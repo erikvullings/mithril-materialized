@@ -21,7 +21,7 @@
     "material-icons": "^0.2.3",
     "materialize-css": "^1.0.0",
     "mithril": "^1.1.6",
-    "mithril-materialized": "^0.0.1"
+    "mithril-materialized": "^0.1.0"
   },
   "devDependencies": {
     "@types/materialize-css": "^1.0.5",
