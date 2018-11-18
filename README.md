@@ -4,7 +4,7 @@ An incomplete [materialize-css](https://materializecss.com) library for the Mith
 
 ## Usage instructions
 
-See the [documentation](https://erikvullings.github.io/mithril-materialized) for examples on how to use this library in your own application. Please note that the library does not include mithril, nor the materialize-css JavaScript or CSS, so you have to include them yourself, as documented.
+See the [documentation](https://erikvullings.github.io/mithril-materialized/index.html) for examples on how to use this library in your own application. Please note that the library does not include mithril, nor the materialize-css JavaScript or CSS, so you have to include them yourself, as documented.
 
 ## Build instructions
 
