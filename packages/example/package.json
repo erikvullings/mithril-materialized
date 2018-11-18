@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "description": "Example project voor the mithril-materialized library.",
   "scripts": {
-    "start": "parcel index.html --out-dir ../docs",
-    "build:domain": "rm -fr ../docs && parcel build index.html --out-dir ../docs --public-url https://erikvullings.github.io/mithril-materialized && cp favicon.ico ../docs/",
+    "start": "parcel index.html --out-dir ../../docs",
+    "build:domain": "rm -fr ../../docs && parcel build index.html --out-dir ../../docs --public-url https://erikvullings.github.io/mithril-materialized && cp favicon.ico ../../docs/",
     "link": "npm link mithril-materialized",
     "build": "rm -fr dist && parcel build index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
