@@ -1,5 +1,7 @@
 devDependencies:
+  figgy-pudding: 3.5.1
   lerna: 3.4.3
+  safe-buffer: 5.1.2
 packages:
   /@lerna/add/3.4.1:
     dependencies:
@@ -4398,4 +4400,6 @@ registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
+  figgy-pudding: ^3.5.1
   lerna: ^3.4.3
+  safe-buffer: ^5.1.2

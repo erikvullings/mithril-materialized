@@ -6,6 +6,7 @@
     "postinstall": "lerna run link",
     "link": "lerna run link",
     "start": "lerna run start --parallel",
+    "publish": "lerna publish",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -15,6 +16,8 @@
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
   "devDependencies": {
-    "lerna": "^3.4.3"
+    "figgy-pudding": "^3.5.1",
+    "lerna": "^3.4.3",
+    "safe-buffer": "^5.1.2"
   }
 }
