@@ -1,0 +1,34 @@
+{
+  "name": "example",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Example project voor the mithril-materialized library.",
+  "scripts": {
+    "start": "parcel index.html --out-dir docs",
+    "link": "npm link mithril-materialized",
+    "build": "rm -fr dist && parcel build index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "example",
+    "mithril",
+    "typescript",
+    "materialize-css"
+  ],
+  "author": "Erik Vullings <erik.vullings@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "material-icons": "^0.2.3",
+    "materialize-css": "^1.0.0",
+    "mithril": "^1.1.6",
+    "mithril-materialized": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/materialize-css": "^1.0.5",
+    "@types/mithril": "^1.1.13",
+    "autoprefixer": "^9.3.1",
+    "cssnano": "^4.1.7",
+    "parcel-bundler": "^1.10.3",
+    "typescript": "^3.1.6"
+  }
+}

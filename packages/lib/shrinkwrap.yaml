@@ -1,0 +1,44 @@
+devDependencies:
+  '@types/materialize-css': 1.0.5
+  '@types/mithril': 1.1.13
+  typescript: 3.1.6
+packages:
+  /@types/cash/0.0.3:
+    dev: true
+    resolution:
+      integrity: sha512-gS24kdFuVwfo5h7IlStnXyBSIH4e9aFIhNHb4w+o5DwbYDeQJv+i9heh7u7nSvqnOP3v34tQMTe7VoJp2US08w==
+  /@types/jquery/3.3.22:
+    dependencies:
+      '@types/sizzle': 2.3.2
+    dev: true
+    resolution:
+      integrity: sha512-a4JDcIhJhHYnoWCkG3xT2CZxXZeA92JeREESorg0DMQ3ZsjuKF48h7XK4l5Gl2GRa/ItGRpKMT0pyK88yRgqXQ==
+  /@types/materialize-css/1.0.5:
+    dependencies:
+      '@types/cash': 0.0.3
+      '@types/jquery': 3.3.22
+    dev: true
+    resolution:
+      integrity: sha512-MhXQMH8ucN7SsFKKVxGZIb9+FvdYlDDcUKxArI2mIMfb/P5uPlYGpaBmBXnA3jmBLaf6g0+VPnXTOb0ArsaSlA==
+  /@types/mithril/1.1.13:
+    dev: true
+    resolution:
+      integrity: sha512-JDdplDDsIHyJFzolSSaKheTyWt7G/TyF1MwKCYU4rucZQtfKigpLMGGB/t8F6FRqPCuVH88uxbE0EILdwCjvVg==
+  /@types/sizzle/2.3.2:
+    dev: true
+    resolution:
+      integrity: sha512-7EJYyKTL7tFR8+gDbB6Wwz/arpGa0Mywk1TJbNzKzHtzbwVmY4HR9WqS5VV7dsBUKQmPNr192jHr/VpBluj/hg==
+  /typescript/3.1.6:
+    dev: true
+    engines:
+      node: '>=4.2.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-tDMYfVtvpb96msS1lDX9MEdHrW4yOuZ4Kdc4Him9oU796XldPYF/t2+uKoX0BBa0hXXwDlqYQbXY5Rzjzc5hBA==
+registry: 'https://registry.npmjs.org/'
+shrinkwrapMinorVersion: 9
+shrinkwrapVersion: 3
+specifiers:
+  '@types/materialize-css': ^1.0.5
+  '@types/mithril': ^1.1.13
+  typescript: ^3.1.6

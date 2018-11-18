@@ -1,0 +1,50 @@
+.clear,
+.clear-10,
+.clear-15 {
+  clear: both;
+  /* overflow: hidden; Précaution pour IE 7 */
+}
+.clear-10 {
+  margin-bottom: 10px;
+}
+.clear-15 {
+  margin-bottom: 15px;
+}
+
+input[type='color']:not(.browser-default) {
+  margin: 0px 0 8px 0;
+  /** Copied from input[type=number] */
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #9e9e9e;
+  border-radius: 0;
+  outline: none;
+  height: 3rem;
+  width: 100%;
+  font-size: 16px;
+  padding: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  -webkit-transition: border 0.3s, -webkit-box-shadow 0.3s;
+  transition: border 0.3s, -webkit-box-shadow 0.3s;
+  transition: box-shadow 0.3s, border 0.3s;
+  transition: box-shadow 0.3s, border 0.3s, -webkit-box-shadow 0.3s;
+}
+
+.codeblock {
+  margin-bottom: 1rem;
+}
+
+.codeblock > label {
+  display: inline-block;
+}
+
+span.mandatory {
+  color: red;
+}
+
+label+.switch {
+  margin-top: 1rem;
+}
