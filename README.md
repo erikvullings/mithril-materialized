@@ -1,10 +1,10 @@
 # mithril-materialized
 
-An incomplete [Materialize-CSS](https://materializecss.com) library for the Mithril framework, making it easier to use a Materialize them in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize code snippets.
+An incomplete [materialize-css](https://materializecss.com) library for the Mithril framework, making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize code snippets.
 
 ## Usage instructions
 
-See the [documentation](https://github.io/erikvullings/mithril-materialized) for examples on how to use this library in your own application. Please note that the library does not include mithril, nor the materialize-css JavaScript or CSS, so you have to include them yourself, as documented.
+See the [documentation](https://erikvullings.github.io/mithril-materialized) for examples on how to use this library in your own application. Please note that the library does not include mithril, nor the materialize-css JavaScript or CSS, so you have to include them yourself, as documented.
 
 ## Build instructions
 
