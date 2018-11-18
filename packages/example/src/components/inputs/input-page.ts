@@ -77,7 +77,7 @@ export const InputPage = () => {
             onchange,
           })
         ),
-        m('span', m('a[target=_blank_][href=https://materializecss.com/autocomplete.html]', 'Documentation')),
+        m('span', m('a[target=_blank][href=https://materializecss.com/autocomplete.html]', 'Documentation')),
         m(CodeBlock, {
           code: `        m(Autocomplete, {
             label: 'What is your favorite company?',
@@ -179,119 +179,6 @@ export const InputPage = () => {
             onchange,
           })
 `,
-        }),
-
-        m('h3.header', 'Switch'),
-        m(
-          '.row',
-          m(Switch, {
-            label: 'What is your gender?',
-            left: 'Man',
-            right: 'Woman',
-            onchange,
-          })
-        ),
-        m(CodeBlock, {
-          code: `          m(Switch, {
-            label: 'What is your gender?',
-            left: 'Man',
-            right: 'Woman',
-            onchange,
-          })
-`,
-        }),
-
-        m('h3.header', 'DatePicker'),
-        m(
-          '.row',
-          m(DatePicker, {
-            format: 'mmmm d, yyyy',
-            label: 'What is your birthday?',
-            yearRange: [1900, new Date().getFullYear() - 17],
-            initialValue: new Date(),
-            onchange,
-          })
-        ),
-        m(CodeBlock, {
-          code: `          m(DatePicker, {
-            format: 'mmmm d, yyyy',
-            label: 'What is your birthday?',
-            yearRange: [1900, new Date().getFullYear() - 17],
-            initialValue: new Date().toDateString(),
-            onchange,
-          })
-`,
-        }),
-
-        m('h3.header', 'TimePicker'),
-        m(
-          '.row',
-          m(TimePicker, {
-            label: 'When do you normally get up?',
-            twelveHour: false,
-            initialValue: '09:00',
-            onchange,
-          })
-        ),
-        m(CodeBlock, {
-          code: `          m(TimePicker, {
-            label: 'What is your birthday?',
-            twelveHour: false,
-            initialValue: '09:00',
-            onchange,
-          })
-`,
-        }),
-
-        m('h3.header', 'Select'),
-        m(
-          'row',
-          m(Select, {
-            label: 'What is your favorite hobby?',
-            options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
-            onchange,
-          })
-        ),
-        m(CodeBlock, {
-          code: `          m(Select, {
-            label: 'What is your favorite hobby?',
-            options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
-            onchange,
-          })`,
-        }),
-
-        m('h3.header', 'Options'),
-        m(
-          'row',
-          m(Options, {
-            label: 'What is your favorite hobby?',
-            options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
-            onchange: (v: boolean, id: string) => onchange(`Option ${id} is changed to ${v}.`),
-          })
-        ),
-        m(CodeBlock, {
-          code: `          m(Options, {
-            label: 'What is your favorite hobby?',
-            options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
-            onchange: (v: boolean, id: string) => onchange(\`Option \${id} is changed to \${v}.\`),
-          })`,
-        }),
-
-        m('h3.header', 'RadioButtons'),
-        m(
-          'row',
-          m(RadioButtons, {
-            label: 'What is your favorite hobby?',
-            options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
-            onchange,
-          })
-        ),
-        m(CodeBlock, {
-          code: `          m(RadioButtons, {
-            label: 'What is your favorite hobby?',
-            options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
-            onchange,
-          })`,
         }),
 
         m('h3.header', 'ColorInput'),

@@ -5,12 +5,15 @@ import { HomePage } from '../components/home/home-page';
 import { AboutPage } from '../components/about/about-page';
 import { ButtonPage } from '../components/buttons/button-page';
 import { InputPage } from '../components/inputs/input-page';
+import { PickerPage } from '../components/pickers/picker-page';
+import { SelectionPage } from '../components/selections/selection-page';
 
 export const enum Dashboards {
   HOME = 'HOME',
   BUTTONS = 'BUTTONS',
   INPUTS = 'INPUTS',
   PICKERS = 'PICKERS',
+  SELECTIONS = 'SELECTIONS',
   ABOUT = 'ABOUT',
 }
 
@@ -77,6 +80,22 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
     route: '/inputs',
     visible: true,
     component: InputPage,
+  },
+  {
+    id: Dashboards.PICKERS,
+    title: 'PICKERS',
+    icon: 'access_time',
+    route: '/pickers',
+    visible: true,
+    component: PickerPage,
+  },
+  {
+    id: Dashboards.SELECTIONS,
+    title: 'SELECTIONS',
+    icon: 'check',
+    route: '/selections',
+    visible: true,
+    component: SelectionPage,
   },
   {
     id: Dashboards.ABOUT,
