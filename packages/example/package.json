@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Example project voor the mithril-materialized library.",
   "scripts": {
-    "start": "parcel index.html --out-dir docs",
+    "start": "parcel index.html --out-dir ../docs",
     "link": "npm link mithril-materialized",
     "build": "rm -fr dist && parcel build index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
