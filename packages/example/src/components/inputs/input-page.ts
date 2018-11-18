@@ -299,14 +299,12 @@ export const InputPage = () => {
           '.row',
           m(ColorInput, {
             label: 'What is your favorite color?',
-            initialValue: '#0000ff',
             onchange,
           })
         ),
         m(CodeBlock, {
           code: `          m(ColorInput, {
             label: 'What is your favorite color?',
-            initialValue: '#0000ff',
             onchange,
           })`,
         }),
