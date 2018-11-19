@@ -65,8 +65,8 @@ export const CodeBlock = (): Component<{
     const language = attrs.language || 'lang-TypeScript';
     const label = language.replace('lang-', '');
     const code = attrs.code instanceof Array ? attrs.code.join('\n') : attrs.code;
-    return m(`pre${toDottedClassList(contentClass)}${newRow ? '.clear' : ''}`, [
-      m('div', { class: 'codeblock' }, m('label', label)),
+    return m(`pre.codeblock${toDottedClassList(contentClass)}${newRow ? '.clear' : ''}`, [
+      m('div', m('label', label)),
       m(`code.${language}`, code),
     ]);
   },
@@ -173,7 +173,7 @@ export const TextArea = () => {
           value: initialValue,
         }),
         m(Label, { label, id, isMandatory, isActive: initialValue }),
-        helperText ? m('span.helper-text', m.trust(helperText)) : undefined,
+        m(HelperText, { helperText }),
       ]);
     },
   } as Component<IInputOptions>;
@@ -201,7 +201,19 @@ const oncreateFactory = (type: InputType, id: string) => {
   }
 };
 
-const inputField = (
+export const HelperText = (): Component<{ helperText?: string; dataError?: string; dataSuccess?: string; }> => {
+  return {
+    view: ({ attrs }) => {
+      const { helperText, dataError, dataSuccess } = attrs;
+      const a = dataError || dataSuccess ? toAttributeString({ dataError, dataSuccess }) : '';
+      return helperText || a
+        ? m(`span.helper-text${a}`, helperText ? m.trust(helperText) : '')
+        : undefined;
+    },
+  };
+};
+
+const InputField = (
   type: InputType,
   defaultClass = ''
 ) => (): Component<IInputOptions> => {
@@ -232,18 +244,18 @@ const inputField = (
           value: initialValue,
         }),
         m(Label, { label, id, isMandatory, isActive: initialValue || type === 'color' || type === 'range' }),
-        m(`span.helper-text${toAttributeString({ dataError, dataSuccess })}`, helperText ? m.trust(helperText) : ''),
+        m(HelperText, { helperText, dataError, dataSuccess }),
       ]);
     },
   };
 };
 
-export const UrlInput = inputField('url');
-export const ColorInput = inputField('color');
-export const TextInput = inputField('text');
-export const NumberInput = inputField('number');
-export const RangeInput = inputField('range', '.range-field');
-export const EmailInput = inputField('email');
+export const UrlInput = InputField('url');
+export const ColorInput = InputField('color');
+export const TextInput = InputField('text');
+export const NumberInput = InputField('number');
+export const RangeInput = InputField('range', '.range-field');
+export const EmailInput = InputField('email');
 
 export const Autocomplete = (): Component<Partial<M.AutocompleteOptions> & IInputOptions> => {
   const state = { id: uniqueId() };
@@ -275,7 +287,7 @@ export const Autocomplete = (): Component<Partial<M.AutocompleteOptions> & IInpu
           value: initialValue,
         }),
         m(Label, { label, id, isMandatory, isActive: initialValue }),
-        m(`span.helper-text`, helperText ? m.trust(helperText) : ''),
+        m(HelperText, { helperText }),
       ]);
     },
   };
@@ -359,7 +371,7 @@ export const DatePicker = (): Component<IInputOptions<Date> & Partial<M.Datepick
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`input[type=text][tabindex=0][id=${id}]${attributes}`),
         m(Label, { label, id, isMandatory, isActive: !!initialValue }),
-        helperText ? m('span.helper-text', m.trust(helperText)) : undefined,
+        m(HelperText, { helperText }),
       ]);
     },
   };
@@ -392,7 +404,7 @@ export const TimePicker = (): Component<IInputOptions & Partial<M.TimepickerOpti
           value: initialValue,
         }),
         m(Label, { label, id, isMandatory, isActive: initialValue }),
-        helperText ? m('span.helper-text', m.trust(helperText)) : undefined,
+        m(HelperText, { helperText }),
       ]);
     },
   };
@@ -433,15 +445,12 @@ export const Options = (): Component<{
   };
 };
 
-export const Select = (): Component<{
-  label: string;
+export interface ISelectOptions extends IInputOptions {
   options: Array<{ id: string | number; label: string }>;
-  onchange: (id: string | number) => void;
-  description?: string;
-  newRow?: boolean;
-  contentClass?: string;
   checkedId?: string | number;
-}> => {
+}
+
+export const Select = (): Component<ISelectOptions> => {
   const state = { id: uniqueId() };
   return {
     oncreate: () => {
@@ -452,7 +461,7 @@ export const Select = (): Component<{
     },
     view: ({ attrs }) => {
       const id = state.id;
-      const { checkedId, newRow, contentClass, onchange, options, label, description } = attrs;
+      const { checkedId, newRow, contentClass, onchange, options, label, helperText } = attrs;
       const clear = newRow ? '.clear' : '';
       return m(`.input-field.select-space${clear}${toDottedClassList(contentClass)}`, [
         m(
@@ -461,7 +470,7 @@ export const Select = (): Component<{
             onchange: (e: Event) => {
               if (e && e.currentTarget) {
                 const b = e.currentTarget as HTMLButtonElement;
-                onchange(b.value);
+                if (onchange) { onchange(b.value); }
               }
             },
           },
@@ -470,7 +479,7 @@ export const Select = (): Component<{
           )
         ),
         m('label', m.trust(label)),
-        description ? m('span.helper-text', m.trust(description)) : undefined,
+        m(HelperText, { helperText }),
       ]);
     },
   };
