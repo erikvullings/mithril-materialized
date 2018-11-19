@@ -26,7 +26,7 @@ export const InputPage = () => {
         m('h2.header', 'Inputs'),
         m('h3.header', 'TextInput'),
         m(
-          '.row',
+          'div',
           m(TextInput, {
             label: 'What is your name?',
             helperText: 'Please, be honest!',
@@ -44,7 +44,7 @@ export const InputPage = () => {
 `,
         }),
         m(
-          '.row',
+          'div',
           m(TextInput, {
             label: 'What is your name?',
             iconName: 'account_circle',
@@ -64,7 +64,7 @@ export const InputPage = () => {
 
         m('h3.header', 'Autocomplete'),
         m(
-          '.row',
+          'div',
           m(Autocomplete, {
             label: 'What is your favorite company?',
             data: {
@@ -94,14 +94,14 @@ export const InputPage = () => {
         }),
 
         m('h3.header', 'TextArea'),
-        m('.row', m(TextArea, { label: 'Can you describe yourself?', helperText: `Don't be shy`, onchange })),
+        m('div', m(TextArea, { label: 'Can you describe yourself?', helperText: `Don't be shy`, onchange })),
         m(CodeBlock, {
           code: `        m(TextArea, { label: 'Can you describe yourself?', helperText: 'Don\'t be shy', onchange })`,
         }),
 
         m('h3.header', 'EmailInput'),
         m(
-          '.row',
+          'div',
           m(EmailInput, {
             label: 'What is your email?',
             dataError: 'Wrong, use username@org.com',
@@ -120,7 +120,7 @@ export const InputPage = () => {
 
         m('h3.header', 'UrlInput'),
         m(
-          '.row',
+          'div',
           m(UrlInput, {
             label: 'What is your favorite website?',
             dataError: 'Wrong, use http(s)://org.com',
@@ -139,7 +139,7 @@ export const InputPage = () => {
 
         m('h3.header', 'NumberInput'),
         m(
-          '.row',
+          'div',
           m(NumberInput, {
             min: 0,
             max: 120,
@@ -163,7 +163,7 @@ export const InputPage = () => {
 
         m('h3.header', 'RangeInput'),
         m(
-          '.row',
+          'div',
           m(RangeInput, {
             min: 0,
             max: 100,
@@ -183,7 +183,7 @@ export const InputPage = () => {
 
         m('h3.header', 'ColorInput'),
         m(
-          '.row',
+          'div',
           m(ColorInput, {
             label: 'What is your favorite color?',
             onchange,

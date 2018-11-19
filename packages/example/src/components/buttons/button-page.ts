@@ -24,14 +24,14 @@ export const ButtonPage = () => {
           ],
         }),
         m('h3.header[id=flatbutton]', 'FlatButton'),
-        m('p', m(FlatButton, { label: 'My Flat button', ui: { onclick } })),
+        m('div', m(FlatButton, { label: 'My Flat button', ui: { onclick } })),
         m(CodeBlock, { code: '            m(FlatButton, { label: "My Flat button", ui: { onclick } })' }),
         m('h3.header[id=roundiconbutton]', 'RoundIconButton'),
-        m('p', m(RoundIconButton, { iconName: 'create', ui: { onclick } })),
+        m('div', m(RoundIconButton, { iconName: 'create', ui: { onclick } })),
         m(CodeBlock, { code: '            m(RoundIconButton, { iconName: "create", ui: { onclick } })' }),
         m('h3.header[id=submitbutton]', 'SubmitButton'),
         m(
-          'p',
+          'div',
           m(SubmitButton, {
             label: 'Submit',
             iconName: 'send',
