@@ -1,4 +1,4 @@
-import { Select, IInputOptions, CodeBlock, Options, Switch, RadioButtons } from 'mithril-materialized';
+import { Select, CodeBlock, Options, Switch, RadioButtons } from 'mithril-materialized';
 import m from 'mithril';
 
 export const SelectionPage = () => {
@@ -13,6 +13,7 @@ export const SelectionPage = () => {
           'row',
           m(Select, {
             label: 'What is your favorite hobby?',
+            isMandatory: true,
             options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
             onchange,
           })
@@ -20,6 +21,7 @@ export const SelectionPage = () => {
         m(CodeBlock, {
           code: `          m(Select, {
             label: 'What is your favorite hobby?',
+            isMandatory: true,
             options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
             onchange,
           })`,
@@ -59,6 +61,7 @@ export const SelectionPage = () => {
           'row',
           m(Options, {
             label: 'What is your favorite hobby?',
+            isMandatory: true,
             options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
             onchange: (v: boolean, id: string) => onchange(`Option ${id} is changed to ${v}.`),
           })
@@ -66,6 +69,7 @@ export const SelectionPage = () => {
         m(CodeBlock, {
           code: `          m(Options, {
             label: 'What is your favorite hobby?',
+            isMandatory: true,
             options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
             onchange: (v: boolean, id: string) => onchange(\`Option \${id} is changed to \${v}.\`),
           })`,

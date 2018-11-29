@@ -146,9 +146,12 @@ export const Label = () =>
   ({
     view: ({ attrs }) => {
       const { label, id, isMandatory, isActive } = attrs;
-      return m(`label${isLabelActive(isActive)}[for=${id}]`, [m.trust(label), isMandatory ? m(Mandatory) : undefined]);
+      return m(`label${isLabelActive(isActive)}[for=${id || uniqueId()}]`, [
+        m.trust(label),
+        isMandatory ? m(Mandatory) : undefined,
+      ]);
     },
-  } as Component<{ label: string; id: string; isMandatory?: boolean; isActive?: boolean | string }>);
+  } as Component<{ label: string; id?: string; isMandatory?: boolean; isActive?: boolean | string }>);
 
 export const TextArea = () => {
   const state = { id: uniqueId() };
@@ -405,6 +408,7 @@ export interface IInputOption {
 }
 
 export const Options = (): Component<{
+  id?: string;
   label: string;
   options: IInputOption[];
   onchange: (isChecked: boolean, id: string, option: IInputOption) => void;
@@ -412,14 +416,16 @@ export const Options = (): Component<{
   contentClass?: string;
   titleClass?: string;
   newRow?: boolean;
+  /** If true, add a mandatory * after the label */
+  isMandatory?: boolean;
 }> => {
   return {
     view: ({ attrs }) => {
-      const { label, options, onchange, description, contentClass, titleClass, newRow } = attrs;
+      const { label, id, options, onchange, description, contentClass, titleClass, newRow, isMandatory } = attrs;
       const clear = newRow ? '.clear' : '';
       return m(`div${clear}${toDottedClassList(titleClass || 'col s12')}`, [
-        m('h4', m.trust(label)),
-        description ? m('p.helper-text', m.trust(description)) : '',
+        m('h4', m(Label, { id, label, isMandatory })),
+        m(HelperText, { helperText: description }),
         ...options.map(option =>
           m(InputCheckbox, {
             label: option.label,
@@ -452,7 +458,8 @@ export const Select = (): Component<ISelectOptions> => {
     },
     view: ({ attrs }) => {
       const id = state.id;
-      const { checkedId, newRow, contentClass, onchange, options, label, helperText, multiple, placeholder } = attrs;
+      const { checkedId, newRow, contentClass, onchange, options, label, helperText, multiple,
+         placeholder, isMandatory } = attrs;
       const clear = newRow ? '.clear' : '';
       return m(`.input-field.select-space${clear}${toDottedClassList(contentClass)}`, [
         m(
@@ -472,7 +479,7 @@ export const Select = (): Component<ISelectOptions> => {
             m(`option[value=${o.id}]${isSelected(o.id, checkedId) ? '[selected]' : ''}`, o.label.replace('&amp;', '&'))
           )
         ),
-        m('label', m.trust(label)),
+        m(Label, { label, isMandatory }),
         m(HelperText, { helperText }),
       ]);
     },

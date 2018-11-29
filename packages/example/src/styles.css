@@ -45,6 +45,7 @@ input[type='color']:not(.browser-default) {
 }
 
 span.mandatory {
+  margin-left: 5px;
   color: red;
 }
 
