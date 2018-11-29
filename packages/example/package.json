@@ -1,7 +1,7 @@
 {
   "name": "example",
   "private": true,
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Example project voor the mithril-materialized library.",
   "scripts": {
     "start": "parcel index.html --out-dir ../../docs",
@@ -22,7 +22,7 @@
     "material-icons": "^0.2.3",
     "materialize-css": "^1.0.0",
     "mithril": "^2.0.0-rc.1",
-    "mithril-materialized": "^0.1.2"
+    "mithril-materialized": "^0.1.3"
   },
   "devDependencies": {
     "@types/materialize-css": "^1.0.5",
