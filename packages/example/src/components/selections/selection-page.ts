@@ -25,6 +25,35 @@ export const SelectionPage = () => {
           })`,
         }),
 
+        m('h3.header', 'Select multiple'),
+        m(
+          'row',
+          m(Select, {
+            multiple: true,
+            placeholder: 'Make a choice...',
+            label: 'What are your favorite hobbies?',
+            checkedId: ['out', 'read'],
+            options: [
+              { id: 'movies', label: 'Watching movies' },
+              { id: 'out', label: 'Going out' },
+              { id: 'read', label: 'Reading' },
+            ],
+          })
+        ),
+        m(CodeBlock, {
+          code: `          m(Select, {
+            multiple: true,
+            placeholder: 'Make a choice...',
+            label: 'What are your favorite hobbies?',
+            checkedId: ['out', 'read'],
+            options: [
+              { id: 'movies', label: 'Watching movies' },
+              { id: 'out', label: 'Going out' },
+              { id: 'read', label: 'Reading' },
+            ],
+          })`,
+        }),
+
         m('h3.header', 'Options'),
         m(
           'row',

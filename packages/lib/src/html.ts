@@ -183,40 +183,38 @@ export type InputType = 'url' | 'color' | 'text' | 'number' | 'email' | 'range';
 
 const oncreateFactory = (type: InputType, id: string) => {
   switch (type) {
-    default: return undefined;
-    case 'text': return ({ attrs }: Vnode<IInputOptions>) => {
-      if (attrs && attrs.maxLength) {
-        const elem = document.querySelector(`#${id}`);
-        if (elem) {
-          CharacterCounter.init(elem);
+    default:
+      return undefined;
+    case 'text':
+      return ({ attrs }: Vnode<IInputOptions>) => {
+        if (attrs && attrs.maxLength) {
+          const elem = document.querySelector(`#${id}`);
+          if (elem) {
+            CharacterCounter.init(elem);
+          }
         }
-      }
-    };
-    case 'range': return () => {
-      const elem = document.querySelectorAll(`#${id}`);
-      if (elem) {
-        M.Range.init(elem);
-      }
-    };
+      };
+    case 'range':
+      return () => {
+        const elem = document.querySelectorAll(`#${id}`);
+        if (elem) {
+          M.Range.init(elem);
+        }
+      };
   }
 };
 
-export const HelperText = (): Component<{ helperText?: string; dataError?: string; dataSuccess?: string; }> => {
+export const HelperText = (): Component<{ helperText?: string; dataError?: string; dataSuccess?: string }> => {
   return {
     view: ({ attrs }) => {
       const { helperText, dataError, dataSuccess } = attrs;
       const a = dataError || dataSuccess ? toAttributeString({ dataError, dataSuccess }) : '';
-      return helperText || a
-        ? m(`span.helper-text${a}`, helperText ? m.trust(helperText) : '')
-        : undefined;
+      return helperText || a ? m(`span.helper-text${a}`, helperText ? m.trust(helperText) : '') : undefined;
     },
   };
 };
 
-const InputField = (
-  type: InputType,
-  defaultClass = ''
-) => (): Component<IInputOptions> => {
+const InputField = (type: InputType, defaultClass = '') => (): Component<IInputOptions> => {
   const state = { id: uniqueId() };
   const oncreate = oncreateFactory(type, state.id);
   return {
@@ -269,17 +267,7 @@ export const Autocomplete = (): Component<Partial<M.AutocompleteOptions> & IInpu
     view: ({ attrs }) => {
       const id = attrs.id || state.id;
       const attributes = toAttrs(attrs);
-      const {
-        label,
-        helperText,
-        initialValue,
-        onchange,
-        newRow,
-        contentClass,
-        style,
-        iconName,
-        isMandatory,
-      } = attrs;
+      const { label, helperText, initialValue, onchange, newRow, contentClass, style, iconName, isMandatory } = attrs;
       return m(`.input-field${newRow ? '.clear' : ''}${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`input.validate.autocomplete[type=text][tabindex=0][id=${id}]${attributes}`, {
@@ -447,11 +435,14 @@ export const Options = (): Component<{
 
 export interface ISelectOptions extends IInputOptions {
   options: Array<{ id: string | number; label: string }>;
-  checkedId?: string | number;
+  checkedId?: string | number | string[] | number[];
+  multiple?: boolean;
 }
 
 export const Select = (): Component<ISelectOptions> => {
   const state = { id: uniqueId() };
+  const isSelected = <T extends number | string>(id: T, checkedId?: T | T[]) =>
+    checkedId instanceof Array ? checkedId.indexOf(id) >= 0 : checkedId === id;
   return {
     oncreate: () => {
       const elem = document.querySelector(`#${state.id}`);
@@ -461,21 +452,24 @@ export const Select = (): Component<ISelectOptions> => {
     },
     view: ({ attrs }) => {
       const id = state.id;
-      const { checkedId, newRow, contentClass, onchange, options, label, helperText } = attrs;
+      const { checkedId, newRow, contentClass, onchange, options, label, helperText, multiple, placeholder } = attrs;
       const clear = newRow ? '.clear' : '';
       return m(`.input-field.select-space${clear}${toDottedClassList(contentClass)}`, [
         m(
-          `select[id=${id}]`,
+          `select[id=${id}]${multiple ? '[multiple]' : ''}`,
           {
             onchange: (e: Event) => {
               if (e && e.currentTarget) {
                 const b = e.currentTarget as HTMLButtonElement;
-                if (onchange) { onchange(b.value); }
+                if (onchange) {
+                  onchange(b.value);
+                }
               }
             },
           },
+          placeholder ? m('option[value=""][disabled]', placeholder) : '',
           options.map(o =>
-            m(`option[value=${o.id}]${checkedId === o.id ? '[selected]' : ''}`, o.label.replace('&amp;', '&'))
+            m(`option[value=${o.id}]${isSelected(o.id, checkedId) ? '[selected]' : ''}`, o.label.replace('&amp;', '&'))
           )
         ),
         m('label', m.trust(label)),
