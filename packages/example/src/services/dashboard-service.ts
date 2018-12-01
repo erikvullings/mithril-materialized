@@ -7,6 +7,7 @@ import { ButtonPage } from '../components/buttons/button-page';
 import { InputPage } from '../components/inputs/input-page';
 import { PickerPage } from '../components/pickers/picker-page';
 import { SelectionPage } from '../components/selections/selection-page';
+import { ModalPage } from '../components/modals/modal-page';
 
 export const enum Dashboards {
   HOME = 'HOME',
@@ -14,6 +15,7 @@ export const enum Dashboards {
   INPUTS = 'INPUTS',
   PICKERS = 'PICKERS',
   SELECTIONS = 'SELECTIONS',
+  MODALS = 'MODALS',
   ABOUT = 'ABOUT',
 }
 
@@ -96,6 +98,14 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
     route: '/selections',
     visible: true,
     component: SelectionPage,
+  },
+  {
+    id: Dashboards.MODALS,
+    title: 'MODALS',
+    icon: 'all_out',
+    route: '/modals',
+    visible: true,
+    component: ModalPage,
   },
   {
     id: Dashboards.ABOUT,

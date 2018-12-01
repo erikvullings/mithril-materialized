@@ -29,7 +29,9 @@ export const baseButtonFactory = (defaultClassNames: string, attributes: string 
   ({
     view: ({ attrs }) =>
       m(
-        `${defaultClassNames}${attributes}${attrs.contentClass ? '.' + attrs.contentClass : ''}${
+        `${defaultClassNames}${attrs.contentClass ? '.' + attrs.contentClass : ''}${attributes}${
+          attrs.modalId ? '.modal-trigger[href=#' + attrs.modalId + ']' : ''
+        }${
           attrs.tooltip ? '.tooltipped[data-position=top][data-tooltip=' + attrs.tooltip + ']' : ''
         }${toAttributeString(attrs.attr)}`,
         attrs.ui || {},
@@ -37,8 +39,9 @@ export const baseButtonFactory = (defaultClassNames: string, attributes: string 
         attrs.label ? attrs.label : ''
       ),
   } as Component<{
-    name?: string;
     label?: string;
+    /** If the button is intended to open a modal, specify its modal id */
+    modalId?: string;
     iconName?: string;
     iconClass?: string;
     attr?: IHtmlAttributes;
@@ -458,8 +461,18 @@ export const Select = (): Component<ISelectOptions> => {
     },
     view: ({ attrs }) => {
       const id = state.id;
-      const { checkedId, newRow, contentClass, onchange, options, label, helperText, multiple,
-         placeholder, isMandatory } = attrs;
+      const {
+        checkedId,
+        newRow,
+        contentClass,
+        onchange,
+        options,
+        label,
+        helperText,
+        multiple,
+        placeholder,
+        isMandatory,
+      } = attrs;
       const clear = newRow ? '.clear' : '';
       return m(`.input-field.select-space${clear}${toDottedClassList(contentClass)}`, [
         m(
@@ -538,5 +551,40 @@ const RadioButton = (): Component<{
         m('span', m.trust(label)),
       ])
     );
+  },
+});
+
+/** Builds a modal panel, which can be triggered using its id */
+export const ModalPanel = (): Component<{
+  id: string;
+  title: string;
+  description?: string;
+  /** Set to true when the description contains HTML */
+  richContent?: boolean;
+  /** Fixate the footer, so you can show more content. */
+  fixedFooter?: boolean;
+  /** Display on the bottom */
+  bottomSheet?: boolean;
+  options?: Partial<M.ModalOptions>;
+  /** Menu buttons, from left to right */
+  buttons?: Array<{ label: string; onclick?: () => void }>;
+}> => ({
+  oncreate: ({ attrs }) => {
+    const elems = document.querySelectorAll('.modal');
+    M.Modal.init(elems, attrs.options);
+  },
+  view: ({ attrs }) => {
+    const { id, title, description, fixedFooter, bottomSheet, buttons, richContent } = attrs;
+    const ff = fixedFooter ? '.modal-fixed-footer' : '';
+    const bs = bottomSheet ? '.bottom-sheet' : '';
+    return m(`.modal${ff}${bs}[id=${id}]`, [
+      m('.modal-content', [m('h4', title), richContent ? m.trust(description || '') : m('p', description)]),
+      buttons
+        ? m(
+            '.modal-footer',
+            buttons.map(b => m('a.modal-close.waves-effect.waves-green.btn-flat', { onclick: b.onclick }, b.label))
+          )
+        : undefined,
+    ]);
   },
 });
