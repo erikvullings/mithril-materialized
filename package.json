@@ -8,7 +8,8 @@
     "link": "lerna run link",
     "build:domain": "lerna run build:domain",
     "start": "lerna run start --parallel",
-    "publish": "lerna publish",
+    "patch-release": "lerna run patch-release --parallel",
+    "minor-release": "lerna run minor-release --parallel",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

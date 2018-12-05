@@ -1,13 +1,14 @@
 {
   "name": "mithril-materialized",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A materialize library for mithril.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
     "link": "npm link",
     "start": "tsc -w",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "patch-release": "npm version patch && npm publish && git push --follow-tags",
+    "minor-release": "npm version minor && npm publish && git push --follow-tags"
   },
   "keywords": [
     "mithril",
