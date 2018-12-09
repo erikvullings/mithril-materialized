@@ -1,7 +1,9 @@
+dependencies:
+  materialize-css: 1.0.0
 devDependencies:
   '@types/materialize-css': 1.0.5
   '@types/mithril': 1.1.13
-  typescript: 3.1.6
+  typescript: 3.2.2
 packages:
   /@types/cash/0.0.3:
     dev: true
@@ -28,17 +30,22 @@ packages:
     dev: true
     resolution:
       integrity: sha512-7EJYyKTL7tFR8+gDbB6Wwz/arpGa0Mywk1TJbNzKzHtzbwVmY4HR9WqS5VV7dsBUKQmPNr192jHr/VpBluj/hg==
-  /typescript/3.1.6:
+  /materialize-css/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-4/oecXl8y/1i8RDZvyvwAICyqwNoKU4or5uf8uoAd74k76KzZ0Llym4zhJ5lLNUskcqjO0AuMcvNyDkpz8Z6zw==
+  /typescript/3.2.2:
     dev: true
     engines:
       node: '>=4.2.0'
     hasBin: true
     resolution:
-      integrity: sha512-tDMYfVtvpb96msS1lDX9MEdHrW4yOuZ4Kdc4Him9oU796XldPYF/t2+uKoX0BBa0hXXwDlqYQbXY5Rzjzc5hBA==
+      integrity: sha512-VCj5UiSyHBjwfYacmDuc/NOk4QQixbE+Wn7MFJuS0nRuPQbof132Pw4u53dm264O8LPc2MVsc7RJNml5szurkg==
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
   '@types/materialize-css': ^1.0.5
   '@types/mithril': ^1.1.13
-  typescript: ^3.1.6
+  materialize-css: ^1.0.0
+  typescript: ^3.2.2
