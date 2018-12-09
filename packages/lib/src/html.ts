@@ -175,7 +175,13 @@ export const TextArea = () => {
       return m(`.input-field${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`textarea.materialize-textarea[tabindex=0][id=${id}]${attributes}`, {
-          onchange: onchange ? m.withAttr('value', onchange) : undefined,
+          onchange: onchange
+            ? (e: Event) => {
+                if (e.target && (e.target as HTMLInputElement).value) {
+                  onchange((e.target as HTMLInputElement).value);
+                }
+              }
+            : undefined,
           value: initialValue,
         }),
         m(Label, { label, id, isMandatory, isActive: initialValue }),
@@ -244,7 +250,13 @@ const InputField = (type: InputType, defaultClass = '') => (): Component<IInputO
       return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`input.validate[type=${type}][tabindex=0][id=${id}]${attributes}`, {
-          onchange: onchange ? m.withAttr('value', onchange) : undefined,
+          onchange: onchange
+            ? (e: Event) => {
+                if (e.target && (e.target as HTMLInputElement).value) {
+                  onchange((e.target as HTMLInputElement).value);
+                }
+              }
+            : undefined,
           value: initialValue,
         }),
         m(Label, { label, id, isMandatory, isActive: initialValue || type === 'color' || type === 'range' }),
@@ -277,7 +289,13 @@ export const Autocomplete = (): Component<Partial<M.AutocompleteOptions> & IInpu
       return m(`.input-field${newRow ? '.clear' : ''}${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`input.validate.autocomplete[type=text][tabindex=0][id=${id}]${attributes}`, {
-          onchange: onchange ? m.withAttr('value', onchange) : undefined,
+          onchange: onchange
+            ? (e: Event) => {
+                if (e.target && (e.target as HTMLInputElement).value) {
+                  onchange((e.target as HTMLInputElement).value);
+                }
+              }
+            : undefined,
           value: initialValue,
         }),
         m(Label, { label, id, isMandatory, isActive: initialValue }),
@@ -295,7 +313,13 @@ export const InputCheckbox = () => {
         `div${toDottedClassList(contentClass)}`,
         m('label', [
           m(`input[type=checkbox][tabindex=0]${checked ? '[checked]' : ''}`, {
-            onclick: m.withAttr('checked', onchange),
+            onclick: onchange
+              ? (e: Event) => {
+                  if (e.target && typeof (e.target as HTMLInputElement).checked !== 'undefined') {
+                    onchange((e.target as HTMLInputElement).checked);
+                  }
+                }
+              : undefined,
           }),
           m('span', m.trust(label)),
         ])
@@ -328,7 +352,13 @@ export const Switch = (): Component<ISwitchOptions> => {
           m('label', [
             left || 'Off',
             m(`input[id=${id}][type=checkbox]${disable({ disabled })}${checked ? '[checked]' : ''}`, {
-              onclick: onchange ? m.withAttr('checked', onchange) : undefined,
+              onclick: onchange
+                ? (e: Event) => {
+                    if (e.target && typeof (e.target as HTMLInputElement).checked !== 'undefined') {
+                      onchange((e.target as HTMLInputElement).checked);
+                    }
+                  }
+                : undefined,
             }),
             m('span.lever'),
             right || 'On',
@@ -546,7 +576,7 @@ const RadioButton = (): Component<{
       `div${toDottedClassList(contentClass)}`,
       m('label', [
         m(`input[type=radio][tabindex=0][name=${groupId}]${attrs.checked ? '[checked=checked]' : ''}`, {
-          onclick: m.withAttr('checked', v => onchange(id)),
+          onclick: onchange ? () => onchange(id) : undefined,
         }),
         m('span', m.trust(label)),
       ])
@@ -596,12 +626,14 @@ export interface IChipsOptions extends Partial<M.ChipsOptions> {
 /** Chips and tags */
 export const Chips = (): Component<IChipsOptions> => {
   return {
-    oncreate: ({ attrs }) => {
+    oncreate: vnode => {
+      const { attrs, dom } = vnode;
       const { onchange, onChipAdd, onChipDelete } = attrs;
-      if (!onchange) { return; }
-      const onChipAddBound = onChipAdd
-        ? (onChipAdd.bind(attrs) as (el: Element, chip: Element) => void)
-        : undefined;
+      if (!onchange) {
+        return;
+      }
+      const chips = M.Chips.getInstance(dom) as M.Chips;
+      const onChipAddBound = onChipAdd ? (onChipAdd.bind(chips) as (el: Element, chip: Element) => void) : undefined;
       attrs.onChipAdd = function(this: M.Chips, el: Element, chip: Element) {
         onchange(this.chipsData);
         if (onChipAddBound) {
@@ -609,7 +641,7 @@ export const Chips = (): Component<IChipsOptions> => {
         }
       };
       const onChipDeleteBound = onChipDelete
-        ? (onChipDelete.bind(attrs) as (el: Element, chip: Element) => void)
+        ? (onChipDelete.bind(chips) as (el: Element, chip: Element) => void)
         : undefined;
       attrs.onChipDelete = function(this: M.Chips, el: Element, chip: Element) {
         onchange(this.chipsData);
