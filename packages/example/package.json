@@ -21,15 +21,15 @@
   "dependencies": {
     "material-icons": "^0.2.3",
     "materialize-css": "^1.0.0",
-    "mithril": "^2.0.0-rc.1",
-    "mithril-materialized": "^0.1.4"
+    "mithril": "^1.1.6",
+    "mithril-materialized": "^0.1.7"
   },
   "devDependencies": {
     "@types/materialize-css": "^1.0.5",
     "@types/mithril": "^1.1.13",
-    "autoprefixer": "^9.3.1",
+    "autoprefixer": "^9.4.2",
     "cssnano": "^4.1.7",
     "parcel-bundler": "^1.10.3",
-    "typescript": "^3.1.6"
+    "typescript": "^3.2.2"
   }
 }
