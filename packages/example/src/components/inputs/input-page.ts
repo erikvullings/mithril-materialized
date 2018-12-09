@@ -1,6 +1,4 @@
 import {
-  DatePicker,
-  Select,
   ColorInput,
   NumberInput,
   TextInput,
@@ -8,13 +6,10 @@ import {
   CodeBlock,
   TextArea,
   EmailInput,
-  TimePicker,
-  Options,
   UrlInput,
-  Switch,
   RangeInput,
-  RadioButtons,
   Autocomplete,
+  Chips,
 } from 'mithril-materialized';
 import m from 'mithril';
 
@@ -179,6 +174,36 @@ export const InputPage = () => {
             onchange,
           })
 `,
+        }),
+
+        m('h3.header', 'Chips'),
+        m(
+          'div',
+          m(Chips, {
+            onchange: (chips: M.ChipData[]) => onchange(JSON.stringify(chips)),
+            placeholder: 'Add a tag',
+            secondaryPlaceholder: '+Tag',
+            data: [
+              {
+                tag: 'Hello',
+              },
+              {
+                tag: 'World',
+              },
+            ],
+          })
+        ),
+        m(CodeBlock, {
+          code: `          m(Chips, {
+            onchange: (chips: M.ChipData[]) => onchange(JSON.stringify(chips)),
+            placeholder: 'Add a tag',
+            secondaryPlaceholder: '+Tag',
+            data: [{
+              tag: 'Hello',
+            }, {
+              tag: 'World',
+            }],
+          })`,
         }),
 
         m('h3.header', 'ColorInput'),
