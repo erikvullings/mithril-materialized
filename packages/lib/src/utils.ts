@@ -28,7 +28,7 @@ const encodeAttribute = (x = '') => x.toString().replace(/"/g, '&quot;');
 /** Convert an object to a string of HTML attributes */
 export const toAttributeString = <T extends { [key: string]: any }>(x?: T) =>
   x
-    ? compose(
+    ? compose<((list: T[]) => string) | ((list: T[]) => Array<{}>), T>(
         join(''),
         map((attribute: string) => `[${camelToSnake(attribute)}="${encodeAttribute(x[attribute])}"]`),
         Object.keys
