@@ -21,7 +21,7 @@
   "dependencies": {
     "material-icons": "^0.2.3",
     "materialize-css": "^1.0.0",
-    "mithril": "^1.1.6",
+    "mithril": "^2.0.0-rc.3",
     "mithril-materialized": "^0.1.7"
   },
   "devDependencies": {
