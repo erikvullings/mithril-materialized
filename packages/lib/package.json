@@ -3,6 +3,10 @@
   "version": "0.1.9",
   "description": "A materialize library for mithril.",
   "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/erikvullings/mithril-materialized.git"
+  },
   "typings": "dist/index.d.ts",
   "scripts": {
     "link": "npm link",
