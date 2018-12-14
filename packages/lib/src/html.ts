@@ -334,8 +334,11 @@ export const InputCheckbox = () => {
 };
 
 export interface ISwitchOptions extends Partial<IInputOptions<boolean>> {
+  /** Left text label */
   left?: string;
+  /** Right text label */
   right?: string;
+  /** If checked is true, the switch is set in the right position. */
   checked?: boolean;
 }
 
