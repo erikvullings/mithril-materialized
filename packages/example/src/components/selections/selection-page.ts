@@ -1,4 +1,4 @@
-import { Select, CodeBlock, Options, Switch, RadioButtons } from 'mithril-materialized';
+import { Select, CodeBlock, Options, Switch, RadioButtons, Dropdown } from 'mithril-materialized';
 import m from 'mithril';
 
 export const SelectionPage = () => {
@@ -108,8 +108,36 @@ export const SelectionPage = () => {
             left: 'Man',
             right: 'Woman',
             onchange,
+          })`,
+        }),
+
+        m('h3.header', 'Dropdown'),
+        m(
+          '.row',
+          m(Dropdown, {
+            id: 'hobby',
+            label: 'Pick a hobby',
+            // selected: 'movies',
+            items: [
+              { name: 'Movies', value: 'movies' },
+              { name: 'Reading', value: 'reading' },
+              { name: 'Eating', value: 'eating' },
+            ],
+            onchange,
           })
-`,
+        ),
+        m(CodeBlock, {
+          code: `          m(Dropdown, {
+            id: 'hobby',
+            label: 'Pick a hobby',
+            // selected: 'movies',
+            items: [
+              { name: 'Movies', value: 'movies' },
+              { name: 'Reading', value: 'reading' },
+              { name: 'Eating', value: 'eating' },
+            ],
+            onchange,
+          })`,
         }),
       ]),
   };

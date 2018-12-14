@@ -27,6 +27,7 @@ Supported components:
   - Options
   - RadioButtons
   - Switch
+  - Dropdown
 - Others
   - ModalPanel
 
