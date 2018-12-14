@@ -78,6 +78,8 @@ export const CodeBlock = (): Component<{
 export interface IInputOptions<T = string> {
   label: string;
   id?: string;
+  /** Unique key for use of the element in an array */
+  key?: string;
   initialValue?: T;
   onchange?: (value: T) => void;
   placeholder?: string;
@@ -456,8 +458,7 @@ export const Options = (): Component<{
   isMandatory?: boolean;
 }> => {
   return {
-    view: ({ attrs }) => {
-      const { label, id, options, onchange, description, contentClass, titleClass, newRow, isMandatory } = attrs;
+    view: ({ attrs: { label, id, options, onchange, description, contentClass, titleClass, newRow, isMandatory } }) => {
       const clear = newRow ? '.clear' : '';
       return m(`div${clear}${toDottedClassList(titleClass || 'col s12')}`, [
         m('h4', m(Label, { id, label, isMandatory })),
@@ -492,9 +493,8 @@ export const Select = (): Component<ISelectOptions> => {
         M.FormSelect.init(elem);
       }
     },
-    view: ({ attrs }) => {
-      const id = state.id;
-      const {
+    view: ({
+      attrs: {
         checkedId,
         newRow,
         contentClass,
@@ -505,7 +505,9 @@ export const Select = (): Component<ISelectOptions> => {
         multiple,
         placeholder,
         isMandatory,
-      } = attrs;
+      },
+    }) => {
+      const id = state.id;
       const clear = newRow ? '.clear' : '';
       return m(`.input-field.select-space${clear}${toDottedClassList(contentClass)}`, [
         m(
@@ -543,10 +545,8 @@ export const RadioButtons = (): Component<{
 }> => {
   const state = { id: uniqueId() };
   return {
-    view: ({ attrs }) => {
+    view: ({ attrs: { newRow, contentClass, label, description, onchange, options, checkedId } }) => {
       const groupId = state.id;
-      const { newRow, contentClass, label, description, onchange, options } = attrs;
-      const checkedId = attrs.checkedId;
       const clear = newRow ? '.clear' : '';
       return m(`.input-field${clear}${toDottedClassList(contentClass)}`, [
         m('h4', m.trust(label)),
@@ -573,12 +573,11 @@ const RadioButton = (): Component<{
   disabled?: boolean;
   contentClass?: string;
 }> => ({
-  view: ({ attrs }) => {
-    const { id, groupId, label, onchange, contentClass } = attrs;
+  view: ({ attrs: { id, groupId, label, onchange, contentClass, checked } }) => {
     return m(
       `div${toDottedClassList(contentClass)}`,
       m('label', [
-        m(`input[type=radio][tabindex=0][name=${groupId}]${attrs.checked ? '[checked=checked]' : ''}`, {
+        m(`input[type=radio][tabindex=0][name=${groupId}]${checked ? '[checked=checked]' : ''}`, {
           onclick: onchange ? () => onchange(id) : undefined,
         }),
         m('span', m.trust(label)),
@@ -602,12 +601,11 @@ export const ModalPanel = (): Component<{
   /** Menu buttons, from left to right */
   buttons?: Array<{ label: string; onclick?: () => void }>;
 }> => ({
-  oncreate: ({ attrs }) => {
+  oncreate: ({ attrs: { options } }) => {
     const elems = document.querySelectorAll('.modal');
-    M.Modal.init(elems, attrs.options);
+    M.Modal.init(elems, options);
   },
-  view: ({ attrs }) => {
-    const { id, title, description, fixedFooter, bottomSheet, buttons, richContent } = attrs;
+  view: ({ attrs: { id, title, description, fixedFooter, bottomSheet, buttons, richContent } }) => {
     const ff = fixedFooter ? '.modal-fixed-footer' : '';
     const bs = bottomSheet ? '.bottom-sheet' : '';
     return m(`.modal${ff}${bs}[id=${id}]`, [
