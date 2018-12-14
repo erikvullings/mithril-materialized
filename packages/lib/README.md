@@ -2,6 +2,34 @@
 
 An incomplete [materialize-css](https://materializecss.com) library for the Mithril framework, making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize code snippets.
 
+Supported components:
+
+- Buttons:
+  - Button
+  - FlatButton
+  - RoundButton
+  - SubmitButton
+- Inputs:
+  - TextInput
+  - TextArea
+  - AutoComplete
+  - UrlInput
+  - EmailInput
+  - NumberInput
+  - ColorInput
+  - RangeInput
+  - Chips
+- Pickers
+  - DatePicker
+  - TimePicker
+- Selections
+  - Select
+  - Options
+  - RadioButtons
+  - Switch
+- Others
+  - ModalPanel
+
 ## Usage instructions
 
 See the [documentation](https://erikvullings.github.io/mithril-materialized/index.html) for examples on how to use this library in your own application. Please note that the library does not include mithril, nor the materialize-css JavaScript or CSS, so you have to include them yourself, as documented.
