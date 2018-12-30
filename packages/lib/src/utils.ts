@@ -41,3 +41,5 @@ export const toAttributeString = <T extends { [key: string]: any }>(x?: T) =>
  */
 export const toDottedClassList = (contentClass = 'col.s12') =>
   contentClass ? '.' + contentClass.replace(' ', '.') : '';
+
+export const pipe = (...fncs: Array<(x: any) => any>) => <T>(x: T) => fncs.reduce((y, f) => f(y), x);
