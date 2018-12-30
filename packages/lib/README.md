@@ -1,6 +1,6 @@
 # mithril-materialized
 
-An incomplete [materialize-css](https://materializecss.com) library for the Mithril framework, making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize code snippets.
+An incomplete [materialize-css](https://materializecss.com) library for the Mithril framework (v2.0.0-rc.3 and higher), making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize code snippets.
 
 Supported components:
 
@@ -30,6 +30,15 @@ Supported components:
   - Dropdown
 - Others
   - ModalPanel
+
+## Version history
+
+v0.2.1
+
+- Label field is optional for inputs.
+- Added autofocus function|property to input fields.
+- Added custom validation using the validate function|property to add valid/invalid label to an input.
+- Removed dependency on materialize-css (it is expected that it is imported via the main app).
 
 ## Usage instructions
 
