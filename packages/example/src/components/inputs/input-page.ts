@@ -19,6 +19,7 @@ export const InputPage = () => {
     view: () =>
       m('.col.s12', [
         m('h2.header', 'Inputs'),
+
         m('h3.header', 'TextInput'),
         m(
           'div',
@@ -120,8 +121,6 @@ export const InputPage = () => {
         m(
           'div',
           m(NumberInput, {
-            min: 0,
-            max: 120,
             label: 'What is the result of 35 + 7?',
             dataSuccess: 'Great, you have found the answer to the meaning of life, the universe and everything!',
             dataError: 'Back to grammar school',
@@ -130,12 +129,10 @@ export const InputPage = () => {
         ),
         m(CodeBlock, {
           code: `          m(NumberInput, {
-            min: 0,
-            max: 120,
             label: 'What is the result of 35 + 7?',
             dataSuccess: 'Great, you have found the answer to the meaning of life, the universe and everything!',
             dataError: 'Back to grammar school',
-            validate: (v: number) => v === 42, // This may also be a boolean
+            validate: (v: number) => v === 42,
           })`,
         }),
 
@@ -144,7 +141,7 @@ export const InputPage = () => {
           'div',
           m(EmailInput, {
             label: 'What is your email?',
-            dataError: 'Wrong, use username@org.com',
+            dataError: 'Please use username@org.com',
             dataSuccess: 'OK',
             onchange,
           })

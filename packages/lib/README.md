@@ -33,6 +33,10 @@ Supported components:
 
 ## Version history
 
+v0.2.2
+
+- Validate function can return a custom validation message. Also, it is called in `onupdate`, so the validation occurs also when you just attach the validate function conditionally.
+
 v0.2.1
 
 - Label field is optional for inputs.

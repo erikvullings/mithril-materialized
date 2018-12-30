@@ -92,8 +92,12 @@ export interface IInputOptions<T = string> {
   placeholder?: string;
   /** Add a description underneath the input field. */
   helperText?: string;
-  /** When (returning) true, add the valid label to the input field, otherwise invalid. */
-  validate?: ((v: T) => boolean) | boolean;
+  /**
+   * When returning true or an empty string, clear the custom validity (= valid).
+   * When returning false, set the custom validity message to a default string string.
+   * When returning a non-empty string, set the custom validity message to this string.
+   */
+  validate?: (v: T) => boolean | string;
   /** Will replace the helperText, if any, when the input is invalid. */
   dataError?: string;
   /** Will replace the helperText, if any, when the input is valid. */
@@ -159,12 +163,8 @@ const disable = ({ disabled }: { disabled?: boolean }) => (disabled ? '[disabled
 const focus = ({ autofocus }: { autofocus?: (() => boolean) | boolean }) =>
   (typeof autofocus === 'boolean' && autofocus) || (autofocus && autofocus()) ? '[autofocus]' : '';
 
-/** Add the autofocus attribute when required */
-const valid = <T>({ validate }: { validate?: ((x: T) => boolean) | boolean }) =>
-  typeof validate === 'boolean' && validate ? '[validate]' : '';
-
 /** Convert input options to a set of input attributes */
-const toAttrs = <T>(o: IInputOptions<T>) => toProps(o) + charCounter(o) + disable(o) + focus(o) + valid(o);
+const toAttrs = <T>(o: IInputOptions<T>) => toProps(o) + charCounter(o) + disable(o) + focus(o);
 
 export const Mandatory = { view: () => m('span.mandatory', '*') };
 
@@ -267,22 +267,16 @@ export const HelperText = (): Component<{ helperText?: string; dataError?: strin
 const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInputOptions<T>> => {
   const state = { id: uniqueId() };
   const oncreate = oncreateFactory<T>(type, state.id);
-  const onblur = (validate?: ((value: T) => boolean) | boolean) =>
-    validate
-      ? (e: Event) => {
-          const target = e.target as HTMLInputElement;
-          if (target && target.value) {
-            const val = (target.value as unknown) as T;
-            const value = (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
-            if (validate && typeof validate === 'function') {
-              target.classList.remove('valid', 'invalid');
-              target.classList.add('validate', validate(value) ? 'valid' : 'invalid');
-              e.stopPropagation();
-              e.preventDefault();
-            }
-          }
-        }
-      : undefined;
+  const setValidity = (target: HTMLInputElement, validate: (value: T) => string | boolean) => {
+    const val = (target.value as unknown) as T;
+    const value = (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
+    const validationResult = validate(value);
+    if (typeof validationResult === 'boolean') {
+      target.setCustomValidity(validationResult ? '' : 'Custom validation failed');
+    } else {
+      target.setCustomValidity(validationResult);
+    }
+  };
 
   return {
     oncreate,
@@ -306,6 +300,12 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
       return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`input.validate[type=${type}][tabindex=0][id=${id}]${attributes}`, {
+          onupdate: validate
+            ? ({ dom }) => {
+                const target = dom as HTMLInputElement;
+                setValidity(target, validate);
+              }
+            : undefined,
           onchange: (e: Event) => {
             const target = e.target as HTMLInputElement;
             if (target && target.value) {
@@ -314,15 +314,11 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
               if (onchange) {
                 onchange(value);
               }
-              if (validate && typeof validate === 'function') {
-                target.classList.remove('valid', 'invalid');
-                target.classList.add('validate', validate(value) ? 'valid' : 'invalid');
-                e.stopPropagation();
-                e.preventDefault();
+              if (validate) {
+                setValidity(target, validate);
               }
             }
           },
-          onblur: onblur(validate),
           value: initialValue,
         }),
         m(Label, {
