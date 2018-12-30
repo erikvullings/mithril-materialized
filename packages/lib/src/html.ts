@@ -76,20 +76,33 @@ export const CodeBlock = (): Component<{
 });
 
 export interface IInputOptions<T = string> {
-  label: string;
+  /** Optional label. */
+  label?: string;
+  /** Optional ID. */
   id?: string;
-  /** Unique key for use of the element in an array */
+  /** Unique key for use of the element in an array. */
   key?: string;
+  /** Initial value of the input field. */
   initialValue?: T;
+  /** When true, add the autofocus attribute to the input field. */
+  autofocus?: (() => boolean) | boolean;
+  /** Invoked when the value changes. */
   onchange?: (value: T) => void;
+  /** Add a a placeholder to the input field. */
   placeholder?: string;
+  /** Add a description underneath the input field. */
   helperText?: string;
-  /** Will replace the helperText, if any, when the input is incorrect. */
+  /** When (returning) true, add the valid label to the input field, otherwise invalid. */
+  validate?: ((v: T) => boolean) | boolean;
+  /** Will replace the helperText, if any, when the input is invalid. */
   dataError?: string;
-  /** Will replace the helperText, if any, when the input is correct. */
+  /** Will replace the helperText, if any, when the input is valid. */
   dataSuccess?: string;
+  /** Uses Materialize icons as a prefix or postfix. */
   iconName?: string;
+  /** Sets the input field to disabled. */
   disabled?: boolean;
+  /** Optional style information. */
   style?: string;
   /** When input type is a number, optionally specify the minimum value. */
   min?: number;
@@ -142,22 +155,43 @@ const charCounter = <T>(o: IInputOptions<T>) => (o.maxLength ? `[data-length=${o
 /** Add the disabled attribute when required */
 const disable = ({ disabled }: { disabled?: boolean }) => (disabled ? '[disabled]' : '');
 
+/** Add the autofocus attribute when required */
+const focus = ({ autofocus }: { autofocus?: (() => boolean) | boolean }) =>
+  (typeof autofocus === 'boolean' && autofocus) || (autofocus && autofocus()) ? '[autofocus]' : '';
+
+/** Add the autofocus attribute when required */
+const valid = <T>({ validate }: { validate?: ((x: T) => boolean) | boolean }) =>
+  typeof validate === 'boolean' && validate ? '[validate]' : '';
+
 /** Convert input options to a set of input attributes */
-const toAttrs = <T>(o: IInputOptions<T>) => toProps(o) + charCounter(o) + disable(o);
+const toAttrs = <T>(o: IInputOptions<T>) => toProps(o) + charCounter(o) + disable(o) + focus(o) + valid(o);
 
 export const Mandatory = { view: () => m('span.mandatory', '*') };
 
+/** Simple label element, used for most components. */
 export const Label = () =>
   ({
     view: ({ attrs }) => {
       const { label, id, isMandatory, isActive } = attrs;
-      return m(`label${isLabelActive(isActive)}[for=${id || uniqueId()}]`, [
-        m.trust(label),
-        isMandatory ? m(Mandatory) : undefined,
-      ]);
+      return label
+        ? m(`label${isLabelActive(isActive)}[for=${id || uniqueId()}]`, [
+            m.trust(label),
+            isMandatory ? m(Mandatory) : undefined,
+          ])
+        : undefined;
     },
-  } as Component<{ label: string; id?: string; isMandatory?: boolean; isActive?: boolean | string }>);
+  } as Component<{
+    /** Optional title/label */
+    label?: string;
+    /** Optional ID */
+    id?: string;
+    /** If true, add a mandatory '*' after the label */
+    isMandatory?: boolean;
+    /** Add the active class to the label */
+    isActive?: boolean | string;
+  }>);
 
+/** Create a TextArea */
 export const TextArea = () => {
   const state = { id: uniqueId() };
   return {
@@ -190,17 +224,17 @@ export const TextArea = () => {
         m(HelperText, { helperText }),
       ]);
     },
-  } as Component<IInputOptions>;
+  } as Component<IInputOptions<string>>;
 };
 
 export type InputType = 'url' | 'color' | 'text' | 'number' | 'email' | 'range';
 
-const oncreateFactory = (type: InputType, id: string) => {
+const oncreateFactory = <T>(type: InputType, id: string) => {
   switch (type) {
     default:
       return undefined;
     case 'text':
-      return ({ attrs }: Vnode<IInputOptions>) => {
+      return ({ attrs }: Vnode<IInputOptions<T>>) => {
         if (attrs && attrs.maxLength) {
           const elem = document.querySelector(`#${id}`);
           if (elem) {
@@ -218,6 +252,7 @@ const oncreateFactory = (type: InputType, id: string) => {
   }
 };
 
+/** Create a helper text, often used for displaying a small help text. May be replaced by the validation message. */
 export const HelperText = (): Component<{ helperText?: string; dataError?: string; dataSuccess?: string }> => {
   return {
     view: ({ attrs }) => {
@@ -228,9 +263,27 @@ export const HelperText = (): Component<{ helperText?: string; dataError?: strin
   };
 };
 
-const InputField = (type: InputType, defaultClass = '') => (): Component<IInputOptions> => {
+/** Default component for all kinds of input fields. */
+const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInputOptions<T>> => {
   const state = { id: uniqueId() };
-  const oncreate = oncreateFactory(type, state.id);
+  const oncreate = oncreateFactory<T>(type, state.id);
+  const onblur = (validate?: ((value: T) => boolean) | boolean) =>
+    validate
+      ? (e: Event) => {
+          const target = e.target as HTMLInputElement;
+          if (target && target.value) {
+            const val = (target.value as unknown) as T;
+            const value = (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
+            if (validate && typeof validate === 'function') {
+              target.classList.remove('valid', 'invalid');
+              target.classList.add('validate', validate(value) ? 'valid' : 'invalid');
+              e.stopPropagation();
+              e.preventDefault();
+            }
+          }
+        }
+      : undefined;
+
   return {
     oncreate,
     view: ({ attrs }) => {
@@ -245,6 +298,7 @@ const InputField = (type: InputType, defaultClass = '') => (): Component<IInputO
         contentClass,
         style,
         iconName,
+        validate,
         dataError,
         dataSuccess,
         isMandatory,
@@ -252,30 +306,52 @@ const InputField = (type: InputType, defaultClass = '') => (): Component<IInputO
       return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`input.validate[type=${type}][tabindex=0][id=${id}]${attributes}`, {
-          onchange: onchange
-            ? (e: Event) => {
-                if (e.target && (e.target as HTMLInputElement).value) {
-                  onchange((e.target as HTMLInputElement).value);
-                }
+          onchange: (e: Event) => {
+            const target = e.target as HTMLInputElement;
+            if (target && target.value) {
+              const val = (target.value as unknown) as T;
+              const value = (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
+              if (onchange) {
+                onchange(value);
               }
-            : undefined,
+              if (validate && typeof validate === 'function') {
+                target.classList.remove('valid', 'invalid');
+                target.classList.add('validate', validate(value) ? 'valid' : 'invalid');
+                e.stopPropagation();
+                e.preventDefault();
+              }
+            }
+          },
+          onblur: onblur(validate),
           value: initialValue,
         }),
-        m(Label, { label, id, isMandatory, isActive: initialValue || type === 'color' || type === 'range' }),
+        m(Label, {
+          label,
+          id,
+          isMandatory,
+          isActive: typeof initialValue !== 'undefined' || type === 'color' || type === 'range',
+        }),
         m(HelperText, { helperText, dataError, dataSuccess }),
       ]);
     },
   };
 };
 
-export const UrlInput = InputField('url');
-export const ColorInput = InputField('color');
-export const TextInput = InputField('text');
-export const NumberInput = InputField('number');
-export const RangeInput = InputField('range', '.range-field');
-export const EmailInput = InputField('email');
+/** Component for entering some text */
+export const TextInput = InputField<string>('text');
+/** Component for entering a number */
+export const NumberInput = InputField<number>('number');
+/** Component for entering a URL */
+export const UrlInput = InputField<string>('url');
+/** Component for entering a color */
+export const ColorInput = InputField<string>('color');
+/** Component for entering a range */
+export const RangeInput = InputField<number>('range', '.range-field');
+/** Component for entering an email */
+export const EmailInput = InputField<string>('email');
 
-export const Autocomplete = (): Component<Partial<M.AutocompleteOptions> & IInputOptions> => {
+/** Component to auto complete your text input */
+export const Autocomplete = (): Component<Partial<M.AutocompleteOptions> & IInputOptions<string>> => {
   const state = { id: uniqueId() };
   return {
     oncreate: ({ attrs }) => {
@@ -290,7 +366,7 @@ export const Autocomplete = (): Component<Partial<M.AutocompleteOptions> & IInpu
       const { label, helperText, initialValue, onchange, newRow, contentClass, style, iconName, isMandatory } = attrs;
       return m(`.input-field${newRow ? '.clear' : ''}${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
-        m(`input.validate.autocomplete[type=text][tabindex=0][id=${id}]${attributes}`, {
+        m(`input.autocomplete[type=text][tabindex=0][id=${id}]${attributes}`, {
           onchange: onchange
             ? (e: Event) => {
                 if (e.target && (e.target as HTMLInputElement).value) {
@@ -307,6 +383,7 @@ export const Autocomplete = (): Component<Partial<M.AutocompleteOptions> & IInpu
   };
 };
 
+/** Component to show a check box */
 export const InputCheckbox = () => {
   return {
     view: ({ attrs }) => {
@@ -328,9 +405,13 @@ export const InputCheckbox = () => {
       );
     },
   } as Component<{
-    onchange: (value: boolean) => void;
+    /** Optional event handler when an option is clicked */
+    onchange?: (checked: boolean) => void;
+    /** Title or label of the option */
     label: string;
+    /** If true, the option is checked */
     checked?: boolean;
+    /** Optional CSS that is added to the div wrapper */
     contentClass?: string;
   }>;
 };
@@ -344,6 +425,7 @@ export interface ISwitchOptions extends Partial<IInputOptions<boolean>> {
   checked?: boolean;
 }
 
+/** Component to display a switch with two values. */
 export const Switch = (): Component<ISwitchOptions> => {
   const state = { id: uniqueId() };
   return {
@@ -374,6 +456,7 @@ export const Switch = (): Component<ISwitchOptions> => {
   };
 };
 
+/** Component to pick a date */
 export const DatePicker = (): Component<IInputOptions<Date> & Partial<M.DatepickerOptions>> => {
   const state = { id: uniqueId() };
   return {
@@ -406,6 +489,7 @@ export const DatePicker = (): Component<IInputOptions<Date> & Partial<M.Datepick
   };
 };
 
+/** Component to pick a time */
 export const TimePicker = (): Component<IInputOptions & Partial<M.TimepickerOptions>> => {
   const state = { id: uniqueId() };
   return {
@@ -440,21 +524,33 @@ export const TimePicker = (): Component<IInputOptions & Partial<M.TimepickerOpti
 };
 
 export interface IInputOption {
+  /** Option ID */
   id: string;
+  /** Title or label */
   label: string;
+  /** Is the option selected? */
   isChecked?: boolean;
 }
 
+/** A list of checkboxes */
 export const Options = (): Component<{
+  /** Element ID */
   id?: string;
-  label: string;
+  /** Optional title or label */
+  label?: string;
+  /** The options that you have */
   options: IInputOption[];
-  onchange: (isChecked: boolean, id: string, option: IInputOption) => void;
+  /** Event handler that is called when an option is changed */
+  onchange?: (isChecked: boolean, id: string, option: IInputOption) => void;
+  /** Optional description */
   description?: string;
+  /** Optional CSS that is added to the option element (checkbox) */
   contentClass?: string;
+  /** Optional CSS that is added to the div wrapper */
   titleClass?: string;
+  /** If true, start on a new row */
   newRow?: boolean;
-  /** If true, add a mandatory * after the label */
+  /** If true, add a mandatory '*' after the label */
   isMandatory?: boolean;
 }> => {
   return {
@@ -466,7 +562,7 @@ export const Options = (): Component<{
         ...options.map(option =>
           m(InputCheckbox, {
             label: option.label,
-            onchange: (v: boolean) => onchange(v, option.id, option),
+            onchange: onchange ? (v: boolean) => onchange(v, option.id, option) : undefined,
             contentClass,
             checked: option.isChecked,
           })
@@ -482,6 +578,7 @@ export interface ISelectOptions extends IInputOptions {
   multiple?: boolean;
 }
 
+/** Component to select from a list of values in a dropdowns */
 export const Select = (): Component<ISelectOptions> => {
   const state = { id: uniqueId() };
   const isSelected = <T extends number | string>(id: T, checkedId?: T | T[]) =>
@@ -534,6 +631,7 @@ export const Select = (): Component<ISelectOptions> => {
   };
 };
 
+/** Component to show a list of radio buttons, from which you can choose one. */
 export const RadioButtons = (): Component<{
   label: string;
   options: Array<{ id: string; label: string }>;
@@ -597,6 +695,7 @@ export const ModalPanel = (): Component<{
   fixedFooter?: boolean;
   /** Display on the bottom */
   bottomSheet?: boolean;
+  /** Materialize css' modal options */
   options?: Partial<M.ModalOptions>;
   /** Menu buttons, from left to right */
   buttons?: Array<{ label: string; onclick?: () => void }>;
@@ -690,6 +789,7 @@ export interface IDropdownOptions extends Partial<M.DropdownOptions> {
   onchange?: (value: string | number) => void;
 }
 
+/** Dropdown component */
 export const Dropdown = (): Component<IDropdownOptions> => {
   return {
     onupdate: () => {
@@ -703,9 +803,9 @@ export const Dropdown = (): Component<IDropdownOptions> => {
       const id = attrs.id || 'dropdown';
       const { key, label, onchange, items, selected } = attrs;
       const selectedItem = attrs.selected
-        ? items.filter(i => i.value ? i.value === selected : i.name === selected).shift()
+        ? items.filter(i => (i.value ? i.value === selected : i.name === selected)).shift()
         : undefined;
-      const title = selectedItem ? selectedItem.name : (label || 'Select');
+      const title = selectedItem ? selectedItem.name : label || 'Select';
       return m('div', { key }, [
         m(`a.dropdown-trigger.btn[href=#][data-target=${id}]`, title),
         m(

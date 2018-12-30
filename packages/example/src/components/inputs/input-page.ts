@@ -17,7 +17,7 @@ export const InputPage = () => {
   const onchange = (v: unknown) => alert(`Input changed. New value: ${v}`);
   return {
     view: () =>
-      m('.col.s12.m8.xl7', [
+      m('.col.s12', [
         m('h2.header', 'Inputs'),
         m('h3.header', 'TextInput'),
         m(
@@ -26,6 +26,7 @@ export const InputPage = () => {
             label: 'What is your name?',
             helperText: 'Please, be honest!',
             onchange,
+            autofocus: true,
             maxLength: 50,
           } as IInputOptions)
         ),
@@ -34,9 +35,9 @@ export const InputPage = () => {
           label: 'What is your name?',
           helperText: 'Please, be honest!',
           onchange,
+          autofocus: true // This may also be a function that resolves to a boolean
           maxLength: 50,
-        } as IInputOptions)
-`,
+        } as IInputOptions)`,
         }),
         m(
           'div',
@@ -53,8 +54,7 @@ export const InputPage = () => {
           iconName: 'account_circle',
           onchange,
           maxLength: 50,
-        } as IInputOptions)
-`,
+        } as IInputOptions)`,
         }),
 
         m('h3.header', 'Autocomplete'),
@@ -84,14 +84,59 @@ export const InputPage = () => {
               TNO: 'https://github.com/TNOCS/spec-tool/raw/master/src/assets/tno.png',
             },
             onchange,
-        } as IInputOptions)
-`,
+        } as IInputOptions)`,
         }),
 
         m('h3.header', 'TextArea'),
-        m('div', m(TextArea, { label: 'Can you describe yourself?', helperText: `Don't be shy`, onchange })),
+        m('div', m(TextArea, { label: 'Please, describe yourself', helperText: `Don't be shy`, onchange })),
         m(CodeBlock, {
-          code: `        m(TextArea, { label: 'Can you describe yourself?', helperText: 'Don\'t be shy', onchange })`,
+          code: `        m(TextArea, { label: 'Please, describe yourself', helperText: 'Don\'t be shy', onchange })`,
+        }),
+
+        m('h3.header', 'NumberInput'),
+        m(
+          'div',
+          m(NumberInput, {
+            min: 1,
+            max: 120,
+            label: 'What is your age?',
+            dataSuccess: 'You look much younger ;-)',
+            dataError: 'Error: Age must be between 1 and 120.',
+            onchange,
+          })
+        ),
+        m(CodeBlock, {
+          code: `          m(NumberInput, {
+            min: 1,
+            max: 120,
+            label: 'What is your age?',
+            dataSuccess: 'You look much younger ;-)',
+            dataError: 'Error: Age must be between 1 and 120.',
+            onchange,
+          })`,
+        }),
+
+        m('h3.header', 'NumberInput with custom validation'),
+        m(
+          'div',
+          m(NumberInput, {
+            min: 0,
+            max: 120,
+            label: 'What is the result of 35 + 7?',
+            dataSuccess: 'Great, you have found the answer to the meaning of life, the universe and everything!',
+            dataError: 'Back to grammar school',
+            validate: (v: number) => v === 42,
+          })
+        ),
+        m(CodeBlock, {
+          code: `          m(NumberInput, {
+            min: 0,
+            max: 120,
+            label: 'What is the result of 35 + 7?',
+            dataSuccess: 'Great, you have found the answer to the meaning of life, the universe and everything!',
+            dataError: 'Back to grammar school',
+            validate: (v: number) => v === 42, // This may also be a boolean
+          })`,
         }),
 
         m('h3.header', 'EmailInput'),
@@ -132,30 +177,6 @@ export const InputPage = () => {
           })`,
         }),
 
-        m('h3.header', 'NumberInput'),
-        m(
-          'div',
-          m(NumberInput, {
-            min: 0,
-            max: 120,
-            label: 'What is your age?',
-            dataSuccess: 'You look much younger ;-)',
-            dataError: 'Error: Age must be between 0 and 120.',
-            onchange,
-          })
-        ),
-        m(CodeBlock, {
-          code: `          m(NumberInput, {
-            min: 0,
-            max: 120,
-            label: 'What is your age?',
-            dataSuccess: 'You look much younger ;-)',
-            dataError: 'Error: Age must be between 0 and 120.',
-            onchange,
-          })
-`,
-        }),
-
         m('h3.header', 'RangeInput'),
         m(
           'div',
@@ -172,8 +193,7 @@ export const InputPage = () => {
             max: 100,
             label: 'What is your favorite number between 0 and 100?',
             onchange,
-          })
-`,
+          })`,
         }),
 
         m('h3.header', 'Chips'),
