@@ -1,6 +1,6 @@
 {
   "name": "mithril-materialized",
-  "version": "0.1.10",
+  "version": "0.2.0",
   "description": "A materialize library for mithril.",
   "main": "dist/index.js",
   "repository": {
@@ -20,9 +20,6 @@
   ],
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
-  "dependencies": {
-    "materialize-css": "^1.0.0"
-  },
   "devDependencies": {
     "@types/materialize-css": "^1.0.6",
     "@types/mithril": "^1.1.13",
