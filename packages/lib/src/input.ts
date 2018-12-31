@@ -1,5 +1,5 @@
 import { CharacterCounter } from 'materialize-css';
-import m, { Vnode, Component } from 'mithril';
+import m, { Vnode, VnodeDOM, Component } from 'mithril';
 import { uniqueId, toDottedClassList, toAttrs } from './utils';
 import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
@@ -47,7 +47,7 @@ const oncreateFactory = <T>(type: InputType, id: string) => {
     default:
       return undefined;
     case 'text':
-      return ({ attrs: { maxLength} }: Vnode<IInputOptions<T>>) => {
+      return ({ attrs: { maxLength } }: Vnode<IInputOptions<T>>) => {
         if (maxLength) {
           const elem = document.querySelector(`#${id}`);
           if (elem) {
@@ -79,9 +79,23 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
       target.setCustomValidity(validationResult);
     }
   };
+  const focus = ({ autofocus }: IInputOptions<T>) =>
+    autofocus ? (typeof autofocus === 'boolean' ? autofocus : autofocus()) : false;
 
   return {
-    oncreate,
+    // oncreate,
+    oncreate: (vnode: VnodeDOM) => {
+      const { attrs } = vnode;
+      if (focus(attrs)) {
+        const el = document.querySelector(`#${state.id}`) as HTMLElement;
+        if (el) {
+          el.focus();
+        }
+      }
+      if (oncreate) {
+        oncreate(vnode);
+      }
+    },
     view: ({ attrs }) => {
       const id = attrs.id || state.id;
       const attributes = toAttrs(attrs);
