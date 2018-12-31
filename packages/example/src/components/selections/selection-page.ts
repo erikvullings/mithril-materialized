@@ -19,6 +19,7 @@ export const SelectionPage = () => {
           })
         ),
         m(CodeBlock, {
+          newRow: true,
           code: `          m(Select, {
             label: 'What is your favorite hobby?',
             isMandatory: true,
@@ -43,6 +44,7 @@ export const SelectionPage = () => {
           })
         ),
         m(CodeBlock, {
+          newRow: true,
           code: `          m(Select, {
             multiple: true,
             placeholder: 'Make a choice...',
@@ -67,6 +69,7 @@ export const SelectionPage = () => {
           })
         ),
         m(CodeBlock, {
+          newRow: true,
           code: `          m(Options, {
             label: 'What is your favorite hobby?',
             isMandatory: true,
@@ -85,6 +88,7 @@ export const SelectionPage = () => {
           })
         ),
         m(CodeBlock, {
+          newRow: true,
           code: `          m(RadioButtons, {
             label: 'What is your favorite hobby?',
             options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
@@ -103,6 +107,7 @@ export const SelectionPage = () => {
           })
         ),
         m(CodeBlock, {
+          newRow: true,
           code: `          m(Switch, {
             label: 'What is your gender?',
             left: 'Man',
@@ -127,6 +132,7 @@ export const SelectionPage = () => {
           })
         ),
         m(CodeBlock, {
+          newRow: true,
           code: `          m(Dropdown, {
             id: 'hobby',
             label: 'Pick a hobby',

@@ -1,3 +1,5 @@
+import { IInputOptions } from './input-options';
+
 /**
  * Create a unique ID
  * @see https://stackoverflow.com/a/2117523/319711
@@ -41,5 +43,41 @@ export const toAttributeString = <T extends { [key: string]: any }>(x?: T) =>
  */
 export const toDottedClassList = (contentClass = 'col.s12') =>
   contentClass ? '.' + contentClass.replace(' ', '.') : '';
+
+/** Options that we want to convert to attributes  */
+const inputAttributes = ['min', 'max', 'minLength', 'maxLength', 'rows', 'cols', 'placeholder'];
+
+const isInputAttribute = (key: string) => inputAttributes.indexOf(key) >= 0;
+
+const isDefinedAttribute = <T>(opt: IInputOptions<T>) => (key: string) => typeof (opt as any)[key] !== 'undefined';
+
+const toProps = <T>(o: IInputOptions<T>) => {
+  const isAttributeDefined = isDefinedAttribute(o);
+  return Object.keys(o)
+    .filter(isInputAttribute)
+    .filter(isAttributeDefined)
+    .reduce(
+      (p, c) => {
+        const value = (o as any)[c];
+        p.push(`[${c.toLowerCase()}=${value}]`);
+        return p;
+      },
+      [] as string[]
+    )
+    .join('');
+};
+
+/** Add a character counter when there is an input restriction. */
+const charCounter = <T>(o: IInputOptions<T>) => (o.maxLength ? `[data-length=${o.maxLength}]` : '');
+
+/** Add the disabled attribute when required */
+export const disable = ({ disabled }: { disabled?: boolean }) => (disabled ? '[disabled]' : '');
+
+/** Add the autofocus attribute when required */
+const focus = ({ autofocus }: { autofocus?: (() => boolean) | boolean }) =>
+  (typeof autofocus === 'boolean' && autofocus) || (autofocus && autofocus()) ? '[autofocus]' : '';
+
+/** Convert input options to a set of input attributes */
+export const toAttrs = <T>(o: IInputOptions<T>) => toProps(o) + charCounter(o) + disable(o) + focus(o);
 
 export const pipe = (...fncs: Array<(x: any) => any>) => <T>(x: T) => fncs.reduce((y, f) => f(y), x);

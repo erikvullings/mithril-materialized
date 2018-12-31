@@ -22,7 +22,7 @@ export const InputPage = () => {
 
         m('h3.header', 'TextInput'),
         m(
-          'div',
+          '.row',
           m(TextInput, {
             label: 'What is your name?',
             helperText: 'Please, be honest!',
@@ -41,7 +41,7 @@ export const InputPage = () => {
         } as IInputOptions)`,
         }),
         m(
-          'div',
+          '.row',
           m(TextInput, {
             label: 'What is your name?',
             iconName: 'account_circle',
@@ -60,7 +60,7 @@ export const InputPage = () => {
 
         m('h3.header', 'Autocomplete'),
         m(
-          'div',
+          '.row',
           m(Autocomplete, {
             label: 'What is your favorite company?',
             data: {
@@ -89,14 +89,14 @@ export const InputPage = () => {
         }),
 
         m('h3.header', 'TextArea'),
-        m('div', m(TextArea, { label: 'Please, describe yourself', helperText: `Don't be shy`, onchange })),
+        m('.row', m(TextArea, { label: 'Please, describe yourself', helperText: `Don't be shy`, onchange })),
         m(CodeBlock, {
           code: `        m(TextArea, { label: 'Please, describe yourself', helperText: 'Don\'t be shy', onchange })`,
         }),
 
         m('h3.header', 'NumberInput'),
         m(
-          'div',
+          '.row',
           m(NumberInput, {
             min: 1,
             max: 120,
@@ -119,7 +119,7 @@ export const InputPage = () => {
 
         m('h3.header', 'NumberInput with custom validation'),
         m(
-          'div',
+          '.row',
           m(NumberInput, {
             label: 'What is the result of 35 + 7?',
             dataSuccess: 'Great, you have found the answer to the meaning of life, the universe and everything!',
@@ -138,7 +138,7 @@ export const InputPage = () => {
 
         m('h3.header', 'EmailInput'),
         m(
-          'div',
+          '.row',
           m(EmailInput, {
             label: 'What is your email?',
             dataError: 'Please use username@org.com',
@@ -157,7 +157,7 @@ export const InputPage = () => {
 
         m('h3.header', 'UrlInput'),
         m(
-          'div',
+          '.row',
           m(UrlInput, {
             label: 'What is your favorite website?',
             dataError: 'Wrong, use http(s)://org.com',
@@ -176,7 +176,7 @@ export const InputPage = () => {
 
         m('h3.header', 'RangeInput'),
         m(
-          'div',
+          '.row',
           m(RangeInput, {
             min: 0,
             max: 100,
@@ -195,7 +195,7 @@ export const InputPage = () => {
 
         m('h3.header', 'Chips'),
         m(
-          'div',
+          '.row',
           m(Chips, {
             onchange: (chips: M.ChipData[]) => onchange(JSON.stringify(chips)),
             placeholder: 'Add a tag',
@@ -225,7 +225,7 @@ export const InputPage = () => {
 
         m('h3.header', 'ColorInput'),
         m(
-          'div',
+          '.row',
           m(ColorInput, {
             label: 'What is your favorite color?',
             onchange,
