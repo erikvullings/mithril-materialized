@@ -1,6 +1,6 @@
 # mithril-materialized
 
-An incomplete [materialize-css](https://materializecss.com) library for the Mithril framework (v2.0.0-rc.3 and higher), making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize code snippets.
+A [materialize-css](https://materializecss.com) library for the Mithril framework (v2.0.0-rc.3 and higher), making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize components.
 
 Supported components:
 
@@ -30,6 +30,9 @@ Supported components:
   - Dropdown
 - Others
   - ModalPanel
+  - Label
+  - HelperText
+  - CodeBlock (not from materialize-css)
 
 ## Usage instructions
 

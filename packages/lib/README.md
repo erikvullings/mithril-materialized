@@ -1,6 +1,6 @@
 # mithril-materialized
 
-An incomplete [materialize-css](https://materializecss.com) library for the Mithril framework (v2.0.0-rc.3 and higher), making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize code snippets.
+A [materialize-css](https://materializecss.com) library for the Mithril framework (v2.0.0-rc.3 and higher), making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize components.
 
 Supported components:
 
@@ -30,6 +30,9 @@ Supported components:
   - Dropdown
 - Others
   - ModalPanel
+  - Label
+  - HelperText
+  - CodeBlock (not from materialize-css)
 
 ## Version history
 
@@ -38,6 +41,7 @@ v0.3 Breaking changes
 - Buttons no longer use the `ui` class to specify additional properties like `onclick`. Instead, you can leverage the mithril attributes directly. See the example, `button-page`.
 - `contentClass` has been removed in favour of the default mithril `class` or `className` attribute.
 - The Icon function has been replaced by the `Icon` component. The `SmallIcon` and `PrefixedIcon` have been removed, as they can easily be created using the `Icon` component.
+- The `autofocus` attribute for inputs now also works on updates (by calling the element.focus() method).
 - The code has been split over multiple files, so it is easier to only import the components that you need.
 
 v0.2.2
