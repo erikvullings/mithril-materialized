@@ -1,5 +1,5 @@
 import { CharacterCounter } from 'materialize-css';
-import m, { Vnode, Lifecycle, Component } from 'mithril';
+import m, { Vnode, Component, Attributes, FactoryComponent } from 'mithril';
 import { uniqueId, toAttributeString, toDottedClassList } from './utils';
 
 export interface IHtmlAttributes {
@@ -11,51 +11,56 @@ export interface IHtmlAttributes {
   type?: 'submit' | 'button' | 'text' | 'textarea' | 'number';
 }
 
-export interface IHtmlInputEvents<Attrs, State> extends Lifecycle<Attrs, State> {
-  value?: string | number | boolean;
-  href?: string;
-  class?: string;
-  style?: string;
-  type?: string;
-  onclick?: (e: UIEvent) => void;
-}
-
 export const Icon = (iconName: string, attrs = {}) => m('i.material-icons', attrs, iconName);
 export const SmallIcon = (iconName: string, attrs = {}) => m('i.small.material-icons', attrs, iconName);
 export const PrefixedIcon = (iconName: string, attrs = {}) => m('i.material-icons.prefix', attrs, iconName);
 
-/** A button factory */
-export const baseButtonFactory = (defaultClassNames: string, attributes: string = '') => <Attrs, State>() =>
-  ({
-    view: ({ attrs }) =>
-      m(
-        `${defaultClassNames}${attrs.contentClass ? '.' + attrs.contentClass : ''}${attributes}${
-          attrs.modalId ? '.modal-trigger[href=#' + attrs.modalId + ']' : ''
-        }${
-          attrs.tooltip ? '.tooltipped[data-position=top][data-tooltip=' + attrs.tooltip + ']' : ''
-        }${toAttributeString(attrs.attr)}`,
-        attrs.ui || {},
-        attrs.iconName ? Icon(attrs.iconName, { class: attrs.iconClass || 'left' }) : '',
-        attrs.label ? attrs.label : ''
-      ),
-  } as Component<{
-    label?: string;
-    /** If the button is intended to open a modal, specify its modal id */
-    modalId?: string;
-    iconName?: string;
-    iconClass?: string;
-    attr?: IHtmlAttributes;
-    tooltip?: string;
-    ui?: IHtmlInputEvents<Attrs, State>;
-    contentClass?: string;
-  }>);
+export interface IMaterialButton extends Attributes {
+  /** Optional (e.g. in case you only want to use an icon) button label */
+  label?: string;
+  /** Optional icon material-icons name, @see https://materializecss.com/icons.html */
+  iconName?: string;
+  /** Optional icon class, e.g. tiny (1em), small (2em), medium (4em), large (6em), or 'tiny right' */
+  iconClass?: string;
+  /**
+   * If the button is intended to open a modal, specify its modal id so we can trigger it,
+   * @see https://materializecss.com/modals.html
+   */
+  modalId?: string;
+  /** Some additional HTML attributes that can be attached to the button */
+  attr?: IHtmlAttributes;
+  /** Optional text-based tooltip, @see https://materializecss.com/tooltips.html */
+  tooltip?: string;
+  /** Optional location for the tooltip */
+  tooltipPostion?: 'top' | 'bottom' | 'left' | 'right';
+}
 
-export const Button = baseButtonFactory('a.waves-effect.waves-light.btn');
-export const LargeButton = baseButtonFactory('a.waves-effect.waves-light.btn-large');
-export const SmallButton = baseButtonFactory('a.waves-effect.waves-light.btn-small');
-export const FlatButton = baseButtonFactory('a.waves-effect.waves-teal.btn-flat');
-export const RoundIconButton = baseButtonFactory('button.btn-floating.btn-large.waves-effect.waves-light');
-export const SubmitButton = baseButtonFactory('button.btn.waves-effect.waves-light', '[type=submit]');
+/** A button factory */
+export const ButtonFactory = (
+  defaultClassNames: string,
+  attributes: string = ''
+): FactoryComponent<IMaterialButton> => () => {
+  return {
+    view: ({ attrs }) => {
+      const { modalId, tooltip, tooltipPostion, iconName, iconClass, label, attr } = attrs;
+      return m(
+        `${defaultClassNames}${attributes}${modalId ? '.modal-trigger[href=#' + modalId + ']' : ''}${
+          tooltip ? `.tooltipped[data-position=${tooltipPostion || 'top'}][data-tooltip=${tooltip}]` : ''
+        }${toAttributeString(attr)}`,
+        attrs,
+        iconName ? Icon(iconName, { class: iconClass || 'left' }) : '',
+        label ? label : ''
+      );
+    },
+  };
+};
+
+export const Button = ButtonFactory('a.waves-effect.waves-light.btn');
+export const LargeButton = ButtonFactory('a.waves-effect.waves-light.btn-large');
+export const SmallButton = ButtonFactory('a.waves-effect.waves-light.btn-small');
+export const FlatButton = ButtonFactory('a.waves-effect.waves-teal.btn-flat');
+export const RoundIconButton = ButtonFactory('button.btn-floating.btn-large.waves-effect.waves-light');
+export const SubmitButton = ButtonFactory('button.btn.waves-effect.waves-light', '[type=submit]');
 
 export const CodeBlock = (): Component<{
   language?: string;
@@ -255,8 +260,7 @@ const oncreateFactory = <T>(type: InputType, id: string) => {
 /** Create a helper text, often used for displaying a small help text. May be replaced by the validation message. */
 export const HelperText = (): Component<{ helperText?: string; dataError?: string; dataSuccess?: string }> => {
   return {
-    view: ({ attrs }) => {
-      const { helperText, dataError, dataSuccess } = attrs;
+    view: ({ attrs: { helperText, dataError, dataSuccess } }) => {
       const a = dataError || dataSuccess ? toAttributeString({ dataError, dataSuccess }) : '';
       return helperText || a ? m(`span.helper-text${a}`, helperText ? m.trust(helperText) : '') : undefined;
     },
@@ -283,20 +287,7 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
     view: ({ attrs }) => {
       const id = attrs.id || state.id;
       const attributes = toAttrs(attrs);
-      const {
-        label,
-        helperText,
-        initialValue,
-        onchange,
-        newRow,
-        contentClass,
-        style,
-        iconName,
-        validate,
-        dataError,
-        dataSuccess,
-        isMandatory,
-      } = attrs;
+      const { label, initialValue, onchange, newRow, contentClass, style, iconName, validate, isMandatory } = attrs;
       return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`input.validate[type=${type}][tabindex=0][id=${id}]${attributes}`, {
@@ -327,7 +318,7 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
           isMandatory,
           isActive: typeof initialValue !== 'undefined' || type === 'color' || type === 'range',
         }),
-        m(HelperText, { helperText, dataError, dataSuccess }),
+        m(HelperText, attrs),
       ]);
     },
   };

@@ -9,26 +9,26 @@ export const ButtonPage = () => {
         m('h2.header', 'Buttons'),
         m('h3.header[id=raised]', 'Raised'),
         m('div', [
-          m(Button, { label: 'Button', ui: { onclick } }),
-          m(Button, { label: 'Button', iconName: 'cloud', ui: { onclick } }),
-          m(Button, { label: 'Button', iconName: 'cloud', iconClass: 'right', ui: { onclick } }),
+          m(Button, { label: 'Button', onclick }),
+          m(Button, { label: 'Button', iconName: 'cloud', onclick }),
+          m(Button, { label: 'Button', iconName: 'cloud', iconClass: 'right', onclick }),
         ]),
         m(CodeBlock, {
           code: [
             `            const onclick = () => alert('Button clicked');
             m('div', [
-              m(Button, { label: 'Button', ui: { onclick } }),
-              m(Button, { label: 'Button', iconName: 'cloud', ui: { onclick } }),
-              m(Button, { label: 'Button', iconName: 'cloud', iconClass: 'right', ui: { onclick } }),
+              m(Button, { label: 'Button', onclick }),
+              m(Button, { label: 'Button', iconName: 'cloud', onclick }),
+              m(Button, { label: 'Button', iconName: 'cloud', iconClass: 'right', onclick }),
             ]),`,
           ],
         }),
         m('h3.header[id=flatbutton]', 'FlatButton'),
-        m('div', m(FlatButton, { label: 'My Flat button', ui: { onclick } })),
-        m(CodeBlock, { code: '            m(FlatButton, { label: "My Flat button", ui: { onclick } })' }),
+        m('div', m(FlatButton, { label: 'My Flat button', onclick })),
+        m(CodeBlock, { code: '            m(FlatButton, { label: "My Flat button", onclick })' }),
         m('h3.header[id=roundiconbutton]', 'RoundIconButton'),
-        m('div', m(RoundIconButton, { iconName: 'create', ui: { onclick } })),
-        m(CodeBlock, { code: '            m(RoundIconButton, { iconName: "create", ui: { onclick } })' }),
+        m('div', m(RoundIconButton, { iconName: 'create', onclick })),
+        m(CodeBlock, { code: '            m(RoundIconButton, { iconName: "create", onclick })' }),
         m('h3.header[id=submitbutton]', 'SubmitButton'),
         m(
           'div',
@@ -36,7 +36,7 @@ export const ButtonPage = () => {
             label: 'Submit',
             iconName: 'send',
             iconClass: 'right',
-            ui: { onclick },
+            onclick,
           })
         ),
         m(CodeBlock, {
@@ -44,7 +44,7 @@ export const ButtonPage = () => {
               label: 'Submit',
               iconName: 'send',
               iconClass: 'right',
-              ui: { onclick },
+              onclick,
             })`,
         }),
       ]),
