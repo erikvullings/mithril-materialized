@@ -30,6 +30,11 @@ Supported components:
   - Dropdown
 - Others
   - ModalPanel
+  - MaterialBox
+  - Collapsible or accordion
+  - Carousel
+  - Parallax
+- Additional
   - Label
   - HelperText
   - CodeBlock (not from materialize-css)

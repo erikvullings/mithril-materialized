@@ -13,3 +13,7 @@ export * from './dropdown';
 export * from './modal';
 export * from './input-options';
 export * from './input';
+export * from './material-box';
+export * from './collapsible';
+export * from './carousel';
+export * from './parallax';
