@@ -34,7 +34,7 @@ import { TextArea } from 'mithril-materialized';
         ])
       ),
       m('.col.s12.m5.l4', [
-        m('h1', 'Table of Contents'),
+        m('h1', 'Contents'),
         m('ul.collection', [
           dashboardSvc
             .getList()
