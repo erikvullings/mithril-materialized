@@ -29,8 +29,7 @@ export const PickerPage = () => {
             yearRange: [1900, new Date().getFullYear() - 17],
             initialValue: new Date().toDateString(),
             onchange,
-          })
-`,
+          })`,
         }),
 
         m('h3.header', 'TimePicker'),
@@ -49,8 +48,7 @@ export const PickerPage = () => {
             twelveHour: false,
             initialValue: '09:00',
             onchange,
-          })
-`,
+          })`,
         }),
       ]),
   };

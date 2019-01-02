@@ -1,5 +1,5 @@
 import { CharacterCounter } from 'materialize-css';
-import m, { Vnode, VnodeDOM, Component } from 'mithril';
+import m, { VnodeDOM, Component } from 'mithril';
 import { uniqueId, toDottedClassList, toAttrs } from './utils';
 import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
@@ -8,15 +8,6 @@ import { Label, HelperText } from './label';
 export const TextArea = () => {
   const state = { id: uniqueId() };
   return {
-    oncreate: ({ attrs }) => {
-      const elem = document.querySelector(`#${state.id}`);
-      if (elem) {
-        M.textareaAutoResize(elem);
-        if (attrs.maxLength) {
-          CharacterCounter.init(elem);
-        }
-      }
-    },
     view: ({ attrs }) => {
       const id = state.id;
       const attributes = toAttrs(attrs);
@@ -24,6 +15,12 @@ export const TextArea = () => {
       return m(`.input-field${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`textarea.materialize-textarea[tabindex=0][id=${id}]${attributes}`, {
+          oncreate: ({ dom }) => {
+            M.textareaAutoResize(dom);
+            if (attrs.maxLength) {
+              CharacterCounter.init(dom);
+            }
+          },
           onchange: onchange
             ? (e: Event) => {
                 if (e.target && (e.target as HTMLInputElement).value) {
@@ -46,21 +43,9 @@ const oncreateFactory = <T>(type: InputType, id: string) => {
   switch (type) {
     default:
       return undefined;
-    case 'text':
-      return ({ attrs: { maxLength } }: Vnode<IInputOptions<T>>) => {
-        if (maxLength) {
-          const elem = document.querySelector(`#${id}`);
-          if (elem) {
-            CharacterCounter.init(elem);
-          }
-        }
-      };
     case 'range':
-      return () => {
-        const elem = document.querySelectorAll(`#${id}`);
-        if (elem) {
-          M.Range.init(elem);
-        }
+      return ({ dom }: VnodeDOM<IInputOptions<T>>) => {
+        M.Range.init(dom);
       };
   }
 };
@@ -83,19 +68,6 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
     autofocus ? (typeof autofocus === 'boolean' ? autofocus : autofocus()) : false;
 
   return {
-    // oncreate,
-    oncreate: (vnode: VnodeDOM) => {
-      const { attrs } = vnode;
-      if (focus(attrs)) {
-        const el = document.querySelector(`#${state.id}`) as HTMLElement;
-        if (el) {
-          el.focus();
-        }
-      }
-      if (oncreate) {
-        oncreate(vnode);
-      }
-    },
     view: ({ attrs }) => {
       const id = attrs.id || state.id;
       const attributes = toAttrs(attrs);
@@ -103,6 +75,18 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
       return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`input.validate[type=${type}][tabindex=0][id=${id}]${attributes}`, {
+          oncreate: (vnode: VnodeDOM) => {
+            const { dom } = vnode;
+            if (focus(attrs)) {
+              (dom as HTMLElement).focus();
+            }
+            if (attrs.maxLength) {
+              CharacterCounter.init(dom);
+            }
+            if (oncreate) {
+              oncreate(vnode);
+            }
+          },
           onupdate: validate
             ? ({ dom }) => {
                 const target = dom as HTMLInputElement;

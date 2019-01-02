@@ -7,8 +7,7 @@ export interface IChipsOptions extends Partial<M.ChipsOptions> {
 /** Chips and tags */
 export const Chips = (): Component<IChipsOptions> => {
   return {
-    oncreate: vnode => {
-      const { attrs, dom } = vnode;
+    oncreate: ({ attrs, dom }) => {
       const { onchange, onChipAdd, onChipDelete } = attrs;
       if (!onchange) {
         return;
@@ -30,8 +29,7 @@ export const Chips = (): Component<IChipsOptions> => {
           onChipDeleteBound(el, chip);
         }
       };
-      const elems = document.querySelectorAll('.chips');
-      M.Chips.init(elems, attrs);
+      M.Chips.init(dom, attrs);
     },
     onupdate: vnode => {
       const { data } = vnode.attrs;

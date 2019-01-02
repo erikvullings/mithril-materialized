@@ -15,12 +15,6 @@ export const Select = (): Component<ISelectOptions> => {
   const isSelected = <T extends number | string>(id: T, checkedId?: T | T[]) =>
     checkedId instanceof Array ? checkedId.indexOf(id) >= 0 : checkedId === id;
   return {
-    oncreate: () => {
-      const elem = document.querySelector(`#${state.id}`);
-      if (elem) {
-        M.FormSelect.init(elem);
-      }
-    },
     view: ({
       attrs: {
         checkedId,
@@ -41,6 +35,9 @@ export const Select = (): Component<ISelectOptions> => {
         m(
           `select[id=${id}]${multiple ? '[multiple]' : ''}`,
           {
+            oncreate: ({ dom }) => {
+              M.FormSelect.init(dom);
+            },
             onchange: (e: Event) => {
               if (e && e.currentTarget) {
                 const b = e.currentTarget as HTMLButtonElement;

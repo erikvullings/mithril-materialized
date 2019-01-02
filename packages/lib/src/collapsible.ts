@@ -38,11 +38,8 @@ export const CollabsibleItem = (): Component<ICollablisbleItem> => {
  */
 export const Collabsible = (): Component<ICollapsible> => {
   return {
-    oncreate: ({ attrs }) => {
-      const elems = document.querySelectorAll('.collapsible');
-      if (elems) {
-        M.Collapsible.init(elems, attrs);
-      }
+    oncreate: ({ dom, attrs }) => {
+      M.Collapsible.init(dom, attrs);
     },
     view: ({ attrs }) => {
       const { items } = attrs;

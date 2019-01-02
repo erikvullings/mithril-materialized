@@ -26,15 +26,19 @@ export const CarouselItem = (): Component<ICarouselItem> => {
  */
 export const Carousel = (): Component<ICarousel> => {
   return {
-    oncreate: ({ attrs }) => {
-      const elems = document.querySelectorAll('.carousel');
-      if (elems) {
-        M.Carousel.init(elems, attrs);
-      }
-    },
     view: ({ attrs }) => {
       const { items } = attrs;
-      return items && items.length > 0 ? m('.carousel', items.map(item => m(CarouselItem, item))) : undefined;
+      return items && items.length > 0
+        ? m(
+            '.carousel',
+            {
+              oncreate: ({ dom }) => {
+                M.Carousel.init(dom, attrs);
+              },
+            },
+            items.map(item => m(CarouselItem, item))
+          )
+        : undefined;
     },
   };
 };

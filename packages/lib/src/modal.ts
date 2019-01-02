@@ -18,9 +18,8 @@ export interface IMaterialModal {
 
 /** Builds a modal panel, which can be triggered using its id */
 export const ModalPanel = (): Component<IMaterialModal> => ({
-  oncreate: ({ attrs: { options } }) => {
-    const elems = document.querySelectorAll('.modal');
-    M.Modal.init(elems, options);
+  oncreate: ({ dom, attrs: { options } }) => {
+    M.Modal.init(dom, options);
   },
   view: ({ attrs: { id, title, description, fixedFooter, bottomSheet, buttons, richContent } }) => {
     const ff = fixedFooter ? '.modal-fixed-footer' : '';

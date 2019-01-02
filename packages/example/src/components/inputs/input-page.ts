@@ -89,9 +89,16 @@ export const InputPage = () => {
         }),
 
         m('h3.header', 'TextArea'),
-        m('.row', m(TextArea, { label: 'Please, describe yourself', helperText: `Don't be shy`, onchange })),
+        m(
+          '.row',
+          m(TextArea, { label: 'Please, describe yourself', helperText: `Don't be shy`, maxLength: 100, onchange })
+        ),
         m(CodeBlock, {
-          code: `        m(TextArea, { label: 'Please, describe yourself', helperText: 'Don\'t be shy', onchange })`,
+          code: `        m(TextArea, {
+            label: 'Please, describe yourself',
+            helperText: 'Don\'t be shy',
+            maxLength: 100,
+            onchange })`,
         }),
 
         m('h3.header', 'NumberInput'),

@@ -13,11 +13,8 @@ export interface IParallax extends Partial<M.ParallaxOptions> {
  */
 export const Parallax = (): Component<IParallax> => {
   return {
-    oncreate: ({ attrs }) => {
-      const elems = document.querySelectorAll('.parallax');
-      if (elems) {
-        M.Parallax.init(elems, attrs);
-      }
+    oncreate: ({ dom, attrs }) => {
+      M.Parallax.init(dom, attrs);
     },
     view: ({ attrs: { src } }) => (src ? m('.parallax-container', m('.parallax', m(`img[src=${src}]`))) : undefined),
   };

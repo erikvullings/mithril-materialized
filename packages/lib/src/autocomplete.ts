@@ -7,12 +7,6 @@ import { Label, HelperText } from './label';
 export const Autocomplete = (): Component<Partial<M.AutocompleteOptions> & IInputOptions<string>> => {
   const state = { id: uniqueId() };
   return {
-    oncreate: ({ attrs }) => {
-      const elem = document.querySelectorAll(`#${state.id}`);
-      if (elem) {
-        M.Autocomplete.init(elem, attrs);
-      }
-    },
     view: ({ attrs }) => {
       const id = attrs.id || state.id;
       const attributes = toAttrs(attrs);
@@ -20,8 +14,11 @@ export const Autocomplete = (): Component<Partial<M.AutocompleteOptions> & IInpu
       return m(`.input-field${newRow ? '.clear' : ''}${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`input.autocomplete[type=text][tabindex=0][id=${id}]${attributes}`, {
+          oncreate: ({ dom }) => {
+            M.Autocomplete.init(dom, attrs);
+          },
           onchange: onchange
-            ? (e: Event) => {
+            ? (e: Event ) => {
                 if (e.target && (e.target as HTMLInputElement).value) {
                   onchange((e.target as HTMLInputElement).value);
                 }

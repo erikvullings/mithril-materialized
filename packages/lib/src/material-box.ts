@@ -16,11 +16,8 @@ export interface IMaterialBox extends Partial<M.MaterialboxOptions> {
  */
 export const MaterialBox = (): Component<IMaterialBox> => {
   return {
-    oncreate: ({ attrs }) => {
-      const elems = document.querySelectorAll('.materialboxed');
-      if (elems) {
-        M.Materialbox.init(elems, attrs);
-      }
+    oncreate: ({ dom, attrs }) => {
+      M.Materialbox.init(dom, attrs);
     },
     view: ({ attrs: { src, width } }) => {
       return m(`img.materialboxed[src=${src}][width=${width || 650}]`);

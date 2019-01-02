@@ -7,28 +7,25 @@ import { Label, HelperText } from './label';
 export const DatePicker = (): Component<IInputOptions<Date> & Partial<M.DatepickerOptions>> => {
   const state = { id: uniqueId() };
   return {
-    oncreate: ({ attrs }) => {
-      const elems = document.querySelectorAll(`#${state.id}`);
-      if (elems) {
-        const { initialValue, onchange } = attrs;
-        M.Datepicker.init(elems, {
-          format: 'yyyy/mm/dd',
-          showClearBtn: true,
-          setDefaultDate: true,
-          defaultDate: initialValue ? new Date(initialValue) : new Date(),
-          onSelect: onchange,
-          ...attrs,
-        } as Partial<M.DatepickerOptions>);
-      }
-    },
     view: ({ attrs }) => {
       const id = state.id;
       const attributes = toAttrs(attrs);
-      const { label, helperText, initialValue, newRow, contentClass, iconName, isMandatory } = attrs;
+      const { label, helperText, initialValue, newRow, contentClass, iconName, isMandatory, onchange } = attrs;
       const clear = newRow ? '.clear' : '';
-      return m(`.input-field.datepicker${clear}${toDottedClassList(contentClass)}`, [
+      return m(`.input-field${clear}${toDottedClassList(contentClass)}`, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
-        m(`input[type=text][tabindex=0][id=${id}]${attributes}`),
+        m(`input.datepicker[type=text][tabindex=0][id=${id}]${attributes}`, {
+          oncreate: ({ dom }) => {
+            M.Datepicker.init(dom, {
+              format: 'yyyy/mm/dd',
+              showClearBtn: true,
+              setDefaultDate: true,
+              defaultDate: initialValue ? new Date(initialValue) : new Date(),
+              onSelect: onchange,
+              ...attrs,
+            } as Partial<M.DatepickerOptions>);
+          },
+        }),
         m(Label, { label, id, isMandatory, isActive: !!initialValue }),
         m(HelperText, { helperText }),
       ]);
@@ -40,28 +37,24 @@ export const DatePicker = (): Component<IInputOptions<Date> & Partial<M.Datepick
 export const TimePicker = (): Component<IInputOptions & Partial<M.TimepickerOptions>> => {
   const state = { id: uniqueId() };
   return {
-    oncreate: ({ attrs }) => {
-      const elems = document.querySelectorAll(`#${state.id}`);
-      if (elems) {
-        const { initialValue, onchange } = attrs;
-        M.Timepicker.init(elems, {
-          twelveHour: false,
-          showClearBtn: true,
-          defaultTime: initialValue,
-          onSelect: onchange ? (hours, minutes) => onchange(`${hours}:${minutes}`) : undefined,
-          ...attrs,
-        } as Partial<M.TimepickerOptions>);
-      }
-    },
     view: ({ attrs }) => {
       const id = state.id;
       const attributes = toAttrs(attrs);
-      const { label, helperText, initialValue, newRow, contentClass, iconName, isMandatory } = attrs;
+      const { label, helperText, initialValue, newRow, contentClass, iconName, isMandatory, onchange } = attrs;
       const clear = newRow ? '.clear' : '';
       return m(`.input-field.timepicker${clear}${toDottedClassList(contentClass)}`, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`input[type=text][tabindex=0][id=${id}]${attributes}`, {
           value: initialValue,
+          oncreate: ({ dom }) => {
+            M.Timepicker.init(dom, {
+              twelveHour: false,
+              showClearBtn: true,
+              defaultTime: initialValue,
+              onSelect: onchange ? (hours, minutes) => onchange(`${hours}:${minutes}`) : undefined,
+              ...attrs,
+            } as Partial<M.TimepickerOptions>);
+          },
         }),
         m(Label, { label, id, isMandatory, isActive: initialValue }),
         m(HelperText, { helperText }),

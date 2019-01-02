@@ -23,13 +23,6 @@ export interface IDropdownOptions extends Partial<M.DropdownOptions> {
 /** Dropdown component */
 export const Dropdown = (): Component<IDropdownOptions> => {
   return {
-    onupdate: () => {
-      console.warn('Dropdown updated.');
-    },
-    oncreate: ({ attrs }) => {
-      const elems = document.querySelectorAll('.dropdown-trigger');
-      M.Dropdown.init(elems, attrs);
-    },
     view: ({ attrs }) => {
       const id = attrs.id || 'dropdown';
       const { key, label, onchange, items, selected } = attrs;
@@ -38,7 +31,15 @@ export const Dropdown = (): Component<IDropdownOptions> => {
         : undefined;
       const title = selectedItem ? selectedItem.name : label || 'Select';
       return m('div', { key }, [
-        m(`a.dropdown-trigger.btn[href=#][data-target=${id}]`, title),
+        m(
+          `a.dropdown-trigger.btn[href=#][data-target=${id}]`,
+          {
+            oncreate: ({ dom }) => {
+              M.Dropdown.init(dom, attrs);
+            },
+          },
+          title
+        ),
         m(
           `ul.dropdown-content[id=${id}]`,
           items.map(i =>
