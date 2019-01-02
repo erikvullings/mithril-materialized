@@ -41,11 +41,15 @@ Supported components:
 
 ## Version history
 
-v0.4 No breaking changes
+v0.4.1 No breaking changes
+
+- Updated all components to use the mithril `dom` attribute instead of performing a document query. This has two advantages: first of all, performance, since we do not need to query for an element we already have. Second, when implementing custom elements that have an `oncreate` function. Using document.query... will lead to no results.
+
+v0.4.0 No breaking changes
 
 - New components: MaterialBox, Collapsible or accordion, and Carousel
 
-v0.3 Breaking changes
+v0.3.0 Breaking changes
 
 - Buttons no longer use the `ui` class to specify additional properties like `onclick`. Instead, you can leverage the mithril attributes directly. See the example, `button-page`.
 - `contentClass` has been removed in favour of the default mithril `class` or `className` attribute.
