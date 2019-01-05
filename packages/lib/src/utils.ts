@@ -73,11 +73,15 @@ const charCounter = <T>(o: IInputOptions<T>) => (o.maxLength ? `[data-length=${o
 /** Add the disabled attribute when required */
 export const disable = ({ disabled }: { disabled?: boolean }) => (disabled ? '[disabled]' : '');
 
+/** Add the required and aria-required attribute when required */
+export const req = ({ required, isMandatory }: { required?: boolean; isMandatory?: boolean }) =>
+  required || isMandatory ? '[required][aria-required=true]' : '';
+
 /** Add the autofocus attribute when required */
 const focus = ({ autofocus }: { autofocus?: (() => boolean) | boolean }) =>
   (typeof autofocus === 'boolean' && autofocus) || (autofocus && autofocus()) ? '[autofocus]' : '';
 
 /** Convert input options to a set of input attributes */
-export const toAttrs = <T>(o: IInputOptions<T>) => toProps(o) + charCounter(o) + disable(o) + focus(o);
+export const toAttrs = <T>(o: IInputOptions<T>) => toProps(o) + charCounter(o) + disable(o) + req(o) + focus(o);
 
 export const pipe = (...fncs: Array<(x: any) => any>) => <T>(x: T) => fncs.reduce((y, f) => f(y), x);
