@@ -21,6 +21,7 @@ export const InputPage = () => {
         m('h2.header', 'Inputs'),
 
         m('h3.header', 'TextInput'),
+        m('h4.header', 'Normal text input'),
         m(
           '.row',
           m(TextInput, {
@@ -40,6 +41,7 @@ export const InputPage = () => {
           maxLength: 50,
         } as IInputOptions)`,
         }),
+        m('h4.header', 'TextInput with icon'),
         m(
           '.row',
           m(TextInput, {
@@ -56,6 +58,25 @@ export const InputPage = () => {
           onchange,
           maxLength: 50,
         } as IInputOptions)`,
+        }),
+
+        m('h4.header', 'TextInput with custom validation'),
+        m(
+          '.row',
+          m(TextInput, {
+            label: 'What is the most popular search engine?',
+            dataSuccess: 'Great minds think alike',
+            dataError: 'Seriously?',
+            validate: v => v && v.toLowerCase() === 'google',
+          } as IInputOptions)
+        ),
+        m(CodeBlock, {
+          code: `          m(TextInput, {
+            label: 'What is the most popular search engine?',
+            dataSuccess: 'Great minds think alike',
+            dataError: 'Seriously?',
+            validate: v => v && v.toLowerCase() === 'google',
+          } as IInputOptions)`,
         }),
 
         m('h3.header', 'Autocomplete'),
@@ -124,7 +145,7 @@ export const InputPage = () => {
           })`,
         }),
 
-        m('h3.header', 'NumberInput with custom validation'),
+        m('h4.header', 'NumberInput with custom validation'),
         m(
           '.row',
           m(NumberInput, {
