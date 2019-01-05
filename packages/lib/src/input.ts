@@ -5,7 +5,7 @@ import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
 
 /** Create a TextArea */
-export const TextArea = () => {
+export const TextArea = (): Component<IInputOptions<string>> => {
   const state = { id: uniqueId() };
   return {
     view: ({ attrs }) => {
@@ -34,30 +34,20 @@ export const TextArea = () => {
         m(HelperText, { helperText }),
       ]);
     },
-  } as Component<IInputOptions<string>>;
+  };
 };
 
 export type InputType = 'url' | 'color' | 'text' | 'number' | 'email' | 'range';
 
-const oncreateFactory = <T>(type: InputType, id: string) => {
-  switch (type) {
-    default:
-      return undefined;
-    case 'range':
-      return ({ dom }: VnodeDOM<IInputOptions<T>>) => {
-        M.Range.init(dom);
-      };
-  }
-};
-
 /** Default component for all kinds of input fields. */
 const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInputOptions<T>> => {
+  console.log(type + defaultClass);
   const state = { id: uniqueId() };
-  const oncreate = oncreateFactory<T>(type, state.id);
-  const setValidity = (target: HTMLInputElement, validate: (value: T) => string | boolean) => {
+  const getValue = (target: HTMLInputElement) => {
     const val = (target.value as unknown) as T;
-    const value = (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
-    const validationResult = validate(value);
+    return (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
+  };
+  const setValidity = (target: HTMLInputElement, validationResult: string | boolean) => {
     if (typeof validationResult === 'boolean') {
       target.setCustomValidity(validationResult ? '' : 'Custom validation failed');
     } else {
@@ -71,7 +61,21 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
     view: ({ attrs }) => {
       const id = attrs.id || state.id;
       const attributes = toAttrs(attrs);
-      const { label, initialValue, onchange, newRow, contentClass, style, iconName, validate, isMandatory } = attrs;
+      const {
+        label,
+        initialValue,
+        onchange,
+        newRow,
+        contentClass,
+        style,
+        iconName,
+        validate,
+        isMandatory,
+        maxLength,
+        helperText,
+        dataError,
+        dataSuccess,
+      } = attrs;
       return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`input.validate[type=${type}][tabindex=0][id=${id}]${attributes}`, {
@@ -80,29 +84,29 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
             if (focus(attrs)) {
               (dom as HTMLElement).focus();
             }
-            if (attrs.maxLength) {
+            if (maxLength) {
               CharacterCounter.init(dom);
             }
-            if (oncreate) {
-              oncreate(vnode);
+            if (type === 'range') {
+              M.Range.init(dom);
             }
           },
+          oninit: () => console.log('init 2'),
           onupdate: validate
             ? ({ dom }) => {
                 const target = dom as HTMLInputElement;
-                setValidity(target, validate);
+                setValidity(target, validate(getValue(target)));
               }
             : undefined,
-          onchange: (e: Event) => {
+          onchange: (e: UIEvent) => {
             const target = e.target as HTMLInputElement;
             if (target && target.value) {
-              const val = (target.value as unknown) as T;
-              const value = (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
+              const value = getValue(target);
               if (onchange) {
                 onchange(value);
               }
               if (validate) {
-                setValidity(target, validate);
+                setValidity(target, validate(value));
               }
             }
           },
@@ -114,7 +118,7 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
           isMandatory,
           isActive: typeof initialValue !== 'undefined' || type === 'color' || type === 'range',
         }),
-        m(HelperText, attrs),
+        m(HelperText, { helperText, dataError, dataSuccess }),
       ]);
     },
   };
