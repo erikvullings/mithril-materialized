@@ -41,6 +41,10 @@ Supported components:
 
 ## Version history
 
+v0.4.2 No breaking changes
+
+- Added `required` and `aria-required="true"` attributes when the `required` or `isMandatory` property are set.
+
 v0.4.1 No breaking changes
 
 - Updated all components to use the mithril `dom` attribute instead of performing a document query. This has two advantages: first of all, performance, since we do not need to query for an element we already have. Second, when implementing custom elements that have an `oncreate` function. Using document.query... will lead to no results.
