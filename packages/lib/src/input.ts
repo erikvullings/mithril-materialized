@@ -41,7 +41,6 @@ export type InputType = 'url' | 'color' | 'text' | 'number' | 'email' | 'range';
 
 /** Default component for all kinds of input fields. */
 const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInputOptions<T>> => {
-  console.log(type + defaultClass);
   const state = { id: uniqueId() };
   const getValue = (target: HTMLInputElement) => {
     const val = (target.value as unknown) as T;
@@ -91,11 +90,10 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
               M.Range.init(dom);
             }
           },
-          oninit: () => console.log('init 2'),
           onupdate: validate
             ? ({ dom }) => {
                 const target = dom as HTMLInputElement;
-                setValidity(target, validate(getValue(target)));
+                setValidity(target, validate(getValue(target), target));
               }
             : undefined,
           onchange: (e: UIEvent) => {
@@ -106,7 +104,7 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
                 onchange(value);
               }
               if (validate) {
-                setValidity(target, validate(value));
+                setValidity(target, validate(value, target));
               }
             }
           },

@@ -41,6 +41,11 @@ Supported components:
 
 ## Version history
 
+v0.4.3 No breaking changes
+
+- The validate method for inputs now also accepts the HTMLInputElement
+- Removed a few left-over `console.log` statements.
+
 v0.4.2 No breaking changes
 
 - Added `required` and `aria-required="true"` attributes when the `required` or `isMandatory` property are set.

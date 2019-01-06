@@ -20,7 +20,7 @@ export interface IInputOptions<T = string> {
    * When returning false, set the custom validity message to a default string string.
    * When returning a non-empty string, set the custom validity message to this string.
    */
-  validate?: (v: T) => boolean | string;
+  validate?: (v: T, target?: HTMLInputElement) => boolean | string;
   /** Will replace the helperText, if any, when the input is invalid. */
   dataError?: string;
   /** Will replace the helperText, if any, when the input is valid. */
