@@ -43,13 +43,23 @@ export const ButtonFactory = (
   return {
     view: ({ attrs }) => {
       const { modalId, tooltip, tooltipPostion, iconName, iconClass, label, attr } = attrs;
+      const passThrough = {
+        ...attrs,
+        modalId: undefined,
+        tooltip: undefined,
+        tooltipPostion: undefined,
+        iconName: undefined,
+        iconClass: undefined,
+        label: undefined,
+        attr: undefined,
+      };
       return m(
         `${defaultClassNames}${attributes}${modalId ? '.modal-trigger[href=#' + modalId + ']' : ''}${
           tooltip ? `.tooltipped[data-position=${tooltipPostion || 'top'}][data-tooltip=${tooltip}]` : ''
         }${toAttributeString(attr)}`,
-        attrs,
-        iconName ? m(Icon, { iconName, class: iconClass || 'left' }) : '',
-        label ? label : ''
+        passThrough,
+        iconName ? m(Icon, { iconName, class: iconClass || 'left' }) : undefined,
+        label ? label : undefined
       );
     },
   };

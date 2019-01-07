@@ -11,5 +11,8 @@ export interface IMaterialIcon extends Attributes {
  * @example m(Icon, { class: 'prefix' }, iconName) renders the icon as a prefix
  */
 export const Icon = (): Component<IMaterialIcon> => ({
-  view: ({ attrs }) => m('i.material-icons', attrs, attrs.iconName),
+  view: ({ attrs }) => {
+    const passThrough = { ...attrs, iconName: undefined };
+    return m('i.material-icons', passThrough, attrs.iconName);
+  },
 });
