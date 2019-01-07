@@ -41,6 +41,10 @@ Supported components:
 
 ## Version history
 
+v0.4.4 No breaking changes
+
+- Do not pass attributes through, e.g. if you had a `m(FlatButton, { onupdate })`, the `onupdate` was passed through to the `HelperText` too.
+
 v0.4.3 No breaking changes
 
 - The validate method for inputs now also accepts the HTMLInputElement
