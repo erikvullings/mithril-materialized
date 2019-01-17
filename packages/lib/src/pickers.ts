@@ -1,10 +1,10 @@
-import m, { Component } from 'mithril';
+import m, { FactoryComponent } from 'mithril';
 import { IInputOptions } from './input-options';
 import { uniqueId, toDottedClassList, toAttrs } from './utils';
 import { Label, HelperText } from './label';
 
 /** Component to pick a date */
-export const DatePicker = (): Component<IInputOptions<Date> & Partial<M.DatepickerOptions>> => {
+export const DatePicker: FactoryComponent<IInputOptions<Date> & Partial<M.DatepickerOptions>> = () => {
   const state = { id: uniqueId() };
   return {
     view: ({ attrs }) => {
@@ -34,7 +34,7 @@ export const DatePicker = (): Component<IInputOptions<Date> & Partial<M.Datepick
 };
 
 /** Component to pick a time */
-export const TimePicker = (): Component<IInputOptions & Partial<M.TimepickerOptions>> => {
+export const TimePicker: FactoryComponent<IInputOptions & Partial<M.TimepickerOptions>> = () => {
   const state = { id: uniqueId() };
   return {
     view: ({ attrs }) => {

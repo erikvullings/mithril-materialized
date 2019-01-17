@@ -1,8 +1,7 @@
-import m, { Component } from 'mithril';
+import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId, toDottedClassList } from './utils';
 
-/** Component to show a list of radio buttons, from which you can choose one. */
-export const RadioButtons = (): Component<{
+export interface IRadioButtons extends Attributes {
   label: string;
   options: Array<{ id: string; label: string }>;
   onchange: (id: string) => void;
@@ -10,7 +9,10 @@ export const RadioButtons = (): Component<{
   description?: string;
   newRow?: boolean;
   contentClass?: string;
-}> => {
+}
+
+/** Component to show a list of radio buttons, from which you can choose one. */
+export const RadioButtons: FactoryComponent<IRadioButtons> = () => {
   const state = { id: uniqueId() };
   return {
     view: ({ attrs: { newRow, contentClass, label, description, onchange, options, checkedId } }) => {
@@ -32,7 +34,7 @@ export const RadioButtons = (): Component<{
   };
 };
 
-const RadioButton = (): Component<{
+export interface IRadioButton {
   id: string;
   checked?: boolean;
   onchange: (id: string) => void;
@@ -40,7 +42,9 @@ const RadioButton = (): Component<{
   groupId: string;
   disabled?: boolean;
   contentClass?: string;
-}> => ({
+}
+
+export const RadioButton: FactoryComponent<IRadioButton> = () => ({
   view: ({ attrs: { id, groupId, label, onchange, contentClass, checked } }) => {
     return m(
       `div${toDottedClassList(contentClass)}`,

@@ -1,11 +1,11 @@
-import m, { Component } from 'mithril';
+import m, { FactoryComponent, Attributes } from 'mithril';
 
-export interface IChipsOptions extends Partial<M.ChipsOptions> {
+export interface IChipsOptions extends Partial<M.ChipsOptions>, Attributes {
   onchange?: (chips: M.ChipData[]) => void;
 }
 
 /** Chips and tags */
-export const Chips = (): Component<IChipsOptions> => {
+export const Chips: FactoryComponent<IChipsOptions> = () => {
   return {
     oncreate: ({ attrs, dom }) => {
       const { onchange, onChipAdd, onChipDelete } = attrs;

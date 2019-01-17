@@ -1,6 +1,6 @@
-import m, { Component } from 'mithril';
+import m, { FactoryComponent, Attributes } from 'mithril';
 
-export interface IMaterialModal {
+export interface IMaterialModal extends Attributes {
   id: string;
   title: string;
   description?: string;
@@ -17,7 +17,7 @@ export interface IMaterialModal {
 }
 
 /** Builds a modal panel, which can be triggered using its id */
-export const ModalPanel = (): Component<IMaterialModal> => ({
+export const ModalPanel: FactoryComponent<IMaterialModal> = () => ({
   oncreate: ({ dom, attrs: { options } }) => {
     M.Modal.init(dom, options);
   },

@@ -1,9 +1,20 @@
-import m, { Component } from 'mithril';
+import m, { FactoryComponent, Attributes } from 'mithril';
 import { toDottedClassList } from './utils';
 import { Label, HelperText } from './label';
 
+export interface IInputCheckbox extends Attributes {
+  /** Optional event handler when an option is clicked */
+  onchange?: (checked: boolean) => void;
+  /** Title or label of the option */
+  label: string;
+  /** If true, the option is checked */
+  checked?: boolean;
+  /** Optional CSS that is added to the div wrapper */
+  contentClass?: string;
+}
+
 /** Component to show a check box */
-export const InputCheckbox = () => {
+export const InputCheckbox: FactoryComponent<IInputCheckbox> = () => {
   return {
     view: ({ attrs }) => {
       const { contentClass, onchange, label, checked } = attrs;
@@ -23,19 +34,10 @@ export const InputCheckbox = () => {
         ])
       );
     },
-  } as Component<{
-    /** Optional event handler when an option is clicked */
-    onchange?: (checked: boolean) => void;
-    /** Title or label of the option */
-    label: string;
-    /** If true, the option is checked */
-    checked?: boolean;
-    /** Optional CSS that is added to the div wrapper */
-    contentClass?: string;
-  }>;
+  };
 };
 
-export interface IInputOption {
+export interface IInputOption extends Attributes {
   /** Option ID */
   id: string;
   /** Title or label */
@@ -44,8 +46,7 @@ export interface IInputOption {
   isChecked?: boolean;
 }
 
-/** A list of checkboxes */
-export const Options = (): Component<{
+export interface IOptions extends Attributes {
   /** Element ID */
   id?: string;
   /** Optional title or label */
@@ -64,7 +65,10 @@ export const Options = (): Component<{
   newRow?: boolean;
   /** If true, add a mandatory '*' after the label */
   isMandatory?: boolean;
-}> => {
+}
+
+/** A list of checkboxes */
+export const Options: FactoryComponent<IOptions> = () => {
   return {
     view: ({ attrs: { label, id, options, onchange, description, contentClass, titleClass, newRow, isMandatory } }) => {
       const clear = newRow ? '.clear' : '';

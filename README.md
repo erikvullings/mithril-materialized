@@ -33,6 +33,7 @@ Supported components:
   - MaterialBox
   - Collapsible or accordion
   - Carousel
+  - Pagination
   - Parallax
 - Additional
   - Label

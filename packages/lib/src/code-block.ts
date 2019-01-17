@@ -1,4 +1,4 @@
-import m, { Component, Attributes } from 'mithril';
+import m, { FactoryComponent, Attributes } from 'mithril';
 
 export interface ICodeBlock extends Attributes {
   language?: string;
@@ -7,7 +7,7 @@ export interface ICodeBlock extends Attributes {
 }
 
 /** A simple code block without syntax high-lighting */
-export const CodeBlock = (): Component<ICodeBlock> => ({
+export const CodeBlock: FactoryComponent<ICodeBlock> = () => ({
   view: ({ attrs }) => {
     const { newRow, code, language } = attrs;
     const lang = language || 'lang-TypeScript';

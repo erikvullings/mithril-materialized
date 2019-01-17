@@ -1,6 +1,6 @@
-import m, { Component, Vnode } from 'mithril';
+import m, { FactoryComponent, Attributes, Vnode } from 'mithril';
 
-export interface ICollablisbleItem {
+export interface ICollablisbleItem extends Attributes {
   /** Header of the collabsible item, may contain HTML or may be a Vnode */
   header?: string | Vnode;
   /** Body of the collabsible item, may contain HTML or may be a Vnode */
@@ -11,12 +11,12 @@ export interface ICollablisbleItem {
   iconName?: string;
 }
 
-export interface ICollapsible extends Partial<M.CollapsibleOptions> {
+export interface ICollapsible extends Partial<M.CollapsibleOptions>, Attributes {
   /** The list of accordeon/collabsible items */
   items: ICollablisbleItem[];
 }
 
-export const CollabsibleItem = (): Component<ICollablisbleItem> => {
+export const CollabsibleItem: FactoryComponent<ICollablisbleItem> = () => {
   return {
     view: ({ attrs: { header, body, active, iconName } }) => {
       return m(active ? 'li.active' : 'li', [
@@ -36,7 +36,7 @@ export const CollabsibleItem = (): Component<ICollablisbleItem> => {
  * Creates a collabsible or accordion (via the accordion option, default true) component.
  * @see https://materializecss.com/collapsible.html
  */
-export const Collabsible = (): Component<ICollapsible> => {
+export const Collabsible: FactoryComponent<ICollapsible> = () => {
   return {
     oncreate: ({ dom, attrs }) => {
       M.Collapsible.init(dom, attrs);

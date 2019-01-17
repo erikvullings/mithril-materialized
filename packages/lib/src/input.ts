@@ -98,7 +98,7 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
             : undefined,
           onchange: (e: UIEvent) => {
             const target = e.target as HTMLInputElement;
-            if (target && target.value) {
+            if (target) {
               const value = getValue(target);
               if (onchange) {
                 onchange(value);

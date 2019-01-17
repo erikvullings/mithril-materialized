@@ -1,6 +1,6 @@
-import m, { Component } from 'mithril';
+import m, { FactoryComponent, Attributes } from 'mithril';
 
-export interface IMaterialBox extends Partial<M.MaterialboxOptions> {
+export interface IMaterialBox extends Partial<M.MaterialboxOptions>, Attributes {
   /** Source image path */
   src: string;
   /**
@@ -14,7 +14,7 @@ export interface IMaterialBox extends Partial<M.MaterialboxOptions> {
  * Create an image box, that, when clicked upon, fills the screen.
  * @see https://materializecss.com/media.html
  */
-export const MaterialBox = (): Component<IMaterialBox> => {
+export const MaterialBox: FactoryComponent<IMaterialBox> = () => {
   return {
     oncreate: ({ dom, attrs }) => {
       M.Materialbox.init(dom, attrs);

@@ -1,6 +1,6 @@
-import m, { Component } from 'mithril';
+import m, { FactoryComponent, Attributes } from 'mithril';
 
-export interface IDropdownOptions extends Partial<M.DropdownOptions> {
+export interface IDropdownOptions extends Partial<M.DropdownOptions>, Attributes {
   /**
    * Optional id of the dropdown element
    * @default 'dropdown'
@@ -21,7 +21,7 @@ export interface IDropdownOptions extends Partial<M.DropdownOptions> {
 }
 
 /** Dropdown component */
-export const Dropdown = (): Component<IDropdownOptions> => {
+export const Dropdown: FactoryComponent<IDropdownOptions> = () => {
   return {
     view: ({ attrs }) => {
       const id = attrs.id || 'dropdown';

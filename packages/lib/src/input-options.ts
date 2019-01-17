@@ -1,4 +1,6 @@
-export interface IInputOptions<T = string> {
+import { Attributes } from 'mithril';
+
+export interface IInputOptions<T = string> extends Attributes {
   /** Optional label. */
   label?: string;
   /** Optional ID. */

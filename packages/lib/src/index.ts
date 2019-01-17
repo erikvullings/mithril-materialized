@@ -17,3 +17,4 @@ export * from './material-box';
 export * from './collapsible';
 export * from './carousel';
 export * from './parallax';
+export * from './pagination';

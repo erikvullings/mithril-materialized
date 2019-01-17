@@ -33,6 +33,7 @@ Supported components:
   - MaterialBox
   - Collapsible or accordion
   - Carousel
+  - Pagination
   - Parallax
 - Additional
   - Label
@@ -40,6 +41,13 @@ Supported components:
   - CodeBlock (not from materialize-css)
 
 ## Version history
+
+v0.5.0 No breaking changes
+
+- NEW: Pagination control
+- BUG FIX: `Input.onchange` would not fire if the input was cleared.
+- All options now derives from mithril's `Attributes`.
+- Using `FactoryComponent` type
 
 v0.4.4 No breaking changes
 

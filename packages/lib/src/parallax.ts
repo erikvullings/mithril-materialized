@@ -1,6 +1,6 @@
-import m, { Component } from 'mithril';
+import m, { FactoryComponent, Attributes } from 'mithril';
 
-export interface IParallax extends Partial<M.ParallaxOptions> {
+export interface IParallax extends Partial<M.ParallaxOptions>, Attributes {
   /** Image source */
   src: string;
 }
@@ -11,7 +11,7 @@ export interface IParallax extends Partial<M.ParallaxOptions> {
  * is moved at a different speed than the foreground content while scrolling.
  * @see https://materializecss.com/parallax.html
  */
-export const Parallax = (): Component<IParallax> => {
+export const Parallax: FactoryComponent<IParallax> = () => {
   return {
     oncreate: ({ dom, attrs }) => {
       M.Parallax.init(dom, attrs);

@@ -1,10 +1,12 @@
-import m, { Component } from 'mithril';
+import m, { FactoryComponent } from 'mithril';
 import { uniqueId, toDottedClassList, toAttrs } from './utils';
 import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
 
+export interface IAutoCompleteOptions extends Partial<M.AutocompleteOptions>, IInputOptions<string> {}
+
 /** Component to auto complete your text input */
-export const Autocomplete = (): Component<Partial<M.AutocompleteOptions> & IInputOptions<string>> => {
+export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
   const state = { id: uniqueId() };
   return {
     view: ({ attrs }) => {

@@ -1,4 +1,4 @@
-import m, { Component } from 'mithril';
+import m, { FactoryComponent } from 'mithril';
 import { uniqueId, toDottedClassList } from './utils';
 import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
@@ -10,7 +10,7 @@ export interface ISelectOptions extends IInputOptions {
 }
 
 /** Component to select from a list of values in a dropdowns */
-export const Select = (): Component<ISelectOptions> => {
+export const Select: FactoryComponent<ISelectOptions> = () => {
   const state = { id: uniqueId() };
   const isSelected = <T extends number | string>(id: T, checkedId?: T | T[]) =>
     checkedId instanceof Array ? checkedId.indexOf(id) >= 0 : checkedId === id;

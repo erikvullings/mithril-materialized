@@ -1,4 +1,4 @@
-import m, { Component } from 'mithril';
+import m, { FactoryComponent } from 'mithril';
 import { uniqueId, toDottedClassList, disable } from './utils';
 import { IInputOptions } from './input-options';
 import { Label } from './label';
@@ -13,7 +13,7 @@ export interface ISwitchOptions extends Partial<IInputOptions<boolean>> {
 }
 
 /** Component to display a switch with two values. */
-export const Switch = (): Component<ISwitchOptions> => {
+export const Switch: FactoryComponent<ISwitchOptions> = () => {
   const state = { id: uniqueId() };
   return {
     view: ({ attrs }) => {
