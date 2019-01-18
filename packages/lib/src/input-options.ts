@@ -9,8 +9,33 @@ export interface IInputOptions<T = string> extends Attributes {
   key?: string;
   /** Initial value of the input field. */
   initialValue?: T;
+  /**
+   * The autocomplete property sets or returns the value of the autocomplete
+   * attribute in a text field. When autocomplete is on, the browser automatically
+   * complete values based on values that the user has entered before.
+   * @default 'on'
+   */
+  autocomplete?: 'on' | 'off';
+  /**
+   * The pattern property sets or returns the value of the pattern attribute of
+   * a text field. The pattern attribute specifies a regular expression that the
+   * text field's value is checked against.
+   */
+  pattern?: RegExp;
+  /**
+   * The readOnly property sets or returns whether a text field is read-only, or not.
+   * A read-only field cannot be modified. However, a user can tab to it, highlight it,
+   * and copy the text from it.
+   */
+  readOnly?: boolean;
   /** When true, add the autofocus attribute to the input field. */
   autofocus?: (() => boolean) | boolean;
+  /** Key down event */
+  onkeydown?: (ev: KeyboardEvent, value?: T) => void;
+  /** Key press event */
+  onkeypress?: (ev: KeyboardEvent, value?: T) => void;
+  /** Key up event */
+  onkeyup?: (ev: KeyboardEvent, value?: T) => void;
   /** Invoked when the value changes. */
   onchange?: (value: T) => void;
   /** Add a a placeholder to the input field. */

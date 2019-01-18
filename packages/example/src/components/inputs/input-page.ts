@@ -28,6 +28,8 @@ export const InputPage = () => {
             label: 'What is your name?',
             helperText: 'Please, be honest!',
             onchange,
+            autocomplete: 'off',
+            onkeyup: (ev, value) => console.log(value),
             autofocus: true,
             maxLength: 50,
           } as IInputOptions)
@@ -37,6 +39,7 @@ export const InputPage = () => {
           label: 'What is your name?',
           helperText: 'Please, be honest!',
           onchange,
+          onkeyup: (ev, value) => console.log(value),
           autofocus: true // This may also be a function that resolves to a boolean
           maxLength: 50,
         } as IInputOptions)`,

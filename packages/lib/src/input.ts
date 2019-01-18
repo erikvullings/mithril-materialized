@@ -1,11 +1,11 @@
 import { CharacterCounter } from 'materialize-css';
-import m, { VnodeDOM, Component } from 'mithril';
+import m, { VnodeDOM, FactoryComponent } from 'mithril';
 import { uniqueId, toDottedClassList, toAttrs } from './utils';
 import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
 
 /** Create a TextArea */
-export const TextArea = (): Component<IInputOptions<string>> => {
+export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
   const state = { id: uniqueId() };
   return {
     view: ({ attrs }) => {
@@ -40,7 +40,7 @@ export const TextArea = (): Component<IInputOptions<string>> => {
 export type InputType = 'url' | 'color' | 'text' | 'number' | 'email' | 'range';
 
 /** Default component for all kinds of input fields. */
-const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInputOptions<T>> => {
+const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IInputOptions<T>> => () => {
   const state = { id: uniqueId() };
   const getValue = (target: HTMLInputElement) => {
     const val = (target.value as unknown) as T;
@@ -74,6 +74,9 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
         helperText,
         dataError,
         dataSuccess,
+        onkeydown,
+        onkeyup,
+        onkeypress,
       } = attrs;
       return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
@@ -90,6 +93,15 @@ const InputField = <T>(type: InputType, defaultClass = '') => (): Component<IInp
               M.Range.init(dom);
             }
           },
+          onkeyup: onkeyup ? (ev: KeyboardEvent) => {
+            onkeyup(ev, getValue(ev.target as HTMLInputElement));
+          } : undefined,
+          onkeydown: onkeydown ? (ev: KeyboardEvent) => {
+            onkeydown(ev, getValue(ev.target as HTMLInputElement));
+          } : undefined,
+          onkeypress: onkeypress ? (ev: KeyboardEvent) => {
+            onkeypress(ev, getValue(ev.target as HTMLInputElement));
+          } : undefined,
           onupdate: validate
             ? ({ dom }) => {
                 const target = dom as HTMLInputElement;

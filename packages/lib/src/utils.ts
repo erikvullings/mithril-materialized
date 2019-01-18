@@ -45,7 +45,18 @@ export const toDottedClassList = (contentClass = 'col.s12') =>
   contentClass ? '.' + contentClass.replace(' ', '.') : '';
 
 /** Options that we want to convert to attributes  */
-const inputAttributes = ['min', 'max', 'minLength', 'maxLength', 'rows', 'cols', 'placeholder'];
+const inputAttributes = [
+  'min',
+  'max',
+  'minLength',
+  'maxLength',
+  'rows',
+  'cols',
+  'placeholder',
+  'autocomplete',
+  'pattern',
+  'readOnly',
+];
 
 const isInputAttribute = (key: string) => inputAttributes.indexOf(key) >= 0;
 
