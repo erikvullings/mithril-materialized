@@ -42,7 +42,7 @@ Supported components:
 
 ## Version history
 
-v0.5.1 No breaking changes
+v0.6.0 No breaking changes
 
 - `Inputs` can now use `onkeyup`, `onkeydown`, and `onkeypress` events. They also return the value.
 - Additionally, they can use `readOnly`, `pattern` and `autocomplete` (does not always seem to work).
