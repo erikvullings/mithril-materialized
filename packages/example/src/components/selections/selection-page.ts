@@ -2,7 +2,11 @@ import { Select, CodeBlock, Options, Switch, RadioButtons, Dropdown } from 'mith
 import m from 'mithril';
 
 export const SelectionPage = () => {
-  const onchange = (v: unknown) => alert(`Input changed. New value: ${v}`);
+  const state = {
+    checkedId: undefined as string | undefined,
+  };
+  const onchange = (v: unknown) => state.checkedId = v as string;
+  // const onchange = (v: unknown) => alert(`Input changed. New value: ${v}`);
   return {
     view: () =>
       m('.col.s12.m8.xl7', [
@@ -14,7 +18,9 @@ export const SelectionPage = () => {
           m(Select, {
             iconName: 'person',
             label: 'What is your favorite hobby?',
+            // placeholder: 'Pick one', // Alternative to first option
             isMandatory: true,
+            checkedId: state.checkedId,
             options: [
               { label: 'Pick one', disabled: true },
               { id: 'movies', label: 'Watching movies' },
@@ -28,6 +34,7 @@ export const SelectionPage = () => {
           code: `          m(Select, {
             iconName: 'person',
             label: 'What is your favorite hobby?',
+            // placeholder: 'Pick one', // Alternative to first option
             isMandatory: true,
             options: [
               { label: 'Pick one', disabled: true }, // IDs are optional: ID = label when missing
@@ -46,6 +53,7 @@ export const SelectionPage = () => {
             placeholder: 'Make a choice...',
             label: 'What are your favorite hobbies?',
             checkedId: ['out', 'read'],
+            onchange,
             options: [
               { id: 'movies', label: 'Watching movies' },
               { id: 'out', label: 'Going out' },
