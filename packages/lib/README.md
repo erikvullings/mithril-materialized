@@ -42,24 +42,21 @@ Supported components:
 
 ## Version history
 
-v0.6.5 Breaking changes, bug fix.
+v0.6.4 Breaking changes, bug fix.
 
 - `Select` did not always return the proper id on selection changes with multiple elements.
 
-v0.6.4 No breaking changes, bug fix.
+v0.6.3 No breaking changes, bug fix.
 
 - `Select` did not update dynamically when checkedId changed.
 
-v0.6.3 No breaking changes
+v0.6.2 No breaking changes
 
 - `Select` can use `M.FormSelectOptions`.
 
-v0.6.2 No breaking changes
-
-- `Select` can have `disabled` options, and `id` is optional (in which case the label is used).
-
 v0.6.1 No breaking changes
 
+- `Select` can have `disabled` options, and `id` is optional (in which case the label is used).
 - `Select` can use a prefix icon.
 
 v0.6.0 No breaking changes
