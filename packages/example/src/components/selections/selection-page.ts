@@ -12,6 +12,7 @@ export const SelectionPage = () => {
         m(
           'row',
           m(Select, {
+            iconName: 'person',
             label: 'What is your favorite hobby?',
             isMandatory: true,
             options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
@@ -21,6 +22,7 @@ export const SelectionPage = () => {
         m(CodeBlock, {
           newRow: true,
           code: `          m(Select, {
+            iconName: 'person',
             label: 'What is your favorite hobby?',
             isMandatory: true,
             options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],

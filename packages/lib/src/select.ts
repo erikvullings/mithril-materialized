@@ -27,11 +27,13 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
         multiple,
         placeholder,
         isMandatory,
+        iconName,
       },
     }) => {
       const id = state.id;
       const clear = newRow ? '.clear' : '';
       return m(`.input-field.select-space${clear}${toDottedClassList(contentClass)}`, [
+        iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(
           `select[id=${id}]${multiple ? '[multiple]' : ''}`,
           {

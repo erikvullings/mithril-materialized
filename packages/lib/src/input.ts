@@ -79,7 +79,7 @@ const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IIn
         onkeypress,
       } = attrs;
       return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}${toDottedClassList(contentClass)}`, { style }, [
-        iconName ? m('i.material-icons.prefix', iconName) : '',
+        iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(`input.validate[type=${type}][tabindex=0][id=${id}]${attributes}`, {
           oncreate: (vnode: VnodeDOM) => {
             const { dom } = vnode;

@@ -11,8 +11,8 @@
   "scripts": {
     "link": "npm link",
     "start": "tsc -w",
-    "patch-release": "npm version patch && npm publish && git push --follow-tags",
-    "minor-release": "npm version minor && npm publish && git push --follow-tags"
+    "patch-release": "npm version patch --force \"Patch release\" && git push --follow-tags && npm publish",
+    "minor-release": "npm version minor --force \"Minor release\" && git push --follow-tags && npm publish"
   },
   "keywords": [
     "mithril",

@@ -42,6 +42,10 @@ Supported components:
 
 ## Version history
 
+v0.6.1 No breaking changes
+
+- `Select` can use a prefix icon.
+
 v0.6.0 No breaking changes
 
 - `Inputs` can now use `onkeyup`, `onkeydown`, and `onkeypress` events. They also return the value.
