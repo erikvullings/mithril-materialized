@@ -5,8 +5,8 @@ export const SelectionPage = () => {
   const state = {
     checkedId: undefined as string | undefined,
   };
-  const onchange = (v: unknown) => state.checkedId = v as string;
-  // const onchange = (v: unknown) => alert(`Input changed. New value: ${v}`);
+  // const onchange = (v: unknown) => state.checkedId = v as string;
+  const onchange = (v: unknown) => alert(`Input changed. New value: ${v}`);
   return {
     view: () =>
       m('.col.s12.m8.xl7', [
@@ -68,6 +68,7 @@ export const SelectionPage = () => {
             placeholder: 'Make a choice...',
             label: 'What are your favorite hobbies?',
             checkedId: ['out', 'read'],
+            onchange,
             options: [
               { id: 'movies', label: 'Watching movies' },
               { id: 'out', label: 'Going out' },

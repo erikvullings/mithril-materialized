@@ -42,6 +42,10 @@ Supported components:
 
 ## Version history
 
+v0.6.5 Breaking changes, bug fix.
+
+- `Select` did not always return the proper id on selection changes with multiple elements.
+
 v0.6.4 No breaking changes, bug fix.
 
 - `Select` did not update dynamically when checkedId changed.
