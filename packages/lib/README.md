@@ -42,6 +42,10 @@ Supported components:
 
 ## Version history
 
+v0.6.2 No breaking changes
+
+- `Select` can have `disabled` options, and `id` is optional (in which case the label is used).
+
 v0.6.1 No breaking changes
 
 - `Select` can use a prefix icon.

@@ -15,7 +15,11 @@ export const SelectionPage = () => {
             iconName: 'person',
             label: 'What is your favorite hobby?',
             isMandatory: true,
-            options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
+            options: [
+              { label: 'Pick one', disabled: true },
+              { id: 'movies', label: 'Watching movies' },
+              { id: 'out', label: 'Going out' },
+            ],
             onchange,
           })
         ),
@@ -25,7 +29,11 @@ export const SelectionPage = () => {
             iconName: 'person',
             label: 'What is your favorite hobby?',
             isMandatory: true,
-            options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
+            options: [
+              { label: 'Pick one', disabled: true }, // IDs are optional: ID = label when missing
+              { id: 'movies', label: 'Watching movies' },
+              { id: 'out', label: 'Going out' },
+            ],
             onchange,
           })`,
         }),

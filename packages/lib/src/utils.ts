@@ -4,7 +4,7 @@ import { IInputOptions } from './input-options';
  * Create a unique ID
  * @see https://stackoverflow.com/a/2117523/319711
  *
- * @returns RFC4122 version 4 compliant GUID
+ * @returns id followed by 8 hexadecimal characters.
  */
 export const uniqueId = () => {
   // tslint:disable-next-line:no-bitwise
