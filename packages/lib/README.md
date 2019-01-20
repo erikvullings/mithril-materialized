@@ -42,6 +42,12 @@ Supported components:
 
 ## Version history
 
+v0.7.0 Breaking changes for Dropdown component.
+
+- `Dropdown` uses similar items as `Select`, and uses `checkedId` to select the item.
+- `Dropdown` items can now use an icon and dividers.
+- `Dropdown` can now have a helper text option and an icon prefix.
+
 v0.6.4 Breaking changes, bug fix.
 
 - `Select` did not always return the proper id on selection changes with multiple elements.

@@ -1,5 +1,5 @@
-import { Select, CodeBlock, Options, Switch, RadioButtons, Dropdown } from 'mithril-materialized';
 import m from 'mithril';
+import { Select, CodeBlock, Options, Switch, RadioButtons, Dropdown, IDropdownOptions } from 'mithril-materialized';
 
 export const SelectionPage = () => {
   const state = {
@@ -140,26 +140,36 @@ export const SelectionPage = () => {
           '.row',
           m(Dropdown, {
             id: 'hobby',
+            iconName: 'my_location',
             label: 'Pick a hobby',
-            // selected: 'movies',
+            helperText: 'Help me',
+            contentClass: 'col s6',
+            // checkedId: 'movies',
             items: [
-              { name: 'Movies', value: 'movies' },
-              { name: 'Reading', value: 'reading' },
-              { name: 'Eating', value: 'eating' },
+              { label: 'Movies', id: 'movies', iconName: 'local_movies' },
+              { label: 'Reading', id: 'reading', iconName: 'import_contacts' },
+              { label: 'Eating', id: 'eating', iconName: 'restaurant' },
+              { label: '', divider: true },
+              { label: 'Sex', id: 'sex', iconName: 'group' },
             ],
             onchange,
-          })
+          } as IDropdownOptions<string>)
         ),
         m(CodeBlock, {
           newRow: true,
           code: `          m(Dropdown, {
             id: 'hobby',
+            iconName: 'my_location',
             label: 'Pick a hobby',
-            // selected: 'movies',
+            helperText: 'Help me',
+            contentClass: 'col s6',
+            // checkedId: 'movies',
             items: [
-              { name: 'Movies', value: 'movies' },
-              { name: 'Reading', value: 'reading' },
-              { name: 'Eating', value: 'eating' },
+              { label: 'Movies', id: 'movies', iconName: 'local_movies' },
+              { label: 'Reading', id: 'reading', iconName: 'import_contacts' },
+              { label: 'Eating', id: 'eating', iconName: 'restaurant' },
+              { label: '', divider: true },
+              { label: 'Sex', id: 'sex', iconName: 'group' },
             ],
             onchange,
           })`,
