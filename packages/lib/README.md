@@ -44,6 +44,7 @@ Supported components:
 
 v0.7.0 Breaking changes for Dropdown component.
 
+- New `FileInput` component to upload one or more files.
 - `Dropdown` uses similar items as `Select`, and uses `checkedId` to select the item.
 - `Dropdown` items can now use an icon and dividers.
 - `Dropdown` can now have a helper text option and an icon prefix.

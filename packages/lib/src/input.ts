@@ -93,15 +93,21 @@ const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IIn
               M.Range.init(dom);
             }
           },
-          onkeyup: onkeyup ? (ev: KeyboardEvent) => {
-            onkeyup(ev, getValue(ev.target as HTMLInputElement));
-          } : undefined,
-          onkeydown: onkeydown ? (ev: KeyboardEvent) => {
-            onkeydown(ev, getValue(ev.target as HTMLInputElement));
-          } : undefined,
-          onkeypress: onkeypress ? (ev: KeyboardEvent) => {
-            onkeypress(ev, getValue(ev.target as HTMLInputElement));
-          } : undefined,
+          onkeyup: onkeyup
+            ? (ev: KeyboardEvent) => {
+                onkeyup(ev, getValue(ev.target as HTMLInputElement));
+              }
+            : undefined,
+          onkeydown: onkeydown
+            ? (ev: KeyboardEvent) => {
+                onkeydown(ev, getValue(ev.target as HTMLInputElement));
+              }
+            : undefined,
+          onkeypress: onkeypress
+            ? (ev: KeyboardEvent) => {
+                onkeypress(ev, getValue(ev.target as HTMLInputElement));
+              }
+            : undefined,
           onupdate: validate
             ? ({ dom }) => {
                 const target = dom as HTMLInputElement;
@@ -146,3 +152,30 @@ export const ColorInput = InputField<string>('color');
 export const RangeInput = InputField<number>('range', '.range-field');
 /** Component for entering an email */
 export const EmailInput = InputField<string>('email');
+
+/** Component for uploading a file */
+export const FileInput: FactoryComponent<{
+  placeholder?: string;
+  multiple?: boolean;
+  onchange?: (files: FileList) => void;
+}> = () => {
+  return {
+    view: ({ attrs: { multiple, placeholder, onchange }}) => {
+      const ph = placeholder ? `[placeholder=${placeholder}]` : '';
+      return m('.file-field.input-field', [
+        m('.btn', [
+          m('span', 'File'),
+          m(`input${multiple ? '[multiple]' : ''}[type=file]`, {
+            onchange: onchange ? (e: UIEvent) => {
+              const i = e.target as HTMLInputElement;
+              if (i && i.files) {
+                onchange(i.files);
+              }
+            } : undefined,
+          }),
+        ]),
+        m('.file-path-wrapper', m(`input.file-path.validate${ph}[type=text]`)),
+      ]);
+    },
+  };
+};

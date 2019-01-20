@@ -10,6 +10,7 @@ import {
   RangeInput,
   Autocomplete,
   Chips,
+  FileInput,
 } from 'mithril-materialized';
 import m from 'mithril';
 
@@ -202,6 +203,23 @@ export const InputPage = () => {
             dataError: 'Wrong, use http(s)://org.com',
             dataSuccess: 'OK',
             onchange,
+          })`,
+        }),
+
+        m('h3.header', 'FileInput'),
+        m(
+          '.row',
+          m(FileInput, {
+            placeholder: 'Upload one or more files',
+            multiple: true,
+            onchange: (files: FileList) => console.table(files),
+          })
+        ),
+        m(CodeBlock, {
+          code: `        m(FileInput, {
+            placeholder: 'Upload one or more files',
+            multiple: true,
+            onchange: (files: FileList) => console.table(files),
           })`,
         }),
 
