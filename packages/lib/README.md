@@ -42,6 +42,10 @@ Supported components:
 
 ## Version history
 
+v0.7.1 No breaking changes
+
+- `FileInput` component can specify `class` property on the `div` wrapper (default `col s12`) and `contentClass` property on the file input element.
+
 v0.7.0 Breaking changes for Dropdown component.
 
 - New `FileInput` component to upload one or more files.

@@ -1,5 +1,5 @@
 import { CharacterCounter } from 'materialize-css';
-import m, { VnodeDOM, FactoryComponent } from 'mithril';
+import m, { VnodeDOM, FactoryComponent, Attributes } from 'mithril';
 import { uniqueId, toDottedClassList, toAttrs } from './utils';
 import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
@@ -153,29 +153,46 @@ export const RangeInput = InputField<number>('range', '.range-field');
 /** Component for entering an email */
 export const EmailInput = InputField<string>('email');
 
-/** Component for uploading a file */
-export const FileInput: FactoryComponent<{
+export interface IFileInputOptions extends Attributes {
+  /** Adds a placeholder message */
   placeholder?: string;
+  /** Add class names to the input element */
+  contentClass?: string;
+  /** If true, upload multiple files */
   multiple?: boolean;
+  /** Called when the file input is changed */
   onchange?: (files: FileList) => void;
-}> = () => {
+}
+
+/** Component for uploading a file */
+export const FileInput: FactoryComponent<IFileInputOptions> = () => {
   return {
-    view: ({ attrs: { multiple, placeholder, onchange }}) => {
+    view: ({ attrs }) => {
+      const { multiple, placeholder, onchange, contentClass } = attrs;
       const ph = placeholder ? `[placeholder=${placeholder}]` : '';
-      return m('.file-field.input-field', [
-        m('.btn', [
-          m('span', 'File'),
-          m(`input${multiple ? '[multiple]' : ''}[type=file]`, {
-            onchange: onchange ? (e: UIEvent) => {
-              const i = e.target as HTMLInputElement;
-              if (i && i.files) {
-                onchange(i.files);
-              }
-            } : undefined,
-          }),
-        ]),
-        m('.file-path-wrapper', m(`input.file-path.validate${ph}[type=text]`)),
-      ]);
+      return m(
+        '.file-field.input-field',
+        {
+          class: attrs.class || attrs.className || 'col s12',
+        },
+        [
+          m('.btn', [
+            m('span', 'File'),
+            m(`input${multiple ? '[multiple]' : ''}[type=file]`, {
+              class: contentClass,
+              onchange: onchange
+                ? (e: UIEvent) => {
+                    const i = e.target as HTMLInputElement;
+                    if (i && i.files) {
+                      onchange(i.files);
+                    }
+                  }
+                : undefined,
+            }),
+          ]),
+          m('.file-path-wrapper', m(`input.file-path.validate${ph}[type=text]`)),
+        ]
+      );
     },
   };
 };
