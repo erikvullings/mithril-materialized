@@ -42,7 +42,7 @@ Supported components:
 
 ## Version history
 
-v0.7.1 No breaking changes
+v0.8.0 No breaking changes
 
 - `FileInput` component can specify `class` property on the `div` wrapper (default `col s12`) and `contentClass` property on the file input element.
 
