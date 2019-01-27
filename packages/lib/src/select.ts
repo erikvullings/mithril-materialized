@@ -2,19 +2,19 @@ import m, { FactoryComponent } from 'mithril';
 import { toDottedClassList, isNumeric } from './utils';
 import { Label, HelperText } from './label';
 
-export interface ISelectOption {
-  id?: string | number;
+export interface ISelectOption<T extends string | number> {
+  id?: T;
   label: string;
   disabled?: boolean;
 }
 
-export interface ISelectOptions extends Partial<M.FormSelectOptions> {
+export interface ISelectOptions<T extends string | number> extends Partial<M.FormSelectOptions> {
   /** Options to select from */
-  options: ISelectOption[];
+  options: Array<ISelectOption<T>>;
   /** Called when the value is changed, either contains a single or all selected (checked) ids */
-  onchange: (value?: string | number | Array<string | number>) => void;
+  onchange: (value?: string | number | string[] | number[]) => void;
   /** Selected id or ids (in case of multiple options) */
-  checkedId?: string | number | Array<string | number>;
+  checkedId?: string | number | string[] | number[];
   /** Select a single option or multiple options */
   multiple?: boolean;
   /** Optional label. */
@@ -47,7 +47,7 @@ export interface ISelectOptions extends Partial<M.FormSelectOptions> {
 }
 
 /** Component to select from a list of values in a dropdowns */
-export const Select: FactoryComponent<ISelectOptions> = () => {
+export const Select: FactoryComponent<ISelectOptions<string | number>> = () => {
   const state = {
     instance: undefined as M.FormSelect | undefined,
   };
@@ -88,12 +88,16 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
               ? (e: Event) => {
                   if (multiple) {
                     const values = state.instance && state.instance.getSelectedValues();
-                    const v = values ? values.map(n => isNumeric(n) ? +n : n) : undefined;
-                    onchange(v as Array<string | number> | undefined);
+                    const v = values
+                      ? values.length > 0 && isNumeric(values[0])
+                        ? values.map(n => +n)
+                        : values
+                      : undefined;
+                    onchange(v);
                   } else if (e && e.currentTarget) {
                     const b = e.currentTarget as HTMLButtonElement;
-                    const v = isNumeric(b.value) ? +b.value as number : b.value as string;
-                    onchange(v as string | number);
+                    const v = isNumeric(b.value) ? +b.value : b.value;
+                    onchange(v);
                   }
                 }
               : undefined,

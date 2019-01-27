@@ -1,10 +1,20 @@
 import m from 'mithril';
-import { Select, CodeBlock, Options, Switch, RadioButtons, Dropdown, IDropdownOptions } from 'mithril-materialized';
+import {
+  Select,
+  CodeBlock,
+  Options,
+  Switch,
+  RadioButtons,
+  Dropdown,
+  IDropdownOptions,
+  ISelectOptions,
+} from 'mithril-materialized';
 
 export const SelectionPage = () => {
   const state = {
     checkedId: undefined as string | undefined,
   };
+
   // const onchange = (v: unknown) => state.checkedId = v as string;
   const onchange = (v: unknown) => alert(`Input changed. New value: ${v}`);
   return {
@@ -27,7 +37,7 @@ export const SelectionPage = () => {
               { id: 'out', label: 'Going out' },
             ],
             onchange,
-          })
+          } as ISelectOptions<string>)
         ),
         m(CodeBlock, {
           newRow: true,
