@@ -42,6 +42,11 @@ Supported components:
 
 ## Version history
 
+v0.8.1 No breaking changes
+
+- Closes issue #1: Select issue with id === 0
+- MaterialBox can set height, passes attributes to wrapped image element
+
 v0.8.0 No breaking changes
 
 - `FileInput` component can specify `class` property on the `div` wrapper (default `col s12`) and `contentClass` property on the file input element.
