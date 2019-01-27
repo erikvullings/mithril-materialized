@@ -212,6 +212,7 @@ export const InputPage = () => {
           m(FileInput, {
             placeholder: 'Upload one or more files',
             multiple: true,
+            accept: ['image/*', '.pdf'],
             onchange: (files: FileList) => console.table(files),
           })
         ),
@@ -219,6 +220,7 @@ export const InputPage = () => {
           code: `        m(FileInput, {
             placeholder: 'Upload one or more files',
             multiple: true,
+            accept: ['image/*', '.pdf'],
             onchange: (files: FileList) => console.table(files),
           })`,
         }),

@@ -162,13 +162,25 @@ export interface IFileInputOptions extends Attributes {
   multiple?: boolean;
   /** Called when the file input is changed */
   onchange?: (files: FileList) => void;
+  /** If true, disable the box */
+  disabled?: boolean;
+  /**
+   * Accepted file types, e.g. image/png, image/jpeg,
+   * any image/*, video/*. audio/*, .pdf, a valid MIME type string, with no extensions, etc.
+   * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#Unique_file_type_specifiers
+   */
+  accept?: string | string[];
 }
 
 /** Component for uploading a file */
 export const FileInput: FactoryComponent<IFileInputOptions> = () => {
   return {
     view: ({ attrs }) => {
-      const { multiple, placeholder, onchange, contentClass } = attrs;
+      const { multiple, disabled, placeholder, onchange, contentClass, accept } = attrs;
+      const accepted = accept ? (accept instanceof Array ? accept.join(', ') : accept) : undefined;
+      const acc = accepted ? `[accept=${accepted}]` : '';
+      const mul = multiple ? '[multiple]' : '';
+      const dis = disabled ? '[disabled]' : '';
       const ph = placeholder ? `[placeholder=${placeholder}]` : '';
       return m(
         '.file-field.input-field',
@@ -178,7 +190,7 @@ export const FileInput: FactoryComponent<IFileInputOptions> = () => {
         [
           m('.btn', [
             m('span', 'File'),
-            m(`input${multiple ? '[multiple]' : ''}[type=file]`, {
+            m(`input[type=file]${mul}${dis}${acc}`, {
               class: contentClass,
               onchange: onchange
                 ? (e: UIEvent) => {
