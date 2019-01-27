@@ -1,13 +1,20 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
-import { HelperText, ISelectOption } from '.';
+import { HelperText } from '.';
 
-export interface IDropdownOption<T extends string | number> extends ISelectOption {
+export interface IDropdownOption<T> {
+  /** ID property of the selected item */
   id?: T;
+  /** Label to show in the dropdown */
+  label: string;
+  /** Can we select the item */
+  disabled?: boolean;
+  /** Display a Materials Icon in front of the label */
   iconName?: string;
+  /** Add a divider */
   divider?: boolean;
 }
 
-export interface IDropdownOptions<T extends string | number> extends Partial<M.DropdownOptions>, Attributes {
+export interface IDropdownOptions<T> extends Partial<M.DropdownOptions>, Attributes {
   /**
    * Optional id of the dropdown element
    * @default 'dropdown'
