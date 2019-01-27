@@ -5,7 +5,7 @@ export interface IMaterialBox extends Partial<M.MaterialboxOptions>, Attributes 
   src: string;
   /**
    * Width of the image
-   * @default 650
+   * @default undefined
    */
   width?: number;
   /**
@@ -25,8 +25,8 @@ export const MaterialBox: FactoryComponent<IMaterialBox> = () => {
       M.Materialbox.init(dom, attrs);
     },
     view: ({ attrs }) => {
-      const { src, width = 650, height } = attrs;
-      const w = `[width=${width}]`;
+      const { src, width, height } = attrs;
+      const w = width ? `[width=${width}]` : '';
       const h = height ? `[height=${height}]` : '';
       return m(`img.materialboxed[src=${src}]${w}${h}`, attrs);
     },
