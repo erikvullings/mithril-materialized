@@ -42,6 +42,10 @@ Supported components:
 
 ## Version history
 
+v0.8.3 No breaking changes
+
+- `FileInput` component can be disabled, and accepts file types.
+
 v0.8.1 No breaking changes
 
 - Closes issue #1: Select issue with id === 0
