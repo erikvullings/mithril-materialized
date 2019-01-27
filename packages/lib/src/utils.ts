@@ -95,4 +95,7 @@ const focus = ({ autofocus }: { autofocus?: (() => boolean) | boolean }) =>
 /** Convert input options to a set of input attributes */
 export const toAttrs = <T>(o: IInputOptions<T>) => toProps(o) + charCounter(o) + disable(o) + req(o) + focus(o);
 
+/** Check if a string or number is numeric. @see https://stackoverflow.com/a/9716488/319711 */
+export const isNumeric = (n: string | number) => !isNaN(parseFloat(n as string)) && isFinite(n as number);
+
 export const pipe = (...fncs: Array<(x: any) => any>) => <T>(x: T) => fncs.reduce((y, f) => f(y), x);
