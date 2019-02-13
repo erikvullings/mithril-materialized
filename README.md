@@ -28,10 +28,12 @@ Supported components:
   - RadioButtons
   - Switch
   - Dropdown
+- Collections
+  - Basic, Link and Avatar Collections
+  - Collapsible or accordion
 - Others
   - ModalPanel
   - MaterialBox
-  - Collapsible or accordion
   - Carousel
   - Pagination
   - Parallax

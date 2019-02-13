@@ -1,6 +1,6 @@
 import m, { FactoryComponent, Attributes, Vnode } from 'mithril';
 
-export interface ICollablisbleItem extends Attributes {
+export interface ICollapsibleItem extends Attributes {
   /** Header of the collabsible item, may contain HTML or may be a Vnode */
   header?: string | Vnode;
   /** Body of the collabsible item, may contain HTML or may be a Vnode */
@@ -13,10 +13,10 @@ export interface ICollablisbleItem extends Attributes {
 
 export interface ICollapsible extends Partial<M.CollapsibleOptions>, Attributes {
   /** The list of accordeon/collabsible items */
-  items: ICollablisbleItem[];
+  items: ICollapsibleItem[];
 }
 
-export const CollabsibleItem: FactoryComponent<ICollablisbleItem> = () => {
+export const CollapsibleItem: FactoryComponent<ICollapsibleItem> = () => {
   return {
     view: ({ attrs: { header, body, active, iconName } }) => {
       return m(active ? 'li.active' : 'li', [
@@ -36,14 +36,14 @@ export const CollabsibleItem: FactoryComponent<ICollablisbleItem> = () => {
  * Creates a collabsible or accordion (via the accordion option, default true) component.
  * @see https://materializecss.com/collapsible.html
  */
-export const Collabsible: FactoryComponent<ICollapsible> = () => {
+export const Collapsible: FactoryComponent<ICollapsible> = () => {
   return {
     oncreate: ({ dom, attrs }) => {
       M.Collapsible.init(dom, attrs);
     },
     view: ({ attrs }) => {
       const { items } = attrs;
-      return items && items.length > 0 ? m('ul.collapsible', items.map(item => m(CollabsibleItem, item))) : undefined;
+      return items && items.length > 0 ? m('ul.collapsible', items.map(item => m(CollapsibleItem, item))) : undefined;
     },
   };
 };

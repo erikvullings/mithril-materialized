@@ -1,4 +1,4 @@
-import { MaterialBox, CodeBlock, Collabsible, Carousel, Parallax, Pagination } from 'mithril-materialized';
+import { MaterialBox, CodeBlock, ICollectionItem, Carousel, Parallax, Pagination } from 'mithril-materialized';
 import m from 'mithril';
 import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
@@ -11,7 +11,9 @@ export const MiscPage = () => {
           'Some miscellaneous components, like the ',
           m('a[href=https://materializecss.com/media.html][target=_blank]', 'Material box'),
           ', ',
-          m('a[href=https://materializecss.com/collapsible.html][target=_blank]', 'Collabsible'),
+          m('a[href=https://materializecss.com/collection.html][target=_blank]', 'Collection'),
+          ', ',
+          m('a[href=https://materializecss.com/collapsible.html][target=_blank]', 'Collapsible'),
           ', ',
           m('a[href=https://materializecss.com/carousel.html][target=_blank]', 'Carousel'),
           ', ',
@@ -30,27 +32,7 @@ export const MiscPage = () => {
         m('h3.header', 'Material box'),
         m('row', m(MaterialBox, { src: gogh, width: 600 })),
         m(CodeBlock, {
-          code: `          import gogh from 'gogh.jpg'; // using webpack
-          m(MaterialBox, { src: gogh, width: 600 })`,
-        }),
-
-        m('h3.header', 'Collabsible'),
-        m(
-          'row',
-          m(Collabsible, {
-            items: [
-              { header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama' },
-              { header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },
-              { header: 'Third', body: m('span', 'Third in a span.'), iconName: 'whatshot' },
-            ],
-          })
-        ),
-        m(CodeBlock, {
-          code: `          m(Collabsible, { items: [
-            { header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama' },
-            { header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },
-            { header: 'Third', body: m('span', 'Third in a span.'), iconName: 'whatshot' },
-          ] })`,
+          code: `          m(MaterialBox, { src: gogh, width: 600 })`,
         }),
 
         m('h3.header', 'Carousel'),

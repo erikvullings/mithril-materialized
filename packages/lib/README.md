@@ -28,10 +28,12 @@ Supported components:
   - RadioButtons
   - Switch
   - Dropdown
+- Collections
+  - Basic, Link and Avatar Collections
+  - Collapsible or accordion
 - Others
   - ModalPanel
   - MaterialBox
-  - Collapsible or accordion
   - Carousel
   - Pagination
   - Parallax
@@ -41,6 +43,11 @@ Supported components:
   - CodeBlock (not from materialize-css)
 
 ## Version history
+
+v0.9.0 Breaking changes
+
+- `Collapsible` is now correctly spelled (used to be `Collabsible`, oops).
+- Added `Collection`, to create a collection of items: supports basic, link and avatar collections.
 
 v0.8.3 No breaking changes
 
