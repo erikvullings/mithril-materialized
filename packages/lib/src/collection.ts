@@ -80,7 +80,7 @@ const BasicCollection: FactoryComponent<ICollection> = () => {
   return {
     view: ({ attrs }) => {
       const { header, items, mode = CollectionMode.BASIC } = attrs;
-      return items && items.length > 0
+      return header
         ? header
           ? m('ul.collection.with-header', [
               m('li.collection-header', m('h4', header)),
@@ -109,7 +109,7 @@ const LinksCollection: FactoryComponent<ICollection> = () => {
   return {
     view: ({ attrs }) => {
       const { items, header } = attrs;
-      return items && items.length > 0
+      return header
         ? header
           ? m('.collection.with-header', [
               m('.collection-header', m('h4', header)),
@@ -129,7 +129,7 @@ export const Collection: FactoryComponent<ICollection> = () => {
   return {
     view: ({ attrs }) => {
       const { items, header, mode = CollectionMode.BASIC } = attrs;
-      return items && items.length > 0
+      return header || (items && items.length > 0)
         ? mode === CollectionMode.LINKS
           ? m(LinksCollection, { header, items })
           : m(BasicCollection, { header, items, mode })
