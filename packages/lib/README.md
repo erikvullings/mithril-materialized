@@ -44,6 +44,10 @@ Supported components:
 
 ## Version history
 
+v0.9.1 No breaking changes
+
+- `Collection` with links can now also contain a header.
+
 v0.9.0 Breaking changes
 
 - `Collapsible` is now correctly spelled (used to be `Collabsible`, oops).

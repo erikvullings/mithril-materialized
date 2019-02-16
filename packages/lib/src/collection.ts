@@ -80,7 +80,6 @@ const BasicCollection: FactoryComponent<ICollection> = () => {
   return {
     view: ({ attrs }) => {
       const { header, items, mode = CollectionMode.BASIC } = attrs;
-      console.table(items);
       return items && items.length > 0
         ? header
           ? m('ul.collection.with-header', [
@@ -109,8 +108,15 @@ export const AnchorItem: FactoryComponent<ICollectionItem> = () => {
 const LinksCollection: FactoryComponent<ICollection> = () => {
   return {
     view: ({ attrs }) => {
-      const { items } = attrs;
-      return items && items.length > 0 ? m('.collection', items.map(item => m(AnchorItem, item))) : undefined;
+      const { items, header } = attrs;
+      return items && items.length > 0
+        ? header
+          ? m('.collection.with-header', [
+              m('.collection-header', m('h4', header)),
+              ...items.map(item => m(AnchorItem, item)),
+            ])
+          : m('.collection', items.map(item => m(AnchorItem, item)))
+        : undefined;
     },
   };
 };
@@ -125,7 +131,7 @@ export const Collection: FactoryComponent<ICollection> = () => {
       const { items, header, mode = CollectionMode.BASIC } = attrs;
       return items && items.length > 0
         ? mode === CollectionMode.LINKS
-          ? m(LinksCollection, { items })
+          ? m(LinksCollection, { header, items })
           : m(BasicCollection, { header, items, mode })
         : undefined;
     },

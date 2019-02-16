@@ -61,22 +61,22 @@ const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IIn
       const id = attrs.id || state.id;
       const attributes = toAttrs(attrs);
       const {
-        label,
-        initialValue,
-        onchange,
-        newRow,
         contentClass,
-        style,
-        iconName,
-        validate,
-        isMandatory,
-        maxLength,
-        helperText,
         dataError,
         dataSuccess,
+        helperText,
+        iconName,
+        initialValue,
+        isMandatory,
+        label,
+        maxLength,
+        newRow,
+        onchange,
         onkeydown,
-        onkeyup,
         onkeypress,
+        onkeyup,
+        style,
+        validate,
       } = attrs;
       return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}${toDottedClassList(contentClass)}`, { style }, [
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
