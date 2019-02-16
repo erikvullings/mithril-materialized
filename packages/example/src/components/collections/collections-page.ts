@@ -40,8 +40,7 @@ export const CollectionsPage = () => {
         m(Collection, {
           header: 'First names',
           mode: CollectionMode.LINKS,
-          items: [],
-          // items: [{ title: 'John', href: '#!' }, { title: 'Mary', href: '#!' }, { title: 'Pete', href: '#!' }],
+          items: [{ title: 'John', href: '#!' }, { title: 'Mary', href: '#!' }, { title: 'Pete', href: '#!' }],
         }),
         m(CodeBlock, {
           code: `          m(Collection, {
