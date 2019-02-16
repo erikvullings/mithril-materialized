@@ -81,13 +81,11 @@ const BasicCollection: FactoryComponent<ICollection> = () => {
     view: ({ attrs }) => {
       const { header, items, mode = CollectionMode.BASIC } = attrs;
       return header
-        ? header
-          ? m('ul.collection.with-header', [
-              m('li.collection-header', m('h4', header)),
-              ...items.map(item => m(ListItem, { item, mode })),
-            ])
-          : m('ul.collection', items.map(item => m(ListItem, { item, mode })))
-        : undefined;
+        ? m('ul.collection.with-header', [
+            m('li.collection-header', m('h4', header)),
+            ...items.map(item => m(ListItem, { item, mode })),
+          ])
+        : m('ul.collection', items.map(item => m(ListItem, { item, mode })));
     },
   };
 };
@@ -110,13 +108,11 @@ const LinksCollection: FactoryComponent<ICollection> = () => {
     view: ({ attrs }) => {
       const { items, header } = attrs;
       return header
-        ? header
-          ? m('.collection.with-header', [
-              m('.collection-header', m('h4', header)),
-              ...items.map(item => m(AnchorItem, item)),
-            ])
-          : m('.collection', items.map(item => m(AnchorItem, item)))
-        : undefined;
+        ? m('.collection.with-header', [
+            m('.collection-header', m('h4', header)),
+            ...items.map(item => m(AnchorItem, item)),
+          ])
+        : m('.collection', items.map(item => m(AnchorItem, item)));
     },
   };
 };

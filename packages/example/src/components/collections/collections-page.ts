@@ -18,7 +18,6 @@ export const CollectionsPage = () => {
 
         m('h3.header', 'Secondary Content Collection'),
         m(Collection, {
-          header: 'First names',
           items: [
             { title: 'John', iconName: 'send', onclick },
             { title: 'Mary', iconName: 'send', onclick },
@@ -27,7 +26,6 @@ export const CollectionsPage = () => {
         }),
         m(CodeBlock, {
           code: `          m(Collection, {
-            header: 'First names',
             items: [
               { title: 'John', iconName: 'send', onclick },
               { title: 'Mary', iconName: 'send', onclick },

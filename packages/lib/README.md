@@ -44,6 +44,10 @@ Supported components:
 
 ## Version history
 
+v0.9.4 No breaking changes
+
+- FIX `Collection` without headers did no longer render.
+
 v0.9.3 No breaking changes
 
 - `Collection` with links can now also contain a header.
