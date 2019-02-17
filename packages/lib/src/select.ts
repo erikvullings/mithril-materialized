@@ -52,7 +52,8 @@ export const Select: FactoryComponent<ISelectOptions<string | number>> = () => {
     instance: undefined as M.FormSelect | undefined,
   };
   const isSelected = (id?: string | number, checkedId?: string | number | Array<string | number>, selected = false) =>
-    selected || (id && checkedId instanceof Array ? checkedId.indexOf(id) >= 0 : checkedId === id);
+    selected ||
+    (checkedId instanceof Array && (id || typeof id === 'number') ? checkedId.indexOf(id) >= 0 : checkedId === id);
   return {
     view: ({
       attrs: {
@@ -102,7 +103,7 @@ export const Select: FactoryComponent<ISelectOptions<string | number>> = () => {
                 }
               : undefined,
           },
-          placeholder ? m(`option[value=""][disabled]${validSelection ? '' : '[selected]'}`, placeholder) : '',
+          placeholder ? m('option[value=""][disabled]', placeholder) : '',
           options.map((o, i) =>
             m(
               `option[value=${o.id}]${o.disabled ? '[disabled]' : ''}${

@@ -15,8 +15,8 @@ export const SelectionPage = () => {
     checkedId: undefined as string | undefined,
   };
 
-  // const onchange = (v: unknown) => state.checkedId = v as string;
   const onchange = (v: unknown) => alert(`Input changed. New value: ${v}`);
+
   return {
     view: () =>
       m('.col.s12.m8.xl7', [
@@ -62,29 +62,36 @@ export const SelectionPage = () => {
             multiple: true,
             placeholder: 'Make a choice...',
             label: 'What are your favorite hobbies?',
-            checkedId: ['out', 'read'],
-            onchange,
+            checkedId: [0, 2],
+            onchange: v => console.log(v),
             options: [
-              { id: 'movies', label: 'Watching movies' },
-              { id: 'out', label: 'Going out' },
-              { id: 'read', label: 'Reading' },
+              { id: 0, label: 'Watching movies' },
+              { id: 1, label: 'Going out' },
+              { id: 2, label: 'Reading' },
+              { id: 3, label: 'Karate' },
+              { id: 4, label: 'Horse riding' },
             ],
-          })
+          } as ISelectOptions<number>)
         ),
         m(CodeBlock, {
           newRow: true,
-          code: `          m(Select, {
-            multiple: true,
-            placeholder: 'Make a choice...',
-            label: 'What are your favorite hobbies?',
-            checkedId: ['out', 'read'],
-            onchange,
-            options: [
-              { id: 'movies', label: 'Watching movies' },
-              { id: 'out', label: 'Going out' },
-              { id: 'read', label: 'Reading' },
-            ],
-          })`,
+          code: `          m(
+            'row',
+            m(Select, {
+              multiple: true,
+              placeholder: 'Make a choice...',
+              label: 'What are your favorite hobbies?',
+              checkedId: [0, 2],
+              onchange: v => console.log(v),
+              options: [
+                { id: 0, label: 'Watching movies' },
+                { id: 1, label: 'Going out' },
+                { id: 2, label: 'Reading' },
+                { id: 3, label: 'Karate' },
+                { id: 4, label: 'Horse riding' },
+              ],
+            } as ISelectOptions<number>)
+          )`,
         }),
 
         m('h3.header', 'Options'),

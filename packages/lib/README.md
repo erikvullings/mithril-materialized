@@ -44,6 +44,10 @@ Supported components:
 
 ## Version history
 
+v0.9.5 No breaking changes
+
+- FIX `Select` bug when numeric option IDs were used and ID === 0, option was never selected.
+
 v0.9.4 No breaking changes
 
 - FIX `Collection` without headers did no longer render.
