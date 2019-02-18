@@ -44,6 +44,10 @@ Supported components:
 
 ## Version history
 
+v0.9.6 No breaking changes
+
+- For a `Collection` with secondary content, do not create a SPA route (with a #!) but leave the URL as is.
+
 v0.9.5 No breaking changes
 
 - FIX `Select` bug when numeric option IDs were used and ID === 0, option was never selected.
