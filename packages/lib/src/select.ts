@@ -60,7 +60,7 @@ export const Select: FactoryComponent<ISelectOptions<string | number>> = () => {
         id,
         checkedId,
         newRow,
-        className,
+        className = 'col s12',
         key,
         onchange,
         options,
