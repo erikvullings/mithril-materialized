@@ -1,9 +1,9 @@
-import m, { FactoryComponent, Attributes } from 'mithril';
+import m, { FactoryComponent, Vnode, Attributes } from 'mithril';
 
 export interface IMaterialModal extends Attributes {
   id: string;
   title: string;
-  description?: string;
+  description?: string | Vnode<any>;
   /** Set to true when the description contains HTML */
   richContent?: boolean;
   /** Fixate the footer, so you can show more content. */
@@ -25,7 +25,14 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => ({
     const ff = fixedFooter ? '.modal-fixed-footer' : '';
     const bs = bottomSheet ? '.bottom-sheet' : '';
     return m(`.modal${ff}${bs}[id=${id}]`, [
-      m('.modal-content', [m('h4', title), richContent ? m.trust(description || '') : m('p', description)]),
+      m('.modal-content', [
+        m('h4', title),
+        richContent && typeof description === 'string'
+          ? m.trust(description || '')
+          : typeof description === 'string'
+          ? m('p', description)
+          : description,
+      ]),
       buttons
         ? m(
             '.modal-footer',

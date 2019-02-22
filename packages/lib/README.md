@@ -44,6 +44,11 @@ Supported components:
 
 ## Version history
 
+v0.9.7 No breaking changes
+
+- `ModalPanel`: it's description (i.e. the main content area of the modal) can be a `Vnode`.
+- `Select` does not use `contentClass` anymore, but instead uses the regular mithril `className` (but not `class`, since this is a reserved keyword in TypeScript).
+
 v0.9.6 No breaking changes
 
 - For a `Collection` with secondary content, do not create a SPA route (with a #!) but leave the URL as is.

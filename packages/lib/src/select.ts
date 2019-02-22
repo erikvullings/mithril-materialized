@@ -1,4 +1,4 @@
-import m, { FactoryComponent } from 'mithril';
+import m, { FactoryComponent, Attributes } from 'mithril';
 import { toDottedClassList, isNumeric } from './utils';
 import { Label, HelperText } from './label';
 
@@ -8,7 +8,7 @@ export interface ISelectOption<T extends string | number> {
   disabled?: boolean;
 }
 
-export interface ISelectOptions<T extends string | number> extends Partial<M.FormSelectOptions> {
+export interface ISelectOptions<T extends string | number> extends Attributes, Partial<M.FormSelectOptions> {
   /** Options to select from */
   options: Array<ISelectOption<T>>;
   /** Called when the value is changed, either contains a single or all selected (checked) ids */
@@ -60,7 +60,8 @@ export const Select: FactoryComponent<ISelectOptions<string | number>> = () => {
         id,
         checkedId,
         newRow,
-        contentClass,
+        className,
+        key,
         onchange,
         options,
         label,
@@ -74,7 +75,7 @@ export const Select: FactoryComponent<ISelectOptions<string | number>> = () => {
       const clear = newRow ? '.clear' : '';
       const validSelection = options.filter(o => isSelected(o.id, checkedId)).length > 0;
 
-      return m(`.input-field.select-space${clear}${toDottedClassList(contentClass)}`, [
+      return m(`.input-field.select-space${clear}`, { className, key }, [
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(
           `select[id=${id}]${multiple ? '[multiple]' : ''}`,

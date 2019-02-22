@@ -1,5 +1,6 @@
-import { ModalPanel, CodeBlock, Button } from 'mithril-materialized';
 import m from 'mithril';
+import { ModalPanel, CodeBlock, Button, MaterialBox } from 'mithril-materialized';
+import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
 export const ModalPage = () => {
   const onchange = (v: unknown) => alert(v);
@@ -168,6 +169,18 @@ This is some content.<br>
             ],
           })`,
         }),
+
+        m('h3.header', 'Vnode as content'),
+        m(
+          'row',
+          m(Button, { label: 'Open bottom content modal', modalId: 'modal4' }),
+          m(ModalPanel, {
+            id: 'modal4',
+            title: 'Content modal',
+            description: m(MaterialBox, { src: gogh, width: 400 }),
+            bottomSheet: true,
+          })
+        ),
 
       ]),
   };

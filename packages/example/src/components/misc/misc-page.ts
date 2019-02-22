@@ -1,4 +1,4 @@
-import { MaterialBox, CodeBlock, ICollectionItem, Carousel, Parallax, Pagination } from 'mithril-materialized';
+import { MaterialBox, CodeBlock, Carousel, Parallax, Pagination } from 'mithril-materialized';
 import m from 'mithril';
 import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
