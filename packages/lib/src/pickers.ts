@@ -1,6 +1,6 @@
 import m, { FactoryComponent } from 'mithril';
 import { IInputOptions } from './input-options';
-import { uniqueId, toDottedClassList, toAttrs } from './utils';
+import { uniqueId, toAttrs } from './utils';
 import { Label, HelperText } from './label';
 
 /** Component to pick a date */
@@ -10,9 +10,9 @@ export const DatePicker: FactoryComponent<IInputOptions<Date> & Partial<M.Datepi
     view: ({ attrs }) => {
       const id = state.id;
       const attributes = toAttrs(attrs);
-      const { label, helperText, initialValue, newRow, contentClass, iconName, isMandatory, onchange } = attrs;
+      const { label, helperText, initialValue, newRow, className = 'col s12', iconName, isMandatory, onchange } = attrs;
       const clear = newRow ? '.clear' : '';
-      return m(`.input-field${clear}${toDottedClassList(contentClass)}`, [
+      return m(`.input-field${clear}`, { className }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`input.datepicker[type=text][tabindex=0][id=${id}]${attributes}`, {
           oncreate: ({ dom }) => {
@@ -40,9 +40,9 @@ export const TimePicker: FactoryComponent<IInputOptions & Partial<M.TimepickerOp
     view: ({ attrs }) => {
       const id = state.id;
       const attributes = toAttrs(attrs);
-      const { label, helperText, initialValue, newRow, contentClass, iconName, isMandatory, onchange } = attrs;
+      const { label, helperText, initialValue, newRow, className = 'col s12', iconName, isMandatory, onchange } = attrs;
       const clear = newRow ? '.clear' : '';
-      return m(`.input-field.timepicker${clear}${toDottedClassList(contentClass)}`, [
+      return m(`.input-field.timepicker${clear}`, { className }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`input[type=text][tabindex=0][id=${id}]${attributes}`, {
           value: initialValue,

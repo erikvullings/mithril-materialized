@@ -1,6 +1,6 @@
 import { CharacterCounter } from 'materialize-css';
 import m, { VnodeDOM, FactoryComponent, Attributes } from 'mithril';
-import { uniqueId, toDottedClassList, toAttrs } from './utils';
+import { uniqueId, toAttrs } from './utils';
 import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
 
@@ -11,8 +11,8 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
     view: ({ attrs }) => {
       const id = state.id;
       const attributes = toAttrs(attrs);
-      const { label, iconName, onchange, initialValue, contentClass, style, helperText, isMandatory } = attrs;
-      return m(`.input-field${toDottedClassList(contentClass)}`, { style }, [
+      const { label, iconName, onchange, initialValue, className = 'col s12', style, helperText, isMandatory } = attrs;
+      return m(`.input-field`, { className, style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`textarea.materialize-textarea[tabindex=0][id=${id}]${attributes}`, {
           oncreate: ({ dom }) => {
@@ -61,7 +61,7 @@ const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IIn
       const id = attrs.id || state.id;
       const attributes = toAttrs(attrs);
       const {
-        contentClass,
+        className = 'col s12',
         dataError,
         dataSuccess,
         helperText,
@@ -78,7 +78,7 @@ const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IIn
         style,
         validate,
       } = attrs;
-      return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}${toDottedClassList(contentClass)}`, { style }, [
+      return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}`, { className, style }, [
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(`input.validate[type=${type}][tabindex=0][id=${id}]${attributes}`, {
           oncreate: (vnode: VnodeDOM) => {
@@ -156,8 +156,6 @@ export const EmailInput = InputField<string>('email');
 export interface IFileInputOptions extends Attributes {
   /** Adds a placeholder message */
   placeholder?: string;
-  /** Add class names to the input element */
-  contentClass?: string;
   /** If true, upload multiple files */
   multiple?: boolean;
   /** Called when the file input is changed */
@@ -176,7 +174,7 @@ export interface IFileInputOptions extends Attributes {
 export const FileInput: FactoryComponent<IFileInputOptions> = () => {
   return {
     view: ({ attrs }) => {
-      const { multiple, disabled, placeholder, onchange, contentClass, accept } = attrs;
+      const { multiple, disabled, placeholder, onchange, className = 'col s12', accept } = attrs;
       const accepted = accept ? (accept instanceof Array ? accept.join(', ') : accept) : undefined;
       const acc = accepted ? `[accept=${accepted}]` : '';
       const mul = multiple ? '[multiple]' : '';
@@ -191,7 +189,7 @@ export const FileInput: FactoryComponent<IFileInputOptions> = () => {
           m('.btn', [
             m('span', 'File'),
             m(`input[type=file]${mul}${dis}${acc}`, {
-              class: contentClass,
+              className,
               onchange: onchange
                 ? (e: UIEvent) => {
                     const i = e.target as HTMLInputElement;

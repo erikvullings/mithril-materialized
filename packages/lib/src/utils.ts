@@ -37,13 +37,6 @@ export const toAttributeString = <T extends { [key: string]: any }>(x?: T) =>
       )(x)
     : '';
 
-/**
- * Convert a list of class names to mithril syntax, e.g. .class1.class2.class3
- * @param contentClass
- */
-export const toDottedClassList = (contentClass = 'col.s12') =>
-  contentClass ? '.' + contentClass.replace(' ', '.') : '';
-
 /** Options that we want to convert to attributes  */
 const inputAttributes = [
   'min',

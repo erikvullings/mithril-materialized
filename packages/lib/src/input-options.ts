@@ -72,8 +72,6 @@ export interface IInputOptions<T = string> extends Attributes {
   cols?: number;
   /** If true, break to a new row */
   newRow?: boolean;
-  /** Classes that you wish to attach to the content, e.g. "col s12 m6 l4 xl3" to specify the size. */
-  contentClass?: string;
   /**
    * If true, add a mandatory * after the label (if any),
    * and add the required and aria-required attributes to the input element.

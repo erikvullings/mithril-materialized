@@ -32,8 +32,6 @@ export interface IDropdownOptions<T> extends Partial<M.DropdownOptions>, Attribu
   checkedId?: T;
   /** When a value or name is selected */
   onchange?: (value: T) => void;
-  /** Classes that you wish to attach to the content, e.g. "col s12 m6 l4 xl3" to specify the size. */
-  contentClass?: string;
   /** Uses Materialize icons as a prefix or postfix. */
   iconName?: string;
   /** Add a description underneath the input field. */
@@ -56,7 +54,7 @@ export const Dropdown: FactoryComponent<IDropdownOptions<string | number>> = () 
         checkedId = state.checkedId,
         iconName,
         helperText,
-        contentClass = 'col s12',
+        className = 'col s12',
       } = attrs;
       const selectedItem = checkedId
         ? items
@@ -64,7 +62,7 @@ export const Dropdown: FactoryComponent<IDropdownOptions<string | number>> = () 
             .shift()
         : undefined;
       const title = selectedItem ? selectedItem.label : label || 'Select';
-      return m('.input-field', { class: contentClass, key }, [
+      return m('.input-field', { className, key }, [
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(HelperText, { helperText }),
         m(

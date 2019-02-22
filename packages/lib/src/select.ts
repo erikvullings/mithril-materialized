@@ -1,5 +1,5 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
-import { toDottedClassList, isNumeric } from './utils';
+import { isNumeric } from './utils';
 import { Label, HelperText } from './label';
 
 export interface ISelectOption<T extends string | number> {
@@ -35,8 +35,6 @@ export interface ISelectOptions<T extends string | number> extends Attributes, P
   style?: string;
   /** If true, break to a new row */
   newRow?: boolean;
-  /** Classes that you wish to attach to the content, e.g. "col s12 m6 l4 xl3" to specify the size. */
-  contentClass?: string;
   /**
    * If true, add a mandatory * after the label (if any),
    * and add the required and aria-required attributes to the input element.

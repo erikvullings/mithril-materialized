@@ -1,5 +1,4 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
-import { toDottedClassList } from './utils';
 import { Label, HelperText } from './label';
 
 export interface IInputCheckbox extends Attributes {
@@ -9,17 +8,16 @@ export interface IInputCheckbox extends Attributes {
   label: string;
   /** If true, the option is checked */
   checked?: boolean;
-  /** Optional CSS that is added to the div wrapper */
-  contentClass?: string;
 }
 
 /** Component to show a check box */
 export const InputCheckbox: FactoryComponent<IInputCheckbox> = () => {
   return {
     view: ({ attrs }) => {
-      const { contentClass, onchange, label, checked } = attrs;
+      const { className = 'col s12', onchange, label, checked } = attrs;
       return m(
-        `div${toDottedClassList(contentClass)}`,
+        `div`,
+        { className },
         m('label', [
           m(`input[type=checkbox][tabindex=0]${checked ? '[checked]' : ''}`, {
             onclick: onchange
@@ -57,10 +55,8 @@ export interface IOptions extends Attributes {
   onchange?: (isChecked: boolean, id: string, option: IInputOption) => void;
   /** Optional description */
   description?: string;
-  /** Optional CSS that is added to the option element (checkbox) */
-  contentClass?: string;
-  /** Optional CSS that is added to the div wrapper */
-  titleClass?: string;
+  /** Optional CSS that is added to the input checkbox */
+  checkboxClass?: string;
   /** If true, start on a new row */
   newRow?: boolean;
   /** If true, add a mandatory '*' after the label */
@@ -70,16 +66,16 @@ export interface IOptions extends Attributes {
 /** A list of checkboxes */
 export const Options: FactoryComponent<IOptions> = () => {
   return {
-    view: ({ attrs: { label, id, options, onchange, description, contentClass, titleClass, newRow, isMandatory } }) => {
+    view: ({ attrs: { label, id, options, onchange, description, className, checkboxClass, newRow, isMandatory } }) => {
       const clear = newRow ? '.clear' : '';
-      return m(`div${clear}${toDottedClassList(titleClass || 'col s12')}`, [
+      return m(`div${clear}`, { className },  [
         m('h4', m(Label, { id, label, isMandatory })),
         m(HelperText, { helperText: description }),
         ...options.map(option =>
           m(InputCheckbox, {
             label: option.label,
             onchange: onchange ? (v: boolean) => onchange(v, option.id, option) : undefined,
-            contentClass,
+            checkboxClass,
             checked: option.isChecked,
           })
         ),

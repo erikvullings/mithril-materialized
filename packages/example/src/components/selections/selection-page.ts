@@ -160,7 +160,7 @@ export const SelectionPage = () => {
             iconName: 'my_location',
             label: 'Pick a hobby',
             helperText: 'Help me',
-            contentClass: 'col s6',
+            className: 'col s6',
             // checkedId: 'movies',
             items: [
               { label: 'Movies', id: 'movies', iconName: 'local_movies' },
@@ -179,7 +179,7 @@ export const SelectionPage = () => {
             iconName: 'my_location',
             label: 'Pick a hobby',
             helperText: 'Help me',
-            contentClass: 'col s6',
+            className: 'col s6',
             // checkedId: 'movies',
             items: [
               { label: 'Movies', id: 'movies', iconName: 'local_movies' },

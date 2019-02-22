@@ -1,5 +1,5 @@
 import m, { FactoryComponent } from 'mithril';
-import { uniqueId, toDottedClassList, disable } from './utils';
+import { uniqueId, disable } from './utils';
 import { IInputOptions } from './input-options';
 import { Label } from './label';
 
@@ -18,8 +18,8 @@ export const Switch: FactoryComponent<ISwitchOptions> = () => {
   return {
     view: ({ attrs }) => {
       const id = attrs.id || state.id;
-      const { label, contentClass, left, right, disabled, newRow, onchange, checked, isMandatory } = attrs;
-      return m(`div${newRow ? '.clear' : ''}${toDottedClassList(contentClass)}`, [
+      const { label, left, right, disabled, newRow, onchange, checked, isMandatory, className = 'col s12' } = attrs;
+      return m(`div${newRow ? '.clear' : ''}`, { className }, [
         label ? m(Label, { label: label || '', id, isMandatory }) : undefined,
         m(
           '.switch',

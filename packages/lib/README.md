@@ -44,6 +44,10 @@ Supported components:
 
 ## Version history
 
+v0.9.10 Breaking changes
+
+- Deprecated the use of all `contentClass` properties in favour of the mithril convention `className`.
+
 v0.9.9 Breaking changes
 
 - `ModalPanel`: it's description (i.e. the main content area of the modal) can be a `Vnode`.
