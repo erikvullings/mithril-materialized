@@ -44,7 +44,7 @@ Supported components:
 
 ## Version history
 
-v0.9.8 Breaking changes
+v0.9.9 Breaking changes
 
 - `ModalPanel`: it's description (i.e. the main content area of the modal) can be a `Vnode`.
 - `Select` does not use `contentClass` anymore, but instead uses the regular mithril `className` (but not `class`, since this is a reserved keyword in TypeScript).
