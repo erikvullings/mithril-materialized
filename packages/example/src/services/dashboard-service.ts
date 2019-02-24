@@ -10,6 +10,7 @@ import { SelectionPage } from '../components/selections/selection-page';
 import { ModalPage } from '../components/modals/modal-page';
 import { MiscPage } from '../components/misc/misc-page';
 import { CollectionsPage } from '../components/collections/collections-page';
+import { MapEditorPage } from './../components/map-editor/map-editor-page';
 
 export const enum Dashboards {
   HOME = 'HOME',
@@ -18,6 +19,7 @@ export const enum Dashboards {
   PICKERS = 'PICKERS',
   SELECTIONS = 'SELECTIONS',
   COLLECTIONS = 'COLLECTIONS',
+  MAP_EDITOR = 'MAP_EDITOR',
   MODALS = 'MODALS',
   MISC = 'IMAGES',
   ABOUT = 'ABOUT',
@@ -118,6 +120,14 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
     route: '/collections',
     visible: true,
     component: CollectionsPage,
+  },
+  {
+    id: Dashboards.MAP_EDITOR,
+    title: 'MAP-EDITOR',
+    icon: 'dns',
+    route: '/map_editor',
+    visible: true,
+    component: MapEditorPage,
   },
   {
     id: Dashboards.MISC,

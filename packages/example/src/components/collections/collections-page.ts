@@ -4,6 +4,17 @@ import m from 'mithril';
 const onclick = (item: ICollectionItem) => alert(`You clicked ${item.title}.`);
 
 export const CollectionsPage = () => {
+  const state = {
+    properties: {
+      stringArray: ['a', 'b', 'c'],
+      numberArray: [1, 2, 3],
+      aNumber: 42,
+      aString: 'Hello world',
+      truthy: true,
+      falsy: false,
+    },
+  };
+
   return {
     view: () =>
       m('.col.s12.m8.xl7', [
@@ -38,16 +49,16 @@ export const CollectionsPage = () => {
         m(Collection, {
           header: 'First names',
           mode: CollectionMode.LINKS,
-          items: [{ title: 'John', href: '#!' }, { title: 'Mary', href: '#!' }, { title: 'Pete', href: '#!' }],
+          items: [{ title: 'John' }, { title: 'Mary' }, { title: 'Pete' }],
         }),
         m(CodeBlock, {
           code: `          m(Collection, {
             header: 'First names',
             mode: CollectionMode.LINKS,
             items: [
-              { title: 'John', href: '#!' },
-              { title: 'Mary', href: '#!' },
-              { title: 'Pete', href: '#!' },
+              { title: 'John' },
+              { title: 'Mary' },
+              { title: 'Pete' },
             ],
           })`,
         }),
@@ -116,7 +127,7 @@ export const CollectionsPage = () => {
 
         m('h3.header', 'Collapsible'),
         m(
-          'row',
+          '.row',
           m(Collapsible, {
             items: [
               { header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama' },

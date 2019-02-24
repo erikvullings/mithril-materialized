@@ -41,8 +41,16 @@ Supported components:
   - Label
   - HelperText
   - CodeBlock (not from materialize-css)
+  - MapEditor (not from materialize-css)
 
 ## Version history
+
+v0.10.1 New component, `MapEditor`
+
+- Added a new component, `MapEditor`, to edit a map of key-value pairs.
+- `InputCheckbox` can now be disabled.
+- Attributes are better dealt with and no longer end up as unused attributes of elements.
+- Fixed a bug for `TextInput`, where sometimes the `active` class was not added even if the `input` element had a value.
 
 v0.9.10 Breaking changes
 
