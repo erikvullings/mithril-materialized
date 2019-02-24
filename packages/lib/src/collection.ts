@@ -80,8 +80,7 @@ export const ListItem: FactoryComponent<{ item: ICollectionItem; mode: Collectio
 
 const BasicCollection: FactoryComponent<ICollection> = () => {
   return {
-    view: ({ attrs }) => {
-      const { header, items, mode = CollectionMode.BASIC } = attrs;
+    view: ({ attrs: { header, items, mode = CollectionMode.BASIC } }) => {
       return header
         ? m('ul.collection.with-header', [
             m('li.collection-header', m('h4', header)),
@@ -95,10 +94,10 @@ const BasicCollection: FactoryComponent<ICollection> = () => {
 export const AnchorItem: FactoryComponent<ICollectionItem> = () => {
   return {
     view: ({ attrs }) => {
-      const { title, active, href } = attrs;
+      const { title, active, href, ...params } = attrs;
       return m(
         `a.collection-item${active ? '.active' : ''}`,
-        { ...attrs, oncreate: href ? m.route.link : undefined },
+        { ...params, oncreate: href ? m.route.link : undefined },
         title
       );
     },
@@ -107,8 +106,7 @@ export const AnchorItem: FactoryComponent<ICollectionItem> = () => {
 
 const LinksCollection: FactoryComponent<ICollection> = () => {
   return {
-    view: ({ attrs }) => {
-      const { items, header } = attrs;
+    view: ({ attrs: { items, header } }) => {
       return header
         ? m('.collection.with-header', [
             m('.collection-header', m('h4', header)),
@@ -125,8 +123,7 @@ const LinksCollection: FactoryComponent<ICollection> = () => {
  */
 export const Collection: FactoryComponent<ICollection> = () => {
   return {
-    view: ({ attrs }) => {
-      const { items, header, mode = CollectionMode.BASIC } = attrs;
+    view: ({ attrs: { items, header, mode = CollectionMode.BASIC } }) => {
       return header || (items && items.length > 0)
         ? mode === CollectionMode.LINKS
           ? m(LinksCollection, { header, items })
