@@ -1,5 +1,5 @@
 import m, { FactoryComponent, Component, Attributes } from 'mithril';
-import { uniqueId, toAttributeString } from './utils';
+import { toAttributeString } from './utils';
 
 export const Mandatory: Component = { view: ({ attrs }) => m('span.mandatory', attrs, '*') };
 
@@ -16,18 +16,14 @@ export interface IMaterialLabel extends Attributes {
 
 /** Simple label element, used for most components. */
 export const Label: FactoryComponent<IMaterialLabel> = () => {
-  const isLabelActive = (s?: string | boolean) => (s ? '.active' : '');
-
   return {
-    view: ({ attrs }) => {
-      const { label, id, isMandatory, isActive } = attrs;
-      return label
-        ? m(`label${isLabelActive(isActive)}[for=${id || uniqueId()}]`, attrs, [
+    view: ({ attrs: { label, id, isMandatory, isActive, ...params } }) =>
+      label
+        ? m(`label${isActive ? '.active' : ''}${id ? `[for=${id}]` : ''}`, params, [
             m.trust(label),
             isMandatory ? m(Mandatory) : undefined,
           ])
-        : undefined;
-    },
+        : undefined,
   };
 };
 
