@@ -1,25 +1,26 @@
-import m, { FactoryComponent, Attributes } from 'mithril';
+import m, { Vnode, FactoryComponent, Attributes } from 'mithril';
 import { Label, HelperText } from './label';
 
 export interface IInputCheckbox extends Attributes {
-  /** Optional event handler when an option is clicked */
+  /** Optional event handler when a checkbox is clicked */
   onchange?: (checked: boolean) => void;
-  /** Title or label of the option */
-  label: string;
-  /** If true, the option is checked */
+  /** Label of the checkbox, can be a string or Vnode */
+  label: string | Vnode;
+  /** If true, the checkbox is checked */
   checked?: boolean;
+  /** If true, the checkbox is disabled */
+  disabled?: boolean;
 }
 
 /** Component to show a check box */
 export const InputCheckbox: FactoryComponent<IInputCheckbox> = () => {
   return {
-    view: ({ attrs }) => {
-      const { className = 'col s12', onchange, label, checked } = attrs;
+    view: ({ attrs: { className = 'col s12', onchange, label, checked, disabled } }) => {
       return m(
         `div`,
         { className },
         m('label', [
-          m(`input[type=checkbox][tabindex=0]${checked ? '[checked]' : ''}`, {
+          m(`input[type=checkbox][tabindex=0]${checked ? '[checked]' : ''}${disabled ? '[disabled]' : ''}`, {
             onclick: onchange
               ? (e: Event) => {
                   if (e.target && typeof (e.target as HTMLInputElement).checked !== 'undefined') {
@@ -28,7 +29,7 @@ export const InputCheckbox: FactoryComponent<IInputCheckbox> = () => {
                 }
               : undefined,
           }),
-          m('span', m.trust(label)),
+          typeof label === 'string' ? m('span', label) : label,
         ])
       );
     },
