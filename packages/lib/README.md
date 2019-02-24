@@ -45,7 +45,7 @@ Supported components:
 
 ## Version history
 
-v0.10.1 New component, `MapEditor`
+v0.10.0 New component, `MapEditor`
 
 - Added a new component, `MapEditor`, to edit a map of key-value pairs.
 - `InputCheckbox` can now be disabled.

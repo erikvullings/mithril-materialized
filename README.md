@@ -41,6 +41,7 @@ Supported components:
   - Label
   - HelperText
   - CodeBlock (not from materialize-css)
+  - MapEditor (not from materialize-css)
 
 ## Usage instructions
 
