@@ -1,5 +1,5 @@
 import { CharacterCounter } from 'materialize-css';
-import m, { VnodeDOM, FactoryComponent, Attributes } from 'mithril';
+import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId, toAttrs } from './utils';
 import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
@@ -9,9 +9,19 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
   const state = { id: uniqueId() };
   return {
     view: ({ attrs }) => {
-      const id = state.id;
-      const attributes = toAttrs(attrs);
-      const { label, iconName, onchange, initialValue, className = 'col s12', style, helperText, isMandatory } = attrs;
+      const {
+        className = 'col s12',
+        helperText,
+        iconName,
+        id = state.id,
+        initialValue,
+        isMandatory,
+        label,
+        onchange,
+        style,
+        ...params
+      } = attrs;
+      const attributes = toAttrs(params);
       return m(`.input-field`, { className, style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m(`textarea.materialize-textarea[tabindex=0][id=${id}]${attributes}`, {
@@ -58,14 +68,13 @@ const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IIn
 
   return {
     view: ({ attrs }) => {
-      const id = attrs.id || state.id;
-      const attributes = toAttrs(attrs);
       const {
         className = 'col s12',
         dataError,
         dataSuccess,
         helperText,
         iconName,
+        id = state.id,
         initialValue,
         isMandatory,
         label,
@@ -77,12 +86,13 @@ const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IIn
         onkeyup,
         style,
         validate,
+        ...params
       } = attrs;
+      const attributes = toAttrs(params);
       return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}`, { className, style }, [
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(`input.validate[type=${type}][tabindex=0][id=${id}]${attributes}`, {
-          oncreate: (vnode: VnodeDOM) => {
-            const { dom } = vnode;
+          oncreate: ({ dom }) => {
             if (focus(attrs)) {
               (dom as HTMLElement).focus();
             }
@@ -132,7 +142,8 @@ const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IIn
           label,
           id,
           isMandatory,
-          isActive: typeof initialValue !== 'undefined' || type === 'color' || type === 'range',
+          isActive: initialValue || type === 'color' || type === 'range' ? true : false,
+          // typeof initialValue !== 'undefined' || type === 'color' || type === 'range',
         }),
         m(HelperText, { helperText, dataError, dataSuccess }),
       ]);
