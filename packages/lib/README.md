@@ -4,12 +4,12 @@ A [materialize-css](https://materializecss.com) library for the Mithril framewor
 
 Supported components:
 
-- Buttons:
+- [Buttons](https://erikvullings.github.io/mithril-materialized/#!/buttons)
   - Button
   - FlatButton
   - RoundButton
   - SubmitButton
-- Inputs:
+- [Inputs](https://erikvullings.github.io/mithril-materialized/#!/inputs)
   - TextInput
   - TextArea
   - AutoComplete
@@ -19,19 +19,19 @@ Supported components:
   - ColorInput
   - RangeInput
   - Chips
-- Pickers
+- [Pickers](https://erikvullings.github.io/mithril-materialized/#!/pickers)
   - DatePicker
   - TimePicker
-- Selections
+- [Selections](https://erikvullings.github.io/mithril-materialized/#!/selections)
   - Select
   - Options
   - RadioButtons
   - Switch
   - Dropdown
-- Collections
+- [Collections](https://erikvullings.github.io/mithril-materialized/#!/collections)
   - Basic, Link and Avatar Collections
   - Collapsible or accordion
-- Others
+- [Others](https://erikvullings.github.io/mithril-materialized/#!/modals)
   - ModalPanel
   - MaterialBox
   - Carousel
@@ -41,7 +41,7 @@ Supported components:
   - Label
   - HelperText
   - CodeBlock (not from materialize-css)
-  - MapEditor (not from materialize-css)
+  - [MapEditor](https://erikvullings.github.io/mithril-materialized/#!/map_editor) (not from materialize-css)
 
 ## Version history
 
