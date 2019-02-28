@@ -5,7 +5,7 @@ const isActive = (path: string) => (m.route.get().indexOf(path) >= 0 ? '.active'
 
 export const Layout = () => ({
   view: (vnode: Vnode) =>
-    m('container', [
+    m('.main', [
       m(
         'nav',
         m('.nav-wrapper', [
