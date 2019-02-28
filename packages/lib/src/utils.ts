@@ -92,3 +92,17 @@ export const toAttrs = <T>(o: IInputOptions<T>) => toProps(o) + charCounter(o) +
 export const isNumeric = (n: string | number) => !isNaN(parseFloat(n as string)) && isFinite(n as number);
 
 export const pipe = (...fncs: Array<(x: any) => any>) => <T>(x: T) => fncs.reduce((y, f) => f(y), x);
+
+/**
+ * Pad left, default width 2 with a '0'
+ *
+ * @see http://stackoverflow.com/a/10073788/319711
+ * @param {(string | number)} n
+ * @param {number} [width=2]
+ * @param {string} [z='0']
+ * @returns
+ */
+export const padLeft = (n: string | number, width = 2, z = '0') => {
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+};

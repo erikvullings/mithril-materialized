@@ -11,6 +11,7 @@ import { ModalPage } from '../components/modals/modal-page';
 import { MiscPage } from '../components/misc/misc-page';
 import { CollectionsPage } from '../components/collections/collections-page';
 import { MapEditorPage } from './../components/map-editor/map-editor-page';
+import { TimelinePage } from '../components/timeline/timeline-page';
 
 export const enum Dashboards {
   HOME = 'HOME',
@@ -21,6 +22,7 @@ export const enum Dashboards {
   COLLECTIONS = 'COLLECTIONS',
   MAP_EDITOR = 'MAP_EDITOR',
   MODALS = 'MODALS',
+  TIMELINE = 'TIMELINE',
   MISC = 'IMAGES',
   ABOUT = 'ABOUT',
 }
@@ -128,6 +130,14 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
     route: '/map_editor',
     visible: true,
     component: MapEditorPage,
+  },
+  {
+    id: Dashboards.TIMELINE,
+    title: 'TIMELINE',
+    icon: 'timeline',
+    route: '/timeline',
+    visible: true,
+    component: TimelinePage,
   },
   {
     id: Dashboards.MISC,

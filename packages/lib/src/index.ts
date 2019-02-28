@@ -20,3 +20,4 @@ export * from './radio';
 export * from './select';
 export * from './switch';
 export * from './map-editor';
+export * from './timeline';
