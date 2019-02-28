@@ -5,7 +5,7 @@ import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google
 export const MiscPage = () => {
   return {
     view: () =>
-      m('.col.s12.m8.xl7', [
+      m('.col.s12', [
         m('h2.header', 'Miscellaneous'),
         m('p', [
           'Some miscellaneous components, like the ',

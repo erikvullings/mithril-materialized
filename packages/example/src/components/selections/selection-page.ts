@@ -19,7 +19,7 @@ export const SelectionPage = () => {
 
   return {
     view: () =>
-      m('.col.s12.m8.xl7', [
+      m('.col.s12', [
         m('h2.header', 'Selections'),
 
         m('h3.header', 'Select'),

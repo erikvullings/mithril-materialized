@@ -15,7 +15,7 @@ export const MapEditorPage = () => {
 
   return {
     view: () =>
-      m('.col.s12.m8.xl7', [
+      m('.col.s12', [
         m('h2.header', 'Key-value pairs editor'),
         m('p', [
           'As materializecss.com did not offer a useful editor for a map of key-value pairs, ',

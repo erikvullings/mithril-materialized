@@ -9,7 +9,7 @@ export const PickerPage = () => {
   const onchange = (v: unknown) => alert(`Input changed. New value: ${v}`);
   return {
     view: () =>
-      m('.col.s12.m8.xl7', [
+      m('.col.s12', [
         m('h2.header', 'Pickers'),
         m('h3.header', 'DatePicker'),
         m(

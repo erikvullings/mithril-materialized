@@ -6,7 +6,7 @@ export const ModalPage = () => {
   const onchange = (v: unknown) => alert(v);
   return {
     view: () =>
-      m('.col.s12.m8.xl7', [
+      m('.col.s12', [
         m('h2.header', 'Modals'),
         m('p', [
           'The library supports all three modals types that are defined on the ',
