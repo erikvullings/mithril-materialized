@@ -10,7 +10,10 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "link": "npm link",
-    "start": "tsc -w",
+    "styles:watch": "cpx \"src/**/*.css\" \"dist\" --watch",
+    "build": "tsc -w",
+    "build:domain": "typedoc --out ../../docs/typedoc src",
+    "start": "run-p styles:watch build",
     "patch-release": "npm version patch --force -m \"Patch release\" && npm publish && git push --follow-tags",
     "minor-release": "npm version minor --force -m \"Minor release\" && npm publish && git push --follow-tags",
     "major-release": "npm version major --force -m \"Major release\" && npm publish && git push --follow-tags"
@@ -24,6 +27,13 @@
   "devDependencies": {
     "@types/materialize-css": "^1.0.6",
     "@types/mithril": "^1.1.13",
+    "cpx": "^1.5.0",
+    "cssnano": "^4.1.10",
+    "npm-run-all": "^4.1.5",
+    "typedoc": "^0.14.2",
     "typescript": "^3.2.2"
+  },
+  "dependencies": {
+    "mithril": "^1.1.6"
   }
 }
