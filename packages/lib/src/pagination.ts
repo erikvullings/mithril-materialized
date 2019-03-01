@@ -72,7 +72,7 @@ export const Pagination: FactoryComponent<IPaginationOptions> = () => {
             title: startPage + i,
             ...item,
             active: i === curPage,
-          }))
+          } as IInternalPaginationOption))
           .map(item => m(PaginationItem, item))
       );
     },

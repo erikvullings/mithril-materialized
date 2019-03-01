@@ -2,6 +2,7 @@ import m, { FactoryComponent } from 'mithril';
 import { uniqueId, disable } from './utils';
 import { IInputOptions } from './input-options';
 import { Label } from './label';
+import './styles/switch.css';
 
 export interface ISwitchOptions extends Partial<IInputOptions<boolean>> {
   /** Left text label */

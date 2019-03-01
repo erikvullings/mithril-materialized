@@ -3,6 +3,7 @@ import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId, toAttrs } from './utils';
 import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
+import './styles/input.css';
 
 /** Create a TextArea */
 export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
@@ -53,7 +54,7 @@ export type InputType = 'url' | 'color' | 'text' | 'number' | 'email' | 'range';
 const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IInputOptions<T>> => () => {
   const state = { id: uniqueId() };
   const getValue = (target: HTMLInputElement) => {
-    const val = (target.value as unknown) as T;
+    const val = (target.value as any) as T;
     return (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
   };
   const setValidity = (target: HTMLInputElement, validationResult: string | boolean) => {

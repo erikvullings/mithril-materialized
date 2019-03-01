@@ -1,0 +1,19 @@
+.clear,
+.clear-10,
+.clear-15 {
+  clear: both;
+  /* overflow: hidden; Précaution pour IE 7 */
+}
+.clear-10 {
+  margin-bottom: 10px;
+}
+.clear-15 {
+  margin-bottom: 15px;
+}
+span.mandatory {
+  margin-left: 5px;
+  color: red;
+}
+label+.switch {
+  margin-top: 1rem;
+}
