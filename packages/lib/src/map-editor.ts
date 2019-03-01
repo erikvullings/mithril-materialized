@@ -11,6 +11,7 @@ import {
   FlatButton,
 } from '.';
 import { uniqueId } from './utils';
+import './styles/map-editor.css';
 
 export interface IMapEditor extends Attributes {
   /** Optional ID of the element */
@@ -41,9 +42,15 @@ export interface IMapEditor extends Attributes {
   disallowArrays?: boolean;
   /** The actual map of key-value pairs supports numbers, strings, booleans and arrays of strings and numbers. */
   properties: { [key: string]: number | string | boolean | Array<string | number> };
-  /** In order to create a boolean, you first have to enter a truthy or falsy value. Default 'true' and 'false', but you can add more options. */
+  /**
+   * In order to create a boolean, you first have to enter a truthy or falsy value.
+   * Default 'true' and 'false', but you can add more options.
+   */
   truthy?: string[];
-  /** In order to create a boolean, you first have to enter a truthy or falsy value. Default 'true' and 'false', but you can add more options. */
+  /**
+   * In order to create a boolean, you first have to enter a truthy or falsy value.
+   * Default 'true' and 'false', but you can add more options.
+   */
   falsy?: string[];
   /**
    * Optional function to replace the render function of a key-value pair.

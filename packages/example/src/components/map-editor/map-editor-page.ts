@@ -19,7 +19,7 @@ export const MapEditorPage = () => {
         m('h2.header', 'Key-value pairs editor'),
         m('p', [
           'As materializecss.com did not offer a useful editor for a map of key-value pairs, ',
-          'I\'ve created one myself. It allows you to edit (or just view, when it is disabled), ',
+          "I've created one myself. It allows you to edit (or just view, when it is disabled), ",
           'booleans, numbers, strings and arrays of numbers and strings.',
         ]),
 
@@ -56,38 +56,6 @@ export const MapEditorPage = () => {
           })`,
         }),
 
-        m(CodeBlock, {
-          language: 'CSS',
-          code: `          /* Additional styles for the map-editor */
-          /* When using an icon prefix, the collection needs to move to the left */
-          .map-editor .input-field .prefix ~.collection {
-            margin-left: 3rem;
-            width: 92%;
-            width: calc(100% - 3rem);
-          }
-          /* For truthy values, the checkbox is not visible when the item is selected, so make it white */
-          .map-editor .active .checkbox-in-collection label > input[type=checkbox]:checked + span:before {
-            top: -4px;
-            left: -3px;
-            width: 12px;
-            height: 22px;
-            border-top: 2px solid transparent;
-            border-left: 2px solid transparent;
-            border-right: 2px solid white; /* You need to change the colour here */
-            border-bottom: 2px solid white; /* And here */
-            -webkit-transform: rotate(40deg);
-            -moz-transform: rotate(40deg);
-            -ms-transform: rotate(40deg);
-            -o-transform: rotate(40deg);
-            transform: rotate(40deg);
-            -webkit-backface-visibility: hidden;
-            -webkit-transform-origin: 100% 100%;
-            -moz-transform-origin: 100% 100%;
-            -ms-transform-origin: 100% 100%;
-            -o-transform-origin: 100% 100%;
-            transform-origin: 100% 100%;
-          }`,
-        })
       ]),
   };
 };
