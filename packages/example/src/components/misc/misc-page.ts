@@ -29,7 +29,7 @@ export const MiscPage = () => {
           code: `          m(Parallax, { src: gogh }) // should be embedded in layout so the width is not limited`,
         }),
 
-        m('h3.header', 'Material box'),
+        m('h3.header', 'Material box (click on image)'),
         m('row', m(MaterialBox, { src: gogh, width: 600 })),
         m(CodeBlock, {
           code: `          m(MaterialBox, { src: gogh, width: 600 })`,
