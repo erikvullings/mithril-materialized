@@ -65,7 +65,7 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<h1 id="mithril-materialized">mithril-materialized</h1>
-				<p>A <a href="https://materializecss.com">materialize-css</a> library for the Mithril framework (v2.0.0-rc.3 and higher), making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize components.</p>
+				<p>A <a href="https://materializecss.com">materialize-css</a> library for the Mithril framework (tested with v2.0.0-rc4 and higher, but presumably, it should work with v1.1.6 too), making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize components.</p>
 				<p>Supported components:</p>
 				<ul>
 					<li><a href="https://erikvullings.github.io/mithril-materialized/#!/buttons">Buttons</a><ul>
@@ -116,12 +116,23 @@
 					<li>Additional<ul>
 							<li>Label</li>
 							<li>HelperText</li>
-							<li>CodeBlock (not from materialize-css)</li>
-							<li><a href="https://erikvullings.github.io/mithril-materialized/#!/map_editor">MapEditor</a> (not from materialize-css)</li>
+						</ul>
+					</li>
+					<li>Not from Materialize-CSS<ul>
+							<li>CodeBlock</li>
+							<li><a href="https://erikvullings.github.io/mithril-materialized/#!/map_editor">MapEditor</a></li>
+							<li><a href="https://erikvullings.github.io/mithril-materialized/#!/timeline">Timeline</a></li>
 						</ul>
 					</li>
 				</ul>
 				<h2 id="version-history">Version history</h2>
+				<p>v0.11.0 New component, <code>Timeline</code></p>
+				<ul>
+					<li>Added a <code>Timeline</code> component to render vertical timelines.</li>
+					<li><code>Collection</code> now accepts other parameters, e.g. styles.</li>
+					<li>All <code>css</code> styles are extracted into separate <code>css</code> files, and imported in the component. This implies that you don&#39;t need to add the required CSS in your own application anymore (except for <code>materialisecss</code>, of course).</li>
+					<li>Added documentation using <code>Typedoc</code>. It can be found <a href="https://erikvullings.github.io/mithril-materialized/typedoc/index.html">here</a>.</li>
+				</ul>
 				<p>v0.10.0 New component, <code>MapEditor</code></p>
 				<ul>
 					<li>Added a new component, <code>MapEditor</code>, to edit a map of key-value pairs.</li>
