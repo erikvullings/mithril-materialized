@@ -80,13 +80,13 @@ export const ListItem: FactoryComponent<{ item: ICollectionItem; mode: Collectio
 
 const BasicCollection: FactoryComponent<ICollection> = () => {
   return {
-    view: ({ attrs: { header, items, mode = CollectionMode.BASIC } }) => {
+    view: ({ attrs: { header, items, mode = CollectionMode.BASIC, ...params } }) => {
       return header
-        ? m('ul.collection.with-header', [
+        ? m('ul.collection.with-header', params, [
             m('li.collection-header', m('h4', header)),
             ...items.map(item => m(ListItem, { item, mode })),
           ])
-        : m('ul.collection', items.map(item => m(ListItem, { item, mode })));
+        : m('ul.collection', params, items.map(item => m(ListItem, { item, mode })));
     },
   };
 };
@@ -106,13 +106,13 @@ export const AnchorItem: FactoryComponent<ICollectionItem> = () => {
 
 const LinksCollection: FactoryComponent<ICollection> = () => {
   return {
-    view: ({ attrs: { items, header } }) => {
+    view: ({ attrs: { items, header, ...params } }) => {
       return header
-        ? m('.collection.with-header', [
+        ? m('.collection.with-header', params, [
             m('.collection-header', m('h4', header)),
             ...items.map(item => m(AnchorItem, item)),
           ])
-        : m('.collection', items.map(item => m(AnchorItem, item)));
+        : m('.collection', params, items.map(item => m(AnchorItem, item)));
     },
   };
 };
@@ -123,11 +123,11 @@ const LinksCollection: FactoryComponent<ICollection> = () => {
  */
 export const Collection: FactoryComponent<ICollection> = () => {
   return {
-    view: ({ attrs: { items, header, mode = CollectionMode.BASIC } }) => {
+    view: ({ attrs: { items, header, mode = CollectionMode.BASIC, ...params } }) => {
       return header || (items && items.length > 0)
         ? mode === CollectionMode.LINKS
-          ? m(LinksCollection, { header, items })
-          : m(BasicCollection, { header, items, mode })
+          ? m(LinksCollection, { header, items, ...params })
+          : m(BasicCollection, { header, items, mode, ...params })
         : undefined;
     },
   };
