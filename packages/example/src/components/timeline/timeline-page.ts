@@ -1,7 +1,11 @@
-import { CodeBlock, Timeline } from 'mithril-materialized';
+import { CodeBlock, Timeline, padLeft } from 'mithril-materialized';
 import m from 'mithril';
+import { Collection } from './../../../../lib/src/collection';
 
 export const TimelinePage = () => {
+  const timeFormatter = (d: Date) =>
+    `${padLeft(d.getUTCHours())}:${padLeft(d.getUTCMinutes())}:${padLeft(d.getUTCSeconds())}`;
+
   return {
     view: () =>
       m('.col.s12', [
@@ -17,15 +21,19 @@ export const TimelinePage = () => {
 
         m('h3.header', 'Timeline'),
         m(Timeline, {
+          onSelect: (item: unknown) => console.table(item),
+          timeFormatter,
           items: [
             {
-              title: 'Test 1',
+              id: '1',
+              title: 'Test a string',
               iconName: 'play_arrow',
               datetime: new Date(2019, 2, 3, 9, 0, 0),
               content: 'Hello world',
             },
             {
-              title: 'Test 2',
+              id: '2',
+              title: 'Test a long text',
               iconName: 'play_arrow',
               datetime: new Date(2019, 2, 3, 9, 30, 0),
               content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec luctus maximus erat, 
@@ -34,59 +42,90 @@ export const TimelinePage = () => {
               sollicitudin sem. Nulla neque est, elementum et lectus ut, luctus elementum metus.`,
             },
             {
-              title: 'Test 3',
+              id: '3',
+              title: 'Test an active item',
               iconName: 'play_arrow',
               datetime: new Date(2019, 2, 3, 9, 45, 0),
               content: 'Hello world',
               active: true,
             },
             {
-              title: 'Test 4',
+              id: '4',
+              title: 'Test Vnode content',
               iconName: 'play_arrow',
               datetime: new Date(2019, 2, 3, 10, 5, 0),
+              content: m(Collection, {
+                style: 'color: black;',
+                items: [
+                  { title: 'John', iconName: 'send' },
+                  { title: 'Mary', iconName: 'send' },
+                  { title: 'Pete', iconName: 'send' },
+                ],
+              }),
+            },
+            {
+              id: '5',
+              title: 'Test other icon',
+              iconName: 'visibility',
+              datetime: new Date(2019, 2, 3, 10, 11, 0),
               content: 'Hello world',
             },
             {
-              title: 'Test 5',
-              iconName: 'play_arrow',
+              id: '6',
+              iconName: 'visibility_off',
               datetime: new Date(2019, 2, 3, 10, 11, 0),
-              content: 'Hello world',
+              content: 'No title, only content',
             },
           ],
         }),
         m(CodeBlock, {
           code: `          m(Timeline, {
+            onSelect: (item: ITimelineItem) => console.table(item),
+            timeFormatter, // Adds seconds to time format
             items: [
               {
-                title: 'Test 1',
+                title: 'Test a string',
                 iconName: 'play_arrow',
                 datetime: new Date(2019, 2, 3, 9, 0, 0),
                 content: 'Hello world',
               },
               {
-                title: 'Test 2',
+                title: 'Test a long text',
                 iconName: 'play_arrow',
                 datetime: new Date(2019, 2, 3, 9, 30, 0),
                 content: 'Lorem ipsum ...',
               },
               {
-                title: 'Test 3',
+                title: 'Test an active item',
                 iconName: 'play_arrow',
                 datetime: new Date(2019, 2, 3, 9, 45, 0),
                 content: 'Hello world',
                 active: true,
               },
               {
-                title: 'Test 4',
+                title: 'Test Vnode content',
                 iconName: 'play_arrow',
                 datetime: new Date(2019, 2, 3, 10, 5, 0),
+                content: m(Collection, {
+                  style: 'color: black;', // otherwise the titles are in white
+                  items: [
+                    { title: 'John', iconName: 'send' },
+                    { title: 'Mary', iconName: 'send' },
+                    { title: 'Pete', iconName: 'send' },
+                  ],
+                }),
+              },
+              {
+                title: 'Test other icon',
+                iconName: 'visibility',
+                datetime: new Date(2019, 2, 3, 10, 11, 0),
                 content: 'Hello world',
               },
               {
-                title: 'Test 5',
-                iconName: 'play_arrow',
+                id: '6',
+                iconName: 'visibility_off',
                 datetime: new Date(2019, 2, 3, 10, 11, 0),
-                content: 'Hello world',
+                content: 'No title, only content',
               },
             ],
           })`,

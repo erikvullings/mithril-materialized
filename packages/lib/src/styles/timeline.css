@@ -44,8 +44,10 @@
   color: #6cbfee;
 }
 
+/* Active time */
+.mm_timeline > li.active:nth-child(even) .mm_time span:last-child,
 .mm_timeline > li.active:nth-child(odd) .mm_time span:last-child {
-  color: red;
+  color: rgb(6, 5, 88);
 }
 
 /* Right content */
@@ -59,6 +61,11 @@
   line-height: 1.4;
   position: relative;
   border-radius: 5px;
+}
+
+/* Active label */
+.mm_timeline > li.active .mm_label {
+  border: 4px solid rgb(6, 5, 88);
 }
 
 .mm_timeline > li:nth-child(odd) .mm_label {
@@ -83,6 +90,12 @@
   border-right-color: #3594cb;
   border-width: 10px;
   top: 10px;
+}
+
+/* Active triangle */
+.mm_timeline > li:nth-child(even).active .mm_label:after,
+.mm_timeline > li:nth-child(odd).active .mm_label:after {
+  border-right-color: rgb(6, 5, 88);
 }
 
 .mm_timeline > li:nth-child(odd) .mm_label:after {
@@ -111,8 +124,9 @@
   margin: 0 0 0 -25px;
 }
 
+/* Active icon */
 .mm_timeline > li.active .mm_icon {
-	background: red;
+	background: rgb(6, 5, 88);
 }
 
 .mm_icon > .material-icons {

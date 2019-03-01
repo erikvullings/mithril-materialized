@@ -1,6 +1,6 @@
 # mithril-materialized
 
-A [materialize-css](https://materializecss.com) library for the Mithril framework (v2.0.0-rc.3 and higher), making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize components.
+A [materialize-css](https://materializecss.com) library for the Mithril framework (tested with v2.0.0-rc4 and higher, but presumably, it should work with v1.1.6 too), making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize components.
 
 Supported components:
 
@@ -40,8 +40,10 @@ Supported components:
 - Additional
   - Label
   - HelperText
-  - CodeBlock (not from materialize-css)
-  - [MapEditor](https://erikvullings.github.io/mithril-materialized/#!/map_editor) (not from materialize-css)
+- Not from Materialize-CSS
+  - CodeBlock
+  - [MapEditor](https://erikvullings.github.io/mithril-materialized/#!/map_editor)
+  - [Timeline](https://erikvullings.github.io/mithril-materialized/#!/timeline)
 
 ## Usage instructions
 
