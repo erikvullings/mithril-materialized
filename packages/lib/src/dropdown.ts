@@ -1,4 +1,4 @@
-import m, { FactoryComponent, Attributes } from 'mithril';
+import m, { Component, Attributes } from 'mithril';
 import { HelperText } from '.';
 
 export interface IDropdownOption<T> {
@@ -39,9 +39,10 @@ export interface IDropdownOptions<T> extends Partial<M.DropdownOptions>, Attribu
 }
 
 /** Dropdown component */
-export const Dropdown: FactoryComponent<IDropdownOptions<string | number>> = () => {
+export const Dropdown = <T extends string | number>(): Component<IDropdownOptions<T>> => {
+// export const Dropdown: FactoryComponent<IDropdownOptions> = () => {
   const state = {
-    checkedId: '' as string | number,
+    checkedId: undefined as T | undefined,
   };
   return {
     view: ({ attrs }) => {
@@ -58,7 +59,7 @@ export const Dropdown: FactoryComponent<IDropdownOptions<string | number>> = () 
       } = attrs;
       const selectedItem = checkedId
         ? items
-            .filter((i: IDropdownOption<string | number>) => (i.id ? i.id === checkedId : i.label === checkedId))
+            .filter((i: IDropdownOption<T>) => (i.id ? i.id === checkedId : i.label === checkedId))
             .shift()
         : undefined;
       const title = selectedItem ? selectedItem.label : label || 'Select';
@@ -78,7 +79,7 @@ export const Dropdown: FactoryComponent<IDropdownOptions<string | number>> = () 
         ),
         m(
           `ul.dropdown-content[id=${id}]`,
-          items.map((i: IDropdownOption<string | number>) =>
+          items.map(i =>
             m(
               `li${i.divider ? '.divider[tabindex=-1]' : ''}`,
               i.divider
@@ -88,8 +89,8 @@ export const Dropdown: FactoryComponent<IDropdownOptions<string | number>> = () 
                     {
                       onclick: onchange
                         ? () => {
-                            state.checkedId = i.id || i.label;
-                            onchange(i.id || i.label);
+                            state.checkedId = i.id || i.label as T;
+                            onchange(i.id || i.label as T);
                           }
                         : undefined,
                     },

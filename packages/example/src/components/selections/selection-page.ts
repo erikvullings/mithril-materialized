@@ -13,6 +13,7 @@ import {
 export const SelectionPage = () => {
   const state = {
     checkedId: undefined as string | undefined,
+    checkedIds: [0, 2],
   };
 
   const onchange = (v: unknown) => alert(`Input changed. New value: ${v}`);
@@ -62,8 +63,11 @@ export const SelectionPage = () => {
             multiple: true,
             placeholder: 'Make a choice...',
             label: 'What are your favorite hobbies?',
-            checkedId: [0, 2],
-            onchange: v => console.log(v),
+            checkedId: state.checkedIds,
+            onchange: v => {
+              state.checkedIds = v as number[];
+              console.log(v);
+            },
             options: [
               { id: 0, label: 'Watching movies' },
               { id: 1, label: 'Going out' },
@@ -81,8 +85,11 @@ export const SelectionPage = () => {
               multiple: true,
               placeholder: 'Make a choice...',
               label: 'What are your favorite hobbies?',
-              checkedId: [0, 2],
-              onchange: v => console.log(v),
+              checkedId: state.checkedIds, // [0, 2]
+              onchange: v => {
+                state.checkedIds = v as number[];
+                console.log(v);
+              },
               options: [
                 { id: 0, label: 'Watching movies' },
                 { id: 1, label: 'Going out' },
@@ -169,7 +176,7 @@ export const SelectionPage = () => {
               { label: '', divider: true },
               { label: 'Sex', id: 'sex', iconName: 'group' },
             ],
-            onchange,
+            onchange: v => console.log(v),
           } as IDropdownOptions<string>)
         ),
         m(CodeBlock, {
