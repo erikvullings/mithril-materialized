@@ -49,16 +49,20 @@ export const CollectionsPage = () => {
         m(Collection, {
           header: 'First names',
           mode: CollectionMode.LINKS,
-          items: [{ title: 'John' }, { title: 'Mary' }, { title: 'Pete' }],
+          items: [
+            { title: 'John', onclick: console.log },
+            { title: 'Mary', onclick: console.log },
+            { title: 'Pete', onclick: console.log },
+          ],
         }),
         m(CodeBlock, {
           code: `          m(Collection, {
             header: 'First names',
             mode: CollectionMode.LINKS,
             items: [
-              { title: 'John' },
-              { title: 'Mary' },
-              { title: 'Pete' },
+              { title: 'John', onclick: console.log },
+              { title: 'Mary', onclick: console.log },
+              { title: 'Pete', onclick: console.log },
             ],
           })`,
         }),

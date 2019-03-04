@@ -36,7 +36,7 @@ export interface ICollection extends Attributes {
 }
 
 export const SecondaryContent: FactoryComponent<ICollectionItem> = () => {
-  const isNonLocalRoute = (url?: string) => url && (/https?:\/\//.test(url));
+  const isNonLocalRoute = (url?: string) => url && /https?:\/\//.test(url);
 
   return {
     view: ({ attrs }) => {
@@ -46,7 +46,7 @@ export const SecondaryContent: FactoryComponent<ICollectionItem> = () => {
         {
           href,
           style,
-          oncreate: isNonLocalRoute(href) ? undefined : m.route.link,
+          oncreate: href ? (isNonLocalRoute(href) ? undefined : m.route.link) : undefined,
           onclick: onclick ? () => onclick(attrs) : undefined,
         },
         m(Icon, { iconName })
@@ -97,7 +97,7 @@ export const AnchorItem: FactoryComponent<ICollectionItem> = () => {
       const { title, active, href, ...params } = attrs;
       return m(
         `a.collection-item${active ? '.active' : ''}`,
-        { ...params, oncreate: href ? m.route.link : undefined },
+        { ...params, href, oncreate: href ? m.route.link : undefined },
         title
       );
     },
