@@ -47,6 +47,11 @@ Supported components:
 
 ## Version history
 
+v0.11.1 No breaking changes
+
+- Improved generics of `Select` and `Dropdown` component
+- FIX Issue with `placeholder` in `Select` component: when no item was selected, it would not show the placeholder text.
+
 v0.11.0 New component, `Timeline`
 
 - Added a `Timeline` component to render vertical timelines.
