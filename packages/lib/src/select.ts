@@ -71,8 +71,7 @@ export const Select: FactoryComponent<ISelectOptions<string | number>> = () => {
       },
     }) => {
       const clear = newRow ? '.clear' : '';
-      const validSelection = options.filter(o => isSelected(o.id, checkedId)).length > 0;
-
+      const noValidSelection = options.filter(o => isSelected(o.id, checkedId)).length === 0;
       return m(`.input-field.select-space${clear}`, { className, key }, [
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(
@@ -102,11 +101,11 @@ export const Select: FactoryComponent<ISelectOptions<string | number>> = () => {
                 }
               : undefined,
           },
-          placeholder ? m('option[value=""][disabled]', placeholder) : '',
+          placeholder ? m(`option[disabled]${noValidSelection ? '[selected]' : ''}`, placeholder) : '',
           options.map((o, i) =>
             m(
               `option[value=${o.id}]${o.disabled ? '[disabled]' : ''}${
-                isSelected(o.id, checkedId, i === 0 && !validSelection && !placeholder) ? '[selected]' : ''
+                isSelected(o.id, checkedId, i === 0 && noValidSelection && !placeholder) ? '[selected]' : ''
               }`,
               o.label.replace('&amp;', '&')
             )
