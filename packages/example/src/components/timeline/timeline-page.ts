@@ -1,6 +1,5 @@
-import { CodeBlock, Timeline, padLeft } from 'mithril-materialized';
+import { CodeBlock, Timeline, padLeft, Collection } from 'mithril-materialized';
 import m from 'mithril';
-import { Collection } from './../../../../lib/src/collection';
 
 export const TimelinePage = () => {
   const timeFormatter = (d: Date) =>
