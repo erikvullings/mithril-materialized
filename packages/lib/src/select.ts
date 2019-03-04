@@ -1,20 +1,20 @@
-import m, { FactoryComponent, Attributes } from 'mithril';
+import m, { Component, Attributes } from 'mithril';
 import { isNumeric } from './utils';
 import { Label, HelperText } from './label';
 
-export interface ISelectOption<T extends string | number> {
+export interface ISelectOption<T> {
   id?: T;
   label: string;
   disabled?: boolean;
 }
 
-export interface ISelectOptions<T extends string | number> extends Attributes, Partial<M.FormSelectOptions> {
+export interface ISelectOptions<T> extends Attributes, Partial<M.FormSelectOptions> {
   /** Options to select from */
   options: Array<ISelectOption<T>>;
   /** Called when the value is changed, either contains a single or all selected (checked) ids */
-  onchange: (value?: string | number | string[] | number[]) => void;
+  onchange: (value?: T | T[]) => void;
   /** Selected id or ids (in case of multiple options) */
-  checkedId?: string | number | string[] | number[];
+  checkedId?: T | T[];
   /** Select a single option or multiple options */
   multiple?: boolean;
   /** Optional label. */
@@ -45,11 +45,11 @@ export interface ISelectOptions<T extends string | number> extends Attributes, P
 }
 
 /** Component to select from a list of values in a dropdowns */
-export const Select: FactoryComponent<ISelectOptions<string | number>> = () => {
+export const Select = <T extends string | number>(): Component<ISelectOptions<T>> => {
   const state = {
     instance: undefined as M.FormSelect | undefined,
   };
-  const isSelected = (id?: string | number, checkedId?: string | number | Array<string | number>, selected = false) =>
+  const isSelected = (id?: T, checkedId?: T | T[], selected = false) =>
     selected ||
     (checkedId instanceof Array && (id || typeof id === 'number') ? checkedId.indexOf(id) >= 0 : checkedId === id);
   return {
@@ -92,11 +92,11 @@ export const Select: FactoryComponent<ISelectOptions<string | number>> = () => {
                         ? values.map(n => +n)
                         : values
                       : undefined;
-                    onchange(v);
+                    onchange(v as T[]);
                   } else if (e && e.currentTarget) {
                     const b = e.currentTarget as HTMLButtonElement;
                     const v = isNumeric(b.value) ? +b.value : b.value;
-                    onchange(v);
+                    onchange(v as T);
                   }
                 }
               : undefined,
