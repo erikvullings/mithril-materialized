@@ -47,6 +47,10 @@ Supported components:
 
 ## Version history
 
+v0.11.2 No breaking changes
+
+- FIX Issue with `SecondaryContent` in `Collection` component: when no `href` was provided, it still created a `href=#!undefined` link.
+
 v0.11.1 No breaking changes
 
 - Improved generics of `Select` and `Dropdown` component
