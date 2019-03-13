@@ -52,7 +52,7 @@ const TimelineItem: FactoryComponent<IInternalTimelineItem> = () => {
  * @see https://tympanus.net/codrops/2013/05/02/vertical-timeline/
  */
 export const Timeline: FactoryComponent<ITimeline> = () => {
-  const df = (d: Date) => `${d.getUTCDate()}/${d.getUTCMonth()}/${d.getUTCFullYear()}`;
+  const df = (d: Date) => `${d.getUTCDate()}/${d.getUTCMonth() + 1}/${d.getUTCFullYear()}`;
   const tf = (d: Date) => `${padLeft(d.getUTCHours())}:${padLeft(d.getUTCMinutes())}`;
   return {
     view: ({ attrs: { items, onSelect, timeFormatter = tf, dateFormatter = df } }) => {
