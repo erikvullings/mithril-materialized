@@ -19,7 +19,7 @@ export const MapEditorPage = () => {
         m('h2.header', 'Key-value pairs editor'),
         m('p', [
           'As materializecss.com did not offer a useful editor for a map of key-value pairs, ',
-          "I've created one myself. It allows you to edit (or just view, when it is disabled), ",
+          'I have created one myself. It allows you to edit (or just view, when it is disabled), ',
           'booleans, numbers, strings and arrays of numbers and strings.',
         ]),
 

@@ -143,7 +143,7 @@ const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IIn
           label,
           id,
           isMandatory,
-          isActive: initialValue || type === 'color' || type === 'range' ? true : false,
+          isActive: initialValue || type === 'number' || type === 'color' || type === 'range' ? true : false,
           // typeof initialValue !== 'undefined' || type === 'color' || type === 'range',
         }),
         m(HelperText, { helperText, dataError, dataSuccess }),

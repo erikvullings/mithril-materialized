@@ -47,6 +47,12 @@ Supported components:
 
 ## Version history
 
+v0.11.3 No breaking changes
+
+- FIX `Timeline`: Default date formatter did not add 1 to the months. See [here](https://www.w3schools.com/js/js_dates.asp).
+- FIX `MapEditor` when dealing with number inputs and the number was 0, it did not work properly.
+- FIX `NumberInput` when the number was 0, the label was not active (and overlaying the number).
+
 v0.11.2 No breaking changes
 
 - FIX Issue with `SecondaryContent` in `Collection` component: when no `href` was provided, it still created a `href=#!undefined` link.

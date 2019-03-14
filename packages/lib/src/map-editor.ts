@@ -151,7 +151,13 @@ export const MapEditor: FactoryComponent<IMapEditor> = () => {
       const key = state.curKey;
       const prop = properties[key];
       const value =
-        typeof prop === 'boolean' ? prop : prop ? (prop instanceof Array ? `[${prop.join(', ')}]` : prop) : '';
+        typeof prop === 'boolean' || typeof prop === 'number'
+          ? prop
+          : prop
+          ? prop instanceof Array
+            ? `[${prop.join(', ')}]`
+            : prop
+          : '';
       const id = state.elementId;
       return [
         m(
