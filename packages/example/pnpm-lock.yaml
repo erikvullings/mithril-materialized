@@ -2,7 +2,7 @@ dependencies:
   material-icons: 0.3.0
   materialize-css: 1.0.0
   mithril: 2.0.0-rc.4
-  mithril-materialized: 0.3.0
+  mithril-materialized: 'link:../lib'
 devDependencies:
   '@types/materialize-css': 1.0.6
   '@types/mithril': 1.1.16
@@ -3117,10 +3117,6 @@ packages:
     dev: true
     resolution:
       integrity: sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=
-  /mithril-materialized/0.3.0:
-    dev: false
-    resolution:
-      integrity: sha512-aBzdFWzWkWbb0wGYQAE5JPAku9i4JNBcNwoFqrjOUKGrGOZKyrLCJ0EkF/dTDtTMv4SyQsA23SXc9CLS1ybqIQ==
   /mithril/2.0.0-rc.4:
     dev: false
     hasBin: true
@@ -5104,11 +5100,11 @@ packages:
 specifiers:
   '@types/materialize-css': ^1.0.6
   '@types/mithril': ^1.1.16
-  autoprefixer: ^9.4.9
+  autoprefixer: ^9.5.0
   cssnano: ^4.1.10
   material-icons: ^0.3.0
   materialize-css: ^1.0.0
   mithril: ^2.0.0-rc.4
-  mithril-materialized: ^0.3.0
-  parcel-bundler: ^1.11.0
+  mithril-materialized: ^0.11.3
+  parcel-bundler: ^1.12.2
   typescript: ^3.3.3333
