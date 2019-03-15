@@ -1,3 +1,4 @@
+import './styles/codeblock.css';
 import m, { FactoryComponent, Attributes } from 'mithril';
 
 export interface ICodeBlock extends Attributes {

@@ -47,6 +47,10 @@ Supported components:
 
 ## Version history
 
+v0.11.4 No breaking changes
+
+- FIX `CodeBlock` missed importing of `css`.
+
 v0.11.3 No breaking changes
 
 - FIX `Timeline`: Default date formatter did not add 1 to the months. See [here](https://www.w3schools.com/js/js_dates.asp).
