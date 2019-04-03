@@ -43,6 +43,11 @@ export interface IMapEditor extends Attributes {
   /** The actual map of key-value pairs supports numbers, strings, booleans and arrays of strings and numbers. */
   properties: { [key: string]: number | string | boolean | Array<string | number> };
   /**
+   * Called when the properties collection has changed. Not needed if you are performing a direct edit on the
+   * properties object, but in case you have created a mapping, this allows you to convert the object back again.
+   */
+  onchange?: (properties: { [key: string]: number | string | boolean | Array<string | number> }) => void;
+  /**
    * In order to create a boolean, you first have to enter a truthy or falsy value.
    * Default 'true' and 'false', but you can add more options.
    */
@@ -57,6 +62,10 @@ export interface IMapEditor extends Attributes {
    * The ICollectionItems's title may be a Vnode.
    */
   keyValueConverter?: (key: string, value: number | string | boolean | Array<string | number>) => ICollectionItem;
+  /** Optional class to apply to the key column, @default .col.s4 */
+  keyClass?: string;
+  /** Optional class to apply to the value column, @default .col.s8 */
+  valueClass?: string;
 }
 
 /** A simple viewer and/or editor for a map of key - value pairs */
@@ -79,14 +88,19 @@ export const MapEditor: FactoryComponent<IMapEditor> = () => {
       .map(i => (/^\d+$/g.test(i) ? +i : i));
   };
 
-  const kvc = (key: string, value: number | string | boolean | Array<string | number>) => {
+  const kvc = (
+    key: string,
+    value: number | string | boolean | Array<string | number>,
+    options: { keyClass?: string; valueClass?: string }
+  ) => {
+    const { keyClass = '.col.s4', valueClass = '.col.s8' } = options;
     const displayValue =
       value instanceof Array
         ? value.join(', ')
         : typeof value === 'boolean'
         ? m(InputCheckbox, { label: '', checked: value, disabled: true, className: 'checkbox-in-collection' })
         : value.toString();
-    const title = m('.row', { style: 'margin-bottom: 0' }, [m('.col.s4', m('b', key)), m('.col.s8', displayValue)]);
+    const title = m('.row', { style: 'margin-bottom: 0' }, [m(keyClass, m('b', key)), m(valueClass, displayValue)]);
     return {
       title,
     } as ICollectionItem;
@@ -102,10 +116,19 @@ export const MapEditor: FactoryComponent<IMapEditor> = () => {
     return item;
   };
 
-  const toCollectionArray = (properties: { [key: string]: number | string | boolean | Array<string | number> }) =>
+  const toCollectionArray = (
+    properties: { [key: string]: number | string | boolean | Array<string | number> },
+    options: { keyClass?: string; valueClass?: string }
+  ) =>
     Object.keys(properties)
       .map(key => ({ key, value: properties[key] }))
-      .map(item => kvcWrapper(item.key, state.kvc(item.key, item.value)));
+      .map(item =>
+        kvcWrapper(
+          item.key,
+          state.kvc(item.key, item.value, { keyClass: options.keyClass, valueClass: options.valueClass })
+        )
+      );
+
   const isTruthy = (i: string, truthy: string[], falsy: string[]) =>
     truthy.indexOf(i) >= 0 ? true : falsy.indexOf(i) >= 0 ? false : undefined;
 
@@ -143,11 +166,15 @@ export const MapEditor: FactoryComponent<IMapEditor> = () => {
         labelKey = 'Key',
         labelValue = 'Value',
         properties,
+        keyClass,
+        valueClass,
+        onchange,
         falsy = ['false'],
         truthy = ['true'],
       },
     }) => {
-      const items = toCollectionArray(properties);
+      const notify = () => (onchange ? onchange(properties) : undefined);
+      const items = toCollectionArray(properties, { keyClass, valueClass });
       const key = state.curKey;
       const prop = properties[key];
       const value =
@@ -162,7 +189,7 @@ export const MapEditor: FactoryComponent<IMapEditor> = () => {
       return [
         m(
           '.map-editor',
-          m('.input-field', { className }, [
+          m('.input-field', { className, style: 'min-height: 1.5em;' }, [
             iconName ? m('i.material-icons.prefix', iconName) : '',
             m(Label, { label, isMandatory, isActive: items.length > 0 }),
             m(Collection, { id, items, mode: CollectionMode.LINKS, header }),
@@ -183,6 +210,7 @@ export const MapEditor: FactoryComponent<IMapEditor> = () => {
                     properties[v] = prop;
                     state.id = v;
                   }
+                  notify();
                 },
               }),
               typeof value === 'string'
@@ -195,6 +223,7 @@ export const MapEditor: FactoryComponent<IMapEditor> = () => {
                       const n = typeof b === 'undefined' ? (/^\s*\d+\s*$/i.test(v) ? +v : undefined) : undefined;
                       properties[key] =
                         typeof b === 'boolean' ? b : typeof n === 'number' ? n : parseArray(v, disallowArrays) || v;
+                      notify();
                     },
                   })
                 : typeof value === 'number'
@@ -204,6 +233,7 @@ export const MapEditor: FactoryComponent<IMapEditor> = () => {
                     className: 'col s7',
                     onchange: (v: number) => {
                       properties[key] = v;
+                      notify();
                     },
                   })
                 : m(InputCheckbox, {
@@ -212,6 +242,7 @@ export const MapEditor: FactoryComponent<IMapEditor> = () => {
                     className: 'input-field col s7',
                     onchange: (v: boolean) => {
                       properties[key] = v;
+                      notify();
                     },
                   }),
               m('.col.s12.right-align', [
@@ -225,6 +256,7 @@ export const MapEditor: FactoryComponent<IMapEditor> = () => {
                   onclick: () => {
                     delete properties[key];
                     resetInputs();
+                    notify();
                   },
                 }),
               ]),

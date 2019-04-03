@@ -47,6 +47,11 @@ Supported components:
 
 ## Version history
 
+v0.11.5 No breaking changes
+
+- `MapEditor` has an `onchange` callback to notify changes to the properties collection.
+- `MapEditor` allows you to set the column width (`keyClass`) for the key and value column (`keyValue`).
+
 v0.11.4 No breaking changes
 
 - FIX `CodeBlock` missed importing of `css`.
