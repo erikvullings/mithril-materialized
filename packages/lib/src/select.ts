@@ -68,14 +68,17 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
         placeholder,
         isMandatory,
         iconName,
+        disabled,
       },
     }) => {
       const clear = newRow ? '.clear' : '';
+      const isDisabled = disabled ? '[disabled]' : '';
+      const isMultiple = multiple ? '[multiple]' : '';
       const noValidSelection = options.filter(o => isSelected(o.id, checkedId)).length === 0;
       return m(`.input-field.select-space${clear}`, { className, key }, [
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(
-          `select[id=${id}]${multiple ? '[multiple]' : ''}`,
+          `select[id=${id}]${isDisabled}${isMultiple}`,
           {
             oncreate: ({ dom, attrs }) => {
               state.instance = M.FormSelect.init(dom, attrs);

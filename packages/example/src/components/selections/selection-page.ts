@@ -43,6 +43,7 @@ export const SelectionPage = () => {
         m(CodeBlock, {
           newRow: true,
           code: `          m(Select, {
+            // disabled: true, // Add disabled if you want to disable the select control
             iconName: 'person',
             label: 'What is your favorite hobby?',
             // placeholder: 'Pick one', // Alternative to first option

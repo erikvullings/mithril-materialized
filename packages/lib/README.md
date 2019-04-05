@@ -47,6 +47,10 @@ Supported components:
 
 ## Version history
 
+v0.11.6 No breaking changes
+
+- `Select` control can now be disabled by adding the property `disabled: true` to the control's properties.
+
 v0.11.5 No breaking changes
 
 - `MapEditor` has an `onchange` callback to notify changes to the properties collection.
