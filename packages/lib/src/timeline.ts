@@ -4,7 +4,7 @@ import { padLeft } from './utils';
 
 export interface ITimelineItem {
   id?: string;
-  title?: string;
+  title?: Vnode<any> | string;
   datetime: Date;
   iconName?: string;
   active?: boolean;
@@ -39,7 +39,7 @@ const TimelineItem: FactoryComponent<IInternalTimelineItem> = () => {
         m('.mm_time', { datetime }, [m('span', dateFormatter(datetime)), m('span', timeFormatter(datetime))]),
         iconName ? m('.mm_icon', m('i.material-icons', iconName)) : undefined,
         m('.mm_label', [
-          title ? m('h5', title) : undefined,
+          title ? typeof title === 'string' ? m('h5', title) : title : undefined,
           content ? (typeof content === 'string' ? m('p', content) : content) : undefined,
         ]),
       ]);

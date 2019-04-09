@@ -1,9 +1,9 @@
-import { CodeBlock, Timeline, padLeft, Collection } from 'mithril-materialized';
+import { CodeBlock, Timeline, padLeft, Collection, Icon } from 'mithril-materialized';
 import m from 'mithril';
 
 export const TimelinePage = () => {
   const timeFormatter = (d: Date) =>
-    `${padLeft(d.getUTCHours())}:${padLeft(d.getUTCMinutes())}:${padLeft(d.getUTCSeconds())}`;
+    `${padLeft(d.getHours())}:${padLeft(d.getMinutes())}:${padLeft(d.getSeconds())}`;
 
   return {
     view: () =>
@@ -72,8 +72,17 @@ export const TimelinePage = () => {
             {
               id: '6',
               iconName: 'visibility_off',
-              datetime: new Date(2019, 2, 3, 10, 11, 0),
+              datetime: new Date(2019, 2, 3, 10, 15, 0),
               content: 'No title, only content',
+            },
+            {
+              id: '7',
+              title: m('i', [
+                'Test a Vnode',
+                m(Icon, { className: 'small', style: 'float: right;', iconName: 'directions_run' }),
+              ]),
+              iconName: 'visibility',
+              datetime: new Date(2019, 2, 3, 10, 21, 0),
             },
           ],
         }),
@@ -123,8 +132,17 @@ export const TimelinePage = () => {
               {
                 id: '6',
                 iconName: 'visibility_off',
-                datetime: new Date(2019, 2, 3, 10, 11, 0),
+                datetime: new Date(2019, 2, 3, 10, 15, 0),
                 content: 'No title, only content',
+              },
+              {
+                id: '7',
+                title: m('i', [
+                  'Test a Vnode',
+                  m(Icon, { className: 'small', style: 'float: right;', iconName: 'directions_run' }),
+                ]),
+                iconName: 'visibility',
+                datetime: new Date(2019, 2, 3, 10, 21, 0),
               },
             ],
           })`,

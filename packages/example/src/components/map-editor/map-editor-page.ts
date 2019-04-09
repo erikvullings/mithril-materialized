@@ -12,6 +12,12 @@ export const MapEditorPage = () => {
       falsy: false,
     },
   };
+  const cells = [
+    ['title 1', 'desc 1', 'high'],
+    ['title 2', 'desc 2', 'medium'],
+    ['title 3', 'desc 3', 'average'],
+    ['title 4', 'desc 4', 'low'],
+  ];
 
   return {
     view: () =>
@@ -22,6 +28,12 @@ export const MapEditorPage = () => {
           'I have created one myself. It allows you to edit (or just view, when it is disabled), ',
           'booleans, numbers, strings and arrays of numbers and strings.',
         ]),
+
+        // m(EditableTable, {
+        //   headers: ['title', 'description', 'priority'],
+        //   cells,
+        //   addRows: true,
+        // }),
 
         m('h3.header', 'MapEditor'),
         m(

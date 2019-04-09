@@ -47,6 +47,10 @@ Supported components:
 
 ## Version history
 
+v0.11.7 No breaking changes
+
+- `Timeline` title can now be a Vnode too.
+
 v0.11.6 No breaking changes
 
 - `Select` control can now be disabled by adding the property `disabled: true` to the control's properties.
