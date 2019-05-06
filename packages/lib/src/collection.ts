@@ -60,9 +60,11 @@ const avatarIsImage = (avatar = '') => /\./.test(avatar);
 export const ListItem: FactoryComponent<{ item: ICollectionItem; mode: CollectionMode }> = () => {
   return {
     view: ({ attrs: { item, mode } }) => {
-      const { title, content = '', active, iconName, avatar, className } = item;
+      const { title, content = '', active, iconName, avatar, className, onclick } = item;
       return mode === CollectionMode.AVATAR
-        ? m(`li.collection-item.avatar${active ? '.active' : ''}`, [
+        ? m(`li.collection-item.avatar${active ? '.active' : ''}`, {
+          onclick: onclick ? () => onclick(item) : undefined,
+        }, [
             avatarIsImage(avatar)
               ? m('img.circle', { src: avatar })
               : m('i.material-icons.circle', { className }, avatar),
