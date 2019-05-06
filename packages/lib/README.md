@@ -47,6 +47,10 @@ Supported components:
 
 ## Version history
 
+v0.11.8 No breaking changes
+
+- `Collection onclick` event was not registered properly.
+
 v0.11.7 No breaking changes
 
 - `Timeline` title can now be a Vnode too.
