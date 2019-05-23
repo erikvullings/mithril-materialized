@@ -34,9 +34,9 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
           },
           onchange: onchange
             ? (e: Event) => {
-                if (e.target && (e.target as HTMLInputElement).value) {
-                  onchange((e.target as HTMLInputElement).value);
-                }
+                const target = e.target as HTMLInputElement;
+                const value = target && typeof target.value === 'string' ? target.value : '';
+                onchange(value);
               }
             : undefined,
           value: initialValue,
