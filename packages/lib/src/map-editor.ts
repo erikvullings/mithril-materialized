@@ -1,17 +1,11 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
-import {
-  Label,
-  Collection,
-  ICollectionItem,
-  CollectionMode,
-  TextInput,
-  NumberInput,
-  InputCheckbox,
-  TextArea,
-  FlatButton,
-} from '.';
-import { uniqueId } from './utils';
 import './styles/map-editor.css';
+import { ICollectionItem, Collection, CollectionMode } from './collection';
+import { InputCheckbox } from './option';
+import { uniqueId } from './utils';
+import { Label } from './label';
+import { TextArea, TextInput, NumberInput } from './input';
+import { FlatButton } from './button';
 
 export interface IMapEditor extends Attributes {
   /** Optional ID of the element */

@@ -1,5 +1,5 @@
 import m, { Component, Attributes } from 'mithril';
-import { HelperText } from '.';
+import { HelperText } from './label';
 
 export interface IDropdownOption<T> {
   /** ID property of the selected item */

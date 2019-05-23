@@ -1,0 +1,523 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>mithril-materialized</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">mithril-materialized</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> mithril-materialized</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<h1 id="mithril-materialized">mithril-materialized</h1>
+				<p>A <a href="https://materializecss.com">materialize-css</a> library for the Mithril framework (tested with v2.0.0-rc4 and higher, but presumably, it should work with v1.1.6 too), making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize components.</p>
+				<p>Supported components:</p>
+				<ul>
+					<li><a href="https://erikvullings.github.io/mithril-materialized/#!/buttons">Buttons</a><ul>
+							<li>Button</li>
+							<li>FlatButton</li>
+							<li>RoundButton</li>
+							<li>SubmitButton</li>
+						</ul>
+					</li>
+					<li><a href="https://erikvullings.github.io/mithril-materialized/#!/inputs">Inputs</a><ul>
+							<li>TextInput</li>
+							<li>TextArea</li>
+							<li>AutoComplete</li>
+							<li>UrlInput</li>
+							<li>EmailInput</li>
+							<li>NumberInput</li>
+							<li>ColorInput</li>
+							<li>RangeInput</li>
+							<li>Chips</li>
+						</ul>
+					</li>
+					<li><a href="https://erikvullings.github.io/mithril-materialized/#!/pickers">Pickers</a><ul>
+							<li>DatePicker</li>
+							<li>TimePicker</li>
+						</ul>
+					</li>
+					<li><a href="https://erikvullings.github.io/mithril-materialized/#!/selections">Selections</a><ul>
+							<li>Select</li>
+							<li>Options</li>
+							<li>RadioButtons</li>
+							<li>Switch</li>
+							<li>Dropdown</li>
+						</ul>
+					</li>
+					<li><a href="https://erikvullings.github.io/mithril-materialized/#!/collections">Collections</a><ul>
+							<li>Basic, Link and Avatar Collections</li>
+							<li>Collapsible or accordion</li>
+						</ul>
+					</li>
+					<li><a href="https://erikvullings.github.io/mithril-materialized/#!/modals">Others</a><ul>
+							<li>ModalPanel</li>
+							<li>MaterialBox</li>
+							<li>Carousel</li>
+							<li>Pagination</li>
+							<li>Parallax</li>
+						</ul>
+					</li>
+					<li>Additional<ul>
+							<li>Label</li>
+							<li>HelperText</li>
+						</ul>
+					</li>
+					<li>Not from Materialize-CSS<ul>
+							<li>CodeBlock</li>
+							<li><a href="https://erikvullings.github.io/mithril-materialized/#!/map_editor">MapEditor</a></li>
+							<li><a href="https://erikvullings.github.io/mithril-materialized/#!/timeline">Timeline</a></li>
+						</ul>
+					</li>
+				</ul>
+				<h2 id="version-history">Version history</h2>
+				<p>v0.11.11 No breaking changes</p>
+				<ul>
+					<li>Bug fix: <code>TextArea</code> did not invoke <code>onchange</code> when the input was cleared.</li>
+					<li>Using Rollup as bundler, generating two bundles (ESM, regular JS).</li>
+				</ul>
+				<p>v0.11.8 No breaking changes</p>
+				<ul>
+					<li><code>Collection onclick</code> event was not registered properly.</li>
+				</ul>
+				<p>v0.11.7 No breaking changes</p>
+				<ul>
+					<li><code>Timeline</code> title can now be a Vnode too.</li>
+				</ul>
+				<p>v0.11.6 No breaking changes</p>
+				<ul>
+					<li><code>Select</code> control can now be disabled by adding the property <code>disabled: true</code> to the control&#39;s properties.</li>
+				</ul>
+				<p>v0.11.5 No breaking changes</p>
+				<ul>
+					<li><code>MapEditor</code> has an <code>onchange</code> callback to notify changes to the properties collection.</li>
+					<li><code>MapEditor</code> allows you to set the column width (<code>keyClass</code>) for the key and value column (<code>keyValue</code>).</li>
+				</ul>
+				<p>v0.11.4 No breaking changes</p>
+				<ul>
+					<li>FIX <code>CodeBlock</code> missed importing of <code>css</code>.</li>
+				</ul>
+				<p>v0.11.3 No breaking changes</p>
+				<ul>
+					<li>FIX <code>Timeline</code>: Default date formatter did not add 1 to the months. See <a href="https://www.w3schools.com/js/js_dates.asp">here</a>.</li>
+					<li>FIX <code>MapEditor</code> when dealing with number inputs and the number was 0, it did not work properly.</li>
+					<li>FIX <code>NumberInput</code> when the number was 0, the label was not active (and overlaying the number).</li>
+				</ul>
+				<p>v0.11.2 No breaking changes</p>
+				<ul>
+					<li>FIX Issue with <code>SecondaryContent</code> in <code>Collection</code> component: when no <code>href</code> was provided, it still created a <code>href=#!undefined</code> link.</li>
+				</ul>
+				<p>v0.11.1 No breaking changes</p>
+				<ul>
+					<li>Improved generics of <code>Select</code> and <code>Dropdown</code> component</li>
+					<li>FIX Issue with <code>placeholder</code> in <code>Select</code> component: when no item was selected, it would not show the placeholder text.</li>
+				</ul>
+				<p>v0.11.0 New component, <code>Timeline</code></p>
+				<ul>
+					<li>Added a <code>Timeline</code> component to render vertical timelines.</li>
+					<li><code>Collection</code> now accepts other parameters, e.g. styles.</li>
+					<li>All <code>css</code> styles are extracted into separate <code>css</code> files, and imported in the component. This implies that you don&#39;t need to add the required CSS in your own application anymore (except for <code>materialisecss</code>, of course).</li>
+					<li>Added documentation using <code>Typedoc</code>. It can be found <a href="https://erikvullings.github.io/mithril-materialized/typedoc/index.html">here</a>.</li>
+				</ul>
+				<p>v0.10.0 New component, <code>MapEditor</code></p>
+				<ul>
+					<li>Added a new component, <code>MapEditor</code>, to edit a map of key-value pairs.</li>
+					<li><code>InputCheckbox</code> can now be disabled.</li>
+					<li>Attributes are better dealt with and no longer end up as unused attributes of elements.</li>
+					<li>Fixed a bug for <code>TextInput</code>, where sometimes the <code>active</code> class was not added even if the <code>input</code> element had a value.</li>
+				</ul>
+				<p>v0.9.10 Breaking changes</p>
+				<ul>
+					<li>Deprecated the use of all <code>contentClass</code> properties in favour of the mithril convention <code>className</code>.</li>
+				</ul>
+				<p>v0.9.9 Breaking changes</p>
+				<ul>
+					<li><code>ModalPanel</code>: it&#39;s description (i.e. the main content area of the modal) can be a <code>Vnode</code>.</li>
+					<li><code>Select</code> does not use <code>contentClass</code> anymore, but instead uses the regular mithril <code>className</code> (but not <code>class</code>, since this is a reserved keyword in TypeScript).</li>
+				</ul>
+				<p>v0.9.6 No breaking changes</p>
+				<ul>
+					<li>For a <code>Collection</code> with secondary content, do not create a SPA route (with a #!) but leave the URL as is.</li>
+				</ul>
+				<p>v0.9.5 No breaking changes</p>
+				<ul>
+					<li>FIX <code>Select</code> bug when numeric option IDs were used and ID === 0, option was never selected.</li>
+				</ul>
+				<p>v0.9.4 No breaking changes</p>
+				<ul>
+					<li>FIX <code>Collection</code> without headers did no longer render.</li>
+				</ul>
+				<p>v0.9.3 No breaking changes</p>
+				<ul>
+					<li><code>Collection</code> with links can now also contain a header.</li>
+					<li><code>Collection</code> with no items and only a header will now just render the header</li>
+				</ul>
+				<p>v0.9.0 Breaking changes</p>
+				<ul>
+					<li><code>Collapsible</code> is now correctly spelled (used to be <code>Collabsible</code>, oops).</li>
+					<li>Added <code>Collection</code>, to create a collection of items: supports basic, link and avatar collections.</li>
+				</ul>
+				<p>v0.8.3 No breaking changes</p>
+				<ul>
+					<li><code>FileInput</code> component can be disabled, and accepts file types.</li>
+				</ul>
+				<p>v0.8.1 No breaking changes</p>
+				<ul>
+					<li>Closes issue #1: Select issue with id === 0</li>
+					<li>MaterialBox can set height, passes attributes to wrapped image element</li>
+				</ul>
+				<p>v0.8.0 No breaking changes</p>
+				<ul>
+					<li><code>FileInput</code> component can specify <code>class</code> property on the <code>div</code> wrapper (default <code>col s12</code>) and <code>contentClass</code> property on the file input element.</li>
+				</ul>
+				<p>v0.7.0 Breaking changes for Dropdown component.</p>
+				<ul>
+					<li>New <code>FileInput</code> component to upload one or more files.</li>
+					<li><code>Dropdown</code> uses similar items as <code>Select</code>, and uses <code>checkedId</code> to select the item.</li>
+					<li><code>Dropdown</code> items can now use an icon and dividers.</li>
+					<li><code>Dropdown</code> can now have a helper text option and an icon prefix.</li>
+				</ul>
+				<p>v0.6.4 Breaking changes, bug fix.</p>
+				<ul>
+					<li><code>Select</code> did not always return the proper id on selection changes with multiple elements.</li>
+				</ul>
+				<p>v0.6.3 No breaking changes, bug fix.</p>
+				<ul>
+					<li><code>Select</code> did not update dynamically when checkedId changed.</li>
+				</ul>
+				<p>v0.6.2 No breaking changes</p>
+				<ul>
+					<li><code>Select</code> can use <code>M.FormSelectOptions</code>.</li>
+				</ul>
+				<p>v0.6.1 No breaking changes</p>
+				<ul>
+					<li><code>Select</code> can have <code>disabled</code> options, and <code>id</code> is optional (in which case the label is used).</li>
+					<li><code>Select</code> can use a prefix icon.</li>
+				</ul>
+				<p>v0.6.0 No breaking changes</p>
+				<ul>
+					<li><code>Inputs</code> can now use <code>onkeyup</code>, <code>onkeydown</code>, and <code>onkeypress</code> events. They also return the value.</li>
+					<li>Additionally, they can use <code>readOnly</code>, <code>pattern</code> and <code>autocomplete</code> (does not always seem to work).</li>
+				</ul>
+				<p>v0.5.0 No breaking changes</p>
+				<ul>
+					<li>NEW: Pagination control</li>
+					<li>BUG FIX: <code>Input.onchange</code> would not fire if the input was cleared.</li>
+					<li>All options now derives from mithril&#39;s <code>Attributes</code>.</li>
+					<li>Using <code>FactoryComponent</code> type</li>
+				</ul>
+				<p>v0.4.4 No breaking changes</p>
+				<ul>
+					<li>Do not pass attributes through, e.g. if you had a <code>m(FlatButton, { onupdate })</code>, the <code>onupdate</code> was passed through to the <code>HelperText</code> too.</li>
+				</ul>
+				<p>v0.4.3 No breaking changes</p>
+				<ul>
+					<li>The validate method for inputs now also accepts the HTMLInputElement</li>
+					<li>Removed a few left-over <code>console.log</code> statements.</li>
+				</ul>
+				<p>v0.4.2 No breaking changes</p>
+				<ul>
+					<li>Added <code>required</code> and <code>aria-required=&quot;true&quot;</code> attributes when the <code>required</code> or <code>isMandatory</code> property are set.</li>
+				</ul>
+				<p>v0.4.1 No breaking changes</p>
+				<ul>
+					<li>Updated all components to use the mithril <code>dom</code> attribute instead of performing a document query. This has two advantages: first of all, performance, since we do not need to query for an element we already have. Second, when implementing custom elements that have an <code>oncreate</code> function. Using document.query... will lead to no results.</li>
+				</ul>
+				<p>v0.4.0 No breaking changes</p>
+				<ul>
+					<li>New components: MaterialBox, Collapsible or accordion, and Carousel</li>
+				</ul>
+				<p>v0.3.0 Breaking changes</p>
+				<ul>
+					<li>Buttons no longer use the <code>ui</code> class to specify additional properties like <code>onclick</code>. Instead, you can leverage the mithril attributes directly. See the example, <code>button-page</code>.</li>
+					<li><code>contentClass</code> has been removed in favour of the default mithril <code>class</code> or <code>className</code> attribute.</li>
+					<li>The Icon function has been replaced by the <code>Icon</code> component. The <code>SmallIcon</code> and <code>PrefixedIcon</code> have been removed, as they can easily be created using the <code>Icon</code> component.</li>
+					<li>The <code>autofocus</code> attribute for inputs now also works on updates (by calling the element.focus() method).</li>
+					<li>The code has been split over multiple files, so it is easier to only import the components that you need.</li>
+				</ul>
+				<p>v0.2.2</p>
+				<ul>
+					<li>Validate function can return a custom validation message. Also, it is called in <code>onupdate</code>, so the validation occurs also when you just attach the validate function conditionally.</li>
+				</ul>
+				<p>v0.2.1</p>
+				<ul>
+					<li>Label field is optional for inputs.</li>
+					<li>Added autofocus function|property to input fields.</li>
+					<li>Added custom validation using the validate function|property to add valid/invalid label to an input.</li>
+					<li>Removed dependency on materialize-css (it is expected that it is imported via the main app).</li>
+				</ul>
+				<h2 id="usage-instructions">Usage instructions</h2>
+				<p>See the <a href="https://erikvullings.github.io/mithril-materialized/index.html">documentation</a> for examples on how to use this library in your own application. Please note that the library does not include mithril, nor the materialize-css JavaScript or CSS, so you have to include them yourself, as documented.</p>
+				<h2 id="build-instructions">Build instructions</h2>
+				<p>This repository consists of two packages, combined using <code>lerna</code>: the <code>lib</code> package that is published to <code>npm</code>, as well as an <code>example</code> project which uses this library to display the Mithril components that it contains.</p>
+				<p>To install the dependencies, you can use <code>npm i</code>, or, alternatively, use <code>pnpm m i</code> (assuming you have installed <code>pnpm</code> as alternative package manager using <code>npm i -g pnpm</code>) to perform a multi-repository install. Next, build everything using <code>npm start</code> and visit the documentation page on <a href="http://localhost:1234">http://localhost:1234</a> in case port 1234 is not occupied already.</p>
+				<h2 id="css">CSS</h2>
+				<p>Although I&#39;ve tried to limit the CSS adaptations to a minimum, I needed to tweak certain parts to make it look better. Here are the styles I&#39;ve added.</p>
+				<pre><code class="language-css"><span class="hljs-selector-class">.clear</span>,
+<span class="hljs-selector-class">.clear-10</span>,
+<span class="hljs-selector-class">.clear-15</span> {
+  <span class="hljs-attribute">clear</span>: both;
+  <span class="hljs-comment">/* overflow: hidden; Précaution pour IE 7 */</span>
+}
+<span class="hljs-selector-class">.clear-10</span> {
+  <span class="hljs-attribute">margin-bottom</span>: <span class="hljs-number">10px</span>;
+}
+<span class="hljs-selector-class">.clear-15</span> {
+  <span class="hljs-attribute">margin-bottom</span>: <span class="hljs-number">15px</span>;
+}
+
+<span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type='color']</span><span class="hljs-selector-pseudo">:not(.browser-default)</span> {
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> <span class="hljs-number">0</span> <span class="hljs-number">8px</span> <span class="hljs-number">0</span>;
+  <span class="hljs-comment">/** Copied from input[type=number] */</span>
+  <span class="hljs-attribute">background-color</span>: transparent;
+  <span class="hljs-attribute">border</span>: none;
+  <span class="hljs-attribute">border-bottom</span>: <span class="hljs-number">1px</span> solid <span class="hljs-number">#9e9e9e</span>;
+  <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">outline</span>: none;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">3rem</span>;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">16px</span>;
+  <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
+  <span class="hljs-attribute">-webkit-box-shadow</span>: none;
+  <span class="hljs-attribute">box-shadow</span>: none;
+  <span class="hljs-attribute">-webkit-box-sizing</span>: content-box;
+  <span class="hljs-attribute">box-sizing</span>: content-box;
+  <span class="hljs-attribute">-webkit-transition</span>: border <span class="hljs-number">0.3s</span>, -webkit-box-shadow <span class="hljs-number">0.3s</span>;
+  <span class="hljs-attribute">transition</span>: border <span class="hljs-number">0.3s</span>, -webkit-box-shadow <span class="hljs-number">0.3s</span>;
+  <span class="hljs-attribute">transition</span>: box-shadow <span class="hljs-number">0.3s</span>, border <span class="hljs-number">0.3s</span>;
+  <span class="hljs-attribute">transition</span>: box-shadow <span class="hljs-number">0.3s</span>, border <span class="hljs-number">0.3s</span>, -webkit-box-shadow <span class="hljs-number">0.3s</span>;
+}
+
+<span class="hljs-selector-class">.codeblock</span> {
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">1.5rem</span> <span class="hljs-number">0</span> <span class="hljs-number">2.5rem</span> <span class="hljs-number">0</span>;
+}
+<span class="hljs-selector-class">.codeblock</span> &gt; <span class="hljs-selector-tag">div</span> {
+  <span class="hljs-attribute">margin-bottom</span>: <span class="hljs-number">1rem</span>;
+}
+
+<span class="hljs-selector-class">.codeblock</span> &gt; <span class="hljs-selector-tag">label</span> {
+  <span class="hljs-attribute">display</span>: inline-block;
+}
+
+<span class="hljs-selector-tag">span</span><span class="hljs-selector-class">.mandatory</span> {
+  <span class="hljs-attribute">margin-left</span>: <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">color</span>: red;
+}
+
+<span class="hljs-selector-tag">label</span>+<span class="hljs-selector-class">.switch</span> {
+  <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">1rem</span>;
+}</code></pre>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_autocomplete_.html">"autocomplete"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_button_.html">"button"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_carousel_.html">"carousel"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_chip_.html">"chip"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_code_block_.html">"code-<wbr>block"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_collapsible_.html">"collapsible"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_collection_.html">"collection"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_dropdown_.html">"dropdown"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_icon_.html">"icon"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_index_.html">"index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_input_.html">"input"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_input_options_.html">"input-<wbr>options"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_label_.html">"label"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_map_editor_.html">"map-<wbr>editor"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_material_box_.html">"material-<wbr>box"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_modal_.html">"modal"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_option_.html">"option"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_pagination_.html">"pagination"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_parallax_.html">"parallax"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_pickers_.html">"pickers"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_radio_.html">"radio"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_select_.html">"select"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_switch_.html">"switch"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_timeline_.html">"timeline"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_utils_.html">"utils"</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

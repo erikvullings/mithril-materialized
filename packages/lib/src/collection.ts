@@ -1,5 +1,5 @@
 import m, { FactoryComponent, Attributes, Vnode } from 'mithril';
-import { Icon } from '.';
+import { Icon } from './icon';
 
 export enum CollectionMode {
   BASIC,

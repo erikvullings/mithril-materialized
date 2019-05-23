@@ -47,6 +47,11 @@ Supported components:
 
 ## Version history
 
+v0.11.11 No breaking changes
+
+- Bug fix: `TextArea` did not invoke `onchange` when the input was cleared.
+- Using Rollup as bundler, generating two bundles (ESM, regular JS).
+
 v0.11.8 No breaking changes
 
 - `Collection onclick` event was not registered properly.
