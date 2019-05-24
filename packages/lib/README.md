@@ -31,8 +31,10 @@ Supported components:
 - [Collections](https://erikvullings.github.io/mithril-materialized/#!/collections)
   - Basic, Link and Avatar Collections
   - Collapsible or accordion
-- [Others](https://erikvullings.github.io/mithril-materialized/#!/modals)
+- [Modals](https://erikvullings.github.io/mithril-materialized/#!/modals)
   - ModalPanel
+- [Miscellaneous](https://erikvullings.github.io/mithril-materialized/#!/misc)
+  - Tabs
   - MaterialBox
   - Carousel
   - Pagination
@@ -46,6 +48,10 @@ Supported components:
   - [Timeline](https://erikvullings.github.io/mithril-materialized/#!/timeline)
 
 ## Version history
+
+v0.12.1 No breaking changes
+
+- `Tabs` component added, to show [tabs](https://erikvullings.github.io/mithril-materialized/#!/misc).
 
 v0.11.11 No breaking changes
 

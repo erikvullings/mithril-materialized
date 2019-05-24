@@ -1,14 +1,23 @@
-import { MaterialBox, CodeBlock, Carousel, Parallax, Pagination } from 'mithril-materialized';
+import { MaterialBox, CodeBlock, Carousel, Parallax, Pagination, Tabs, Button } from 'mithril-materialized';
 import m from 'mithril';
 import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
 export const MiscPage = () => {
+  const state = {
+    activeTabId: '',
+    disabled: true,
+    activeTab: 3,
+    tabWidthId: 2,
+    tabWidths: ['auto', 'fixed', 'fill'] as Array<'auto' | 'fixed' | 'fill'>,
+  };
   return {
     view: () =>
       m('.col.s12', [
         m('h2.header', 'Miscellaneous'),
         m('p', [
           'Some miscellaneous components, like the ',
+          m('a[href=https://materializecss.com/tabs.html][target=_blank]', 'Tabs component'),
+          ', ',
           m('a[href=https://materializecss.com/media.html][target=_blank]', 'Material box'),
           ', ',
           m('a[href=https://materializecss.com/collection.html][target=_blank]', 'Collection'),
@@ -22,6 +31,98 @@ export const MiscPage = () => {
           m('a[href=https://materializecss.com/pagination.html][target=_blank]', 'Parallax'),
           '.',
         ]),
+
+        m('h3.header', 'Tabs'),
+        m(Tabs, {
+          selectedTabId: state.activeTabId,
+          tabWidth: state.tabWidths[state.tabWidthId % 3],
+          onShow: console.log,
+          tabs: [
+            {
+              title: 'Test 1',
+              active: state.activeTab === 1,
+              vnode: m('', 'Show content of tab 1'),
+            },
+            {
+              title: 'Test 2',
+              disabled: state.disabled,
+              active: state.activeTab === 2,
+              vnode: m('', 'Show content of tab 2'),
+            },
+            {
+              title: 'Test 3',
+              active: state.activeTab === 3,
+              vnode: m('', 'Show content of tab 3'),
+            },
+            {
+              title: 'Test 4',
+              active: state.activeTab === 4,
+              vnode: m('', 'Show content of tab 4'),
+            },
+            {
+              title: 'Visit Google',
+              target: '_blank',
+              href: 'http://www.google.com',
+              // vnode: m('', 'Nothing to show'),
+            },
+          ],
+        }),
+        m(Button, {
+          label: 'Switch to tab 1',
+          onclick: () => {
+            state.activeTab = 1;
+            state.activeTabId = '';
+          },
+        }),
+        m(Button, {
+          label: 'Switch to tab 4',
+          onclick: () => {
+            state.activeTab = 0;
+            state.activeTabId = 'test4';
+          },
+        }),
+        m(Button, {
+          label: `${state.disabled ? 'Enable' : 'Disable'} tab 2`,
+          onclick: () => {
+            state.disabled = !state.disabled;
+          },
+        }),
+        m(Button, {
+          label: `Switch tab width from ${state.tabWidths[state.tabWidthId % 3]} to ${
+            state.tabWidths[(state.tabWidthId + 1) % 3]
+          }`,
+          onclick: () => state.tabWidthId++,
+        }),
+        m(CodeBlock, {
+          code: `          m(Tabs, {
+            onShow: console.log,
+            tabs: [
+              {
+                title: 'Test 1',
+                vnode: m('', 'Show content of tab 1'),
+              },
+              {
+                title: 'Test 2',
+                disabled: true,
+                vnode: m('', 'Show content of tab 2'),
+              },
+              {
+                title: 'Test 3',
+                active: true,
+                vnode: m('', 'Show content of tab 3'),
+              },
+              {
+                title: 'Test 4',
+                vnode: m('', 'Show content of tab 4'),
+              },
+              {
+                title: 'Visit Google',
+                target: '_blank',
+                href: 'http://www.google.com',
+              },
+            ],
+          })`,
+        }),
 
         m('h3.header', 'Parallax'),
         m(Parallax, { src: gogh }),
