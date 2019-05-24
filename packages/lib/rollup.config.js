@@ -14,7 +14,7 @@ const pkg = require('./package.json');
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
-  input: `src/index.ts`,
+  input: `src/mithril-materialized.ts`,
   watch: 'src/**',
   context: 'null',
   moduleContext: 'null',
