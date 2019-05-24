@@ -54,7 +54,7 @@ export const Tabs: FactoryComponent<ITabs> = () => {
     }) => {
       const activeTab = tabs.filter(t => t.active).shift();
       const select = selectedTabId || (activeTab ? createId(activeTab.title, activeTab.id) : '');
-      if (select) {
+      if (select && state.instance) {
         setTimeout(() => state.instance.select(select), 0);
       }
       return m('.row', [

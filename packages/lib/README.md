@@ -49,6 +49,10 @@ Supported components:
 
 ## Version history
 
+v0.12.1 No breaking changes
+
+- Simplified bundling after issues in `webpack`.
+
 v0.12.0 No breaking changes
 
 - `Tabs` component added, to show [tabs](https://erikvullings.github.io/mithril-materialized/#!/misc).

@@ -2,23 +2,21 @@
   "name": "mithril-materialized",
   "version": "0.12.0",
   "description": "A materialize library for mithril.",
-  "main": "dist/mithril-materialized.js",
-  "module": "dist/mithril-materialized.mjs",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git://github.com/erikvullings/mithril-materialized.git"
   },
-  "typings": "dist/mithril-materialized.d.ts",
   "scripts": {
-    "clean": "rm -fr ./dist && rm -fr .rpt2_cache",
     "link": "npm link",
-    "start": "rollup -c -w",
-    "build": "npm run build:production && npm run build:domain",
-    "build:production": "npm run clean && rollup -c",
+    "styles:watch": "cpx \"src/**/*.css\" \"dist\" --watch",
+    "build": "tsc -w",
     "build:domain": "typedoc --out ../../docs/typedoc src",
-    "patch-release": "npm run build && npm version patch --force -m \"Patch release\" && npm publish && git push --follow-tags",
-    "minor-release": "npm run build && npm version minor --force -m \"Minor release\" && npm publish && git push --follow-tags",
-    "major-release": "npm run build && npm version major --force -m \"Major release\" && npm publish && git push --follow-tags"
+    "start": "run-p styles:watch build",
+    "patch-release": "npm version patch --force -m \"Patch release\" && npm publish && git push --follow-tags",
+    "minor-release": "npm version minor --force -m \"Minor release\" && npm publish && git push --follow-tags",
+    "major-release": "npm version major --force -m \"Major release\" && npm publish && git push --follow-tags"
   },
   "keywords": [
     "mithril",
@@ -32,24 +30,12 @@
     "cpx": "^1.5.0",
     "cssnano": "^4.1.10",
     "npm-run-all": "^4.1.5",
-    "typedoc": "^0.14.2",
-    "autoprefixer": "^9.5.1",
-    "rollup": "^1.12.3",
-    "rollup-plugin-commonjs": "^10.0.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.0.0",
-    "rollup-plugin-postcss": "^2.0.3",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-terser": "^5.0.0",
-    "rollup-plugin-typescript2": "^0.21.1",
-    "postcss-simple-vars": "^5.0.2",
-    "postcss-nested": "^4.1.2",
-    "postcss-preset-env": "^6.6.0",
     "tslib": "^1.9.3",
+    "typedoc": "^0.14.2",
     "typescript": "^3.4.5"
   },
   "peerDependencies": {
-    "mithril": "next",
-    "materialize-css": "^1.0.0"
+    "materialize-css": "^1.0.0",
+    "mithril": "next"
   }
 }

@@ -1,4 +1,4 @@
-import { CharacterCounter } from 'materialize-css';
+import M from 'materialize-css';
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId, toAttrs } from './utils';
 import { IInputOptions } from './input-options';
@@ -29,7 +29,7 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
           oncreate: ({ dom }) => {
             M.textareaAutoResize(dom);
             if (attrs.maxLength) {
-              CharacterCounter.init(dom);
+              M.CharacterCounter.init(dom);
             }
           },
           onchange: onchange
@@ -98,7 +98,7 @@ const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IIn
               (dom as HTMLElement).focus();
             }
             if (maxLength) {
-              CharacterCounter.init(dom);
+              M.CharacterCounter.init(dom);
             }
             if (type === 'range') {
               M.Range.init(dom);
