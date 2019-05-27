@@ -49,6 +49,10 @@ Supported components:
 
 ## Version history
 
+v0.12.2 No breaking changes
+
+- `Tabs`: added `contentClass` to add a class to the content.
+
 v0.12.1 No breaking changes
 
 - Simplified bundling after issues in `webpack`.

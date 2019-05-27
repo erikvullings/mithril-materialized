@@ -23,6 +23,8 @@ export interface ITabItem {
   disabled?: boolean;
   /** CSS class for the tab (li), default `.tab.col.s3` */
   className?: string;
+  /** CSS class for the content (li), default `.tab.col.s3` */
+  contentClass?: string;
   /**
    * By default, Materialize tabs will ignore their default anchor behaviour.
    * To force a tab to behave as a regular hyperlink, just specify the target property of that link.
@@ -89,7 +91,9 @@ export const Tabs: FactoryComponent<ITabs> = () => {
         ),
         tabs
           .filter(({ href }) => typeof href === 'undefined')
-          .map(({ id, title, vnode }) => m(`.col.s12[id=${createId(title, id)}]`, vnode)),
+          .map(({ id, title, vnode, contentClass }) =>
+            m(`.col.s12[id=${createId(title, id)}]`, { className: contentClass }, vnode)
+          ),
       ]);
     },
   };
