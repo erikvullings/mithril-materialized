@@ -2,7 +2,7 @@ import m, { Component, Attributes } from 'mithril';
 import { FlatButton } from './button';
 import { Dropdown } from './dropdown';
 import { TextInput, TextArea, EmailInput, UrlInput, NumberInput } from './input';
-import { TimePicker } from '.';
+import { TimePicker, uniqueId } from '.';
 import { DatePicker } from './pickers';
 import { ModalPanel } from './modal';
 
@@ -209,11 +209,15 @@ interface IKanbanState extends IKanban {
   curItem?: IConvertibleType;
   updatedItem?: IConvertibleType;
   canSave?: boolean;
+  id: string;
+  editId: string;
+  deleteId: string;
 }
 
 /** A flexible list of items, supporting drag-n-drop */
 export const Kanban = (): Component<Partial<IKanban>> => {
   const state = {
+    id: uniqueId(),
     curSortId: undefined,
     curItem: undefined,
   } as IKanbanState;
@@ -243,9 +247,12 @@ export const Kanban = (): Component<Partial<IKanban>> => {
       state.sortDirection = sortDirection;
       state.containerId = containerId;
       state.fixedFooter = fixedFooter;
+      state.editId = `edit_item_${state.id}`;
+      state.deleteId = `delete_item_${state.id}`;
     },
     view: () => {
       const {
+        id,
         items,
         model,
         canSort,
@@ -276,7 +283,7 @@ export const Kanban = (): Component<Partial<IKanban>> => {
           canEdit
             ? m(FlatButton, {
                 label: `New ${label}`,
-                modalId: 'editItem',
+                modalId: state.editId,
                 iconName: 'add',
                 onclick: () => {
                   state.curItem = undefined;
@@ -310,13 +317,13 @@ export const Kanban = (): Component<Partial<IKanban>> => {
               m(
                 '.col.s12',
                 sortedItems.map(item =>
-                  m('.card-panel', { key: Date.now(), style: 'padding-bottom: 12px;' }, [
+                  m('.card-panel', { key: Date.now(), style: 'padding-bottom: 12px;', draggable: canDrag }, [
                     m('.card-content.kanban__item', m(NewGroup, { model, item, containerId, disabled: true })),
                     canEdit
                       ? m('.card-action', { style: 'text-align: right' }, [
                           m(FlatButton, {
                             iconName: 'edit',
-                            modalId: 'editItem',
+                            modalId: state.editId,
                             onclick: () => {
                               state.curItem = item;
                               state.updatedItem = { ...item };
@@ -324,7 +331,7 @@ export const Kanban = (): Component<Partial<IKanban>> => {
                           }),
                           m(FlatButton, {
                             iconName: 'delete',
-                            modalId: 'deleteItem',
+                            modalId: state.deleteId,
                             onclick: () => (state.curItem = item),
                           }),
                         ])
@@ -336,7 +343,7 @@ export const Kanban = (): Component<Partial<IKanban>> => {
           : undefined,
 
         m(ModalPanel, {
-          id: 'editItem',
+          id: state.editId,
           title: `Create new ${label}`,
           fixedFooter,
           description: m(NewGroup, {
@@ -368,7 +375,7 @@ export const Kanban = (): Component<Partial<IKanban>> => {
           ],
         }),
         m(ModalPanel, {
-          id: 'deleteItem',
+          id: state.deleteId,
           title: `Delete ${label}`,
           description: 'Are you sure?',
           buttons: [

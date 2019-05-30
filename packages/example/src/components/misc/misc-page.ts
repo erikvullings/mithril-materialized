@@ -16,7 +16,7 @@ export const MiscPage = () => {
         m('h2.header', 'Miscellaneous'),
         m('p', [
           'Some miscellaneous components, like the ',
-          m('a[href=https://materializecss.com/tabs.html][target=_blank]', 'Tabs component'),
+          m('a[href=https://materializecss.com/tabs.html][target=_blank]', 'Tabs'),
           ', ',
           m('a[href=https://materializecss.com/media.html][target=_blank]', 'Material box'),
           ', ',
@@ -37,10 +37,20 @@ export const MiscPage = () => {
           label: 'task',
           fixedFooter: false,
           canEdit: true,
+          canDrag: true,
+          items: [{
+            task: 'Buy milk',
+            due: new Date(2025, 11, 31),
+            desc: 'Do not forget this!',
+          }, {
+            task: 'Clean the bathroom',
+            due: new Date(2025, 10, 30),
+            desc: 'Why don\'t we have a maid?',
+          }],
           model: [
             {
-              id: 'todo',
-              label: 'Todo',
+              id: 'task',
+              label: 'Task',
               component: 'Text',
               className: 'col s8',
               required: true,
@@ -57,6 +67,27 @@ export const MiscPage = () => {
               className: 'col s12',
               component: 'Text',
               multiline: true,
+            },
+          ],
+        }),
+
+        m(Kanban, {
+          label: 'todo',
+          fixedFooter: false,
+          canEdit: true,
+          model: [
+            {
+              id: 'todo',
+              label: 'Todo',
+              component: 'Text',
+              className: 'col s8',
+              required: true,
+            },
+            {
+              id: 'due',
+              label: 'Due date',
+              className: 'col s4',
+              component: 'Date',
             },
           ],
         }),
