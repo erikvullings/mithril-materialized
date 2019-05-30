@@ -55,6 +55,7 @@ export const Dropdown = <T extends string | number>(): Component<IDropdownOption
         checkedId = state.checkedId,
         iconName,
         helperText,
+        style,
         className = 'col s12',
       } = attrs;
       const selectedItem = checkedId
@@ -63,7 +64,7 @@ export const Dropdown = <T extends string | number>(): Component<IDropdownOption
             .shift()
         : undefined;
       const title = selectedItem ? selectedItem.label : label || 'Select';
-      return m('.input-field', { className, key }, [
+      return m('.input-field', { className, key, style }, [
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(HelperText, { helperText }),
         m(

@@ -9,6 +9,7 @@ export * from './dropdown';
 export * from './icon';
 export * from './input-options';
 export * from './input';
+export * from './kanban';
 export * from './label';
 export * from './map-editor';
 export * from './material-box';

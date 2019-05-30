@@ -1,3 +1,7 @@
+.twist {
+  transform: scaleY(-1);
+}
+
 input[type='color']:not(.browser-default) {
   margin: 0px 0 8px 0;
   /** Copied from input[type=number] */

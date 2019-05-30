@@ -1,4 +1,4 @@
-import { MaterialBox, CodeBlock, Carousel, Parallax, Pagination, Tabs, Button } from 'mithril-materialized';
+import { MaterialBox, CodeBlock, Carousel, Parallax, Pagination, Tabs, Button, Kanban } from 'mithril-materialized';
 import m from 'mithril';
 import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
@@ -31,6 +31,35 @@ export const MiscPage = () => {
           m('a[href=https://materializecss.com/pagination.html][target=_blank]', 'Parallax'),
           '.',
         ]),
+
+        m('h3.header', 'Kanban'),
+        m(Kanban, {
+          label: 'task',
+          fixedFooter: false,
+          canEdit: true,
+          model: [
+            {
+              id: 'todo',
+              label: 'Todo',
+              component: 'Text',
+              className: 'col s8',
+              required: true,
+            },
+            {
+              id: 'due',
+              label: 'Due date',
+              className: 'col s4',
+              component: 'Date',
+            },
+            {
+              id: 'desc',
+              label: 'Description',
+              className: 'col s12',
+              component: 'Text',
+              multiline: true,
+            },
+          ],
+        }),
 
         m('h3.header', 'Tabs'),
         m(Tabs, {

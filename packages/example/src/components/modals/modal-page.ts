@@ -181,6 +181,15 @@ This is some content.<br>
             bottomSheet: true,
           })
         ),
+        m(CodeBlock, {
+          code: `          m(Button, { label: 'Open bottom content modal', modalId: 'modal4' }),
+          m(ModalPanel, {
+            id: 'modal4',
+            title: 'Content modal',
+            description: m(MaterialBox, { src: gogh, width: 400 }),
+            bottomSheet: true,
+          })`,
+        }),
 
       ]),
   };

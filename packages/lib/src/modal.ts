@@ -1,4 +1,5 @@
 import m, { FactoryComponent, Vnode, Attributes } from 'mithril';
+import { FlatButton } from './button';
 
 export interface IMaterialModal extends Attributes {
   id: string;
@@ -13,7 +14,7 @@ export interface IMaterialModal extends Attributes {
   /** Materialize css' modal options */
   options?: Partial<M.ModalOptions>;
   /** Menu buttons, from left to right */
-  buttons?: Array<{ label: string; onclick?: () => void }>;
+  buttons?: Array<{ label: string; iconName?: string; disabled?: boolean; onclick?: () => void }>;
 }
 
 /** Builds a modal panel, which can be triggered using its id */
@@ -36,7 +37,7 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => ({
       buttons
         ? m(
             '.modal-footer',
-            buttons.map(b => m('a.modal-close.waves-effect.waves-green.btn-flat', { onclick: b.onclick }, b.label))
+            buttons.map(props => m(FlatButton, { ...props, className: 'modal-close' }))
           )
         : undefined,
     ]);
