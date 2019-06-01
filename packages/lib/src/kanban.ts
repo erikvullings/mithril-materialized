@@ -1,191 +1,24 @@
 import m, { Component, Attributes } from 'mithril';
 import { FlatButton } from './button';
-import { Dropdown } from './dropdown';
-import { TextInput, TextArea, EmailInput, UrlInput, NumberInput } from './input';
-import { TimePicker, uniqueId } from '.';
-import { DatePicker } from './pickers';
+import { Dropdown, IDropdownOption } from './dropdown';
+import { uniqueId } from '.';
 import { ModalPanel } from './modal';
+import { IModelField, IConvertibleType, NewGroup } from './form-generator';
+import { move } from './utils';
+import './styles/kanban.css';
 
-export type ComponentType = 'Text' | 'Number' | 'Url' | 'Email' | 'Date' | 'Time';
-
-export interface IField {
-  id: string;
-  component: ComponentType;
-  label?: string;
-  className?: string;
-  iconName?: string;
-  iconClass?: string;
-  multiline?: boolean;
-  required?: boolean;
-  disabled?: boolean;
-}
-
-export interface IConvertibleType {
-  [key: string]: string | number | boolean | Date;
-}
-
-export const fieldToComponent = (
-  { component, required, ...props }: IField,
-  value: string | number | boolean | Date,
-  options: {
-    onchange?: (v: string | number | boolean | Date) => void;
-    containerId?: string;
-    autofocus?: boolean;
-    disabled?: boolean;
-    multiline?: boolean;
-  } = {}
-) => {
-  const { containerId, autofocus, disabled = false, onchange, multiline } = options;
-  switch (component) {
-    case 'Number':
-      return m(NumberInput, {
-        ...props,
-        isMandatory: required,
-        autofocus,
-        disabled,
-        onchange,
-        initialValue: value as number,
-      });
-    case 'Url':
-      return m(UrlInput, {
-        ...props,
-        isMandatory: required,
-        autofocus,
-        disabled,
-        onchange,
-        initialValue: value as string,
-      });
-    case 'Email':
-      return m(EmailInput, {
-        ...props,
-        isMandatory: required,
-        autofocus,
-        disabled,
-        onchange,
-        initialValue: value as string,
-      });
-    case 'Text':
-      return m(multiline ? TextArea : TextInput, {
-        ...props,
-        isMandatory: required,
-        autofocus,
-        disabled,
-        onchange,
-        initialValue: value as string,
-      });
-    case 'Date':
-      const date = (value as Date) || new Date();
-      if (!value && onchange) {
-        onchange(date);
-      }
-      return m(DatePicker, {
-        ...props,
-        isMandatory: required,
-        autofocus,
-        disabled,
-        onchange,
-        initialValue: date,
-        container: (containerId ? document.getElementById(containerId) : document.body) as HTMLElement,
-      });
-    case 'Time':
-      const time = (value as string) || '00:00';
-      if (!value && onchange) {
-        onchange(time);
-      }
-      return m(TimePicker, {
-        ...props,
-        isMandatory: required,
-        autofocus,
-        disabled,
-        onchange,
-        initialValue: time,
-        container: containerId || document.body.id,
-      });
-    default:
-      return m(TextInput, {
-        ...props,
-        isMandatory: required,
-        autofocus,
-        disabled,
-        onchange,
-        initialValue: value as string,
-      });
-  }
-};
-
-export const NewGroup = (): Component<{
-  el?: string;
-  model: IField[];
-  item: IConvertibleType;
-  containerId?: string;
-  disabled?: boolean;
-  onchange?: (valid: boolean) => void;
-}> => {
-  const state = {} as {
-    model: IField[];
-    item: IConvertibleType;
-  };
-
-  const isValid = () => {
-    const { model, item } = state;
-    return model
-      .filter(f => f.required)
-      .reduce(
-        (acc, cur) =>
-          acc &&
-          !(
-            typeof item[cur.id] === 'undefined' ||
-            (typeof item[cur.id] === 'string' && (item[cur.id] as string).length === 0)
-          ),
-        true
-      );
-  };
-
-  return {
-    view: ({ attrs: { el = '.row', model, item, containerId, disabled = false, onchange } }) => {
-      state.item = item;
-      state.model = model;
-      if (onchange) {
-        onchange(isValid());
-      }
-
-      const formFields = model.map((f, i) =>
-        fieldToComponent(f, item[f.id], {
-          containerId,
-          autofocus: i === 0,
-          disabled,
-          onchange: disabled
-            ? undefined
-            : v => {
-                state.item[f.id] = v;
-                if (onchange) {
-                  onchange(isValid());
-                }
-              },
-        })
-      );
-      return m(
-        el,
-        {
-          style: 'margin-bottom: -20px;',
-          // onbeforeremove: () => {
-          //   if (isValid()) {
-          //     const { item: updatedItem, originalItem } = state;
-          //     state.model.forEach(f => (originalItem[f.id] = updatedItem[f.id]));
-          //   }
-          // },
-        },
-        formFields
-      );
-    },
-  };
-};
+// TODO
+// - onchange notification
+// - add support for options (not working - checkedId is implemented incorrectly)
+// - Save button is not behaving correctly: sometimes it is enabled while it should not, or otherwise.
 
 export interface IKanban extends Attributes {
   /** The model representing the item's fields */
-  model: IField[];
+  model: IModelField[];
   /** The items that we want to show */
   items: IConvertibleType[];
+  /** Notify of changes */
+  onchange?: (items: IConvertibleType[]) => void;
   /** Label for creating a new item */
   label: string;
   /** If true, use a modal for editing with a fixed footer */
@@ -194,12 +27,19 @@ export interface IKanban extends Attributes {
   canEdit: boolean;
   /** Can we sort items: default true */
   canSort: boolean;
-  /** Can we drag items: default true */
+  /** Can we drag items - in this case, sorting is disabled: default false */
   canDrag: boolean;
+  /**
+   * Can we move items between lists (based on the same model): default false.
+   * Must be enabled on both lists in order to work.
+   */
+  moveBetweenList: boolean;
   /** Sort direction */
   sortDirection: 'asc' | 'desc';
   /** Properties to sort */
   sortProperties: string[];
+  /** Drop down options */
+  dropdownItems: Array<IDropdownOption<string | number>>;
 }
 
 interface IKanbanState extends IKanban {
@@ -212,6 +52,7 @@ interface IKanbanState extends IKanban {
   id: string;
   editId: string;
   deleteId: string;
+  dragIndex: number;
 }
 
 /** A flexible list of items, supporting drag-n-drop */
@@ -222,7 +63,158 @@ export const Kanban = (): Component<Partial<IKanban>> => {
     curItem: undefined,
   } as IKanbanState;
 
+  const notify = () => {
+    if (state.onchange) {
+      state.onchange(state.items);
+    }
+  };
+
+  /** The drop location indicates the new position of the dropped element: above or below */
+  const computeDropLocation = (target: HTMLElement, ev: DragEvent) => {
+    const { top, height } = target.getBoundingClientRect();
+    const y = ev.clientY - top;
+    const deltaZone = height / 2;
+    return y < deltaZone ? 'above' : 'below';
+  };
+
+  const getItemIndex = (target: Element): number => {
+    const data = target.getAttribute('data-kanban-index');
+    if (data) {
+      return +data;
+    } else if (target.parentElement) {
+      return getItemIndex(target.parentElement);
+    } else {
+      return -1;
+    }
+  };
+
+  const isKanbanItem = (target: Element): boolean => {
+    if (/kanban__item/.test(target.className)) {
+      return true;
+    } else if (target.parentElement) {
+      return isKanbanItem(target.parentElement);
+    } else {
+      return false;
+    }
+  };
+
+  const getKanbanItem = (target: Element): HTMLDivElement | null => {
+    if (/kanban__item/.test(target.className)) {
+      return target as HTMLDivElement;
+    } else if (target.parentElement) {
+      return getKanbanItem(target.parentElement);
+    } else {
+      return null;
+    }
+  };
+
+  const getNewIndex = (dropLocation: 'above' | 'below', targetIndex: number, sourceIndex: number) =>
+    state.moveBetweenList
+      ? dropLocation === 'above'
+        ? targetIndex
+        : targetIndex + 1
+      : sourceIndex < targetIndex
+      ? dropLocation === 'above'
+        ? targetIndex - 1
+        : targetIndex
+      : dropLocation === 'above'
+      ? targetIndex
+      : targetIndex - 1;
+
+  const isValidTarget = (target: HTMLElement, dropLocation: 'above' | 'below') => {
+    const kanbanItem = isKanbanItem(target);
+    if (!kanbanItem) {
+      return false;
+    }
+    const { dragIndex, moveBetweenList } = state;
+    if (moveBetweenList) {
+      return true;
+    }
+    const targetIndex = getItemIndex(target);
+    const newIndex = getNewIndex(dropLocation, targetIndex, dragIndex);
+    return dragIndex !== targetIndex && newIndex !== dragIndex;
+  };
+
   // const shallowCopy = <T extends { [key: string]: any }>(item: T) => ({ ...item });
+  const ondrop = (ev: DragEvent) => {
+    ev.preventDefault();
+    const { dragIndex, moveBetweenList } = state;
+    const target = ev.target as HTMLElement;
+    const kanbanItem = getKanbanItem(target);
+    if (kanbanItem) {
+      kanbanItem.classList.remove('kanban__above', 'kanban__below');
+      const dropLocation = computeDropLocation(target, ev);
+      const targetIndex = getItemIndex(target);
+      const newIndex = getNewIndex(dropLocation, targetIndex, dragIndex);
+      if (moveBetweenList) {
+        const item = JSON.parse(ev.dataTransfer!.getData('application/json'));
+        state.items.splice(newIndex, 0, item);
+      } else {
+        move(state.items, dragIndex, newIndex);
+      }
+      notify();
+    }
+  };
+
+  const ondragleave = (ev: DragEvent) => {
+    (ev as any).redraw = false;
+    const target = ev.target as HTMLElement;
+    const kanbanItem = getKanbanItem(target);
+    if (kanbanItem) {
+      kanbanItem.classList.remove('kanban__above', 'kanban__below');
+    }
+  };
+
+  const ondragover = (ev: DragEvent) => {
+    // console.log('ondragover');
+    (ev as any).redraw = false;
+    ev.preventDefault();
+    const target = ev.target as HTMLElement;
+    const kanbanItem = getKanbanItem(target);
+    if (kanbanItem && ev.dataTransfer) {
+      const copying = ev.getModifierState('Control');
+      kanbanItem.classList.remove('kanban__above', 'kanban__below');
+      const dropLocation = computeDropLocation(kanbanItem, ev);
+      if (isValidTarget(kanbanItem, dropLocation)) {
+        kanbanItem.classList.add('kanban__' + dropLocation);
+        ev.dataTransfer.dropEffect = copying ? 'copy' : 'move';
+      } else {
+        ev.dataTransfer.dropEffect = 'none';
+      }
+    }
+  };
+
+  const ondragend = (ev: DragEvent) => {
+    // console.log('ondragend');
+    if (ev.dataTransfer) {
+      // console.log('Drop effect: ' + ev.dataTransfer.dropEffect);
+      if (ev.dataTransfer.dropEffect === 'move') {
+        state.items.splice(state.dragIndex, 1);
+        notify();
+      }
+    }
+  };
+
+  const ondragstart = (ev: DragEvent) => {
+    console.log('ondragstart');
+    const target = ev.target as HTMLElement;
+    if (ev.dataTransfer) {
+      const { items } = state;
+      ev.dataTransfer.effectAllowed = 'copyMove';
+      state.dragIndex = getItemIndex(target);
+      const item = items[state.dragIndex];
+      ev.dataTransfer.setData('application/json', JSON.stringify(item, null, 2));
+    }
+  };
+
+  const dragOptions = {
+    draggable: true,
+    ondrop,
+    ondragstart,
+    ondragover,
+    ondragleave,
+    ondragend,
+  };
 
   return {
     oninit: ({
@@ -236,6 +228,8 @@ export const Kanban = (): Component<Partial<IKanban>> => {
         label = 'New item',
         containerId,
         fixedFooter = false,
+        moveBetweenList = false,
+        onchange,
       },
     }) => {
       state.items = items;
@@ -249,10 +243,15 @@ export const Kanban = (): Component<Partial<IKanban>> => {
       state.fixedFooter = fixedFooter;
       state.editId = `edit_item_${state.id}`;
       state.deleteId = `delete_item_${state.id}`;
+      state.moveBetweenList = moveBetweenList;
+      state.onchange = onchange;
+      state.dropdownItems = [
+        { label: 'None' },
+        ...model.filter(i => i.label).map(i => ({ label: i.label!, id: i.id })),
+      ];
     },
     view: () => {
       const {
-        id,
         items,
         model,
         canSort,
@@ -263,14 +262,12 @@ export const Kanban = (): Component<Partial<IKanban>> => {
         fixedFooter,
         canDrag,
         canEdit,
+        moveBetweenList,
+        dropdownItems,
       } = state;
       if (!model) {
         return undefined;
       }
-      const dropdownItems = [
-        { label: 'None' },
-        ...model.filter(i => i.label).map(i => ({ label: i.label!, id: i.id })),
-      ];
 
       const dir = sortDirection === 'asc' ? 1 : -1;
       const sortedItems =
@@ -278,8 +275,8 @@ export const Kanban = (): Component<Partial<IKanban>> => {
           ? items.sort((a, b) => (a[curSortId] > b[curSortId] ? dir : a[curSortId] < b[curSortId] ? -dir : 0))
           : items;
 
-      return [
-        m('.row.kanban__menu', [
+      return m('.kanban', [
+        m('.row.kanban__menu', { style: 'margin-bottom: 0;' }, [
           canEdit
             ? m(FlatButton, {
                 label: `New ${label}`,
@@ -311,37 +308,46 @@ export const Kanban = (): Component<Partial<IKanban>> => {
             : undefined,
         ]),
 
-        sortedItems.length > 0
-          ? m(
-              '.row.kanban__items',
-              m(
-                '.col.s12',
-                sortedItems.map(item =>
-                  m('.card-panel', { key: Date.now(), style: 'padding-bottom: 12px;', draggable: canDrag }, [
-                    m('.card-content.kanban__item', m(NewGroup, { model, item, containerId, disabled: true })),
-                    canEdit
-                      ? m('.card-action', { style: 'text-align: right' }, [
-                          m(FlatButton, {
-                            iconName: 'edit',
-                            modalId: state.editId,
-                            onclick: () => {
-                              state.curItem = item;
-                              state.updatedItem = { ...item };
-                            },
-                          }),
-                          m(FlatButton, {
-                            iconName: 'delete',
-                            modalId: state.deleteId,
-                            onclick: () => (state.curItem = item),
-                          }),
-                        ])
-                      : undefined,
-                  ])
+        m(
+          '.row.kanban__items',
+          m(
+            '.col.s12',
+            sortedItems.length > 0 || !moveBetweenList
+              ? sortedItems.map((item, i) =>
+                  m(
+                    `.card-panel.kanban__item[data-kanban-index=${i}]`,
+                    canDrag
+                      ? {
+                          key: Date.now(),
+                          style: 'padding-bottom: 12px;',
+                          ...dragOptions,
+                        }
+                      : { key: Date.now(), style: 'padding-bottom: 12px;' },
+                    [
+                      m('.card-content', m(NewGroup, { model, item, containerId, disabled: true })),
+                      canEdit
+                        ? m('.card-action', { style: 'text-align: right' }, [
+                            m(FlatButton, {
+                              iconName: 'edit',
+                              modalId: state.editId,
+                              onclick: () => {
+                                state.curItem = item;
+                                state.updatedItem = { ...item };
+                              },
+                            }),
+                            m(FlatButton, {
+                              iconName: 'delete',
+                              modalId: state.deleteId,
+                              onclick: () => (state.curItem = item),
+                            }),
+                          ])
+                        : undefined,
+                    ]
+                  )
                 )
-              )
-            )
-          : undefined,
-
+              : m('.card-panel.kanban__item', { ...dragOptions })
+          )
+        ),
         m(ModalPanel, {
           id: state.editId,
           title: `Create new ${label}`,
@@ -358,7 +364,6 @@ export const Kanban = (): Component<Partial<IKanban>> => {
             {
               iconName: 'cancel',
               label: 'Cancel',
-              // onclick: () => state.curItem && state.items.push(state.curItem),
             },
             {
               iconName: 'save',
@@ -370,6 +375,7 @@ export const Kanban = (): Component<Partial<IKanban>> => {
                 } else if (state.updatedItem) {
                   state.items.push(state.updatedItem);
                 }
+                notify();
               },
             },
           ],
@@ -381,15 +387,17 @@ export const Kanban = (): Component<Partial<IKanban>> => {
           buttons: [
             {
               label: 'No',
-              // onclick: () => state.curItem && state.items.push(state.curItem),
             },
             {
               label: 'Yes',
-              onclick: () => (state.items = state.items.filter(item => item !== state.curItem)),
+              onclick: () => {
+                state.items = state.items.filter(item => item !== state.curItem);
+                notify();
+              },
             },
           ],
         }),
-      ];
+      ]);
     },
   };
 };
