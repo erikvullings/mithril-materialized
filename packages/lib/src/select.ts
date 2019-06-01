@@ -2,19 +2,19 @@ import m, { Component, Attributes } from 'mithril';
 import { isNumeric } from './utils';
 import { Label, HelperText } from './label';
 
-export interface ISelectOption<T> {
-  id?: T;
+export interface ISelectOption {
+  id?: string | number;
   label: string;
   disabled?: boolean;
 }
 
-export interface ISelectOptions<T> extends Attributes, Partial<M.FormSelectOptions> {
+export interface ISelectOptions extends Attributes, Partial<M.FormSelectOptions> {
   /** Options to select from */
-  options: Array<ISelectOption<T>>;
+  options: ISelectOption[];
   /** Called when the value is changed, either contains a single or all selected (checked) ids */
-  onchange: (value?: T | T[]) => void;
+  onchange: (value?: string | number | Array<string | number>) => void;
   /** Selected id or ids (in case of multiple options) */
-  checkedId?: T | T[];
+  checkedId?: string | number | Array<string | number>;
   /** Select a single option or multiple options */
   multiple?: boolean;
   /** Optional label. */
@@ -45,11 +45,11 @@ export interface ISelectOptions<T> extends Attributes, Partial<M.FormSelectOptio
 }
 
 /** Component to select from a list of values in a dropdowns */
-export const Select = <T extends string | number>(): Component<ISelectOptions<T>> => {
+export const Select = <T extends string | number>(): Component<ISelectOptions> => {
   const state = {
     instance: undefined as M.FormSelect | undefined,
   };
-  const isSelected = (id?: T, checkedId?: T | T[], selected = false) =>
+  const isSelected = (id?: string | number, checkedId?: string | number | Array<string | number>, selected = false) =>
     selected ||
     (checkedId instanceof Array && (id || typeof id === 'number') ? checkedId.indexOf(id) >= 0 : checkedId === id);
   return {
