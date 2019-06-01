@@ -106,3 +106,31 @@ export const padLeft = (n: string | number, width = 2, z = '0') => {
   n = n + '';
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 };
+
+/**
+ * Swap two elements at index i and j.
+ * Mutates the original array.
+ *
+ * @param arr array of items
+ * @param i from index
+ * @param j to index
+ */
+export const swap = <T>(arr: T[], i: number, j: number) => {
+  const temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
+};
+
+/**
+ * Move an element at index i to index j.
+ * Mutates the original array.
+ *
+ * @param arr array of items
+ * @param i from index
+ * @param j to index
+ */
+export const move = <T>(arr: T[], i: number, j: number) => {
+  const temp = arr[i];
+  arr.splice(i, 1);
+  arr.splice(j, 0, temp);
+};
