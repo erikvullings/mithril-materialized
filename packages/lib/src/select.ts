@@ -1,18 +1,13 @@
-import m, { Component, Attributes } from 'mithril';
+import m, { FactoryComponent, Attributes } from 'mithril';
 import { isNumeric } from './utils';
 import { Label, HelperText } from './label';
-
-export interface ISelectOption {
-  id?: string | number;
-  label: string;
-  disabled?: boolean;
-}
+import { IInputOption } from './option';
 
 export interface ISelectOptions extends Attributes, Partial<M.FormSelectOptions> {
   /** Options to select from */
-  options: ISelectOption[];
+  options: IInputOption[];
   /** Called when the value is changed, either contains a single or all selected (checked) ids */
-  onchange: (value?: string | number | Array<string | number>) => void;
+  onchange: (checkedId: Array<string | number>) => void;
   /** Selected id or ids (in case of multiple options) */
   checkedId?: string | number | Array<string | number>;
   /** Select a single option or multiple options */
@@ -45,36 +40,54 @@ export interface ISelectOptions extends Attributes, Partial<M.FormSelectOptions>
 }
 
 /** Component to select from a list of values in a dropdowns */
-export const Select = <T extends string | number>(): Component<ISelectOptions> => {
-  const state = {
-    instance: undefined as M.FormSelect | undefined,
+export const Select: FactoryComponent<ISelectOptions> = () => {
+  const state = {} as {
+    checkedIds: Array<string | number>;
+    instance?: M.FormSelect;
+    onchange?: (e: Event) => void;
   };
   const isSelected = (id?: string | number, checkedId?: string | number | Array<string | number>, selected = false) =>
     selected ||
     (checkedId instanceof Array && (id || typeof id === 'number') ? checkedId.indexOf(id) >= 0 : checkedId === id);
   return {
+    oninit: ({ attrs: { onchange, checkedId, multiple } }) => {
+      state.checkedIds = checkedId ? (checkedId instanceof Array ? [...checkedId] : [checkedId]) : [];
+      state.onchange = onchange
+        ? (e: Event) => {
+            if (multiple) {
+              const values = state.instance && state.instance.getSelectedValues();
+              const v = values ? (values.length > 0 && isNumeric(values[0]) ? values.map(n => +n) : values) : undefined;
+              state.checkedIds = v ? v : [];
+            } else if (e && e.currentTarget) {
+              const b = e.currentTarget as HTMLButtonElement;
+              const v = isNumeric(b.value) ? +b.value : b.value;
+              state.checkedIds = v ? [v] : [];
+            }
+            onchange(state.checkedIds);
+          }
+        : undefined;
+    },
     view: ({
       attrs: {
         id,
-        checkedId,
         newRow,
         className = 'col s12',
         key,
-        onchange,
         options,
+        multiple,
         label,
         helperText,
-        multiple,
         placeholder,
         isMandatory,
         iconName,
         disabled,
       },
     }) => {
+      const { checkedIds, onchange } = state;
       const clear = newRow ? '.clear' : '';
       const isDisabled = disabled ? '[disabled]' : '';
       const isMultiple = multiple ? '[multiple]' : '';
-      const noValidSelection = options.filter(o => isSelected(o.id, checkedId)).length === 0;
+      const noValidSelection = options.filter(o => isSelected(o.id, checkedIds)).length === 0;
       return m(`.input-field.select-space${clear}`, { className, key }, [
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(
@@ -86,29 +99,13 @@ export const Select = <T extends string | number>(): Component<ISelectOptions> =
             onupdate: ({ dom, attrs }) => {
               state.instance = M.FormSelect.init(dom, attrs);
             },
-            onchange: onchange
-              ? (e: Event) => {
-                  if (multiple) {
-                    const values = state.instance && state.instance.getSelectedValues();
-                    const v = values
-                      ? values.length > 0 && isNumeric(values[0])
-                        ? values.map(n => +n)
-                        : values
-                      : undefined;
-                    onchange(v as T[]);
-                  } else if (e && e.currentTarget) {
-                    const b = e.currentTarget as HTMLButtonElement;
-                    const v = isNumeric(b.value) ? +b.value : b.value;
-                    onchange(v as T);
-                  }
-                }
-              : undefined,
+            onchange,
           },
           placeholder ? m(`option[disabled]${noValidSelection ? '[selected]' : ''}`, placeholder) : '',
           options.map((o, i) =>
             m(
               `option[value=${o.id}]${o.disabled ? '[disabled]' : ''}${
-                isSelected(o.id, checkedId, i === 0 && noValidSelection && !placeholder) ? '[selected]' : ''
+                isSelected(o.id, checkedIds, i === 0 && noValidSelection && !placeholder) ? '[selected]' : ''
               }`,
               o.label.replace('&amp;', '&')
             )

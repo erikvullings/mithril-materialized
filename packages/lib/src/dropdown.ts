@@ -1,9 +1,9 @@
 import m, { Component, Attributes } from 'mithril';
 import { HelperText } from './label';
 
-export interface IDropdownOption<T> {
+export interface IDropdownOption {
   /** ID property of the selected item */
-  id?: T;
+  id?: string | number;
   /** Label to show in the dropdown */
   label: string;
   /** Can we select the item */
@@ -14,7 +14,7 @@ export interface IDropdownOption<T> {
   divider?: boolean;
 }
 
-export interface IDropdownOptions<T> extends Partial<M.DropdownOptions>, Attributes {
+export interface IDropdownOptions extends Partial<M.DropdownOptions>, Attributes {
   /**
    * Optional id of the dropdown element
    * @default 'dropdown'
@@ -27,11 +27,11 @@ export interface IDropdownOptions<T> extends Partial<M.DropdownOptions>, Attribu
   label?: string;
   key?: string;
   /** Item array to show in the dropdown. If the value is not supplied, uses he name. */
-  items: Array<IDropdownOption<T>>;
+  items: IDropdownOption[];
   /** Selected value or name */
-  checkedId?: T;
+  checkedId?: string | number;
   /** When a value or name is selected */
-  onchange?: (value: T) => void;
+  onchange?: (value: string | number) => void;
   /** Uses Materialize icons as a prefix or postfix. */
   iconName?: string;
   /** Add a description underneath the input field. */
@@ -39,10 +39,10 @@ export interface IDropdownOptions<T> extends Partial<M.DropdownOptions>, Attribu
 }
 
 /** Dropdown component */
-export const Dropdown = <T extends string | number>(): Component<IDropdownOptions<T>> => {
+export const Dropdown = (): Component<IDropdownOptions> => {
 // export const Dropdown: FactoryComponent<IDropdownOptions> = () => {
   const state = {
-    checkedId: undefined as T | undefined,
+    checkedId: undefined as string | number | undefined,
   };
   return {
     view: ({ attrs }) => {
@@ -60,7 +60,7 @@ export const Dropdown = <T extends string | number>(): Component<IDropdownOption
       } = attrs;
       const selectedItem = checkedId
         ? items
-            .filter((i: IDropdownOption<T>) => (i.id ? i.id === checkedId : i.label === checkedId))
+            .filter((i: IDropdownOption) => (i.id ? i.id === checkedId : i.label === checkedId))
             .shift()
         : undefined;
       const title = selectedItem ? selectedItem.label : label || 'Select';
@@ -90,8 +90,8 @@ export const Dropdown = <T extends string | number>(): Component<IDropdownOption
                     {
                       onclick: onchange
                         ? () => {
-                            state.checkedId = i.id || i.label as T;
-                            onchange(i.id || i.label as T);
+                            state.checkedId = i.id || i.label;
+                            onchange(state.checkedId);
                           }
                         : undefined,
                     },

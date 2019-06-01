@@ -25,7 +25,7 @@ export const SelectionPage = () => {
 
         m('h3.header', 'Select'),
         m(
-          'row',
+          '.row',
           m(Select, {
             iconName: 'person',
             label: 'What is your favorite hobby?',
@@ -38,7 +38,7 @@ export const SelectionPage = () => {
               { id: 'out', label: 'Going out' },
             ],
             onchange,
-          } as ISelectOptions<string>)
+          } as ISelectOptions)
         ),
         m(CodeBlock, {
           newRow: true,
@@ -59,29 +59,29 @@ export const SelectionPage = () => {
 
         m('h3.header', 'Select multiple'),
         m(
-          'row',
+          '.row',
           m(Select, {
             multiple: true,
             placeholder: 'Make a choice...',
             label: 'What are your favorite hobbies?',
             checkedId: state.checkedIds,
             onchange: v => {
-              state.checkedIds = v as number[];
+              // state.checkedIds = v as number[];
               console.log(v);
             },
             options: [
               { id: 0, label: 'Watching movies' },
               { id: 1, label: 'Going out' },
               { id: 2, label: 'Reading' },
-              { id: 3, label: 'Karate' },
+              { id: 3, label: 'Sex', disabled: true },
               { id: 4, label: 'Horse riding' },
             ],
-          } as ISelectOptions<number>)
+          } as ISelectOptions)
         ),
         m(CodeBlock, {
           newRow: true,
           code: `          m(
-            'row',
+            '.row',
             m(Select, {
               multiple: true,
               placeholder: 'Make a choice...',
@@ -95,7 +95,7 @@ export const SelectionPage = () => {
                 { id: 0, label: 'Watching movies' },
                 { id: 1, label: 'Going out' },
                 { id: 2, label: 'Reading' },
-                { id: 3, label: 'Karate' },
+                { id: 3, label: 'Sex', disabled: true },
                 { id: 4, label: 'Horse riding' },
               ],
             } as ISelectOptions<number>)
@@ -104,38 +104,85 @@ export const SelectionPage = () => {
 
         m('h3.header', 'Options'),
         m(
-          'row',
+          '.row',
           m(Options, {
-            label: 'What is your favorite hobby?',
+            inline: true,
+            label: 'What are your favorite hobbies?',
             isMandatory: true,
-            options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
-            onchange: (v: boolean, id: string) => onchange(`Option ${id} is changed to ${v}.`),
+            checkedId: 'out',
+            options: [
+              { id: 'movies', label: 'Watching movies' },
+              { id: 'out', label: 'Going out' },
+              { id: 'sex', label: 'Sex', disabled: true },
+            ],
+            onchange: checkedIds => onchange(`Options ${checkedIds.join()} are checked.`),
+          })
+        ),
+        m(
+          '.row',
+          m(Options, {
+            label: 'What are your favorite hobbies?',
+            isMandatory: true,
+            checkedId: 'out',
+            options: [
+              { id: 'movies', label: 'Watching movies' },
+              { id: 'out', label: 'Going out' },
+              { id: 'sex', label: 'Sex', disabled: true },
+            ],
+            onchange: checkedIds => onchange(`Options ${checkedIds.join()} are checked.`),
           })
         ),
         m(CodeBlock, {
           newRow: true,
           code: `          m(Options, {
-            label: 'What is your favorite hobby?',
+            inline: true, // next one is false
+            label: 'What are your favorite hobbies?',
             isMandatory: true,
-            options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
-            onchange: (v: boolean, id: string) => onchange(\`Option \${id} is changed to \${v}.\`),
+            checkedId: 'out',
+            options: [
+              { id: 'movies', label: 'Watching movies' },
+              { id: 'out', label: 'Going out' },
+              { id: 'sex', label: 'Sex', disabled: true },
+            ],
+            onchange: checkedIds => onchange(\`Options \${checkedIds.join()} are checked.\`),
           })`,
         }),
 
         m('h3.header', 'RadioButtons'),
         m(
-          'row',
+          '.row',
+          m(RadioButtons, {
+            inline: true,
+            label: 'What is your favorite hobby?',
+            options: [
+              { id: 'movies', label: 'Watching movies' },
+              { id: 'out', label: 'Going out' },
+              { id: 'sex', label: 'Sex', disabled: true },
+            ],
+            checkedId: 'out',
+            onchange,
+          }),
           m(RadioButtons, {
             label: 'What is your favorite hobby?',
-            options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
+            options: [
+              { id: 'movies', label: 'Watching movies' },
+              { id: 'out', label: 'Going out' },
+              { id: 'sex', label: 'Sex', disabled: true },
+            ],
+            checkedId: 'out',
             onchange,
           })
         ),
         m(CodeBlock, {
           newRow: true,
           code: `          m(RadioButtons, {
+            inline: true, // next one is false
             label: 'What is your favorite hobby?',
-            options: [{ id: 'movies', label: 'Watching movies' }, { id: 'out', label: 'Going out' }],
+            options: [
+              { id: 'movies', label: 'Watching movies' },
+              { id: 'out', label: 'Going out' },
+              { id: 'sex', label: 'Sex', disabled: true },
+            ],
             onchange,
           })`,
         }),
@@ -178,7 +225,7 @@ export const SelectionPage = () => {
               { label: 'Sex', id: 'sex', iconName: 'group' },
             ],
             onchange: v => console.log(v),
-          } as IDropdownOptions<string>)
+          } as IDropdownOptions)
         ),
         m(CodeBlock, {
           newRow: true,
