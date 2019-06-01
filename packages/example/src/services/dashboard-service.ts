@@ -12,6 +12,7 @@ import { MiscPage } from '../components/misc/misc-page';
 import { CollectionsPage } from '../components/collections/collections-page';
 import { MapEditorPage } from './../components/map-editor/map-editor-page';
 import { TimelinePage } from '../components/timeline/timeline-page';
+import { KanbanPage } from '../components/misc/kanban-page';
 
 export const enum Dashboards {
   HOME = 'HOME',
@@ -23,7 +24,8 @@ export const enum Dashboards {
   MAP_EDITOR = 'MAP_EDITOR',
   MODALS = 'MODALS',
   TIMELINE = 'TIMELINE',
-  MISC = 'IMAGES',
+  KANBAN = 'KANBAN',
+  MISC = 'MISC',
   ABOUT = 'ABOUT',
 }
 
@@ -126,7 +128,7 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
   {
     id: Dashboards.MAP_EDITOR,
     title: 'MAP-EDITOR',
-    icon: 'dns',
+    icon: 'playlist_add',
     route: '/map_editor',
     visible: true,
     component: MapEditorPage,
@@ -138,6 +140,14 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
     route: '/timeline',
     visible: true,
     component: TimelinePage,
+  },
+  {
+    id: Dashboards.KANBAN,
+    title: 'KANBAN',
+    icon: 'dns',
+    route: '/kanban',
+    visible: true,
+    component: KanbanPage,
   },
   {
     id: Dashboards.MISC,
