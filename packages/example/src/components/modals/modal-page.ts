@@ -16,7 +16,7 @@ export const ModalPage = () => {
 
         m('h3.header', 'Normal Modal'),
         m(
-          'row',
+          '.row',
           m(Button, { label: 'Open modal', modalId: 'modal1' }),
           m(ModalPanel, {
             id: 'modal1',
@@ -57,7 +57,7 @@ export const ModalPage = () => {
 
         m('h3.header', 'Fixed Footer Modal'),
         m(
-          'row',
+          '.row',
           m(Button, { label: 'Fixed footer modal', modalId: 'modal2' }),
           m(ModalPanel, {
             id: 'modal2',
@@ -131,7 +131,7 @@ This is some content.<br>
 
         m('h3.header', 'Bottom Modal'),
         m(
-          'row',
+          '.row',
           m(Button, { label: 'Open bottom modal', modalId: 'modal3' }),
           m(ModalPanel, {
             id: 'modal3',
@@ -172,7 +172,7 @@ This is some content.<br>
 
         m('h3.header', 'Vnode as content'),
         m(
-          'row',
+          '.row',
           m(Button, { label: 'Open bottom content modal', modalId: 'modal4' }),
           m(ModalPanel, {
             id: 'modal4',

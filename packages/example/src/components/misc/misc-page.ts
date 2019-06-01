@@ -131,14 +131,14 @@ export const MiscPage = () => {
         }),
 
         m('h3.header', 'Material box (click on image)'),
-        m('row', m(MaterialBox, { src: gogh, width: 600 })),
+        m('.row', m(MaterialBox, { src: gogh, width: 600 })),
         m(CodeBlock, {
           code: `          m(MaterialBox, { src: gogh, width: 600 })`,
         }),
 
         m('h3.header', 'Carousel'),
         m(
-          'row',
+          '.row',
           m(Carousel, {
             items: [
               { href: '#one!', src: 'https://lorempixel.com/250/250/nature/1' },
@@ -161,7 +161,7 @@ export const MiscPage = () => {
 
         m('h3.header', 'Pagination'),
         m(
-          'row',
+          '.row',
           m(Pagination, {
             size: 5,
             items: [
