@@ -8,8 +8,6 @@ import { move } from './utils';
 import './styles/kanban.css';
 
 // TODO
-// - onchange notification
-// - add support for options (not working - checkedId is implemented incorrectly)
 // - Save button is not behaving correctly: sometimes it is enabled while it should not, or otherwise.
 
 export interface IKanban extends Attributes {
@@ -39,7 +37,7 @@ export interface IKanban extends Attributes {
   /** Properties to sort */
   sortProperties: string[];
   /** Drop down options */
-  dropdownItems: Array<IDropdownOption<string | number>>;
+  dropdownItems: IDropdownOption[];
 }
 
 interface IKanbanState extends IKanban {
@@ -63,11 +61,7 @@ export const Kanban = (): Component<Partial<IKanban>> => {
     curItem: undefined,
   } as IKanbanState;
 
-  const notify = () => {
-    if (state.onchange) {
-      state.onchange(state.items);
-    }
-  };
+  const notify = () => state.onchange && state.onchange(state.items);
 
   /** The drop location indicates the new position of the dropped element: above or below */
   const computeDropLocation = (target: HTMLElement, ev: DragEvent) => {

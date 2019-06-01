@@ -35,6 +35,8 @@ export interface IModelField {
   multiple?: boolean;
   newRow?: boolean;
   options?: IInputOption[];
+  /** If true, draw the radio buttons inline */
+  inline?: boolean;
 }
 
 /** A data object that can be created */
@@ -107,7 +109,7 @@ export const fieldToComponent = (
         checkedId: value as string | number | Array<string | number>,
       });
     case 'options':
-      const onChange2 = (v?: boolean) => v && onchange && onchange(v);
+      const onChange2 = (checkedIds: Array<string | number>) => onchange && onchange(checkedIds);
       return m(Options, {
         ...props,
         options: selectOptions || [{ id: 'none', label: 'Unspecified' }],
@@ -224,7 +226,7 @@ export const NewGroup = (): Component<{
               },
         })
       );
-      return m(el, { style: 'margin-bottom: -20px;' }, formFields);
+      return m(el, { style: 'margin-bottom: -15px;' }, formFields);
     },
   };
 };
