@@ -241,7 +241,7 @@ export const Kanban = (): Component<Partial<IKanban>> => {
       state.canEdit = canEdit;
       state.canSort = canSort;
       state.canDrag = canDrag;
-      state.sortDirection = sortDirection;
+      state.sortDirection = sortDirection as 'asc' | 'desc';
       state.containerId = containerId;
       state.fixedFooter = fixedFooter;
       state.editId = `edit_item_${state.id}`;

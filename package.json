@@ -14,14 +14,13 @@
   },
   "keywords": [
     "mithril",
-    "materialize-css"
+    "materialize-css",
+    "material design",
+    "ui toolkit"
   ],
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
   "devDependencies": {
-    "lerna": "^3.4.3"
-  },
-  "dependencies": {
-    "materialize-css": "^1.0.0"
+    "lerna": "^3.14.1"
   }
 }

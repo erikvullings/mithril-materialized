@@ -19,10 +19,10 @@
   "author": "Erik Vullings <erik.vullings@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "mithril": "next",
     "material-icons": "^0.3.1",
     "materialize-css": "^1.0.0",
-    "mithril-materialized": "^0.12.5"
+    "mithril": "^2.0.0-rc.6",
+    "mithril-materialized": "^0.12.7"
   },
   "devDependencies": {
     "@types/materialize-css": "^1.0.6",
@@ -30,6 +30,6 @@
     "autoprefixer": "^9.5.1",
     "cssnano": "^4.1.10",
     "parcel-bundler": "^1.12.3",
-    "typescript": "^3.4.5"
+    "typescript": "^3.5.1"
   }
 }

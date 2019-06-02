@@ -6,7 +6,7 @@ devDependencies:
   npm-run-all: 4.1.5
   tslib: 1.9.3
   typedoc: 0.14.2
-  typescript: 3.4.5
+  typescript: 3.5.1
 lockfileVersion: 5
 packages:
   /@types/cash/0.0.3:
@@ -2531,13 +2531,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-0RNDbSdEokBeEAkgNbxJ+BLwSManFy9TeXz8uW+48j/xhEXv1ePME60olyzw2XzUqUBNAYFeJadIqAgNqIACwg==
-  /typescript/3.4.5:
+  /typescript/3.5.1:
     dev: true
     engines:
       node: '>=4.2.0'
     hasBin: true
     resolution:
-      integrity: sha512-YycBxUb49UUhdNMU5aJ7z5Ej2XGmaIBL0x34vZ82fn3hGvD+bgrMrVDpatgz2f7YxUMJxMkbWxJZeAvDxVe7Vw==
+      integrity: sha512-64HkdiRv1yYZsSe4xC1WVgamNigVYjlssIoaH2HcZF0+ijsk5YK2g0G34w9wJkze8+5ow4STd22AynfO6ZYYLw==
   /uglify-js/3.4.9:
     dependencies:
       commander: 2.17.1
@@ -2644,4 +2644,4 @@ specifiers:
   npm-run-all: ^4.1.5
   tslib: ^1.9.3
   typedoc: ^0.14.2
-  typescript: ^3.4.5
+  typescript: ^3.5.1

@@ -27,6 +27,7 @@ export const uuid4 = () => {
   });
 };
 
+
 export const compose = <F extends (d: any) => any, T>(...functions: F[]) => (data: T) =>
   functions.reduceRight((value, func) => func(value), data);
 
@@ -46,7 +47,7 @@ const encodeAttribute = (x = '') => x.toString().replace(/"/g, '&quot;');
 /** Convert an object to a string of HTML attributes */
 export const toAttributeString = <T extends { [key: string]: any }>(x?: T) =>
   x
-    ? compose<((list: T[]) => string) | ((list: T[]) => Array<{}>), T>(
+    ? compose<any, T>(
         join(''),
         map((attribute: string) => `[${camelToSnake(attribute)}="${encodeAttribute(x[attribute])}"]`),
         Object.keys

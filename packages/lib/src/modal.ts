@@ -4,7 +4,7 @@ import { FlatButton } from './button';
 export interface IMaterialModal extends Attributes {
   id: string;
   title: string;
-  description?: string | Vnode<any>;
+  description?: string | Vnode<any, any>;
   /** Set to true when the description contains HTML */
   richContent?: boolean;
   /** Fixate the footer, so you can show more content. */

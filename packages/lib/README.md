@@ -52,8 +52,6 @@ Supported components:
 
 v0.13.0 Breaking changes
 
-items. Supports drag-and-drop between lists too, essentially allowing you to create a Kanban list. Hence the name.
-
 - `Select` component now maintains the checkedIds internally, i.e. they are only processed during `oninit`. This is to create consistent behaviour with the `Options` and `RadioButtons` components.
 - `Select`, `Options`, `Dropdown` and `RadioButtons` are no longer of the generic type, since IDs can only be strings or numbers.
 - `ISelectOption` is removed, and is replaced by `IInputOption`, making it easier to switch between a radios, select and options.
@@ -61,7 +59,8 @@ items. Supports drag-and-drop between lists too, essentially allowing you to cre
 
 NEW
 
-- [Kanban](https://erikvullings.github.io/mithril-materialized/#!/kanban): new component to render an editable list of - `InputCheckbox`: label is optional
+- [Kanban](https://erikvullings.github.io/mithril-materialized/#!/kanban): new component to render an editable list of items. Supports drag-and-drop between lists too, essentially allowing you to create a Kanban list. Hence the name.
+- `InputCheckbox`: label is optional
 - `Options` and `RadioButtons` are more consistent with respect to look and feel.
 - `Options` and `RadioButtons` support an `inline` property to align them horizontally.
 - `Select`, `Options`, and `RadioButtons` all use `IInputOption` to specify their options. An item can be disabled now.
