@@ -5,6 +5,7 @@ import { DatePicker } from './pickers';
 import { InputCheckbox, Options, IInputOption } from './option';
 import { Select } from './select';
 import { RadioButtons } from './radio';
+import { uniqueId, uuid4 } from './utils';
 
 /** List of components that can be used for generating a form */
 export type ComponentType =
@@ -21,26 +22,44 @@ export type ComponentType =
 
 /** Generic description of a form field, based on a union of the individual component options */
 export interface IModelField {
+  /** Name of the property in the generated object */
   id: string;
-  component: ComponentType;
+  /** Type of component to use for rendering the field. If empty, field will not be rendered. */
+  component?: ComponentType;
+  /** Label to display */
   label?: string;
+  /** Optional class to append to the field */
   className?: string;
+  /** Optional icon to display on the element, based on the materializecss.com/icons */
   iconName?: string;
+  /** Optional class for the icon, e.g. to make it smaller or bigger */
   iconClass?: string;
+  /** For text, may it have multiple lines */
   multiline?: boolean;
+  /** If true, the item is required */
   required?: boolean;
+  /** If true, the item is disabled */
   disabled?: boolean;
+  /** Optional placeholder */
   placeholder?: string;
+  /** Optional helper text */
   helperText?: string;
-  multiple?: boolean;
+  /** Start a new row after this field */
   newRow?: boolean;
+  /** Options for radios, options (checkboxes), and selections */
   options?: IInputOption[];
   /** If true, draw the radio buttons inline */
   inline?: boolean;
+  /**
+   * If specified, generate a value automatically, e.g. to set an ID, or to use a GUID.
+   * Possible options are `guid` to generate a GUID, or 'id' to generate an `idXXXX`.
+   */
+  autogenerate?: 'guid' | 'id';
 }
 
 /** A data object that can be created */
 export interface IConvertibleType {
+  id: string | number;
   [key: string]: string | number | boolean | Date | Array<string | number>;
 }
 
@@ -52,22 +71,43 @@ export interface IConvertibleType {
  * @param options Component options
  */
 export const fieldToComponent = (
-  { component, required, options: selectOptions, ...props }: IModelField,
+  { component, required: isMandatory, options: selectOptions, autogenerate, ...props }: IModelField,
   value: string | number | boolean | Date | Array<string | number>,
   options: {
-    onchange?: (v: string | number | boolean | Date | Array<string | number>) => void;
+    onchange?: (v: string | number | boolean | Date | Array<string | number>, overwrite?: boolean) => void;
     containerId?: string;
     autofocus?: boolean;
     disabled?: boolean;
     multiline?: boolean;
+    key?: number | string;
   } = {}
 ) => {
-  const { containerId, autofocus, disabled = false, onchange, multiline } = options;
+  const { containerId, autofocus, disabled = false, onchange, multiline, key } = options;
+  if (autogenerate && onchange) {
+    onchange(autogenerate === 'id' ? uniqueId() : uuid4(), false);
+  }
+  const validate = isMandatory
+    ? (v: string | number | Array<string | number>) => (v instanceof Array ? v && v.length > 0 : typeof v !== undefined)
+    : undefined;
+
   switch (component) {
+    case 'text':
+      return m(multiline ? TextArea : TextInput, {
+        ...props,
+        key,
+        isMandatory,
+        validate,
+        autofocus,
+        disabled,
+        onchange,
+        initialValue: value as string,
+      });
     case 'number':
       return m(NumberInput, {
         ...props,
-        isMandatory: required,
+        key,
+        isMandatory,
+        validate,
         autofocus,
         disabled,
         onchange,
@@ -76,7 +116,9 @@ export const fieldToComponent = (
     case 'url':
       return m(UrlInput, {
         ...props,
-        isMandatory: required,
+        key,
+        isMandatory,
+        validate,
         autofocus,
         disabled,
         onchange,
@@ -85,7 +127,9 @@ export const fieldToComponent = (
     case 'email':
       return m(EmailInput, {
         ...props,
-        isMandatory: required,
+        key,
+        isMandatory,
+        validate,
         autofocus,
         disabled,
         onchange,
@@ -94,6 +138,7 @@ export const fieldToComponent = (
     case 'checkbox':
       return m(InputCheckbox, {
         ...props,
+        validate,
         disabled,
         onchange,
         checked: value as boolean,
@@ -102,9 +147,11 @@ export const fieldToComponent = (
       const onChange = (v?: string | number | Array<string | number>) => v && onchange && onchange(v);
       return m(Select, {
         ...props,
+        key,
         options: selectOptions || [{ id: 'none', label: 'Unspecified' }],
         disabled,
-        isMandatory: required,
+        isMandatory,
+        validate,
         onchange: onChange,
         checkedId: value as string | number | Array<string | number>,
       });
@@ -112,9 +159,11 @@ export const fieldToComponent = (
       const onChange2 = (checkedIds: Array<string | number>) => onchange && onchange(checkedIds);
       return m(Options, {
         ...props,
+        key,
         options: selectOptions || [{ id: 'none', label: 'Unspecified' }],
         disabled,
-        isMandatory: required,
+        isMandatory,
+        validate,
         onchange: onChange2,
         checkedId: value as string | number | Array<string | number>,
       });
@@ -122,9 +171,11 @@ export const fieldToComponent = (
       const onChange3 = (v?: string | number) => v && onchange && onchange(v);
       return m(RadioButtons, {
         ...props,
+        key,
         options: selectOptions || [{ id: 'none', label: 'Unspecified' }],
         disabled,
-        isMandatory: required,
+        isMandatory,
+        validate,
         onchange: onChange3,
         checkedId: value as string | number,
       });
@@ -135,7 +186,8 @@ export const fieldToComponent = (
       }
       return m(DatePicker, {
         ...props,
-        isMandatory: required,
+        key,
+        isMandatory,
         autofocus,
         disabled,
         onchange,
@@ -149,7 +201,8 @@ export const fieldToComponent = (
       }
       return m(TimePicker, {
         ...props,
-        isMandatory: required,
+        key,
+        isMandatory,
         autofocus,
         disabled,
         onchange,
@@ -157,14 +210,7 @@ export const fieldToComponent = (
         container: containerId || document.body.id,
       });
     default:
-      return m(multiline ? TextArea : TextInput, {
-        ...props,
-        isMandatory: required,
-        autofocus,
-        disabled,
-        onchange,
-        initialValue: value as string,
-      });
+      return undefined;
   }
 };
 
@@ -193,6 +239,7 @@ export const NewGroup = (): Component<{
           acc &&
           !(
             typeof item[cur.id] === 'undefined' ||
+            (item[cur.id] instanceof Array && (item[cur.id] as any[]).length === 0) ||
             (typeof item[cur.id] === 'string' && (item[cur.id] as string).length === 0)
           ),
         true
@@ -204,24 +251,27 @@ export const NewGroup = (): Component<{
       state.item = item;
       state.model = model;
       if (onchange) {
-        onchange(isValid());
+        onchange(false);
       }
 
       const formFields = model.map((f, i) =>
         fieldToComponent(f, item[f.id], {
+          key: item.id,
           containerId,
           autofocus: i === 0,
           disabled,
           onchange: disabled
             ? undefined
-            : v => {
-                if (v instanceof Array) {
-                  state.item[f.id] = v;
-                } else {
-                  state.item[f.id] = v;
-                }
-                if (onchange) {
-                  onchange(isValid());
+            : (v, overwrite = true) => {
+                if (overwrite || typeof state.item[f.id] === 'undefined') {
+                  if (v instanceof Array) {
+                    state.item[f.id] = v;
+                  } else {
+                    state.item[f.id] = v;
+                  }
+                  if (onchange) {
+                    onchange(isValid());
+                  }
                 }
               },
         })

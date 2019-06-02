@@ -6,7 +6,7 @@ export interface IInputOptions<T = string> extends Attributes {
   /** Optional ID. */
   id?: string;
   /** Unique key for use of the element in an array. */
-  key?: string;
+  key?: string | number;
   /** Initial value of the input field. */
   initialValue?: T;
   /**
