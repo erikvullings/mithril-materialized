@@ -9,7 +9,7 @@
     "url": "git://github.com/erikvullings/mithril-materialized.git"
   },
   "scripts": {
-    "clean": "rimraf .rpt2_cacheac && rimraf dist",
+    "clean": "rimraf .rpt2_cache && rimraf dist",
     "link": "npm link",
     "build": "rollup -c",
     "start": "rollup -c -w",
