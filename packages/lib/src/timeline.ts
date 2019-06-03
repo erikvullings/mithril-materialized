@@ -4,11 +4,11 @@ import { padLeft } from './utils';
 
 export interface ITimelineItem {
   id?: string;
-  title?: Vnode<any> | string;
+  title?: Vnode<any, any> | string;
   datetime: Date;
   iconName?: string;
   active?: boolean;
-  content?: Vnode<any> | string;
+  content?: Vnode<any, any> | string;
 }
 
 interface IInternalTimelineItem extends ITimelineItem {

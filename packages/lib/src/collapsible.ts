@@ -2,9 +2,9 @@ import m, { FactoryComponent, Attributes, Vnode } from 'mithril';
 
 export interface ICollapsibleItem extends Attributes {
   /** Header of the collabsible item, may contain HTML or may be a Vnode */
-  header?: string | Vnode;
+  header?: string | Vnode<any, any>;
   /** Body of the collabsible item, may contain HTML or may be a Vnode */
-  body?: string | Vnode;
+  body?: string | Vnode<any, any>;
   /** If active, preselect the collabsible item. */
   active?: boolean;
   /** Add an material icon in front of the header. */

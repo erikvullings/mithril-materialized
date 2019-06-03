@@ -6,5 +6,6 @@
     "markdown",
     "latex",
     "plaintext"
-  ]
+  ],
+  "typescript.tsdk": "./packages/lib/node_modules/typescript/lib"
 }

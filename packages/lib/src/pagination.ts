@@ -2,7 +2,7 @@ import m, { FactoryComponent, Attributes, Vnode } from 'mithril';
 
 export interface IInternalPaginationOption extends IPaginationOption {
   active?: boolean;
-  title: number | Vnode;
+  title: number | Vnode<any, any>;
 }
 
 export interface IPaginationOption extends Attributes {

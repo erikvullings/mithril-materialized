@@ -9,7 +9,7 @@ export enum CollectionMode {
 
 export interface ICollectionItem extends Attributes {
   /** Title of the collection item */
-  title: string | Vnode;
+  title: string | Vnode<any, any>;
   /** For links, may contain a URL reference */
   href?: string;
   /** For Avatar mode, may contain a URL reference to an image or a material icons class name */

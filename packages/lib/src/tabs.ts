@@ -14,7 +14,7 @@ export interface ITabItem {
   /** Title of the tab */
   title: string;
   /** Vnode to render: may be empty in case of a using the tab as a hyperlink. */
-  vnode?: Vnode;
+  vnode?: Vnode<any, any>;
   /** ID of the tab element. Default the title in lowercase */
   id?: string;
   /** If the tab should be active */

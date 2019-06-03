@@ -5,7 +5,7 @@ export interface IInputCheckbox extends Attributes {
   /** Optional event handler when a checkbox is clicked */
   onchange?: (checked: boolean) => void;
   /** Label of the checkbox, can be a string or Vnode */
-  label?: string | Vnode;
+  label?: string | Vnode<any, any>;
   /** If true, the checkbox is checked */
   checked?: boolean;
   /** If true, the checkbox is disabled */
