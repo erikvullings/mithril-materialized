@@ -8,6 +8,7 @@
     "link": "lerna run link",
     "build:domain": "lerna run build:domain",
     "start": "lerna run start --parallel",
+    "clean": "lerna run clean --parallel",
     "patch-release": "lerna run patch-release --parallel",
     "minor-release": "lerna run minor-release --parallel",
     "test": "echo \"Error: no test specified\" && exit 1"

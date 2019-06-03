@@ -1,10 +1,9 @@
 import m, { Component, Attributes } from 'mithril';
 import { FlatButton } from './button';
 import { Dropdown, IDropdownOption } from './dropdown';
-import { uniqueId } from '.';
 import { ModalPanel } from './modal';
 import { IModelField, IConvertibleType, NewGroup } from './form-generator';
-import { move, uuid4 } from './utils';
+import { move, uuid4, uniqueId } from './utils';
 import './styles/kanban.css';
 
 export interface IKanban extends Attributes {

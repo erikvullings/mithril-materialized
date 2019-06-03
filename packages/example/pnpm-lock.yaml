@@ -5230,6 +5230,6 @@ specifiers:
   material-icons: ^0.3.1
   materialize-css: ^1.0.0
   mithril: ^2.0.0-rc.6
-  mithril-materialized: ^0.12.7
+  mithril-materialized: ^0.13.0
   parcel-bundler: ^1.12.3
   typescript: ^3.5.1

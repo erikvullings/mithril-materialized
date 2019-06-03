@@ -1,7 +1,7 @@
 import m, { Component } from 'mithril';
+import 'tslib';
 import { TextInput, TextArea, EmailInput, UrlInput, NumberInput } from './input';
-import { TimePicker } from '.';
-import { DatePicker } from './pickers';
+import { TimePicker, DatePicker } from './pickers';
 import { InputCheckbox, Options, IInputOption } from './option';
 import { Select } from './select';
 import { RadioButtons } from './radio';
