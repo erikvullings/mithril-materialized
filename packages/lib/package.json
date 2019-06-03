@@ -1,6 +1,6 @@
 {
   "name": "mithril-materialized",
-  "version": "0.13.1",
+  "version": "0.13.3",
   "description": "A materialize library for mithril.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -14,6 +14,7 @@
     "build": "rollup -c",
     "start": "rollup -c -w",
     "build:domain": "npm run clean && npm run build && typedoc --out ../../docs/typedoc src",
+    "dry-run": "npm publish --dry-run",
     "patch-release": "npm version patch --force -m \"Patch release\" && npm publish && git push --follow-tags",
     "minor-release": "npm version minor --force -m \"Minor release\" && npm publish && git push --follow-tags",
     "major-release": "npm version major --force -m \"Major release\" && npm publish && git push --follow-tags"
