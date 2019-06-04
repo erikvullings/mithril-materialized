@@ -1,5 +1,6 @@
 import m, { Component, Attributes } from 'mithril';
 import { HelperText } from './label';
+import { uniqueId } from './utils';
 
 export interface IDropdownOption {
   /** ID property of the selected item */
@@ -25,7 +26,7 @@ export interface IDropdownOptions extends Partial<M.DropdownOptions>, Attributes
    * @default 'Select'
    */
   label?: string;
-  key?: string;
+  key?: string | number;
   /** Item array to show in the dropdown. If the value is not supplied, uses he name. */
   items: IDropdownOption[];
   /** Selected value or name */
@@ -41,23 +42,27 @@ export interface IDropdownOptions extends Partial<M.DropdownOptions>, Attributes
 /** Dropdown component */
 export const Dropdown = (): Component<IDropdownOptions> => {
 // export const Dropdown: FactoryComponent<IDropdownOptions> = () => {
-  const state = {
-    checkedId: undefined as string | number | undefined,
+  const state = {} as {
+    checkedId?: string | number;
+    id: string;
   };
   return {
-    view: ({ attrs }) => {
-      const id = attrs.id || 'dropdown';
-      const {
-        key,
-        label,
-        onchange,
-        items,
-        checkedId = state.checkedId,
-        iconName,
-        helperText,
-        style,
-        className = 'col s12',
-      } = attrs;
+    oninit: ({ attrs: { id = uniqueId() }}) => {
+      state.id = id;
+    },
+    view: ({ attrs: {
+      key,
+      label,
+      onchange,
+      items,
+      checkedId = state.checkedId,
+      iconName,
+      helperText,
+      style,
+      className = 'col s12',
+      ...props
+    } }) => {
+      const { id } = state;
       const selectedItem = checkedId
         ? items
             .filter((i: IDropdownOption) => (i.id ? i.id === checkedId : i.label === checkedId))
@@ -71,9 +76,9 @@ export const Dropdown = (): Component<IDropdownOptions> => {
           `a.dropdown-trigger.btn[href=#][data-target=${id}]`,
           {
             class: 'col s12',
-            style: attrs.style || (iconName ? 'margin: 0.2em 0 0 3em;' : undefined),
+            style: style || (iconName ? 'margin: 0.2em 0 0 3em;' : undefined),
             oncreate: ({ dom }) => {
-              M.Dropdown.init(dom, attrs);
+              M.Dropdown.init(dom, props);
             },
           },
           title
