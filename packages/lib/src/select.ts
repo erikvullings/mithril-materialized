@@ -7,7 +7,7 @@ export interface ISelectOptions extends Attributes, Partial<M.FormSelectOptions>
   /** Options to select from */
   options: IInputOption[];
   /** Called when the value is changed, either contains a single or all selected (checked) ids */
-  onchange: (checkedId: Array<string | number>) => void;
+  onchange: (checkedIds: Array<string | number>) => void;
   /** Selected id or ids (in case of multiple options) */
   checkedId?: string | number | Array<string | number>;
   /** Select a single option or multiple options */
@@ -61,7 +61,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
             } else if (e && e.currentTarget) {
               const b = e.currentTarget as HTMLButtonElement;
               const v = isNumeric(b.value) ? +b.value : b.value;
-              state.checkedIds = v ? [v] : [];
+              state.checkedIds = typeof v !== undefined ? [v] : [];
             }
             onchange(state.checkedIds);
           }
