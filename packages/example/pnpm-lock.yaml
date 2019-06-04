@@ -9,6 +9,7 @@ devDependencies:
   autoprefixer: 9.5.1
   cssnano: 4.1.10
   parcel-bundler: 1.12.3
+  rimraf: 2.6.3
   typescript: 3.5.1
 lockfileVersion: 5
 packages:
@@ -5232,4 +5233,5 @@ specifiers:
   mithril: ^2.0.0-rc.6
   mithril-materialized: ^0.13.0
   parcel-bundler: ^1.12.3
+  rimraf: ^2.6.3
   typescript: ^3.5.1

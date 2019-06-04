@@ -50,6 +50,12 @@ Supported components:
 
 ## Version history
 
+v0.13.5 Minor updates
+
+- `Dropdown` id, if not supplied, caused confusion when multiple `Dropdowns` were used on one page.
+- `Kanban` uses type information. New property, `editableIds`, which makes some properties also editable in the list view.
+
+
 v0.13.0 Breaking changes
 
 - `Select` component now maintains the checkedIds internally, i.e. they are only processed during `oninit`. This is to create consistent behaviour with the `Options` and `RadioButtons` components.

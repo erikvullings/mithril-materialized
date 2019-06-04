@@ -1,8 +1,38 @@
-import { CodeBlock, Kanban, IModelField, IConvertibleType } from 'mithril-materialized';
+import { CodeBlock, Kanban, IModelField, IKanban } from 'mithril-materialized';
 import m from 'mithril';
 
+interface ITodoTask {
+  id: string;
+  todo?: string;
+  task?: string;
+  desc?: string;
+  due?: Date;
+  done?: boolean;
+  category?: string;
+  option?: string;
+  prio?: string;
+}
+
 export const KanbanPage = () => {
-  const onchange = (items: IConvertibleType[]) => console.table(items);
+  const state = {
+    todos: [
+      {
+        id: 'id1',
+        todo: 'Buy milk',
+        due: new Date(2025, 11, 31),
+      },
+      {
+        id: 'id2',
+        todo: 'Clean the bathroom',
+        due: new Date(2025, 10, 30),
+        prio: 1,
+      },
+    ],
+  } as {
+    todos: ITodoTask[];
+  };
+
+  const onchange = (items: ITodoTask[]) => console.table(items);
 
   const taskModel = [
     {
@@ -84,8 +114,8 @@ export const KanbanPage = () => {
               fixedFooter: false,
               canEdit: true,
               canDrag: true,
-              model: taskModel,
               moveBetweenList: true,
+              model: taskModel,
               items: [
                 {
                   id: 'item1',
@@ -98,11 +128,11 @@ export const KanbanPage = () => {
                   id: 'item2',
                   task: 'Clean the bathroom',
                   due: new Date(2025, 10, 30),
-                  desc: "Why don't we have a maid?",
+                  desc: `Why don't we have a maid?`,
                   option: 'kids',
                 },
               ],
-            })
+            } as IKanban<ITodoTask>)
           ),
           m(
             '.col.s6',
@@ -112,8 +142,8 @@ export const KanbanPage = () => {
               fixedFooter: false,
               canEdit: true,
               canDrag: true,
-              model: taskModel,
               moveBetweenList: true,
+              model: taskModel,
               items: [
                 {
                   id: 'item3',
@@ -121,28 +151,17 @@ export const KanbanPage = () => {
                   due: new Date(2025, 11, 17),
                 },
               ],
-            })
+            } as IKanban<ITodoTask>)
           ),
         ]),
 
+        m('h3', 'Editable todo'),
         m(Kanban, {
           label: 'todo',
-          onchange,
+          onchange: todos => state.todos = todos,
           fixedFooter: false,
           canEdit: true,
-          items: [
-            {
-              id: 'id1',
-              todo: 'Buy milk',
-              due: new Date(2025, 11, 31),
-            },
-            {
-              id: 'id2',
-              todo: 'Clean the bathroom',
-              due: new Date(2025, 10, 30),
-              prio: 1,
-            },
-          ],
+          items: state.todos,
           model: [
             {
               id: 'id',
@@ -156,10 +175,10 @@ export const KanbanPage = () => {
               required: true,
             },
             {
-              id: 'due',
-              label: 'Due date',
+              id: 'done',
+              label: 'Done',
               className: 'col s4',
-              component: 'date',
+              component: 'checkbox',
             },
             {
               id: 'prio',
@@ -170,19 +189,65 @@ export const KanbanPage = () => {
               options: [{ id: 1, label: 'Low' }, { id: 2, label: 'Medium' }, { id: 3, label: 'High' }],
             },
           ],
-        }),
+        } as IKanban<ITodoTask>),
+
+        m('h3', 'Non-editable todo, except for done'),
+        m(Kanban, {
+          label: 'todo',
+          fixedFooter: false,
+          canEdit: false,
+          editableIds: ['done'],
+          items: state.todos,
+          model: [
+            {
+              id: 'id',
+              autogenerate: 'id',
+            },
+            {
+              id: 'todo',
+              label: 'Todo',
+              component: 'text',
+              className: 'col s8',
+              required: true,
+            },
+            {
+              id: 'done',
+              label: 'Done',
+              className: 'col s4',
+              component: 'checkbox',
+            },
+            {
+              id: 'prio',
+              label: 'Priority',
+              className: 'col s12',
+              component: 'radios',
+              inline: true,
+              options: [{ id: 1, label: 'Low' }, { id: 2, label: 'Medium' }, { id: 3, label: 'High' }],
+            },
+          ],
+        } as IKanban<ITodoTask>),
 
         m(CodeBlock, {
-          code: `        m(Kanban, {
+          code: `          interface ITodoTask {
+            id: string;
+            todo?: string;
+            task?: string;
+            desc?: string;
+            due?: Date;
+            done?: boolean;
+            category?: string;
+            option?: string;
+            prio?: string;
+          }
+
+          m(Kanban, {
             label: 'todo',
-            onchange,
+            onchange: (items: ITodoTask[]) => console.table(items),
             fixedFooter: false,
             canEdit: true,
+            // canEdit: false,
+            // editableIds: ['done'],
             items: [
-              {
-                id: 'id',
-                autogenerate: 'id', // autogenerated ID
-              },
               {
                 id: 'item1',
                 todo: 'Buy milk',
@@ -196,6 +261,10 @@ export const KanbanPage = () => {
               },
             ],
             model: [
+              {
+                id: 'id',
+                autogenerate: 'id',
+              },
               {
                 id: 'todo',
                 label: 'Todo',
@@ -212,13 +281,19 @@ export const KanbanPage = () => {
               {
                 id: 'prio',
                 label: 'Priority',
-                className: 'col s12',
+                className: 'col s8',
                 component: 'radios',
                 inline: true,
                 options: [{ id: 1, label: 'Low' }, { id: 2, label: 'Medium' }, { id: 3, label: 'High' }],
               },
+              {
+                id: 'done',
+                label: 'Done',
+                className: 'col s4',
+                component: 'checkbox',
+              },
             ],
-          })`,
+          } as IKanban<ITodoTask>)`,
         }),
       ]),
   };
