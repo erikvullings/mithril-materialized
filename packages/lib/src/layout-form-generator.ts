@@ -60,7 +60,7 @@ export interface IModelField {
 /** A data object that can be created */
 export interface IConvertibleType {
   id: string | number;
-  [key: string]: string | number | boolean | Date | Array<string | number>;
+  [key: string]: undefined | string | number | boolean | Date | Array<string | number>;
 }
 
 /**
@@ -72,7 +72,7 @@ export interface IConvertibleType {
  */
 export const fieldToComponent = (
   { component, required: isMandatory, options: selectOptions, autogenerate, ...props }: IModelField,
-  value: string | number | boolean | Date | Array<string | number>,
+  value?: string | number | boolean | Date | Array<string | number>,
   options: {
     onchange?: (v: string | number | boolean | Date | Array<string | number>, overwrite?: boolean) => void;
     containerId?: string;
@@ -217,12 +217,13 @@ export const fieldToComponent = (
 /**
  * Generate a new group or form based on an object's model description, where a model consists of multiple fields.
  */
-export const NewGroup = (): Component<{
+export const LayoutForm = <T extends IConvertibleType>(): Component<{
   el?: string;
   model: IModelField[];
-  item: IConvertibleType;
+  item: T;
   containerId?: string;
   disabled?: boolean;
+  editableIds?: Array<keyof T>;
   onchange?: (valid: boolean) => void;
 }> => {
   const state = {} as {
@@ -247,7 +248,7 @@ export const NewGroup = (): Component<{
   };
 
   return {
-    view: ({ attrs: { el = '.row', model, item, containerId, disabled = false, onchange } }) => {
+    view: ({ attrs: { el = '.row', model, item, containerId, disabled = false, editableIds = [], onchange } }) => {
       state.item = item;
       state.model = model;
       if (onchange) {
@@ -259,8 +260,8 @@ export const NewGroup = (): Component<{
           key: item.id,
           containerId,
           autofocus: i === 0,
-          disabled,
-          onchange: disabled
+          disabled: disabled && editableIds.indexOf(f.id) < 0,
+          onchange: disabled && editableIds.indexOf(f.id) < 0
             ? undefined
             : (v, overwrite = true) => {
                 if (overwrite || typeof state.item[f.id] === 'undefined') {
