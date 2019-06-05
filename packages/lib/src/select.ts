@@ -50,8 +50,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
     selected ||
     (checkedId instanceof Array && (id || typeof id === 'number') ? checkedId.indexOf(id) >= 0 : checkedId === id);
   return {
-    oninit: ({ attrs: { onchange, checkedId, multiple } }) => {
-      state.checkedIds = checkedId ? (checkedId instanceof Array ? [...checkedId] : [checkedId]) : [];
+    oninit: ({ attrs: { onchange, multiple } }) => {
       state.onchange = onchange
         ? (e: Event) => {
             if (multiple) {
@@ -72,6 +71,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
         id,
         newRow,
         className = 'col s12',
+        checkedId,
         key,
         options,
         multiple,
@@ -83,6 +83,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
         disabled,
       },
     }) => {
+      state.checkedIds = checkedId ? (checkedId instanceof Array ? [...checkedId] : [checkedId]) : [];
       const { checkedIds, onchange } = state;
       const clear = newRow ? '.clear' : '';
       const isDisabled = disabled ? '[disabled]' : '';

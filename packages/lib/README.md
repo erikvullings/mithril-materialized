@@ -50,6 +50,10 @@ Supported components:
 
 ## Version history
 
+v0.13.8 Bug fix
+
+- `Select`, checkedId is evaluated in the view instead of `oninit`.
+
 v0.13.6 Minor updates
 
 - `Dropdown`, `Kanban`, `TimePicker`, `DatePicker` can be disabled.
