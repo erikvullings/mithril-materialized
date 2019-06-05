@@ -216,6 +216,7 @@ export const SelectionPage = () => {
             label: 'Pick a hobby',
             helperText: 'Help me',
             className: 'col s6',
+            // disabled: true,
             // checkedId: 'movies',
             items: [
               { label: 'Movies', id: 'movies', iconName: 'local_movies' },
@@ -235,6 +236,7 @@ export const SelectionPage = () => {
             label: 'Pick a hobby',
             helperText: 'Help me',
             className: 'col s6',
+            // disabled: true,
             // checkedId: 'movies',
             items: [
               { label: 'Movies', id: 'movies', iconName: 'local_movies' },

@@ -7,7 +7,6 @@ import { move, uuid4, uniqueId } from './utils';
 import './styles/kanban.css';
 
 export interface IKanban<T> extends Attributes {
-  // export interface IKanban<T extends IConvertibleType> extends Attributes {
   /** Label for creating a new item */
   label: string;
   /** The model representing the item's fields */
@@ -35,6 +34,8 @@ export interface IKanban<T> extends Attributes {
   sortProperties?: string[];
   /** Property IDs which can always be edited, e.g. also in the list view */
   editableIds?: string[];
+  /** If true, disable the item */
+  disabled?: boolean;
 }
 
 interface IKanbanState<T extends IConvertibleType> extends IKanban<T> {
@@ -253,7 +254,7 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
       state.editableIds = editableIds;
       state.sortableIds = [{ label: 'None' }, ...model.filter(i => i.label).map(i => ({ label: i.label!, id: i.id }))];
     },
-    view: () => {
+    view: ({ attrs: { disabled } }) => {
       const {
         model,
         items,
@@ -281,7 +282,7 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
 
       return m('.kanban', [
         m('.row.kanban__menu', { style: 'margin-bottom: 0;' }, [
-          canEdit
+          canEdit && !disabled
             ? m(FlatButton, {
                 label: `New ${label}`,
                 modalId: state.editId,
@@ -320,32 +321,30 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
             sortedItems.length > 0 || !moveBetweenList
               ? sortedItems.map((item, i) =>
                   m(
-                    `.card-panel.kanban__item[data-kanban-index=${i}]`,
-                    canDrag
-                      ? {
-                          key: Date.now(),
-                          style: 'padding-bottom: 12px;',
-                          ...dragOptions,
-                        }
-                      : { key: Date.now(), style: 'padding-bottom: 12px;' },
+                    `.card-panel.kanban__item[data-kanban-index=${i}]${disabled ? '.disabled' : ''}`,
+                    canDrag && !disabled ? { key: Date.now(), ...dragOptions } : { key: Date.now() },
                     [
                       m('.card-content', m(LayoutForm, { model, item, containerId, disabled: true, editableIds })),
-                      canEdit
-                        ? m('.card-action', { style: 'text-align: right' }, [
-                            m(FlatButton, {
-                              iconName: 'edit',
-                              modalId: state.editId,
-                              onclick: () => {
-                                state.curItem = item;
-                                state.updatedItem = { ...item };
-                              },
-                            }),
-                            m(FlatButton, {
-                              iconName: 'delete',
-                              modalId: state.deleteId,
-                              onclick: () => (state.curItem = item),
-                            }),
-                          ])
+                      canEdit && !disabled
+                        ? m(
+                            '.card-action.row',
+                            // { style: 'text-align: right; margin-bottom: 0;' },
+                            m('.col.s12', [
+                              m(FlatButton, {
+                                iconName: 'edit',
+                                modalId: state.editId,
+                                onclick: () => {
+                                  state.curItem = item;
+                                  state.updatedItem = { ...item };
+                                },
+                              }),
+                              m(FlatButton, {
+                                iconName: 'delete',
+                                modalId: state.deleteId,
+                                onclick: () => (state.curItem = item),
+                              }),
+                            ])
+                          )
                         : undefined,
                     ]
                   )

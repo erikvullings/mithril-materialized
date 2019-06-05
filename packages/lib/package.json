@@ -1,6 +1,6 @@
 {
   "name": "mithril-materialized",
-  "version": "0.13.4",
+  "version": "0.13.6",
   "description": "A materialize library for mithril.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

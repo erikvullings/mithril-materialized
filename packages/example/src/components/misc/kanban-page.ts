@@ -1,4 +1,4 @@
-import { CodeBlock, Kanban, IModelField, IKanban } from 'mithril-materialized';
+import { CodeBlock, Kanban, IModelField, IKanban, Switch } from 'mithril-materialized';
 import m from 'mithril';
 
 interface ITodoTask {
@@ -15,6 +15,7 @@ interface ITodoTask {
 
 export const KanbanPage = () => {
   const state = {
+    disabled: false,
     todos: [
       {
         id: 'id1',
@@ -29,6 +30,7 @@ export const KanbanPage = () => {
       },
     ],
   } as {
+    disabled: boolean;
     todos: ITodoTask[];
   };
 
@@ -103,12 +105,22 @@ export const KanbanPage = () => {
           requirement is that the item contains a (string) 'id' property, which you can automatically generate for new
           items (using a full or abbreviated GUID).`
         ),
+        m(
+          '.row',
+          m(Switch, {
+            label: 'Disable kanban',
+            left: 'enable',
+            right: 'disable',
+            onchange: v => (state.disabled = v),
+          })
+        ),
 
         m('h3.header', 'Kanban'),
         m('.row', [
           m(
             '.col.s6',
             m(Kanban, {
+              disabled: state.disabled,
               label: 'task',
               onchange,
               fixedFooter: false,
@@ -137,6 +149,7 @@ export const KanbanPage = () => {
           m(
             '.col.s6',
             m(Kanban, {
+              disabled: state.disabled,
               label: 'task',
               onchange,
               fixedFooter: false,
@@ -156,43 +169,50 @@ export const KanbanPage = () => {
         ]),
 
         m('h3', 'Editable todo'),
-        m(Kanban, {
-          label: 'todo',
-          onchange: todos => state.todos = todos,
-          fixedFooter: false,
-          canEdit: true,
-          items: state.todos,
-          model: [
-            {
-              id: 'id',
-              autogenerate: 'id',
-            },
-            {
-              id: 'todo',
-              label: 'Todo',
-              component: 'text',
-              className: 'col s8',
-              required: true,
-            },
-            {
-              id: 'done',
-              label: 'Done',
-              className: 'col s4',
-              component: 'checkbox',
-            },
-            {
-              id: 'prio',
-              label: 'Priority',
-              className: 'col s12',
-              component: 'radios',
-              inline: true,
-              options: [{ id: 1, label: 'Low' }, { id: 2, label: 'Medium' }, { id: 3, label: 'High' }],
-            },
-          ],
-        } as IKanban<ITodoTask>),
-
+        m(
+          '.row',
+          m(
+            '.col s12',
+            m(Kanban, {
+              disabled: state.disabled,
+              label: 'todo',
+              onchange: todos => (state.todos = todos),
+              fixedFooter: false,
+              canEdit: true,
+              items: state.todos,
+              model: [
+                {
+                  id: 'id',
+                  autogenerate: 'id',
+                },
+                {
+                  id: 'todo',
+                  label: 'Todo',
+                  component: 'text',
+                  className: 'col s8',
+                  required: true,
+                },
+                {
+                  id: 'done',
+                  label: 'Done',
+                  className: 'col s4',
+                  component: 'checkbox',
+                },
+                {
+                  id: 'prio',
+                  label: 'Priority',
+                  className: 'col s12',
+                  component: 'radios',
+                  inline: true,
+                  options: [{ id: 1, label: 'Low' }, { id: 2, label: 'Medium' }, { id: 3, label: 'High' }],
+                },
+              ],
+            } as IKanban<ITodoTask>)
+          )
+        ),
         m('h3', 'Non-editable todo, except for done'),
         m(Kanban, {
+          disabled: state.disabled,
           label: 'todo',
           fixedFooter: false,
           canEdit: false,

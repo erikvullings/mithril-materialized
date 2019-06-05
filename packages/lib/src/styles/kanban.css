@@ -43,3 +43,14 @@
   ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b31e5799', endColorstr='#001e5799',GradientType=0 ); /* IE6-9 */
 }
+
+.kanban__item {
+  padding-bottom: 12px;
+}
+.kanban__item.disabled {
+  padding-bottom: 24px;
+}
+.kanban__item > .card-action {
+  margin-bottom: 0;
+  text-align: right;
+}

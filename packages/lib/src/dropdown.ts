@@ -27,6 +27,8 @@ export interface IDropdownOptions extends Partial<M.DropdownOptions>, Attributes
    */
   label?: string;
   key?: string | number;
+  /** If true, disable the selection */
+  disabled?: boolean;
   /** Item array to show in the dropdown. If the value is not supplied, uses he name. */
   items: IDropdownOption[];
   /** Selected value or name */
@@ -54,6 +56,7 @@ export const Dropdown = (): Component<IDropdownOptions> => {
       key,
       label,
       onchange,
+      disabled = false,
       items,
       checkedId = state.checkedId,
       iconName,
@@ -73,7 +76,7 @@ export const Dropdown = (): Component<IDropdownOptions> => {
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(HelperText, { helperText }),
         m(
-          `a.dropdown-trigger.btn[href=#][data-target=${id}]`,
+          `a.dropdown-trigger.btn[href=#][data-target=${id}]${disabled ? '[disabled]' : ''}`,
           {
             class: 'col s12',
             style: style || (iconName ? 'margin: 0.2em 0 0 3em;' : undefined),

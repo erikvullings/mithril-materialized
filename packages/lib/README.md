@@ -50,11 +50,14 @@ Supported components:
 
 ## Version history
 
+v0.13.6 Minor updates
+
+- `Dropdown`, `Kanban`, `TimePicker`, `DatePicker` can be disabled.
+
 v0.13.5 Minor updates
 
 - `Dropdown` id, if not supplied, caused confusion when multiple `Dropdowns` were used on one page.
 - `Kanban` uses type information. New property, `editableIds`, which makes some properties also editable in the list view.
-
 
 v0.13.0 Breaking changes
 

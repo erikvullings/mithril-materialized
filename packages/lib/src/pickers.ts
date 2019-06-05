@@ -7,14 +7,27 @@ import { Label, HelperText } from './label';
 export const DatePicker: FactoryComponent<IInputOptions<Date> & Partial<M.DatepickerOptions>> = () => {
   const state = { id: uniqueId() };
   return {
-    view: ({ attrs }) => {
+    view: ({
+      attrs: {
+        label,
+        helperText,
+        initialValue,
+        newRow,
+        className = 'col s12',
+        iconName,
+        isMandatory,
+        onchange,
+        disabled,
+        ...props
+      },
+    }) => {
       const id = state.id;
-      const attributes = toAttrs(attrs);
-      const { label, helperText, initialValue, newRow, className = 'col s12', iconName, isMandatory, onchange } = attrs;
+      const attributes = toAttrs(props);
+      // const {} = attrs;
       const clear = newRow ? '.clear' : '';
       return m(`.input-field${clear}`, { className }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
-        m(`input.datepicker[type=text][tabindex=0][id=${id}]${attributes}`, {
+        m(`input.datepicker[type=text][tabindex=0][id=${id}]${attributes}${disabled ? '[disabled]' : ''}`, {
           oncreate: ({ dom }) => {
             M.Datepicker.init(dom, {
               format: 'yyyy/mm/dd',
@@ -22,7 +35,7 @@ export const DatePicker: FactoryComponent<IInputOptions<Date> & Partial<M.Datepi
               setDefaultDate: true,
               defaultDate: initialValue ? new Date(initialValue) : new Date(),
               onSelect: onchange,
-              ...attrs,
+              ...props,
             } as Partial<M.DatepickerOptions>);
           },
         }),
@@ -37,14 +50,26 @@ export const DatePicker: FactoryComponent<IInputOptions<Date> & Partial<M.Datepi
 export const TimePicker: FactoryComponent<IInputOptions & Partial<M.TimepickerOptions>> = () => {
   const state = { id: uniqueId() };
   return {
-    view: ({ attrs }) => {
+    view: ({
+      attrs: {
+        label,
+        helperText,
+        initialValue,
+        newRow,
+        className = 'col s12',
+        iconName,
+        isMandatory,
+        onchange,
+        disabled,
+        ...props
+      },
+    }) => {
       const id = state.id;
-      const attributes = toAttrs(attrs);
-      const { label, helperText, initialValue, newRow, className = 'col s12', iconName, isMandatory, onchange } = attrs;
+      const attributes = toAttrs(props);
       const clear = newRow ? '.clear' : '';
       return m(`.input-field.timepicker${clear}`, { className }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
-        m(`input[type=text][tabindex=0][id=${id}]${attributes}`, {
+        m(`input[type=text][tabindex=0][id=${id}]${attributes}${disabled ? '[disabled]' : ''}`, {
           value: initialValue,
           oncreate: ({ dom }) => {
             M.Timepicker.init(dom, {
@@ -52,7 +77,7 @@ export const TimePicker: FactoryComponent<IInputOptions & Partial<M.TimepickerOp
               showClearBtn: true,
               defaultTime: initialValue,
               onSelect: onchange ? (hours, minutes) => onchange(`${hours}:${minutes}`) : undefined,
-              ...attrs,
+              ...props,
             } as Partial<M.TimepickerOptions>);
           },
         }),
