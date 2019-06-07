@@ -1,4 +1,4 @@
-import m, { FactoryComponent, Vnode, VnodeDOM, Attributes } from 'mithril';
+import m, { FactoryComponent, Vnode, Attributes } from 'mithril';
 import { FlatButton } from './button';
 
 export interface IMaterialModal extends Attributes {
