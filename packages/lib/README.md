@@ -50,6 +50,12 @@ Supported components:
 
 ## Version history
 
+v0.13.9 Enhancement
+
+- `ModalPanel` buttons' `onclick` handler now also receives the event, so you can prevent mithril from redrawing.
+- `ModalPanel` has a new handler, `onCreate` which can be used to receive the modal instance, so you can control it programmatically.
+
+
 v0.13.8 Bug fix
 
 - `Select`, checkedId is evaluated in the view instead of `oninit`.
