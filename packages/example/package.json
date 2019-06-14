@@ -4,9 +4,9 @@
   "version": "0.1.4",
   "description": "Example project voor the mithril-materialized library.",
   "scripts": {
-    "clean": "rimraf ./.cache && rimraf ../../docs",
+    "clean": "rimraf ./.cache",
     "start": "parcel index.html --out-dir ../../docs",
-    "build:domain": "npm run clean && parcel build index.html --out-dir ../../docs --public-url https://erikvullings.github.io/mithril-materialized && cp favicon.ico ../../docs/",
+    "build:domain": "npm run clean && parcel build index.html --out-dir ../../docs --public-url https://erikvullings.github.io/mithril-materialized",
     "link": "npm link mithril-materialized",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
