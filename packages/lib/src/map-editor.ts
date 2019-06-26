@@ -92,7 +92,7 @@ export const MapEditor: FactoryComponent<IMapEditor> = () => {
       value instanceof Array
         ? value.join(', ')
         : typeof value === 'boolean'
-        ? m(InputCheckbox, { label: '', checked: value, disabled: true, className: 'checkbox-in-collection' })
+        ? m(InputCheckbox, { label: ' ', checked: value, disabled: true, className: 'checkbox-in-collection' })
         : value.toString();
     const title = m('.row', { style: 'margin-bottom: 0' }, [m(keyClass, m('b', key)), m(valueClass, displayValue)]);
     return {
