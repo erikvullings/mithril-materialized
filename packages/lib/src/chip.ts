@@ -39,10 +39,10 @@ export const Chips: FactoryComponent<IChipsOptions> = () => {
       const chips = M.Chips.getInstance(vnode.dom) as M.Chips;
       data.forEach(d => chips.addChip(d));
     },
-    view: ({ attrs }) => {
-      const { placeholder, data } = attrs;
+    view: ({ attrs: { placeholder, data, className = 'col s12' } }) => {
       return m(
-        `.chips.input-field.chips-autocomplete${placeholder ? '.placeholder' : ''}${data ? '.chips-initial' : ''}`
+        `.chips.input-field.chips-autocomplete${placeholder ? '.placeholder' : ''}${data ? '.chips-initial' : ''}`,
+        { className }
       );
     },
   };
