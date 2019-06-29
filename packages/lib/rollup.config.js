@@ -20,7 +20,13 @@ export default {
   moduleContext: 'null',
   output: [
     {
+      name: 'materialized',
       file: pkg.main,
+      format: 'iife',
+      sourcemap: true,
+    },
+    {
+      file: pkg.module,
       format: 'es',
       sourcemap: true,
     },

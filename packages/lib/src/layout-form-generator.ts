@@ -1,5 +1,5 @@
-import m, { Component } from 'mithril';
 import 'tslib';
+import m, { Component } from 'mithril';
 import { TextInput, TextArea, EmailInput, UrlInput, NumberInput } from './input';
 import { TimePicker, DatePicker } from './pickers';
 import { InputCheckbox, Options, IInputOption } from './option';

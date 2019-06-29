@@ -3,13 +3,14 @@
   "version": "0.13.9",
   "description": "A materialize library for mithril.",
   "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "typings": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git://github.com/erikvullings/mithril-materialized.git"
   },
   "scripts": {
-    "clean": "rimraf .rpt2_cache && rimraf dist",
+    "clean": "rimraf .rpt2_cache dist",
     "link": "npm link",
     "build": "rollup -c",
     "start": "rollup -c -w",
