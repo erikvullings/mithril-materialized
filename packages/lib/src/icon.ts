@@ -7,12 +7,9 @@ export interface IMaterialIcon extends Attributes {
 /**
  * A simple material icon, defined by its icon name.
  *
- * @example m(Icon, { class: 'small' }, 'create') renders a small 'create' icon
- * @example m(Icon, { class: 'prefix' }, iconName) renders the icon as a prefix
+ * @example m(Icon, { className: 'small' }, 'create') renders a small 'create' icon
+ * @example m(Icon, { className: 'prefix' }, iconName) renders the icon as a prefix
  */
 export const Icon: FactoryComponent<IMaterialIcon> = () => ({
-  view: ({ attrs }) => {
-    const passThrough = { ...attrs, iconName: undefined };
-    return m('i.material-icons', passThrough, attrs.iconName);
-  },
+  view: ({ attrs: { iconName, ...passThrough } }) => m('i.material-icons', passThrough, iconName),
 });

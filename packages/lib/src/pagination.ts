@@ -14,7 +14,7 @@ const PaginationItem: FactoryComponent<IInternalPaginationOption> = () => ({
   view: ({ attrs: { title, href, active, disabled } }) =>
     m(
       'li',
-      { class: active ? 'active' : disabled ? 'disabled' : 'waves-effect' },
+      { className: active ? 'active' : disabled ? 'disabled' : 'waves-effect' },
       typeof title === 'number' ? m('a', { href, oncreate: m.route.link }, title) : title
     ),
 });

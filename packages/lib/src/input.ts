@@ -195,7 +195,7 @@ export const FileInput: FactoryComponent<IFileInputOptions> = () => {
       return m(
         '.file-field.input-field',
         {
-          class: attrs.class || attrs.className || 'col s12',
+          className: attrs.class || className,
         },
         [
           m('.btn', [

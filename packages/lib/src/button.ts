@@ -40,25 +40,16 @@ export const ButtonFactory = (
   defaultClassNames: string,
   attributes: string = ''
 ): FactoryComponent<IMaterialButton> => () => {
+  const dca = `${defaultClassNames}${attributes}`;
   return {
     view: ({ attrs }) => {
-      const { modalId, tooltip, tooltipPostion, iconName, iconClass, label, attr } = attrs;
-      const passThrough = {
-        ...attrs,
-        modalId: undefined,
-        tooltip: undefined,
-        tooltipPostion: undefined,
-        iconName: undefined,
-        iconClass: undefined,
-        label: undefined,
-        attr: undefined,
-      };
+      const { modalId, tooltip, tooltipPostion, iconName, iconClass, label, attr, ...passThrough } = attrs;
       return m(
-        `${defaultClassNames}${attributes}${modalId ? '.modal-trigger[href=#' + modalId + ']' : ''}${
+        `${dca}${modalId ? `.modal-trigger[href=#${modalId}]` : ''}${
           tooltip ? `.tooltipped[data-position=${tooltipPostion || 'top'}][data-tooltip=${tooltip}]` : ''
         }${toAttributeString(attr)}`,
         passThrough,
-        iconName ? m(Icon, { iconName, class: iconClass || 'left' }) : undefined,
+        iconName ? m(Icon, { iconName, className: iconClass || 'left' }) : undefined,
         label ? label : undefined
       );
     },

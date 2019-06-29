@@ -78,7 +78,7 @@ export const Dropdown = (): Component<IDropdownOptions> => {
         m(
           `a.dropdown-trigger.btn[href=#][data-target=${id}]${disabled ? '[disabled]' : ''}`,
           {
-            class: 'col s12',
+            className: 'col s12',
             style: style || (iconName ? 'margin: 0.2em 0 0 3em;' : undefined),
             oncreate: ({ dom }) => {
               M.Dropdown.init(dom, props);
