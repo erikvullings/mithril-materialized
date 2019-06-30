@@ -31,17 +31,18 @@ export const Chips: FactoryComponent<IChipsOptions> = () => {
       };
       M.Chips.init(dom, attrs);
     },
-    onupdate: vnode => {
-      const { data } = vnode.attrs;
+    onupdate: ({ dom, attrs: { data } }) => {
       if (!data || data.length === 0) {
         return;
       }
-      const chips = M.Chips.getInstance(vnode.dom) as M.Chips;
+      const chips = M.Chips.getInstance(dom) as M.Chips;
       data.forEach(d => chips.addChip(d));
     },
     view: ({ attrs: { placeholder, data, className = 'col s12' } }) => {
       return m(
-        `.chips.input-field.chips-autocomplete${placeholder ? '.placeholder' : ''}${data ? '.chips-initial' : ''}`,
+        `.chips.input-field.chips-autocomplete${placeholder ? '.chips-placeholder' : ''}${
+          data ? '.chips-initial' : ''
+        }`,
         { className }
       );
     },
