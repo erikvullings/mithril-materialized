@@ -1,6 +1,6 @@
 {
   "name": "mithril-materialized",
-  "version": "0.13.10",
+  "version": "0.13.11",
   "description": "A materialize library for mithril.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -19,7 +19,7 @@
     "patch-release": "npm version patch --force -m \"Patch release\" && npm run publish",
     "minor-release": "npm version minor --force -m \"Minor release\" && npm run publish",
     "major-release": "npm version major --force -m \"Major release\" && npm run publish",
-    "publish": "git commit packages/lib/package.json -m \"version bump\" && git push --follow-tags && npm publish"
+    "publish": "git commit package.json -m \"version bump\" && git push --follow-tags && npm publish"
   },
   "keywords": [
     "mithril",
