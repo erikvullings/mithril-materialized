@@ -249,6 +249,8 @@ export const InputPage = () => {
           '.row',
           m(Chips, {
             onchange: (chips: M.ChipData[]) => onchange(JSON.stringify(chips)),
+            label: 'An optional label',
+            helperText: 'Optional help instructions',
             placeholder: 'Add a tag',
             secondaryPlaceholder: '+Tag',
             data: [
@@ -264,6 +266,8 @@ export const InputPage = () => {
         m(CodeBlock, {
           code: `          m(Chips, {
             onchange: (chips: M.ChipData[]) => onchange(JSON.stringify(chips)),
+            label: 'An optional label',
+            helperText: 'Optional help instructions',
             placeholder: 'Add a tag',
             secondaryPlaceholder: '+Tag',
             data: [{
