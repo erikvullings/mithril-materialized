@@ -108,7 +108,7 @@ export const Options: FactoryComponent<IOptions> = () => {
             disabled: option.disabled,
             label: option.label,
             onchange: onchange ? (v: boolean) => onchange(option.id, v) : undefined,
-            checkboxClass,
+            className: checkboxClass,
             checked: isChecked(option.id),
           })
         ),

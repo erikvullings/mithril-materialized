@@ -50,6 +50,10 @@ Supported components:
 
 ## Version history
 
+v0.13.12 Bug fix
+
+- `Options` `checkboxClass` was not applied, so you could not align items properly.
+
 v0.13.11 Enhancements
 
 - `Chips` component can now have an optional `label` (title) and `helperText` (under the input). Also the alignment has been fixed (the input used to be slightly wider than a regular input).
