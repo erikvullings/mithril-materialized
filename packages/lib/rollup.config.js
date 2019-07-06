@@ -24,6 +24,10 @@ export default {
       file: pkg.main,
       format: 'iife',
       sourcemap: true,
+      globals: {
+        mithril: 'm',
+        'materialize-css': 'M',
+      }
     },
     {
       file: pkg.module,
