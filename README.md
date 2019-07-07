@@ -1,6 +1,6 @@
 # mithril-materialized
 
-A [materialize-css](https://materializecss.com) library for the Mithril framework (tested with v2.0.0-rc4 and higher, but presumably, it should work with v1.1.6 too), making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize components.
+A [materialize-css](https://materializecss.com) library for the Mithril framework (tested with v2.0.0-rc7 and higher, but presumably, it should work with v1.1.6 too), making it easier to use a Materialize theme in your application. The main focus of this library is on creating Mithril components for the more complicated Materialize components.
 
 Supported components:
 
