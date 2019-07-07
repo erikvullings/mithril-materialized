@@ -9,9 +9,9 @@ export const ButtonPage = () => {
         m('h2.header', 'Buttons'),
         m('h3.header[id=raised]', 'Raised'),
         m('div', [
-          m(Button, { label: 'Button', onclick }),
-          m(Button, { label: 'Button', iconName: 'cloud', onclick }),
-          m(Button, { label: 'Button', iconName: 'cloud', iconClass: 'right', onclick }),
+          m(Button, { label: 'First Button', onclick }),
+          m(Button, { label: 'Second Button', iconName: 'cloud', onclick }),
+          m(Button, { label: 'Third Button', iconName: 'cloud', iconClass: 'right', onclick }),
         ]),
         m(CodeBlock, {
           code: [

@@ -50,6 +50,12 @@ Supported components:
 
 ## Version history
 
+v0.13.14 Enhancements
+
+- `Dropdown`: displayed text is truncated, so it doesn't overflow the button.
+- `Select` can receive options, e.g. `dropdownOptions: { container: document.body }` to display it properly in a `Modal`.
+- `Modal` examples added with `Select` and `Dropdown` components.
+
 v0.13.13 Bug fix related to mithril RC7
 
 - FIX `Kanban` key usage and drag-n-drop behaviour
