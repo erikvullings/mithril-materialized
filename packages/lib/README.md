@@ -50,6 +50,10 @@ Supported components:
 
 ## Version history
 
+v0.13.13 Bug fix related to mithril RC7
+
+- FIX `Kanban` key usage and drag-n-drop behaviour
+
 v0.13.12 Bug fix
 
 - `Options` `checkboxClass` was not applied, so you could not align items properly.
