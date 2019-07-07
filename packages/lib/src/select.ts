@@ -81,6 +81,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
         isMandatory,
         iconName,
         disabled,
+        ...props
       },
     }) => {
       state.checkedIds = checkedId ? (checkedId instanceof Array ? [...checkedId] : [checkedId]) : [];
@@ -95,10 +96,11 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
           `select[id=${id}]${isDisabled}${isMultiple}`,
           {
             oncreate: ({ dom, attrs }) => {
-              state.instance = M.FormSelect.init(dom, attrs);
+              console.warn(props);
+              state.instance = M.FormSelect.init(dom, { ...attrs, ...props });
             },
             onupdate: ({ dom, attrs }) => {
-              state.instance = M.FormSelect.init(dom, attrs);
+              state.instance = M.FormSelect.init(dom, { ...attrs, ...props });
             },
             onchange,
           },
