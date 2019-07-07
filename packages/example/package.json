@@ -21,7 +21,7 @@
   "dependencies": {
     "material-icons": "^0.3.1",
     "materialize-css": "^1.0.0",
-    "mithril": "^2.0.0-rc.6",
+    "mithril": "^2.0.0-rc.7",
     "mithril-materialized": "^0.13.4",
     "tslib": "^1.9.3"
   },

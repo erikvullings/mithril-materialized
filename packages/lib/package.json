@@ -53,6 +53,6 @@
   },
   "peerDependencies": {
     "materialize-css": "^1.0.0",
-    "mithril": "next"
+    "mithril": "^2.0.0-rc.7"
   }
 }
