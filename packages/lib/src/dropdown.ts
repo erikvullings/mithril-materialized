@@ -76,7 +76,7 @@ export const Dropdown = (): Component<IDropdownOptions> => {
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(HelperText, { helperText }),
         m(
-          `a.dropdown-trigger.btn[href=#][data-target=${id}]${disabled ? '[disabled]' : ''}`,
+          `a.dropdown-trigger.btn.truncate[href=#][data-target=${id}]${disabled ? '[disabled]' : ''}`,
           {
             className: 'col s12',
             style: style || (iconName ? 'margin: 0.2em 0 0 3em;' : undefined),
