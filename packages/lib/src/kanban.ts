@@ -189,6 +189,9 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
       const dropLocation = computeDropLocation(target, ev);
       const targetIndex = getItemIndex(target);
       const newIndex = getNewIndex(dropLocation, targetIndex, dragIndex);
+      if (newIndex < dragIndex) {
+        state.dragIndex++;
+      }
       if (moveBetweenList && ev.dataTransfer) {
         const item = JSON.parse(ev.dataTransfer.getData('application/json')) as T;
         if (copying) {
@@ -322,13 +325,12 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
               ? sortedItems.map((item, i) =>
                   m(
                     `.card-panel.kanban__item[data-kanban-index=${i}]${disabled ? '.disabled' : ''}`,
-                    canDrag && !disabled ? { key: Date.now(), ...dragOptions } : { key: Date.now() },
+                    canDrag && !disabled ? { key: item.id, ...dragOptions } : { key: item.id },
                     [
                       m('.card-content', m(LayoutForm, { model, item, containerId, disabled: true, editableIds })),
                       canEdit && !disabled
                         ? m(
                             '.card-action.row',
-                            // { style: 'text-align: right; margin-bottom: 0;' },
                             m('.col.s12', [
                               m(FlatButton, {
                                 iconName: 'edit',

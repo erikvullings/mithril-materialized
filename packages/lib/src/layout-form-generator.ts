@@ -255,29 +255,32 @@ export const LayoutForm = <T extends IConvertibleType>(): Component<{
         onchange(false);
       }
 
-      const formFields = model.map((f, i) =>
-        fieldToComponent(f, item[f.id], {
-          key: item.id,
-          containerId,
-          autofocus: i === 0,
-          disabled: disabled && editableIds.indexOf(f.id) < 0,
-          onchange: disabled && editableIds.indexOf(f.id) < 0
-            ? undefined
-            : (v, overwrite = true) => {
-                if (overwrite || typeof state.item[f.id] === 'undefined') {
-                  if (v instanceof Array) {
-                    state.item[f.id] = v;
-                  } else {
-                    state.item[f.id] = v;
-                  }
-                  if (onchange) {
-                    onchange(isValid());
-                  }
-                }
-              },
-        })
+      return m(
+        el,
+        { style: 'margin-bottom: -15px;', key: item.id },
+        model.map((f, i) =>
+          fieldToComponent(f, item[f.id], {
+            containerId,
+            autofocus: i === 0,
+            disabled: disabled && editableIds.indexOf(f.id) < 0,
+            onchange:
+              disabled && editableIds.indexOf(f.id) < 0
+                ? undefined
+                : (v, overwrite = true) => {
+                    if (overwrite || typeof state.item[f.id] === 'undefined') {
+                      if (v instanceof Array) {
+                        state.item[f.id] = v;
+                      } else {
+                        state.item[f.id] = v;
+                      }
+                      if (onchange) {
+                        onchange(isValid());
+                      }
+                    }
+                  },
+          })
+        )
       );
-      return m(el, { style: 'margin-bottom: -15px;' }, formFields);
     },
   };
 };
