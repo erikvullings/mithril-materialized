@@ -50,6 +50,11 @@ Supported components:
 
 ## Version history
 
+v0.13.15 Patch
+
+- `Select` removed `console.warn` in library.
+- Updated `npm` scripts.
+
 v0.13.14 Enhancements
 
 - `Dropdown`: displayed text is truncated, so it doesn't overflow the button.
