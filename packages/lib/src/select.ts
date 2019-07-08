@@ -96,7 +96,6 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
           `select[id=${id}]${isDisabled}${isMultiple}`,
           {
             oncreate: ({ dom, attrs }) => {
-              console.warn(props);
               state.instance = M.FormSelect.init(dom, { ...attrs, ...props });
             },
             onupdate: ({ dom, attrs }) => {

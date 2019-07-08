@@ -16,10 +16,10 @@
     "start": "rollup -c -w",
     "build:domain": "npm run clean && npm run build && typedoc --out ../../docs/typedoc src",
     "dry-run": "npm publish --dry-run",
-    "patch-release": "npm version patch --force -m \"Patch release\" && npm run publish",
-    "minor-release": "npm version minor --force -m \"Minor release\" && npm run publish",
-    "major-release": "npm version major --force -m \"Major release\" && npm run publish",
-    "publish": "git commit package.json -m \"version bump\" && npm publish && git push --follow-tags"
+    "patch-release": "npm run clean && npm run build && npm version patch --force -m \"Patch release\" && npm run publish",
+    "minor-release": "npm run clean && npm run build && npm version minor --force -m \"Minor release\" && npm run publish",
+    "major-release": "npm run clean && npm run build && npm version major --force -m \"Major release\" && npm run publish",
+    "publish": "npm publish && git push --follow-tags"
   },
   "keywords": [
     "mithril",
