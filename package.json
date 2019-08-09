@@ -23,7 +23,7 @@
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
   "devDependencies": {
-    "lerna": "^3.15.0",
+    "lerna": "^3.16.4",
     "rimraf": "^2.6.3"
   }
 }
