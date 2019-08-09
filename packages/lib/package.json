@@ -28,30 +28,30 @@
   "license": "MIT",
   "devDependencies": {
     "@types/materialize-css": "^1.0.6",
-    "@types/mithril": "^1.1.16",
+    "@types/mithril": "^2.0.0",
     "rimraf": "^2.6.3",
-    "autoprefixer": "^9.6.0",
-    "rollup": "^1.15.4",
-    "rollup-plugin-commonjs": "^10.0.0",
+    "autoprefixer": "^9.6.1",
+    "rollup": "^1.19.4",
+    "rollup-plugin-commonjs": "^10.0.2",
     "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.0.2",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-postcss": "^2.0.3",
     "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-terser": "^5.0.0",
-    "rollup-plugin-typescript2": "^0.21.1",
+    "rollup-plugin-terser": "^5.1.1",
+    "rollup-plugin-typescript2": "^0.22.1",
     "rollup-plugin-auto-external": "^2.0.0",
     "cssnano": "^4.1.10",
-    "postcss-preset-env": "^6.6.0",
+    "postcss-preset-env": "^6.7.0",
     "postcss-simple-vars": "^5.0.2",
     "postcss-nested": "^4.1.2",
     "tslib": "^1.10.0",
-    "typedoc": "^0.14.2",
-    "typescript": "^3.5.2",
+    "typedoc": "^0.15.0",
+    "typescript": "^3.5.3",
     "handlebars": ">=4.1.2",
     "js-yaml": ">=3.13.1"
   },
   "peerDependencies": {
     "materialize-css": "^1.0.0",
-    "mithril": "^2.0.0-rc.7"
+    "mithril": "^2.0.3"
   }
 }

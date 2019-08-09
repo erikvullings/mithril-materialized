@@ -50,6 +50,12 @@ Supported components:
 
 ## Version history
 
+v0.14 Using Mithril v2
+
+- Upgrading all dependencies
+- `Pickers` now trigger `onchange` when closing.
+- Replace all links `oncreate: m.route.link` with `m.route.Link`.
+
 v0.13.15 Patch
 
 - `Select` removed `console.warn` in library.
