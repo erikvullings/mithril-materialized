@@ -141,21 +141,21 @@ export const MiscPage = () => {
           '.row',
           m(Carousel, {
             items: [
-              { href: '#one!', src: 'https://lorempixel.com/250/250/nature/1' },
-              { href: '#two!', src: 'https://lorempixel.com/250/250/nature/2' },
-              { href: '#three!', src: 'https://lorempixel.com/250/250/nature/3' },
-              { href: '#four!', src: 'https://lorempixel.com/250/250/nature/4' },
-              { href: '#five!', src: 'https://lorempixel.com/250/250/nature/5' },
+              { href: '#!/one!', src: 'https://lorempixel.com/250/250/nature/1' },
+              { href: '#!/two!', src: 'https://lorempixel.com/250/250/nature/2' },
+              { href: '#!/three!', src: 'https://lorempixel.com/250/250/nature/3' },
+              { href: '#!/four!', src: 'https://lorempixel.com/250/250/nature/4' },
+              { href: '#!/five!', src: 'https://lorempixel.com/250/250/nature/5' },
             ],
           })
         ),
         m(CodeBlock, {
           code: `          m(Carousel, { items: [
-            { href: '#one!', src: 'https://lorempixel.com/250/250/nature/1' },
-            { href: '#two!', src: 'https://lorempixel.com/250/250/nature/2' },
-            { href: '#three!', src: 'https://lorempixel.com/250/250/nature/3' },
-            { href: '#four!', src: 'https://lorempixel.com/250/250/nature/4' },
-            { href: '#five!', src: 'https://lorempixel.com/250/250/nature/5' },
+            { href: '#!/one!', src: 'https://lorempixel.com/250/250/nature/1' },
+            { href: '#!/two!', src: 'https://lorempixel.com/250/250/nature/2' },
+            { href: '#!/three!', src: 'https://lorempixel.com/250/250/nature/3' },
+            { href: '#!/four!', src: 'https://lorempixel.com/250/250/nature/4' },
+            { href: '#!/five!', src: 'https://lorempixel.com/250/250/nature/5' },
           ] })`,
         }),
 

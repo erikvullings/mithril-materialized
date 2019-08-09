@@ -15,7 +15,7 @@ const PaginationItem: FactoryComponent<IInternalPaginationOption> = () => ({
     m(
       'li',
       { className: active ? 'active' : disabled ? 'disabled' : 'waves-effect' },
-      typeof title === 'number' ? m('a', { href, oncreate: m.route.link }, title) : title
+      typeof title === 'number' ? m(m.route.Link, { href }, title) : title
     ),
 });
 
@@ -68,11 +68,14 @@ export const Pagination: FactoryComponent<IPaginationOptions> = () => {
       return m(
         'ul.pagination',
         displayedItems
-          .map((item, i) => ({
-            title: startPage + i,
-            ...item,
-            active: i === curPage,
-          } as IInternalPaginationOption))
+          .map(
+            (item, i) =>
+              ({
+                title: startPage + i,
+                ...item,
+                active: i === curPage,
+              } as IInternalPaginationOption)
+          )
           .map(item => m(PaginationItem, item))
       );
     },

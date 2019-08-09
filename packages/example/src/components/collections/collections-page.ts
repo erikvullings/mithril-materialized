@@ -51,8 +51,8 @@ export const CollectionsPage = () => {
           mode: CollectionMode.LINKS,
           items: [
             { title: 'John', onclick: console.log },
-            { title: 'Mary', onclick: console.log },
-            { title: 'Pete', onclick: console.log },
+            { title: 'Mary', onclick: console.log, href: '/timeline' },
+            { title: 'Pete', onclick: console.log, href: 'https://www.google.com' },
           ],
         }),
         m(CodeBlock, {
@@ -61,8 +61,8 @@ export const CollectionsPage = () => {
             mode: CollectionMode.LINKS,
             items: [
               { title: 'John', onclick: console.log },
-              { title: 'Mary', onclick: console.log },
-              { title: 'Pete', onclick: console.log },
+              { title: 'Mary', onclick: console.log, href: '/timeline' },
+              { title: 'Pete', onclick: console.log, href: 'https://www.google.com' },
             ],
           })`,
         }),

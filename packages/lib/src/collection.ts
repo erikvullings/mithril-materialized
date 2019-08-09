@@ -35,22 +35,21 @@ export interface ICollection extends Attributes {
   mode?: CollectionMode;
 }
 
-export const SecondaryContent: FactoryComponent<ICollectionItem> = () => {
-  const isNonLocalRoute = (url?: string) => url && /https?:\/\//.test(url);
+const isNonLocalRoute = (url?: string) => url && /https?:\/\//.test(url);
 
+export const SecondaryContent: FactoryComponent<ICollectionItem> = () => {
   return {
     view: ({ attrs }) => {
       const { href, iconName = 'send', onclick, style = { cursor: 'pointer' } } = attrs;
-      return m(
-        'a.secondary-content',
-        {
-          href,
-          style,
-          oncreate: href ? (isNonLocalRoute(href) ? undefined : m.route.link) : undefined,
-          onclick: onclick ? () => onclick(attrs) : undefined,
-        },
-        m(Icon, { iconName })
-      );
+      const props = {
+        href,
+        style,
+        className: 'secondary-content',
+        onclick: onclick ? () => onclick(attrs) : undefined,
+      };
+      return isNonLocalRoute(href) || !href
+        ? m('a[target=_]', props, m(Icon, { iconName }))
+        : m(m.route.Link, props as { href: string }, m(Icon, { iconName }));
     },
   };
 };
@@ -62,16 +61,20 @@ export const ListItem: FactoryComponent<{ item: ICollectionItem; mode: Collectio
     view: ({ attrs: { item, mode } }) => {
       const { title, content = '', active, iconName, avatar, className, onclick } = item;
       return mode === CollectionMode.AVATAR
-        ? m(`li.collection-item.avatar${active ? '.active' : ''}`, {
-          onclick: onclick ? () => onclick(item) : undefined,
-        }, [
-            avatarIsImage(avatar)
-              ? m('img.circle', { src: avatar })
-              : m('i.material-icons.circle', { className }, avatar),
-            m('span.title', title),
-            m('p', m.trust(content)),
-            m(SecondaryContent, item),
-          ])
+        ? m(
+            `li.collection-item.avatar${active ? '.active' : ''}`,
+            {
+              onclick: onclick ? () => onclick(item) : undefined,
+            },
+            [
+              avatarIsImage(avatar)
+                ? m('img.circle', { src: avatar })
+                : m('i.material-icons.circle', { className }, avatar),
+              m('span.title', title),
+              m('p', m.trust(content)),
+              m(SecondaryContent, item),
+            ]
+          )
         : m(
             `li.collection-item${active ? '.active' : ''}`,
             iconName ? m('div', [title, m(SecondaryContent, item)]) : title
@@ -97,11 +100,12 @@ export const AnchorItem: FactoryComponent<ICollectionItem> = () => {
   return {
     view: ({ attrs }) => {
       const { title, active, href, ...params } = attrs;
-      return m(
-        `a.collection-item${active ? '.active' : ''}`,
-        { ...params, href, oncreate: href ? m.route.link : undefined },
-        title
-      );
+      const props = {
+        ...params,
+        className: `collection-item ${active ? 'active' : ''}`,
+        href,
+      };
+      return isNonLocalRoute(href) || !href ? m('a[target=_]', props, title) : m(m.route.Link, props, title);
     },
   };
 };

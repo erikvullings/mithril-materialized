@@ -53,8 +53,8 @@ export const Layout = () => ({
                 m(
                   `li${isActive(d.route)}`,
                   m(
-                    'a',
-                    { href: d.route, oncreate: m.route.link },
+                    m.route.Link,
+                    { href: d.route },
                     m('i.material-icons.right', d.icon ? m('i.material-icons', d.icon) : d.title)
                   )
                 )
