@@ -50,7 +50,12 @@ Supported components:
 
 ## Version history
 
-v0.14 Using Mithril v2
+v0.14.1 Using Mithril v2
+
+- Migrated backwards from Mithril v2.0.3 to v2.0.1 due to bugs in the released version.
+- When `Collection` items have an `id` property, the `id` property is used as key (e.g. for sorting the collection). You should not include a `key` property directly in your item's data, as explained [here](https://mithril.js.org/keys.html#avoid-passing-model-data-directly-to-components-if-the-model-uses-key-as-a-data-property).
+
+v0.14.0 Using Mithril v2
 
 - Upgrading all dependencies
 - `Pickers` now trigger `onchange` when closing.
