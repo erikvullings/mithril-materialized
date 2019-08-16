@@ -135,6 +135,17 @@
 				<a href="#version-history" id="version-history" style="color: inherit; text-decoration: none;">
 					<h2>Version history</h2>
 				</a>
+				<p>v0.14.1 Using Mithril v2</p>
+				<ul>
+					<li>Migrated backwards from Mithril v2.0.3 to v2.0.1 due to bugs in the released version.</li>
+					<li>When <code>Collection</code> items have an <code>id</code> property, the <code>id</code> property is used as key (e.g. for sorting the collection). You should not include a <code>key</code> property directly in your item&#39;s data, as explained <a href="https://mithril.js.org/keys.html#avoid-passing-model-data-directly-to-components-if-the-model-uses-key-as-a-data-property">here</a>.</li>
+				</ul>
+				<p>v0.14.0 Using Mithril v2</p>
+				<ul>
+					<li>Upgrading all dependencies</li>
+					<li><code>Pickers</code> now trigger <code>onchange</code> when closing.</li>
+					<li>Replace all links <code>oncreate: m.route.link</code> with <code>m.route.Link</code>.</li>
+				</ul>
 				<p>v0.13.15 Patch</p>
 				<ul>
 					<li><code>Select</code> removed <code>console.warn</code> in library.</li>

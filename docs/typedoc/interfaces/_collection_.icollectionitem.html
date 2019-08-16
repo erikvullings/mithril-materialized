@@ -73,21 +73,16 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="tsd-signature-type">Attributes</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">ICollectionItem</span>
-							</li>
-						</ul>
+						<span class="target">ICollectionItem</span>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-kind-interface tsd-parent-kind-external-module">
 				<h3 class="tsd-before-signature">Indexable</h3>
-				<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">[</span>_: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></div>
+				<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">[</span>property: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></div>
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>WORKAROUND: TypeScript 2.4 does not allow extending an interface with all-optional properties.</p>
+						<p>Any other virtual element properties, including attributes and event handlers.</p>
 					</div>
 				</div>
 			</section>
@@ -100,25 +95,13 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_collection_.icollectionitem.html#active" class="tsd-kind-icon">active</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_collection_.icollectionitem.html#avatar" class="tsd-kind-icon">avatar</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_collection_.icollectionitem.html#class" class="tsd-kind-icon">class</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite"><a href="_collection_.icollectionitem.html#classname" class="tsd-kind-icon">class<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_collection_.icollectionitem.html#classname" class="tsd-kind-icon">class<wbr>Name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_collection_.icollectionitem.html#content" class="tsd-kind-icon">content</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_collection_.icollectionitem.html#href" class="tsd-kind-icon">href</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_collection_.icollectionitem.html#iconname" class="tsd-kind-icon">icon<wbr>Name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="_collection_.icollectionitem.html#key" class="tsd-kind-icon">key</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_collection_.icollectionitem.html#id" class="tsd-kind-icon">id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_collection_.icollectionitem.html#onclick" class="tsd-kind-icon">onclick</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_collection_.icollectionitem.html#title" class="tsd-kind-icon">title</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-inherited">
-							<h3>Methods</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_collection_.icollectionitem.html#onbeforeremove" class="tsd-kind-icon">onbeforeremove</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_collection_.icollectionitem.html#onbeforeupdate" class="tsd-kind-icon">onbeforeupdate</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_collection_.icollectionitem.html#oncreate" class="tsd-kind-icon">oncreate</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_collection_.icollectionitem.html#oninit" class="tsd-kind-icon">oninit</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_collection_.icollectionitem.html#onremove" class="tsd-kind-icon">onremove</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited"><a href="_collection_.icollectionitem.html#onupdate" class="tsd-kind-icon">onupdate</a></li>
 							</ul>
 						</section>
 					</div>
@@ -132,7 +115,7 @@
 					<div class="tsd-signature tsd-kind-icon">active<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/76983df/packages/lib/src/collection.ts#L22">collection.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/40d7cf6/packages/lib/src/collection.ts#L24">collection.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -147,7 +130,7 @@
 					<div class="tsd-signature tsd-kind-icon">avatar<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/76983df/packages/lib/src/collection.ts#L16">collection.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/40d7cf6/packages/lib/src/collection.ts#L18">collection.ts:18</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -156,30 +139,13 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-					<a name="class" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> class</h3>
-					<div class="tsd-signature tsd-kind-icon">class<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from Attributes.class</p>
-						<ul>
-							<li>Defined in C:/dev/web/mithril-materialized/packages/lib/node_modules/@types/mithril/index.d.ts:289</li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The class name(s) for this virtual element, as a space-separated list.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="classname" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> class<wbr>Name</h3>
 					<div class="tsd-signature tsd-kind-icon">class<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
-						<p>Overrides Attributes.className</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/76983df/packages/lib/src/collection.ts#L18">collection.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/40d7cf6/packages/lib/src/collection.ts#L20">collection.ts:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -194,7 +160,7 @@
 					<div class="tsd-signature tsd-kind-icon">content<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/76983df/packages/lib/src/collection.ts#L20">collection.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/40d7cf6/packages/lib/src/collection.ts#L22">collection.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -209,7 +175,7 @@
 					<div class="tsd-signature tsd-kind-icon">href<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/76983df/packages/lib/src/collection.ts#L14">collection.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/40d7cf6/packages/lib/src/collection.ts#L16">collection.ts:16</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -224,7 +190,7 @@
 					<div class="tsd-signature tsd-kind-icon">icon<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/76983df/packages/lib/src/collection.ts#L24">collection.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/40d7cf6/packages/lib/src/collection.ts#L26">collection.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -233,19 +199,18 @@
 						</div>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-					<a name="key" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> key</h3>
-					<div class="tsd-signature tsd-kind-icon">key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="id" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> id</h3>
+					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
-						<p>Inherited from Attributes.key</p>
 						<ul>
-							<li>Defined in C:/dev/web/mithril-materialized/packages/lib/node_modules/@types/mithril/index.d.ts:291</li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/40d7cf6/packages/lib/src/collection.ts#L12">collection.ts:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A key to optionally associate with this element.</p>
+							<p>If available, will be used as the key, so all items need an id.</p>
 						</div>
 					</div>
 				</section>
@@ -255,7 +220,7 @@
 					<div class="tsd-signature tsd-kind-icon">onclick<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/76983df/packages/lib/src/collection.ts#L26">collection.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/40d7cf6/packages/lib/src/collection.ts#L28">collection.ts:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -270,7 +235,7 @@
 					<div class="tsd-signature tsd-kind-icon">title<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Vnode</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/76983df/packages/lib/src/collection.ts#L12">collection.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/40d7cf6/packages/lib/src/collection.ts#L14">collection.ts:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -278,210 +243,6 @@
 							<p>Title of the collection item</p>
 						</div>
 					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="onbeforeremove" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> onbeforeremove</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">onbeforeremove<span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, vnode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VnodeDOM</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from Lifecycle.onbeforeremove</p>
-								<ul>
-									<li>Defined in C:/dev/web/mithril-materialized/packages/lib/node_modules/@types/mithril/index.d.ts:32</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>The onbeforeremove hook is called before a DOM element is detached from the document. If a Promise is returned, Mithril only detaches the DOM element after the promise completes.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>this: <span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li>
-									<h5>vnode: <span class="tsd-signature-type">VnodeDOM</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>
-								<span class="tsd-signature-symbol"> | </span>
-								<span class="tsd-signature-type">void</span>
-							</h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="onbeforeupdate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> onbeforeupdate</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">onbeforeupdate<span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, vnode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vnode</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, old<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VnodeDOM</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from Lifecycle.onbeforeupdate</p>
-								<ul>
-									<li>Defined in C:/dev/web/mithril-materialized/packages/lib/node_modules/@types/mithril/index.d.ts:36</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>The onbeforeupdate hook is called before a vnode is diffed in a update.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>this: <span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li>
-									<h5>vnode: <span class="tsd-signature-type">Vnode</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-								<li>
-									<h5>old: <span class="tsd-signature-type">VnodeDOM</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span>
-								<span class="tsd-signature-symbol"> | </span>
-								<span class="tsd-signature-type">void</span>
-							</h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="oncreate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> oncreate</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">oncreate<span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, vnode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VnodeDOM</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from Lifecycle.oncreate</p>
-								<ul>
-									<li>Defined in C:/dev/web/mithril-materialized/packages/lib/node_modules/@types/mithril/index.d.ts:30</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>The oncreate hook is called after a DOM element is created and attached to the document.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>this: <span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li>
-									<h5>vnode: <span class="tsd-signature-type">VnodeDOM</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="oninit" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> oninit</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">oninit<span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, vnode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vnode</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from Lifecycle.oninit</p>
-								<ul>
-									<li>Defined in C:/dev/web/mithril-materialized/packages/lib/node_modules/@types/mithril/index.d.ts:28</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>The oninit hook is called before a vnode is touched by the virtual DOM engine.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>this: <span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li>
-									<h5>vnode: <span class="tsd-signature-type">Vnode</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="onremove" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> onremove</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">onremove<span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, vnode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VnodeDOM</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from Lifecycle.onremove</p>
-								<ul>
-									<li>Defined in C:/dev/web/mithril-materialized/packages/lib/node_modules/@types/mithril/index.d.ts:34</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>The onremove hook is called before a DOM element is removed from the document.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>this: <span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li>
-									<h5>vnode: <span class="tsd-signature-type">VnodeDOM</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-					<a name="onupdate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> onupdate</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">onupdate<span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, vnode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VnodeDOM</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from Lifecycle.onupdate</p>
-								<ul>
-									<li>Defined in C:/dev/web/mithril-materialized/packages/lib/node_modules/@types/mithril/index.d.ts:38</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>The onupdate hook is called after a DOM element is updated, while attached to the document.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>this: <span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li>
-									<h5>vnode: <span class="tsd-signature-type">VnodeDOM</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-						</li>
-					</ul>
 				</section>
 			</section>
 		</div>
@@ -515,10 +276,7 @@
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_collection_.icollectionitem.html#avatar" class="tsd-kind-icon">avatar</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_collection_.icollectionitem.html#class" class="tsd-kind-icon">class</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_collection_.icollectionitem.html#classname" class="tsd-kind-icon">class<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
@@ -530,32 +288,14 @@
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_collection_.icollectionitem.html#iconname" class="tsd-kind-icon">icon<wbr>Name</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_collection_.icollectionitem.html#key" class="tsd-kind-icon">key</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_collection_.icollectionitem.html#id" class="tsd-kind-icon">id</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_collection_.icollectionitem.html#onclick" class="tsd-kind-icon">onclick</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_collection_.icollectionitem.html#title" class="tsd-kind-icon">title</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_collection_.icollectionitem.html#onbeforeremove" class="tsd-kind-icon">onbeforeremove</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_collection_.icollectionitem.html#onbeforeupdate" class="tsd-kind-icon">onbeforeupdate</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_collection_.icollectionitem.html#oncreate" class="tsd-kind-icon">oncreate</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_collection_.icollectionitem.html#oninit" class="tsd-kind-icon">oninit</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_collection_.icollectionitem.html#onremove" class="tsd-kind-icon">onremove</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited">
-								<a href="_collection_.icollectionitem.html#onupdate" class="tsd-kind-icon">onupdate</a>
 							</li>
 						</ul>
 					</li>
