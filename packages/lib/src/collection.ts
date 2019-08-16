@@ -7,7 +7,9 @@ export enum CollectionMode {
   AVATAR,
 }
 
-export interface ICollectionItem extends Attributes {
+export interface ICollectionItem {
+  /** If available, will be used as the key, so all items need an id. */
+  id?: string | number;
   /** Title of the collection item */
   title: string | Vnode<any, any>;
   /** For links, may contain a URL reference */
@@ -24,6 +26,8 @@ export interface ICollectionItem extends Attributes {
   iconName?: string;
   /** Onclick event handler */
   onclick?: (item: ICollectionItem) => void;
+  /** Any other virtual element properties, including attributes and event handlers. */
+  [property: string]: any;
 }
 
 export interface ICollection extends Attributes {
@@ -86,26 +90,24 @@ export const ListItem: FactoryComponent<{ item: ICollectionItem; mode: Collectio
 const BasicCollection: FactoryComponent<ICollection> = () => {
   return {
     view: ({ attrs: { header, items, mode = CollectionMode.BASIC, ...params } }) => {
+      const collectionItems = items.map(item => m(ListItem, { key: item.id, item, mode }));
       return header
-        ? m('ul.collection.with-header', params, [
-            m('li.collection-header', m('h4', header)),
-            ...items.map(item => m(ListItem, { item, mode })),
-          ])
-        : m('ul.collection', params, items.map(item => m(ListItem, { item, mode })));
+        ? m('ul.collection.with-header', params, [m('li.collection-header', m('h4', header)), collectionItems])
+        : m('ul.collection', params, collectionItems);
     },
   };
 };
 
-export const AnchorItem: FactoryComponent<ICollectionItem> = () => {
+export const AnchorItem: FactoryComponent<{ item: ICollectionItem }> = () => {
   return {
-    view: ({ attrs }) => {
-      const { title, active, href, ...params } = attrs;
+    view: ({ attrs: { item } }) => {
+      const { title, active, href, ...params } = item;
       const props = {
         ...params,
         className: `collection-item ${active ? 'active' : ''}`,
-        href,
+        href: href || '',
       };
-      return isNonLocalRoute(href) || !href ? m('a[target=_]', props, title) : m(m.route.Link, props, title);
+      return !href || isNonLocalRoute(href) ? m('a[target=_]', props, title) : m(m.route.Link, props, title);
     },
   };
 };
@@ -116,16 +118,16 @@ const LinksCollection: FactoryComponent<ICollection> = () => {
       return header
         ? m('.collection.with-header', params, [
             m('.collection-header', m('h4', header)),
-            ...items.map(item => m(AnchorItem, item)),
+            items.map(item => m(AnchorItem, { key: item.id, item })),
           ])
-        : m('.collection', params, items.map(item => m(AnchorItem, item)));
+        : m('.collection', params, items.map(item => m(AnchorItem, { key: item.id, item })));
     },
   };
 };
 
 /**
- * Creates a collabsible or accordion (via the accordion option, default true) component.
- * @see https://materializecss.com/collapsible.html
+ * Creates a Collection of items, optionally containing links, headers, secondary content or avatars.
+ * @see https://materializecss.com/collections.html
  */
 export const Collection: FactoryComponent<ICollection> = () => {
   return {

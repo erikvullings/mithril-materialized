@@ -30,17 +30,17 @@ export const CollectionsPage = () => {
         m('h3.header', 'Secondary Content Collection'),
         m(Collection, {
           items: [
-            { title: 'John', iconName: 'send', onclick },
-            { title: 'Mary', iconName: 'send', onclick },
-            { title: 'Pete', iconName: 'send', onclick },
+            { id: '1', title: 'John', iconName: 'send', onclick },
+            { id: '2', title: 'Mary', iconName: 'send', onclick },
+            { id: '3', title: 'Pete', iconName: 'send', onclick },
           ],
         }),
         m(CodeBlock, {
           code: `          m(Collection, {
             items: [
-              { title: 'John', iconName: 'send', onclick },
-              { title: 'Mary', iconName: 'send', onclick },
-              { title: 'Pete', iconName: 'send', onclick },
+              { id: '1', title: 'John', iconName: 'send', onclick },
+              { id: '2', title: 'Mary', iconName: 'send', onclick },
+              { id: '3', title: 'Pete', iconName: 'send', onclick },
             ],
           })`,
         }),
