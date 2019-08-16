@@ -4,17 +4,6 @@ import m from 'mithril';
 const onclick = (item: ICollectionItem) => alert(`You clicked ${item.title}.`);
 
 export const CollectionsPage = () => {
-  const state = {
-    properties: {
-      stringArray: ['a', 'b', 'c'],
-      numberArray: [1, 2, 3],
-      aNumber: 42,
-      aString: 'Hello world',
-      truthy: true,
-      falsy: false,
-    },
-  };
-
   return {
     view: () =>
       m('.col.s12.m8.xl7', [
@@ -38,6 +27,7 @@ export const CollectionsPage = () => {
         m(CodeBlock, {
           code: `          m(Collection, {
             items: [
+              // id is used as key, e.g. when sorting or editing the collection.
               { id: '1', title: 'John', iconName: 'send', onclick },
               { id: '2', title: 'Mary', iconName: 'send', onclick },
               { id: '3', title: 'Pete', iconName: 'send', onclick },
@@ -129,20 +119,42 @@ export const CollectionsPage = () => {
           })`,
         }),
 
-        m('h3.header', 'Collapsible'),
+        m('h3.header', 'Collapsible (accordion)'),
         m(
           '.row',
           m(Collapsible, {
             items: [
-              { header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama' },
-              { header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },
-              { header: 'Third', body: m('span', 'Third in a span.'), iconName: 'whatshot' },
+              { id: 1, header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama' },
+              { id: 2, header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },
+              { id: 3, header: 'Third', body: m('span', 'Third in a span.'), iconName: 'whatshot' },
             ],
           })
         ),
         m(CodeBlock, {
           code: `          m(Collapsible, { items: [
             { header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama' },
+            { header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },
+            { header: 'Third', body: m('span', 'Third in a span.'), iconName: 'whatshot' },
+          ] })`,
+        }),
+
+        m('h3.header', 'Collapsible (no accordion)'),
+        m(
+          '.row',
+          m(Collapsible, {
+            accordion: false,
+            items: [
+              { id: 1, header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama', active: true },
+              { id: 2, header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },
+              { id: 3, header: 'Third', body: m('span', 'Third in a span.'), iconName: 'whatshot' },
+            ],
+          })
+        ),
+        m(CodeBlock, {
+          code: `          m(Collapsible, {
+          accordion: false,
+          items: [
+            { header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama', active: true },
             { header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },
             { header: 'Third', body: m('span', 'Third in a span.'), iconName: 'whatshot' },
           ] })`,
