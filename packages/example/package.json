@@ -21,8 +21,8 @@
   "dependencies": {
     "material-icons": "^0.3.1",
     "materialize-css": "^1.0.0",
-    "mithril": "^2.0.3",
-    "mithril-materialized": "^0.13.15",
+    "mithril": "^2.0.4",
+    "mithril-materialized": "^0.14.1",
     "tslib": "^1.10.0"
   },
   "devDependencies": {
@@ -31,7 +31,7 @@
     "autoprefixer": "^9.6.1",
     "cssnano": "^4.1.10",
     "parcel-bundler": "^1.12.3",
-    "rimraf": "^2.6.3",
+    "rimraf": "^3.0.0",
     "typescript": "^3.5.3"
   }
 }
