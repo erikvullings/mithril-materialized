@@ -50,6 +50,10 @@ Supported components:
 
 ## Version history
 
+v0.14.2
+
+- `LinksCollection` sometimes created unwanted `href` attribute in links.
+
 v0.14.1 Using Mithril v2
 
 - Migrated backwards from Mithril v2.0.3 to v2.0.1 due to bugs in the released version.
