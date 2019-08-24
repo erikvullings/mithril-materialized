@@ -52,6 +52,6 @@
   },
   "peerDependencies": {
     "materialize-css": "^1.0.0",
-    "mithril": "2.0.4"
+    "mithril": "^2.0.4"
   }
 }

@@ -105,9 +105,11 @@ export const AnchorItem: FactoryComponent<{ item: ICollectionItem }> = () => {
       const props = {
         ...params,
         className: `collection-item ${active ? 'active' : ''}`,
-        href: href || '',
+        href,
       };
-      return !href || isNonLocalRoute(href) ? m('a[target=_]', props, title) : m(m.route.Link, props, title);
+      return isNonLocalRoute(href) || !href
+        ? m('a[target=_]', props, title)
+        : m(m.route.Link, props as { href: string }, title);
     },
   };
 };
