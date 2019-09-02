@@ -22,6 +22,8 @@ export interface IRadioButtons extends Attributes {
   isMandatory?: boolean;
   /** If true, draw the radio buttons inline */
   inline?: boolean;
+  /** Disable the button */
+  disabled?: boolean;
 }
 
 /** Component to show a list of radio buttons, from which you can choose one. */
@@ -41,7 +43,9 @@ export const RadioButtons: FactoryComponent<IRadioButtons> = () => {
         }
       };
     },
-    view: ({ attrs: { id, newRow, inline, className = 'col s12', label = '', description, options, isMandatory } }) => {
+    view: ({
+      attrs: { id, newRow, inline, className = 'col s12', label = '', disabled, description, options, isMandatory },
+    }) => {
       const { groupId, onchange, checkedId } = state;
       const clear = newRow ? '.clear' : '';
       return m(`div${id ? `[id=${id}]` : ''}${clear}`, { className }, [
@@ -53,6 +57,7 @@ export const RadioButtons: FactoryComponent<IRadioButtons> = () => {
             inline,
             onchange,
             groupId,
+            disabled,
             checked: r.id === checkedId,
           })
         ),

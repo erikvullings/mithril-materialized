@@ -10,7 +10,7 @@ export interface IInputCheckbox extends Attributes {
   checked?: boolean;
   /** If true, the checkbox is disabled */
   disabled?: boolean;
-  /** If true, draw the radio buttons inline */
+  /** If true, draw the checkboxes inline */
   inline?: boolean;
 }
 
@@ -69,6 +69,8 @@ export interface IOptions extends Attributes {
   isMandatory?: boolean;
   /** If true, draw the radio buttons inline */
   inline?: boolean;
+  /** If true, disable the options. */
+  disabled?: boolean;
 }
 
 /** A list of checkboxes */
@@ -95,7 +97,18 @@ export const Options: FactoryComponent<IOptions> = () => {
         : undefined;
     },
     view: ({
-      attrs: { label, id, options, description, className = 'col s12', checkboxClass, newRow, isMandatory, inline },
+      attrs: {
+        label,
+        id,
+        options,
+        description,
+        className = 'col s12',
+        disabled,
+        checkboxClass,
+        newRow,
+        isMandatory,
+        inline,
+      },
     }) => {
       const clear = newRow ? '.clear' : '';
       const { onchange } = state;
@@ -105,7 +118,7 @@ export const Options: FactoryComponent<IOptions> = () => {
         ...options.map(option =>
           m(InputCheckbox, {
             inline,
-            disabled: option.disabled,
+            disabled: disabled || option.disabled,
             label: option.label,
             onchange: onchange ? (v: boolean) => onchange(option.id, v) : undefined,
             className: checkboxClass,
