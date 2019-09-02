@@ -41,7 +41,7 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
             : undefined,
           value: initialValue,
         }),
-        m(Label, { label, id, isMandatory, isActive: initialValue }),
+        m(Label, { label, id, isMandatory, isActive: initialValue || attrs.placeholder }),
         m(HelperText, { helperText }),
       ]);
     },
@@ -143,8 +143,14 @@ const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IIn
           label,
           id,
           isMandatory,
-          isActive: initialValue || type === 'number' || type === 'color' || type === 'range' ? true : false,
-          // typeof initialValue !== 'undefined' || type === 'color' || type === 'range',
+          isActive:
+            typeof initialValue !== 'undefined' ||
+            attrs.placeholder ||
+            type === 'number' ||
+            type === 'color' ||
+            type === 'range'
+              ? true
+              : false,
         }),
         m(HelperText, { helperText, dataError, dataSuccess }),
       ]);
