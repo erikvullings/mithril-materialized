@@ -11,7 +11,7 @@ devDependencies:
   cssnano: 4.1.10
   parcel-bundler: 1.12.3
   rimraf: 3.0.0
-  typescript: 3.5.3
+  typescript: 3.6.2
 lockfileVersion: 5.1
 packages:
   /@babel/code-frame/7.0.0:
@@ -4942,13 +4942,13 @@ packages:
     dev: true
     resolution:
       integrity: sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
-  /typescript/3.5.3:
+  /typescript/3.6.2:
     dev: true
     engines:
       node: '>=4.2.0'
     hasBin: true
     resolution:
-      integrity: sha512-ACzBtm/PhXBDId6a6sDJfroT2pOWt/oOnk4/dElG5G33ZL776N3Y6/6bKZJBFpd+b05F3Ct9qDjMeJmRWtE2/g==
+      integrity: sha512-lmQ4L+J6mnu3xweP8+rOrUwzmN+MRAj7TgtJtDaXE5PMyX2kCrklhg3rvOsOIfNeAWMQWO2F1GPc1kMD2vLAfw==
   /uncss/0.16.2:
     dependencies:
       commander: 2.20.0
@@ -5200,8 +5200,8 @@ specifiers:
   material-icons: ^0.3.1
   materialize-css: ^1.0.0
   mithril: ^2.0.4
-  mithril-materialized: ^0.14.1
+  mithril-materialized: ^0.14.4
   parcel-bundler: ^1.12.3
   rimraf: ^3.0.0
   tslib: ^1.10.0
-  typescript: ^3.5.3
+  typescript: ^3.6.2

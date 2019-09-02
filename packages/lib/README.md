@@ -50,6 +50,14 @@ Supported components:
 
 ## Version history
 
+v0.14.4
+
+- FIX: `Options` and `RadioButtons` did not listen to the `disabled` property.
+
+v0.14.3
+
+- When using a placeholder in an `input` field, the label should be active.
+
 v0.14.2
 
 - `LinksCollection` sometimes created unwanted `href` attribute in links.

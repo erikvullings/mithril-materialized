@@ -24,6 +24,6 @@
   "license": "MIT",
   "devDependencies": {
     "lerna": "^3.16.4",
-    "rimraf": "^2.6.3"
+    "rimraf": "^3.0.0"
   }
 }

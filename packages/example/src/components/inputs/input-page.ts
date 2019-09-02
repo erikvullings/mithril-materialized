@@ -192,6 +192,7 @@ export const InputPage = () => {
           '.row',
           m(UrlInput, {
             label: 'What is your favorite website?',
+            placeholder: 'http(s)://',
             dataError: 'Wrong, use http(s)://org.com',
             dataSuccess: 'OK',
             onchange,
@@ -200,6 +201,7 @@ export const InputPage = () => {
         m(CodeBlock, {
           code: `          m(UrlInput, {
             label: 'What is your favorite website?',
+            placeholder: 'http(s)://',
             dataError: 'Wrong, use http(s)://org.com',
             dataSuccess: 'OK',
             onchange,
