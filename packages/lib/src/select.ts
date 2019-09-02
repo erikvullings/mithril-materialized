@@ -50,20 +50,32 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
     selected ||
     (checkedId instanceof Array && (id || typeof id === 'number') ? checkedId.indexOf(id) >= 0 : checkedId === id);
   return {
-    oninit: ({ attrs: { onchange, multiple } }) => {
+    oninit: ({ attrs: { onchange, multiple, checkedId } }) => {
+      state.checkedIds = checkedId
+        ? checkedId instanceof Array
+          ? [...checkedId.filter(i => i !== null)]
+          : [checkedId]
+        : [];
       state.onchange = onchange
-        ? (e: Event) => {
-            if (multiple) {
+        ? multiple
+          ? () => {
               const values = state.instance && state.instance.getSelectedValues();
-              const v = values ? (values.length > 0 && isNumeric(values[0]) ? values.map(n => +n) : values) : undefined;
+              const v = values
+                ? values.length > 0 && isNumeric(values[0])
+                  ? values.map(n => +n)
+                  : values.filter(i => i !== null || typeof i !== 'undefined')
+                : undefined;
               state.checkedIds = v ? v : [];
-            } else if (e && e.currentTarget) {
-              const b = e.currentTarget as HTMLButtonElement;
-              const v = isNumeric(b.value) ? +b.value : b.value;
-              state.checkedIds = typeof v !== undefined ? [v] : [];
+              onchange(state.checkedIds);
             }
-            onchange(state.checkedIds);
-          }
+          : (e: Event) => {
+              if (e && e.currentTarget) {
+                const b = e.currentTarget as HTMLButtonElement;
+                const v = isNumeric(b.value) ? +b.value : b.value;
+                state.checkedIds = typeof v !== undefined ? [v] : [];
+              }
+              onchange(state.checkedIds);
+            }
         : undefined;
     },
     view: ({
@@ -84,7 +96,11 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
         ...props
       },
     }) => {
-      state.checkedIds = checkedId ? (checkedId instanceof Array ? [...checkedId] : [checkedId]) : [];
+      // state.checkedIds = checkedId
+      //   ? checkedId instanceof Array
+      //     ? [...checkedId.filter(i => i !== null)]
+      //     : [checkedId]
+      //   : [];
       const { checkedIds, onchange } = state;
       const clear = newRow ? '.clear' : '';
       const isDisabled = disabled ? '[disabled]' : '';
