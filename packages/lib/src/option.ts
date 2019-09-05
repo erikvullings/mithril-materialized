@@ -113,7 +113,7 @@ export const Options: FactoryComponent<IOptions> = () => {
       const clear = newRow ? '.clear' : '';
       const { onchange } = state;
       return m(`div${clear}`, { className }, [
-        m('h6', { style: 'margin-top: 0;' }, m(Label, { id, label, isMandatory })),
+        m('div', { className: 'input-field options' }, m(Label, { id, label, isMandatory })),
         m(HelperText, { helperText: description }),
         ...options.map(option =>
           m(InputCheckbox, {

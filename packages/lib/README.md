@@ -50,6 +50,10 @@ Supported components:
 
 ## Version history
 
+v0.14.5
+
+- FIX: `Options` and `Radios` no longer use `h6` element for labels, so they behave more like other labels.
+
 v0.14.4
 
 - FIX: `Options` and `RadioButtons` did not listen to the `disabled` property.

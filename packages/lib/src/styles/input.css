@@ -23,3 +23,7 @@ input[type='color']:not(.browser-default) {
   transition: box-shadow 0.3s, border 0.3s;
   transition: box-shadow 0.3s, border 0.3s, -webkit-box-shadow 0.3s;
 }
+
+.input-field.options > label {
+  top: -2.5rem;
+}

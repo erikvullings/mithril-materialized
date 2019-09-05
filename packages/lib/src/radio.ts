@@ -49,7 +49,7 @@ export const RadioButtons: FactoryComponent<IRadioButtons> = () => {
       const { groupId, onchange, checkedId } = state;
       const clear = newRow ? '.clear' : '';
       return m(`div${id ? `[id=${id}]` : ''}${clear}`, { className }, [
-        m('h6', { style: 'margin-top: 0;' }, m(Label, { label, isMandatory })),
+        m('div', { className: 'input-field options' }, m(Label, { id, label, isMandatory })),
         description ? m('p.helper-text', m.trust(description)) : '',
         ...options.map(r =>
           m(RadioButton, {
