@@ -3,7 +3,7 @@ devDependencies:
   '@types/mithril': 2.0.0
   autoprefixer: 9.6.1
   cssnano: 4.1.10
-  handlebars: 4.1.2
+  handlebars: 4.2.0
   js-yaml: 3.13.1
   postcss-nested: 4.1.2
   postcss-preset-env: 6.7.0
@@ -739,6 +739,19 @@ packages:
       uglify-js: 3.6.0
     resolution:
       integrity: sha512-nvfrjqvt9xQ8Z/w0ijewdD/vvWDTOweBUm96NTr66Wfvo1mJenBLwcYmPs3TIBP5ruzYGD7Hx/DaM9RmhroGPw==
+  /handlebars/4.2.0:
+    dependencies:
+      neo-async: 2.6.1
+      optimist: 0.6.1
+      source-map: 0.6.1
+    dev: true
+    engines:
+      node: '>=0.4.7'
+    hasBin: true
+    optionalDependencies:
+      uglify-js: 3.6.0
+    resolution:
+      integrity: sha512-Kb4xn5Qh1cxAKvQnzNWZ512DhABzyFNmsaJf3OAkWNa4NkaqWcNI8Tao8Tasi0/F4JD9oyG0YxuFyvyR57d+Gw==
   /has-ansi/2.0.0:
     dependencies:
       ansi-regex: 2.1.1
@@ -2532,7 +2545,7 @@ specifiers:
   '@types/mithril': ^2.0.0
   autoprefixer: ^9.6.1
   cssnano: ^4.1.10
-  handlebars: '>=4.1.2'
+  handlebars: '>=4.2.0'
   js-yaml: '>=3.13.1'
   postcss-nested: ^4.1.2
   postcss-preset-env: ^6.7.0
