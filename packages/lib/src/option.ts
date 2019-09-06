@@ -57,8 +57,13 @@ export interface IOptions extends Attributes {
   options: IInputOption[];
   /** Event handler that is called when an option is changed */
   onchange?: (checkedId: Array<string | number>) => void;
-  /** Selected id or ids (in case of multiple options) */
+  /**
+   * Selected id or ids (in case of multiple options)
+   * @deprecated Please use initialValue instead
+   */
   checkedId?: string | number | Array<string | number>;
+  /** Selected id or ids (in case of multiple options) */
+  initialValue?: string | number | Array<string | number>;
   /** Optional description */
   description?: string;
   /** Optional CSS that is added to the input checkbox */
@@ -76,22 +81,23 @@ export interface IOptions extends Attributes {
 /** A list of checkboxes */
 export const Options: FactoryComponent<IOptions> = () => {
   const state = {} as {
-    checkedIds: Array<string | number>;
+    initialValue: Array<string | number>;
     onchange?: (id: string | number, checked: boolean) => void;
   };
 
-  const isChecked = (id: string | number) => state.checkedIds.indexOf(id) >= 0;
+  const isChecked = (id: string | number) => state.initialValue.indexOf(id) >= 0;
 
   return {
-    oninit: ({ attrs: { onchange, checkedId } }) => {
-      state.checkedIds = checkedId ? (checkedId instanceof Array ? [...checkedId] : [checkedId]) : [];
+    oninit: ({ attrs: { onchange, initialValue, checkedId } }) => {
+      const iv = initialValue || checkedId;
+      state.initialValue = iv ? (iv instanceof Array ? [...iv] : [iv]) : [];
       state.onchange = onchange
         ? (id: string | number, checked: boolean) => {
-            const checkedIds = state.checkedIds.filter(i => i !== id);
+            const checkedIds = state.initialValue.filter(i => i !== id);
             if (checked) {
               checkedIds.push(id);
             }
-            state.checkedIds = checkedIds;
+            state.initialValue = checkedIds;
             onchange(checkedIds);
           }
         : undefined;

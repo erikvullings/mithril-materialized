@@ -13,7 +13,7 @@ import {
 export const SelectionPage = () => {
   const state = {
     checkedId: undefined as string | undefined,
-    checkedIds: [0, 2],
+    initialValue: [0, 2],
   };
 
   const onchange = (v: unknown) => alert(`Input changed. New value: ${v}`);
@@ -31,7 +31,7 @@ export const SelectionPage = () => {
             label: 'What is your favorite hobby?',
             // placeholder: 'Pick one', // Alternative to first option
             isMandatory: true,
-            checkedId: state.checkedId,
+            initialValue: state.checkedId,
             options: [
               { label: 'Pick one', disabled: true },
               { id: 'movies', label: 'Watching movies' },
@@ -64,9 +64,9 @@ export const SelectionPage = () => {
             multiple: true,
             placeholder: 'Make a choice...',
             label: 'What are your favorite hobbies?',
-            checkedId: state.checkedIds,
+            initialValue: state.initialValue,
             onchange: v => {
-              // state.checkedIds = v as number[];
+              // state.initialValue = v as number[];
               console.log(v);
             },
             options: [
@@ -86,9 +86,9 @@ export const SelectionPage = () => {
               multiple: true,
               placeholder: 'Make a choice...',
               label: 'What are your favorite hobbies?',
-              checkedId: state.checkedIds, // [0, 2]
+              initialValue: state.initialValue, // [0, 2]
               onchange: v => {
-                state.checkedIds = v as number[];
+                state.initialValue = v as number[];
                 console.log(v);
               },
               options: [
@@ -109,13 +109,13 @@ export const SelectionPage = () => {
             inline: true,
             label: 'What are your favorite hobbies?',
             isMandatory: true,
-            checkedId: 'out',
+            initialValue: 'out',
             options: [
               { id: 'movies', label: 'Watching movies' },
               { id: 'out', label: 'Going out' },
               { id: 'sex', label: 'Sex', disabled: true },
             ],
-            onchange: checkedIds => onchange(`Options ${checkedIds.join()} are checked.`),
+            onchange: ids => onchange(`Options ${ids.join()} are checked.`),
           })
         ),
         m(
@@ -123,13 +123,13 @@ export const SelectionPage = () => {
           m(Options, {
             label: 'What are your favorite hobbies?',
             isMandatory: true,
-            checkedId: 'out',
+            initialValue: 'out',
             options: [
               { id: 'movies', label: 'Watching movies' },
               { id: 'out', label: 'Going out' },
               { id: 'sex', label: 'Sex', disabled: true },
             ],
-            onchange: checkedIds => onchange(`Options ${checkedIds.join()} are checked.`),
+            onchange: ids => onchange(`Options ${ids.join()} are checked.`),
           })
         ),
         m(CodeBlock, {
@@ -138,13 +138,13 @@ export const SelectionPage = () => {
             inline: true, // next one is false
             label: 'What are your favorite hobbies?',
             isMandatory: true,
-            checkedId: 'out',
+            initialValue: 'out',
             options: [
               { id: 'movies', label: 'Watching movies' },
               { id: 'out', label: 'Going out' },
               { id: 'sex', label: 'Sex', disabled: true },
             ],
-            onchange: checkedIds => onchange(\`Options \${checkedIds.join()} are checked.\`),
+            onchange: ids => onchange(\`Options \${ids.join()} are checked.\`),
           })`,
         }),
 
@@ -159,7 +159,7 @@ export const SelectionPage = () => {
               { id: 'out', label: 'Going out' },
               { id: 'sex', label: 'Sex', disabled: true },
             ],
-            checkedId: 'out',
+            initialValue: 'out',
             onchange,
           }),
           m(RadioButtons, {
@@ -169,7 +169,7 @@ export const SelectionPage = () => {
               { id: 'out', label: 'Going out' },
               { id: 'sex', label: 'Sex', disabled: true },
             ],
-            checkedId: 'out',
+            initialValue: 'out',
             onchange,
           })
         ),
@@ -217,7 +217,7 @@ export const SelectionPage = () => {
             helperText: 'Help me',
             className: 'col s6',
             // disabled: true,
-            // checkedId: 'movies',
+            initialValue: 'movies',
             items: [
               { label: 'Movies', id: 'movies', iconName: 'local_movies' },
               { label: 'Reading', id: 'reading', iconName: 'import_contacts' },
@@ -237,7 +237,7 @@ export const SelectionPage = () => {
             helperText: 'Help me',
             className: 'col s6',
             // disabled: true,
-            // checkedId: 'movies',
+            initialValue: 'movies',
             items: [
               { label: 'Movies', id: 'movies', iconName: 'local_movies' },
               { label: 'Reading', id: 'reading', iconName: 'import_contacts' },

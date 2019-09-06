@@ -8,8 +8,13 @@ export interface ISelectOptions extends Attributes, Partial<M.FormSelectOptions>
   options: IInputOption[];
   /** Called when the value is changed, either contains a single or all selected (checked) ids */
   onchange: (checkedIds: Array<string | number>) => void;
-  /** Selected id or ids (in case of multiple options) */
+  /**
+   * Selected id or ids (in case of multiple options)
+   * @deprecated Please use initialValue instead
+   */
   checkedId?: string | number | Array<string | number>;
+  /** Selected id or ids (in case of multiple options) */
+  initialValue?: string | number | Array<string | number>;
   /** Select a single option or multiple options */
   multiple?: boolean;
   /** Optional label. */
@@ -42,7 +47,7 @@ export interface ISelectOptions extends Attributes, Partial<M.FormSelectOptions>
 /** Component to select from a list of values in a dropdowns */
 export const Select: FactoryComponent<ISelectOptions> = () => {
   const state = {} as {
-    checkedIds: Array<string | number>;
+    initialValue: Array<string | number>;
     instance?: M.FormSelect;
     onchange?: (e: Event) => void;
   };
@@ -50,11 +55,12 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
     selected ||
     (checkedId instanceof Array && (id || typeof id === 'number') ? checkedId.indexOf(id) >= 0 : checkedId === id);
   return {
-    oninit: ({ attrs: { onchange, multiple, checkedId } }) => {
-      state.checkedIds = checkedId
-        ? checkedId instanceof Array
-          ? [...checkedId.filter(i => i !== null)]
-          : [checkedId]
+    oninit: ({ attrs: { onchange, multiple, checkedId, initialValue } }) => {
+      const iv = initialValue || checkedId;
+      state.initialValue = iv
+        ? iv instanceof Array
+          ? [...iv.filter(i => i !== null)]
+          : [iv]
         : [];
       state.onchange = onchange
         ? multiple
@@ -65,16 +71,16 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
                   ? values.map(n => +n)
                   : values.filter(i => i !== null || typeof i !== 'undefined')
                 : undefined;
-              state.checkedIds = v ? v : [];
-              onchange(state.checkedIds);
+              state.initialValue = v ? v : [];
+              onchange(state.initialValue);
             }
           : (e: Event) => {
               if (e && e.currentTarget) {
                 const b = e.currentTarget as HTMLButtonElement;
                 const v = isNumeric(b.value) ? +b.value : b.value;
-                state.checkedIds = typeof v !== undefined ? [v] : [];
+                state.initialValue = typeof v !== undefined ? [v] : [];
               }
-              onchange(state.checkedIds);
+              onchange(state.initialValue);
             }
         : undefined;
     },
@@ -83,7 +89,6 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
         id,
         newRow,
         className = 'col s12',
-        checkedId,
         key,
         options,
         multiple,
@@ -93,29 +98,22 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
         isMandatory,
         iconName,
         disabled,
-        ...props
+        classes,
+        dropdownOptions,
       },
     }) => {
-      // state.checkedIds = checkedId
-      //   ? checkedId instanceof Array
-      //     ? [...checkedId.filter(i => i !== null)]
-      //     : [checkedId]
-      //   : [];
-      const { checkedIds, onchange } = state;
+      const { initialValue, onchange } = state;
       const clear = newRow ? '.clear' : '';
       const isDisabled = disabled ? '[disabled]' : '';
       const isMultiple = multiple ? '[multiple]' : '';
-      const noValidSelection = options.filter(o => isSelected(o.id, checkedIds)).length === 0;
+      const noValidSelection = options.filter(o => isSelected(o.id, initialValue)).length === 0;
       return m(`.input-field.select-space${clear}`, { className, key }, [
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(
           `select[id=${id}]${isDisabled}${isMultiple}`,
           {
-            oncreate: ({ dom, attrs }) => {
-              state.instance = M.FormSelect.init(dom, { ...attrs, ...props });
-            },
-            onupdate: ({ dom, attrs }) => {
-              state.instance = M.FormSelect.init(dom, { ...attrs, ...props });
+            oncreate: ({ dom }) => {
+              state.instance = M.FormSelect.init(dom, { classes, dropdownOptions });
             },
             onchange,
           },
@@ -123,7 +121,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
           options.map((o, i) =>
             m(
               `option[value=${o.id}]${o.disabled ? '[disabled]' : ''}${
-                isSelected(o.id, checkedIds, i === 0 && noValidSelection && !placeholder) ? '[selected]' : ''
+                isSelected(o.id, initialValue, i === 0 && noValidSelection && !placeholder) ? '[selected]' : ''
               }`,
               o.label.replace('&amp;', '&')
             )

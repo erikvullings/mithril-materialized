@@ -50,6 +50,11 @@ Supported components:
 
 ## Version history
 
+v0.14.7
+
+- FIX: `Select` when using `multiple` keeps the dropdown open, `dropdownOptions` and `classes` are passed on creation.
+- `Select`, `Options`, `Radios` use `initialValue` instead of `checkedId` (which is deprecated but still working). The rationale is that the checked values are only read initially, when the component is created.
+
 v0.14.5
 
 - FIX: `Options` and `Radios` no longer use `h6` element for labels, so they behave more like other labels.

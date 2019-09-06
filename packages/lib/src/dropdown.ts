@@ -31,8 +31,13 @@ export interface IDropdownOptions extends Partial<M.DropdownOptions>, Attributes
   disabled?: boolean;
   /** Item array to show in the dropdown. If the value is not supplied, uses he name. */
   items: IDropdownOption[];
-  /** Selected value or name */
+  /**
+   * Selected value or name
+   * @deprecated Use initialValue instead
+   */
   checkedId?: string | number;
+   /** Selected value or name */
+  initialValue?: string | number;
   /** When a value or name is selected */
   onchange?: (value: string | number) => void;
   /** Uses Materialize icons as a prefix or postfix. */
@@ -45,12 +50,13 @@ export interface IDropdownOptions extends Partial<M.DropdownOptions>, Attributes
 export const Dropdown = (): Component<IDropdownOptions> => {
 // export const Dropdown: FactoryComponent<IDropdownOptions> = () => {
   const state = {} as {
-    checkedId?: string | number;
+    initialValue?: string | number;
     id: string;
   };
   return {
-    oninit: ({ attrs: { id = uniqueId() }}) => {
+    oninit: ({ attrs: { id = uniqueId(), initialValue, checkedId }}) => {
       state.id = id;
+      state.initialValue = initialValue || checkedId;
     },
     view: ({ attrs: {
       key,
@@ -58,17 +64,16 @@ export const Dropdown = (): Component<IDropdownOptions> => {
       onchange,
       disabled = false,
       items,
-      checkedId = state.checkedId,
       iconName,
       helperText,
       style,
       className = 'col s12',
       ...props
     } }) => {
-      const { id } = state;
-      const selectedItem = checkedId
+      const { id, initialValue } = state;
+      const selectedItem = initialValue
         ? items
-            .filter((i: IDropdownOption) => (i.id ? i.id === checkedId : i.label === checkedId))
+            .filter((i: IDropdownOption) => (i.id ? i.id === initialValue : i.label === initialValue))
             .shift()
         : undefined;
       const title = selectedItem ? selectedItem.label : label || 'Select';
@@ -98,8 +103,8 @@ export const Dropdown = (): Component<IDropdownOptions> => {
                     {
                       onclick: onchange
                         ? () => {
-                            state.checkedId = i.id || i.label;
-                            onchange(state.checkedId);
+                            state.initialValue = i.id || i.label;
+                            onchange(state.initialValue);
                           }
                         : undefined,
                     },
