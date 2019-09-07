@@ -49,16 +49,13 @@ export interface ITabs extends Partial<TabsOptions>, Attributes {
 export const Tabs: FactoryComponent<ITabs> = () => {
   const state = {} as { instance: M.Tabs };
 
-  const createId = (title: string, id?: string) => (id ? id : title.replace(/ /, '').toLowerCase());
+  const createId = (title: string, id?: string) => (id ? id : title.replace(/ /g, '').toLowerCase());
   return {
     view: ({
       attrs: { tabWidth, selectedTabId, tabs, className: cn, style, duration, onShow, swipeable, responsiveThreshold },
     }) => {
       const activeTab = tabs.filter(t => t.active).shift();
       const select = selectedTabId || (activeTab ? createId(activeTab.title, activeTab.id) : '');
-      if (select && state.instance) {
-        setTimeout(() => state.instance.select(select), 0);
-      }
       return m('.row', [
         m(
           '.col.s12',
@@ -68,13 +65,20 @@ export const Tabs: FactoryComponent<ITabs> = () => {
               className: cn,
               style,
               oncreate: ({ dom }) => {
-                M.Tabs.init(dom, {
+                state.instance = M.Tabs.init(dom, {
                   duration,
                   onShow,
                   responsiveThreshold,
                   swipeable,
                 });
-                state.instance = M.Tabs.getInstance(dom);
+              },
+              onupdate: () => {
+                if (select) {
+                  const el = document.getElementById(`tab_${select}`);
+                  if (el) {
+                    el.click();
+                  }
+                }
               },
               onremove: () => state.instance.destroy(),
             },
@@ -84,7 +88,11 @@ export const Tabs: FactoryComponent<ITabs> = () => {
                   tabWidth === 'fixed' ? `.col.s${Math.floor(12 / tabs.length)}` : ''
                 }`,
                 { className },
-                m(`a${active ? '.active' : ''}`, { target, href: href || `#${createId(title, id)}` }, title)
+                m(
+                  `a[id=tab_${createId(title, id)}]${active ? '.active' : ''}`,
+                  { target, href: href || `#${createId(title, id)}` },
+                  title
+                )
               )
             )
           )

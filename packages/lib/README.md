@@ -50,6 +50,10 @@ Supported components:
 
 ## Version history
 
+v0.14.8
+
+- FIX: `Tabs` component selection did not work in Edge due to the way the `select` function was implemented in materialize-css.
+
 v0.14.7
 
 - FIX: `Select` when using `multiple` keeps the dropdown open, `dropdownOptions` and `classes` are passed on creation.
