@@ -50,6 +50,10 @@ Supported components:
 
 ## Version history
 
+v0.14.9
+
+- NEW: `PasswordInput` component to enter passwords.
+
 v0.14.8
 
 - FIX: `Tabs` component selection did not work in Edge due to the way the `select` function was implemented in materialize-css.

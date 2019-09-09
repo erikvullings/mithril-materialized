@@ -48,7 +48,7 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
   };
 };
 
-export type InputType = 'url' | 'color' | 'text' | 'number' | 'email' | 'range';
+export type InputType = 'url' | 'color' | 'text' | 'number' | 'email' | 'range' | 'password';
 
 /** Default component for all kinds of input fields. */
 const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IInputOptions<T>> => () => {
@@ -160,6 +160,8 @@ const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IIn
 
 /** Component for entering some text */
 export const TextInput = InputField<string>('text');
+/** Component for entering some text */
+export const PasswordInput = InputField<string>('password');
 /** Component for entering a number */
 export const NumberInput = InputField<number>('number');
 /** Component for entering a URL */

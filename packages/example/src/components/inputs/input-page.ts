@@ -9,6 +9,7 @@ import {
   UrlInput,
   RangeInput,
   Autocomplete,
+  PasswordInput,
   Chips,
   FileInput,
 } from 'mithril-materialized';
@@ -204,6 +205,23 @@ export const InputPage = () => {
             placeholder: 'http(s)://',
             dataError: 'Wrong, use http(s)://org.com',
             dataSuccess: 'OK',
+            onchange,
+          })`,
+        }),
+
+        m('h3.header', 'PasswordInput'),
+        m(
+          '.row',
+          m(PasswordInput, {
+            label: 'What is your password?',
+            iconName: 'lock',
+            onchange,
+          })
+        ),
+        m(CodeBlock, {
+          code: `          m(PasswordInput, {
+            label: 'What is your password?',
+            iconName: 'lock',
             onchange,
           })`,
         }),
