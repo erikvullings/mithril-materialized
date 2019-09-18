@@ -14,13 +14,12 @@ export const Chips: FactoryComponent<IChipsOptions> = () => {
   return {
     oncreate: ({ attrs, dom }) => {
       const { onchange, onChipAdd, onChipDelete } = attrs;
-      if (!onchange) {
-        return;
-      }
       const chips = M.Chips.getInstance(dom.children[0]) as M.Chips;
       const onChipAddBound = onChipAdd ? (onChipAdd.bind(chips) as (el: Element, chip: Element) => void) : undefined;
       attrs.onChipAdd = function(this: M.Chips, el: Element, chip: Element) {
-        onchange(this.chipsData);
+        if (onchange) {
+          onchange(this.chipsData);
+        }
         if (onChipAddBound) {
           onChipAddBound(el, chip);
         }
@@ -29,7 +28,9 @@ export const Chips: FactoryComponent<IChipsOptions> = () => {
         ? (onChipDelete.bind(chips) as (el: Element, chip: Element) => void)
         : undefined;
       attrs.onChipDelete = function(this: M.Chips, el: Element, chip: Element) {
-        onchange(this.chipsData);
+        if (onchange) {
+          onchange(this.chipsData);
+        }
         if (onChipDeleteBound) {
           onChipDeleteBound(el, chip);
         }
