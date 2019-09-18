@@ -160,7 +160,7 @@ const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IIn
 
 /** Component for entering some text */
 export const TextInput = InputField<string>('text');
-/** Component for entering some text */
+/** Component for entering a password */
 export const PasswordInput = InputField<string>('password');
 /** Component for entering a number */
 export const NumberInput = InputField<number>('number');
