@@ -6,9 +6,21 @@ import { IModelField, IConvertibleType, LayoutForm } from './layout-form-generat
 import { move, uuid4, uniqueId } from './utils';
 import './styles/kanban.css';
 
+export interface IKanbanI18n {
+  newItem: string;
+  modalDeleteItem: string;
+  modalCreateNewItem: string;
+  modalEditNewItem: string;
+}
+
 export interface IKanban<T> extends Attributes {
+  /**
+   * Label for creating a new item
+   * @deprecated Use i18n instead
+   */
+  label?: string;
   /** Label for creating a new item */
-  label: string;
+  i18n?: IKanbanI18n;
   /** The model representing the item's fields */
   model: IModelField[];
   /** The items that we want to show */
@@ -233,7 +245,13 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
         canDrag = false,
         sortDirection = 'asc',
         model = [],
-        label = 'New item',
+        label = 'item',
+        i18n = {
+          newItem: `New ${label}`,
+          modalDeleteItem: `Delete ${label}`,
+          modalCreateNewItem: `Create new ${label}`,
+          modalEditNewItem: `Edit new ${label}`,
+        },
         containerId,
         editableIds = [],
         fixedFooter = false,
@@ -243,7 +261,7 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
     }) => {
       state.items = items.map(item => ({ ...item }));
       state.model = model;
-      state.label = label;
+      state.i18n = i18n;
       state.canEdit = canEdit;
       state.canSort = canSort;
       state.canDrag = canDrag;
@@ -264,7 +282,7 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
         canSort,
         sortDirection,
         curSortId,
-        label,
+        i18n,
         containerId,
         fixedFooter,
         canDrag,
@@ -287,7 +305,7 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
         m('.row.kanban__menu', { style: 'margin-bottom: 0;' }, [
           canEdit && !disabled
             ? m(FlatButton, {
-                label: `New ${label}`,
+                label: i18n!.newItem,
                 modalId: state.editId,
                 iconName: 'add',
                 onclick: () => {
@@ -327,7 +345,22 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
                     `.card-panel.kanban__item[data-kanban-index=${i}]${disabled ? '.disabled' : ''}`,
                     canDrag && !disabled ? { key: item.id, ...dragOptions } : { key: item.id },
                     [
-                      m('.card-content', m(LayoutForm, { model, item, containerId, disabled: true, editableIds })),
+                      m(
+                        '.card-content',
+                        m(LayoutForm, {
+                          model,
+                          item,
+                          containerId,
+                          disabled: true,
+                          editableIds,
+                          onchange: (valid: boolean) => {
+                            state.canSave = valid;
+                            if (state.onchange) {
+                              state.onchange(state.items);
+                            }
+                          },
+                        })
+                      ),
                       canEdit && !disabled
                         ? m(
                             '.card-action.row',
@@ -356,7 +389,7 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
         ),
         m(ModalPanel, {
           id: state.editId,
-          title: `Create new ${label}`,
+          title: i18n!.modalCreateNewItem,
           fixedFooter,
           description: state.updatedItem
             ? m(LayoutForm, {
@@ -393,7 +426,7 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
         }),
         m(ModalPanel, {
           id: state.deleteId,
-          title: `Delete ${label}`,
+          title: i18n!.modalDeleteItem,
           description: 'Are you sure?',
           buttons: [
             {

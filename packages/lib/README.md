@@ -50,6 +50,10 @@ Supported components:
 
 ## Version history
 
+v0.14.11
+
+- FIX: `Kanban` did not trigger `onChange` when disabled, but with editable properties.
+
 v0.14.10
 
 - FIX: `Chips` did not initialize properly when `onChange` was not specified (e.g. when disabled).

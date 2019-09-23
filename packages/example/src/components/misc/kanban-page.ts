@@ -218,6 +218,7 @@ export const KanbanPage = () => {
           canEdit: false,
           editableIds: ['done'],
           items: state.todos,
+          onchange: console.table,
           model: [
             {
               id: 'id',
