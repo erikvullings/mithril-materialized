@@ -115,6 +115,9 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
             oncreate: ({ dom }) => {
               state.instance = M.FormSelect.init(dom, { classes, dropdownOptions });
             },
+            onupdate: ({ dom }) => {
+              state.instance = M.FormSelect.init(dom, { classes, dropdownOptions });
+            },
             onchange,
           },
           placeholder ? m(`option[disabled]${noValidSelection ? '[selected]' : ''}`, placeholder) : '',
