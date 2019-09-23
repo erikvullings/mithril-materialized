@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ITimelineItem | mithril-materialized</title>
+	<title>IKanbanI18n | mithril-materialized</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_timeline_.html">&quot;timeline&quot;</a>
+					<a href="../modules/_kanban_.html">&quot;kanban&quot;</a>
 				</li>
 				<li>
-					<a href="_timeline_.itimelineitem.html">ITimelineItem</a>
+					<a href="_kanban_.ikanbani18n.html">IKanbanI18n</a>
 				</li>
 			</ul>
-			<h1>Interface ITimelineItem</h1>
+			<h1>Interface IKanbanI18n</h1>
 		</div>
 	</div>
 </header>
@@ -73,12 +73,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ITimelineItem</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="_timeline_.iinternaltimelineitem.html" class="tsd-signature-type">IInternalTimelineItem</a>
-							</li>
-						</ul>
+						<span class="target">IKanbanI18n</span>
 					</li>
 				</ul>
 			</section>
@@ -89,12 +84,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_timeline_.itimelineitem.html#active" class="tsd-kind-icon">active</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_timeline_.itimelineitem.html#content" class="tsd-kind-icon">content</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_timeline_.itimelineitem.html#datetime" class="tsd-kind-icon">datetime</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_timeline_.itimelineitem.html#iconname" class="tsd-kind-icon">icon<wbr>Name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_timeline_.itimelineitem.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_timeline_.itimelineitem.html#title" class="tsd-kind-icon">title</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_kanban_.ikanbani18n.html#modalcreatenewitem" class="tsd-kind-icon">modal<wbr>Create<wbr>New<wbr>Item</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_kanban_.ikanbani18n.html#modaldeleteitem" class="tsd-kind-icon">modal<wbr>Delete<wbr>Item</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_kanban_.ikanbani18n.html#modaleditnewitem" class="tsd-kind-icon">modal<wbr>Edit<wbr>New<wbr>Item</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_kanban_.ikanbani18n.html#newitem" class="tsd-kind-icon">new<wbr>Item</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,62 +96,42 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="active" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> active</h3>
-					<div class="tsd-signature tsd-kind-icon">active<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
+					<a name="modalcreatenewitem" class="tsd-anchor"></a>
+					<h3>modal<wbr>Create<wbr>New<wbr>Item</h3>
+					<div class="tsd-signature tsd-kind-icon">modal<wbr>Create<wbr>New<wbr>Item<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/25448a9/packages/lib/src/timeline.ts#L10">timeline.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/25448a9/packages/lib/src/kanban.ts#L12">kanban.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="content" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> content</h3>
-					<div class="tsd-signature tsd-kind-icon">content<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Vnode</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="modaldeleteitem" class="tsd-anchor"></a>
+					<h3>modal<wbr>Delete<wbr>Item</h3>
+					<div class="tsd-signature tsd-kind-icon">modal<wbr>Delete<wbr>Item<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/25448a9/packages/lib/src/timeline.ts#L11">timeline.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/25448a9/packages/lib/src/kanban.ts#L11">kanban.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="datetime" class="tsd-anchor"></a>
-					<h3>datetime</h3>
-					<div class="tsd-signature tsd-kind-icon">datetime<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span></div>
+					<a name="modaleditnewitem" class="tsd-anchor"></a>
+					<h3>modal<wbr>Edit<wbr>New<wbr>Item</h3>
+					<div class="tsd-signature tsd-kind-icon">modal<wbr>Edit<wbr>New<wbr>Item<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/25448a9/packages/lib/src/timeline.ts#L8">timeline.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/25448a9/packages/lib/src/kanban.ts#L13">kanban.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="iconname" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> icon<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">icon<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="newitem" class="tsd-anchor"></a>
+					<h3>new<wbr>Item</h3>
+					<div class="tsd-signature tsd-kind-icon">new<wbr>Item<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/25448a9/packages/lib/src/timeline.ts#L9">timeline.ts:9</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="id" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> id</h3>
-					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/25448a9/packages/lib/src/timeline.ts#L6">timeline.ts:6</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="title" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> title</h3>
-					<div class="tsd-signature tsd-kind-icon">title<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Vnode</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/25448a9/packages/lib/src/timeline.ts#L7">timeline.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/25448a9/packages/lib/src/kanban.ts#L10">kanban.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -171,50 +144,41 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/_timeline_.html">"timeline"</a>
+						<a href="../modules/_kanban_.html">"kanban"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_timeline_.iinternaltimelineitem.html" class="tsd-kind-icon">IInternal<wbr>Timeline<wbr>Item</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_timeline_.itimeline.html" class="tsd-kind-icon">ITimeline</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_kanban_.ikanban.html" class="tsd-kind-icon">IKanban</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_timeline_.itimelineitem.html" class="tsd-kind-icon">ITimeline<wbr>Item</a>
+						<a href="_kanban_.ikanbani18n.html" class="tsd-kind-icon">IKanban<wbr>I18n</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_timeline_.itimelineitem.html#active" class="tsd-kind-icon">active</a>
+								<a href="_kanban_.ikanbani18n.html#modalcreatenewitem" class="tsd-kind-icon">modal<wbr>Create<wbr>New<wbr>Item</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_timeline_.itimelineitem.html#content" class="tsd-kind-icon">content</a>
+								<a href="_kanban_.ikanbani18n.html#modaldeleteitem" class="tsd-kind-icon">modal<wbr>Delete<wbr>Item</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_timeline_.itimelineitem.html#datetime" class="tsd-kind-icon">datetime</a>
+								<a href="_kanban_.ikanbani18n.html#modaleditnewitem" class="tsd-kind-icon">modal<wbr>Edit<wbr>New<wbr>Item</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_timeline_.itimelineitem.html#iconname" class="tsd-kind-icon">icon<wbr>Name</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_timeline_.itimelineitem.html#id" class="tsd-kind-icon">id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_timeline_.itimelineitem.html#title" class="tsd-kind-icon">title</a>
+								<a href="_kanban_.ikanbani18n.html#newitem" class="tsd-kind-icon">new<wbr>Item</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_timeline_.html#timeline" class="tsd-kind-icon">Timeline</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
+						<a href="_kanban_.ikanbanstate.html" class="tsd-kind-icon">IKanban<wbr>State</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="../modules/_timeline_.html#timelineitem" class="tsd-kind-icon">Timeline<wbr>Item</a>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="../modules/_kanban_.html#kanban" class="tsd-kind-icon">Kanban</a>
 					</li>
 				</ul>
 			</nav>
