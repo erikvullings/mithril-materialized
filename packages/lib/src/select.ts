@@ -49,14 +49,19 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
   const state = {} as {
     initialValue: Array<string | number>;
     instance?: M.FormSelect;
+    /** Concatenation of all options IDs, to see if the options have changed and we need to re-init the select */
+    ids?: string,
     onchange?: (e: Event) => void;
   };
+  const optionsIds = (options: IInputOption[]) => options.map(o => o.id).join('');
+
   const isSelected = (id?: string | number, checkedId?: string | number | Array<string | number>, selected = false) =>
     selected ||
     (checkedId instanceof Array && (id || typeof id === 'number') ? checkedId.indexOf(id) >= 0 : checkedId === id);
   return {
-    oninit: ({ attrs: { onchange, multiple, checkedId, initialValue } }) => {
+    oninit: ({ attrs: { onchange, multiple, checkedId, initialValue, options } }) => {
       const iv = initialValue || checkedId;
+      state.ids = optionsIds(options);
       state.initialValue = iv
         ? iv instanceof Array
           ? [...iv.filter(i => i !== null)]
@@ -116,7 +121,11 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
               state.instance = M.FormSelect.init(dom, { classes, dropdownOptions });
             },
             onupdate: ({ dom }) => {
-              state.instance = M.FormSelect.init(dom, { classes, dropdownOptions });
+              const ids = optionsIds(options);
+              if (state.ids !== ids) {
+                state.ids = ids;
+                state.instance = M.FormSelect.init(dom, { classes, dropdownOptions });
+              }
             },
             onchange,
           },
