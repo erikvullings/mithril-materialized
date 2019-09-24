@@ -50,6 +50,10 @@ Supported components:
 
 ## Version history
 
+v0.14.14
+
+- FIX: `Kanban` triggering too many `onchange` messages.
+
 v0.14.12
 
 - FIX: `Select` when using `multiple` keeps the dropdown open, but re-initialize select when the options change.

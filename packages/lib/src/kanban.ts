@@ -355,7 +355,7 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
                           editableIds,
                           onchange: (valid: boolean) => {
                             state.canSave = valid;
-                            if (state.onchange) {
+                            if (valid && state.onchange) {
                               state.onchange(state.items);
                             }
                           },
