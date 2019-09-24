@@ -50,6 +50,10 @@ Supported components:
 
 ## Version history
 
+v0.14.12
+
+- FIX: `Select` when using `multiple` keeps the dropdown open, but re-initialize select when the options change.
+
 v0.14.11
 
 - FIX: `Kanban` did not trigger `onChange` when disabled, but with editable properties.
