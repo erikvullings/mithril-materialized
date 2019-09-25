@@ -6,6 +6,7 @@ export * from './code-block';
 export * from './collapsible';
 export * from './collection';
 export * from './dropdown';
+export * from './floating-action-button';
 export * from './layout-form-generator';
 export * from './icon';
 export * from './input-options';
