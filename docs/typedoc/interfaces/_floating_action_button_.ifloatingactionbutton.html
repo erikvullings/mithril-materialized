@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IHtmlAttributes | mithril-materialized</title>
+	<title>IFloatingActionButton | mithril-materialized</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,13 +56,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_button_.html">&quot;button&quot;</a>
+					<a href="../modules/_floating_action_button_.html">&quot;floating-action-button&quot;</a>
 				</li>
 				<li>
-					<a href="_button_.ihtmlattributes.html">IHtmlAttributes</a>
+					<a href="_floating_action_button_.ifloatingactionbutton.html">IFloatingActionButton</a>
 				</li>
 			</ul>
-			<h1>Interface IHtmlAttributes</h1>
+			<h1>Interface IFloatingActionButton</h1>
 		</div>
 	</div>
 </header>
@@ -73,7 +73,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IHtmlAttributes</span>
+						<span class="tsd-signature-type">object</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">IFloatingActionButton</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -84,12 +89,12 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_button_.ihtmlattributes.html#autofocus" class="tsd-kind-icon">autofocus</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_button_.ihtmlattributes.html#disabled" class="tsd-kind-icon">disabled</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_button_.ihtmlattributes.html#for" class="tsd-kind-icon">for</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_button_.ihtmlattributes.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_button_.ihtmlattributes.html#placeholder" class="tsd-kind-icon">placeholder</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_button_.ihtmlattributes.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_floating_action_button_.ifloatingactionbutton.html#buttons" class="tsd-kind-icon">buttons</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_floating_action_button_.ifloatingactionbutton.html#classname" class="tsd-kind-icon">class<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_floating_action_button_.ifloatingactionbutton.html#iconclass" class="tsd-kind-icon">icon<wbr>Class</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_floating_action_button_.ifloatingactionbutton.html#iconname" class="tsd-kind-icon">icon<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_floating_action_button_.ifloatingactionbutton.html#position" class="tsd-kind-icon">position</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_floating_action_button_.ifloatingactionbutton.html#style" class="tsd-kind-icon">style</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,64 +103,99 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="autofocus" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> autofocus</h3>
-					<div class="tsd-signature tsd-kind-icon">autofocus<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
+					<a name="buttons" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> buttons</h3>
+					<div class="tsd-signature tsd-kind-icon">buttons<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/aec423a/packages/lib/src/button.ts#L9">button.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/aec423a/packages/lib/src/floating-action-button.ts#L18">floating-action-button.ts:18</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The buttons you want to show</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="disabled" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> disabled</h3>
-					<div class="tsd-signature tsd-kind-icon">disabled<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
+					<a name="classname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> class<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">class<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/aec423a/packages/lib/src/button.ts#L10">button.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/aec423a/packages/lib/src/floating-action-button.ts#L5">floating-action-button.ts:5</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Optional classes to add to the top element</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="for" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> for</h3>
-					<div class="tsd-signature tsd-kind-icon">for<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="iconclass" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> icon<wbr>Class</h3>
+					<div class="tsd-signature tsd-kind-icon">icon<wbr>Class<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/aec423a/packages/lib/src/button.ts#L7">button.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/aec423a/packages/lib/src/floating-action-button.ts#L16">floating-action-button.ts:16</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Optional icon class, e.g. tiny (1em), small (2em), medium (4em), large (6em), or &#39;tiny right&#39;.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>default</dt>
+							<dd><p>large</p>
+							</dd>
+						</dl>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="id" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> id</h3>
-					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="iconname" class="tsd-anchor"></a>
+					<h3>icon<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">icon<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/aec423a/packages/lib/src/button.ts#L6">button.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/aec423a/packages/lib/src/floating-action-button.ts#L9">floating-action-button.ts:9</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Material-icons name for the main FAB, @see <a href="https://materializecss.com/icons.html">https://materializecss.com/icons.html</a></p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="placeholder" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> placeholder</h3>
-					<div class="tsd-signature tsd-kind-icon">placeholder<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="position" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> position</h3>
+					<div class="tsd-signature tsd-kind-icon">position<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"left"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"right"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"inline-left"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"inline-right"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/aec423a/packages/lib/src/button.ts#L8">button.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/aec423a/packages/lib/src/floating-action-button.ts#L11">floating-action-button.ts:11</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Helper option to place the FAB inline instead of the bottom right of the display</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="type" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"submit"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"button"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"text"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"textarea"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number"</span></div>
+					<a name="style" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> style</h3>
+					<div class="tsd-signature tsd-kind-icon">style<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/aec423a/packages/lib/src/button.ts#L11">button.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/aec423a/packages/lib/src/floating-action-button.ts#L7">floating-action-button.ts:7</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Optional style to add to the top element, e.g. for positioning it inline</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -166,7 +206,7 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="../modules/_button_.html">"button"</a>
+						<a href="../modules/_floating_action_button_.html">"floating-<wbr>action-<wbr>button"</a>
 					</li>
 				</ul>
 			</nav>
@@ -175,53 +215,32 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_button_.ihtmlattributes.html" class="tsd-kind-icon">IHtml<wbr>Attributes</a>
+						<a href="_floating_action_button_.ifloatingactionbutton.html" class="tsd-kind-icon">IFloating<wbr>Action<wbr>Button</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_button_.ihtmlattributes.html#autofocus" class="tsd-kind-icon">autofocus</a>
+								<a href="_floating_action_button_.ifloatingactionbutton.html#buttons" class="tsd-kind-icon">buttons</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_button_.ihtmlattributes.html#disabled" class="tsd-kind-icon">disabled</a>
+								<a href="_floating_action_button_.ifloatingactionbutton.html#classname" class="tsd-kind-icon">class<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_button_.ihtmlattributes.html#for" class="tsd-kind-icon">for</a>
+								<a href="_floating_action_button_.ifloatingactionbutton.html#iconclass" class="tsd-kind-icon">icon<wbr>Class</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_button_.ihtmlattributes.html#id" class="tsd-kind-icon">id</a>
+								<a href="_floating_action_button_.ifloatingactionbutton.html#iconname" class="tsd-kind-icon">icon<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_button_.ihtmlattributes.html#placeholder" class="tsd-kind-icon">placeholder</a>
+								<a href="_floating_action_button_.ifloatingactionbutton.html#position" class="tsd-kind-icon">position</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_button_.ihtmlattributes.html#type" class="tsd-kind-icon">type</a>
+								<a href="_floating_action_button_.ifloatingactionbutton.html#style" class="tsd-kind-icon">style</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
-						<a href="_button_.imaterialbutton.html" class="tsd-kind-icon">IMaterial<wbr>Button</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_button_.html#button" class="tsd-kind-icon">Button</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_button_.html#flatbutton" class="tsd-kind-icon">Flat<wbr>Button</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_button_.html#largebutton" class="tsd-kind-icon">Large<wbr>Button</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_button_.html#roundiconbutton" class="tsd-kind-icon">Round<wbr>Icon<wbr>Button</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_button_.html#smallbutton" class="tsd-kind-icon">Small<wbr>Button</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-parent-kind-external-module">
-						<a href="../modules/_button_.html#submitbutton" class="tsd-kind-icon">Submit<wbr>Button</a>
-					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="../modules/_button_.html#buttonfactory" class="tsd-kind-icon">Button<wbr>Factory</a>
+						<a href="../modules/_floating_action_button_.html#floatingactionbutton" class="tsd-kind-icon">Floating<wbr>Action<wbr>Button</a>
 					</li>
 				</ul>
 			</nav>

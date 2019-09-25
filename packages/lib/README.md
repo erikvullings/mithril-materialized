@@ -9,6 +9,7 @@ Supported components:
   - FlatButton
   - RoundButton
   - SubmitButton
+  - FloatingActionButton
 - [Inputs](https://erikvullings.github.io/mithril-materialized/#!/inputs)
   - TextInput
   - TextArea
@@ -49,6 +50,10 @@ Supported components:
   - [MapEditor](https://erikvullings.github.io/mithril-materialized/#!/map_editor)
 
 ## Version history
+
+v0.15.0
+
+- NEW: `FloatingActionButton` created.
 
 v0.14.14
 
