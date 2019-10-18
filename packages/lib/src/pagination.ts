@@ -35,12 +35,12 @@ export const Pagination: FactoryComponent<IPaginationOptions> = () => {
     pagIndex: 0,
   };
   return {
-    view: ({ attrs: { items, curPage, size = Math.min(9, items.length) } }) => {
+    view: ({ attrs: { items, curPage = 1, size = Math.min(9, items.length) } }) => {
       const { pagIndex } = state;
       const startPage = pagIndex * size;
       const endPage = startPage + size;
       const canGoBack = pagIndex > 0;
-      const canGoForward = (pagIndex + 1) * size < items.length;
+      const canGoForward = (pagIndex + 1) < items.length;
       const displayedItems = [
         {
           title: m(
@@ -73,7 +73,7 @@ export const Pagination: FactoryComponent<IPaginationOptions> = () => {
               ({
                 title: startPage + i,
                 ...item,
-                active: i === curPage,
+                active: startPage + i === curPage,
               } as IInternalPaginationOption)
           )
           .map(item => m(PaginationItem, item))

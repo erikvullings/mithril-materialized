@@ -10,6 +10,8 @@ export const MiscPage = () => {
     tabWidthId: 2,
     tabWidths: ['auto', 'fixed', 'fill'] as Array<'auto' | 'fixed' | 'fill'>,
   };
+  const curPage = () => m.route.param('page') ? +m.route.param('page') : 1;
+
   return {
     view: () =>
       m('.col.s12', [
@@ -164,40 +166,41 @@ export const MiscPage = () => {
           '.row',
           m(Pagination, {
             size: 5,
+            curPage: curPage(),
             items: [
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
+              { href: '/misc?page=1' },
+              { href: '/misc?page=2' },
+              { href: '/misc?page=3' },
+              { href: '/misc?page=4' },
+              { href: '/misc?page=5' },
+              { href: '/misc?page=6' },
+              { href: '/misc?page=7' },
+              { href: '/misc?page=8' },
+              { href: '/misc?page=9' },
+              { href: '/misc?page=10' },
+              { href: '/misc?page=11' },
+              { href: '/misc?page=12' },
             ],
           })
         ),
         m(CodeBlock, {
-          code: `          m(Pagination, {
-            size: 5,
-            items: [
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-              { href: '/' },
-            ],
-          })`,
+          code: `m(Pagination, {
+  size: 5,
+  items: [
+    { href: '/misc?page=1' },
+    { href: '/misc?page=2' },
+    { href: '/misc?page=3' },
+    { href: '/misc?page=4' },
+    { href: '/misc?page=5' },
+    { href: '/misc?page=6' },
+    { href: '/misc?page=7' },
+    { href: '/misc?page=8' },
+    { href: '/misc?page=9' },
+    { href: '/misc?page=10' },
+    { href: '/misc?page=11' },
+    { href: '/misc?page=12' },
+  ],
+})`,
         }),
       ]),
   };

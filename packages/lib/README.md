@@ -51,6 +51,10 @@ Supported components:
 
 ## Version history
 
+v0.15.1
+
+- FIX: `Pagination` did not highlight current item when item index exceeded size limit. Also updated example with actual routes.
+
 v0.15.0
 
 - NEW: `FloatingActionButton` created.
