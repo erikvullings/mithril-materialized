@@ -40,6 +40,7 @@ export const DatePicker: FactoryComponent<IInputOptions<Date> & Partial<M.Datepi
               onClose,
             } as Partial<M.DatepickerOptions>);
           },
+          onremove: () => state.dp && state.dp.destroy(),
         }),
         m(Label, { label, id, isMandatory, isActive: !!initialValue }),
         m(HelperText, { helperText }),
@@ -84,6 +85,7 @@ export const TimePicker: FactoryComponent<IInputOptions & Partial<M.TimepickerOp
               onCloseEnd,
             } as Partial<M.TimepickerOptions>);
           },
+          onremove: () => state.tp && state.tp.destroy(),
         }),
         m(Label, { label, id, isMandatory, isActive: initialValue }),
         m(HelperText, { helperText }),

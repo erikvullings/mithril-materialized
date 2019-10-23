@@ -51,6 +51,10 @@ Supported components:
 
 ## Version history
 
+v0.15.3
+
+- FIX: `Pickers` destroy them `onremove`.
+
 v0.15.2
 
 - FIX: `Pagination` did not properly compute the go forward disabled/enabled state.
