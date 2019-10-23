@@ -22,7 +22,7 @@ const PaginationItem: FactoryComponent<IInternalPaginationOption> = () => ({
 export interface IPaginationOptions extends Attributes {
   /**
    * How many items do we show
-   * @default 9 or items.length
+   * @default 9 or items.length, whatever is the smallest
    */
   size?: number;
   /** The active page index */
@@ -40,7 +40,7 @@ export const Pagination: FactoryComponent<IPaginationOptions> = () => {
       const startPage = pagIndex * size;
       const endPage = startPage + size;
       const canGoBack = pagIndex > 0;
-      const canGoForward = (pagIndex + 1) < items.length;
+      const canGoForward = endPage < items.length;
       const displayedItems = [
         {
           title: m(
