@@ -52,8 +52,7 @@ export const Pagination: FactoryComponent<IPaginationOptions> = () => {
           ),
           disabled: !canGoBack,
         },
-        // tslint:disable-next-line:variable-name
-        ...items.filter((_item, i) => startPage <= i && i < endPage),
+        ...items.filter((_, i) => startPage <= i && i < endPage),
         {
           title: m(
             'a',
@@ -67,16 +66,13 @@ export const Pagination: FactoryComponent<IPaginationOptions> = () => {
       ];
       return m(
         'ul.pagination',
-        displayedItems
-          .map(
-            (item, i) =>
-              ({
-                title: startPage + i,
-                ...item,
-                active: startPage + i === curPage,
-              } as IInternalPaginationOption)
-          )
-          .map(item => m(PaginationItem, item))
+        displayedItems.map((item, i) =>
+          m(PaginationItem, {
+            title: startPage + i,
+            ...item,
+            active: startPage + i === curPage,
+          })
+        )
       );
     },
   };
