@@ -1,6 +1,6 @@
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
-import sourceMaps from 'rollup-plugin-sourcemaps';
+// import sourceMaps from 'rollup-plugin-sourcemaps';
 import typescript from 'rollup-plugin-typescript2';
 import postcss from 'rollup-plugin-postcss';
 import json from 'rollup-plugin-json';
@@ -23,7 +23,7 @@ export default {
       name: 'materialized',
       file: pkg.main,
       format: 'iife',
-      sourcemap: true,
+      // sourcemap: true,
       globals: {
         mithril: 'm',
         'materialize-css': 'M',
@@ -32,7 +32,7 @@ export default {
     {
       file: pkg.module,
       format: 'es',
-      sourcemap: true,
+      // sourcemap: true,
     },
   ],
   // Indicate here external modules you don't want to include in your bundle
@@ -63,7 +63,7 @@ export default {
       },
     }),
     // Resolve source maps to the original source
-    sourceMaps(),
+    // sourceMaps(),
     // minifies generated bundles
     production && terser({ sourcemap: true }),
   ],

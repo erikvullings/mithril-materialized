@@ -51,6 +51,10 @@ Supported components:
 
 ## Version history
 
+v0.15.4
+
+- `Pagination` component simplified implementation.
+
 v0.15.3
 
 - FIX: `Pickers` destroy them `onremove`.
