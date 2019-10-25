@@ -26,25 +26,34 @@ export const DatePicker: FactoryComponent<IInputOptions<Date> & Partial<M.Datepi
       // const {} = attrs;
       const clear = newRow ? '.clear' : '';
       const onClose = onchange ? () => state.dp && onchange(state.dp.date) : undefined;
-      return m(`.input-field${clear}`, { className }, [
-        iconName ? m('i.material-icons.prefix', iconName) : '',
-        m(`input.datepicker[type=text][tabindex=0][id=${id}]${attributes}${disabled ? '[disabled]' : ''}`, {
-          oncreate: ({ dom }) => {
-            state.dp = M.Datepicker.init(dom, {
-              format: 'yyyy/mm/dd',
-              showClearBtn: true,
-              setDefaultDate: true,
-              defaultDate: initialValue ? new Date(initialValue) : new Date(),
-              // onSelect: onchange,
-              ...props,
-              onClose,
-            } as Partial<M.DatepickerOptions>);
+      return m(
+        `.input-field${clear}`,
+        {
+          className,
+          onremove: () => {
+            // console.log('removing dp');
+            return state.dp && state.dp.destroy();
           },
-          onremove: () => state.dp && state.dp.destroy(),
-        }),
-        m(Label, { label, id, isMandatory, isActive: !!initialValue }),
-        m(HelperText, { helperText }),
-      ]);
+        },
+        [
+          iconName ? m('i.material-icons.prefix', iconName) : '',
+          m(`input.datepicker[type=text][tabindex=0][id=${id}]${attributes}${disabled ? '[disabled]' : ''}`, {
+            oncreate: ({ dom }) => {
+              state.dp = M.Datepicker.init(dom, {
+                format: 'yyyy/mm/dd',
+                showClearBtn: true,
+                setDefaultDate: true,
+                defaultDate: initialValue ? new Date(initialValue) : new Date(),
+                // onSelect: onchange,
+                ...props,
+                onClose,
+              } as Partial<M.DatepickerOptions>);
+            },
+          }),
+          m(Label, { label, id, isMandatory, isActive: !!initialValue }),
+          m(HelperText, { helperText }),
+        ]
+      );
     },
   };
 };
@@ -71,25 +80,31 @@ export const TimePicker: FactoryComponent<IInputOptions & Partial<M.TimepickerOp
       const attributes = toAttrs(props);
       const clear = newRow ? '.clear' : '';
       const onCloseEnd = onchange ? () => state.tp && onchange(state.tp.time) : undefined;
-      return m(`.input-field.timepicker${clear}`, { className }, [
-        iconName ? m('i.material-icons.prefix', iconName) : '',
-        m(`input[type=text][tabindex=0][id=${id}]${attributes}${disabled ? '[disabled]' : ''}`, {
-          value: initialValue,
-          oncreate: ({ dom }) => {
-            state.tp = M.Timepicker.init(dom, {
-              twelveHour: false,
-              showClearBtn: true,
-              defaultTime: initialValue,
-              // onSelect: onchange ? (hours: number, minutes: number) => onchange(`${hours}:${minutes}`) : undefined,
-              ...props,
-              onCloseEnd,
-            } as Partial<M.TimepickerOptions>);
-          },
+      return m(
+        `.input-field.timepicker${clear}`,
+        {
+          className,
           onremove: () => state.tp && state.tp.destroy(),
-        }),
-        m(Label, { label, id, isMandatory, isActive: initialValue }),
-        m(HelperText, { helperText }),
-      ]);
+        },
+        [
+          iconName ? m('i.material-icons.prefix', iconName) : '',
+          m(`input[type=text][tabindex=0][id=${id}]${attributes}${disabled ? '[disabled]' : ''}`, {
+            value: initialValue,
+            oncreate: ({ dom }) => {
+              state.tp = M.Timepicker.init(dom, {
+                twelveHour: false,
+                showClearBtn: true,
+                defaultTime: initialValue,
+                // onSelect: onchange ? (hours: number, minutes: number) => onchange(`${hours}:${minutes}`) : undefined,
+                ...props,
+                onCloseEnd,
+              } as Partial<M.TimepickerOptions>);
+            },
+          }),
+          m(Label, { label, id, isMandatory, isActive: initialValue }),
+          m(HelperText, { helperText }),
+        ]
+      );
     },
   };
 };
