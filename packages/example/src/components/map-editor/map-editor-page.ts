@@ -12,12 +12,6 @@ export const MapEditorPage = () => {
       falsy: false,
     },
   };
-  const cells = [
-    ['title 1', 'desc 1', 'high'],
-    ['title 2', 'desc 2', 'medium'],
-    ['title 3', 'desc 3', 'average'],
-    ['title 4', 'desc 4', 'low'],
-  ];
 
   return {
     view: () =>
