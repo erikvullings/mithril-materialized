@@ -51,6 +51,10 @@ Supported components:
 
 ## Version history
 
+v0.15.5
+
+- `Select` `disabled` status is computed dynamically in the view, not only in `oninit`.
+
 v0.15.4
 
 - `Pagination` component simplified implementation.
