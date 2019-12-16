@@ -213,7 +213,7 @@ export const FileInput: FactoryComponent<IFileInputOptions> = () => {
               onchange: onchange
                 ? (e: UIEvent) => {
                     const i = e.target as HTMLInputElement;
-                    if (i && i.files) {
+                    if (i && i.files && onchange) {
                       onchange(i.files);
                     }
                   }
