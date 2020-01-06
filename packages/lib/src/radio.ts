@@ -34,19 +34,31 @@ export const RadioButtons: FactoryComponent<IRadioButtons> = () => {
     onchange: (id: string | number) => void;
   };
   return {
-    oninit: ({ attrs: { onchange, checkedId } }) => {
+    oninit: ({ attrs: { checkedId } }) => {
       state.checkedId = checkedId;
-      state.onchange = (id: string | number) => {
-        state.checkedId = id;
-        if (onchange) {
-          onchange(id);
-        }
-      };
     },
     view: ({
-      attrs: { id, newRow, inline, className = 'col s12', label = '', disabled, description, options, isMandatory },
+      attrs: {
+        id,
+        newRow,
+        inline,
+        className = 'col s12',
+        label = '',
+        disabled,
+        description,
+        options,
+        isMandatory,
+        onchange: callback,
+      },
     }) => {
-      const { groupId, onchange, checkedId } = state;
+      const { groupId, checkedId } = state;
+      const onchange = (propId: string | number) => {
+        state.checkedId = propId;
+        if (callback) {
+          callback(propId);
+        }
+      };
+
       const clear = newRow ? '.clear' : '';
       return m(`div${id ? `[id=${id}]` : ''}${clear}`, { className }, [
         m('div', { className: 'input-field options' }, m(Label, { id, label, isMandatory })),

@@ -50,8 +50,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
     initialValue: Array<string | number>;
     instance?: M.FormSelect;
     /** Concatenation of all options IDs, to see if the options have changed and we need to re-init the select */
-    ids?: string,
-    onchange?: (e: Event) => void;
+    ids?: string;
   };
   const optionsIds = (options: IInputOption[]) => options.map(o => o.id).join('');
 
@@ -59,35 +58,10 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
     selected ||
     (checkedId instanceof Array && (id || typeof id === 'number') ? checkedId.indexOf(id) >= 0 : checkedId === id);
   return {
-    oninit: ({ attrs: { onchange, multiple, checkedId, initialValue, options } }) => {
+    oninit: ({ attrs: { checkedId, initialValue, options } }) => {
       const iv = initialValue || checkedId;
       state.ids = optionsIds(options);
-      state.initialValue = iv
-        ? iv instanceof Array
-          ? [...iv.filter(i => i !== null)]
-          : [iv]
-        : [];
-      state.onchange = onchange
-        ? multiple
-          ? () => {
-              const values = state.instance && state.instance.getSelectedValues();
-              const v = values
-                ? values.length > 0 && isNumeric(values[0])
-                  ? values.map(n => +n)
-                  : values.filter(i => i !== null || typeof i !== 'undefined')
-                : undefined;
-              state.initialValue = v ? v : [];
-              onchange(state.initialValue);
-            }
-          : (e: Event) => {
-              if (e && e.currentTarget) {
-                const b = e.currentTarget as HTMLButtonElement;
-                const v = isNumeric(b.value) ? +b.value : b.value;
-                state.initialValue = typeof v !== undefined ? [v] : [];
-              }
-              onchange(state.initialValue);
-            }
-        : undefined;
+      state.initialValue = iv ? (iv instanceof Array ? [...iv.filter(i => i !== null)] : [iv]) : [];
     },
     view: ({
       attrs: {
@@ -105,9 +79,31 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
         disabled,
         classes,
         dropdownOptions,
+        onchange: callback,
       },
     }) => {
-      const { initialValue, onchange } = state;
+      const { initialValue } = state;
+      const onchange = callback
+        ? multiple
+          ? () => {
+              const values = state.instance && state.instance.getSelectedValues();
+              const v = values
+                ? values.length > 0 && isNumeric(values[0])
+                  ? values.map(n => +n)
+                  : values.filter(i => i !== null || typeof i !== 'undefined')
+                : undefined;
+              state.initialValue = v ? v : [];
+              callback(state.initialValue);
+            }
+          : (e: Event) => {
+              if (e && e.currentTarget) {
+                const b = e.currentTarget as HTMLButtonElement;
+                const v = isNumeric(b.value) ? +b.value : b.value;
+                state.initialValue = typeof v !== undefined ? [v] : [];
+              }
+              callback(state.initialValue);
+            }
+        : undefined;
       const clear = newRow ? '.clear' : '';
       const isDisabled = disabled ? '[disabled]' : '';
       const isMultiple = multiple ? '[multiple]' : '';

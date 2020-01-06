@@ -256,7 +256,6 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
         editableIds = [],
         fixedFooter = false,
         moveBetweenList = false,
-        onchange,
       },
     }) => {
       state.items = items.map(item => ({ ...item }));
@@ -271,11 +270,10 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
       state.editId = `edit_item_${state.id}`;
       state.deleteId = `delete_item_${state.id}`;
       state.moveBetweenList = moveBetweenList;
-      state.onchange = onchange;
       state.editableIds = editableIds;
       state.sortableIds = [{ label: 'None' }, ...model.filter(i => i.label).map(i => ({ label: i.label!, id: i.id }))];
     },
-    view: ({ attrs: { disabled } }) => {
+    view: ({ attrs: { disabled, onchange } }) => {
       const {
         model,
         items,
@@ -294,6 +292,7 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
       if (!model) {
         return undefined;
       }
+      state.onchange = onchange;
 
       const dir = sortDirection === 'asc' ? 1 : -1;
       const sortedItems =
@@ -355,8 +354,8 @@ export const Kanban = <T extends IConvertibleType>(): Component<Partial<IKanban<
                           editableIds,
                           onchange: (valid: boolean) => {
                             state.canSave = valid;
-                            if (valid && state.onchange) {
-                              state.onchange(state.items);
+                            if (valid && onchange) {
+                              onchange(state.items);
                             }
                           },
                         })

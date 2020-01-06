@@ -82,25 +82,14 @@ export interface IOptions extends Attributes {
 export const Options: FactoryComponent<IOptions> = () => {
   const state = {} as {
     initialValue: Array<string | number>;
-    onchange?: (id: string | number, checked: boolean) => void;
   };
 
   const isChecked = (id: string | number) => state.initialValue.indexOf(id) >= 0;
 
   return {
-    oninit: ({ attrs: { onchange, initialValue, checkedId } }) => {
+    oninit: ({ attrs: { initialValue, checkedId } }) => {
       const iv = initialValue || checkedId;
       state.initialValue = iv ? (iv instanceof Array ? [...iv] : [iv]) : [];
-      state.onchange = onchange
-        ? (id: string | number, checked: boolean) => {
-            const checkedIds = state.initialValue.filter(i => i !== id);
-            if (checked) {
-              checkedIds.push(id);
-            }
-            state.initialValue = checkedIds;
-            onchange(checkedIds);
-          }
-        : undefined;
     },
     view: ({
       attrs: {
@@ -114,10 +103,20 @@ export const Options: FactoryComponent<IOptions> = () => {
         newRow,
         isMandatory,
         inline,
+        onchange: callback,
       },
     }) => {
       const clear = newRow ? '.clear' : '';
-      const { onchange } = state;
+      const onchange = callback
+        ? (propId: string | number, checked: boolean) => {
+            const checkedIds = state.initialValue.filter(i => i !== propId);
+            if (checked) {
+              checkedIds.push(propId);
+            }
+            state.initialValue = checkedIds;
+            callback(checkedIds);
+          }
+        : undefined;
       return m(`div${clear}`, { className }, [
         m('div', { className: 'input-field options' }, m(Label, { id, label, isMandatory })),
         m(HelperText, { helperText: description }),

@@ -51,9 +51,10 @@ Supported components:
 
 ## Version history
 
-v0.15.5
+v0.16.0
 
 - `Select` `disabled` status is computed dynamically in the view, not only in `oninit`.
+- `Select`, `Option`, `Radio`, `Kanban`: `onchange` is computed dynamically in the view, not only in `oninit`. As the `onchange` created a closure, new attributes were not always updated as expected.
 
 v0.15.4
 
