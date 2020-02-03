@@ -51,6 +51,10 @@ Supported components:
 
 ## Version history
 
+v0.16.1
+
+- `Select`, `Options`, and `RadioButtons`: The `checkedId` property can be used to change the selection in `onupdate` dynamically. Otherwise, it is treated the same as `initialValue` (which is only processed in `oninit`). This allows you to dynamically update the selections without recreating the component.
+
 v0.16.0
 
 - `Select` `disabled` status is computed dynamically in the view, not only in `oninit`.

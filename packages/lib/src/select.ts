@@ -9,11 +9,11 @@ export interface ISelectOptions extends Attributes, Partial<M.FormSelectOptions>
   /** Called when the value is changed, either contains a single or all selected (checked) ids */
   onchange: (checkedIds: Array<string | number>) => void;
   /**
-   * Selected id or ids (in case of multiple options)
-   * @deprecated Please use initialValue instead
+   * Selected id or ids (in case of multiple options). Processed in the oninit and onupdate lifecycle.
+   * When the checkedId property changes (using a shallow compare), the selections are updated accordingly.
    */
   checkedId?: string | number | Array<string | number>;
-  /** Selected id or ids (in case of multiple options) */
+  /** Selected id or ids (in case of multiple options). Only processed in the oninit lifecycle. */
   initialValue?: string | number | Array<string | number>;
   /** Select a single option or multiple options */
   multiple?: boolean;
@@ -47,6 +47,7 @@ export interface ISelectOptions extends Attributes, Partial<M.FormSelectOptions>
 /** Component to select from a list of values in a dropdowns */
 export const Select: FactoryComponent<ISelectOptions> = () => {
   const state = {} as {
+    checkedId?: string | number | Array<string | number>;
     initialValue: Array<string | number>;
     instance?: M.FormSelect;
     /** Concatenation of all options IDs, to see if the options have changed and we need to re-init the select */
@@ -59,8 +60,9 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
     (checkedId instanceof Array && (id || typeof id === 'number') ? checkedId.indexOf(id) >= 0 : checkedId === id);
   return {
     oninit: ({ attrs: { checkedId, initialValue, options } }) => {
-      const iv = initialValue || checkedId;
       state.ids = optionsIds(options);
+      const iv = checkedId || initialValue;
+      state.checkedId = checkedId;
       state.initialValue = iv ? (iv instanceof Array ? [...iv.filter(i => i !== null)] : [iv]) : [];
     },
     view: ({
@@ -68,6 +70,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
         id,
         newRow,
         className = 'col s12',
+        checkedId,
         key,
         options,
         multiple,
@@ -82,6 +85,10 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
         onchange: callback,
       },
     }) => {
+      if (checkedId && state.checkedId !== checkedId) {
+        state.checkedId = checkedId;
+        state.initialValue = checkedId instanceof Array ? checkedId : [checkedId];
+      }
       const { initialValue } = state;
       const onchange = callback
         ? multiple
@@ -118,8 +125,16 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
             },
             onupdate: ({ dom }) => {
               const ids = optionsIds(options);
+              let reinit = false;
               if (state.ids !== ids) {
                 state.ids = ids;
+                reinit = true;
+              }
+              if (state.checkedId !== checkedId) {
+                state.checkedId = checkedId;
+                reinit = true;
+              }
+              if (reinit) {
                 state.instance = M.FormSelect.init(dom, { classes, dropdownOptions });
               }
             },

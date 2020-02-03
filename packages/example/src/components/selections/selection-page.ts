@@ -12,6 +12,7 @@ import {
 
 export const SelectionPage = () => {
   const state = {
+    radioIds: undefined as string | number | undefined,
     checkedId: undefined as string | undefined,
     initialValue: [0, 2],
   };
@@ -149,6 +150,7 @@ export const SelectionPage = () => {
         }),
 
         m('h3.header', 'RadioButtons'),
+        m('p', 'Linked radio buttons: when you change one of them, the other changes too.'),
         m(
           '.row',
           m(RadioButtons, {
@@ -160,7 +162,8 @@ export const SelectionPage = () => {
               { id: 'sex', label: 'Sex', disabled: true },
             ],
             initialValue: 'out',
-            onchange,
+            checkedId: state.radioIds,
+            onchange: ids => state.radioIds = ids,
           }),
           m(RadioButtons, {
             label: 'What is your favorite hobby?',
@@ -170,20 +173,22 @@ export const SelectionPage = () => {
               { id: 'sex', label: 'Sex', disabled: true },
             ],
             initialValue: 'out',
-            onchange,
+            checkedId: state.radioIds,
+            onchange: ids => state.radioIds = ids,
           })
         ),
         m(CodeBlock, {
           newRow: true,
           code: `          m(RadioButtons, {
-            inline: true, // next one is false
+            inline: true, // to align items horizontally, next one is false
             label: 'What is your favorite hobby?',
             options: [
               { id: 'movies', label: 'Watching movies' },
               { id: 'out', label: 'Going out' },
               { id: 'sex', label: 'Sex', disabled: true },
             ],
-            onchange,
+            checkedId: state.radioIds,
+            onchange: ids => state.radioIds = ids,
           })`,
         }),
 

@@ -81,21 +81,24 @@ export interface IOptions extends Attributes {
 /** A list of checkboxes */
 export const Options: FactoryComponent<IOptions> = () => {
   const state = {} as {
-    initialValue: Array<string | number>;
+    checkedId?: string | number | Array<string | number>;
+    checkedIds: Array<string | number>;
   };
 
-  const isChecked = (id: string | number) => state.initialValue.indexOf(id) >= 0;
+  const isChecked = (id: string | number) => state.checkedIds.indexOf(id) >= 0;
 
   return {
     oninit: ({ attrs: { initialValue, checkedId } }) => {
-      const iv = initialValue || checkedId;
-      state.initialValue = iv ? (iv instanceof Array ? [...iv] : [iv]) : [];
+      const iv = checkedId || initialValue;
+      state.checkedId = checkedId;
+      state.checkedIds = iv ? (iv instanceof Array ? [...iv] : [iv]) : [];
     },
     view: ({
       attrs: {
         label,
         id,
         options,
+        checkedId,
         description,
         className = 'col s12',
         disabled,
@@ -106,14 +109,18 @@ export const Options: FactoryComponent<IOptions> = () => {
         onchange: callback,
       },
     }) => {
+      if (checkedId && state.checkedId !== checkedId) {
+        state.checkedId = checkedId;
+        state.checkedIds = checkedId instanceof Array ? checkedId : [checkedId];
+      }
       const clear = newRow ? '.clear' : '';
       const onchange = callback
         ? (propId: string | number, checked: boolean) => {
-            const checkedIds = state.initialValue.filter(i => i !== propId);
+            const checkedIds = state.checkedIds.filter(i => i !== propId);
             if (checked) {
               checkedIds.push(propId);
             }
-            state.initialValue = checkedIds;
+            state.checkedIds = checkedIds;
             callback(checkedIds);
           }
         : undefined;

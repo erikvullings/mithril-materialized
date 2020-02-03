@@ -12,7 +12,9 @@ export interface IRadioButtons extends Attributes {
   options: IInputOption[];
   /** Event handler that is called when an option is changed */
   onchange: (id: string | number) => void;
-  /** Selected id */
+  /** Selected id (in oninit lifecycle) */
+  initialValue?: string | number;
+  /** Selected id (in oninit and onupdate lifecycle) */
   checkedId?: string | number;
   /** Optional description */
   description?: string;
@@ -30,16 +32,19 @@ export interface IRadioButtons extends Attributes {
 export const RadioButtons: FactoryComponent<IRadioButtons> = () => {
   const state = { groupId: uniqueId() } as {
     groupId: string;
+    oldCheckedId?: string | number;
     checkedId?: string | number;
     onchange: (id: string | number) => void;
   };
   return {
-    oninit: ({ attrs: { checkedId } }) => {
-      state.checkedId = checkedId;
+    oninit: ({ attrs: { checkedId, initialValue } }) => {
+      state.oldCheckedId = checkedId;
+      state.checkedId = checkedId || initialValue;
     },
     view: ({
       attrs: {
         id,
+        checkedId: cid,
         newRow,
         inline,
         className = 'col s12',
@@ -51,6 +56,9 @@ export const RadioButtons: FactoryComponent<IRadioButtons> = () => {
         onchange: callback,
       },
     }) => {
+      if (state.oldCheckedId !== cid) {
+        state.oldCheckedId = state.checkedId = cid;
+      }
       const { groupId, checkedId } = state;
       const onchange = (propId: string | number) => {
         state.checkedId = propId;
