@@ -13,7 +13,7 @@ import {
 export const SelectionPage = () => {
   const state = {
     radioIds: undefined as string | number | undefined,
-    checkedId: undefined as string | undefined,
+    checkedId: undefined as string | string[] | undefined,
     initialValue: [0, 2],
   };
 
@@ -32,13 +32,14 @@ export const SelectionPage = () => {
             label: 'What is your favorite hobby?',
             // placeholder: 'Pick one', // Alternative to first option
             isMandatory: true,
+            checkedId: state.checkedId,
             initialValue: state.checkedId,
             options: [
               { label: 'Pick one', disabled: true },
               { id: 'movies', label: 'Watching movies' },
               { id: 'out', label: 'Going out' },
             ],
-            onchange,
+            onchange: (ids) => (state.checkedId = ids as string[]),
           } as ISelectOptions)
         ),
         m(CodeBlock, {
@@ -66,7 +67,7 @@ export const SelectionPage = () => {
             placeholder: 'Make a choice...',
             label: 'What are your favorite hobbies?',
             initialValue: state.initialValue,
-            onchange: v => {
+            onchange: (v) => {
               // state.initialValue = v as number[];
               console.log(v);
             },
@@ -116,7 +117,7 @@ export const SelectionPage = () => {
               { id: 'out', label: 'Going out' },
               { id: 'sex', label: 'Sex', disabled: true },
             ],
-            onchange: ids => onchange(`Options ${ids.join()} are checked.`),
+            onchange: (ids) => onchange(`Options ${ids.join()} are checked.`),
           })
         ),
         m(
@@ -130,7 +131,7 @@ export const SelectionPage = () => {
               { id: 'out', label: 'Going out' },
               { id: 'sex', label: 'Sex', disabled: true },
             ],
-            onchange: ids => onchange(`Options ${ids.join()} are checked.`),
+            onchange: (ids) => onchange(`Options ${ids.join()} are checked.`),
           })
         ),
         m(CodeBlock, {
@@ -163,7 +164,7 @@ export const SelectionPage = () => {
             ],
             initialValue: 'out',
             checkedId: state.radioIds,
-            onchange: ids => state.radioIds = ids,
+            onchange: (ids) => (state.radioIds = ids),
           }),
           m(RadioButtons, {
             label: 'What is your favorite hobby?',
@@ -174,7 +175,7 @@ export const SelectionPage = () => {
             ],
             initialValue: 'out',
             checkedId: state.radioIds,
-            onchange: ids => state.radioIds = ids,
+            onchange: (ids) => (state.radioIds = ids),
           })
         ),
         m(CodeBlock, {
@@ -230,7 +231,7 @@ export const SelectionPage = () => {
               { label: '', divider: true },
               { label: 'Sex', id: 'sex', iconName: 'group' },
             ],
-            onchange: v => console.log(v),
+            onchange: (v) => console.log(v),
           } as IDropdownOptions)
         ),
         m(CodeBlock, {
