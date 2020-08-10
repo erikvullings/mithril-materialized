@@ -116,7 +116,7 @@ export const Options: FactoryComponent<IOptions> = () => {
       const clear = newRow ? '.clear' : '';
       const onchange = callback
         ? (propId: string | number, checked: boolean) => {
-            const checkedIds = state.checkedIds.filter(i => i !== propId);
+            const checkedIds = state.checkedIds.filter((i) => i !== propId);
             if (checked) {
               checkedIds.push(propId);
             }
@@ -127,7 +127,7 @@ export const Options: FactoryComponent<IOptions> = () => {
       return m(`div${clear}`, { className }, [
         m('div', { className: 'input-field options' }, m(Label, { id, label, isMandatory })),
         m(HelperText, { helperText: description }),
-        ...options.map(option =>
+        ...options.map((option) =>
           m(InputCheckbox, {
             inline,
             disabled: disabled || option.disabled,

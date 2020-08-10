@@ -53,7 +53,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
     /** Concatenation of all options IDs, to see if the options have changed and we need to re-init the select */
     ids?: string;
   };
-  const optionsIds = (options: IInputOption[]) => options.map(o => o.id).join('');
+  const optionsIds = (options: IInputOption[]) => options.map((o) => o.id).join('');
 
   const isSelected = (id?: string | number, checkedId?: string | number | Array<string | number>, selected = false) =>
     selected ||
@@ -63,7 +63,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
       state.ids = optionsIds(options);
       const iv = checkedId || initialValue;
       state.checkedId = checkedId;
-      state.initialValue = iv ? (iv instanceof Array ? [...iv.filter(i => i !== null)] : [iv]) : [];
+      state.initialValue = iv ? (iv instanceof Array ? [...iv.filter((i) => i !== null)] : [iv]) : [];
     },
     view: ({
       attrs: {
@@ -86,7 +86,6 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
       },
     }) => {
       if (checkedId && state.checkedId !== checkedId) {
-        state.checkedId = checkedId;
         state.initialValue = checkedId instanceof Array ? checkedId : [checkedId];
       }
       const { initialValue } = state;
@@ -96,8 +95,8 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
               const values = state.instance && state.instance.getSelectedValues();
               const v = values
                 ? values.length > 0 && isNumeric(values[0])
-                  ? values.map(n => +n)
-                  : values.filter(i => i !== null || typeof i !== 'undefined')
+                  ? values.map((n) => +n)
+                  : values.filter((i) => i !== null || typeof i !== 'undefined')
                 : undefined;
               state.initialValue = v ? v : [];
               callback(state.initialValue);
@@ -114,9 +113,9 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
       const clear = newRow ? '.clear' : '';
       const isDisabled = disabled ? '[disabled]' : '';
       const isMultiple = multiple ? '[multiple]' : '';
-      const noValidSelection = options.filter(o => isSelected(o.id, initialValue)).length === 0;
+      const noValidSelection = options.filter((o) => isSelected(o.id, initialValue)).length === 0;
       return m(`.input-field.select-space${clear}`, { className, key }, [
-        iconName ? m('i.material-icons.prefix', iconName) : undefined,
+        iconName && m('i.material-icons.prefix', iconName),
         m(
           `select[id=${id}]${isDisabled}${isMultiple}`,
           {
@@ -125,7 +124,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
             },
             onupdate: ({ dom }) => {
               const ids = optionsIds(options);
-              let reinit = false;
+              let reinit = checkedId && state.checkedId !== checkedId.toString();
               if (state.ids !== ids) {
                 state.ids = ids;
                 reinit = true;

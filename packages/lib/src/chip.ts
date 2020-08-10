@@ -16,7 +16,7 @@ export const Chips: FactoryComponent<IChipsOptions> = () => {
       const { onchange, onChipAdd, onChipDelete } = attrs;
       const chips = M.Chips.getInstance(dom.children[0]) as M.Chips;
       const onChipAddBound = onChipAdd ? (onChipAdd.bind(chips) as (el: Element, chip: Element) => void) : undefined;
-      attrs.onChipAdd = function(this: M.Chips, el: Element, chip: Element) {
+      attrs.onChipAdd = function (this: M.Chips, el: Element, chip: Element) {
         if (onchange) {
           onchange(this.chipsData);
         }
@@ -27,7 +27,7 @@ export const Chips: FactoryComponent<IChipsOptions> = () => {
       const onChipDeleteBound = onChipDelete
         ? (onChipDelete.bind(chips) as (el: Element, chip: Element) => void)
         : undefined;
-      attrs.onChipDelete = function(this: M.Chips, el: Element, chip: Element) {
+      attrs.onChipDelete = function (this: M.Chips, el: Element, chip: Element) {
         if (onchange) {
           onchange(this.chipsData);
         }
@@ -42,7 +42,7 @@ export const Chips: FactoryComponent<IChipsOptions> = () => {
         return;
       }
       const chips = M.Chips.getInstance(dom.children[0]) as M.Chips;
-      data.forEach(d => chips.addChip(d));
+      data.forEach((d) => chips.addChip(d));
     },
     view: ({ attrs: { placeholder, data, className = 'col s12', label, helperText } }) => {
       return m('.input-field', { className }, [
