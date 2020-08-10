@@ -68,8 +68,8 @@ export const Pagination: FactoryComponent<IPaginationOptions> = () => {
         'ul.pagination',
         displayedItems.map((item, i) =>
           m(PaginationItem, {
-            title: startPage + i,
             ...item,
+            title: startPage + i,
             active: startPage + i === curPage,
           })
         )
