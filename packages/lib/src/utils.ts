@@ -27,7 +27,6 @@ export const uuid4 = () => {
   });
 };
 
-
 export const compose = <F extends (d: any) => any, T>(...functions: F[]) => (data: T) =>
   functions.reduceRight((value, func) => func(value), data);
 
@@ -40,7 +39,7 @@ export const join = <T>(seperator: string) => (list: T[]): string => Array.proto
  *
  * @param {string} cc: Camel case string
  */
-export const camelToSnake = (cc: string) => cc.replace(/([A-Z])/g, $1 => '-' + $1.toLowerCase());
+export const camelToSnake = (cc: string) => cc.replace(/([A-Z])/g, ($1) => '-' + $1.toLowerCase());
 
 const encodeAttribute = (x = '') => x.toString().replace(/"/g, '&quot;');
 
@@ -66,6 +65,7 @@ const inputAttributes = [
   'autocomplete',
   'pattern',
   'readOnly',
+  'step',
 ];
 
 const isInputAttribute = (key: string) => inputAttributes.indexOf(key) >= 0;
@@ -77,14 +77,11 @@ const toProps = <T>(o: IInputOptions<T>) => {
   return Object.keys(o)
     .filter(isInputAttribute)
     .filter(isAttributeDefined)
-    .reduce(
-      (p, c) => {
-        const value = (o as any)[c];
-        p.push(`[${c.toLowerCase()}=${value}]`);
-        return p;
-      },
-      [] as string[]
-    )
+    .reduce((p, c) => {
+      const value = (o as any)[c];
+      p.push(`[${c.toLowerCase()}=${value}]`);
+      return p;
+    }, [] as string[])
     .join('');
 };
 

@@ -133,6 +133,7 @@ export const InputPage = () => {
           m(NumberInput, {
             min: 1,
             max: 120,
+            step: 1,
             label: 'What is your age?',
             dataSuccess: 'You look much younger ;-)',
             dataError: 'Error: Age must be between 1 and 120.',
@@ -143,6 +144,7 @@ export const InputPage = () => {
           code: `          m(NumberInput, {
             min: 1,
             max: 120,
+            step: 1, // Default value is step increments of 1
             label: 'What is your age?',
             dataSuccess: 'You look much younger ;-)',
             dataError: 'Error: Age must be between 1 and 120.',

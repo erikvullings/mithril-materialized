@@ -51,6 +51,14 @@ Supported components:
 
 ## Version history
 
+v0.16.3
+
+- `NumberInput` adds support for the `step` attribute, so you can use the number up/down to represent floats too.
+
+v0.16.2
+
+- Updated dependencies, fixed library vulnerabilities
+
 v0.16.1
 
 - `Select`, `Options`, and `RadioButtons`: The `checkedId` property can be used to change the selection in `onupdate` dynamically. Otherwise, it is treated the same as `initialValue` (which is only processed in `oninit`). This allows you to dynamically update the selections without recreating the component.
@@ -451,7 +459,7 @@ span.mandatory {
   color: red;
 }
 
-label+.switch {
+label + .switch {
   margin-top: 1rem;
 }
 ```
