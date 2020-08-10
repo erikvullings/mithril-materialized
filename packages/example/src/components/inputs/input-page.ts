@@ -72,7 +72,7 @@ export const InputPage = () => {
             label: 'What is the most popular search engine?',
             dataSuccess: 'Great minds think alike',
             dataError: 'Seriously?',
-            validate: v => v && v.toLowerCase() === 'google',
+            validate: (v) => v && v.toLowerCase() === 'google',
           } as IInputOptions)
         ),
         m(CodeBlock, {
@@ -295,6 +295,37 @@ export const InputPage = () => {
             }, {
               tag: 'World',
             }],
+          })`,
+        }),
+
+        m('h3.header', 'Chips with auto-complete'),
+        m(
+          '.row',
+          m(Chips, {
+            label: 'Cloud providers',
+            autocompleteOptions: {
+              data: {
+                Apple: null,
+                Microsoft: null,
+                Google: null,
+              },
+              limit: Infinity,
+              minLength: 1,
+            },
+          })
+        ),
+        m(CodeBlock, {
+          code: `          m(Chips, {
+            label: 'Cloud providers',
+            autocompleteOptions: {
+              data: {
+                Apple: null,
+                Microsoft: null,
+                Google: null,
+              },
+              limit: Infinity,
+              minLength: 1,
+            },
           })`,
         }),
 
