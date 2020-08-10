@@ -4,14 +4,14 @@
   "private": true,
   "description": "A materialize library for mithril.",
   "scripts": {
-    "postinstall": "lerna run link",
-    "link": "lerna run link",
+    "postinstall": "pnpm run -r --parallel link",
+    "link": "pnpm run -r --parallel link",
     "clean:docs": "rimraf -rf ./docs",
-    "build:domain": "npm run clean:docs && lerna run build:domain",
-    "start": "lerna run start --parallel",
-    "clean": "lerna run clean --parallel",
-    "patch-release": "lerna run patch-release --parallel",
-    "minor-release": "lerna run minor-release --parallel",
+    "build:domain": "pnpm run -r --parallel clean:docs && pnpm run -r --parallel build:domain",
+    "start": "pnpm run -r --parallel dev",
+    "clean": "pnpm run -r --parallel clean",
+    "patch-release": "pnpm run -r --parallel patch-release",
+    "minor-release": "pnpm run -r --parallel minor-release",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -23,7 +23,7 @@
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
   "devDependencies": {
-    "lerna": "^3.20.2",
-    "rimraf": "^3.0.0"
+    "pnpm": "^5.5.1",
+    "rimraf": "^3.0.2"
   }
 }
