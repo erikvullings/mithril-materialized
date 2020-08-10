@@ -79,7 +79,10 @@ export const TimePicker: FactoryComponent<IInputOptions & Partial<M.TimepickerOp
       const id = state.id;
       const attributes = toAttrs(props);
       const clear = newRow ? '.clear' : '';
-      const onCloseEnd = onchange ? () => state.tp && onchange(state.tp.time) : undefined;
+      const now = new Date();
+      const onCloseEnd = onchange
+        ? () => state.tp && onchange(state.tp.time || initialValue || `${now.getHours()}:${now.getMinutes()}`)
+        : undefined;
       return m(
         `.input-field.timepicker${clear}`,
         {
