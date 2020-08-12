@@ -18559,8 +18559,9 @@ var Pagination = function Pagination() {
         disabled: !canGoForward
       }]);
       return (0, _mithril.default)('ul.pagination', displayedItems.map(function (item, i) {
-        return (0, _mithril.default)(PaginationItem, (0, _tslib.__assign)((0, _tslib.__assign)({}, item), {
-          title: startPage + i,
+        return (0, _mithril.default)(PaginationItem, (0, _tslib.__assign)((0, _tslib.__assign)({
+          title: startPage + i
+        }, item), {
           active: startPage + i === curPage
         }));
       }));
@@ -20845,7 +20846,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57004" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60964" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
