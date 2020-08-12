@@ -63,13 +63,19 @@ export const Pagination: FactoryComponent<IPaginationOptions> = () => {
           ),
           disabled: !canGoForward,
         },
-      ];
+      ] as (
+        | IPaginationOption
+        | {
+            title?: m.Vnode<any, any>;
+            disabled: boolean;
+          }
+      )[];
       return m(
         'ul.pagination',
         displayedItems.map((item, i) =>
           m(PaginationItem, {
-            ...item,
             title: startPage + i,
+            ...item,
             active: startPage + i === curPage,
           })
         )
