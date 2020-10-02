@@ -32,13 +32,13 @@
   "license": "MIT",
   "devDependencies": {
     "@types/materialize-css": "^1.0.8",
-    "@types/mithril": "^2.0.3",
+    "@types/mithril": "^2.0.4",
     "js-yaml": "^3.14.0",
-    "microbundle": "^0.12.3",
+    "microbundle": "^0.12.4",
     "rimraf": "^3.0.2",
     "tslib": "^2.0.1",
-    "typedoc": "^0.17.8",
-    "typescript": "^3.9.7"
+    "typedoc": "^0.19.2",
+    "typescript": "^4.0.3"
   },
   "peerDependencies": {
     "materialize-css": "^1.0.0",

@@ -6,12 +6,12 @@ dependencies:
   tslib: 2.0.1
 devDependencies:
   '@types/materialize-css': 1.0.8
-  '@types/mithril': 2.0.3
-  autoprefixer: 9.8.6
+  '@types/mithril': 2.0.4
+  autoprefixer: 10.0.1
   cssnano: 4.1.10
   parcel-bundler: 1.12.4
   rimraf: 3.0.2
-  typescript: 3.9.7
+  typescript: 4.0.3
 lockfileVersion: 5.1
 packages:
   /@babel/code-frame/7.10.4:
@@ -1073,10 +1073,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-KEfzuNfftNWt4ULrwqu7YdRJLjk42LuKxeLJ8ek91w+L9rReIAAYAbpAghUwcfgMTdEN6ykJ718KAHapDZCndA==
-  /@types/mithril/2.0.3:
+  /@types/mithril/2.0.4:
     dev: true
     resolution:
-      integrity: sha512-cZHOdO2IiXYeyjeDYdbOisSdfaJRzfmRo3zVzgu33IWTMA0KEQObp9fdvqcuYdPz93iJ1yCl19GcEjo/9yv+yA==
+      integrity: sha512-MIvmMwqoCN+e46Yj+FqvlYXviGK/PW98KDdx07j29ljIme74LW7KbBimogUdNorloeqqFpQYSu8ioJ57UBvFiA==
   /@types/q/1.5.4:
     dev: true
     resolution:
@@ -1255,19 +1255,22 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
-  /autoprefixer/9.8.6:
+  /autoprefixer/10.0.1:
     dependencies:
-      browserslist: 4.14.0
-      caniuse-lite: 1.0.30001112
+      browserslist: 4.14.5
+      caniuse-lite: 1.0.30001142
       colorette: 1.2.1
       normalize-range: 0.1.2
       num2fraction: 1.2.2
-      postcss: 7.0.32
       postcss-value-parser: 4.1.0
     dev: true
+    engines:
+      node: ^10 || ^12 || >=14
     hasBin: true
+    peerDependencies:
+      postcss: ^8.1.0
     resolution:
-      integrity: sha512-XrvP4VVHdRBCdX1S3WXVD8+RyG9qeb1D5Sn1DeLiG2xfSpzellk5k54xbUERJ3M5DggQxes39UGOTP8CFrEGbg==
+      integrity: sha512-aQo2BDIsoOdemXUAOBpFv4ZQa2DrOtEufarYhtFsK1088Ca0TUwu/aQWf0M3mrILXZ3mTIVn1lR3hPW8acacsw==
   /aws-sign2/0.7.0:
     dev: true
     resolution:
@@ -1467,6 +1470,18 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-pUsXKAF2lVwhmtpeA3LJrZ76jXuusrNyhduuQs7CDFf9foT4Y38aQOserd2lMe5DSSrjf3fx34oHwryuvxAUgQ==
+  /browserslist/4.14.5:
+    dependencies:
+      caniuse-lite: 1.0.30001142
+      electron-to-chromium: 1.3.576
+      escalade: 3.1.0
+      node-releases: 1.1.61
+    dev: true
+    engines:
+      node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7
+    hasBin: true
+    resolution:
+      integrity: sha512-Z+vsCZIvCBvqLoYkBFTwEYH3v5MCQbsAjp50ERycpOjnPmolg1Gjy4+KaWWpm8QOJt9GHkhdqAl14NpCX73CWA==
   /buffer-equal/0.0.1:
     dev: true
     engines:
@@ -1548,6 +1563,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-J05RTQlqsatidif/38aN3PGULCLrg8OYQOlJUKbeYVzC2mGZkZLIztwRlB3MtrfLmawUmjFlNJvy/uhwniIe1Q==
+  /caniuse-lite/1.0.30001142:
+    dev: true
+    resolution:
+      integrity: sha512-pDPpn9ankEpBFZXyCv2I4lh1v/ju+bqb78QfKf+w9XgDAFWBwSYPswXqprRdrgQWK0wQnpIbfwRjNHO1HWqvoQ==
   /caseless/0.12.0:
     dev: true
     resolution:
@@ -2202,6 +2221,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-HiroW5ZbGwgT8kCnoEO8qnGjoTPzJxduvV/Vv/wH63eo2N6Zj3xT5fmmaSPAPUM05iN9/5fIEkIg3owTtV6QZg==
+  /electron-to-chromium/1.3.576:
+    dev: true
+    resolution:
+      integrity: sha512-uSEI0XZ//5ic+0NdOqlxp0liCD44ck20OAGyLMSymIWTEAtHKVJi6JM18acOnRgUgX7Q65QqnI+sNncNvIy8ew==
   /elliptic/6.5.3:
     dependencies:
       bn.js: 4.11.9
@@ -2275,6 +2298,12 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-gPYAU37hYCUhW5euPeR+Y74F7BL+IBsV93j5cvGriSaD1aG6MGsqsV1yamRdrWrb2j3aiZvb0X+UBOWpx3JWtQ==
+  /escalade/3.1.0:
+    dev: true
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-mAk+hPSO8fLDkhV7V0dXazH5pDc6MrjBTPyD3VeKzxnVFjH1MIxbCdqGZB9O8+EwWakZs3ZCbDS4IpRt79V1ig==
   /escape-html/1.0.3:
     dev: true
     resolution:
@@ -3517,6 +3546,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-gsO4vjEdQaTusZAEebUWp2a5d7dF5DYoIpDG7WySnk7BuZDW+GPpHXoXXuYawRBr/9t5q54tirPz79kFIWg4dA==
+  /node-releases/1.1.61:
+    dev: true
+    resolution:
+      integrity: sha512-DD5vebQLg8jLCOzwupn954fbIiZht05DAZs0k2u8NStSe6h9XdsuIQL8hSRKYiU8WUQRznmSDrKGbv3ObOmC7g==
   /normalize-html-whitespace/1.0.0:
     dev: true
     engines:
@@ -5117,13 +5150,13 @@ packages:
     dev: true
     resolution:
       integrity: sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
-  /typescript/3.9.7:
+  /typescript/4.0.3:
     dev: true
     engines:
       node: '>=4.2.0'
     hasBin: true
     resolution:
-      integrity: sha512-BLbiRkiBzAwsjut4x/dsibSTB6yWpwT5qWmC2OfuCg3GgVQCSgMs4vEctYPhsaGtd0AeuuHMkjZ2h2WG8MSzRw==
+      integrity: sha512-tEu6DGxGgRJPb/mVPIZ48e69xCn2yRmCgYmDugAVwmJ6o+0u1RI18eO7E7WBTLYLaEVVOhwQmcdhQHweux/WPg==
   /uncss/0.17.3:
     dependencies:
       commander: 2.20.3
@@ -5380,8 +5413,8 @@ packages:
       integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
 specifiers:
   '@types/materialize-css': ^1.0.8
-  '@types/mithril': ^2.0.3
-  autoprefixer: ^9.8.6
+  '@types/mithril': ^2.0.4
+  autoprefixer: ^10.0.1
   cssnano: ^4.1.10
   material-icons: ^0.3.1
   materialize-css: ^1.0.0
@@ -5390,4 +5423,4 @@ specifiers:
   parcel-bundler: ^1.12.4
   rimraf: ^3.0.2
   tslib: ^2.0.1
-  typescript: ^3.9.7
+  typescript: ^4.0.3
