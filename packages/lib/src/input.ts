@@ -174,6 +174,8 @@ export const RangeInput = InputField<number>('range', '.range-field');
 export const EmailInput = InputField<string>('email');
 
 export interface IFileInputOptions extends Attributes {
+  /** Displayed on the button, @default File */
+  label?: string;
   /** Adds a placeholder message */
   placeholder?: string;
   /** If true, upload multiple files */
@@ -194,7 +196,7 @@ export interface IFileInputOptions extends Attributes {
 export const FileInput: FactoryComponent<IFileInputOptions> = () => {
   return {
     view: ({ attrs }) => {
-      const { multiple, disabled, placeholder, onchange, className = 'col s12', accept } = attrs;
+      const { multiple, disabled, placeholder, onchange, className = 'col s12', accept, label = 'File' } = attrs;
       const accepted = accept ? (accept instanceof Array ? accept.join(', ') : accept) : undefined;
       const acc = accepted ? `[accept=${accepted}]` : '';
       const mul = multiple ? '[multiple]' : '';
@@ -207,7 +209,7 @@ export const FileInput: FactoryComponent<IFileInputOptions> = () => {
         },
         [
           m('.btn', [
-            m('span', 'File'),
+            m('span', label),
             m(`input[type=file]${mul}${dis}${acc}`, {
               className,
               onchange: onchange
