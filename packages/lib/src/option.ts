@@ -10,17 +10,15 @@ export interface IInputCheckbox extends Attributes {
   checked?: boolean;
   /** If true, the checkbox is disabled */
   disabled?: boolean;
-  /** If true, draw the checkboxes inline */
-  inline?: boolean;
 }
 
 /** Component to show a check box */
 export const InputCheckbox: FactoryComponent<IInputCheckbox> = () => {
   return {
-    view: ({ attrs: { inline, className = inline ? 'col' : 'col s12', onchange, label, checked, disabled } }) => {
+    view: ({ attrs: { className = 'col s12', onchange, label, checked, disabled } }) => {
       return m(
         `div`,
-        { className, style: inline ? 'display: inline-block; margin: 0 2em 1em 0;' : '' },
+        { className },
         m('label', [
           m(`input[type=checkbox][tabindex=0]${checked ? '[checked]' : ''}${disabled ? '[disabled]' : ''}`, {
             onclick: onchange
@@ -66,14 +64,12 @@ export interface IOptions extends Attributes {
   initialValue?: string | number | Array<string | number>;
   /** Optional description */
   description?: string;
-  /** Optional CSS that is added to the input checkbox */
+  /** Optional CSS that is added to the input checkbox, e.g. if you add col s4, the items will be put inline */
   checkboxClass?: string;
   /** If true, start on a new row */
   newRow?: boolean;
   /** If true, add a mandatory '*' after the label */
   isMandatory?: boolean;
-  /** If true, draw the radio buttons inline */
-  inline?: boolean;
   /** If true, disable the options. */
   disabled?: boolean;
 }
@@ -105,7 +101,6 @@ export const Options: FactoryComponent<IOptions> = () => {
         checkboxClass,
         newRow,
         isMandatory,
-        inline,
         onchange: callback,
       },
     }) => {
@@ -129,7 +124,6 @@ export const Options: FactoryComponent<IOptions> = () => {
         m(HelperText, { helperText: description }),
         ...options.map((option) =>
           m(InputCheckbox, {
-            inline,
             disabled: disabled || option.disabled,
             label: option.label,
             onchange: onchange ? (v: boolean) => onchange(option.id, v) : undefined,

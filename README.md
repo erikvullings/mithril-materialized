@@ -61,6 +61,7 @@ To install the dependencies, you can use `npm i`, or, alternatively, use `pnpm m
 Although I've tried to limit the CSS adaptations to a minimum, I needed to tweak certain parts to make it look better. Here are the styles I've added.
 
 ```css
+/* For the switch */
 .clear,
 .clear-10,
 .clear-15 {
@@ -74,6 +75,16 @@ Although I've tried to limit the CSS adaptations to a minimum, I needed to tweak
   margin-bottom: 15px;
 }
 
+span.mandatory {
+  margin-left: 5px;
+  color: red;
+}
+
+label+.switch {
+  margin-top: 1rem;
+}
+
+/* For the color input */
 input[type='color']:not(.browser-default) {
   margin: 0px 0 8px 0;
   /** Copied from input[type=number] */
@@ -96,23 +107,20 @@ input[type='color']:not(.browser-default) {
   transition: box-shadow 0.3s, border 0.3s, -webkit-box-shadow 0.3s;
 }
 
+/* For the options' label */
+.input-field.options > label {
+  top: -2.5rem;
+}
+
+/* For the code block */
 .codeblock {
   margin: 1.5rem 0 2.5rem 0;
 }
 .codeblock > div {
   margin-bottom: 1rem;
 }
-
 .codeblock > label {
   display: inline-block;
 }
 
-span.mandatory {
-  margin-left: 5px;
-  color: red;
-}
-
-label+.switch {
-  margin-top: 1rem;
-}
 ```

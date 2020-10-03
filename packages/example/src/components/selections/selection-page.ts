@@ -108,8 +108,8 @@ export const SelectionPage = () => {
         m(
           '.row',
           m(Options, {
-            inline: true,
             label: 'What are your favorite hobbies?',
+            checkboxClass: 'col s4',
             isMandatory: true,
             initialValue: 'out',
             options: [
@@ -155,7 +155,7 @@ export const SelectionPage = () => {
         m(
           '.row',
           m(RadioButtons, {
-            inline: true,
+            checkboxClass: 'col s4',
             label: 'What is your favorite hobby?',
             options: [
               { id: 'movies', label: 'Watching movies' },
@@ -165,7 +165,10 @@ export const SelectionPage = () => {
             initialValue: 'out',
             checkedId: state.radioIds,
             onchange: (ids) => (state.radioIds = ids),
-          }),
+          })
+        ),
+        m(
+          '.row',
           m(RadioButtons, {
             label: 'What is your favorite hobby?',
             options: [
@@ -181,7 +184,7 @@ export const SelectionPage = () => {
         m(CodeBlock, {
           newRow: true,
           code: `          m(RadioButtons, {
-            inline: true, // to align items horizontally, next one is false
+            checkboxClass: 'col s4', // to align items horizontally
             label: 'What is your favorite hobby?',
             options: [
               { id: 'movies', label: 'Watching movies' },

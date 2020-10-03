@@ -22,8 +22,8 @@ export interface IRadioButtons extends Attributes {
   newRow?: boolean;
   /** If true, add a mandatory '*' after the label */
   isMandatory?: boolean;
-  /** If true, draw the radio buttons inline */
-  inline?: boolean;
+  /** Optional CSS that is added to the input checkbox, e.g. if you add col s4, the items will be put inline */
+  checkboxClass?: string;
   /** Disable the button */
   disabled?: boolean;
 }
@@ -46,13 +46,13 @@ export const RadioButtons: FactoryComponent<IRadioButtons> = () => {
         id,
         checkedId: cid,
         newRow,
-        inline,
         className = 'col s12',
         label = '',
         disabled,
         description,
         options,
         isMandatory,
+        checkboxClass,
         onchange: callback,
       },
     }) => {
@@ -71,13 +71,13 @@ export const RadioButtons: FactoryComponent<IRadioButtons> = () => {
       return m(`div${id ? `[id=${id}]` : ''}${clear}`, { className }, [
         m('div', { className: 'input-field options' }, m(Label, { id, label, isMandatory })),
         description ? m('p.helper-text', m.trust(description)) : '',
-        ...options.map(r =>
+        ...options.map((r) =>
           m(RadioButton, {
             ...r,
-            inline,
             onchange,
             groupId,
             disabled,
+            className: checkboxClass,
             checked: r.id === checkedId,
           })
         ),
@@ -93,16 +93,13 @@ export interface IRadioButton extends Attributes {
   label: string;
   groupId: string;
   disabled?: boolean;
-  inline?: boolean;
 }
 
 export const RadioButton: FactoryComponent<IRadioButton> = () => ({
-  view: ({
-    attrs: { id, groupId, label, onchange, inline, className = inline ? 'col' : 'col s12', checked, disabled },
-  }) => {
+  view: ({ attrs: { id, groupId, label, onchange, className = 'col s12', checked, disabled } }) => {
     return m(
       `div`,
-      { className, style: inline ? 'display: inline-block; margin: 0 2em 1em 0;' : '' },
+      { className },
       m('label', [
         m(
           `input[type=radio][tabindex=0][name=${groupId}]${checked ? '[checked=checked]' : ''}${
