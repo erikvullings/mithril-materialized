@@ -1,5 +1,5 @@
 devDependencies:
-  pnpm: 5.8.0
+  pnpm: 5.10.1
   rimraf: 3.0.2
 lockfileVersion: 5.1
 packages:
@@ -62,13 +62,13 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-F0uSaHNVNP+8es5r9TpanhtcX18=
-  /pnpm/5.8.0:
+  /pnpm/5.10.1:
     dev: true
     engines:
-      node: '>=10.14'
+      node: '>=10.16'
     hasBin: true
     resolution:
-      integrity: sha512-J2rAxEXnohwcDkR4KNI6UsYhDs9hJ/tje/BahHpXawi406pmxd6caJUXfRxZPbKvKdyVqfBRKhlX1vyhYbM8lQ==
+      integrity: sha512-XJ41/VU6cwFFugFi6V9y8WUO6S/eF3YRtOpX82xx25p3jW25cLHnvGn/TtC4XHwO/OZkCWOWkEV/AtDE5YKiSQ==
   /rimraf/3.0.2:
     dependencies:
       glob: 7.1.6
@@ -81,5 +81,5 @@ packages:
     resolution:
       integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
 specifiers:
-  pnpm: ^5.8.0
+  pnpm: ^5.10.1
   rimraf: ^3.0.2
