@@ -210,6 +210,10 @@ NEW
 - `Options` and `RadioButtons` support an `inline` property to align them horizontally.
 - `Select`, `Options`, and `RadioButtons` all use `IInputOption` to specify their options. An item can be disabled now.
 
+v0.13.0 No breaking changes
+
+- `FileInput`: added `initialValue` to set the initial value more clearly, and added a clear button to remove the input.
+
 v0.12.2 No breaking changes
 
 - `Tabs`: added `contentClass` to add a class to the content.

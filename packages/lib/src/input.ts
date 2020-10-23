@@ -176,6 +176,8 @@ export const EmailInput = InputField<string>('email');
 export interface IFileInputOptions extends Attributes {
   /** Displayed on the button, @default File */
   label?: string;
+  /** Current value of the file input, write only */
+  initialValue?: string;
   /** Adds a placeholder message */
   placeholder?: string;
   /** If true, upload multiple files */
@@ -194,9 +196,20 @@ export interface IFileInputOptions extends Attributes {
 
 /** Component for uploading a file */
 export const FileInput: FactoryComponent<IFileInputOptions> = () => {
+  let canClear = false;
+  let i: HTMLInputElement;
   return {
     view: ({ attrs }) => {
-      const { multiple, disabled, placeholder, onchange, className = 'col s12', accept, label = 'File' } = attrs;
+      const {
+        multiple,
+        disabled,
+        initialValue,
+        placeholder,
+        onchange,
+        className = 'col s12',
+        accept,
+        label = 'File',
+      } = attrs;
       const accepted = accept ? (accept instanceof Array ? accept.join(', ') : accept) : undefined;
       const acc = accepted ? `[accept=${accepted}]` : '';
       const mul = multiple ? '[multiple]' : '';
@@ -211,18 +224,39 @@ export const FileInput: FactoryComponent<IFileInputOptions> = () => {
           m('.btn', [
             m('span', label),
             m(`input[type=file]${mul}${dis}${acc}`, {
-              className,
               onchange: onchange
                 ? (e: UIEvent) => {
                     const i = e.target as HTMLInputElement;
                     if (i && i.files && onchange) {
+                      canClear = true;
                       onchange(i.files);
                     }
                   }
                 : undefined,
             }),
           ]),
-          m('.file-path-wrapper', m(`input.file-path.validate${ph}[type=text]`)),
+          m(
+            '.file-path-wrapper',
+            m(`input.file-path.validate${ph}[type=text]`, {
+              oncreate: ({ dom }) => {
+                i = dom as HTMLInputElement;
+                if (initialValue) i.value = initialValue;
+              },
+            })
+          ),
+          (canClear || initialValue) &&
+            m(
+              'a.waves-effect.waves-teal.btn-flat',
+              {
+                style: 'float: right;position: relative;top: -3rem; padding: 0',
+                onclick: () => {
+                  canClear = false;
+                  i.value = '';
+                  onchange && onchange({} as FileList);
+                },
+              },
+              m('i.material-icons', 'clear')
+            ),
         ]
       );
     },

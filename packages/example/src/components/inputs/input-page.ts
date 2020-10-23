@@ -17,11 +17,11 @@ import m from 'mithril';
 
 export const InputPage = () => {
   const onchange = (v: unknown) => alert(`Input changed. New value: ${v}`);
+  let value = 'click_clear_to_remove.me';
   return {
     view: () =>
       m('.col.s12', [
         m('h2.header', 'Inputs'),
-
         m('h3.header', 'TextInput'),
         m('h4.header', 'Normal text input'),
         m(
@@ -234,14 +234,19 @@ export const InputPage = () => {
           m(FileInput, {
             placeholder: 'Upload one or more files',
             multiple: true,
+            initialValue: value,
             accept: ['image/*', '.pdf'],
-            onchange: (files: FileList) => console.table(files),
+            onchange: (files: FileList) => {
+              value = '';
+              console.table(files);
+            },
           })
         ),
         m(CodeBlock, {
           code: `        m(FileInput, {
             placeholder: 'Upload one or more files',
             multiple: true,
+            initialValue: value,
             accept: ['image/*', '.pdf'],
             onchange: (files: FileList) => console.table(files),
           })`,
