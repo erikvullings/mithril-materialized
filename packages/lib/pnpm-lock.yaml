@@ -5,9 +5,9 @@ devDependencies:
   microbundle: 0.12.4
   rimraf: 3.0.2
   tslib: 2.0.3
-  typedoc: 0.19.2_typescript@4.0.3
-  typescript: 4.0.3
-lockfileVersion: 5.1
+  typedoc: 0.19.2_typescript@4.0.5
+  typescript: 4.0.5
+lockfileVersion: 5.2
 packages:
   /@babel/code-frame/7.10.4:
     dependencies:
@@ -3542,7 +3542,7 @@ packages:
       node: '>= 8'
     resolution:
       integrity: sha512-Y4Lf+qIb9NTydrexlazAM46SSLrmrQRqWiD52593g53SsmUFioAsMWt8m834J6qsp+7wHRjxCXSZeiiW5cMUdw==
-  /typedoc/0.19.2_typescript@4.0.3:
+  /typedoc/0.19.2_typescript@4.0.5:
     dependencies:
       fs-extra: 9.0.1
       handlebars: 4.7.6
@@ -3555,7 +3555,7 @@ packages:
       semver: 7.3.2
       shelljs: 0.8.4
       typedoc-default-themes: 0.11.4
-      typescript: 4.0.3
+      typescript: 4.0.5
     dev: true
     engines:
       node: '>= 10.0.0'
@@ -3571,13 +3571,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-BLbiRkiBzAwsjut4x/dsibSTB6yWpwT5qWmC2OfuCg3GgVQCSgMs4vEctYPhsaGtd0AeuuHMkjZ2h2WG8MSzRw==
-  /typescript/4.0.3:
+  /typescript/4.0.5:
     dev: true
     engines:
       node: '>=4.2.0'
     hasBin: true
     resolution:
-      integrity: sha512-tEu6DGxGgRJPb/mVPIZ48e69xCn2yRmCgYmDugAVwmJ6o+0u1RI18eO7E7WBTLYLaEVVOhwQmcdhQHweux/WPg==
+      integrity: sha512-ywmr/VrTVCmNTJ6iV2LwIrfG1P+lv6luD8sUJs+2eI9NLGigaN+nUQc13iHqisq7bra9lnmUSYqbJvegraBOPQ==
   /uglify-js/3.11.3:
     dev: true
     engines:
@@ -3680,4 +3680,4 @@ specifiers:
   rimraf: ^3.0.2
   tslib: ^2.0.3
   typedoc: ^0.19.2
-  typescript: ^4.0.3
+  typescript: ^4.0.5

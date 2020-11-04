@@ -2,17 +2,17 @@ dependencies:
   material-icons: 0.3.1
   materialize-css: 1.0.0
   mithril: 2.0.4
-  mithril-materialized: 'link:../lib'
+  mithril-materialized: 'link:../../../../../Users/vullingshjlm/AppData/Roaming/npm/pnpm-global/node_modules/mithril-materialized'
   tslib: 2.0.3
 devDependencies:
   '@types/materialize-css': 1.0.8
-  '@types/mithril': 2.0.5
+  '@types/mithril': 2.0.6
   autoprefixer: 10.0.1
   cssnano: 4.1.10
   parcel-bundler: 1.12.4
   rimraf: 3.0.2
-  typescript: 4.0.3
-lockfileVersion: 5.1
+  typescript: 4.0.5
+lockfileVersion: 5.2
 packages:
   /@babel/code-frame/7.10.4:
     dependencies:
@@ -1066,10 +1066,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-KEfzuNfftNWt4ULrwqu7YdRJLjk42LuKxeLJ8ek91w+L9rReIAAYAbpAghUwcfgMTdEN6ykJ718KAHapDZCndA==
-  /@types/mithril/2.0.5:
+  /@types/mithril/2.0.6:
     dev: true
     resolution:
-      integrity: sha512-+HHWp/H7NmjfgAsT/cUX3rO0lqjnCwwW7Ryx92FBJ2tYBYbn/eitWGqpqu5b+DO/3TJ2EadZ5JW05mYNp2hLaQ==
+      integrity: sha512-oOyFr99rKH+94uKHjIVKTL9uaUaxtXJgtZOZkjhWIAY8twr9YzxfEmYARMJkWC3aVg52We8d4wtLhqQ99+fXpw==
   /@types/q/1.5.4:
     dev: true
     resolution:
@@ -5154,13 +5154,13 @@ packages:
     dev: true
     resolution:
       integrity: sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
-  /typescript/4.0.3:
+  /typescript/4.0.5:
     dev: true
     engines:
       node: '>=4.2.0'
     hasBin: true
     resolution:
-      integrity: sha512-tEu6DGxGgRJPb/mVPIZ48e69xCn2yRmCgYmDugAVwmJ6o+0u1RI18eO7E7WBTLYLaEVVOhwQmcdhQHweux/WPg==
+      integrity: sha512-ywmr/VrTVCmNTJ6iV2LwIrfG1P+lv6luD8sUJs+2eI9NLGigaN+nUQc13iHqisq7bra9lnmUSYqbJvegraBOPQ==
   /uncss/0.17.3:
     dependencies:
       commander: 2.20.3
@@ -5417,7 +5417,7 @@ packages:
       integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==
 specifiers:
   '@types/materialize-css': ^1.0.8
-  '@types/mithril': ^2.0.5
+  '@types/mithril': ^2.0.6
   autoprefixer: ^10.0.1
   cssnano: ^4.1.10
   material-icons: ^0.3.1
@@ -5427,4 +5427,4 @@ specifiers:
   parcel-bundler: ^1.12.4
   rimraf: ^3.0.2
   tslib: ^2.0.3
-  typescript: ^4.0.3
+  typescript: ^4.0.5
