@@ -48,7 +48,7 @@ export interface ISelectOptions extends Attributes, Partial<M.FormSelectOptions>
 export const Select: FactoryComponent<ISelectOptions> = () => {
   const state = {} as {
     checkedId?: string | number | Array<string | number>;
-    initialValue: Array<string | number>;
+    initialValue?: Array<string | number>;
     instance?: M.FormSelect;
     /** Concatenation of all options IDs, to see if the options have changed and we need to re-init the select */
     ids?: string;
@@ -85,8 +85,8 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
         onchange: callback,
       },
     }) => {
-      if (checkedId && state.checkedId !== checkedId) {
-        state.initialValue = checkedId instanceof Array ? checkedId : [checkedId];
+      if (state.checkedId !== checkedId) {
+        state.initialValue = checkedId ? (checkedId instanceof Array ? checkedId : [checkedId]) : undefined;
       }
       const { initialValue } = state;
       const onchange = callback
@@ -107,7 +107,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
                 const v = isNumeric(b.value) ? +b.value : b.value;
                 state.initialValue = typeof v !== undefined ? [v] : [];
               }
-              callback(state.initialValue);
+              state.initialValue && callback(state.initialValue);
             }
         : undefined;
       const clear = newRow ? '.clear' : '';

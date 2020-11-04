@@ -51,6 +51,10 @@ Supported components:
 
 ## Version history
 
+v0.17.1: bug fix
+
+- `Select` component also reacts when the `checkedId` property becomes undefined (previously, it would ignore it).
+
 v0.17.0
 
 - Breaking change: `Options` and `RadioButtons` used the `inline` property to put items horizontally. This is actually not needed, and it has been removed. Instead, use the `checkboxClass` to set the grid size of each cell.
