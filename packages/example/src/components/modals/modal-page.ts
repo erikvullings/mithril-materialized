@@ -9,7 +9,7 @@ import {
   Dropdown,
   IDropdownOptions,
 } from 'mithril-materialized';
-import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
+import gogh from 'url:../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
 export const ModalPage = () => {
   const onchange = (v: unknown) => alert(v);
@@ -88,7 +88,7 @@ export const ModalPage = () => {
                     { id: 'fitness', label: 'Fitness' },
                     { id: 'sleep', label: 'Sleeping' },
                   ],
-                  onchange: v => console.log(v),
+                  onchange: (v) => console.log(v),
                 } as ISelectOptions),
                 m(Dropdown, {
                   container: document.body, // So the dropdown is not hidden
@@ -104,7 +104,7 @@ export const ModalPage = () => {
                     { label: '', divider: true },
                     { label: 'Sex', id: 'sex', iconName: 'group' },
                   ],
-                  onchange: v => console.log(v),
+                  onchange: (v) => console.log(v),
                 } as IDropdownOptions),
               ]
             ),

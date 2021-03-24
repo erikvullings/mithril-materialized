@@ -1,6 +1,6 @@
 import { MaterialBox, CodeBlock, Carousel, Parallax, Pagination, Tabs, Button } from 'mithril-materialized';
 import m from 'mithril';
-import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
+import gogh from 'url:../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
 export const MiscPage = () => {
   const state = {
@@ -10,7 +10,7 @@ export const MiscPage = () => {
     tabWidthId: 2,
     tabWidths: ['auto', 'fixed', 'fill'] as Array<'auto' | 'fixed' | 'fill'>,
   };
-  const curPage = () => m.route.param('page') ? +m.route.param('page') : 1;
+  const curPage = () => (m.route.param('page') ? +m.route.param('page') : 1);
 
   return {
     view: () =>
