@@ -2,15 +2,17 @@
   "name": "mithril-materialized",
   "version": "0.17.0",
   "description": "A materialize library for mithril.",
-  "source": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
-  "esmodule": "dist/index.modern.js",
+  "exports": {
+    ".": "./dist/index.modern.js"
+  },
   "unpkg": "dist/index.umd.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "microbundle",
-    "dev": "microbundle watch",
+    "build": "microbundle ./src/index.ts",
+    "dev": "microbundle watch ./src/index.ts",
+    "start": "npm run dev",
     "clean": "rimraf dist",
     "link": "pnpm link",
     "typedoc": "typedoc --out ../../docs/typedoc src",
@@ -32,13 +34,14 @@
   "license": "MIT",
   "devDependencies": {
     "@types/materialize-css": "^1.0.8",
-    "@types/mithril": "^2.0.5",
-    "js-yaml": "^3.14.0",
-    "microbundle": "^0.12.4",
+    "@types/mithril": "^2.0.6",
+    "js-yaml": "^3.14.1",
+    "microbundle": "^0.13.0",
     "rimraf": "^3.0.2",
-    "tslib": "^2.0.3",
+    "rollup": "^2.42.4",
+    "tslib": "^2.1.0",
     "typedoc": "^0.19.2",
-    "typescript": "^4.0.5"
+    "typescript": "^4.2.3"
   },
   "peerDependencies": {
     "materialize-css": "^1.0.0",

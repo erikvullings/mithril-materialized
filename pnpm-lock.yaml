@@ -1,7 +1,7 @@
 devDependencies:
-  pnpm: 5.10.1
+  pnpm: 5.18.8
   rimraf: 3.0.2
-lockfileVersion: 5.1
+lockfileVersion: 5.2
 packages:
   /balanced-match/1.0.0:
     dev: true
@@ -62,13 +62,13 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-F0uSaHNVNP+8es5r9TpanhtcX18=
-  /pnpm/5.10.1:
+  /pnpm/5.18.8:
     dev: true
     engines:
       node: '>=10.16'
     hasBin: true
     resolution:
-      integrity: sha512-XJ41/VU6cwFFugFi6V9y8WUO6S/eF3YRtOpX82xx25p3jW25cLHnvGn/TtC4XHwO/OZkCWOWkEV/AtDE5YKiSQ==
+      integrity: sha512-MO0XZoJfZFn6KjhcDpS03P9MeKx3xzgoXJcIcTjJ29/pKeS1O5x/SeLjzsCsAbkPLrv6JdY5uotIz7LRKEe88w==
   /rimraf/3.0.2:
     dependencies:
       glob: 7.1.6
@@ -81,5 +81,5 @@ packages:
     resolution:
       integrity: sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
 specifiers:
-  pnpm: ^5.10.1
+  pnpm: ^5.18.8
   rimraf: ^3.0.2
