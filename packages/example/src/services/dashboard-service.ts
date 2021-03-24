@@ -14,7 +14,7 @@ import { MapEditorPage } from './../components/map-editor/map-editor-page';
 import { TimelinePage } from '../components/timeline/timeline-page';
 import { KanbanPage } from '../components/misc/kanban-page';
 
-export const enum Dashboards {
+export enum Dashboards {
   HOME = 'HOME',
   BUTTONS = 'BUTTONS',
   INPUTS = 'INPUTS',
@@ -45,25 +45,22 @@ class DashboardService {
   }
 
   public get defaultRoute() {
-    const dashboard = this.dashboards.filter(d => d.default).shift();
+    const dashboard = this.dashboards.filter((d) => d.default).shift();
     return dashboard ? dashboard.route : this.dashboards[0].route;
   }
 
   public switchTo(dashboardId: Dashboards, fragment = '') {
-    const dashboard = this.dashboards.filter(d => d.id === dashboardId).shift();
+    const dashboard = this.dashboards.filter((d) => d.id === dashboardId).shift();
     if (dashboard) {
       m.route.set(dashboard.route);
     }
   }
 
   public get routingTable() {
-    return this.dashboards.reduce(
-      (p, c) => {
-        p[c.route] = { render: () => m(this.layout, m(c.component)) };
-        return p;
-      },
-      {} as RouteDefs
-    );
+    return this.dashboards.reduce((p, c) => {
+      p[c.route] = { render: () => m(this.layout, m(c.component)) };
+      return p;
+    }, {} as RouteDefs);
   }
 }
 
