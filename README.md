@@ -58,7 +58,13 @@ To install the dependencies, you can use `npm i`, or, alternatively, use `pnpm m
 
 ## CSS
 
-Although I've tried to limit the CSS adaptations to a minimum, I needed to tweak certain parts to make it look better. Here are the styles I've added.
+Although I've tried to limit the CSS adaptations to a minimum, I needed to tweak certain parts to make it look better. You can either copy them manually, or import them, e.g.
+
+```ts
+import 'mithril-materialized/dist/index.css';
+```
+
+Here are the styles I've added.
 
 ```css
 /* For the switch */
