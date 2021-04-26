@@ -52,6 +52,7 @@ export const RadioButtons: FactoryComponent<IRadioButtons> = () => {
         description,
         options,
         isMandatory,
+        required,
         checkboxClass,
         onchange: callback,
       },
@@ -77,6 +78,7 @@ export const RadioButtons: FactoryComponent<IRadioButtons> = () => {
             onchange,
             groupId,
             disabled,
+            required,
             className: checkboxClass,
             checked: r.id === checkedId,
           })
@@ -96,7 +98,7 @@ export interface IRadioButton extends Attributes {
 }
 
 export const RadioButton: FactoryComponent<IRadioButton> = () => ({
-  view: ({ attrs: { id, groupId, label, onchange, className = 'col s12', checked, disabled } }) => {
+  view: ({ attrs: { id, groupId, label, onchange, className = 'col s12', checked, disabled, required } }) => {
     return m(
       `div`,
       { className },
@@ -107,6 +109,7 @@ export const RadioButton: FactoryComponent<IRadioButton> = () => ({
           }`,
           {
             onclick: onchange ? () => onchange(id) : undefined,
+            required
           }
         ),
         m('span', m.trust(label)),

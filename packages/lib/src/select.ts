@@ -78,6 +78,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
         helperText,
         placeholder,
         isMandatory,
+        required,
         iconName,
         disabled,
         classes,
@@ -113,11 +114,12 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
       const clear = newRow ? '.clear' : '';
       const isDisabled = disabled ? '[disabled]' : '';
       const isMultiple = multiple ? '[multiple]' : '';
+      const isRequired = required ? '[required]' : '';
       const noValidSelection = options.filter((o) => isSelected(o.id, initialValue)).length === 0;
       return m(`.input-field.select-space${clear}`, { className, key }, [
         iconName && m('i.material-icons.prefix', iconName),
         m(
-          `select[id=${id}]${isDisabled}${isMultiple}`,
+          `select[id=${id}]${isDisabled}${isMultiple}${isRequired}`,
           {
             oncreate: ({ dom }) => {
               state.instance = M.FormSelect.init(dom, { classes, dropdownOptions });
