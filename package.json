@@ -4,7 +4,7 @@
   "private": true,
   "description": "A materialize library for mithril.",
   "scripts": {
-    "postinstall": "pnpm run -r --parallel link",
+    "postinstall:old": "pnpm run -r --parallel link",
     "link": "pnpm run -r --parallel link",
     "clean:docs": "rimraf -rf ./docs",
     "build:domain": "pnpm run -r --parallel clean:docs && pnpm run -r --parallel build:domain",
@@ -23,7 +23,7 @@
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
   "devDependencies": {
-    "pnpm": "^5.18.8",
+    "pnpm": "^5.18.9",
     "rimraf": "^3.0.2"
   }
 }

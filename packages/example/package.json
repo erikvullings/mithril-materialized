@@ -6,9 +6,9 @@
   "scripts": {
     "clean": "rimraf ./.cache",
     "start": "npm run dev",
-    "dev": "parcel index.html --dist-dir ../../docs",
-    "build:domain": "npm run clean && parcel build index.html --dist-dir ../../docs --public-url https://erikvullings.github.io/mithril-materialized",
-    "link": "pnpm link mithril-materialized",
+    "dev": "parcel src/index.html --dist-dir ../../docs",
+    "build:domain": "npm run clean && parcel build src/index.html --dist-dir ../../docs --public-url https://erikvullings.github.io/mithril-materialized",
+    "link:old": "pnpm link mithril-materialized",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -23,7 +23,8 @@
     "material-icons": "^0.3.1",
     "materialize-css": "^1.0.0",
     "mithril": "^2.0.4",
-    "tslib": "^2.1.0"
+    "mithril-materialized": "^0.19.0",
+    "tslib": "^2.2.0"
   },
   "alias": {
     "mithril": "./node_modules/mithril",
@@ -31,12 +32,13 @@
   },
   "devDependencies": {
     "@parcel/transformer-image": "2.0.0-beta.2",
-    "@types/materialize-css": "^1.0.8",
-    "@types/mithril": "^2.0.6",
-    "autoprefixer": "^10.2.5",
-    "cssnano": "^4.1.10",
+    "@types/materialize-css": "^1.0.9",
+    "@types/mithril": "^2.0.7",
+    "autoprefixer": "^10.2.6",
+    "cssnano": "^4.1.11",
     "parcel": "^2.0.0-beta.2",
     "rimraf": "^3.0.2",
-    "typescript": "^4.2.3"
+    "snowpack": "^3.5.2",
+    "typescript": "^4.3.2"
   }
 }
