@@ -51,112 +51,114 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
 export type InputType = 'url' | 'color' | 'text' | 'number' | 'email' | 'range' | 'password';
 
 /** Default component for all kinds of input fields. */
-const InputField = <T>(type: InputType, defaultClass = ''): FactoryComponent<IInputOptions<T>> => () => {
-  const state = { id: uniqueId() };
-  const getValue = (target: HTMLInputElement) => {
-    const val = (target.value as any) as T;
-    return (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
-  };
-  const setValidity = (target: HTMLInputElement, validationResult: string | boolean) => {
-    if (typeof validationResult === 'boolean') {
-      target.setCustomValidity(validationResult ? '' : 'Custom validation failed');
-    } else {
-      target.setCustomValidity(validationResult);
-    }
-  };
-  const focus = ({ autofocus }: IInputOptions<T>) =>
-    autofocus ? (typeof autofocus === 'boolean' ? autofocus : autofocus()) : false;
+const InputField =
+  <T>(type: InputType, defaultClass = ''): FactoryComponent<IInputOptions<T>> =>
+  () => {
+    const state = { id: uniqueId() };
+    const getValue = (target: HTMLInputElement) => {
+      const val = target.value as any as T;
+      return (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
+    };
+    const setValidity = (target: HTMLInputElement, validationResult: string | boolean) => {
+      if (typeof validationResult === 'boolean') {
+        target.setCustomValidity(validationResult ? '' : 'Custom validation failed');
+      } else {
+        target.setCustomValidity(validationResult);
+      }
+    };
+    const focus = ({ autofocus }: IInputOptions<T>) =>
+      autofocus ? (typeof autofocus === 'boolean' ? autofocus : autofocus()) : false;
 
-  return {
-    view: ({ attrs }) => {
-      const {
-        className = 'col s12',
-        dataError,
-        dataSuccess,
-        helperText,
-        iconName,
-        id = state.id,
-        initialValue,
-        isMandatory,
-        label,
-        maxLength,
-        newRow,
-        onchange,
-        onkeydown,
-        onkeypress,
-        onkeyup,
-        style,
-        validate,
-        ...params
-      } = attrs;
-      const attributes = toAttrs(params);
-      return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}`, { className, style }, [
-        iconName ? m('i.material-icons.prefix', iconName) : undefined,
-        m(`input.validate[type=${type}][tabindex=0][id=${id}]${attributes}`, {
-          oncreate: ({ dom }) => {
-            if (focus(attrs)) {
-              (dom as HTMLElement).focus();
-            }
-            if (maxLength) {
-              M.CharacterCounter.init(dom);
-            }
-            if (type === 'range') {
-              M.Range.init(dom);
-            }
-          },
-          onkeyup: onkeyup
-            ? (ev: KeyboardEvent) => {
-                onkeyup(ev, getValue(ev.target as HTMLInputElement));
-              }
-            : undefined,
-          onkeydown: onkeydown
-            ? (ev: KeyboardEvent) => {
-                onkeydown(ev, getValue(ev.target as HTMLInputElement));
-              }
-            : undefined,
-          onkeypress: onkeypress
-            ? (ev: KeyboardEvent) => {
-                onkeypress(ev, getValue(ev.target as HTMLInputElement));
-              }
-            : undefined,
-          onupdate: validate
-            ? ({ dom }) => {
-                const target = dom as HTMLInputElement;
-                setValidity(target, validate(getValue(target), target));
-              }
-            : undefined,
-          onchange: (e: UIEvent) => {
-            const target = e.target as HTMLInputElement;
-            if (target) {
-              const value = getValue(target);
-              if (onchange) {
-                onchange(value);
-              }
-              if (validate) {
-                setValidity(target, validate(value, target));
-              }
-            }
-          },
-          value: initialValue,
-        }),
-        m(Label, {
-          label,
-          id,
+    return {
+      view: ({ attrs }) => {
+        const {
+          className = 'col s12',
+          dataError,
+          dataSuccess,
+          helperText,
+          iconName,
+          id = state.id,
+          initialValue,
           isMandatory,
-          isActive:
-            typeof initialValue !== 'undefined' ||
-            attrs.placeholder ||
-            type === 'number' ||
-            type === 'color' ||
-            type === 'range'
-              ? true
-              : false,
-        }),
-        m(HelperText, { helperText, dataError, dataSuccess }),
-      ]);
-    },
+          label,
+          maxLength,
+          newRow,
+          onchange,
+          onkeydown,
+          onkeypress,
+          onkeyup,
+          style,
+          validate,
+          ...params
+        } = attrs;
+        const attributes = toAttrs(params);
+        return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}`, { className, style }, [
+          iconName ? m('i.material-icons.prefix', iconName) : undefined,
+          m(`input.validate[type=${type}][tabindex=0][id=${id}]${attributes}`, {
+            oncreate: ({ dom }) => {
+              if (focus(attrs)) {
+                (dom as HTMLElement).focus();
+              }
+              if (maxLength) {
+                M.CharacterCounter.init(dom);
+              }
+              if (type === 'range') {
+                M.Range.init(dom);
+              }
+            },
+            onkeyup: onkeyup
+              ? (ev: KeyboardEvent) => {
+                  onkeyup(ev, getValue(ev.target as HTMLInputElement));
+                }
+              : undefined,
+            onkeydown: onkeydown
+              ? (ev: KeyboardEvent) => {
+                  onkeydown(ev, getValue(ev.target as HTMLInputElement));
+                }
+              : undefined,
+            onkeypress: onkeypress
+              ? (ev: KeyboardEvent) => {
+                  onkeypress(ev, getValue(ev.target as HTMLInputElement));
+                }
+              : undefined,
+            onupdate: validate
+              ? ({ dom }) => {
+                  const target = dom as HTMLInputElement;
+                  setValidity(target, validate(getValue(target), target));
+                }
+              : undefined,
+            onchange: (e: UIEvent) => {
+              const target = e.target as HTMLInputElement;
+              if (target) {
+                const value = getValue(target);
+                if (onchange) {
+                  onchange(value);
+                }
+                if (validate) {
+                  setValidity(target, validate(value, target));
+                }
+              }
+            },
+            value: initialValue,
+          }),
+          m(Label, {
+            label,
+            id,
+            isMandatory,
+            isActive:
+              typeof initialValue !== 'undefined' ||
+              attrs.placeholder ||
+              type === 'number' ||
+              type === 'color' ||
+              type === 'range'
+                ? true
+                : false,
+          }),
+          m(HelperText, { helperText, dataError, dataSuccess }),
+        ]);
+      },
+    };
   };
-};
 
 /** Component for entering some text */
 export const TextInput = InputField<string>('text');
