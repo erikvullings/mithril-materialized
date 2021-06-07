@@ -9,7 +9,7 @@ import {
   Dropdown,
   IDropdownOptions,
 } from 'mithril-materialized';
-import gogh from 'url:../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
+import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
 export const ModalPage = () => {
   const onchange = (v: unknown) => alert(v);

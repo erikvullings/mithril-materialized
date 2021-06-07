@@ -5,10 +5,15 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "exports": {
-    ".": "./dist/index.modern.js"
+    ".": "./dist/index.modern.js",
+    "./index.css": "./dist/index.css"
   },
   "unpkg": "dist/index.umd.js",
   "types": "dist/index.d.ts",
+  "alias": {
+    "mithril": "node_modules/mithril",
+    "materialize-css": "node_modules/materialize-css"
+  },
   "scripts": {
     "build": "microbundle ./src/index.ts",
     "dev": "microbundle watch ./src/index.ts",

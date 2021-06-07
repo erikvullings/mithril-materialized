@@ -1,6 +1,6 @@
 import { MaterialBox, CodeBlock, Carousel, Parallax, Pagination, Tabs, Button } from 'mithril-materialized';
 import m from 'mithril';
-import gogh from 'url:../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
+import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
 export const MiscPage = () => {
   const state = {

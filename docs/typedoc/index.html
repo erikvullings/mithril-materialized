@@ -136,6 +136,10 @@
 				<a href="#version-history" id="version-history" style="color: inherit; text-decoration: none;">
 					<h2>Version history</h2>
 				</a>
+				<p>v0.17.1: bug fix</p>
+				<ul>
+					<li><code>Select</code> component also reacts when the <code>checkedId</code> property becomes undefined (previously, it would ignore it).</li>
+				</ul>
 				<p>v0.17.0</p>
 				<ul>
 					<li>Breaking change: <code>Options</code> and <code>RadioButtons</code> used the <code>inline</code> property to put items horizontally. This is actually not needed, and it has been removed. Instead, use the <code>checkboxClass</code> to set the grid size of each cell.</li>
@@ -523,7 +527,7 @@
 }
 
 <span class="hljs-comment">/* For the color input */</span>
-<span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&#x27;color&#x27;</span>]</span><span class="hljs-selector-pseudo">:not(.browser-default)</span> {
+<span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&#x27;color&#x27;</span>]</span><span class="hljs-selector-pseudo">:not</span>(<span class="hljs-selector-class">.browser-default</span>) {
   <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> <span class="hljs-number">0</span> <span class="hljs-number">8px</span> <span class="hljs-number">0</span>;
   <span class="hljs-comment">/** Copied from input[type=number] */</span>
   <span class="hljs-attribute">background-color</span>: transparent;
@@ -535,11 +539,11 @@
   <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
   <span class="hljs-attribute">font-size</span>: <span class="hljs-number">16px</span>;
   <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span>;
-  <span class="hljs-attribute">-webkit-box-shadow</span>: none;
+  -webkit-<span class="hljs-attribute">box-shadow</span>: none;
   <span class="hljs-attribute">box-shadow</span>: none;
-  <span class="hljs-attribute">-webkit-box-sizing</span>: content-box;
+  -webkit-<span class="hljs-attribute">box-sizing</span>: content-box;
   <span class="hljs-attribute">box-sizing</span>: content-box;
-  <span class="hljs-attribute">-webkit-transition</span>: border <span class="hljs-number">0.3s</span>, -webkit-box-shadow <span class="hljs-number">0.3s</span>;
+  -webkit-<span class="hljs-attribute">transition</span>: border <span class="hljs-number">0.3s</span>, -webkit-box-shadow <span class="hljs-number">0.3s</span>;
   <span class="hljs-attribute">transition</span>: border <span class="hljs-number">0.3s</span>, -webkit-box-shadow <span class="hljs-number">0.3s</span>;
   <span class="hljs-attribute">transition</span>: box-shadow <span class="hljs-number">0.3s</span>, border <span class="hljs-number">0.3s</span>;
   <span class="hljs-attribute">transition</span>: box-shadow <span class="hljs-number">0.3s</span>, border <span class="hljs-number">0.3s</span>, -webkit-box-shadow <span class="hljs-number">0.3s</span>;
