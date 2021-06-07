@@ -41,7 +41,7 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
             : undefined,
           value: initialValue,
         }),
-        m(Label, { label, id, isMandatory, isActive: initialValue || attrs.placeholder }),
+        m(Label, { label: 'ERIK: ' + label, id, isMandatory, isActive: initialValue || attrs.placeholder }),
         m(HelperText, { helperText }),
       ]);
     },
