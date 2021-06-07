@@ -15149,7 +15149,7 @@ module.exports = __webpack_require__.p + "0f170ea0ecc81d3b9ccc.jpg";
 /******/ 	
 /******/ 	/* webpack/runtime/publicPath */
 /******/ 	(() => {
-/******/ 		__webpack_require__.p = "https://erikvullings.github.io/mithril-materialized";
+/******/ 		__webpack_require__.p = "https://erikvullings.github.io/mithril-materialized/";
 /******/ 	})();
 /******/ 	
 /************************************************************************/

@@ -8,7 +8,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 module.exports = (env) => {
   const isProduction = env.production;
   const outputPath = path.resolve(__dirname, isProduction ? '../../docs' : 'dist');
-  const publicPath = isProduction ? 'https://erikvullings.github.io/mithril-materialized' : '/';
+  const publicPath = isProduction ? 'https://erikvullings.github.io/mithril-materialized/' : '/';
 
   console.log(`Running in ${isProduction ? 'production' : 'development'} mode, output directed to ${outputPath}.`);
 

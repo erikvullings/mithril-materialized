@@ -4,7 +4,7 @@
   "version": "0.1.4",
   "description": "Example project voor the mithril-materialized library.",
   "scripts": {
-    "clean": "rimraf ./.cache",
+    "clean": "rimraf ./.cache ../docs",
     "dev": "npm start",
     "start": "webpack serve --env development --open",
     "build": "webpack --env production",
