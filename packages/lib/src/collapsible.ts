@@ -42,8 +42,19 @@ export const Collapsible: FactoryComponent<ICollapsible> = () => {
       M.Collapsible.init(dom, attrs);
     },
     view: ({ attrs }) => {
-      const { items } = attrs;
-      return items && items.length > 0 ? m('ul.collapsible', items.map(item => m(CollapsibleItem, item))) : undefined;
+      const { items, class: c, className, style, id } = attrs;
+      return items && items.length > 0
+        ? m(
+            'ul.collapsible',
+            {
+              class: c,
+              className,
+              style,
+              id,
+            },
+            items.map((item) => m(CollapsibleItem, item))
+          )
+        : undefined;
     },
   };
 };
