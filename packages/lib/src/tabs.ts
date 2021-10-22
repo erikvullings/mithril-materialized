@@ -1,5 +1,4 @@
 import m, { Vnode, FactoryComponent, Attributes } from 'mithril';
-import { TabsOptions } from 'materialize-css';
 
 /**
  * Link or anchor target may take 4 values:
@@ -34,7 +33,7 @@ export interface ITabItem {
   href?: string;
 }
 
-export interface ITabs extends Partial<TabsOptions>, Attributes {
+export interface ITabs extends Partial<M.TabsOptions>, Attributes {
   /** Selected tab id */
   selectedTabId?: string;
   /**
@@ -54,7 +53,7 @@ export const Tabs: FactoryComponent<ITabs> = () => {
     view: ({
       attrs: { tabWidth, selectedTabId, tabs, className: cn, style, duration, onShow, swipeable, responsiveThreshold },
     }) => {
-      const activeTab = tabs.filter(t => t.active).shift();
+      const activeTab = tabs.filter((t) => t.active).shift();
       const select = selectedTabId || (activeTab ? createId(activeTab.title, activeTab.id) : '');
       return m('.row', [
         m(
