@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = (env) => {
@@ -18,8 +18,7 @@ module.exports = (env) => {
     devtool: isProduction ? 'source-map' : 'inline-source-map',
     devServer: {
       liveReload: true,
-      port: 1234,
-      contentBase: './dist',
+      port: 1235,
     },
     plugins: [
       new Dotenv(),
@@ -80,10 +79,10 @@ module.exports = (env) => {
           },
         ],
       }),
-      new MiniCssExtractPlugin({
-        filename: isProduction ? '[name].[contenthash].css' : '[name].css',
-        chunkFilename: isProduction ? '[id].[contenthash].css' : '[id].css',
-      }),
+      // new MiniCssExtractPlugin({
+      //   filename: isProduction ? '[name].[contenthash].css' : '[name].css',
+      //   chunkFilename: isProduction ? '[id].[contenthash].css' : '[id].css',
+      // }),
     ],
     module: {
       rules: [
@@ -104,15 +103,15 @@ module.exports = (env) => {
           test: /\.(woff|woff2|eot|ttf|otf)$/i,
           type: 'asset/resource',
         },
-        {
-          test: /\.css$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader'],
-        },
+        // {
+        //   test: /\.css$/,
+        //   use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        // },
       ],
     },
     resolve: {
       alias: {
-        'materialize-css': path.resolve(__dirname, 'node_modules/materialize-css'),
+        // 'materialize-css': path.resolve(__dirname, 'node_modules/materialize-css'),
         mithril: path.resolve(__dirname, 'node_modules/mithril'),
       },
       extensions: ['.ts', '.js'],

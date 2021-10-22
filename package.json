@@ -4,15 +4,13 @@
   "private": true,
   "description": "A materialize library for mithril.",
   "scripts": {
-    "postinstall:old": "pnpm run -r --parallel link",
-    "link": "pnpm run -r --parallel link",
-    "clean:docs": "rimraf -rf ./docs",
+    "clean:local": "rimraf -rf ./docs",
     "build:domain": "pnpm run -r --parallel clean:docs && pnpm run -r --parallel build:domain",
-    "start": "pnpm run -r --parallel dev",
-    "clean": "pnpm run -r --parallel clean",
-    "patch-release": "pnpm run -r patch-release",
-    "minor-release": "pnpm run -r minor-release",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "pnpm -r --parallel run dev",
+    "clean": "npm run clean:local && pnpm clean",
+    "dry-run": "pnpm dry-run",
+    "patch-release": "npm run clean && npm run build && pnpm patch-release",
+    "minor-release": "npm run clean && npm run build && pnpm minor-release"
   },
   "keywords": [
     "mithril",
@@ -23,7 +21,7 @@
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
   "devDependencies": {
-    "pnpm": "^5.18.9",
+    "pnpm": "^6.18.0",
     "rimraf": "^3.0.2"
   }
 }

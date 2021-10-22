@@ -10,10 +10,6 @@
   },
   "unpkg": "dist/index.umd.js",
   "types": "dist/index.d.ts",
-  "alias": {
-    "mithril": "node_modules/mithril",
-    "materialize-css": "node_modules/materialize-css"
-  },
   "scripts": {
     "build": "microbundle ./src/index.ts",
     "dev": "microbundle watch ./src/index.ts",
@@ -38,17 +34,16 @@
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
   "devDependencies": {
-    "@types/materialize-css": "^1.0.9",
-    "@types/mithril": "^2.0.7",
-    "js-yaml": "^3.14.1",
-    "microbundle": "^0.13.1",
+    "@types/materialize-css": "^1.0.11",
+    "@types/mithril": "^2.0.8",
+    "js-yaml": "^4.1.0",
+    "microbundle": "^0.14.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.50.4",
-    "tslib": "^2.2.0",
-    "typedoc": "^0.19.2",
-    "typescript": "^4.3.2"
+    "tslib": "^2.3.1",
+    "typedoc": "^0.22.6",
+    "typescript": "^4.4.4"
   },
-  "peerDependencies": {
+  "dependencies": {
     "materialize-css": "^1.0.0",
     "mithril": "^2.0.4"
   }
