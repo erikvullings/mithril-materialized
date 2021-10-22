@@ -123,6 +123,8 @@ export const CollectionsPage = () => {
         m(
           '.row',
           m(Collapsible, {
+            id: 'testme',
+            className: 'first-second-third',
             items: [
               { id: 1, header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama' },
               { id: 2, header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },

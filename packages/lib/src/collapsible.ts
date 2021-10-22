@@ -47,8 +47,7 @@ export const Collapsible: FactoryComponent<ICollapsible> = () => {
         ? m(
             'ul.collapsible',
             {
-              class: c,
-              className,
+              class: c || className,
               style,
               id,
             },
