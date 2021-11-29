@@ -285,6 +285,7 @@ export const InputPage = () => {
             helperText: 'Optional help instructions',
             placeholder: 'Add a tag',
             secondaryPlaceholder: '+Tag',
+            required: true,
             data: [
               {
                 tag: 'Hello',

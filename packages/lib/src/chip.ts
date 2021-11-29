@@ -44,10 +44,12 @@ export const Chips: FactoryComponent<IChipsOptions> = () => {
       const chips = M.Chips.getInstance(dom.children[0]) as M.Chips;
       data.forEach((d) => chips.addChip(d));
     },
-    view: ({ attrs: { placeholder, data, className = 'col s12', label, helperText } }) => {
+    view: ({
+      attrs: { placeholder, required, isMandatory = required, data, className = 'col s12', label, helperText },
+    }) => {
       return m('.input-field', { className }, [
         m(`.chips.chips-autocomplete${placeholder ? '.chips-placeholder' : ''}${data ? '.chips-initial' : ''}`),
-        label ? m(Label, { label, className: 'active' }) : undefined,
+        label ? m(Label, { label, isMandatory, className: 'active' }) : undefined,
         helperText ? m(HelperText, { helperText }) : undefined,
       ]);
     },
