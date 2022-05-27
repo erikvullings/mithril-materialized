@@ -21,7 +21,7 @@
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
   "devDependencies": {
-    "pnpm": "^6.18.0",
+    "pnpm": "^7.1.6",
     "rimraf": "^3.0.2"
   }
 }
