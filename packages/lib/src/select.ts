@@ -142,7 +142,7 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
           placeholder ? m(`option[disabled]${noValidSelection ? '[selected]' : ''}`, placeholder) : '',
           options.map((o, i) =>
             m(
-              `option[value=${o.id}]${o.disabled ? '[disabled]' : ''}${
+              `option[value=${o.id}]${o.title ? `[title=${o.title}]` : ''}${o.disabled ? '[disabled]' : ''}${
                 isSelected(o.id, initialValue, i === 0 && noValidSelection && !placeholder) ? '[selected]' : ''
               }`,
               o.label.replace('&amp;', '&')

@@ -39,8 +39,10 @@ export const InputCheckbox: FactoryComponent<IInputCheckbox> = () => {
 export interface IInputOption {
   /** Option ID */
   id: string | number;
-  /** Title or label */
+  /** Displayed label */
   label: string;
+  /** Optional title, often used to display a tooltip - will only work when choosing browser-defaults */
+  title?: string;
   /** Is the option disabled? */
   disabled?: boolean;
   // isChecked?: boolean;

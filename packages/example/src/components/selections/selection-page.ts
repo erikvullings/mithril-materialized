@@ -36,8 +36,8 @@ export const SelectionPage = () => {
             initialValue: state.checkedId,
             options: [
               { label: 'Pick one', disabled: true },
-              { id: 'movies', label: 'Watching movies' },
-              { id: 'out', label: 'Going out' },
+              { id: 'movies', label: 'Watching movies', title: 'Sitting for the TV, doing nothing' },
+              { id: 'out', label: 'Going out', title: 'Scanning the environment, talking to strangers' },
             ],
             onchange: (ids) => (state.checkedId = ids as string[]),
           } as ISelectOptions)
