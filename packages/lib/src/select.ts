@@ -1,20 +1,20 @@
-import m, { FactoryComponent, Attributes } from 'mithril';
+import m, { Attributes, Component } from 'mithril';
 import { isNumeric } from './utils';
 import { Label, HelperText } from './label';
 import { IInputOption } from './option';
 
-export interface ISelectOptions extends Attributes, Partial<M.FormSelectOptions> {
+export interface ISelectOptions<T extends string | number> extends Attributes, Partial<M.FormSelectOptions> {
   /** Options to select from */
-  options: IInputOption[];
+  options: IInputOption<T>[];
   /** Called when the value is changed, either contains a single or all selected (checked) ids */
-  onchange: (checkedIds: Array<string | number>) => void;
+  onchange: (checkedIds: T[]) => void;
   /**
    * Selected id or ids (in case of multiple options). Processed in the oninit and onupdate lifecycle.
    * When the checkedId property changes (using a shallow compare), the selections are updated accordingly.
    */
-  checkedId?: string | number | Array<string | number>;
+  checkedId?: T | T[];
   /** Selected id or ids (in case of multiple options). Only processed in the oninit lifecycle. */
-  initialValue?: string | number | Array<string | number>;
+  initialValue?: T | T[];
   /** Select a single option or multiple options */
   multiple?: boolean;
   /** Optional label. */
@@ -45,17 +45,17 @@ export interface ISelectOptions extends Attributes, Partial<M.FormSelectOptions>
 }
 
 /** Component to select from a list of values in a dropdowns */
-export const Select: FactoryComponent<ISelectOptions> = () => {
+export const Select = <T extends string | number>(): Component<ISelectOptions<T>> => {
   const state = {} as {
-    checkedId?: string | number | Array<string | number>;
-    initialValue?: Array<string | number>;
+    checkedId?: T | T[];
+    initialValue?: T[];
     instance?: M.FormSelect;
     /** Concatenation of all options IDs, to see if the options have changed and we need to re-init the select */
     ids?: string;
   };
-  const optionsIds = (options: IInputOption[]) => options.map((o) => o.id).join('');
+  const optionsIds = (options: IInputOption<T>[]) => options.map((o) => o.id).join('');
 
-  const isSelected = (id?: string | number, checkedId?: string | number | Array<string | number>, selected = false) =>
+  const isSelected = (id?: T, checkedId?: T | T[], selected = false) =>
     selected ||
     (checkedId instanceof Array && (id || typeof id === 'number') ? checkedId.indexOf(id) >= 0 : checkedId === id);
   return {
@@ -98,13 +98,13 @@ export const Select: FactoryComponent<ISelectOptions> = () => {
                   ? values.map((n) => +n)
                   : values.filter((i) => i !== null || typeof i !== 'undefined')
                 : undefined;
-              state.initialValue = v ? v : [];
+              state.initialValue = v ? (v as T[]) : [];
               callback(state.initialValue);
             }
           : (e: Event) => {
               if (e && e.currentTarget) {
                 const b = e.currentTarget as HTMLButtonElement;
-                const v = isNumeric(b.value) ? +b.value : b.value;
+                const v = (isNumeric(b.value) ? +b.value : b.value) as T;
                 state.initialValue = typeof v !== undefined ? [v] : [];
               }
               state.initialValue && callback(state.initialValue);

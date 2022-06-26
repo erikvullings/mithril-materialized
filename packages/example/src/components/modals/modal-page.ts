@@ -89,7 +89,7 @@ export const ModalPage = () => {
                     { id: 'sleep', label: 'Sleeping' },
                   ],
                   onchange: (v) => console.log(v),
-                } as ISelectOptions),
+                } as ISelectOptions<string>),
                 m(Dropdown, {
                   container: document.body, // So the dropdown is not hidden
                   id: 'hobby',
@@ -105,7 +105,7 @@ export const ModalPage = () => {
                     { label: 'Sex', id: 'sex', iconName: 'group' },
                   ],
                   onchange: (v) => console.log(v),
-                } as IDropdownOptions),
+                } as IDropdownOptions<string>),
               ]
             ),
 

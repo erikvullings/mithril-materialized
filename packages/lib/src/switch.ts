@@ -19,11 +19,23 @@ export const Switch: FactoryComponent<ISwitchOptions> = () => {
   return {
     view: ({ attrs }) => {
       const id = attrs.id || state.id;
-      const { label, left, right, disabled, newRow, onchange, checked, isMandatory, className = 'col s12' } = attrs;
+      const {
+        label,
+        left,
+        right,
+        disabled,
+        newRow,
+        onchange,
+        checked,
+        isMandatory,
+        className = 'col s12',
+        ...params
+      } = attrs;
       return m(`div${newRow ? '.clear' : ''}`, { className }, [
         label ? m(Label, { label: label || '', id, isMandatory }) : undefined,
         m(
           '.switch',
+          params,
           m('label', [
             left || 'Off',
             m(`input[id=${id}][type=checkbox]${disable({ disabled })}${checked ? '[checked]' : ''}`, {

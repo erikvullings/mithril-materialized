@@ -1,4 +1,4 @@
-import m, { Vnode, FactoryComponent, Attributes } from 'mithril';
+import m, { Vnode, FactoryComponent, Attributes, Component } from 'mithril';
 import { Label, HelperText } from './label';
 
 export interface IInputCheckbox extends Attributes {
@@ -36,9 +36,9 @@ export const InputCheckbox: FactoryComponent<IInputCheckbox> = () => {
   };
 };
 
-export interface IInputOption {
+export interface IInputOption<T extends string | number> {
   /** Option ID */
-  id: string | number;
+  id: T;
   /** Displayed label */
   label: string;
   /** Optional title, often used to display a tooltip - will only work when choosing browser-defaults */
@@ -48,22 +48,22 @@ export interface IInputOption {
   // isChecked?: boolean;
 }
 
-export interface IOptions extends Attributes {
+export interface IOptions<T extends string | number> extends Attributes {
   /** Element ID */
   id?: string;
   /** Optional title or label */
   label?: string;
   /** The options that you have */
-  options: IInputOption[];
+  options: IInputOption<T>[];
   /** Event handler that is called when an option is changed */
-  onchange?: (checkedId: Array<string | number>) => void;
+  onchange?: (checkedId: T[]) => void;
   /**
    * Selected id or ids (in case of multiple options)
    * @deprecated Please use initialValue instead
    */
-  checkedId?: string | number | Array<string | number>;
+  checkedId?: T | T[];
   /** Selected id or ids (in case of multiple options) */
-  initialValue?: string | number | Array<string | number>;
+  initialValue?: T | T[];
   /** Optional description */
   description?: string;
   /** Optional CSS that is added to the input checkbox, e.g. if you add col s4, the items will be put inline */
@@ -77,13 +77,13 @@ export interface IOptions extends Attributes {
 }
 
 /** A list of checkboxes */
-export const Options: FactoryComponent<IOptions> = () => {
+export const Options = <T extends string | number>(): Component<IOptions<T>> => {
   const state = {} as {
-    checkedId?: string | number | Array<string | number>;
-    checkedIds: Array<string | number>;
+    checkedId?: T | T[];
+    checkedIds: T[];
   };
 
-  const isChecked = (id: string | number) => state.checkedIds.indexOf(id) >= 0;
+  const isChecked = (id: T) => state.checkedIds.indexOf(id) >= 0;
 
   return {
     oninit: ({ attrs: { initialValue, checkedId } }) => {
@@ -112,7 +112,7 @@ export const Options: FactoryComponent<IOptions> = () => {
       }
       const clear = newRow ? '.clear' : '';
       const onchange = callback
-        ? (propId: string | number, checked: boolean) => {
+        ? (propId: T, checked: boolean) => {
             const checkedIds = state.checkedIds.filter((i) => i !== propId);
             if (checked) {
               checkedIds.push(propId);

@@ -2,9 +2,9 @@ import m, { Component, Attributes } from 'mithril';
 import { HelperText } from './label';
 import { uniqueId } from './utils';
 
-export interface IDropdownOption {
+export interface IDropdownOption<T extends string | number> {
   /** ID property of the selected item */
-  id?: string | number;
+  id?: T;
   /** Label to show in the dropdown */
   label: string;
   /** Can we select the item */
@@ -15,12 +15,12 @@ export interface IDropdownOption {
   divider?: boolean;
 }
 
-export interface IDropdownOptions extends Partial<M.DropdownOptions>, Attributes {
+export interface IDropdownOptions<T extends string | number> extends Partial<M.DropdownOptions>, Attributes {
   /**
    * Optional id of the dropdown element
    * @default 'dropdown'
    */
-  id?: string;
+  id?: T;
   /**
    * Optional label when no item is selected
    * @default 'Select'
@@ -30,16 +30,16 @@ export interface IDropdownOptions extends Partial<M.DropdownOptions>, Attributes
   /** If true, disable the selection */
   disabled?: boolean;
   /** Item array to show in the dropdown. If the value is not supplied, uses he name. */
-  items: IDropdownOption[];
+  items: IDropdownOption<T>[];
   /**
    * Selected value or name
    * @deprecated Use initialValue instead
    */
-  checkedId?: string | number;
-   /** Selected value or name */
-  initialValue?: string | number;
+  checkedId?: T;
+  /** Selected value or name */
+  initialValue?: T;
   /** When a value or name is selected */
-  onchange?: (value: string | number) => void;
+  onchange?: (value: T) => void;
   /** Uses Materialize icons as a prefix or postfix. */
   iconName?: string;
   /** Add a description underneath the input field. */
@@ -47,34 +47,34 @@ export interface IDropdownOptions extends Partial<M.DropdownOptions>, Attributes
 }
 
 /** Dropdown component */
-export const Dropdown = (): Component<IDropdownOptions> => {
-// export const Dropdown: FactoryComponent<IDropdownOptions> = () => {
+export const Dropdown = <T extends string | number>(): Component<IDropdownOptions<T>> => {
+  // export const Dropdown: FactoryComponent<IDropdownOptions> = () => {
   const state = {} as {
-    initialValue?: string | number;
-    id: string;
+    initialValue?: T;
+    id: T;
   };
   return {
-    oninit: ({ attrs: { id = uniqueId(), initialValue, checkedId }}) => {
-      state.id = id;
+    oninit: ({ attrs: { id = uniqueId(), initialValue, checkedId } }) => {
+      state.id = id as T;
       state.initialValue = initialValue || checkedId;
     },
-    view: ({ attrs: {
-      key,
-      label,
-      onchange,
-      disabled = false,
-      items,
-      iconName,
-      helperText,
-      style,
-      className = 'col s12',
-      ...props
-    } }) => {
+    view: ({
+      attrs: {
+        key,
+        label,
+        onchange,
+        disabled = false,
+        items,
+        iconName,
+        helperText,
+        style,
+        className = 'col s12',
+        ...props
+      },
+    }) => {
       const { id, initialValue } = state;
       const selectedItem = initialValue
-        ? items
-            .filter((i: IDropdownOption) => (i.id ? i.id === initialValue : i.label === initialValue))
-            .shift()
+        ? items.filter((i: IDropdownOption<T>) => (i.id ? i.id === initialValue : i.label === initialValue)).shift()
         : undefined;
       const title = selectedItem ? selectedItem.label : label || 'Select';
       return m('.input-field', { className, key, style }, [
@@ -93,7 +93,7 @@ export const Dropdown = (): Component<IDropdownOptions> => {
         ),
         m(
           `ul.dropdown-content[id=${id}]`,
-          items.map(i =>
+          items.map((i) =>
             m(
               `li${i.divider ? '.divider[tabindex=-1]' : ''}`,
               i.divider
@@ -103,7 +103,7 @@ export const Dropdown = (): Component<IDropdownOptions> => {
                     {
                       onclick: onchange
                         ? () => {
-                            state.initialValue = i.id || i.label;
+                            state.initialValue = (i.id || i.label) as T;
                             onchange(state.initialValue);
                           }
                         : undefined,

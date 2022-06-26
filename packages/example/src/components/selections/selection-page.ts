@@ -39,8 +39,8 @@ export const SelectionPage = () => {
               { id: 'movies', label: 'Watching movies', title: 'Sitting for the TV, doing nothing' },
               { id: 'out', label: 'Going out', title: 'Scanning the environment, talking to strangers' },
             ],
-            onchange: (ids) => (state.checkedId = ids as string[]),
-          } as ISelectOptions)
+            onchange: (ids) => (state.checkedId = ids),
+          } as ISelectOptions<string>)
         ),
         m(CodeBlock, {
           newRow: true,
@@ -78,7 +78,7 @@ export const SelectionPage = () => {
               { id: 3, label: 'Sex', disabled: true },
               { id: 4, label: 'Horse riding' },
             ],
-          } as ISelectOptions)
+          } as ISelectOptions<number>)
         ),
         m(CodeBlock, {
           newRow: true,
@@ -235,7 +235,7 @@ export const SelectionPage = () => {
               { label: 'Sex', id: 'sex', iconName: 'group' },
             ],
             onchange: (v) => console.log(v),
-          } as IDropdownOptions)
+          } as IDropdownOptions<string>)
         ),
         m(CodeBlock, {
           newRow: true,
