@@ -12,6 +12,7 @@ import {
 
 export const SelectionPage = () => {
   const state = {
+    ids: undefined as number | number[] | undefined,
     radioIds: undefined as string | number | undefined,
     checkedId: undefined as string | string[] | undefined,
     initialValue: [0, 2],
@@ -30,12 +31,13 @@ export const SelectionPage = () => {
           m(Select, {
             iconName: 'person',
             label: 'What is your favorite hobby?',
-            // placeholder: 'Pick one', // Alternative to first option
+            // placeholder: 'Pick one', // Alternative to first option, is also the default
             isMandatory: true,
             checkedId: state.checkedId,
-            initialValue: state.checkedId,
+            // initialValue: state.checkedId,
             options: [
-              { label: 'Pick one', disabled: true },
+              // { label: 'Pick one', disabled: true },
+              // { id: 0, label: 'Option 0' },
               { id: 'movies', label: 'Watching movies', title: 'Sitting for the TV, doing nothing' },
               { id: 'out', label: 'Going out', title: 'Scanning the environment, talking to strangers' },
             ],

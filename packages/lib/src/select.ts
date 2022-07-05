@@ -129,7 +129,11 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
                 state.ids = ids;
                 reinit = true;
               }
-              if (state.checkedId !== checkedId) {
+              if (
+                state.checkedId instanceof Array && checkedId instanceof Array
+                  ? state.checkedId.join() !== checkedId.join()
+                  : state.checkedId !== checkedId
+              ) {
                 state.checkedId = checkedId;
                 reinit = true;
               }
