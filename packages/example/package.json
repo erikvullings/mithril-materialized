@@ -22,26 +22,26 @@
   "target": "web",
   "dependencies": {
     "mithril": "^2.2.2",
-    "material-icons": "^1.11.2",
+    "material-icons": "^1.13.11",
     "materialize-css": "^1.0.0",
     "mithril-materialized": "workspace:*",
-    "tslib": "^2.4.0"
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@types/materialize-css": "^1.0.11",
-    "@types/mithril": "^2.0.11",
-    "css-loader": "^6.7.1",
-    "css-minimizer-webpack-plugin": "^4.0.0",
-    "dotenv-webpack": "^7.1.0",
-    "html-webpack-plugin": "^5.5.0",
+    "@types/mithril": "^2.0.14",
+    "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "dotenv-webpack": "^8.0.1",
+    "html-webpack-plugin": "^5.5.3",
     "html-webpack-tags-plugin": "^3.0.2",
-    "mini-css-extract-plugin": "^2.6.1",
-    "rimraf": "^3.0.2",
-    "style-loader": "^3.3.1",
-    "ts-loader": "^9.3.1",
-    "typescript": "^4.7.4",
-    "webpack": "^5.73.0",
-    "webpack-cli": "4.10.0",
-    "webpack-dev-server": "^4.9.2"
+    "mini-css-extract-plugin": "^2.7.6",
+    "rimraf": "^5.0.1",
+    "style-loader": "^3.3.3",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "5.1.4",
+    "webpack-dev-server": "^4.15.1"
   }
 }
