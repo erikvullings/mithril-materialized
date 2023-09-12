@@ -97,8 +97,8 @@ export const RadioButtons = <T extends string | number>(): Component<IRadioButto
         }
       };
 
-      const clear = newRow ? '.clear' : '';
-      return m(`div${id ? `[id=${id}]` : ''}${clear}`, { className }, [
+      if (newRow) className += ' clear';
+      return m('div', { id, className }, [
         m('div', { className: 'input-field options' }, m(Label, { id, label, isMandatory })),
         description ? m('p.helper-text', m.trust(description)) : '',
         ...options.map((r) =>

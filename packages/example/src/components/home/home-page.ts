@@ -4,7 +4,7 @@ import { CodeBlock } from 'mithril-materialized';
 
 export const HomePage = () => ({
   view: () =>
-    m('.row', [
+    m('.home-page', [
       m(
         '.col.s12.m7.l8',
         m('.introduction', [
@@ -43,8 +43,8 @@ import { TextArea } from 'mithril-materialized';
         m('ul.collection', [
           dashboardSvc
             .getList()
-            .filter(d => d.visible && !d.default)
-            .map(d => m('li.collection-item', m('a', { href: `#!${d.route}` }, d.title))),
+            .filter((d) => d.visible && !d.default)
+            .map((d) => m('li.collection-item', m('a', { href: `#!${d.route}` }, d.title))),
         ]),
       ]),
     ]),

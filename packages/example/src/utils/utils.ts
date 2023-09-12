@@ -5,7 +5,7 @@
  * @returns RFC4122 version 4 compliant GUID
  */
 export const uuid4 = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     // tslint:disable-next-line:no-bitwise
     const r = (Math.random() * 16) | 0;
     // tslint:disable-next-line:no-bitwise
@@ -21,7 +21,7 @@ export const uuid4 = () => {
  * @returns RFC4122 version 4 compliant GUID
  */
 export const uniqueId = () => {
-  return 'idxxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, c => {
+  return 'idxxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     // tslint:disable-next-line:no-bitwise
     const r = (Math.random() * 16) | 0;
     // tslint:disable-next-line:no-bitwise
@@ -48,12 +48,7 @@ export const toLetters = (num: number): string => {
  * @param {number} [step=1]
  * @returns
  */
-export const range = (
-  from: number,
-  to: number,
-  count: number = to - from + 1,
-  step: number = 1
-) => {
+export const range = (from: number, to: number, count: number = to - from + 1, step: number = 1) => {
   // See here: http://stackoverflow.com/questions/3746725/create-a-javascript-array-containing-1-n
   // let a = Array.apply(null, {length: n}).map(Function.call, Math.random);
   const a: number[] = new Array(count);
@@ -83,16 +78,16 @@ export const deepCopy = <T>(target: T): T => {
   }
   if (target instanceof Array) {
     const cpy = [] as any[];
-    (target as any[]).forEach(v => {
+    (target as any[]).forEach((v) => {
       cpy.push(v);
     });
     return cpy.map((n: any) => deepCopy<any>(n)) as any;
   }
-  if (typeof target === 'object' && target !== {}) {
+  if (typeof target === 'object') {
     const cpy = { ...(target as { [key: string]: any }) } as {
       [key: string]: any;
     };
-    Object.keys(cpy).forEach(k => {
+    Object.keys(cpy).forEach((k) => {
       cpy[k] = deepCopy<any>(cpy[k]);
     });
     return cpy as T;
@@ -110,8 +105,7 @@ export const titleAndDescriptionFilter = (filterValue: string) => {
     !filterValue ||
     !content.title ||
     content.title.toLowerCase().indexOf(filterValue) >= 0 ||
-    (content.description &&
-      content.description.toLowerCase().indexOf(filterValue) >= 0);
+    (content.description && content.description.toLowerCase().indexOf(filterValue) >= 0);
 };
 
 /**
@@ -123,18 +117,14 @@ export const unCamelCase = (str?: string) =>
     ? str
         .replace(/([a-z])([A-Z])/g, '$1 $2') // insert a space between lower & upper
         .replace(/\b([A-Z]+)([A-Z])([a-z])/, '$1 $2$3') // space before last upper in a sequence followed by lower
-        .replace(/^./, char => char.toUpperCase()) // uppercase the first character
+        .replace(/^./, (char) => char.toUpperCase()) // uppercase the first character
     : '';
 
-export const deepEqual = <T extends { [key: string]: any }>(
-  x?: T,
-  y?: T
-): boolean => {
+export const deepEqual = <T extends { [key: string]: any }>(x?: T, y?: T): boolean => {
   const tx = typeof x;
   const ty = typeof y;
   return x && y && tx === 'object' && tx === ty
-    ? Object.keys(x).length === Object.keys(y).length &&
-        Object.keys(x).every(key => deepEqual(x[key], y[key]))
+    ? Object.keys(x).length === Object.keys(y).length && Object.keys(x).every((key) => deepEqual(x[key], y[key]))
     : x === y;
 };
 
@@ -147,5 +137,4 @@ export const deepEqual = <T extends { [key: string]: any }>(
 /** Remove paragraphs <p> and </p> and the beginning and end of a string. */
 export const removeParagraphs = (s: string) => s.replace(/<\/?p>/g, '');
 
-export const removeHtml = (s: string) =>
-  s.replace(/<\/?[0-9a-zA-Z=\[\]_ \-"]+>/gm, '').replace(/&quot;/gi, '"');
+export const removeHtml = (s: string) => s.replace(/<\/?[0-9a-zA-Z=\[\]_ \-"]+>/gm, '').replace(/&quot;/gi, '"');
