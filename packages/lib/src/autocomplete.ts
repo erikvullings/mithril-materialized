@@ -23,9 +23,11 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
         iconName,
         isMandatory,
       } = attrs;
-      return m(`.input-field${newRow ? '.clear' : ''}`, { className, style }, [
+      const cn = newRow ? className + ' clear' : className;
+      return m(`.input-field${newRow ? '.clear' : ''}`, { className: cn, style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
-        m(`input.autocomplete[type=text][tabindex=0][id=${id}]${attributes}`, {
+        m(`input.autocomplete[type=text][tabindex=0]${attributes}`, {
+          id,
           oncreate: ({ dom }) => {
             M.Autocomplete.init(dom, attrs);
           },
