@@ -1,4 +1,3 @@
-import M from 'materialize-css';
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId, toAttrs } from './utils';
 import { IInputOptions } from './input-options';

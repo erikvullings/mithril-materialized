@@ -45,7 +45,10 @@ export interface IInputOption<T extends string | number> {
   title?: string;
   /** Is the option disabled? */
   disabled?: boolean;
-  // isChecked?: boolean;
+  /** Select image */
+  img?: string;
+  /** Select group label */
+  group?: string;
 }
 
 export interface IOptions<T extends string | number> extends Attributes {

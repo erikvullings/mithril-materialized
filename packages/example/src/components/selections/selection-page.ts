@@ -31,15 +31,26 @@ export const SelectionPage = () => {
           m(Select, {
             iconName: 'person',
             label: 'What is your favorite hobby?',
-            // placeholder: 'Pick one', // Alternative to first option, is also the default
+            // disabled: true,
+            placeholder: 'Pick one', // Alternative to first option, is also the default
             isMandatory: true,
-            checkedId: state.checkedId,
+            // checkedId: state.checkedId,
             // initialValue: state.checkedId,
             options: [
               // { label: 'Pick one', disabled: true },
               // { id: 0, label: 'Option 0' },
-              { id: 'movies', label: 'Watching movies', title: 'Sitting for the TV, doing nothing' },
-              { id: 'out', label: 'Going out', title: 'Scanning the environment, talking to strangers' },
+              {
+                id: 'movies',
+                img: 'https://loremflickr.com/320/240?random=1',
+                label: 'Watching movies',
+                title: 'Sitting for the TV, doing nothing',
+              },
+              {
+                id: 'out',
+                img: 'https://loremflickr.com/320/240?random=2',
+                label: 'Going out',
+                title: 'Scanning the environment, talking to strangers',
+              },
             ],
             onchange: (ids) => (state.checkedId = ids),
           } as ISelectOptions<string>)
@@ -52,10 +63,10 @@ export const SelectionPage = () => {
             label: 'What is your favorite hobby?',
             // placeholder: 'Pick one', // Alternative to first option
             isMandatory: true,
-            options: [
+            options: [ // img property is optional
               { label: 'Pick one', disabled: true }, // IDs are optional: ID = label when missing
-              { id: 'movies', label: 'Watching movies' },
-              { id: 'out', label: 'Going out' },
+              { id: 'movies', img: "https://loremflickr.com/320/240?random=1", label: 'Watching movies' },
+              { id: 'out', img: "https://loremflickr.com/320/240?random=2", label: 'Going out' },
             ],
             onchange,
           })`,
@@ -68,6 +79,7 @@ export const SelectionPage = () => {
             multiple: true,
             placeholder: 'Make a choice...',
             label: 'What are your favorite hobbies?',
+            classes: 'my-select-wrapper-classes',
             initialValue: state.initialValue,
             onchange: (v) => {
               // state.initialValue = v as number[];
@@ -90,6 +102,7 @@ export const SelectionPage = () => {
               multiple: true,
               placeholder: 'Make a choice...',
               label: 'What are your favorite hobbies?',
+              classes: 'my-select-wrapper-classes',
               initialValue: state.initialValue, // [0, 2]
               onchange: v => {
                 state.initialValue = v as number[];
@@ -101,6 +114,50 @@ export const SelectionPage = () => {
                 { id: 2, label: 'Reading' },
                 { id: 3, label: 'Sex', disabled: true },
                 { id: 4, label: 'Horse riding' },
+              ],
+            } as ISelectOptions<number>)
+          )`,
+        }),
+
+        m('h3.header', 'Select option group'),
+        m(
+          '.row',
+          m(Select, {
+            placeholder: 'Make a choice...',
+            label: 'What are your favorite hobbies?',
+            // initialValue: state.initialValue,
+            onchange: (v) => {
+              // state.initialValue = v as number[];
+              console.log(v);
+            },
+            options: [
+              { id: 1, group: 'Indoors', label: 'Watching movies' },
+              { id: 2, group: 'Indoors', label: 'Reading' },
+              { id: 3, group: 'Indoors', label: 'Sex', disabled: true },
+              { id: 4, group: 'Outdoors', label: 'Going out' },
+              { id: 5, group: 'Outdoors', label: 'Horse riding' },
+            ],
+          } as ISelectOptions<number>)
+        ),
+        m(CodeBlock, {
+          newRow: true,
+          code: `          m(
+            '.row',
+            m(Select, {
+              multiple: true,
+              placeholder: 'Make a choice...',
+              label: 'What are your favorite hobbies?',
+              // initialValue: state.initialValue, // [0, 2]
+              onchange: v => {
+                state.initialValue = v as number[];
+                console.log(v);
+              },
+              options: [
+                { id: 1, group: 'Indoors', label: 'Watching movies' },
+                { id: 2, group: 'Indoors', label: 'Reading' },
+                { id: 3, group: 'Indoors', label: 'Sex', disabled: true },
+                { id: 4, group: 'Outdoors', label: 'Going out' },
+                { id: 5, group: 'Outdoors', label: 'Horse riding' },
               ],
             } as ISelectOptions<number>)
           )`,
