@@ -8,7 +8,7 @@
     "dev": "npm start",
     "start": "webpack serve --env development --open",
     "build": "webpack --env production",
-    "build:domain": "npm run clean && npm run build",
+    "build:domain": "npm run clean && pnpm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
