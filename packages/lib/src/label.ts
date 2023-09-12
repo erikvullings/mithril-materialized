@@ -1,5 +1,4 @@
 import m, { FactoryComponent, Component, Attributes } from 'mithril';
-import { toAttributeString } from './utils';
 import './styles/input.css';
 
 export const Mandatory: Component = { view: ({ attrs }) => m('span.mandatory', attrs, '*') };
@@ -38,8 +37,9 @@ export interface IHelperTextOptions extends Attributes {
 export const HelperText: FactoryComponent<IHelperTextOptions> = () => {
   return {
     view: ({ attrs: { helperText, dataError, dataSuccess } }) => {
-      const a = dataError || dataSuccess ? toAttributeString({ dataError, dataSuccess }) : '';
-      return helperText || a ? m(`span.helper-text${a}`, helperText ? m.trust(helperText) : '') : undefined;
+      return helperText || dataError || dataSuccess
+        ? m('span.helper-text', { dataError, dataSuccess }, helperText ? m.trust(helperText) : '')
+        : undefined;
     },
   };
 };
