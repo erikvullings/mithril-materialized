@@ -77,6 +77,7 @@ export const SelectionPage = () => {
           '.row',
           m(Select, {
             multiple: true,
+            // iconName: 'person',
             placeholder: 'Make a choice...',
             label: 'What are your favorite hobbies?',
             classes: 'my-select-wrapper-classes',

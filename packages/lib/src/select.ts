@@ -151,18 +151,19 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
               },
               onupdate: ({ dom }) => {
                 if (multiple) {
+                  const i = iconName ? 1 : 0;
                   // Ugly hack to remove the placeholder when only one item is selected.
                   if (
                     !state.inputEl &&
                     state.wrapper &&
                     state.wrapper.childNodes &&
                     state.wrapper.childNodes.length > 0 &&
-                    state.wrapper.childNodes[0].childNodes &&
-                    state.wrapper.childNodes[0].childNodes[0]
+                    state.wrapper.childNodes[i].childNodes &&
+                    state.wrapper.childNodes[i].childNodes[0]
                   ) {
-                    state.inputEl = state.wrapper.childNodes[0].childNodes[0] as HTMLInputElement;
+                    state.inputEl = state.wrapper.childNodes[i].childNodes[0] as HTMLInputElement;
                   }
-                  if (state.inputEl && state.inputEl.value.startsWith(`${placeholder}, `)) {
+                  if (state.inputEl && state.inputEl.value && state.inputEl.value.startsWith(`${placeholder}, `)) {
                     state.inputEl.value = state.inputEl.value.replace(`${placeholder}, `, '');
                   }
                 }
