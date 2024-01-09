@@ -15,12 +15,14 @@ export interface IInputCheckbox extends Attributes {
 /** Component to show a check box */
 export const InputCheckbox: FactoryComponent<IInputCheckbox> = () => {
   return {
-    view: ({ attrs: { className = 'col s12', onchange, label, checked, disabled } }) => {
+    view: ({ attrs: { className = 'col s12', onchange, label, checked, disabled, description } }) => {
       return m(
         `div`,
         { className },
         m('label', [
-          m(`input[type=checkbox][tabindex=0]${checked ? '[checked]' : ''}${disabled ? '[disabled]' : ''}`, {
+          m('input[type=checkbox][tabindex=0]', {
+            checked,
+            disabled,
             onclick: onchange
               ? (e: Event) => {
                   if (e.target && typeof (e.target as HTMLInputElement).checked !== 'undefined') {
@@ -30,7 +32,8 @@ export const InputCheckbox: FactoryComponent<IInputCheckbox> = () => {
               : undefined,
           }),
           label ? (typeof label === 'string' ? m('span', label) : label) : undefined,
-        ])
+        ]),
+        description && m(HelperText, { className: 'input-checkbox-desc', helperText: description })
       );
     },
   };
@@ -49,6 +52,10 @@ export interface IInputOption<T extends string | number> {
   img?: string;
   /** Select group label */
   group?: string;
+  /** Optional class name */
+  className?: string;
+  /** Optional description */
+  description?: string;
 }
 
 export interface IOptions<T extends string | number> extends Attributes {
@@ -124,6 +131,7 @@ export const Options = <T extends string | number>(): Component<IOptions<T>> => 
             callback(checkedIds);
           }
         : undefined;
+      console.table({ id, label, checkboxClass, className });
       return m(`div${clear}`, { className }, [
         m('div', { className: 'input-field options' }, m(Label, { id, label, isMandatory })),
         m(HelperText, { helperText: description }),
@@ -132,8 +140,9 @@ export const Options = <T extends string | number>(): Component<IOptions<T>> => 
             disabled: disabled || option.disabled,
             label: option.label,
             onchange: onchange ? (v: boolean) => onchange(option.id, v) : undefined,
-            className: checkboxClass,
+            className: checkboxClass || option.className,
             checked: isChecked(option.id),
+            description: option.description,
           })
         ),
       ]);
