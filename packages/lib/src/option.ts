@@ -139,7 +139,7 @@ export const Options = <T extends string | number>(): Component<IOptions<T>> => 
             disabled: disabled || option.disabled,
             label: option.label,
             onchange: onchange ? (v: boolean) => onchange(option.id, v) : undefined,
-            className: checkboxClass || option.className,
+            className: option.className || checkboxClass,
             checked: isChecked(option.id),
             description: option.description,
           })
