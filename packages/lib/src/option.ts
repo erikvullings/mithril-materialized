@@ -131,7 +131,6 @@ export const Options = <T extends string | number>(): Component<IOptions<T>> => 
             callback(checkedIds);
           }
         : undefined;
-      console.table({ id, label, checkboxClass, className });
       return m(`div${clear}`, { className }, [
         m('div', { className: 'input-field options' }, m(Label, { id, label, isMandatory })),
         m(HelperText, { helperText: description }),
