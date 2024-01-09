@@ -36,9 +36,9 @@ export interface IHelperTextOptions extends Attributes {
 /** Create a helper text, often used for displaying a small help text. May be replaced by the validation message. */
 export const HelperText: FactoryComponent<IHelperTextOptions> = () => {
   return {
-    view: ({ attrs: { helperText, dataError, dataSuccess } }) => {
+    view: ({ attrs: { helperText, dataError, dataSuccess, className } }) => {
       return helperText || dataError || dataSuccess
-        ? m('span.helper-text', { dataError, dataSuccess }, helperText ? m.trust(helperText) : '')
+        ? m('span.helper-text', { className, dataError, dataSuccess }, helperText ? m.trust(helperText) : '')
         : undefined;
     },
   };
