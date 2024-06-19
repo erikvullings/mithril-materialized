@@ -36,6 +36,8 @@ export interface IInputOptions<T = string> extends Attributes {
   onkeypress?: (ev: KeyboardEvent, value?: T) => void;
   /** Key up event */
   onkeyup?: (ev: KeyboardEvent, value?: T) => void;
+  /** Invoked when the element looses focus */
+  onblur?: (ev: FocusEvent) => void;
   /** Invoked when the value changes. */
   onchange?: (value: T) => void;
   /** Add a a placeholder to the input field. */

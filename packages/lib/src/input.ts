@@ -18,6 +18,10 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
         isMandatory,
         label,
         onchange,
+        onkeydown,
+        onkeypress,
+        onkeyup,
+        onblur,
         style,
         ...params
       } = attrs;
@@ -39,6 +43,22 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
               }
             : undefined,
           value: initialValue,
+          onkeyup: onkeyup
+            ? (ev: KeyboardEvent) => {
+                onkeyup(ev, (ev.target as HTMLTextAreaElement).value);
+              }
+            : undefined,
+          onkeydown: onkeydown
+            ? (ev: KeyboardEvent) => {
+                onkeydown(ev, (ev.target as HTMLTextAreaElement).value);
+              }
+            : undefined,
+          onkeypress: onkeypress
+            ? (ev: KeyboardEvent) => {
+                onkeypress(ev, (ev.target as HTMLTextAreaElement).value);
+              }
+            : undefined,
+          onblur,
         }),
         m(Label, { label, id, isMandatory, isActive: initialValue || attrs.placeholder }),
         m(HelperText, { helperText }),
@@ -86,6 +106,7 @@ const InputField =
           onkeydown,
           onkeypress,
           onkeyup,
+          onblur,
           style,
           validate,
           ...params
@@ -120,6 +141,7 @@ const InputField =
                   onkeypress(ev, getValue(ev.target as HTMLInputElement));
                 }
               : undefined,
+            onblur,
             onupdate: validate
               ? ({ dom }) => {
                   const target = dom as HTMLInputElement;
