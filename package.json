@@ -5,6 +5,8 @@
   "description": "A materialize library for mithril.",
   "scripts": {
     "clean:local": "rimraf -rf ./docs",
+    "build": "cd packages/lib && pnpm run build",
+    "build:example": "cd packages/example && pnpm run build",
     "build:domain": "pnpm run -r --parallel clean:docs && pnpm run -r --parallel build:domain",
     "start": "pnpm -r --parallel run dev",
     "clean": "npm run clean:local && pnpm clean",
@@ -21,7 +23,7 @@
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
   "devDependencies": {
-    "pnpm": "^9.4.0",
-    "rimraf": "^5.0.7"
+    "pnpm": "^9.12.3",
+    "rimraf": "^6.0.1"
   }
 }
