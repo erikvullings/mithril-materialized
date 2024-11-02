@@ -1,28 +1,28 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 283:
+/***/ 773:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(378);
-/* harmony import */ var _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(849);
-/* harmony import */ var _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(606);
-/* harmony import */ var _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(675);
+/* harmony import */ var _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(305);
+/* harmony import */ var _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(852);
+/* harmony import */ var _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2__);
 // Imports
 
 
 
-var ___CSS_LOADER_URL_IMPORT_0___ = new URL(/* asset import */ __webpack_require__(320), __webpack_require__.b);
-var ___CSS_LOADER_URL_IMPORT_1___ = new URL(/* asset import */ __webpack_require__(122), __webpack_require__.b);
-var ___CSS_LOADER_EXPORT___ = _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
-var ___CSS_LOADER_URL_REPLACEMENT_0___ = _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_0___);
-var ___CSS_LOADER_URL_REPLACEMENT_1___ = _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_1___);
+var ___CSS_LOADER_URL_IMPORT_0___ = new URL(/* asset import */ __webpack_require__(745), __webpack_require__.b);
+var ___CSS_LOADER_URL_IMPORT_1___ = new URL(/* asset import */ __webpack_require__(825), __webpack_require__.b);
+var ___CSS_LOADER_EXPORT___ = _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+var ___CSS_LOADER_URL_REPLACEMENT_0___ = _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_0___);
+var ___CSS_LOADER_URL_REPLACEMENT_1___ = _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_getUrl_js__WEBPACK_IMPORTED_MODULE_2___default()(___CSS_LOADER_URL_IMPORT_1___);
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `@font-face {
   font-family: "Material Icons";
@@ -55,21 +55,21 @@ ___CSS_LOADER_EXPORT___.push([module.id, `@font-face {
 
 /***/ }),
 
-/***/ 82:
+/***/ 575:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(378);
-/* harmony import */ var _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(849);
-/* harmony import */ var _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(675);
+/* harmony import */ var _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(305);
+/* harmony import */ var _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
 // Imports
 
 
-var ___CSS_LOADER_EXPORT___ = _css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+var ___CSS_LOADER_EXPORT___ = _css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `/*!
  * Materialize v1.0.0 (http://materializecss.com)
@@ -91,21 +91,21 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/*!
 
 /***/ }),
 
-/***/ 95:
+/***/ 178:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Z: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _node_modules_pnpm_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(378);
-/* harmony import */ var _node_modules_pnpm_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_pnpm_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_pnpm_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(849);
-/* harmony import */ var _node_modules_pnpm_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_pnpm_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_pnpm_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(675);
+/* harmony import */ var _node_modules_pnpm_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_pnpm_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_pnpm_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(305);
+/* harmony import */ var _node_modules_pnpm_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_pnpm_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
 // Imports
 
 
-var ___CSS_LOADER_EXPORT___ = _node_modules_pnpm_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_pnpm_css_loader_6_8_1_webpack_5_89_0_webpack_cli_5_1_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+var ___CSS_LOADER_EXPORT___ = _node_modules_pnpm_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_pnpm_css_loader_7_1_2_webpack_5_96_1_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, `.twist{transform:scaleY(-1)}input[type=color]:not(.browser-default){background-color:transparent;border:none;border-bottom:1px solid #9e9e9e;border-radius:0;box-shadow:none;box-sizing:content-box;font-size:16px;height:3rem;margin:0 0 8px;outline:none;padding:0;transition:box-shadow .3s,border .3s;width:100%}.input-field.options>label{top:-2.5rem}.codeblock{margin:1.5rem 0 2.5rem}.codeblock>div{margin-bottom:1rem}.codeblock>label{display:inline-block}.map-editor .input-field .prefix~.collection{margin-left:3rem;width:92%;width:calc(100% - 3rem)}.map-editor .active .checkbox-in-collection label>input[type=checkbox]:checked+span:before{-webkit-backface-visibility:hidden;border-color:transparent #fff #fff transparent;border-style:solid;border-width:2px;height:22px;left:-3px;top:-4px;transform:rotate(40deg);transform-origin:100% 100%;width:12px}.clear,.clear-10,.clear-15{clear:both}.clear-10{margin-bottom:10px}.clear-15{margin-bottom:15px}span.mandatory{color:red;margin-left:5px}label+.switch{margin-top:1rem}.mm_timeline{list-style:none;margin:30px 0 0;padding:0;position:relative}.mm_timeline:before{background:#afdcf8;bottom:0;content:"";left:20%;margin-left:-10px;position:absolute;top:0;width:10px}.mm_timeline>li .mm_time{display:block;padding-right:100px;position:absolute;width:25%}.mm_timeline>li .mm_time span{display:block;text-align:right}.mm_timeline>li .mm_time span:first-child{color:#bdd0db;font-size:.9em}.mm_timeline>li .mm_time span:last-child{color:#3594cb;font-size:1.4em}.mm_timeline>li:nth-child(odd) .mm_time span:last-child{color:#6cbfee}.mm_timeline>li.active:nth-child(2n) .mm_time span:last-child,.mm_timeline>li.active:nth-child(odd) .mm_time span:last-child{color:#060558}.mm_timeline>li .mm_label{background:#3594cb;border-radius:5px;color:#fff;font-size:1.2em;font-weight:300;line-height:1.4;margin:0 0 15px 28%;padding:.6em 1em;position:relative}.mm_timeline>li.active .mm_label{border:4px solid #060558}.mm_timeline>li:nth-child(odd) .mm_label{background:#6cbfee}.mm_timeline>li .mm_label h5{border-bottom:1px solid hsla(0,0%,100%,.4);margin-top:0;padding:0 0 10px}.mm_timeline>li .mm_label:after{border:10px solid transparent;border-right-color:#3594cb;content:" ";height:0;pointer-events:none;position:absolute;right:100%;top:10px;width:0}.mm_timeline>li:nth-child(2n).active .mm_label:after,.mm_timeline>li:nth-child(odd).active .mm_label:after{border-right-color:#060558}.mm_timeline>li:nth-child(odd) .mm_label:after{border-right-color:#6cbfee}.mm_timeline>li .mm_icon{-webkit-font-smoothing:antialiased;background:#46a4da;border-radius:50%;box-shadow:0 0 0 8px #afdcf8;color:#fff;font-size:1.4em;font-style:normal;font-variant:normal;font-weight:400;height:40px;left:20%;line-height:40px;margin:0 0 0 -25px;position:absolute;text-align:center;text-transform:none;width:40px}.mm_timeline>li.active .mm_icon{background:#060558}.mm_icon>.material-icons{line-height:3rem}@media screen and (max-width:65.375em){.mm_timeline>li .mm_time span:last-child{font-size:1.5em}}@media screen and (max-width:47.2em){.mm_timeline:before{display:none}.mm_timeline>li .mm_time{padding:0 0 20px;position:relative;width:100%}.mm_timeline>li .mm_time span{text-align:left}.mm_timeline>li .mm_label{font-size:95%;font-weight:400;margin:0 0 30px;padding:1em}.mm_timeline>li .mm_label:after{border-bottom-color:#3594cb;border-right-color:transparent;left:20px;right:auto;top:-20px}.mm_timeline>li:nth-child(odd) .mm_label:after{border-bottom-color:#6cbfee;border-right-color:transparent}.mm_timeline>li .mm_icon{float:right;left:auto;margin:-55px 5px 0 0;position:relative}}
 /*# sourceMappingURL=index.css.map */`, "",{"version":3,"sources":["webpack://./../lib/dist/input.css","webpack://./../lib/dist/codeblock.css","webpack://./../lib/dist/map-editor.css","webpack://./../lib/dist/switch.css","webpack://./../lib/dist/timeline.css","webpack://./../lib/dist/index.css"],"names":[],"mappings":"AAAA,OACE,oBACF,CAEA,wCAGE,4BAA6B,CAE7B,WAAgC,CAAhC,+BAAgC,CAChC,eAAgB,CAOhB,eAAgB,CAEhB,sBAAuB,CALvB,cAAe,CAFf,WAAY,CAPZ,cAAmB,CAMnB,YAAa,CAIb,SAAU,CAOV,oCAAwC,CATxC,UAWF,CAEA,2BACE,WACF,CC5BA,WACE,sBACF,CACA,eACE,kBACF,CACA,iBACE,oBACF,CCRA,6CACE,gBAAiB,CACjB,SAAU,CACV,uBACF,CAEA,2FAcE,kCAAmC,CANnC,8CAA8B,CAA9B,kBAA8B,CAA9B,gBAA8B,CAJ9B,WAAY,CAFZ,SAAU,CADV,QAAS,CAYT,uBAAwB,CAMxB,0BAA2B,CAhB3B,UAiBF,CC1BA,2BAGE,UAEF,CACA,UACE,kBACF,CACA,UACE,kBACF,CACA,eAEE,SAAU,CADV,eAEF,CACA,cACE,eACF,CClBA,aAGE,eAAgB,CAFhB,eAAkB,CAClB,SAAU,CAEV,iBACF,CAGA,oBAME,kBAAmB,CAFnB,QAAS,CAHT,UAAW,CAMX,QAAS,CACT,iBAAkB,CANlB,iBAAkB,CAClB,KAAM,CAEN,UAIF,CAGA,yBACE,aAAc,CAEd,mBAAoB,CACpB,iBAAkB,CAFlB,SAGF,CAEA,8BACE,aAAc,CACd,gBACF,CAEA,0CAEE,aAAc,CADd,cAEF,CAEA,yCAEE,aAAc,CADd,eAEF,CAEA,wDACE,aACF,CAGA,6HAEE,aACF,CAGA,0BAEE,kBAAmB,CAOnB,iBAAkB,CANlB,UAAW,CAEX,eAAgB,CAChB,eAAgB,CAChB,eAAgB,CANhB,mBAAoB,CAGpB,gBAAkB,CAIlB,iBAEF,CAGA,iCACE,wBACF,CAEA,yCACE,kBACF,CAEA,6BAGE,0CAAiD,CAFjD,YAAe,CACf,gBAEF,CAGA,gCASE,6BAAkB,CAAlB,0BAAkB,CANlB,WAAY,CACZ,QAAS,CAGT,mBAAoB,CADpB,iBAAkB,CALlB,UAAW,CASX,QAAS,CALT,OAMF,CAGA,2GAEE,0BACF,CAEA,+CACE,0BACF,CAGA,yBASE,kCAAmC,CAGnC,kBAAmB,CACnB,iBAAkB,CAClB,4BAA6B,CAH7B,UAAW,CAJX,eAAgB,CAJhB,iBAAkB,CAElB,mBAAoB,CADpB,eAAmB,CAFnB,WAAY,CAcZ,QAAS,CART,gBAAiB,CAUjB,kBAAmB,CARnB,iBAAkB,CAKlB,iBAAkB,CATlB,mBAAoB,CALpB,UAkBF,CAGA,gCACC,kBACD,CAEA,yBACE,gBACF,CAGA,uCACE,yCACE,eACF,CACF,CAEA,qCACE,oBACE,YACF,CAEA,yBAGE,gBAAmB,CADnB,iBAAkB,CADlB,UAGF,CAEA,8BACE,eACF,CAEA,0BAIE,aAAc,CADd,eAAgB,CAFhB,eAAkB,CAClB,WAGF,CAEA,gCAIE,2BAA4B,CAD5B,8BAA+B,CAD/B,SAAU,CADV,UAAW,CAIX,SACF,CAEA,+CAEE,2BAA4B,CAD5B,8BAEF,CAEA,yBAEE,WAAY,CACZ,SAAU,CACV,oBAAuB,CAHvB,iBAIF,CACF;ACtLA,oCAAoC","sourcesContent":[".twist {\n  transform: scaleY(-1);\n}\n\ninput[type='color']:not(.browser-default) {\n  margin: 0px 0 8px 0;\n  /** Copied from input[type=number] */\n  background-color: transparent;\n  border: none;\n  border-bottom: 1px solid #9e9e9e;\n  border-radius: 0;\n  outline: none;\n  height: 3rem;\n  width: 100%;\n  font-size: 16px;\n  padding: 0;\n  -webkit-box-shadow: none;\n  box-shadow: none;\n  -webkit-box-sizing: content-box;\n  box-sizing: content-box;\n  -webkit-transition: border 0.3s, -webkit-box-shadow 0.3s;\n  transition: border 0.3s, -webkit-box-shadow 0.3s;\n  transition: box-shadow 0.3s, border 0.3s;\n  transition: box-shadow 0.3s, border 0.3s, -webkit-box-shadow 0.3s;\n}\n\n.input-field.options > label {\n  top: -2.5rem;\n}",".codeblock {\n  margin: 1.5rem 0 2.5rem 0;\n}\n.codeblock > div {\n  margin-bottom: 1rem;\n}\n.codeblock > label {\n  display: inline-block;\n}\n",".map-editor .input-field .prefix ~ .collection {\n  margin-left: 3rem;\n  width: 92%;\n  width: calc(100% - 3rem);\n}\n/* For truthy values, the checkbox is not visible when the item is selected, so make it white */\n.map-editor .active .checkbox-in-collection label > input[type='checkbox']:checked + span:before {\n  top: -4px;\n  left: -3px;\n  width: 12px;\n  height: 22px;\n  border-top: 2px solid transparent;\n  border-left: 2px solid transparent;\n  border-right: 2px solid white; /* You need to change the colour here */\n  border-bottom: 2px solid white; /* And here */\n  -webkit-transform: rotate(40deg);\n  -moz-transform: rotate(40deg);\n  -ms-transform: rotate(40deg);\n  -o-transform: rotate(40deg);\n  transform: rotate(40deg);\n  -webkit-backface-visibility: hidden;\n  -webkit-transform-origin: 100% 100%;\n  -moz-transform-origin: 100% 100%;\n  -ms-transform-origin: 100% 100%;\n  -o-transform-origin: 100% 100%;\n  transform-origin: 100% 100%;\n}\n",".clear,\n.clear-10,\n.clear-15 {\n  clear: both;\n  /* overflow: hidden; Précaution pour IE 7 */\n}\n.clear-10 {\n  margin-bottom: 10px;\n}\n.clear-15 {\n  margin-bottom: 15px;\n}\nspan.mandatory {\n  margin-left: 5px;\n  color: red;\n}\nlabel+.switch {\n  margin-top: 1rem;\n}\n",".mm_timeline {\n  margin: 30px 0 0 0;\n  padding: 0;\n  list-style: none;\n  position: relative;\n}\n\n/* The line */\n.mm_timeline:before {\n  content: '';\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  width: 10px;\n  background: #afdcf8;\n  left: 20%;\n  margin-left: -10px;\n}\n\n/* The date/time */\n.mm_timeline > li .mm_time {\n  display: block;\n  width: 25%;\n  padding-right: 100px;\n  position: absolute;\n}\n\n.mm_timeline > li .mm_time span {\n  display: block;\n  text-align: right;\n}\n\n.mm_timeline > li .mm_time span:first-child {\n  font-size: 0.9em;\n  color: #bdd0db;\n}\n\n.mm_timeline > li .mm_time span:last-child {\n  font-size: 1.4em;\n  color: #3594cb;\n}\n\n.mm_timeline > li:nth-child(odd) .mm_time span:last-child {\n  color: #6cbfee;\n}\n\n/* Active time */\n.mm_timeline > li.active:nth-child(even) .mm_time span:last-child,\n.mm_timeline > li.active:nth-child(odd) .mm_time span:last-child {\n  color: rgb(6, 5, 88);\n}\n\n/* Right content */\n.mm_timeline > li .mm_label {\n  margin: 0 0 15px 28%;\n  background: #3594cb;\n  color: #fff;\n  padding: 0.6em 1em;\n  font-size: 1.2em;\n  font-weight: 300;\n  line-height: 1.4;\n  position: relative;\n  border-radius: 5px;\n}\n\n/* Active label */\n.mm_timeline > li.active .mm_label {\n  border: 4px solid rgb(6, 5, 88);\n}\n\n.mm_timeline > li:nth-child(odd) .mm_label {\n  background: #6cbfee;\n}\n\n.mm_timeline > li .mm_label h5 {\n  margin-top: 0px;\n  padding: 0 0 10px 0;\n  border-bottom: 1px solid rgba(255, 255, 255, 0.4);\n}\n\n/* The triangle */\n.mm_timeline > li .mm_label:after {\n  right: 100%;\n  border: solid transparent;\n  content: ' ';\n  height: 0;\n  width: 0;\n  position: absolute;\n  pointer-events: none;\n  border-right-color: #3594cb;\n  border-width: 10px;\n  top: 10px;\n}\n\n/* Active triangle */\n.mm_timeline > li:nth-child(even).active .mm_label:after,\n.mm_timeline > li:nth-child(odd).active .mm_label:after {\n  border-right-color: rgb(6, 5, 88);\n}\n\n.mm_timeline > li:nth-child(odd) .mm_label:after {\n  border-right-color: #6cbfee;\n}\n\n/* The icons */\n.mm_timeline > li .mm_icon {\n  width: 40px;\n  height: 40px;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  font-size: 1.4em;\n  line-height: 40px;\n  -webkit-font-smoothing: antialiased;\n  position: absolute;\n  color: #fff;\n  background: #46a4da;\n  border-radius: 50%;\n  box-shadow: 0 0 0 8px #afdcf8;\n  text-align: center;\n  left: 20%;\n  /* top: 0; */\n  margin: 0 0 0 -25px;\n}\n\n/* Active icon */\n.mm_timeline > li.active .mm_icon {\n\tbackground: rgb(6, 5, 88);\n}\n\n.mm_icon > .material-icons {\n  line-height: 3rem;\n}\n\n/* Example Media Queries */\n@media screen and (max-width: 65.375em) {\n  .mm_timeline > li .mm_time span:last-child {\n    font-size: 1.5em;\n  }\n}\n\n@media screen and (max-width: 47.2em) {\n  .mm_timeline:before {\n    display: none;\n  }\n\n  .mm_timeline > li .mm_time {\n    width: 100%;\n    position: relative;\n    padding: 0 0 20px 0;\n  }\n\n  .mm_timeline > li .mm_time span {\n    text-align: left;\n  }\n\n  .mm_timeline > li .mm_label {\n    margin: 0 0 30px 0;\n    padding: 1em;\n    font-weight: 400;\n    font-size: 95%;\n  }\n\n  .mm_timeline > li .mm_label:after {\n    right: auto;\n    left: 20px;\n    border-right-color: transparent;\n    border-bottom-color: #3594cb;\n    top: -20px;\n  }\n\n  .mm_timeline > li:nth-child(odd) .mm_label:after {\n    border-right-color: transparent;\n    border-bottom-color: #6cbfee;\n  }\n\n  .mm_timeline > li .mm_icon {\n    position: relative;\n    float: right;\n    left: auto;\n    margin: -55px 5px 0 0px;\n  }\n}\n",".twist{transform:scaleY(-1)}input[type=color]:not(.browser-default){background-color:transparent;border:none;border-bottom:1px solid #9e9e9e;border-radius:0;box-shadow:none;box-sizing:content-box;font-size:16px;height:3rem;margin:0 0 8px;outline:none;padding:0;transition:box-shadow .3s,border .3s;width:100%}.input-field.options>label{top:-2.5rem}.codeblock{margin:1.5rem 0 2.5rem}.codeblock>div{margin-bottom:1rem}.codeblock>label{display:inline-block}.map-editor .input-field .prefix~.collection{margin-left:3rem;width:92%;width:calc(100% - 3rem)}.map-editor .active .checkbox-in-collection label>input[type=checkbox]:checked+span:before{-webkit-backface-visibility:hidden;border-color:transparent #fff #fff transparent;border-style:solid;border-width:2px;height:22px;left:-3px;top:-4px;transform:rotate(40deg);transform-origin:100% 100%;width:12px}.clear,.clear-10,.clear-15{clear:both}.clear-10{margin-bottom:10px}.clear-15{margin-bottom:15px}span.mandatory{color:red;margin-left:5px}label+.switch{margin-top:1rem}.mm_timeline{list-style:none;margin:30px 0 0;padding:0;position:relative}.mm_timeline:before{background:#afdcf8;bottom:0;content:\"\";left:20%;margin-left:-10px;position:absolute;top:0;width:10px}.mm_timeline>li .mm_time{display:block;padding-right:100px;position:absolute;width:25%}.mm_timeline>li .mm_time span{display:block;text-align:right}.mm_timeline>li .mm_time span:first-child{color:#bdd0db;font-size:.9em}.mm_timeline>li .mm_time span:last-child{color:#3594cb;font-size:1.4em}.mm_timeline>li:nth-child(odd) .mm_time span:last-child{color:#6cbfee}.mm_timeline>li.active:nth-child(2n) .mm_time span:last-child,.mm_timeline>li.active:nth-child(odd) .mm_time span:last-child{color:#060558}.mm_timeline>li .mm_label{background:#3594cb;border-radius:5px;color:#fff;font-size:1.2em;font-weight:300;line-height:1.4;margin:0 0 15px 28%;padding:.6em 1em;position:relative}.mm_timeline>li.active .mm_label{border:4px solid #060558}.mm_timeline>li:nth-child(odd) .mm_label{background:#6cbfee}.mm_timeline>li .mm_label h5{border-bottom:1px solid hsla(0,0%,100%,.4);margin-top:0;padding:0 0 10px}.mm_timeline>li .mm_label:after{border:10px solid transparent;border-right-color:#3594cb;content:\" \";height:0;pointer-events:none;position:absolute;right:100%;top:10px;width:0}.mm_timeline>li:nth-child(2n).active .mm_label:after,.mm_timeline>li:nth-child(odd).active .mm_label:after{border-right-color:#060558}.mm_timeline>li:nth-child(odd) .mm_label:after{border-right-color:#6cbfee}.mm_timeline>li .mm_icon{-webkit-font-smoothing:antialiased;background:#46a4da;border-radius:50%;box-shadow:0 0 0 8px #afdcf8;color:#fff;font-size:1.4em;font-style:normal;font-variant:normal;font-weight:400;height:40px;left:20%;line-height:40px;margin:0 0 0 -25px;position:absolute;text-align:center;text-transform:none;width:40px}.mm_timeline>li.active .mm_icon{background:#060558}.mm_icon>.material-icons{line-height:3rem}@media screen and (max-width:65.375em){.mm_timeline>li .mm_time span:last-child{font-size:1.5em}}@media screen and (max-width:47.2em){.mm_timeline:before{display:none}.mm_timeline>li .mm_time{padding:0 0 20px;position:relative;width:100%}.mm_timeline>li .mm_time span{text-align:left}.mm_timeline>li .mm_label{font-size:95%;font-weight:400;margin:0 0 30px;padding:1em}.mm_timeline>li .mm_label:after{border-bottom-color:#3594cb;border-right-color:transparent;left:20px;right:auto;top:-20px}.mm_timeline>li:nth-child(odd) .mm_label:after{border-bottom-color:#6cbfee;border-right-color:transparent}.mm_timeline>li .mm_icon{float:right;left:auto;margin:-55px 5px 0 0;position:relative}}\n/*# sourceMappingURL=index.css.map */"],"sourceRoot":""}]);
@@ -115,7 +115,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `.twist{transform:scaleY(-1)}input[type
 
 /***/ }),
 
-/***/ 849:
+/***/ 305:
 /***/ ((module) => {
 
 "use strict";
@@ -207,7 +207,7 @@ module.exports = function (cssWithMappingToString) {
 
 /***/ }),
 
-/***/ 606:
+/***/ 852:
 /***/ ((module) => {
 
 "use strict";
@@ -240,7 +240,7 @@ module.exports = function (url, options) {
 
 /***/ }),
 
-/***/ 378:
+/***/ 675:
 /***/ ((module) => {
 
 "use strict";
@@ -263,7 +263,7 @@ module.exports = function (item) {
 
 /***/ }),
 
-/***/ 142:
+/***/ 387:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -276,13 +276,13 @@ var _get=function t(e,i,n){null===e&&(e=Function.prototype);var s=Object.getOwnP
 
 /***/ }),
 
-/***/ 862:
+/***/ 895:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var Vnode = __webpack_require__(230)
+var Vnode = __webpack_require__(296)
 
 module.exports = function(render, schedule, console) {
 	var subscriptions = []
@@ -333,21 +333,19 @@ module.exports = function(render, schedule, console) {
 
 /***/ }),
 
-/***/ 236:
+/***/ 781:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var Vnode = __webpack_require__(230)
-var m = __webpack_require__(326)
-var Promise = __webpack_require__(31)
+var Vnode = __webpack_require__(296)
+var m = __webpack_require__(891)
 
-var buildPathname = __webpack_require__(578)
-var parsePathname = __webpack_require__(376)
-var compileTemplate = __webpack_require__(819)
-var assign = __webpack_require__(427)
-var censor = __webpack_require__(750)
+var buildPathname = __webpack_require__(474)
+var parsePathname = __webpack_require__(209)
+var compileTemplate = __webpack_require__(461)
+var censor = __webpack_require__(546)
 
 var sentinel = {}
 
@@ -418,7 +416,7 @@ module.exports = function($window, mountRedraw) {
 			.slice(route.prefix.length)
 		var data = parsePathname(path)
 
-		assign(data.params, $window.history.state)
+		Object.assign(data.params, $window.history.state)
 
 		function reject(e) {
 			console.error(e)
@@ -620,31 +618,32 @@ module.exports = function($window, mountRedraw) {
 
 /***/ }),
 
-/***/ 242:
+/***/ 656:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var hyperscript = __webpack_require__(326)
+var hyperscript = __webpack_require__(891)
 
-hyperscript.trust = __webpack_require__(392)
-hyperscript.fragment = __webpack_require__(753)
+hyperscript.trust = __webpack_require__(440)
+hyperscript.fragment = __webpack_require__(12)
 
 module.exports = hyperscript
 
 
 /***/ }),
 
-/***/ 898:
+/***/ 789:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var hyperscript = __webpack_require__(242)
-var request = __webpack_require__(334)
-var mountRedraw = __webpack_require__(10)
+var hyperscript = __webpack_require__(656)
+var request = __webpack_require__(232)
+var mountRedraw = __webpack_require__(610)
+var domFor = __webpack_require__(311)
 
 var m = function m() { return hyperscript.apply(this, arguments) }
 m.m = hyperscript
@@ -652,45 +651,43 @@ m.trust = hyperscript.trust
 m.fragment = hyperscript.fragment
 m.Fragment = "["
 m.mount = mountRedraw.mount
-m.route = __webpack_require__(483)
-m.render = __webpack_require__(813)
+m.route = __webpack_require__(548)
+m.render = __webpack_require__(525)
 m.redraw = mountRedraw.redraw
 m.request = request.request
-m.jsonp = request.jsonp
-m.parseQueryString = __webpack_require__(459)
-m.buildQueryString = __webpack_require__(354)
-m.parsePathname = __webpack_require__(376)
-m.buildPathname = __webpack_require__(578)
-m.vnode = __webpack_require__(230)
-m.PromisePolyfill = __webpack_require__(657)
-m.censor = __webpack_require__(750)
+m.parseQueryString = __webpack_require__(952)
+m.buildQueryString = __webpack_require__(499)
+m.parsePathname = __webpack_require__(209)
+m.buildPathname = __webpack_require__(474)
+m.vnode = __webpack_require__(296)
+m.censor = __webpack_require__(546)
+m.domFor = domFor.domFor
 
 module.exports = m
 
 
 /***/ }),
 
-/***/ 10:
+/***/ 610:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var render = __webpack_require__(813)
+var render = __webpack_require__(525)
 
-module.exports = __webpack_require__(862)(render, typeof requestAnimationFrame !== "undefined" ? requestAnimationFrame : null, typeof console !== "undefined" ? console : null)
+module.exports = __webpack_require__(895)(render, typeof requestAnimationFrame !== "undefined" ? requestAnimationFrame : null, typeof console !== "undefined" ? console : null)
 
 
 /***/ }),
 
-/***/ 578:
+/***/ 474:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var buildQueryString = __webpack_require__(354)
-var assign = __webpack_require__(427)
+var buildQueryString = __webpack_require__(499)
 
 // Returns `path` from `template` + `params`
 module.exports = function(template, params) {
@@ -705,7 +702,7 @@ module.exports = function(template, params) {
 	var path = template.slice(0, pathEnd)
 	var query = {}
 
-	assign(query, params)
+	Object.assign(query, params)
 
 	var resolved = path.replace(/:([^\/\.-]+)(\.{3})?/g, function(m, key, variadic) {
 		delete query[key]
@@ -734,13 +731,13 @@ module.exports = function(template, params) {
 
 /***/ }),
 
-/***/ 819:
+/***/ 461:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var parsePathname = __webpack_require__(376)
+var parsePathname = __webpack_require__(209)
 
 // Compiles a template into a function that takes a resolved path (without query
 // strings) and returns an object containing the template parameters with their
@@ -785,13 +782,13 @@ module.exports = function(template) {
 
 /***/ }),
 
-/***/ 376:
+/***/ 209:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var parseQueryString = __webpack_require__(459)
+var parseQueryString = __webpack_require__(952)
 
 // Returns `{path, params}` from `url`
 module.exports = function(url) {
@@ -804,7 +801,6 @@ module.exports = function(url) {
 	if (!path) path = "/"
 	else {
 		if (path[0] !== "/") path = "/" + path
-		if (path.length > 1 && path[path.length - 1] === "/") path = path.slice(0, -1)
 	}
 	return {
 		path: path,
@@ -817,157 +813,7 @@ module.exports = function(url) {
 
 /***/ }),
 
-/***/ 657:
-/***/ ((module) => {
-
-"use strict";
-
-/** @constructor */
-var PromisePolyfill = function(executor) {
-	if (!(this instanceof PromisePolyfill)) throw new Error("Promise must be called with 'new'.")
-	if (typeof executor !== "function") throw new TypeError("executor must be a function.")
-
-	var self = this, resolvers = [], rejectors = [], resolveCurrent = handler(resolvers, true), rejectCurrent = handler(rejectors, false)
-	var instance = self._instance = {resolvers: resolvers, rejectors: rejectors}
-	var callAsync = typeof setImmediate === "function" ? setImmediate : setTimeout
-	function handler(list, shouldAbsorb) {
-		return function execute(value) {
-			var then
-			try {
-				if (shouldAbsorb && value != null && (typeof value === "object" || typeof value === "function") && typeof (then = value.then) === "function") {
-					if (value === self) throw new TypeError("Promise can't be resolved with itself.")
-					executeOnce(then.bind(value))
-				}
-				else {
-					callAsync(function() {
-						if (!shouldAbsorb && list.length === 0) console.error("Possible unhandled promise rejection:", value)
-						for (var i = 0; i < list.length; i++) list[i](value)
-						resolvers.length = 0, rejectors.length = 0
-						instance.state = shouldAbsorb
-						instance.retry = function() {execute(value)}
-					})
-				}
-			}
-			catch (e) {
-				rejectCurrent(e)
-			}
-		}
-	}
-	function executeOnce(then) {
-		var runs = 0
-		function run(fn) {
-			return function(value) {
-				if (runs++ > 0) return
-				fn(value)
-			}
-		}
-		var onerror = run(rejectCurrent)
-		try {then(run(resolveCurrent), onerror)} catch (e) {onerror(e)}
-	}
-
-	executeOnce(executor)
-}
-PromisePolyfill.prototype.then = function(onFulfilled, onRejection) {
-	var self = this, instance = self._instance
-	function handle(callback, list, next, state) {
-		list.push(function(value) {
-			if (typeof callback !== "function") next(value)
-			else try {resolveNext(callback(value))} catch (e) {if (rejectNext) rejectNext(e)}
-		})
-		if (typeof instance.retry === "function" && state === instance.state) instance.retry()
-	}
-	var resolveNext, rejectNext
-	var promise = new PromisePolyfill(function(resolve, reject) {resolveNext = resolve, rejectNext = reject})
-	handle(onFulfilled, instance.resolvers, resolveNext, true), handle(onRejection, instance.rejectors, rejectNext, false)
-	return promise
-}
-PromisePolyfill.prototype.catch = function(onRejection) {
-	return this.then(null, onRejection)
-}
-PromisePolyfill.prototype.finally = function(callback) {
-	return this.then(
-		function(value) {
-			return PromisePolyfill.resolve(callback()).then(function() {
-				return value
-			})
-		},
-		function(reason) {
-			return PromisePolyfill.resolve(callback()).then(function() {
-				return PromisePolyfill.reject(reason);
-			})
-		}
-	)
-}
-PromisePolyfill.resolve = function(value) {
-	if (value instanceof PromisePolyfill) return value
-	return new PromisePolyfill(function(resolve) {resolve(value)})
-}
-PromisePolyfill.reject = function(value) {
-	return new PromisePolyfill(function(resolve, reject) {reject(value)})
-}
-PromisePolyfill.all = function(list) {
-	return new PromisePolyfill(function(resolve, reject) {
-		var total = list.length, count = 0, values = []
-		if (list.length === 0) resolve([])
-		else for (var i = 0; i < list.length; i++) {
-			(function(i) {
-				function consume(value) {
-					count++
-					values[i] = value
-					if (count === total) resolve(values)
-				}
-				if (list[i] != null && (typeof list[i] === "object" || typeof list[i] === "function") && typeof list[i].then === "function") {
-					list[i].then(consume, reject)
-				}
-				else consume(list[i])
-			})(i)
-		}
-	})
-}
-PromisePolyfill.race = function(list) {
-	return new PromisePolyfill(function(resolve, reject) {
-		for (var i = 0; i < list.length; i++) {
-			list[i].then(resolve, reject)
-		}
-	})
-}
-
-module.exports = PromisePolyfill
-
-
-/***/ }),
-
-/***/ 31:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-/* global window */
-
-
-var PromisePolyfill = __webpack_require__(657)
-
-if (typeof window !== "undefined") {
-	if (typeof window.Promise === "undefined") {
-		window.Promise = PromisePolyfill
-	} else if (!window.Promise.prototype.finally) {
-		window.Promise.prototype.finally = PromisePolyfill.prototype.finally
-	}
-	module.exports = window.Promise
-} else if (typeof __webpack_require__.g !== "undefined") {
-	if (typeof __webpack_require__.g.Promise === "undefined") {
-		__webpack_require__.g.Promise = PromisePolyfill
-	} else if (!__webpack_require__.g.Promise.prototype.finally) {
-		__webpack_require__.g.Promise.prototype.finally = PromisePolyfill.prototype.finally
-	}
-	module.exports = __webpack_require__.g.Promise
-} else {
-	module.exports = PromisePolyfill
-}
-
-
-/***/ }),
-
-/***/ 354:
+/***/ 499:
 /***/ ((module) => {
 
 "use strict";
@@ -1001,7 +847,7 @@ module.exports = function(object) {
 
 /***/ }),
 
-/***/ 459:
+/***/ 952:
 /***/ ((module) => {
 
 "use strict";
@@ -1060,25 +906,60 @@ module.exports = function(string) {
 
 /***/ }),
 
-/***/ 813:
+/***/ 525:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-module.exports = __webpack_require__(227)(typeof window !== "undefined" ? window : null)
+module.exports = __webpack_require__(808)(typeof window !== "undefined" ? window : null)
 
 
 /***/ }),
 
-/***/ 753:
+/***/ 311:
+/***/ ((module) => {
+
+"use strict";
+
+
+var delayedRemoval = new WeakMap
+
+function *domFor(vnode, object = {}) {
+	// To avoid unintended mangling of the internal bundler,
+	// parameter destructuring is not used here.
+	var dom = vnode.dom
+	var domSize = vnode.domSize
+	var generation = object.generation
+	if (dom != null) do {
+		var nextSibling = dom.nextSibling
+
+		if (delayedRemoval.get(dom) === generation) {
+			yield dom
+			domSize--
+		}
+
+		dom = nextSibling
+	}
+	while (domSize)
+}
+
+module.exports = {
+	delayedRemoval: delayedRemoval,
+	domFor: domFor,
+}
+
+
+/***/ }),
+
+/***/ 12:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var Vnode = __webpack_require__(230)
-var hyperscriptVnode = __webpack_require__(933)
+var Vnode = __webpack_require__(296)
+var hyperscriptVnode = __webpack_require__(957)
 
 module.exports = function() {
 	var vnode = hyperscriptVnode.apply(0, arguments)
@@ -1091,18 +972,18 @@ module.exports = function() {
 
 /***/ }),
 
-/***/ 326:
+/***/ 891:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var Vnode = __webpack_require__(230)
-var hyperscriptVnode = __webpack_require__(933)
-var hasOwn = __webpack_require__(729)
+var Vnode = __webpack_require__(296)
+var hyperscriptVnode = __webpack_require__(957)
+var hasOwn = __webpack_require__(76)
 
 var selectorParser = /(?:(^|#|\.)([^#\.\[\]]+))|(\[(.+?)(?:\s*=\s*("|'|)((?:\\["'\]]|.)*?)\5)?\])/g
-var selectorCache = {}
+var selectorCache = Object.create(null)
 
 function isEmpty(object) {
 	for (var key in object) if (hasOwn.call(object, key)) return false
@@ -1124,6 +1005,7 @@ function compileSelector(selector) {
 		}
 	}
 	if (classes.length > 0) attrs.className = classes.join(" ")
+	if (isEmpty(attrs)) attrs = null
 	return selectorCache[selector] = {tag: tag, attrs: attrs}
 }
 
@@ -1133,40 +1015,32 @@ function execSelector(state, vnode) {
 	var className = hasClass ? attrs.class : attrs.className
 
 	vnode.tag = state.tag
-	vnode.attrs = {}
 
-	if (!isEmpty(state.attrs) && !isEmpty(attrs)) {
-		var newAttrs = {}
+	if (state.attrs != null) {
+		attrs = Object.assign({}, state.attrs, attrs)
 
-		for (var key in attrs) {
-			if (hasOwn.call(attrs, key)) newAttrs[key] = attrs[key]
-		}
-
-		attrs = newAttrs
+		if (className != null || state.attrs.className != null) attrs.className =
+			className != null
+				? state.attrs.className != null
+					? String(state.attrs.className) + " " + String(className)
+					: className
+				: state.attrs.className != null
+					? state.attrs.className
+					: null
+	} else {
+		if (className != null) attrs.className = className
 	}
-
-	for (var key in state.attrs) {
-		if (hasOwn.call(state.attrs, key) && key !== "className" && !hasOwn.call(attrs, key)){
-			attrs[key] = state.attrs[key]
-		}
-	}
-	if (className != null || state.attrs.className != null) attrs.className =
-		className != null
-			? state.attrs.className != null
-				? String(state.attrs.className) + " " + String(className)
-				: className
-			: state.attrs.className != null
-				? state.attrs.className
-				: null
 
 	if (hasClass) attrs.class = null
 
-	for (var key in attrs) {
-		if (hasOwn.call(attrs, key) && key !== "key") {
-			vnode.attrs = attrs
-			break
-		}
+	// workaround for #2622 (reorder keys in attrs to set "type" first)
+	// The DOM does things to inputs based on the "type", so it needs set first.
+	// See: https://github.com/MithrilJS/mithril.js/issues/2622
+	if (state.tag === "input" && hasOwn.call(attrs, "type")) {
+		attrs = Object.assign({type: attrs.type}, attrs)
 	}
+
+	vnode.attrs = attrs
 
 	return vnode
 }
@@ -1192,13 +1066,13 @@ module.exports = hyperscript
 
 /***/ }),
 
-/***/ 933:
+/***/ 957:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var Vnode = __webpack_require__(230)
+var Vnode = __webpack_require__(296)
 
 // Call via `hyperscriptVnode.apply(startOffset, arguments)`
 //
@@ -1253,21 +1127,28 @@ module.exports = function() {
 
 /***/ }),
 
-/***/ 227:
+/***/ 808:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var Vnode = __webpack_require__(230)
+var Vnode = __webpack_require__(296)
+var df = __webpack_require__(311)
+var delayedRemoval = df.delayedRemoval
+var domFor = df.domFor
 
-module.exports = function($window) {
-	var $doc = $window && $window.document
-	var currentRedraw
-
+module.exports = function() {
 	var nameSpace = {
 		svg: "http://www.w3.org/2000/svg",
 		math: "http://www.w3.org/1998/Math/MathML"
+	}
+
+	var currentRedraw
+	var currentRender
+
+	function getDocument(dom) {
+		return dom.ownerDocument;
 	}
 
 	function getNameSpace(vnode) {
@@ -1294,9 +1175,9 @@ module.exports = function($window) {
 
 	// IE11 (at least) throws an UnspecifiedError when accessing document.activeElement when
 	// inside an iframe. Catch and swallow this error, and heavy-handidly return null.
-	function activeElement() {
+	function activeElement(dom) {
 		try {
-			return $doc.activeElement
+			return getDocument(dom).activeElement
 		} catch (e) {
 			return null
 		}
@@ -1325,8 +1206,8 @@ module.exports = function($window) {
 		else createComponent(parent, vnode, hooks, ns, nextSibling)
 	}
 	function createText(parent, vnode, nextSibling) {
-		vnode.dom = $doc.createTextNode(vnode.children)
-		insertNode(parent, vnode.dom, nextSibling)
+		vnode.dom = getDocument(parent).createTextNode(vnode.children)
+		insertDOM(parent, vnode.dom, nextSibling)
 	}
 	var possibleParents = {caption: "table", thead: "table", tbody: "table", tfoot: "table", tr: "tbody", th: "tr", td: "tr", colgroup: "table", col: "colgroup"}
 	function createHTML(parent, vnode, ns, nextSibling) {
@@ -1336,7 +1217,7 @@ module.exports = function($window) {
 		//     div.innerHTML = "<td>i</td><td>j</td>"
 		//     console.log(div.innerHTML)
 		// --> "ij", no <td> in sight.
-		var temp = $doc.createElement(possibleParents[match[1]] || "div")
+		var temp = getDocument(parent).createElement(possibleParents[match[1]] || "div")
 		if (ns === "http://www.w3.org/2000/svg") {
 			temp.innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\">" + vnode.children + "</svg>"
 			temp = temp.firstChild
@@ -1346,24 +1227,22 @@ module.exports = function($window) {
 		vnode.dom = temp.firstChild
 		vnode.domSize = temp.childNodes.length
 		// Capture nodes to remove, so we don't confuse them.
-		vnode.instance = []
-		var fragment = $doc.createDocumentFragment()
+		var fragment = getDocument(parent).createDocumentFragment()
 		var child
 		while (child = temp.firstChild) {
-			vnode.instance.push(child)
 			fragment.appendChild(child)
 		}
-		insertNode(parent, fragment, nextSibling)
+		insertDOM(parent, fragment, nextSibling)
 	}
 	function createFragment(parent, vnode, hooks, ns, nextSibling) {
-		var fragment = $doc.createDocumentFragment()
+		var fragment = getDocument(parent).createDocumentFragment()
 		if (vnode.children != null) {
 			var children = vnode.children
 			createNodes(fragment, children, 0, children.length, hooks, null, ns)
 		}
 		vnode.dom = fragment.firstChild
 		vnode.domSize = fragment.childNodes.length
-		insertNode(parent, fragment, nextSibling)
+		insertDOM(parent, fragment, nextSibling)
 	}
 	function createElement(parent, vnode, hooks, ns, nextSibling) {
 		var tag = vnode.tag
@@ -1373,15 +1252,15 @@ module.exports = function($window) {
 		ns = getNameSpace(vnode) || ns
 
 		var element = ns ?
-			is ? $doc.createElementNS(ns, tag, {is: is}) : $doc.createElementNS(ns, tag) :
-			is ? $doc.createElement(tag, {is: is}) : $doc.createElement(tag)
+			is ? getDocument(parent).createElementNS(ns, tag, {is: is}) : getDocument(parent).createElementNS(ns, tag) :
+			is ? getDocument(parent).createElement(tag, {is: is}) : getDocument(parent).createElement(tag)
 		vnode.dom = element
 
 		if (attrs != null) {
 			setAttrs(vnode, attrs, ns)
 		}
 
-		insertNode(parent, element, nextSibling)
+		insertDOM(parent, element, nextSibling)
 
 		if (!maybeSetContentEditable(vnode)) {
 			if (vnode.children != null) {
@@ -1521,11 +1400,6 @@ module.exports = function($window) {
 	// this is not the case if the node moved (second and fourth part of the diff algo). We move
 	// the old DOM nodes before updateNode runs because it enables us to use the cached `nextSibling`
 	// variable rather than fetching it using `getNextSibling()`.
-	//
-	// The fourth part of the diff currently inserts nodes unconditionally, leading to issues
-	// like #1791 and #1999. We need to be smarter about those situations where adjascent old
-	// nodes remain together in the new list in a way that isn't covered by parts one and
-	// three of the diff algo.
 
 	function updateNodes(parent, old, vnodes, hooks, nextSibling, ns) {
 		if (old === vnodes || old == null && vnodes == null) return
@@ -1583,9 +1457,9 @@ module.exports = function($window) {
 					if (start === end) break
 					if (o.key !== ve.key || oe.key !== v.key) break
 					topSibling = getNextSibling(old, oldStart, nextSibling)
-					moveNodes(parent, oe, topSibling)
+					moveDOM(parent, oe, topSibling)
 					if (oe !== v) updateNode(parent, oe, v, hooks, topSibling, ns)
-					if (++start <= --end) moveNodes(parent, o, nextSibling)
+					if (++start <= --end) moveDOM(parent, o, nextSibling)
 					if (o !== ve) updateNode(parent, o, ve, hooks, nextSibling, ns)
 					if (ve.dom != null) nextSibling = ve.dom
 					oldStart++; oldEnd--
@@ -1637,7 +1511,7 @@ module.exports = function($window) {
 								if (oldIndices[i-start] === -1) createNode(parent, v, hooks, ns, nextSibling)
 								else {
 									if (lisIndices[li] === i - start) li--
-									else moveNodes(parent, v, nextSibling)
+									else moveDOM(parent, v, nextSibling)
 								}
 								if (v.dom != null) nextSibling = vnodes[i].dom
 							}
@@ -1685,13 +1559,12 @@ module.exports = function($window) {
 	}
 	function updateHTML(parent, old, vnode, ns, nextSibling) {
 		if (old.children !== vnode.children) {
-			removeHTML(parent, old)
+			removeDOM(parent, old, undefined)
 			createHTML(parent, vnode, ns, nextSibling)
 		}
 		else {
 			vnode.dom = old.dom
 			vnode.domSize = old.domSize
-			vnode.instance = old.instance
 		}
 	}
 	function updateFragment(parent, old, vnode, hooks, nextSibling, ns) {
@@ -1713,9 +1586,6 @@ module.exports = function($window) {
 		var element = vnode.dom = old.dom
 		ns = getNameSpace(vnode) || ns
 
-		if (vnode.tag === "textarea") {
-			if (vnode.attrs == null) vnode.attrs = {}
-		}
 		updateAttrs(vnode, old.attrs, vnode.attrs, ns)
 		if (!maybeSetContentEditable(vnode)) {
 			updateNodes(element, old.children, vnode.children, hooks, null, ns)
@@ -1807,46 +1677,22 @@ module.exports = function($window) {
 		return nextSibling
 	}
 
-	// This covers a really specific edge case:
-	// - Parent node is keyed and contains child
-	// - Child is removed, returns unresolved promise in `onbeforeremove`
-	// - Parent node is moved in keyed diff
-	// - Remaining children still need moved appropriately
-	//
-	// Ideally, I'd track removed nodes as well, but that introduces a lot more
-	// complexity and I'm not exactly interested in doing that.
-	function moveNodes(parent, vnode, nextSibling) {
-		var frag = $doc.createDocumentFragment()
-		moveChildToFrag(parent, frag, vnode)
-		insertNode(parent, frag, nextSibling)
-	}
-	function moveChildToFrag(parent, frag, vnode) {
-		// Dodge the recursion overhead in a few of the most common cases.
-		while (vnode.dom != null && vnode.dom.parentNode === parent) {
-			if (typeof vnode.tag !== "string") {
-				vnode = vnode.instance
-				if (vnode != null) continue
-			} else if (vnode.tag === "<") {
-				for (var i = 0; i < vnode.instance.length; i++) {
-					frag.appendChild(vnode.instance[i])
-				}
-			} else if (vnode.tag !== "[") {
-				// Don't recurse for text nodes *or* elements, just fragments
-				frag.appendChild(vnode.dom)
-			} else if (vnode.children.length === 1) {
-				vnode = vnode.children[0]
-				if (vnode != null) continue
+	// This handles fragments with zombie children (removed from vdom, but persisted in DOM through onbeforeremove)
+	function moveDOM(parent, vnode, nextSibling) {
+		if (vnode.dom != null) {
+			var target
+			if (vnode.domSize == null) {
+				// don't allocate for the common case
+				target = vnode.dom
 			} else {
-				for (var i = 0; i < vnode.children.length; i++) {
-					var child = vnode.children[i]
-					if (child != null) moveChildToFrag(parent, frag, child)
-				}
+				target = getDocument(parent).createDocumentFragment()
+				for (var dom of domFor(vnode)) target.appendChild(dom)
 			}
-			break
+			insertDOM(parent, target, nextSibling)
 		}
 	}
 
-	function insertNode(parent, dom, nextSibling) {
+	function insertDOM(parent, dom, nextSibling) {
 		if (nextSibling != null) parent.insertBefore(dom, nextSibling)
 		else parent.appendChild(dom)
 	}
@@ -1892,65 +1738,54 @@ module.exports = function($window) {
 			}
 		}
 		checkState(vnode, original)
-
+		var generation
 		// If we can, try to fast-path it and avoid all the overhead of awaiting
 		if (!mask) {
 			onremove(vnode)
-			removeChild(parent, vnode)
+			removeDOM(parent, vnode, generation)
 		} else {
+			generation = currentRender
+			for (var dom of domFor(vnode)) delayedRemoval.set(dom, generation)
 			if (stateResult != null) {
-				var next = function () {
+				stateResult.finally(function () {
 					// eslint-disable-next-line no-bitwise
-					if (mask & 1) { mask &= 2; if (!mask) reallyRemove() }
-				}
-				stateResult.then(next, next)
+					if (mask & 1) {
+						// eslint-disable-next-line no-bitwise
+						mask &= 2
+						if (!mask) {
+							checkState(vnode, original)
+							onremove(vnode)
+							removeDOM(parent, vnode, generation)
+						}
+					}
+				})
 			}
 			if (attrsResult != null) {
-				var next = function () {
+				attrsResult.finally(function () {
 					// eslint-disable-next-line no-bitwise
-					if (mask & 2) { mask &= 1; if (!mask) reallyRemove() }
-				}
-				attrsResult.then(next, next)
-			}
-		}
-
-		function reallyRemove() {
-			checkState(vnode, original)
-			onremove(vnode)
-			removeChild(parent, vnode)
-		}
-	}
-	function removeHTML(parent, vnode) {
-		for (var i = 0; i < vnode.instance.length; i++) {
-			parent.removeChild(vnode.instance[i])
-		}
-	}
-	function removeChild(parent, vnode) {
-		// Dodge the recursion overhead in a few of the most common cases.
-		while (vnode.dom != null && vnode.dom.parentNode === parent) {
-			if (typeof vnode.tag !== "string") {
-				vnode = vnode.instance
-				if (vnode != null) continue
-			} else if (vnode.tag === "<") {
-				removeHTML(parent, vnode)
-			} else {
-				if (vnode.tag !== "[") {
-					parent.removeChild(vnode.dom)
-					if (!Array.isArray(vnode.children)) break
-				}
-				if (vnode.children.length === 1) {
-					vnode = vnode.children[0]
-					if (vnode != null) continue
-				} else {
-					for (var i = 0; i < vnode.children.length; i++) {
-						var child = vnode.children[i]
-						if (child != null) removeChild(parent, child)
+					if (mask & 2) {
+						// eslint-disable-next-line no-bitwise
+						mask &= 1
+						if (!mask) {
+							checkState(vnode, original)
+							onremove(vnode)
+							removeDOM(parent, vnode, generation)
+						}
 					}
-				}
+				})
 			}
-			break
 		}
 	}
+	function removeDOM(parent, vnode, generation) {
+		if (vnode.dom == null) return
+		if (vnode.domSize == null) {
+			// don't allocate for the common case
+			if (delayedRemoval.get(vnode.dom) === generation) parent.removeChild(vnode.dom)
+		} else {
+			for (var dom of domFor(vnode, {generation})) parent.removeChild(dom)
+		}
+	}
+
 	function onremove(vnode) {
 		if (typeof vnode.tag !== "string" && typeof vnode.state.onremove === "function") callHook.call(vnode.state.onremove, vnode)
 		if (vnode.attrs && typeof vnode.attrs.onremove === "function") callHook.call(vnode.attrs.onremove, vnode)
@@ -1969,18 +1804,12 @@ module.exports = function($window) {
 
 	//attrs
 	function setAttrs(vnode, attrs, ns) {
-		// If you assign an input type that is not supported by IE 11 with an assignment expression, an error will occur.
-		//
-		// Also, the DOM does things to inputs based on the value, so it needs set first.
-		// See: https://github.com/MithrilJS/mithril.js/issues/2622
-		if (vnode.tag === "input" && attrs.type != null) vnode.dom.setAttribute("type", attrs.type)
-		var isFileInput = attrs != null && vnode.tag === "input" && attrs.type === "file"
 		for (var key in attrs) {
-			setAttr(vnode, key, null, attrs[key], ns, isFileInput)
+			setAttr(vnode, key, null, attrs[key], ns)
 		}
 	}
-	function setAttr(vnode, key, old, value, ns, isFileInput) {
-		if (key === "key" || key === "is" || value == null || isLifecycleMethod(key) || (old === value && !isFormAttribute(vnode, key)) && typeof value !== "object" || key === "type" && vnode.tag === "input") return
+	function setAttr(vnode, key, old, value, ns) {
+		if (key === "key" || key === "is" || value == null || isLifecycleMethod(key) || (old === value && !isFormAttribute(vnode, key)) && typeof value !== "object") return
 		if (key[0] === "o" && key[1] === "n") return updateEvent(vnode, key, value)
 		if (key.slice(0, 6) === "xlink:") vnode.dom.setAttributeNS("http://www.w3.org/1999/xlink", key.slice(6), value)
 		else if (key === "style") updateStyle(vnode.dom, old, value)
@@ -1988,9 +1817,10 @@ module.exports = function($window) {
 			if (key === "value") {
 				// Only do the coercion if we're actually going to check the value.
 				/* eslint-disable no-implicit-coercion */
+				var isFileInput = vnode.tag === "input" && vnode.attrs.type === "file"
 				//setting input[value] to same value by typing on focused element moves cursor to end in Chrome
 				//setting input[type=file][value] to same value causes an error to be generated if it's non-empty
-				if ((vnode.tag === "input" || vnode.tag === "textarea") && vnode.dom.value === "" + value && (isFileInput || vnode.dom === activeElement())) return
+				if ((vnode.tag === "input" || vnode.tag === "textarea") && vnode.dom.value === "" + value && (isFileInput || vnode.dom === activeElement(vnode.dom))) return
 				//setting select[value] to same value while having select open blinks select dropdown in Chrome
 				if (vnode.tag === "select" && old !== null && vnode.dom.value === "" + value) return
 				//setting option[value] to same value while having select open blinks select dropdown in Chrome
@@ -2000,7 +1830,9 @@ module.exports = function($window) {
 				if (isFileInput && "" + value !== "") { console.error("`value` is read-only on file inputs!"); return }
 				/* eslint-enable no-implicit-coercion */
 			}
-			vnode.dom[key] = value
+			// If you assign an input type that is not supported by IE 11 with an assignment expression, an error will occur.
+			if (vnode.tag === "input" && key === "type") vnode.dom.setAttribute(key, value)
+			else vnode.dom[key] = value
 		} else {
 			if (typeof value === "boolean") {
 				if (value) vnode.dom.setAttribute(key, "")
@@ -2019,7 +1851,7 @@ module.exports = function($window) {
 			&& key !== "title" // creates "null" as title
 			&& !(key === "value" && (
 				vnode.tag === "option"
-				|| vnode.tag === "select" && vnode.dom.selectedIndex === -1 && vnode.dom === activeElement()
+				|| vnode.tag === "select" && vnode.dom.selectedIndex === -1 && vnode.dom === activeElement(vnode.dom)
 			))
 			&& !(vnode.tag === "input" && key === "type")
 		) {
@@ -2048,14 +1880,8 @@ module.exports = function($window) {
 			console.warn("Don't reuse attrs object, use new object for every redraw, this will throw in next major")
 		}
 		if (attrs != null) {
-			// If you assign an input type that is not supported by IE 11 with an assignment expression, an error will occur.
-			//
-			// Also, the DOM does things to inputs based on the value, so it needs set first.
-			// See: https://github.com/MithrilJS/mithril.js/issues/2622
-			if (vnode.tag === "input" && attrs.type != null) vnode.dom.setAttribute("type", attrs.type)
-			var isFileInput = vnode.tag === "input" && attrs.type === "file"
 			for (var key in attrs) {
-				setAttr(vnode, key, old && old[key], attrs[key], ns, isFileInput)
+				setAttr(vnode, key, old && old[key], attrs[key], ns)
 			}
 		}
 		var val
@@ -2068,7 +1894,7 @@ module.exports = function($window) {
 		}
 	}
 	function isFormAttribute(vnode, attr) {
-		return attr === "value" || attr === "checked" || attr === "selectedIndex" || attr === "selected" && vnode.dom === activeElement() || vnode.tag === "option" && vnode.dom.parentNode === $doc.activeElement
+		return attr === "value" || attr === "checked" || attr === "selectedIndex" || attr === "selected" && vnode.dom === activeElement(vnode.dom) || vnode.tag === "option" && vnode.dom.parentNode === activeElement(vnode.dom)
 	}
 	function isLifecycleMethod(attr) {
 		return attr === "oninit" || attr === "oncreate" || attr === "onupdate" || attr === "onremove" || attr === "onbeforeremove" || attr === "onbeforeupdate"
@@ -2097,10 +1923,10 @@ module.exports = function($window) {
 			// Styles are equivalent, do nothing.
 		} else if (style == null) {
 			// New style is missing, just clear it.
-			element.style.cssText = ""
+			element.style = ""
 		} else if (typeof style !== "object") {
 			// New style is a string, let engine deal with patching.
-			element.style.cssText = style
+			element.style = style
 		} else if (old == null || typeof old !== "object") {
 			// `old` is missing or a string, `style` is an object.
 			element.style.cssText = ""
@@ -2220,11 +2046,12 @@ module.exports = function($window) {
 		var prevRedraw = currentRedraw
 		var prevDOM = currentDOM
 		var hooks = []
-		var active = activeElement()
+		var active = activeElement(dom)
 		var namespace = dom.namespaceURI
 
 		currentDOM = dom
 		currentRedraw = typeof redraw === "function" ? redraw : undefined
+		currentRender = {}
 		try {
 			// First time rendering into a node clears it out
 			if (dom.vnodes == null) dom.textContent = ""
@@ -2232,7 +2059,7 @@ module.exports = function($window) {
 			updateNodes(dom, dom.vnodes, vnodes, hooks, null, namespace === "http://www.w3.org/1999/xhtml" ? undefined : namespace)
 			dom.vnodes = vnodes
 			// `document.activeElement` can return null: https://html.spec.whatwg.org/multipage/interaction.html#dom-document-activeelement
-			if (active != null && activeElement() !== active && typeof active.focus === "function") active.focus()
+			if (active != null && activeElement(dom) !== active && typeof active.focus === "function") active.focus()
 			for (var i = 0; i < hooks.length; i++) hooks[i]()
 		} finally {
 			currentRedraw = prevRedraw
@@ -2244,13 +2071,13 @@ module.exports = function($window) {
 
 /***/ }),
 
-/***/ 392:
+/***/ 440:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var Vnode = __webpack_require__(230)
+var Vnode = __webpack_require__(296)
 
 module.exports = function(html) {
 	if (html == null) html = ""
@@ -2260,7 +2087,7 @@ module.exports = function(html) {
 
 /***/ }),
 
-/***/ 230:
+/***/ 296:
 /***/ ((module) => {
 
 "use strict";
@@ -2303,100 +2130,36 @@ module.exports = Vnode
 
 /***/ }),
 
-/***/ 334:
+/***/ 232:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var PromisePolyfill = __webpack_require__(31)
-var mountRedraw = __webpack_require__(10)
+var mountRedraw = __webpack_require__(610)
 
-module.exports = __webpack_require__(339)(typeof window !== "undefined" ? window : null, PromisePolyfill, mountRedraw.redraw)
+module.exports = __webpack_require__(726)(typeof window !== "undefined" ? window : null, mountRedraw.redraw)
 
 
 /***/ }),
 
-/***/ 339:
+/***/ 726:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var buildPathname = __webpack_require__(578)
-var hasOwn = __webpack_require__(729)
+var buildPathname = __webpack_require__(474)
+var hasOwn = __webpack_require__(76)
 
-module.exports = function($window, Promise, oncompletion) {
-	var callbackCount = 0
-
+module.exports = function($window, oncompletion) {
 	function PromiseProxy(executor) {
 		return new Promise(executor)
 	}
 
-	// In case the global Promise is some userland library's where they rely on
-	// `foo instanceof this.constructor`, `this.constructor.resolve(value)`, or
-	// similar. Let's *not* break them.
-	PromiseProxy.prototype = Promise.prototype
-	PromiseProxy.__proto__ = Promise // eslint-disable-line no-proto
-
-	function makeRequest(factory) {
-		return function(url, args) {
-			if (typeof url !== "string") { args = url; url = url.url }
-			else if (args == null) args = {}
-			var promise = new Promise(function(resolve, reject) {
-				factory(buildPathname(url, args.params), args, function (data) {
-					if (typeof args.type === "function") {
-						if (Array.isArray(data)) {
-							for (var i = 0; i < data.length; i++) {
-								data[i] = new args.type(data[i])
-							}
-						}
-						else data = new args.type(data)
-					}
-					resolve(data)
-				}, reject)
-			})
-			if (args.background === true) return promise
-			var count = 0
-			function complete() {
-				if (--count === 0 && typeof oncompletion === "function") oncompletion()
-			}
-
-			return wrap(promise)
-
-			function wrap(promise) {
-				var then = promise.then
-				// Set the constructor, so engines know to not await or resolve
-				// this as a native promise. At the time of writing, this is
-				// only necessary for V8, but their behavior is the correct
-				// behavior per spec. See this spec issue for more details:
-				// https://github.com/tc39/ecma262/issues/1577. Also, see the
-				// corresponding comment in `request/tests/test-request.js` for
-				// a bit more background on the issue at hand.
-				promise.constructor = PromiseProxy
-				promise.then = function() {
-					count++
-					var next = then.apply(promise, arguments)
-					next.then(complete, function(e) {
-						complete()
-						if (count === 0) throw e
-					})
-					return wrap(next)
-				}
-				return promise
-			}
-		}
-	}
-
-	function hasHeader(args, name) {
-		for (var key in args.headers) {
-			if (hasOwn.call(args.headers, key) && key.toLowerCase() === name) return true
-		}
-		return false
-	}
-
-	return {
-		request: makeRequest(function(url, args, resolve, reject) {
+	function makeRequest(url, args) {
+		return new Promise(function(resolve, reject) {
+			url = buildPathname(url, args.params)
 			var method = args.method != null ? args.method.toUpperCase() : "GET"
 			var body = args.body
 			var assumeJSON = (args.serialize == null || args.serialize === JSON.serialize) && !(body instanceof $window.FormData || body instanceof $window.URLSearchParams)
@@ -2466,7 +2229,18 @@ module.exports = function($window, Promise, oncompletion) {
 						} else if (typeof args.deserialize === "function") {
 							response = args.deserialize(response)
 						}
-						if (success) resolve(response)
+
+						if (success) {
+							if (typeof args.type === "function") {
+								if (Array.isArray(response)) {
+									for (var i = 0; i < response.length; i++) {
+										response[i] = new args.type(response[i])
+									}
+								}
+								else response = new args.type(response)
+							}
+							resolve(response)
+						}
 						else {
 							var completeErrorResponse = function() {
 								try { message = ev.target.responseText }
@@ -2519,63 +2293,77 @@ module.exports = function($window, Promise, oncompletion) {
 			else if (typeof args.serialize === "function") xhr.send(args.serialize(body))
 			else if (body instanceof $window.FormData || body instanceof $window.URLSearchParams) xhr.send(body)
 			else xhr.send(JSON.stringify(body))
-		}),
-		jsonp: makeRequest(function(url, args, resolve, reject) {
-			var callbackName = args.callbackName || "_mithril_" + Math.round(Math.random() * 1e16) + "_" + callbackCount++
-			var script = $window.document.createElement("script")
-			$window[callbackName] = function(data) {
-				delete $window[callbackName]
-				script.parentNode.removeChild(script)
-				resolve(data)
+		})
+	}
+
+	// In case the global Promise is some userland library's where they rely on
+	// `foo instanceof this.constructor`, `this.constructor.resolve(value)`, or
+	// similar. Let's *not* break them.
+	PromiseProxy.prototype = Promise.prototype
+	PromiseProxy.__proto__ = Promise // eslint-disable-line no-proto
+
+	function hasHeader(args, name) {
+		for (var key in args.headers) {
+			if (hasOwn.call(args.headers, key) && key.toLowerCase() === name) return true
+		}
+		return false
+	}
+
+	return {
+		request: function(url, args) {
+			if (typeof url !== "string") { args = url; url = url.url }
+			else if (args == null) args = {}
+			var promise = makeRequest(url, args)
+			if (args.background === true) return promise
+			var count = 0
+			function complete() {
+				if (--count === 0 && typeof oncompletion === "function") oncompletion()
 			}
-			script.onerror = function() {
-				delete $window[callbackName]
-				script.parentNode.removeChild(script)
-				reject(new Error("JSONP request failed"))
+
+			return wrap(promise)
+
+			function wrap(promise) {
+				var then = promise.then
+				// Set the constructor, so engines know to not await or resolve
+				// this as a native promise. At the time of writing, this is
+				// only necessary for V8, but their behavior is the correct
+				// behavior per spec. See this spec issue for more details:
+				// https://github.com/tc39/ecma262/issues/1577. Also, see the
+				// corresponding comment in `request/tests/test-request.js` for
+				// a bit more background on the issue at hand.
+				promise.constructor = PromiseProxy
+				promise.then = function() {
+					count++
+					var next = then.apply(promise, arguments)
+					next.then(complete, function(e) {
+						complete()
+						if (count === 0) throw e
+					})
+					return wrap(next)
+				}
+				return promise
 			}
-			script.src = url + (url.indexOf("?") < 0 ? "?" : "&") +
-				encodeURIComponent(args.callbackKey || "callback") + "=" +
-				encodeURIComponent(callbackName)
-			$window.document.documentElement.appendChild(script)
-		}),
+		}
 	}
 }
 
 
 /***/ }),
 
-/***/ 483:
+/***/ 548:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 
 
-var mountRedraw = __webpack_require__(10)
+var mountRedraw = __webpack_require__(610)
 
-module.exports = __webpack_require__(236)(typeof window !== "undefined" ? window : null, mountRedraw)
-
-
-/***/ }),
-
-/***/ 427:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-// This exists so I'm only saving it once.
-
-
-var hasOwn = __webpack_require__(729)
-
-module.exports = Object.assign || function(target, source) {
-	for (var key in source) {
-		if (hasOwn.call(source, key)) target[key] = source[key]
-	}
-}
+module.exports = __webpack_require__(781)(typeof window !== "undefined" ? window : null, mountRedraw)
 
 
 /***/ }),
 
-/***/ 750:
+/***/ 546:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -2604,7 +2392,7 @@ module.exports = Object.assign || function(target, source) {
 // }
 // ```
 
-var hasOwn = __webpack_require__(729)
+var hasOwn = __webpack_require__(76)
 // Words in RegExp literals are sometimes mangled incorrectly by the internal bundler, so use RegExp().
 var magic = new RegExp("^(?:key|oninit|oncreate|onbeforeupdate|onupdate|onbeforeremove|onremove)$")
 
@@ -2631,7 +2419,7 @@ module.exports = function(attrs, extras) {
 
 /***/ }),
 
-/***/ 729:
+/***/ 76:
 /***/ ((module) => {
 
 "use strict";
@@ -2643,7 +2431,7 @@ module.exports = {}.hasOwnProperty
 
 /***/ }),
 
-/***/ 7:
+/***/ 323:
 /***/ ((module) => {
 
 "use strict";
@@ -2734,7 +2522,7 @@ module.exports = function (list, options) {
 
 /***/ }),
 
-/***/ 530:
+/***/ 452:
 /***/ ((module) => {
 
 "use strict";
@@ -2775,7 +2563,7 @@ module.exports = insertBySelector;
 
 /***/ }),
 
-/***/ 343:
+/***/ 439:
 /***/ ((module) => {
 
 "use strict";
@@ -2792,7 +2580,7 @@ module.exports = insertStyleElement;
 
 /***/ }),
 
-/***/ 272:
+/***/ 947:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -2809,7 +2597,7 @@ module.exports = setAttributesWithoutAttributes;
 
 /***/ }),
 
-/***/ 611:
+/***/ 280:
 /***/ ((module) => {
 
 "use strict";
@@ -2877,7 +2665,7 @@ module.exports = domAPI;
 
 /***/ }),
 
-/***/ 3:
+/***/ 308:
 /***/ ((module) => {
 
 "use strict";
@@ -2898,7 +2686,7 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
-/***/ 122:
+/***/ 825:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -2906,7 +2694,7 @@ module.exports = __webpack_require__.p + "4d73cb90e394b34b7670.woff";
 
 /***/ }),
 
-/***/ 320:
+/***/ 745:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
@@ -2998,7 +2786,7 @@ module.exports = __webpack_require__.p + "0c35d18bf06992036b69.woff2";
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
-/******/ 			179: 0
+/******/ 			792: 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -3023,31 +2811,31 @@ module.exports = __webpack_require__.p + "0c35d18bf06992036b69.woff2";
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+// This entry needs to be wrapped in an IIFE because it needs to be in strict mode.
 (() => {
 "use strict";
 
-// EXTERNAL MODULE: ../../node_modules/.pnpm/style-loader@3.3.3_webpack@5.89.0_webpack-cli@5.1.4_/node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js
-var injectStylesIntoStyleTag = __webpack_require__(7);
-var injectStylesIntoStyleTag_default = /*#__PURE__*/__webpack_require__.n(injectStylesIntoStyleTag);
-// EXTERNAL MODULE: ../../node_modules/.pnpm/style-loader@3.3.3_webpack@5.89.0_webpack-cli@5.1.4_/node_modules/style-loader/dist/runtime/styleDomAPI.js
-var styleDomAPI = __webpack_require__(611);
-var styleDomAPI_default = /*#__PURE__*/__webpack_require__.n(styleDomAPI);
-// EXTERNAL MODULE: ../../node_modules/.pnpm/style-loader@3.3.3_webpack@5.89.0_webpack-cli@5.1.4_/node_modules/style-loader/dist/runtime/insertBySelector.js
-var insertBySelector = __webpack_require__(530);
-var insertBySelector_default = /*#__PURE__*/__webpack_require__.n(insertBySelector);
-// EXTERNAL MODULE: ../../node_modules/.pnpm/style-loader@3.3.3_webpack@5.89.0_webpack-cli@5.1.4_/node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js
-var setAttributesWithoutAttributes = __webpack_require__(272);
-var setAttributesWithoutAttributes_default = /*#__PURE__*/__webpack_require__.n(setAttributesWithoutAttributes);
-// EXTERNAL MODULE: ../../node_modules/.pnpm/style-loader@3.3.3_webpack@5.89.0_webpack-cli@5.1.4_/node_modules/style-loader/dist/runtime/insertStyleElement.js
-var insertStyleElement = __webpack_require__(343);
-var insertStyleElement_default = /*#__PURE__*/__webpack_require__.n(insertStyleElement);
-// EXTERNAL MODULE: ../../node_modules/.pnpm/style-loader@3.3.3_webpack@5.89.0_webpack-cli@5.1.4_/node_modules/style-loader/dist/runtime/styleTagTransform.js
-var styleTagTransform = __webpack_require__(3);
-var styleTagTransform_default = /*#__PURE__*/__webpack_require__.n(styleTagTransform);
-// EXTERNAL MODULE: ../../node_modules/.pnpm/css-loader@6.8.1_webpack@5.89.0_webpack-cli@5.1.4_/node_modules/css-loader/dist/cjs.js!../../node_modules/.pnpm/materialize-css@1.0.0/node_modules/materialize-css/dist/css/materialize.min.css
-var materialize_min = __webpack_require__(82);
-;// CONCATENATED MODULE: ../../node_modules/.pnpm/materialize-css@1.0.0/node_modules/materialize-css/dist/css/materialize.min.css
+// EXTERNAL MODULE: ../../node_modules/.pnpm/style-loader@4.0.0_webpack@5.96.1/node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js
+var app_injectStylesIntoStyleTag = __webpack_require__(323);
+var app_injectStylesIntoStyleTag_default = /*#__PURE__*/__webpack_require__.n(app_injectStylesIntoStyleTag);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/style-loader@4.0.0_webpack@5.96.1/node_modules/style-loader/dist/runtime/styleDomAPI.js
+var app_styleDomAPI = __webpack_require__(280);
+var app_styleDomAPI_default = /*#__PURE__*/__webpack_require__.n(app_styleDomAPI);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/style-loader@4.0.0_webpack@5.96.1/node_modules/style-loader/dist/runtime/insertBySelector.js
+var app_insertBySelector = __webpack_require__(452);
+var app_insertBySelector_default = /*#__PURE__*/__webpack_require__.n(app_insertBySelector);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/style-loader@4.0.0_webpack@5.96.1/node_modules/style-loader/dist/runtime/setAttributesWithoutAttributes.js
+var app_setAttributesWithoutAttributes = __webpack_require__(947);
+var app_setAttributesWithoutAttributes_default = /*#__PURE__*/__webpack_require__.n(app_setAttributesWithoutAttributes);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/style-loader@4.0.0_webpack@5.96.1/node_modules/style-loader/dist/runtime/insertStyleElement.js
+var app_insertStyleElement = __webpack_require__(439);
+var app_insertStyleElement_default = /*#__PURE__*/__webpack_require__.n(app_insertStyleElement);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/style-loader@4.0.0_webpack@5.96.1/node_modules/style-loader/dist/runtime/styleTagTransform.js
+var app_styleTagTransform = __webpack_require__(308);
+var app_styleTagTransform_default = /*#__PURE__*/__webpack_require__.n(app_styleTagTransform);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/css-loader@7.1.2_webpack@5.96.1/node_modules/css-loader/dist/cjs.js!../../node_modules/.pnpm/materialize-css@1.0.0/node_modules/materialize-css/dist/css/materialize.min.css
+var app_materialize_min = __webpack_require__(575);
+;// ../../node_modules/.pnpm/materialize-css@1.0.0/node_modules/materialize-css/dist/css/materialize.min.css
 
       
       
@@ -3059,28 +2847,26 @@ var materialize_min = __webpack_require__(82);
       
       
 
-var options = {};
+var app_options = {};
 
-options.styleTagTransform = (styleTagTransform_default());
-options.setAttributes = (setAttributesWithoutAttributes_default());
+app_options.styleTagTransform = (app_styleTagTransform_default());
+app_options.setAttributes = (app_setAttributesWithoutAttributes_default());
+app_options.insert = app_insertBySelector_default().bind(null, "head");
+app_options.domAPI = (app_styleDomAPI_default());
+app_options.insertStyleElement = (app_insertStyleElement_default());
 
-      options.insert = insertBySelector_default().bind(null, "head");
-    
-options.domAPI = (styleDomAPI_default());
-options.insertStyleElement = (insertStyleElement_default());
-
-var update = injectStylesIntoStyleTag_default()(materialize_min/* default */.Z, options);
+var app_update = app_injectStylesIntoStyleTag_default()(app_materialize_min/* default */.A, app_options);
 
 
 
 
-       /* harmony default export */ const css_materialize_min = (materialize_min/* default */.Z && materialize_min/* default */.Z.locals ? materialize_min/* default */.Z.locals : undefined);
+       /* harmony default export */ const app_css_materialize_min = (app_materialize_min/* default */.A && app_materialize_min/* default */.A.locals ? app_materialize_min/* default */.A.locals : undefined);
 
 // EXTERNAL MODULE: ../../node_modules/.pnpm/materialize-css@1.0.0/node_modules/materialize-css/dist/js/materialize.min.js
-var js_materialize_min = __webpack_require__(142);
-// EXTERNAL MODULE: ../../node_modules/.pnpm/css-loader@6.8.1_webpack@5.89.0_webpack-cli@5.1.4_/node_modules/css-loader/dist/cjs.js!../../node_modules/.pnpm/material-icons@1.13.12/node_modules/material-icons/iconfont/filled.css
-var filled = __webpack_require__(283);
-;// CONCATENATED MODULE: ../../node_modules/.pnpm/material-icons@1.13.12/node_modules/material-icons/iconfont/filled.css
+var app_js_materialize_min = __webpack_require__(387);
+// EXTERNAL MODULE: ../../node_modules/.pnpm/css-loader@7.1.2_webpack@5.96.1/node_modules/css-loader/dist/cjs.js!../../node_modules/.pnpm/material-icons@1.13.12/node_modules/material-icons/iconfont/filled.css
+var app_filled = __webpack_require__(773);
+;// ../../node_modules/.pnpm/material-icons@1.13.12/node_modules/material-icons/iconfont/filled.css
 
       
       
@@ -3092,26 +2878,24 @@ var filled = __webpack_require__(283);
       
       
 
-var filled_options = {};
+var app_filled_options = {};
 
-filled_options.styleTagTransform = (styleTagTransform_default());
-filled_options.setAttributes = (setAttributesWithoutAttributes_default());
+app_filled_options.styleTagTransform = (app_styleTagTransform_default());
+app_filled_options.setAttributes = (app_setAttributesWithoutAttributes_default());
+app_filled_options.insert = app_insertBySelector_default().bind(null, "head");
+app_filled_options.domAPI = (app_styleDomAPI_default());
+app_filled_options.insertStyleElement = (app_insertStyleElement_default());
 
-      filled_options.insert = insertBySelector_default().bind(null, "head");
-    
-filled_options.domAPI = (styleDomAPI_default());
-filled_options.insertStyleElement = (insertStyleElement_default());
-
-var filled_update = injectStylesIntoStyleTag_default()(filled/* default */.Z, filled_options);
+var app_filled_update = app_injectStylesIntoStyleTag_default()(app_filled/* default */.A, app_filled_options);
 
 
 
 
-       /* harmony default export */ const iconfont_filled = (filled/* default */.Z && filled/* default */.Z.locals ? filled/* default */.Z.locals : undefined);
+       /* harmony default export */ const app_iconfont_filled = (app_filled/* default */.A && app_filled/* default */.A.locals ? app_filled/* default */.A.locals : undefined);
 
-// EXTERNAL MODULE: ../../node_modules/.pnpm/css-loader@6.8.1_webpack@5.89.0_webpack-cli@5.1.4_/node_modules/css-loader/dist/cjs.js!../lib/dist/index.css
-var dist = __webpack_require__(95);
-;// CONCATENATED MODULE: ../lib/dist/index.css
+// EXTERNAL MODULE: ../../node_modules/.pnpm/css-loader@7.1.2_webpack@5.96.1/node_modules/css-loader/dist/cjs.js!../lib/dist/index.css
+var app_dist = __webpack_require__(178);
+;// ../lib/dist/index.css
 
       
       
@@ -3123,36 +2907,34 @@ var dist = __webpack_require__(95);
       
       
 
-var dist_options = {};
+var app_dist_options = {};
 
-dist_options.styleTagTransform = (styleTagTransform_default());
-dist_options.setAttributes = (setAttributesWithoutAttributes_default());
+app_dist_options.styleTagTransform = (app_styleTagTransform_default());
+app_dist_options.setAttributes = (app_setAttributesWithoutAttributes_default());
+app_dist_options.insert = app_insertBySelector_default().bind(null, "head");
+app_dist_options.domAPI = (app_styleDomAPI_default());
+app_dist_options.insertStyleElement = (app_insertStyleElement_default());
 
-      dist_options.insert = insertBySelector_default().bind(null, "head");
-    
-dist_options.domAPI = (styleDomAPI_default());
-dist_options.insertStyleElement = (insertStyleElement_default());
-
-var dist_update = injectStylesIntoStyleTag_default()(dist/* default */.Z, dist_options);
+var app_dist_update = app_injectStylesIntoStyleTag_default()(app_dist/* default */.A, app_dist_options);
 
 
 
 
-       /* harmony default export */ const lib_dist = (dist/* default */.Z && dist/* default */.Z.locals ? dist/* default */.Z.locals : undefined);
+       /* harmony default export */ const app_lib_dist = (app_dist/* default */.A && app_dist/* default */.A.locals ? app_dist/* default */.A.locals : undefined);
 
-// EXTERNAL MODULE: ../../node_modules/.pnpm/mithril@2.2.2/node_modules/mithril/index.js
-var mithril = __webpack_require__(898);
-var mithril_default = /*#__PURE__*/__webpack_require__.n(mithril);
-;// CONCATENATED MODULE: ./src/components/layout.ts
+// EXTERNAL MODULE: ../../node_modules/.pnpm/mithril@2.2.9/node_modules/mithril/index.js
+var app_mithril = __webpack_require__(789);
+var app_mithril_default = /*#__PURE__*/__webpack_require__.n(app_mithril);
+;// ./src/components/layout.ts
 
 
-const isActive = (path) => (mithril_default().route.get().indexOf(path) >= 0 ? '.active' : '');
-const Layout = () => ({
-    view: (vnode) => mithril_default()('.main', [
-        mithril_default()('nav', mithril_default()('.nav-wrapper', [
-            mithril_default()(
+const app_isActive = (path) => (app_mithril_default().route.get().indexOf(path) >= 0 ? '.active' : '');
+const app_Layout = () => ({
+    view: (vnode) => app_mithril_default()('.main', [
+        app_mithril_default()('nav', app_mithril_default()('.nav-wrapper', [
+            app_mithril_default()(
             // tslint:disable-next-line:max-line-length
-            'a.github-corner[aria-label=View source on GitHub][href=https://github.com/erikvullings/mithril-materialized]', mithril_default()('svg[aria-hidden=true][height=80][viewBox=0 0 250 250][width=80]', {
+            'a.github-corner[aria-label=View source on GitHub][href=https://github.com/erikvullings/mithril-materialized]', app_mithril_default()('svg[aria-hidden=true][height=80][viewBox=0 0 250 250][width=80]', {
                 style: {
                     fill: 'black',
                     color: '#fff',
@@ -3163,95 +2945,95 @@ const Layout = () => ({
                     transform: 'scale(-1, 1)',
                 },
             }, [
-                mithril_default()('path[d=M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z]'),
-                mithril_default()(
+                app_mithril_default()('path[d=M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z]'),
+                app_mithril_default()(
                 // tslint:disable-next-line:max-line-length
                 'path.octo-arm[d=M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2][fill=currentColor]', { style: { 'transform-origin': '130px 106px' } }),
-                mithril_default()(
+                app_mithril_default()(
                 // tslint:disable-next-line:max-line-length
                 'path.octo-body[d=M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z][fill=currentColor]'),
             ])),
-            mithril_default()('style', 
+            app_mithril_default()('style', 
             // tslint:disable-next-line:max-line-length
             '.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}'),
-            mithril_default()('ul.right', dashboardSvc
+            app_mithril_default()('ul.right', app_dashboardSvc
                 .getList()
                 .filter(d => d.visible)
-                .map(d => mithril_default()(`li${isActive(d.route)}`, mithril_default()((mithril_default()).route.Link, { href: d.route }, mithril_default()('i.material-icons.right', d.icon ? mithril_default()('i.material-icons', d.icon) : d.title))))),
+                .map(d => app_mithril_default()(`li${app_isActive(d.route)}`, app_mithril_default()((app_mithril_default()).route.Link, { href: d.route }, app_mithril_default()('i.material-icons.right', d.icon ? app_mithril_default()('i.material-icons', d.icon) : d.title))))),
         ])),
-        mithril_default()('.container', mithril_default()('.row', vnode.children)),
+        app_mithril_default()('.container', app_mithril_default()('.row', vnode.children)),
     ]),
 });
 
-;// CONCATENATED MODULE: ../lib/dist/index.modern.js
-const t=()=>"idxxxxxxxx".replace(/[x]/g,()=>(16*Math.random()|0).toString(16)),a=()=>"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,e=>{const t=16*Math.random()|0;return("x"===e?t:3&t|8).toString(16)}),i=(...e)=>t=>e.reduceRight((e,t)=>t(e),t),l=e=>t=>Array.prototype.map.call(t,e),o=e=>t=>Array.prototype.join.call(t,e),n=e=>e.replace(/([A-Z])/g,e=>"-"+e.toLowerCase()),s=e=>e?i(o(""),l(t=>`[${n(t)}="${((e="")=>e.toString().replace(/"/g,"&quot;"))(e[t])}"]`),Object.keys)(e):"",r=["min","max","minLength","maxLength","rows","cols","placeholder","autocomplete","pattern","readOnly","step"],c=e=>r.indexOf(e)>=0,d=({disabled:e})=>e?"[disabled]":"",p=({required:e,isMandatory:t})=>e||t?"[required][aria-required=true]":"",m=e=>(e=>{const t=(a=e,e=>void 0!==a[e]);var a;return Object.keys(e).filter(c).filter(t).reduce((t,a)=>{const i=e[a];return t.push(`[${a.toLowerCase()}=${i}]`),t},[]).join("")})(e)+(e=>e.maxLength?`[data-length=${e.maxLength}]`:"")(e)+d(e)+p(e)+(({autofocus:e})=>"boolean"==typeof e&&e||e&&e()?"[autofocus]":"")(e),u=e=>!isNaN(parseFloat(e))&&isFinite(e),h=(...e)=>t=>e.reduce((e,t)=>t(e),t),v=(e,t=2,a="0")=>(e+="").length>=t?e:new Array(t-e.length+1).join(a)+e,b=(e,t,a)=>{const i=e[t];e[t]=e[a],e[a]=i},y=(e,t,a)=>{const i=e[t];e.splice(t,1),e.splice(a,0,i)};function g(){return g=Object.assign?Object.assign.bind():function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var i in a)Object.prototype.hasOwnProperty.call(a,i)&&(e[i]=a[i])}return e},g.apply(this,arguments)}function f(e,t){if(null==e)return{};var a,i,l={},o=Object.keys(e);for(i=0;i<o.length;i++)t.indexOf(a=o[i])>=0||(l[a]=e[a]);return l}const x=["label","id","isMandatory","isActive"],w={view:({attrs:t})=>mithril_default()("span.mandatory",t,"*")},k=()=>({view:t=>{let{attrs:{label:a,id:i,isMandatory:l,isActive:o}}=t,n=f(t.attrs,x);return a?mithril_default()(`label${o?".active":""}${i?`[for=${i}]`:""}`,n,[mithril_default().trust(a),l?mithril_default()(w):void 0]):void 0}}),N=()=>({view:({attrs:{helperText:t,dataError:a,dataSuccess:i,className:l}})=>t||a||i?mithril_default()("span.helper-text",{className:l,dataError:a,dataSuccess:i},t?mithril_default().trust(t):""):void 0}),$=()=>{const a={id:t()};return{view:({attrs:t})=>{const i=t.id||a.id,l=m(t),{label:o,helperText:n,initialValue:s,onchange:r,newRow:c,className:d="col s12",style:p,iconName:u,isMandatory:h}=t;return mithril_default()(".input-field"+(c?".clear":""),{className:c?d+" clear":d,style:p},[u?mithril_default()("i.material-icons.prefix",u):"",mithril_default()(`input.autocomplete[type=text][tabindex=0]${l}`,{id:i,oncreate:({dom:e})=>{M.Autocomplete.init(e,t)},onchange:r?e=>{e.target&&e.target.value&&r(e.target.value)}:void 0,value:s}),mithril_default()(k,{label:o,id:i,isMandatory:h,isActive:s}),mithril_default()(N,{helperText:n})])}}},C=["iconName"],I=()=>({view:t=>{let{attrs:{iconName:a}}=t,i=f(t.attrs,C);return mithril_default()("i.material-icons",i,a)}}),A=["modalId","tooltip","tooltipPostion","iconName","iconClass","label","attr"],T=(t,a="")=>()=>{const i=`${t}${a}`;return{view:({attrs:t})=>{const{modalId:a,tooltip:l,tooltipPostion:o,iconName:n,iconClass:r,label:c,attr:d}=t,p=f(t,A);return mithril_default()(`${i}${a?`.modal-trigger[href=#${a}]`:""}${l?`.tooltipped[data-position=${o||"top"}][data-tooltip=${l}]`:""}${s(d)}`,p,n?mithril_default()(I,{iconName:n,className:r||"left"}):void 0,c||void 0)}}},V=T("a.waves-effect.waves-light.btn","[type=button]"),S=T("a.waves-effect.waves-light.btn-large","[type=button]"),O=T("a.waves-effect.waves-light.btn-small","[type=button]"),R=T("a.waves-effect.waves-teal.btn-flat","[type=button]"),j=T("button.btn-floating.btn-large.waves-effect.waves-light","[type=button]"),L=T("button.btn.waves-effect.waves-light","[type=submit]"),E=()=>({view:({attrs:{href:t,src:a}})=>mithril_default()("a.carousel-item",{href:t},mithril_default()(`img[src=${a}]`))}),F=()=>({view:({attrs:t})=>{const{items:a}=t;return a&&a.length>0?mithril_default()(".carousel",{oncreate:({dom:e})=>{M.Carousel.init(e,t)}},a.map(t=>mithril_default()(E,t))):void 0}}),D=()=>({oncreate:({attrs:e,dom:t})=>{const{onchange:a,onChipAdd:i,onChipDelete:l}=e,o=M.Chips.getInstance(t.children[0]),n=i?i.bind(o):void 0;e.onChipAdd=function(e,t){a&&a(this.chipsData),n&&n(e,t)};const s=l?l.bind(o):void 0;e.onChipDelete=function(e,t){a&&a(this.chipsData),s&&s(e,t)},M.Chips.init(t.children[0],e)},onupdate:({dom:e,attrs:{data:t}})=>{if(!t||0===t.length)return;const a=M.Chips.getInstance(e.children[0]);t.forEach(e=>a.addChip(e))},view:({attrs:{placeholder:t,required:a,isMandatory:i=a,data:l,className:o="col s12",label:n,helperText:s}})=>mithril_default()(".input-field",{className:o},[mithril_default()(`.chips.chips-autocomplete${t?".chips-placeholder":""}${l?".chips-initial":""}`),n?mithril_default()(k,{label:n,isMandatory:i,className:"active"}):void 0,s?mithril_default()(N,{helperText:s}):void 0])}),K=()=>({view:({attrs:t})=>{const{newRow:a,code:i,language:l}=t,o=l||"lang-TypeScript",n=o.replace("lang-",""),s=i instanceof Array?i.join("\n"):i;return mithril_default()("pre.codeblock"+(a?".clear":""),t,[mithril_default()("div",mithril_default()("label",n)),mithril_default()(`code.${o}`,s)])}}),_=()=>({view:({attrs:{header:t,body:a,active:i,iconName:l}})=>mithril_default()(i?"li.active":"li",[t||l?mithril_default()(".collapsible-header",[l?mithril_default()("i.material-icons",l):void 0,t?"string"==typeof t?mithril_default()("span",t):t:void 0]):void 0,a?mithril_default()(".collapsible-body",a):void 0])}),B=()=>({oncreate:({dom:e,attrs:t})=>{M.Collapsible.init(e,t)},view:({attrs:t})=>{const{items:a,class:i,className:l,style:o,id:n}=t;return a&&a.length>0?mithril_default()("ul.collapsible",{class:i||l,style:o,id:n},a.map(t=>mithril_default()(_,t))):void 0}}),q=["header","items","mode"],P=["title","active","href"],U=["items","header"],z=["items","header","mode"];var H;!function(e){e[e.BASIC=0]="BASIC",e[e.LINKS=1]="LINKS",e[e.AVATAR=2]="AVATAR"}(H||(H={}));const W=e=>e&&/https?:\/\//.test(e),Y=()=>({view:({attrs:t})=>{const{href:a,iconName:i="send",onclick:l,style:o={cursor:"pointer"}}=t,n={href:a,style:o,className:"secondary-content",onclick:l?()=>l(t):void 0};return W(a)||!a?mithril_default()("a[target=_]",n,mithril_default()(I,{iconName:i})):mithril_default()((mithril_default()).route.Link,n,mithril_default()(I,{iconName:i}))}}),Z=(e="")=>/\./.test(e),G=()=>({view:({attrs:{item:t,mode:a}})=>{const{title:i,content:l="",active:o,iconName:n,avatar:s,className:r,onclick:c}=t;return a===H.AVATAR?mithril_default()("li.collection-item.avatar"+(o?".active":""),{onclick:c?()=>c(t):void 0},[Z(s)?mithril_default()("img.circle",{src:s}):mithril_default()("i.material-icons.circle",{className:r},s),mithril_default()("span.title",i),mithril_default()("p",mithril_default().trust(l)),mithril_default()(Y,t)]):mithril_default()("li.collection-item"+(o?".active":""),n?mithril_default()("div",[i,mithril_default()(Y,t)]):i)}}),J=()=>({view:t=>{let{attrs:{header:a,items:i,mode:l=H.BASIC}}=t,o=f(t.attrs,q);const n=i.map(t=>mithril_default()(G,{key:t.id,item:t,mode:l}));return a?mithril_default()("ul.collection.with-header",o,[mithril_default()("li.collection-header",mithril_default()("h4",a)),n]):mithril_default()("ul.collection",o,n)}}),Q=()=>({view:({attrs:{item:t}})=>{const{title:a,active:i,href:l}=t,o=g({},f(t,P),{className:"collection-item "+(i?"active":""),href:l});return W(l)||!l?mithril_default()("a[target=_]",o,a):mithril_default()((mithril_default()).route.Link,o,a)}}),X=()=>({view:t=>{let{attrs:{items:a,header:i}}=t,l=f(t.attrs,U);return i?mithril_default()(".collection.with-header",l,[mithril_default()(".collection-header",mithril_default()("h4",i)),a.map(t=>mithril_default()(Q,{key:t.id,item:t}))]):mithril_default()(".collection",l,a.map(t=>mithril_default()(Q,{key:t.id,item:t})))}}),ee=()=>({view:t=>{let{attrs:{items:a,header:i,mode:l=H.BASIC}}=t,o=f(t.attrs,z);return i||a&&a.length>0?l===H.LINKS?mithril_default()(X,g({header:i,items:a},o)):mithril_default()(J,g({header:i,items:a,mode:l},o)):void 0}}),te=["key","label","onchange","disabled","items","iconName","helperText","style","className"],ae=()=>{const a={};return{oninit:({attrs:{id:e=t(),initialValue:i,checkedId:l}})=>{a.id=e,a.initialValue=i||l},view:t=>{let{attrs:{key:i,label:l,onchange:o,disabled:n=!1,items:s,iconName:r,helperText:c,style:d,className:p="col s12"}}=t,m=f(t.attrs,te);const{id:u,initialValue:h}=a,v=h?s.filter(e=>e.id?e.id===h:e.label===h).shift():void 0,b=v?v.label:l||"Select";return mithril_default()(".input-field",{className:p,key:i,style:d},[r?mithril_default()("i.material-icons.prefix",r):void 0,mithril_default()(N,{helperText:c}),mithril_default()(`a.dropdown-trigger.btn.truncate[href=#][data-target=${u}]${n?"[disabled]":""}`,{className:"col s12",style:d||(r?"margin: 0.2em 0 0 3em;":void 0),oncreate:({dom:e})=>{M.Dropdown.init(e,m)}},b),mithril_default()(`ul.dropdown-content[id=${u}]`,s.map(t=>mithril_default()("li"+(t.divider?".divider[tabindex=-1]":""),t.divider?void 0:mithril_default()("a",{onclick:o?()=>{a.initialValue=t.id||t.label,o(a.initialValue)}:void 0},[t.iconName?mithril_default()("i.material-icons",t.iconName):void 0,t.label]))))])}}},ie=["className","iconName","iconClass","position","style","buttons"],le=()=>({view:t=>{let{attrs:{className:a,iconName:i,iconClass:l="large",position:o,style:n=("left"===o||"inline-left"===o?"position: absolute; display: inline-block; left: 24px;":"right"===o||"inline-right"===o?"position: absolute; display: inline-block; right: 24px;":void 0),buttons:s}}=t,r=f(t.attrs,ie);const c=mithril_default()(".fixed-action-btn",{style:n,oncreate:({dom:e})=>M.FloatingActionButton.init(e,r)},[mithril_default()("a.btn-floating.btn-large",{className:a},mithril_default()("i.material-icons",{classNames:l},i)),s?mithril_default()("ul",s.map(t=>mithril_default()("li",mithril_default()("a.btn-floating",{className:t.className,onclick:e=>t.onClick&&t.onClick(e)},mithril_default()("i.material-icons",{className:t.iconClass},t.iconName))))):void 0]);return"inline-right"===o||"inline-left"===o?mithril_default()("div",{style:"position: relative; height: 70px;"},c):c}}),oe=["className","helperText","iconName","id","initialValue","isMandatory","label","onchange","onkeydown","onkeypress","onkeyup","onblur","style"],ne=["className","dataError","dataSuccess","helperText","iconName","id","initialValue","isMandatory","label","maxLength","newRow","onchange","onkeydown","onkeypress","onkeyup","onblur","style","validate"],se=()=>{const a={id:t()};return{view:({attrs:t})=>{const{className:i="col s12",helperText:l,iconName:o,id:n=a.id,initialValue:s,isMandatory:r,label:c,onchange:d,onkeydown:p,onkeypress:u,onkeyup:h,onblur:v,style:b}=t,y=f(t,oe),g=m(y);return mithril_default()(".input-field",{className:i,style:b},[o?mithril_default()("i.material-icons.prefix",o):"",mithril_default()(`textarea.materialize-textarea[tabindex=0][id=${n}]${g}`,{oncreate:({dom:e})=>{M.textareaAutoResize(e),t.maxLength&&M.CharacterCounter.init(e)},onchange:d?e=>{const t=e.target;d(t&&"string"==typeof t.value?t.value:"")}:void 0,value:s,onkeyup:h?e=>{h(e,e.target.value)}:void 0,onkeydown:p?e=>{p(e,e.target.value)}:void 0,onkeypress:u?e=>{u(e,e.target.value)}:void 0,onblur:v}),mithril_default()(k,{label:c,id:n,isMandatory:r,isActive:s||t.placeholder}),mithril_default()(N,{helperText:l})])}}},re=(a,i="")=>()=>{const l={id:t()},o=e=>{const t=e.value;return!t||"number"!==a&&"range"!==a?t:+t},n=(e,t)=>{e.setCustomValidity("boolean"==typeof t?t?"":"Custom validation failed":t)};return{view:({attrs:t})=>{const{className:s="col s12",dataError:r,dataSuccess:c,helperText:d,iconName:p,id:u=l.id,initialValue:h,isMandatory:v,label:b,maxLength:y,newRow:g,onchange:x,onkeydown:w,onkeypress:$,onkeyup:C,onblur:I,style:A,validate:T}=t,V=f(t,ne),S=m(V);return mithril_default()(`.input-field${g?".clear":""}${i}`,{className:s,style:A},[p?mithril_default()("i.material-icons.prefix",p):void 0,mithril_default()(`input.validate[type=${a}][tabindex=0][id=${u}]${S}`,{oncreate:({dom:e})=>{(({autofocus:e})=>!!e&&("boolean"==typeof e?e:e()))(t)&&e.focus(),y&&M.CharacterCounter.init(e),"range"===a&&M.Range.init(e)},onkeyup:C?e=>{C(e,o(e.target))}:void 0,onkeydown:w?e=>{w(e,o(e.target))}:void 0,onkeypress:$?e=>{$(e,o(e.target))}:void 0,onblur:I,onupdate:T?({dom:e})=>{const t=e;n(t,T(o(t),t))}:void 0,onchange:e=>{const t=e.target;if(t){const e=o(t);x&&x(e),T&&n(t,T(e,t))}},value:h}),mithril_default()(k,{label:b,id:u,isMandatory:v,isActive:!(void 0===h&&!t.placeholder&&"number"!==a&&"color"!==a&&"range"!==a)}),mithril_default()(N,{helperText:d,dataError:r,dataSuccess:c})])}}},ce=re("text"),de=re("password"),pe=re("number"),me=re("url"),ue=re("color"),he=re("range",".range-field"),ve=re("email"),be=()=>{let t,a=!1;return{view:({attrs:i})=>{const{multiple:l,disabled:o,initialValue:n,placeholder:s,onchange:r,className:c="col s12",accept:d,label:p="File"}=i,m=d?d instanceof Array?d.join(", "):d:void 0,u=m?`[accept=${m}]`:"",h=l?"[multiple]":"",v=o?"[disabled]":"",b=s?`[placeholder=${s}]`:"";return mithril_default()(".file-field.input-field",{className:i.class||c},[mithril_default()(".btn",[mithril_default()("span",p),mithril_default()(`input[type=file]${h}${v}${u}`,{onchange:r?e=>{const t=e.target;t&&t.files&&r&&(a=!0,r(t.files))}:void 0})]),mithril_default()(".file-path-wrapper",mithril_default()(`input.file-path.validate${b}[type=text]`,{oncreate:({dom:e})=>{t=e,n&&(t.value=n)}})),(a||n)&&mithril_default()("a.waves-effect.waves-teal.btn-flat",{style:"float: right;position: relative;top: -3rem; padding: 0",onclick:()=>{a=!1,t.value="",r&&r({})}},mithril_default()("i.material-icons","clear"))])}}},ye=()=>({view:({attrs:{className:t="col s12",onchange:a,label:i,checked:l,disabled:o,description:n}})=>mithril_default()("div",{className:t},mithril_default()("label",[mithril_default()("input[type=checkbox][tabindex=0]",{checked:l,disabled:o,onclick:a?e=>{e.target&&void 0!==e.target.checked&&a(e.target.checked)}:void 0}),i?"string"==typeof i?mithril_default()("span",i):i:void 0]),n&&mithril_default()(N,{className:"input-checkbox-desc",helperText:n}))}),ge=()=>{const t={},a=e=>t.checkedIds.indexOf(e)>=0;return{oninit:({attrs:{initialValue:e,checkedId:a}})=>{const i=a||e;t.checkedId=a,t.checkedIds=i?i instanceof Array?[...i]:[i]:[]},view:({attrs:{label:i,id:l,options:o,checkedId:n,description:s,className:r="col s12",disabled:c,checkboxClass:d,newRow:p,isMandatory:m,onchange:u}})=>{n&&t.checkedId!==n&&(t.checkedId=n,t.checkedIds=n instanceof Array?n:[n]);const h=u?(e,a)=>{const i=t.checkedIds.filter(t=>t!==e);a&&i.push(e),t.checkedIds=i,u(i)}:void 0;return mithril_default()("div"+(p?".clear":""),{className:r},[mithril_default()("div",{className:"input-field options"},mithril_default()(k,{id:l,label:i,isMandatory:m})),mithril_default()(N,{helperText:s}),...o.map(t=>mithril_default()(ye,{disabled:c||t.disabled,label:t.label,onchange:h?e=>h(t.id,e):void 0,className:t.className||d,checked:a(t.id),description:t.description}))])}}},fe=()=>{const a=e=>i.curKey=i.id=e,i={elementId:t(),id:"",curKey:"",kvc:(t,a,i)=>{const{keyClass:l=".col.s4",valueClass:o=".col.s8"}=i,n=a instanceof Array?a.join(", "):"boolean"==typeof a?mithril_default()(ye,{label:" ",checked:a,disabled:!0,className:"checkbox-in-collection"}):a.toString();return{title:mithril_default()(".row",{style:"margin-bottom: 0"},[mithril_default()(l,mithril_default()("b",t)),mithril_default()(o,n)])}}},l=()=>{i.id="",i.curKey=""};return{oninit:({attrs:{keyValueConverter:e,id:t}})=>{e&&(i.kvc=e),t&&(i.elementId=t)},view:({attrs:{className:t="col s12",disabled:o,disallowArrays:n,header:s,iconName:r,iconNameKey:c=(r?"label":void 0),isMandatory:d,label:p,labelKey:m="Key",labelValue:u="Value",properties:h,keyClass:v,valueClass:b,onchange:y,falsy:g=["false"],truthy:f=["true"]}})=>{const x=()=>y?y(h):void 0,w=((e,t)=>Object.keys(e).map(t=>({key:t,value:e[t]})).map(e=>((e,t)=>{const l=t.onclick;return t.id=t.id||e,t.active=e===i.curKey,t.onclick=l?()=>a(e)&&l(t):()=>a(e),t})(e.key,i.kvc(e.key,e.value,{keyClass:t.keyClass,valueClass:t.valueClass}))))(h,{keyClass:v,valueClass:b}),N=i.curKey,$=h[N],M="boolean"==typeof $||"number"==typeof $?$:$?$ instanceof Array?`[${$.join(", ")}]`:$:"",C=i.elementId;return[mithril_default()(".map-editor",mithril_default()(".input-field",{className:t,style:"min-height: 1.5em;"},[r?mithril_default()("i.material-icons.prefix",r):"",mithril_default()(k,{label:p,isMandatory:d,isActive:w.length>0}),mithril_default()(ee,{id:C,items:w,mode:H.LINKS,header:s})])),o?void 0:[mithril_default()(ce,{label:m,iconName:c,className:"col s5",initialValue:N,onchange:e=>{i.curKey=e,i.id&&(delete h[i.id],h[e]=$,i.id=e),x()}}),"string"==typeof M?mithril_default()(se,{label:u,initialValue:M,className:"col s7",onchange:e=>{const t=(i=g,f.indexOf(a=e)>=0||!(i.indexOf(a)>=0)&&void 0);var a,i;const l=void 0===t&&/^\s*\d+\s*$/i.test(e)?+e:void 0;h[N]="boolean"==typeof t?t:"number"==typeof l?l:((e,t=!1)=>{if(t)return e;if(!e)return;const a=/\s*\[(.*)\]\s*/gi.exec(e);return a&&2===a.length?a[1].split(",").map(e=>e.trim()).map(e=>/^\d+$/g.test(e)?+e:e):void 0})(e,n)||e,x()}}):"number"==typeof M?mithril_default()(pe,{label:u,initialValue:M,className:"col s7",onchange:e=>{h[N]=e,x()}}):mithril_default()(ye,{label:u,checked:M,className:"input-field col s7",onchange:e=>{h[N]=e,x()}}),mithril_default()(".col.s12.right-align",[mithril_default()(R,{iconName:"add",onclick:l}),mithril_default()(R,{iconName:"delete",disabled:!N,onclick:()=>{delete h[N],l(),x()}})])]]}}},xe=()=>({oncreate:({dom:e,attrs:t})=>{M.Materialbox.init(e,t)},view:({attrs:t})=>{const{src:a,width:i,height:l}=t;return mithril_default()(`img.materialboxed[src=${a}]${i?`[width=${i}]`:""}${l?`[height=${l}]`:""}`,t)}}),we=()=>({oncreate:({dom:e,attrs:{options:t,onCreate:a}})=>{const i=M.Modal.init(e,t);a&&a(i)},view:({attrs:{id:t,title:a,description:i,fixedFooter:l,bottomSheet:o,buttons:n,richContent:s}})=>mithril_default()(`.modal${l?".modal-fixed-footer":""}${o?".bottom-sheet":""}[id=${t}]`,[mithril_default()(".modal-content",[mithril_default()("h4",a),s&&"string"==typeof i?mithril_default().trust(i||""):"string"==typeof i?mithril_default()("p",i):i]),n?mithril_default()(".modal-footer",n.map(t=>mithril_default()(R,g({},t,{className:"modal-close"})))):void 0])}),ke=()=>({view:({attrs:{title:t,href:a,active:i,disabled:l}})=>mithril_default()("li",{className:i?"active":l?"disabled":"waves-effect"},"number"==typeof t?mithril_default()((mithril_default()).route.Link,{href:a},t):t)}),Ne=()=>{const t={pagIndex:0};return{view:({attrs:{items:a,curPage:i=1,size:l=Math.min(9,a.length)}})=>{const{pagIndex:o}=t,n=o*l,s=n+l,r=o>0,c=s<a.length,d=[{title:mithril_default()("a",{onclick:()=>r&&t.pagIndex--},mithril_default()("i.material-icons","chevron_left")),disabled:!r},...a.filter((e,t)=>n<=t&&t<s),{title:mithril_default()("a",{onclick:()=>c&&t.pagIndex++},mithril_default()("i.material-icons","chevron_right")),disabled:!c}];return mithril_default()("ul.pagination",d.map((t,a)=>mithril_default()(ke,g({title:n+a},t,{active:n+a===i}))))}}},$e=()=>({oncreate:({dom:e,attrs:t})=>{M.Parallax.init(e,t)},view:({attrs:{src:t}})=>t?mithril_default()(".parallax-container",mithril_default()(".parallax",mithril_default()(`img[src=${t}]`))):void 0}),Me=["label","helperText","initialValue","newRow","className","iconName","isMandatory","onchange","disabled"],Ce=["label","helperText","initialValue","newRow","className","iconName","isMandatory","onchange","disabled"],Ie=()=>{const a={id:t()};return{view:t=>{let{attrs:{label:i,helperText:l,initialValue:o,newRow:n,className:s="col s12",iconName:r,isMandatory:c,onchange:d,disabled:p}}=t,u=f(t.attrs,Me);const h=a.id,v=m(u),b=d?()=>a.dp&&d(a.dp.date):void 0;return mithril_default()(".input-field"+(n?".clear":""),{className:s,onremove:()=>a.dp&&a.dp.destroy()},[r?mithril_default()("i.material-icons.prefix",r):"",mithril_default()(`input.datepicker[type=text][tabindex=0][id=${h}]${v}${p?"[disabled]":""}`,{oncreate:({dom:e})=>{a.dp=M.Datepicker.init(e,g({format:"yyyy/mm/dd",showClearBtn:!0,setDefaultDate:!0,defaultDate:o?new Date(o):new Date},u,{onClose:b}))}}),mithril_default()(k,{label:i,id:h,isMandatory:c,isActive:!!o}),mithril_default()(N,{helperText:l})])}}},Ae=()=>{const a={id:t()};return{view:t=>{let{attrs:{label:i,helperText:l,initialValue:o,newRow:n,className:s="col s12",iconName:r,isMandatory:c,onchange:d,disabled:p}}=t,u=f(t.attrs,Ce);const h=a.id,v=m(u),b=n?".clear":"",y=new Date,x=d?()=>a.tp&&d(a.tp.time||o||`${y.getHours()}:${y.getMinutes()}`):void 0;return mithril_default()(`.input-field.timepicker${b}`,{className:s,onremove:()=>a.tp&&a.tp.destroy()},[r?mithril_default()("i.material-icons.prefix",r):"",mithril_default()(`input[type=text][tabindex=0][id=${h}]${v}${p?"[disabled]":""}`,{value:o,oncreate:({dom:e})=>{a.tp=M.Timepicker.init(e,g({twelveHour:!1,showClearBtn:!0,defaultTime:o},u,{onCloseEnd:x}))}}),mithril_default()(k,{label:i,id:h,isMandatory:c,isActive:o}),mithril_default()(N,{helperText:l})])}}},Te=()=>({view:({attrs:{id:t,groupId:a,label:i,onchange:l,className:o="col s12",checked:n,disabled:s}})=>mithril_default()("div",{className:o},mithril_default()("label",[mithril_default()(`input[type=radio][tabindex=0][name=${a}]${n?"[checked=checked]":""}${s?"[disabled]":""}`,{onclick:l?()=>l(t):void 0}),mithril_default()("span",mithril_default().trust(i))]))}),Ve=()=>{const a={groupId:t()};return{oninit:({attrs:{checkedId:e,initialValue:t}})=>{a.oldCheckedId=e,a.checkedId=e||t},view:({attrs:{id:t,checkedId:i,newRow:l,className:o="col s12",label:n="",disabled:s,description:r,options:c,isMandatory:d,checkboxClass:p,onchange:m}})=>{a.oldCheckedId!==i&&(a.oldCheckedId=a.checkedId=i);const{groupId:u,checkedId:h}=a,v=e=>{a.checkedId=e,m&&m(e)};return l&&(o+=" clear"),mithril_default()("div",{id:t,className:o},[mithril_default()("div",{className:"input-field options"},mithril_default()(k,{id:t,label:n,isMandatory:d})),r?mithril_default()("p.helper-text",mithril_default().trust(r)):"",...c.map(t=>mithril_default()(Te,g({},t,{onchange:v,groupId:u,disabled:s,className:p,checked:t.id===h})))])}}},Se=()=>{const t={},a=e=>e.map(e=>e.id).join(""),i=(e,t,a=!1)=>a||(t instanceof Array&&(e||"number"==typeof e)?t.indexOf(e)>=0:t===e);return{oninit:({attrs:{checkedId:e,initialValue:i,options:l}})=>{t.ids=a(l);const o=e||i;t.checkedId=e instanceof Array?[...e]:e,t.initialValue=null!=o?o instanceof Array?o.filter(e=>null!=e):[o]:[]},view:({attrs:{id:l,newRow:o,className:n="col s12",checkedId:s,key:r,options:c,multiple:d,label:p,helperText:m,placeholder:h="",isMandatory:v,iconName:b,disabled:y,classes:g="",dropdownOptions:f,onchange:x}})=>{t.checkedId!==s&&(t.initialValue=s?s instanceof Array?s:[s]:void 0);const{initialValue:w}=t,$=x?d?()=>{const e=t.instance&&t.instance.getSelectedValues(),a=e?e.length>0&&u(e[0])?e.map(e=>+e):e.filter(e=>null!==e||void 0!==e):void 0;t.initialValue=a||[],x(t.initialValue)}:e=>{if(e&&e.currentTarget){const a=e.currentTarget,i=u(a.value)?+a.value:a.value;t.initialValue=void 0!==typeof i?[i]:[]}t.initialValue&&x(t.initialValue)}:void 0;o&&(n+=" clear");const C=!c.some(e=>i(e.id,w)),I=c.reduce((e,t)=>(t.group&&e.indexOf(t.group)<0&&e.push(t.group),e),[]);return mithril_default()(".input-field.select-space",{className:n,key:r,oncreate:d?({dom:e})=>t.wrapper=e:void 0},[b&&mithril_default()("i.material-icons.prefix",b),mithril_default()("select",{id:l,title:p,disabled:y,multiple:d,oncreate:({dom:e})=>{t.instance=M.FormSelect.init(e,{classes:g,dropdownOptions:f})},onupdate:({dom:e})=>{if(d){const e=b?1:0;!t.inputEl&&t.wrapper&&t.wrapper.childNodes&&t.wrapper.childNodes.length>0&&t.wrapper.childNodes[e].childNodes&&t.wrapper.childNodes[e].childNodes[0]&&(t.inputEl=t.wrapper.childNodes[e].childNodes[0]),t.inputEl&&t.inputEl.value&&t.inputEl.value.startsWith(`${h}, `)&&(t.inputEl.value=t.inputEl.value.replace(`${h}, `,""))}const i=a(c);let l=s&&t.checkedId!==s.toString();t.ids!==i&&(t.ids=i,l=!0),(t.checkedId instanceof Array&&s instanceof Array?t.checkedId.join()!==s.join():t.checkedId!==s)&&(t.checkedId=s,l=!0),l&&(t.instance=M.FormSelect.init(e,{classes:g,dropdownOptions:f}))},onchange:$},mithril_default()("option",{value:"",disabled:!0,selected:!!C||void 0},h),0===I.length?c.map((t,a)=>{var l;return mithril_default()("option",{value:t.id,title:t.title||void 0,disabled:t.disabled?"true":void 0,"data-icon":t.img||void 0,selected:i(t.id,w,0===a&&C&&!h)},null==(l=t.label)?void 0:l.replace("&amp;","&"))}):I.map(t=>mithril_default()("optgroup",{label:t},c.filter(e=>e.group===t).map((t,a)=>{var l;return mithril_default()("option",{value:t.id,title:t.title||void 0,disabled:t.disabled?"true":void 0,"data-icon":t.img||void 0,selected:i(t.id,w,0===a&&C&&!h)},null==(l=t.label)?void 0:l.replace("&amp;","&"))})))),mithril_default()(k,{label:p,isMandatory:v}),m&&mithril_default()(N,{helperText:m})])}}},Oe=["label","left","right","disabled","newRow","onchange","checked","isMandatory","className"],Re=()=>{const a={id:t()};return{view:({attrs:t})=>{const i=t.id||a.id,{label:l,left:o,right:n,disabled:s,newRow:r,onchange:c,checked:p,isMandatory:m,className:u="col s12"}=t,h=f(t,Oe);return mithril_default()("div"+(r?".clear":""),{className:u},[l?mithril_default()(k,{label:l||"",id:i,isMandatory:m}):void 0,mithril_default()(".switch",h,mithril_default()("label",[o||"Off",mithril_default()(`input[id=${i}][type=checkbox]${d({disabled:s})}${p?"[checked]":""}`,{onclick:c?e=>{e.target&&void 0!==e.target.checked&&c(e.target.checked)}:void 0}),mithril_default()("span.lever"),n||"On"]))])}}},je=()=>{const t={},a=(e,t)=>t||e.replace(/ /g,"").toLowerCase();return{view:({attrs:{tabWidth:i,selectedTabId:l,tabs:o,className:n,style:s,duration:r,onShow:c,swipeable:d,responsiveThreshold:p}})=>{const m=o.filter(e=>e.active).shift(),u=l||(m?a(m.title,m.id):"");return mithril_default()(".row",[mithril_default()(".col.s12",mithril_default()("ul.tabs"+("fill"===i?".tabs-fixed-width":""),{className:n,style:s,oncreate:({dom:e})=>{t.instance=M.Tabs.init(e,{duration:r,onShow:c,responsiveThreshold:p,swipeable:d})},onupdate:()=>{if(u){const e=document.getElementById(`tab_${u}`);e&&e.click()}},onremove:()=>t.instance.destroy()},o.map(({className:t,title:l,id:n,active:s,disabled:r,target:c,href:d})=>mithril_default()(`li.tab${r?".disabled":""}${"fixed"===i?`.col.s${Math.floor(12/o.length)}`:""}`,{className:t},mithril_default()(`a[id=tab_${a(l,n)}]${s?".active":""}`,{target:c,href:d||`#${a(l,n)}`},l))))),o.filter(({href:e})=>void 0===e).map(({id:t,title:i,vnode:l,contentClass:o})=>mithril_default()(`.col.s12[id=${a(i,t)}]`,{className:o},l))])}}},Le=()=>({view:({attrs:{id:t,title:a,datetime:i,active:l,content:o,iconName:n,dateFormatter:s,timeFormatter:r,onSelect:c}})=>mithril_default()(`li${l?".active":""}${t?`[id=${t}]`:""}`,{onclick:c?()=>c({id:t,title:a,datetime:i,active:l,content:o}):void 0,style:c?"cursor: pointer;":void 0},[mithril_default()(".mm_time",{datetime:i},[mithril_default()("span",s(i)),mithril_default()("span",r(i))]),n?mithril_default()(".mm_icon",mithril_default()("i.material-icons",n)):void 0,mithril_default()(".mm_label",[a?"string"==typeof a?mithril_default()("h5",a):a:void 0,o?"string"==typeof o?mithril_default()("p",o):o:void 0])])}),Ee=()=>{const t=e=>`${e.getUTCDate()}/${e.getUTCMonth()+1}/${e.getUTCFullYear()}`,a=e=>`${v(e.getUTCHours())}:${v(e.getUTCMinutes())}`;return{view:({attrs:{items:i,onSelect:l,timeFormatter:o=a,dateFormatter:n=t}})=>mithril_default()("ul.mm_timeline",i.map(t=>mithril_default()(Le,g({onSelect:l,dateFormatter:n,timeFormatter:o},t))))}};
+;// ../lib/dist/index.modern.js
+const app_t=()=>"idxxxxxxxx".replace(/[x]/g,()=>(16*Math.random()|0).toString(16)),app_a=()=>"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,e=>{const t=16*Math.random()|0;return("x"===e?t:3&t|8).toString(16)}),app_i=(...e)=>t=>e.reduceRight((e,t)=>t(e),t),app_l=e=>t=>Array.prototype.map.call(t,e),app_o=e=>t=>Array.prototype.join.call(t,e),app_n=e=>e.replace(/([A-Z])/g,e=>"-"+e.toLowerCase()),app_s=e=>e?app_i(app_o(""),app_l(t=>`[${app_n(t)}="${((e="")=>e.toString().replace(/"/g,"&quot;"))(e[t])}"]`),Object.keys)(e):"",app_r=["min","max","minLength","maxLength","rows","cols","placeholder","autocomplete","pattern","readOnly","step"],app_c=e=>app_r.indexOf(e)>=0,app_d=({disabled:e})=>e?"[disabled]":"",app_p=({required:e,isMandatory:t})=>e||t?"[required][aria-required=true]":"",app_m=e=>(e=>{const t=(a=e,e=>void 0!==a[e]);var a;return Object.keys(e).filter(app_c).filter(t).reduce((t,a)=>{const i=e[a];return t.push(`[${a.toLowerCase()}=${i}]`),t},[]).join("")})(e)+(e=>e.maxLength?`[data-length=${e.maxLength}]`:"")(e)+app_d(e)+app_p(e)+(({autofocus:e})=>"boolean"==typeof e&&e||e&&e()?"[autofocus]":"")(e),app_u=e=>!isNaN(parseFloat(e))&&isFinite(e),app_h=(...e)=>t=>e.reduce((e,t)=>t(e),t),app_v=(e,t=2,a="0")=>(e+="").length>=t?e:new Array(t-e.length+1).join(a)+e,app_b=(e,t,a)=>{const i=e[t];e[t]=e[a],e[a]=i},app_y=(e,t,a)=>{const i=e[t];e.splice(t,1),e.splice(a,0,i)};function app_g(){return app_g=Object.assign?Object.assign.bind():function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var i in a)Object.prototype.hasOwnProperty.call(a,i)&&(e[i]=a[i])}return e},app_g.apply(this,arguments)}function app_f(e,t){if(null==e)return{};var a,i,l={},o=Object.keys(e);for(i=0;i<o.length;i++)t.indexOf(a=o[i])>=0||(l[a]=e[a]);return l}const app_x=["label","id","isMandatory","isActive"],app_w={view:({attrs:t})=>app_mithril_default()("span.mandatory",t,"*")},app_k=()=>({view:t=>{let{attrs:{label:a,id:i,isMandatory:l,isActive:o}}=t,n=app_f(t.attrs,app_x);return a?app_mithril_default()(`label${o?".active":""}${i?`[for=${i}]`:""}`,n,[app_mithril_default().trust(a),l?app_mithril_default()(app_w):void 0]):void 0}}),app_N=()=>({view:({attrs:{helperText:t,dataError:a,dataSuccess:i,className:l}})=>t||a||i?app_mithril_default()("span.helper-text",{className:l,dataError:a,dataSuccess:i},t?app_mithril_default().trust(t):""):void 0}),app_$=()=>{const a={id:app_t()};return{view:({attrs:t})=>{const i=t.id||a.id,l=app_m(t),{label:o,helperText:n,initialValue:s,onchange:r,newRow:c,className:d="col s12",style:p,iconName:u,isMandatory:h}=t;return app_mithril_default()(".input-field"+(c?".clear":""),{className:c?d+" clear":d,style:p},[u?app_mithril_default()("i.material-icons.prefix",u):"",app_mithril_default()(`input.autocomplete[type=text][tabindex=0]${l}`,{id:i,oncreate:({dom:e})=>{M.Autocomplete.init(e,t)},onchange:r?e=>{e.target&&e.target.value&&r(e.target.value)}:void 0,value:s}),app_mithril_default()(app_k,{label:o,id:i,isMandatory:h,isActive:s}),app_mithril_default()(app_N,{helperText:n})])}}},app_C=["iconName"],app_I=()=>({view:t=>{let{attrs:{iconName:a}}=t,i=app_f(t.attrs,app_C);return app_mithril_default()("i.material-icons",i,a)}}),app_A=["modalId","tooltip","tooltipPostion","iconName","iconClass","label","attr"],app_T=(t,a="")=>()=>{const i=`${t}${a}`;return{view:({attrs:t})=>{const{modalId:a,tooltip:l,tooltipPostion:o,iconName:n,iconClass:r,label:c,attr:d}=t,p=app_f(t,app_A);return app_mithril_default()(`${i}${a?`.modal-trigger[href=#${a}]`:""}${l?`.tooltipped[data-position=${o||"top"}][data-tooltip=${l}]`:""}${app_s(d)}`,p,n?app_mithril_default()(app_I,{iconName:n,className:r||"left"}):void 0,c||void 0)}}},app_V=app_T("a.waves-effect.waves-light.btn","[type=button]"),app_S=app_T("a.waves-effect.waves-light.btn-large","[type=button]"),app_O=app_T("a.waves-effect.waves-light.btn-small","[type=button]"),app_R=app_T("a.waves-effect.waves-teal.btn-flat","[type=button]"),app_j=app_T("button.btn-floating.btn-large.waves-effect.waves-light","[type=button]"),app_L=app_T("button.btn.waves-effect.waves-light","[type=submit]"),app_E=()=>({view:({attrs:{href:t,src:a}})=>app_mithril_default()("a.carousel-item",{href:t},app_mithril_default()(`img[src=${a}]`))}),app_F=()=>({view:({attrs:t})=>{const{items:a}=t;return a&&a.length>0?app_mithril_default()(".carousel",{oncreate:({dom:e})=>{M.Carousel.init(e,t)}},a.map(t=>app_mithril_default()(app_E,t))):void 0}}),app_D=()=>({oncreate:({attrs:e,dom:t})=>{const{onchange:a,onChipAdd:i,onChipDelete:l}=e,o=M.Chips.getInstance(t.children[0]),n=i?i.bind(o):void 0;e.onChipAdd=function(e,t){a&&a(this.chipsData),n&&n(e,t)};const s=l?l.bind(o):void 0;e.onChipDelete=function(e,t){a&&a(this.chipsData),s&&s(e,t)},M.Chips.init(t.children[0],e)},onupdate:({dom:e,attrs:{data:t}})=>{if(!t||0===t.length)return;const a=M.Chips.getInstance(e.children[0]);t.forEach(e=>a.addChip(e))},view:({attrs:{placeholder:t,required:a,isMandatory:i=a,data:l,className:o="col s12",label:n,helperText:s}})=>app_mithril_default()(".input-field",{className:o},[app_mithril_default()(`.chips.chips-autocomplete${t?".chips-placeholder":""}${l?".chips-initial":""}`),n?app_mithril_default()(app_k,{label:n,isMandatory:i,className:"active"}):void 0,s?app_mithril_default()(app_N,{helperText:s}):void 0])}),app_K=()=>({view:({attrs:t})=>{const{newRow:a,code:i,language:l}=t,o=l||"lang-TypeScript",n=o.replace("lang-",""),s=i instanceof Array?i.join("\n"):i;return app_mithril_default()("pre.codeblock"+(a?".clear":""),t,[app_mithril_default()("div",app_mithril_default()("label",n)),app_mithril_default()(`code.${o}`,s)])}}),app_=()=>({view:({attrs:{header:t,body:a,active:i,iconName:l}})=>app_mithril_default()(i?"li.active":"li",[t||l?app_mithril_default()(".collapsible-header",[l?app_mithril_default()("i.material-icons",l):void 0,t?"string"==typeof t?app_mithril_default()("span",t):t:void 0]):void 0,a?app_mithril_default()(".collapsible-body",a):void 0])}),app_B=()=>({oncreate:({dom:e,attrs:t})=>{M.Collapsible.init(e,t)},view:({attrs:t})=>{const{items:a,class:i,className:l,style:o,id:n}=t;return a&&a.length>0?app_mithril_default()("ul.collapsible",{class:i||l,style:o,id:n},a.map(t=>app_mithril_default()(app_,t))):void 0}}),app_q=["header","items","mode"],app_P=["title","active","href"],app_U=["items","header"],app_z=["items","header","mode"];var app_H;!function(e){e[e.BASIC=0]="BASIC",e[e.LINKS=1]="LINKS",e[e.AVATAR=2]="AVATAR"}(app_H||(app_H={}));const app_W=e=>e&&/https?:\/\//.test(e),app_Y=()=>({view:({attrs:t})=>{const{href:a,iconName:i="send",onclick:l,style:o={cursor:"pointer"}}=t,n={href:a,style:o,className:"secondary-content",onclick:l?()=>l(t):void 0};return app_W(a)||!a?app_mithril_default()("a[target=_]",n,app_mithril_default()(app_I,{iconName:i})):app_mithril_default()((app_mithril_default()).route.Link,n,app_mithril_default()(app_I,{iconName:i}))}}),app_Z=(e="")=>/\./.test(e),app_G=()=>({view:({attrs:{item:t,mode:a}})=>{const{title:i,content:l="",active:o,iconName:n,avatar:s,className:r,onclick:c}=t;return a===app_H.AVATAR?app_mithril_default()("li.collection-item.avatar"+(o?".active":""),{onclick:c?()=>c(t):void 0},[app_Z(s)?app_mithril_default()("img.circle",{src:s}):app_mithril_default()("i.material-icons.circle",{className:r},s),app_mithril_default()("span.title",i),app_mithril_default()("p",app_mithril_default().trust(l)),app_mithril_default()(app_Y,t)]):app_mithril_default()("li.collection-item"+(o?".active":""),n?app_mithril_default()("div",[i,app_mithril_default()(app_Y,t)]):i)}}),app_J=()=>({view:t=>{let{attrs:{header:a,items:i,mode:l=app_H.BASIC}}=t,o=app_f(t.attrs,app_q);const n=i.map(t=>app_mithril_default()(app_G,{key:t.id,item:t,mode:l}));return a?app_mithril_default()("ul.collection.with-header",o,[app_mithril_default()("li.collection-header",app_mithril_default()("h4",a)),n]):app_mithril_default()("ul.collection",o,n)}}),app_Q=()=>({view:({attrs:{item:t}})=>{const{title:a,active:i,href:l}=t,o=app_g({},app_f(t,app_P),{className:"collection-item "+(i?"active":""),href:l});return app_W(l)||!l?app_mithril_default()("a[target=_]",o,a):app_mithril_default()((app_mithril_default()).route.Link,o,a)}}),app_X=()=>({view:t=>{let{attrs:{items:a,header:i}}=t,l=app_f(t.attrs,app_U);return i?app_mithril_default()(".collection.with-header",l,[app_mithril_default()(".collection-header",app_mithril_default()("h4",i)),a.map(t=>app_mithril_default()(app_Q,{key:t.id,item:t}))]):app_mithril_default()(".collection",l,a.map(t=>app_mithril_default()(app_Q,{key:t.id,item:t})))}}),app_ee=()=>({view:t=>{let{attrs:{items:a,header:i,mode:l=app_H.BASIC}}=t,o=app_f(t.attrs,app_z);return i||a&&a.length>0?l===app_H.LINKS?app_mithril_default()(app_X,app_g({header:i,items:a},o)):app_mithril_default()(app_J,app_g({header:i,items:a,mode:l},o)):void 0}}),app_te=["key","label","onchange","disabled","items","iconName","helperText","style","className"],app_ae=()=>{const a={};return{oninit:({attrs:{id:e=app_t(),initialValue:i,checkedId:l}})=>{a.id=e,a.initialValue=i||l},view:t=>{let{attrs:{key:i,label:l,onchange:o,disabled:n=!1,items:s,iconName:r,helperText:c,style:d,className:p="col s12"}}=t,m=app_f(t.attrs,app_te);const{id:u,initialValue:h}=a,v=h?s.filter(e=>e.id?e.id===h:e.label===h).shift():void 0,b=v?v.label:l||"Select";return app_mithril_default()(".input-field",{className:p,key:i,style:d},[r?app_mithril_default()("i.material-icons.prefix",r):void 0,app_mithril_default()(app_N,{helperText:c}),app_mithril_default()(`a.dropdown-trigger.btn.truncate[href=#][data-target=${u}]${n?"[disabled]":""}`,{className:"col s12",style:d||(r?"margin: 0.2em 0 0 3em;":void 0),oncreate:({dom:e})=>{M.Dropdown.init(e,m)}},b),app_mithril_default()(`ul.dropdown-content[id=${u}]`,s.map(t=>app_mithril_default()("li"+(t.divider?".divider[tabindex=-1]":""),t.divider?void 0:app_mithril_default()("a",{onclick:o?()=>{a.initialValue=t.id||t.label,o(a.initialValue)}:void 0},[t.iconName?app_mithril_default()("i.material-icons",t.iconName):void 0,t.label]))))])}}},app_ie=["className","iconName","iconClass","position","style","buttons"],app_le=()=>({view:t=>{let{attrs:{className:a,iconName:i,iconClass:l="large",position:o,style:n=("left"===o||"inline-left"===o?"position: absolute; display: inline-block; left: 24px;":"right"===o||"inline-right"===o?"position: absolute; display: inline-block; right: 24px;":void 0),buttons:s}}=t,r=app_f(t.attrs,app_ie);const c=app_mithril_default()(".fixed-action-btn",{style:n,oncreate:({dom:e})=>M.FloatingActionButton.init(e,r)},[app_mithril_default()("a.btn-floating.btn-large",{className:a},app_mithril_default()("i.material-icons",{classNames:l},i)),s?app_mithril_default()("ul",s.map(t=>app_mithril_default()("li",app_mithril_default()("a.btn-floating",{className:t.className,onclick:e=>t.onClick&&t.onClick(e)},app_mithril_default()("i.material-icons",{className:t.iconClass},t.iconName))))):void 0]);return"inline-right"===o||"inline-left"===o?app_mithril_default()("div",{style:"position: relative; height: 70px;"},c):c}}),app_oe=["className","helperText","iconName","id","initialValue","isMandatory","label","onchange","onkeydown","onkeypress","onkeyup","onblur","style"],app_ne=["className","dataError","dataSuccess","helperText","iconName","id","initialValue","isMandatory","label","maxLength","newRow","onchange","onkeydown","onkeypress","onkeyup","onblur","style","validate"],app_se=()=>{const a={id:app_t()};return{view:({attrs:t})=>{const{className:i="col s12",helperText:l,iconName:o,id:n=a.id,initialValue:s,isMandatory:r,label:c,onchange:d,onkeydown:p,onkeypress:u,onkeyup:h,onblur:v,style:b}=t,y=app_f(t,app_oe),g=app_m(y);return app_mithril_default()(".input-field",{className:i,style:b},[o?app_mithril_default()("i.material-icons.prefix",o):"",app_mithril_default()(`textarea.materialize-textarea[tabindex=0][id=${n}]${g}`,{oncreate:({dom:e})=>{M.textareaAutoResize(e),t.maxLength&&M.CharacterCounter.init(e)},onchange:d?e=>{const t=e.target;d(t&&"string"==typeof t.value?t.value:"")}:void 0,value:s,onkeyup:h?e=>{h(e,e.target.value)}:void 0,onkeydown:p?e=>{p(e,e.target.value)}:void 0,onkeypress:u?e=>{u(e,e.target.value)}:void 0,onblur:v}),app_mithril_default()(app_k,{label:c,id:n,isMandatory:r,isActive:s||t.placeholder}),app_mithril_default()(app_N,{helperText:l})])}}},app_re=(a,i="")=>()=>{const l={id:app_t()},o=e=>{const t=e.value;return!t||"number"!==a&&"range"!==a?t:+t},n=(e,t)=>{e.setCustomValidity("boolean"==typeof t?t?"":"Custom validation failed":t)};return{view:({attrs:t})=>{const{className:s="col s12",dataError:r,dataSuccess:c,helperText:d,iconName:p,id:u=l.id,initialValue:h,isMandatory:v,label:b,maxLength:y,newRow:g,onchange:x,onkeydown:w,onkeypress:$,onkeyup:C,onblur:I,style:A,validate:T}=t,V=app_f(t,app_ne),S=app_m(V);return app_mithril_default()(`.input-field${g?".clear":""}${i}`,{className:s,style:A},[p?app_mithril_default()("i.material-icons.prefix",p):void 0,app_mithril_default()(`input.validate[type=${a}][tabindex=0][id=${u}]${S}`,{oncreate:({dom:e})=>{(({autofocus:e})=>!!e&&("boolean"==typeof e?e:e()))(t)&&e.focus(),y&&M.CharacterCounter.init(e),"range"===a&&M.Range.init(e)},onkeyup:C?e=>{C(e,o(e.target))}:void 0,onkeydown:w?e=>{w(e,o(e.target))}:void 0,onkeypress:$?e=>{$(e,o(e.target))}:void 0,onblur:I,onupdate:T?({dom:e})=>{const t=e;n(t,T(o(t),t))}:void 0,onchange:e=>{const t=e.target;if(t){const e=o(t);x&&x(e),T&&n(t,T(e,t))}},value:h}),app_mithril_default()(app_k,{label:b,id:u,isMandatory:v,isActive:!(void 0===h&&!t.placeholder&&"number"!==a&&"color"!==a&&"range"!==a)}),app_mithril_default()(app_N,{helperText:d,dataError:r,dataSuccess:c})])}}},app_ce=app_re("text"),app_de=app_re("password"),app_pe=app_re("number"),app_me=app_re("url"),app_ue=app_re("color"),app_he=app_re("range",".range-field"),app_ve=app_re("email"),app_be=()=>{let t,a=!1;return{view:({attrs:i})=>{const{multiple:l,disabled:o,initialValue:n,placeholder:s,onchange:r,className:c="col s12",accept:d,label:p="File"}=i,m=d?d instanceof Array?d.join(", "):d:void 0,u=m?`[accept=${m}]`:"",h=l?"[multiple]":"",v=o?"[disabled]":"",b=s?`[placeholder=${s}]`:"";return app_mithril_default()(".file-field.input-field",{className:i.class||c},[app_mithril_default()(".btn",[app_mithril_default()("span",p),app_mithril_default()(`input[type=file]${h}${v}${u}`,{onchange:r?e=>{const t=e.target;t&&t.files&&r&&(a=!0,r(t.files))}:void 0})]),app_mithril_default()(".file-path-wrapper",app_mithril_default()(`input.file-path.validate${b}[type=text]`,{oncreate:({dom:e})=>{t=e,n&&(t.value=n)}})),(a||n)&&app_mithril_default()("a.waves-effect.waves-teal.btn-flat",{style:"float: right;position: relative;top: -3rem; padding: 0",onclick:()=>{a=!1,t.value="",r&&r({})}},app_mithril_default()("i.material-icons","clear"))])}}},app_ye=()=>({view:({attrs:{className:t="col s12",onchange:a,label:i,checked:l,disabled:o,description:n,style:s}})=>app_mithril_default()("div",{className:t,style:s},app_mithril_default()("label",[app_mithril_default()("input[type=checkbox][tabindex=0]",{checked:l,disabled:o,onclick:a?e=>{e.target&&void 0!==e.target.checked&&a(e.target.checked)}:void 0}),i?"string"==typeof i?app_mithril_default()("span",i):i:void 0]),n&&app_mithril_default()(app_N,{className:"input-checkbox-desc",helperText:n}))}),app_ge=()=>{const t={},a=e=>t.checkedIds.indexOf(e)>=0;return{oninit:({attrs:{initialValue:e,checkedId:a}})=>{const i=a||e;t.checkedId=a,t.checkedIds=i?i instanceof Array?[...i]:[i]:[]},view:({attrs:{label:i,id:l,options:o,checkedId:n,description:s,className:r="col s12",disabled:c,checkboxClass:d,newRow:p,isMandatory:m,onchange:u}})=>{n&&t.checkedId!==n&&(t.checkedId=n,t.checkedIds=n instanceof Array?n:[n]);const h=u?(e,a)=>{const i=t.checkedIds.filter(t=>t!==e);a&&i.push(e),t.checkedIds=i,u(i)}:void 0;return app_mithril_default()("div"+(p?".clear":""),{className:r},[app_mithril_default()("div",{className:"input-field options"},app_mithril_default()(app_k,{id:l,label:i,isMandatory:m})),app_mithril_default()(app_N,{helperText:s}),...o.map(t=>app_mithril_default()(app_ye,{disabled:c||t.disabled,label:t.label,onchange:h?e=>h(t.id,e):void 0,className:t.className||d,checked:a(t.id),description:t.description}))])}}},app_fe=()=>{const a=e=>i.curKey=i.id=e,i={elementId:app_t(),id:"",curKey:"",kvc:(t,a,i)=>{const{keyClass:l=".col.s4",valueClass:o=".col.s8"}=i,n=a instanceof Array?a.join(", "):"boolean"==typeof a?app_mithril_default()(app_ye,{label:" ",checked:a,disabled:!0,className:"checkbox-in-collection"}):a.toString();return{title:app_mithril_default()(".row",{style:"margin-bottom: 0"},[app_mithril_default()(l,app_mithril_default()("b",t)),app_mithril_default()(o,n)])}}},l=()=>{i.id="",i.curKey=""};return{oninit:({attrs:{keyValueConverter:e,id:t}})=>{e&&(i.kvc=e),t&&(i.elementId=t)},view:({attrs:{className:t="col s12",disabled:o,disallowArrays:n,header:s,iconName:r,iconNameKey:c=(r?"label":void 0),isMandatory:d,label:p,labelKey:m="Key",labelValue:u="Value",properties:h,keyClass:v,valueClass:b,onchange:y,falsy:g=["false"],truthy:f=["true"]}})=>{const x=()=>y?y(h):void 0,w=((e,t)=>Object.keys(e).map(t=>({key:t,value:e[t]})).map(e=>((e,t)=>{const l=t.onclick;return t.id=t.id||e,t.active=e===i.curKey,t.onclick=l?()=>a(e)&&l(t):()=>a(e),t})(e.key,i.kvc(e.key,e.value,{keyClass:t.keyClass,valueClass:t.valueClass}))))(h,{keyClass:v,valueClass:b}),N=i.curKey,$=h[N],M="boolean"==typeof $||"number"==typeof $?$:$?$ instanceof Array?`[${$.join(", ")}]`:$:"",C=i.elementId;return[app_mithril_default()(".map-editor",app_mithril_default()(".input-field",{className:t,style:"min-height: 1.5em;"},[r?app_mithril_default()("i.material-icons.prefix",r):"",app_mithril_default()(app_k,{label:p,isMandatory:d,isActive:w.length>0}),app_mithril_default()(app_ee,{id:C,items:w,mode:app_H.LINKS,header:s})])),o?void 0:[app_mithril_default()(app_ce,{label:m,iconName:c,className:"col s5",initialValue:N,onchange:e=>{i.curKey=e,i.id&&(delete h[i.id],h[e]=$,i.id=e),x()}}),"string"==typeof M?app_mithril_default()(app_se,{label:u,initialValue:M,className:"col s7",onchange:e=>{const t=(i=g,f.indexOf(a=e)>=0||!(i.indexOf(a)>=0)&&void 0);var a,i;const l=void 0===t&&/^\s*\d+\s*$/i.test(e)?+e:void 0;h[N]="boolean"==typeof t?t:"number"==typeof l?l:((e,t=!1)=>{if(t)return e;if(!e)return;const a=/\s*\[(.*)\]\s*/gi.exec(e);return a&&2===a.length?a[1].split(",").map(e=>e.trim()).map(e=>/^\d+$/g.test(e)?+e:e):void 0})(e,n)||e,x()}}):"number"==typeof M?app_mithril_default()(app_pe,{label:u,initialValue:M,className:"col s7",onchange:e=>{h[N]=e,x()}}):app_mithril_default()(app_ye,{label:u,checked:M,className:"input-field col s7",onchange:e=>{h[N]=e,x()}}),app_mithril_default()(".col.s12.right-align",[app_mithril_default()(app_R,{iconName:"add",onclick:l}),app_mithril_default()(app_R,{iconName:"delete",disabled:!N,onclick:()=>{delete h[N],l(),x()}})])]]}}},app_xe=()=>({oncreate:({dom:e,attrs:t})=>{M.Materialbox.init(e,t)},view:({attrs:t})=>{const{src:a,width:i,height:l}=t;return app_mithril_default()(`img.materialboxed[src=${a}]${i?`[width=${i}]`:""}${l?`[height=${l}]`:""}`,t)}}),app_we=()=>({oncreate:({dom:e,attrs:{options:t,onCreate:a}})=>{const i=M.Modal.init(e,t);a&&a(i)},view:({attrs:{id:t,title:a,description:i,fixedFooter:l,bottomSheet:o,buttons:n,richContent:s}})=>app_mithril_default()(`.modal${l?".modal-fixed-footer":""}${o?".bottom-sheet":""}[id=${t}]`,[app_mithril_default()(".modal-content",[app_mithril_default()("h4",a),s&&"string"==typeof i?app_mithril_default().trust(i||""):"string"==typeof i?app_mithril_default()("p",i):i]),n?app_mithril_default()(".modal-footer",n.map(t=>app_mithril_default()(app_R,app_g({},t,{className:"modal-close"})))):void 0])}),app_ke=()=>({view:({attrs:{title:t,href:a,active:i,disabled:l}})=>app_mithril_default()("li",{className:i?"active":l?"disabled":"waves-effect"},"number"==typeof t?app_mithril_default()((app_mithril_default()).route.Link,{href:a},t):t)}),app_Ne=()=>{const t={pagIndex:0};return{view:({attrs:{items:a,curPage:i=1,size:l=Math.min(9,a.length)}})=>{const{pagIndex:o}=t,n=o*l,s=n+l,r=o>0,c=s<a.length,d=[{title:app_mithril_default()("a",{onclick:()=>r&&t.pagIndex--},app_mithril_default()("i.material-icons","chevron_left")),disabled:!r},...a.filter((e,t)=>n<=t&&t<s),{title:app_mithril_default()("a",{onclick:()=>c&&t.pagIndex++},app_mithril_default()("i.material-icons","chevron_right")),disabled:!c}];return app_mithril_default()("ul.pagination",d.map((t,a)=>app_mithril_default()(app_ke,app_g({title:n+a},t,{active:n+a===i}))))}}},app_$e=()=>({oncreate:({dom:e,attrs:t})=>{M.Parallax.init(e,t)},view:({attrs:{src:t}})=>t?app_mithril_default()(".parallax-container",app_mithril_default()(".parallax",app_mithril_default()(`img[src=${t}]`))):void 0}),app_Me=["label","helperText","initialValue","newRow","className","iconName","isMandatory","onchange","disabled"],app_Ce=["label","helperText","initialValue","newRow","className","iconName","isMandatory","onchange","disabled"],app_Ie=()=>{const a={id:app_t()};return{view:t=>{let{attrs:{label:i,helperText:l,initialValue:o,newRow:n,className:s="col s12",iconName:r,isMandatory:c,onchange:d,disabled:p}}=t,u=app_f(t.attrs,app_Me);const h=a.id,v=app_m(u),b=d?()=>a.dp&&d(a.dp.date):void 0;return app_mithril_default()(".input-field"+(n?".clear":""),{className:s,onremove:()=>a.dp&&a.dp.destroy()},[r?app_mithril_default()("i.material-icons.prefix",r):"",app_mithril_default()(`input.datepicker[type=text][tabindex=0][id=${h}]${v}${p?"[disabled]":""}`,{oncreate:({dom:e})=>{a.dp=M.Datepicker.init(e,app_g({format:"yyyy/mm/dd",showClearBtn:!0,setDefaultDate:!0,defaultDate:o?new Date(o):new Date},u,{onClose:b}))}}),app_mithril_default()(app_k,{label:i,id:h,isMandatory:c,isActive:!!o}),app_mithril_default()(app_N,{helperText:l})])}}},app_Ae=()=>{const a={id:app_t()};return{view:t=>{let{attrs:{label:i,helperText:l,initialValue:o,newRow:n,className:s="col s12",iconName:r,isMandatory:c,onchange:d,disabled:p}}=t,u=app_f(t.attrs,app_Ce);const h=a.id,v=app_m(u),b=n?".clear":"",y=new Date,x=d?()=>a.tp&&d(a.tp.time||o||`${y.getHours()}:${y.getMinutes()}`):void 0;return app_mithril_default()(`.input-field.timepicker${b}`,{className:s,onremove:()=>a.tp&&a.tp.destroy()},[r?app_mithril_default()("i.material-icons.prefix",r):"",app_mithril_default()(`input[type=text][tabindex=0][id=${h}]${v}${p?"[disabled]":""}`,{value:o,oncreate:({dom:e})=>{a.tp=M.Timepicker.init(e,app_g({twelveHour:!1,showClearBtn:!0,defaultTime:o},u,{onCloseEnd:x}))}}),app_mithril_default()(app_k,{label:i,id:h,isMandatory:c,isActive:o}),app_mithril_default()(app_N,{helperText:l})])}}},app_Te=()=>({view:({attrs:{id:t,groupId:a,label:i,onchange:l,className:o="col s12",checked:n,disabled:s}})=>app_mithril_default()("div",{className:o},app_mithril_default()("label",[app_mithril_default()(`input[type=radio][tabindex=0][name=${a}]${n?"[checked=checked]":""}${s?"[disabled]":""}`,{onclick:l?()=>l(t):void 0}),app_mithril_default()("span",app_mithril_default().trust(i))]))}),app_Ve=()=>{const a={groupId:app_t()};return{oninit:({attrs:{checkedId:e,initialValue:t}})=>{a.oldCheckedId=e,a.checkedId=e||t},view:({attrs:{id:t,checkedId:i,newRow:l,className:o="col s12",label:n="",disabled:s,description:r,options:c,isMandatory:d,checkboxClass:p,onchange:m}})=>{a.oldCheckedId!==i&&(a.oldCheckedId=a.checkedId=i);const{groupId:u,checkedId:h}=a,v=e=>{a.checkedId=e,m&&m(e)};return l&&(o+=" clear"),app_mithril_default()("div",{id:t,className:o},[app_mithril_default()("div",{className:"input-field options"},app_mithril_default()(app_k,{id:t,label:n,isMandatory:d})),r?app_mithril_default()("p.helper-text",app_mithril_default().trust(r)):"",...c.map(t=>app_mithril_default()(app_Te,app_g({},t,{onchange:v,groupId:u,disabled:s,className:p,checked:t.id===h})))])}}},app_Se=()=>{const t={},a=e=>e.map(e=>e.id).join(""),i=(e,t,a=!1)=>a||(t instanceof Array&&(e||"number"==typeof e)?t.indexOf(e)>=0:t===e);return{oninit:({attrs:{checkedId:e,initialValue:i,options:l}})=>{t.ids=a(l);const o=e||i;t.checkedId=e instanceof Array?[...e]:e,t.initialValue=null!=o?o instanceof Array?o.filter(e=>null!=e):[o]:[]},view:({attrs:{id:l,newRow:o,className:n="col s12",checkedId:s,key:r,options:c,multiple:d,label:p,helperText:m,placeholder:h="",isMandatory:v,iconName:b,disabled:y,classes:g="",dropdownOptions:f,onchange:x}})=>{t.checkedId!==s&&(t.initialValue=s?s instanceof Array?s:[s]:void 0);const{initialValue:w}=t,$=x?d?()=>{const e=t.instance&&t.instance.getSelectedValues(),a=e?e.length>0&&app_u(e[0])?e.map(e=>+e):e.filter(e=>null!==e||void 0!==e):void 0;t.initialValue=a||[],x(t.initialValue)}:e=>{if(e&&e.currentTarget){const a=e.currentTarget,i=app_u(a.value)?+a.value:a.value;t.initialValue=void 0!==typeof i?[i]:[]}t.initialValue&&x(t.initialValue)}:void 0;o&&(n+=" clear");const C=!c.some(e=>i(e.id,w)),I=c.reduce((e,t)=>(t.group&&e.indexOf(t.group)<0&&e.push(t.group),e),[]);return app_mithril_default()(".input-field.select-space",{className:n,key:r,oncreate:d?({dom:e})=>t.wrapper=e:void 0},[b&&app_mithril_default()("i.material-icons.prefix",b),app_mithril_default()("select",{id:l,title:p,disabled:y,multiple:d,oncreate:({dom:e})=>{t.instance=M.FormSelect.init(e,{classes:g,dropdownOptions:f})},onupdate:({dom:e})=>{if(d){const e=b?1:0;!t.inputEl&&t.wrapper&&t.wrapper.childNodes&&t.wrapper.childNodes.length>0&&t.wrapper.childNodes[e].childNodes&&t.wrapper.childNodes[e].childNodes[0]&&(t.inputEl=t.wrapper.childNodes[e].childNodes[0]),t.inputEl&&t.inputEl.value&&t.inputEl.value.startsWith(`${h}, `)&&(t.inputEl.value=t.inputEl.value.replace(`${h}, `,""))}const i=a(c);let l=s&&t.checkedId!==s.toString();t.ids!==i&&(t.ids=i,l=!0),(t.checkedId instanceof Array&&s instanceof Array?t.checkedId.join()!==s.join():t.checkedId!==s)&&(t.checkedId=s,l=!0),l&&(t.instance=M.FormSelect.init(e,{classes:g,dropdownOptions:f}))},onchange:$},app_mithril_default()("option",{value:"",disabled:!0,selected:!!C||void 0},h),0===I.length?c.map((t,a)=>{var l;return app_mithril_default()("option",{value:t.id,title:t.title||void 0,disabled:t.disabled?"true":void 0,"data-icon":t.img||void 0,selected:i(t.id,w,0===a&&C&&!h)},null==(l=t.label)?void 0:l.replace("&amp;","&"))}):I.map(t=>app_mithril_default()("optgroup",{label:t},c.filter(e=>e.group===t).map((t,a)=>{var l;return app_mithril_default()("option",{value:t.id,title:t.title||void 0,disabled:t.disabled?"true":void 0,"data-icon":t.img||void 0,selected:i(t.id,w,0===a&&C&&!h)},null==(l=t.label)?void 0:l.replace("&amp;","&"))})))),app_mithril_default()(app_k,{label:p,isMandatory:v}),m&&app_mithril_default()(app_N,{helperText:m})])}}},app_Oe=["label","left","right","disabled","newRow","onchange","checked","isMandatory","className"],app_Re=()=>{const a={id:app_t()};return{view:({attrs:t})=>{const i=t.id||a.id,{label:l,left:o,right:n,disabled:s,newRow:r,onchange:c,checked:p,isMandatory:m,className:u="col s12"}=t,h=app_f(t,app_Oe);return app_mithril_default()("div"+(r?".clear":""),{className:u},[l?app_mithril_default()(app_k,{label:l||"",id:i,isMandatory:m}):void 0,app_mithril_default()(".switch",h,app_mithril_default()("label",[o||"Off",app_mithril_default()(`input[id=${i}][type=checkbox]${app_d({disabled:s})}${p?"[checked]":""}`,{onclick:c?e=>{e.target&&void 0!==e.target.checked&&c(e.target.checked)}:void 0}),app_mithril_default()("span.lever"),n||"On"]))])}}},app_je=()=>{const t={},a=(e,t)=>t||e.replace(/ /g,"").toLowerCase();return{view:({attrs:{tabWidth:i,selectedTabId:l,tabs:o,className:n,style:s,duration:r,onShow:c,swipeable:d,responsiveThreshold:p}})=>{const m=o.filter(e=>e.active).shift(),u=l||(m?a(m.title,m.id):"");return app_mithril_default()(".row",[app_mithril_default()(".col.s12",app_mithril_default()("ul.tabs"+("fill"===i?".tabs-fixed-width":""),{className:n,style:s,oncreate:({dom:e})=>{t.instance=M.Tabs.init(e,{duration:r,onShow:c,responsiveThreshold:p,swipeable:d})},onupdate:()=>{if(u){const e=document.getElementById(`tab_${u}`);e&&e.click()}},onremove:()=>t.instance.destroy()},o.map(({className:t,title:l,id:n,active:s,disabled:r,target:c,href:d})=>app_mithril_default()(`li.tab${r?".disabled":""}${"fixed"===i?`.col.s${Math.floor(12/o.length)}`:""}`,{className:t},app_mithril_default()(`a[id=tab_${a(l,n)}]${s?".active":""}`,{target:c,href:d||`#${a(l,n)}`},l))))),o.filter(({href:e})=>void 0===e).map(({id:t,title:i,vnode:l,contentClass:o})=>app_mithril_default()(`.col.s12[id=${a(i,t)}]`,{className:o},l))])}}},app_Le=()=>({view:({attrs:{id:t,title:a,datetime:i,active:l,content:o,iconName:n,dateFormatter:s,timeFormatter:r,onSelect:c}})=>app_mithril_default()(`li${l?".active":""}${t?`[id=${t}]`:""}`,{onclick:c?()=>c({id:t,title:a,datetime:i,active:l,content:o}):void 0,style:c?"cursor: pointer;":void 0},[app_mithril_default()(".mm_time",{datetime:i},[app_mithril_default()("span",s(i)),app_mithril_default()("span",r(i))]),n?app_mithril_default()(".mm_icon",app_mithril_default()("i.material-icons",n)):void 0,app_mithril_default()(".mm_label",[a?"string"==typeof a?app_mithril_default()("h5",a):a:void 0,o?"string"==typeof o?app_mithril_default()("p",o):o:void 0])])}),app_Ee=()=>{const t=e=>`${e.getUTCDate()}/${e.getUTCMonth()+1}/${e.getUTCFullYear()}`,a=e=>`${app_v(e.getUTCHours())}:${app_v(e.getUTCMinutes())}`;return{view:({attrs:{items:i,onSelect:l,timeFormatter:o=a,dateFormatter:n=t}})=>app_mithril_default()("ul.mm_timeline",i.map(t=>app_mithril_default()(app_Le,app_g({onSelect:l,dateFormatter:n,timeFormatter:o},t))))}};
 //# sourceMappingURL=index.modern.js.map
 
-;// CONCATENATED MODULE: ./src/components/home/home-page.ts
+;// ./src/components/home/home-page.ts
 
 
 
-const HomePage = () => ({
-    view: () => mithril_default()('.home-page', [
-        mithril_default()('.col.s12.m7.l8', mithril_default()('.introduction', [
-            mithril_default()('h2', 'About Mithril-Materialized'),
-            mithril_default()('p', `I like Mithril, and I also like materialize-css. However, to create some materialized components
+const app_HomePage = () => ({
+    view: () => app_mithril_default()('.home-page', [
+        app_mithril_default()('.col.s12.m7.l8', app_mithril_default()('.introduction', [
+            app_mithril_default()('h2', 'About Mithril-Materialized'),
+            app_mithril_default()('p', `I like Mithril, and I also like materialize-css. However, to create some materialized components
           is a bit cumbersome as it requires a lot of HTML elements and a specific nesting which can easily go
           wrong. For that reason, the mithril-materialized library provides you with several ready-made
           Mithril components, so you can easily use them in your own application.`),
-            mithril_default()('p', [
+            app_mithril_default()('p', [
                 'You can check out the API documentation ',
-                mithril_default()('a[href="https://erikvullings.github.io/mithril-materialized/typedoc/index.html"]', 'here'),
+                app_mithril_default()('a[href="https://erikvullings.github.io/mithril-materialized/typedoc/index.html"]', 'here'),
                 '.',
             ]),
-            mithril_default()('h3', 'Installation'),
-            mithril_default()('p', 'First, you need to install the required packages:'),
-            mithril_default()(K, {
+            app_mithril_default()('h3', 'Installation'),
+            app_mithril_default()('p', 'First, you need to install the required packages:'),
+            app_mithril_default()(app_K, {
                 language: 'console',
                 code: `npm i materialize-css material-icons mithril mithril-materialized
 # Also install the typings if you use TypeScript
 npm i --save-dev @types/materialize-css @types/mithril`,
             }),
-            mithril_default()('p', 'Next, you can use them inside your application:'),
-            mithril_default()(K, {
+            app_mithril_default()('p', 'Next, you can use them inside your application:'),
+            app_mithril_default()(app_K, {
                 code: `import 'materialize-css/dist/css/materialize.min.css';
 import 'material-icons/iconfont/material-icons.css';
 import { TextArea } from 'mithril-materialized';
 `,
             }),
         ])),
-        mithril_default()('.col.s12.m5.l4', [
-            mithril_default()('h1', 'Contents'),
-            mithril_default()('ul.collection', [
-                dashboardSvc
+        app_mithril_default()('.col.s12.m5.l4', [
+            app_mithril_default()('h1', 'Contents'),
+            app_mithril_default()('ul.collection', [
+                app_dashboardSvc
                     .getList()
                     .filter((d) => d.visible && !d.default)
-                    .map((d) => mithril_default()('li.collection-item', mithril_default()('a', { href: `#!${d.route}` }, d.title))),
+                    .map((d) => app_mithril_default()('li.collection-item', app_mithril_default()('a', { href: `#!${d.route}` }, d.title))),
             ]),
         ]),
     ]),
 });
 
-;// CONCATENATED MODULE: ./src/components/about/about-page.ts
+;// ./src/components/about/about-page.ts
 
-const AboutPage = () => ({
-    view: () => mithril_default()('.row', [
-        mithril_default()('h1', 'About'),
-        mithril_default()('h1', 'Attribution'),
-        mithril_default()('ul.collection', [mithril_default()('li.collection-item', 'Logo: ideation by Vytautas Alech from the Noun Project.')]),
+const app_AboutPage = () => ({
+    view: () => app_mithril_default()('.row', [
+        app_mithril_default()('h1', 'About'),
+        app_mithril_default()('h1', 'Attribution'),
+        app_mithril_default()('ul.collection', [app_mithril_default()('li.collection-item', 'Logo: ideation by Vytautas Alech from the Noun Project.')]),
     ]),
 });
 
-;// CONCATENATED MODULE: ./src/components/buttons/button-page.ts
+;// ./src/components/buttons/button-page.ts
 
 
-const ButtonPage = () => {
+const app_ButtonPage = () => {
     const onclick = () => alert('Button clicked');
     return {
-        view: () => mithril_default()('.col.s12', [
-            mithril_default()('h2.header', 'Buttons'),
-            mithril_default()('h3.header[id=fab]', 'Floating Action Button (FAB)'),
-            mithril_default()(le, {
+        view: () => app_mithril_default()('.col.s12', [
+            app_mithril_default()('h2.header', 'Buttons'),
+            app_mithril_default()('h3.header[id=fab]', 'Floating Action Button (FAB)'),
+            app_mithril_default()(app_le, {
                 className: 'red',
                 iconName: 'mode_edit',
                 direction: 'left',
@@ -3263,7 +3045,7 @@ const ButtonPage = () => {
                     { iconName: 'attach_file', className: 'blue', onClick: () => console.log('Attach file') },
                 ],
             }),
-            mithril_default()(le, {
+            app_mithril_default()(app_le, {
                 className: 'red',
                 iconName: 'mode_edit',
                 direction: 'left',
@@ -3274,7 +3056,7 @@ const ButtonPage = () => {
                     { iconName: 'attach_file', className: 'blue', onClick: () => console.log('Attach file') },
                 ],
             }),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: [
                     `m(FloatingActionButton, {
   className: 'red',
@@ -3290,13 +3072,13 @@ const ButtonPage = () => {
 }),`,
                 ],
             }),
-            mithril_default()('h3.header[id=raised]', 'Raised'),
-            mithril_default()('div', [
-                mithril_default()(V, { label: 'First Button', onclick }),
-                mithril_default()(V, { label: 'Second Button', iconName: 'cloud', onclick }),
-                mithril_default()(V, { label: 'Third Button', iconName: 'cloud', iconClass: 'right', onclick }),
+            app_mithril_default()('h3.header[id=raised]', 'Raised'),
+            app_mithril_default()('div', [
+                app_mithril_default()(app_V, { label: 'First Button', onclick }),
+                app_mithril_default()(app_V, { label: 'Second Button', iconName: 'cloud', onclick }),
+                app_mithril_default()(app_V, { label: 'Third Button', iconName: 'cloud', iconClass: 'right', onclick }),
             ]),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: [
                     `const onclick = () => alert('Button clicked');
 m('div', [
@@ -3306,20 +3088,20 @@ m('div', [
 ]),`,
                 ],
             }),
-            mithril_default()('h3.header[id=flatbutton]', 'FlatButton'),
-            mithril_default()('div', mithril_default()(R, { label: 'My Flat button', onclick })),
-            mithril_default()(K, { code: 'm(FlatButton, { label: "My Flat button", onclick })' }),
-            mithril_default()('h3.header[id=roundiconbutton]', 'RoundIconButton'),
-            mithril_default()('div', mithril_default()(j, { iconName: 'create', onclick })),
-            mithril_default()(K, { code: 'm(RoundIconButton, { iconName: "create", onclick })' }),
-            mithril_default()('h3.header[id=submitbutton]', 'SubmitButton'),
-            mithril_default()('div', mithril_default()(L, {
+            app_mithril_default()('h3.header[id=flatbutton]', 'FlatButton'),
+            app_mithril_default()('div', app_mithril_default()(app_R, { label: 'My Flat button', onclick })),
+            app_mithril_default()(app_K, { code: 'm(FlatButton, { label: "My Flat button", onclick })' }),
+            app_mithril_default()('h3.header[id=roundiconbutton]', 'RoundIconButton'),
+            app_mithril_default()('div', app_mithril_default()(app_j, { iconName: 'create', onclick })),
+            app_mithril_default()(app_K, { code: 'm(RoundIconButton, { iconName: "create", onclick })' }),
+            app_mithril_default()('h3.header[id=submitbutton]', 'SubmitButton'),
+            app_mithril_default()('div', app_mithril_default()(app_L, {
                 label: 'Submit',
                 iconName: 'send',
                 iconClass: 'right',
                 onclick,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `m(SubmitButton, {
   label: 'Submit',
   iconName: 'send',
@@ -3331,18 +3113,18 @@ m('div', [
     };
 };
 
-;// CONCATENATED MODULE: ./src/components/inputs/input-page.ts
+;// ./src/components/inputs/input-page.ts
 
 
-const InputPage = () => {
+const app_InputPage = () => {
     const onchange = (v) => alert(`Input changed. New value: ${v}`);
     let value = 'click_clear_to_remove.me';
     return {
-        view: () => mithril_default()('.col.s12', [
-            mithril_default()('h2.header', 'Inputs'),
-            mithril_default()('h3.header', 'TextInput'),
-            mithril_default()('h4.header', 'Normal text input'),
-            mithril_default()('.row', mithril_default()(ce, {
+        view: () => app_mithril_default()('.col.s12', [
+            app_mithril_default()('h2.header', 'Inputs'),
+            app_mithril_default()('h3.header', 'TextInput'),
+            app_mithril_default()('h4.header', 'Normal text input'),
+            app_mithril_default()('.row', app_mithril_default()(app_ce, {
                 label: 'What is your name?',
                 helperText: 'Please, be honest!',
                 onchange,
@@ -3351,7 +3133,7 @@ const InputPage = () => {
                 autofocus: true,
                 maxLength: 50,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `        m(TextInput, {
           label: 'What is your name?',
           helperText: 'Please, be honest!',
@@ -3361,14 +3143,14 @@ const InputPage = () => {
           maxLength: 50,
         } as IInputOptions)`,
             }),
-            mithril_default()('h4.header', 'TextInput with icon'),
-            mithril_default()('.row', mithril_default()(ce, {
+            app_mithril_default()('h4.header', 'TextInput with icon'),
+            app_mithril_default()('.row', app_mithril_default()(app_ce, {
                 label: 'What is your name?',
                 iconName: 'account_circle',
                 onchange,
                 maxLength: 50,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `        m(TextInput, {
           label: 'What is your name?',
           iconName: 'account_circle',
@@ -3376,14 +3158,14 @@ const InputPage = () => {
           maxLength: 50,
         } as IInputOptions)`,
             }),
-            mithril_default()('h4.header', 'TextInput with custom validation'),
-            mithril_default()('.row', mithril_default()(ce, {
+            app_mithril_default()('h4.header', 'TextInput with custom validation'),
+            app_mithril_default()('.row', app_mithril_default()(app_ce, {
                 label: 'What is the most popular search engine?',
                 dataSuccess: 'Great minds think alike',
                 dataError: 'Seriously?',
                 validate: (v) => v && v.toLowerCase() === 'google',
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(TextInput, {
             label: 'What is the most popular search engine?',
             dataSuccess: 'Great minds think alike',
@@ -3391,8 +3173,8 @@ const InputPage = () => {
             validate: v => v && v.toLowerCase() === 'google',
           } as IInputOptions)`,
             }),
-            mithril_default()('h3.header', 'Autocomplete'),
-            mithril_default()('.row', mithril_default()($, {
+            app_mithril_default()('h3.header', 'Autocomplete'),
+            app_mithril_default()('.row', app_mithril_default()(app_$, {
                 label: 'What is your favorite company?',
                 data: {
                     Apple: null,
@@ -3403,8 +3185,8 @@ const InputPage = () => {
                 },
                 onchange,
             })),
-            mithril_default()('span', mithril_default()('a[target=_blank][href=https://materializecss.com/autocomplete.html]', 'Documentation')),
-            mithril_default()(K, {
+            app_mithril_default()('span', app_mithril_default()('a[target=_blank][href=https://materializecss.com/autocomplete.html]', 'Documentation')),
+            app_mithril_default()(app_K, {
                 code: `        m(Autocomplete, {
             label: 'What is your favorite company?',
             data: {
@@ -3417,22 +3199,22 @@ const InputPage = () => {
             onchange,
         } as IInputOptions)`,
             }),
-            mithril_default()('h3.header', 'TextArea'),
-            mithril_default()('.row', mithril_default()(se, {
+            app_mithril_default()('h3.header', 'TextArea'),
+            app_mithril_default()('.row', app_mithril_default()(app_se, {
                 label: 'Please, could you describe yourself',
                 helperText: `Don't be shy`,
                 maxLength: 100,
                 onchange,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `        m(TextArea, {
             label: 'Please, describe yourself',
             helperText: 'Don\'t be shy',
             maxLength: 100,
             onchange })`,
             }),
-            mithril_default()('h3.header', 'NumberInput'),
-            mithril_default()('.row', mithril_default()(pe, {
+            app_mithril_default()('h3.header', 'NumberInput'),
+            app_mithril_default()('.row', app_mithril_default()(app_pe, {
                 min: 1,
                 max: 120,
                 step: 1,
@@ -3441,7 +3223,7 @@ const InputPage = () => {
                 dataError: 'Error: Age must be between 1 and 120.',
                 onchange,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(NumberInput, {
             min: 1,
             max: 120,
@@ -3452,14 +3234,14 @@ const InputPage = () => {
             onchange,
           })`,
             }),
-            mithril_default()('h4.header', 'NumberInput with custom validation'),
-            mithril_default()('.row', mithril_default()(pe, {
+            app_mithril_default()('h4.header', 'NumberInput with custom validation'),
+            app_mithril_default()('.row', app_mithril_default()(app_pe, {
                 label: 'What is the result of 35 + 7?',
                 dataSuccess: 'Great, you have found the answer to the meaning of life, the universe and everything!',
                 dataError: 'Back to grammar school',
                 validate: (v) => v === 42,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(NumberInput, {
             label: 'What is the result of 35 + 7?',
             dataSuccess: 'Great, you have found the answer to the meaning of life, the universe and everything!',
@@ -3467,14 +3249,14 @@ const InputPage = () => {
             validate: (v: number) => v === 42,
           })`,
             }),
-            mithril_default()('h3.header', 'EmailInput'),
-            mithril_default()('.row', mithril_default()(ve, {
+            app_mithril_default()('h3.header', 'EmailInput'),
+            app_mithril_default()('.row', app_mithril_default()(app_ve, {
                 label: 'What is your email?',
                 dataError: 'Please use username@org.com',
                 dataSuccess: 'OK',
                 onchange,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(EmailInput, {
             label: 'What is your email?',
             dataError: 'Wrong, use username@org.com',
@@ -3482,15 +3264,15 @@ const InputPage = () => {
             onchange,
           })`,
             }),
-            mithril_default()('h3.header', 'UrlInput'),
-            mithril_default()('.row', mithril_default()(me, {
+            app_mithril_default()('h3.header', 'UrlInput'),
+            app_mithril_default()('.row', app_mithril_default()(app_me, {
                 label: 'What is your favorite website?',
                 placeholder: 'http(s)://',
                 dataError: 'Wrong, use http(s)://org.com',
                 dataSuccess: 'OK',
                 onchange,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(UrlInput, {
             label: 'What is your favorite website?',
             placeholder: 'http(s)://',
@@ -3499,21 +3281,21 @@ const InputPage = () => {
             onchange,
           })`,
             }),
-            mithril_default()('h3.header', 'PasswordInput'),
-            mithril_default()('.row', mithril_default()(de, {
+            app_mithril_default()('h3.header', 'PasswordInput'),
+            app_mithril_default()('.row', app_mithril_default()(app_de, {
                 label: 'What is your password?',
                 iconName: 'lock',
                 onchange,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(PasswordInput, {
             label: 'What is your password?',
             iconName: 'lock',
             onchange,
           })`,
             }),
-            mithril_default()('h3.header', 'FileInput'),
-            mithril_default()('.row', mithril_default()(be, {
+            app_mithril_default()('h3.header', 'FileInput'),
+            app_mithril_default()('.row', app_mithril_default()(app_be, {
                 placeholder: 'Upload one or more files',
                 multiple: true,
                 initialValue: value,
@@ -3523,7 +3305,7 @@ const InputPage = () => {
                     console.table(files);
                 },
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `        m(FileInput, {
             placeholder: 'Upload one or more files',
             multiple: true,
@@ -3532,14 +3314,14 @@ const InputPage = () => {
             onchange: (files: FileList) => console.table(files),
           })`,
             }),
-            mithril_default()('h3.header', 'RangeInput'),
-            mithril_default()('.row', mithril_default()(he, {
+            app_mithril_default()('h3.header', 'RangeInput'),
+            app_mithril_default()('.row', app_mithril_default()(app_he, {
                 min: 0,
                 max: 100,
                 label: 'What is your favorite number between 0 and 100?',
                 onchange,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(RangeInput, {
             min: 0,
             max: 100,
@@ -3547,8 +3329,8 @@ const InputPage = () => {
             onchange,
           })`,
             }),
-            mithril_default()('h3.header', 'Chips'),
-            mithril_default()('.row', mithril_default()(D, {
+            app_mithril_default()('h3.header', 'Chips'),
+            app_mithril_default()('.row', app_mithril_default()(app_D, {
                 onchange: (chips) => onchange(JSON.stringify(chips)),
                 label: 'An optional label',
                 helperText: 'Optional help instructions',
@@ -3564,7 +3346,7 @@ const InputPage = () => {
                     },
                 ],
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Chips, {
             onchange: (chips: M.ChipData[]) => onchange(JSON.stringify(chips)),
             label: 'An optional label',
@@ -3578,8 +3360,8 @@ const InputPage = () => {
             }],
           })`,
             }),
-            mithril_default()('h3.header', 'Chips with auto-complete'),
-            mithril_default()('.row', mithril_default()(D, {
+            app_mithril_default()('h3.header', 'Chips with auto-complete'),
+            app_mithril_default()('.row', app_mithril_default()(app_D, {
                 label: 'Cloud providers',
                 autocompleteOptions: {
                     data: {
@@ -3591,7 +3373,7 @@ const InputPage = () => {
                     minLength: 1,
                 },
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Chips, {
             label: 'Cloud providers',
             autocompleteOptions: {
@@ -3605,12 +3387,12 @@ const InputPage = () => {
             },
           })`,
             }),
-            mithril_default()('h3.header', 'ColorInput'),
-            mithril_default()('.row', mithril_default()(ue, {
+            app_mithril_default()('h3.header', 'ColorInput'),
+            app_mithril_default()('.row', app_mithril_default()(app_ue, {
                 label: 'What is your favorite color?',
                 onchange,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(ColorInput, {
             label: 'What is your favorite color?',
             onchange,
@@ -3620,23 +3402,23 @@ const InputPage = () => {
     };
 };
 
-;// CONCATENATED MODULE: ./src/components/pickers/picker-page.ts
+;// ./src/components/pickers/picker-page.ts
 
 
-const PickerPage = () => {
+const app_PickerPage = () => {
     const state = { disabled: false };
     const onchange = (v) => alert(`Input changed. New value: ${v}`);
     return {
-        view: () => mithril_default()('.col.s12', [
-            mithril_default()('h2.header', 'Pickers'),
-            mithril_default()('.row', mithril_default()(Re, {
+        view: () => app_mithril_default()('.col.s12', [
+            app_mithril_default()('h2.header', 'Pickers'),
+            app_mithril_default()('.row', app_mithril_default()(app_Re, {
                 label: 'Disable pickers',
                 left: 'enable',
                 right: 'disable',
                 onchange: v => (state.disabled = v),
             })),
-            mithril_default()('h3.header', 'DatePicker'),
-            mithril_default()('.row', mithril_default()(Ie, {
+            app_mithril_default()('h3.header', 'DatePicker'),
+            app_mithril_default()('.row', app_mithril_default()(app_Ie, {
                 disabled: state.disabled,
                 format: 'mmmm d, yyyy',
                 label: 'What is your birthday?',
@@ -3644,7 +3426,7 @@ const PickerPage = () => {
                 initialValue: new Date(),
                 onchange,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(DatePicker, {
             format: 'mmmm d, yyyy',
             label: 'What is your birthday?',
@@ -3653,15 +3435,15 @@ const PickerPage = () => {
             onchange,
           })`,
             }),
-            mithril_default()('h3.header', 'TimePicker'),
-            mithril_default()('.row', mithril_default()(Ae, {
+            app_mithril_default()('h3.header', 'TimePicker'),
+            app_mithril_default()('.row', app_mithril_default()(app_Ae, {
                 disabled: state.disabled,
                 label: 'When do you normally get up?',
                 twelveHour: false,
                 initialValue: '09:00',
                 onchange,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(TimePicker, {
             label: 'What is your birthday?',
             twelveHour: false,
@@ -3673,10 +3455,10 @@ const PickerPage = () => {
     };
 };
 
-;// CONCATENATED MODULE: ./src/components/selections/selection-page.ts
+;// ./src/components/selections/selection-page.ts
 
 
-const SelectionPage = () => {
+const app_SelectionPage = () => {
     const state = {
         ids: undefined,
         radioIds: undefined,
@@ -3685,10 +3467,10 @@ const SelectionPage = () => {
     };
     const onchange = (v) => alert(`Input changed. New value: ${v}`);
     return {
-        view: () => mithril_default()('.col.s12', [
-            mithril_default()('h2.header', 'Selections'),
-            mithril_default()('h3.header', 'Select'),
-            mithril_default()('.row', mithril_default()(Se, {
+        view: () => app_mithril_default()('.col.s12', [
+            app_mithril_default()('h2.header', 'Selections'),
+            app_mithril_default()('h3.header', 'Select'),
+            app_mithril_default()('.row', app_mithril_default()(app_Se, {
                 iconName: 'person',
                 label: 'What is your favorite hobby?',
                 // disabled: true,
@@ -3714,7 +3496,7 @@ const SelectionPage = () => {
                 ],
                 onchange: (ids) => (state.checkedId = ids),
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 newRow: true,
                 code: `          m(Select, {
             // disabled: true, // Add disabled if you want to disable the select control
@@ -3730,8 +3512,8 @@ const SelectionPage = () => {
             onchange,
           })`,
             }),
-            mithril_default()('h3.header', 'Select multiple'),
-            mithril_default()('.row', mithril_default()(Se, {
+            app_mithril_default()('h3.header', 'Select multiple'),
+            app_mithril_default()('.row', app_mithril_default()(app_Se, {
                 multiple: true,
                 // iconName: 'person',
                 placeholder: 'Make a choice...',
@@ -3750,7 +3532,7 @@ const SelectionPage = () => {
                     { id: 4, label: 'Horse riding' },
                 ],
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 newRow: true,
                 code: `          m(
             '.row',
@@ -3774,8 +3556,8 @@ const SelectionPage = () => {
             } as ISelectOptions<number>)
           )`,
             }),
-            mithril_default()('h3.header', 'Select option group'),
-            mithril_default()('.row', mithril_default()(Se, {
+            app_mithril_default()('h3.header', 'Select option group'),
+            app_mithril_default()('.row', app_mithril_default()(app_Se, {
                 placeholder: 'Make a choice...',
                 label: 'What are your favorite hobbies?',
                 // initialValue: state.initialValue,
@@ -3791,7 +3573,7 @@ const SelectionPage = () => {
                     { id: 5, group: 'Outdoors', label: 'Horse riding' },
                 ],
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 newRow: true,
                 code: `          m(
             '.row',
@@ -3814,8 +3596,8 @@ const SelectionPage = () => {
             } as ISelectOptions<number>)
           )`,
             }),
-            mithril_default()('h3.header', 'Options'),
-            mithril_default()('.row', mithril_default()(ge, {
+            app_mithril_default()('h3.header', 'Options'),
+            app_mithril_default()('.row', app_mithril_default()(app_ge, {
                 label: 'What are your favorite hobbies?',
                 checkboxClass: 'col s4',
                 isMandatory: true,
@@ -3827,7 +3609,7 @@ const SelectionPage = () => {
                 ],
                 onchange: (ids) => onchange(`Options ${ids.join()} are checked.`),
             })),
-            mithril_default()('.row', mithril_default()(ge, {
+            app_mithril_default()('.row', app_mithril_default()(app_ge, {
                 label: 'What are your favorite hobbies?',
                 isMandatory: true,
                 initialValue: 'out',
@@ -3838,7 +3620,7 @@ const SelectionPage = () => {
                 ],
                 onchange: (ids) => onchange(`Options ${ids.join()} are checked.`),
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 newRow: true,
                 code: `          m(Options, {
             inline: true, // next one is false
@@ -3853,9 +3635,9 @@ const SelectionPage = () => {
             onchange: ids => onchange(\`Options \${ids.join()} are checked.\`),
           })`,
             }),
-            mithril_default()('h3.header', 'RadioButtons'),
-            mithril_default()('p', 'Linked radio buttons: when you change one of them, the other changes too.'),
-            mithril_default()('.row', mithril_default()(Ve, {
+            app_mithril_default()('h3.header', 'RadioButtons'),
+            app_mithril_default()('p', 'Linked radio buttons: when you change one of them, the other changes too.'),
+            app_mithril_default()('.row', app_mithril_default()(app_Ve, {
                 checkboxClass: 'col s4',
                 label: 'What is your favorite hobby?',
                 options: [
@@ -3867,7 +3649,7 @@ const SelectionPage = () => {
                 checkedId: state.radioIds,
                 onchange: (ids) => (state.radioIds = ids),
             })),
-            mithril_default()('.row', mithril_default()(Ve, {
+            app_mithril_default()('.row', app_mithril_default()(app_Ve, {
                 label: 'What is your favorite hobby?',
                 options: [
                     { id: 'movies', label: 'Watching movies' },
@@ -3878,7 +3660,7 @@ const SelectionPage = () => {
                 checkedId: state.radioIds,
                 onchange: (ids) => (state.radioIds = ids),
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 newRow: true,
                 code: `          m(RadioButtons, {
             checkboxClass: 'col s4', // to align items horizontally
@@ -3892,14 +3674,14 @@ const SelectionPage = () => {
             onchange: ids => state.radioIds = ids,
           })`,
             }),
-            mithril_default()('h3.header', 'Switch'),
-            mithril_default()('.row', mithril_default()(Re, {
+            app_mithril_default()('h3.header', 'Switch'),
+            app_mithril_default()('.row', app_mithril_default()(app_Re, {
                 label: 'What is your gender?',
                 left: 'Man',
                 right: 'Woman',
                 onchange,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 newRow: true,
                 code: `          m(Switch, {
             label: 'What is your gender?',
@@ -3908,8 +3690,8 @@ const SelectionPage = () => {
             onchange,
           })`,
             }),
-            mithril_default()('h3.header', 'Dropdown'),
-            mithril_default()('.row', mithril_default()(ae, {
+            app_mithril_default()('h3.header', 'Dropdown'),
+            app_mithril_default()('.row', app_mithril_default()(app_ae, {
                 id: 'hobby',
                 iconName: 'my_location',
                 label: 'Pick a hobby',
@@ -3926,7 +3708,7 @@ const SelectionPage = () => {
                 ],
                 onchange: (v) => console.log(v),
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 newRow: true,
                 code: `          m(Dropdown, {
             id: 'hobby',
@@ -3950,24 +3732,24 @@ const SelectionPage = () => {
     };
 };
 
-;// CONCATENATED MODULE: ./src/assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg
-const Vincent_van_Gogh_Landscape_at_twilight_Google_Art_Project_namespaceObject = __webpack_require__.p + "0f170ea0ecc81d3b9ccc.jpg";
-;// CONCATENATED MODULE: ./src/components/modals/modal-page.ts
+;// ./src/assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg
+const app_Vincent_van_Gogh_Landscape_at_twilight_Google_Art_Project_namespaceObject = __webpack_require__.p + "0f170ea0ecc81d3b9ccc.jpg";
+;// ./src/components/modals/modal-page.ts
 
 
 
-const ModalPage = () => {
+const app_ModalPage = () => {
     const onchange = (v) => alert(v);
     return {
-        view: () => mithril_default()('.col.s12', [
-            mithril_default()('h2.header', 'Modals'),
-            mithril_default()('p', [
+        view: () => app_mithril_default()('.col.s12', [
+            app_mithril_default()('h2.header', 'Modals'),
+            app_mithril_default()('p', [
                 'The library supports all three modals types that are defined on the ',
-                mithril_default()('a[href=https://materializecss.com/modals.html#!][target=_blank]', 'materialize-css website'),
+                app_mithril_default()('a[href=https://materializecss.com/modals.html#!][target=_blank]', 'materialize-css website'),
                 '.',
             ]),
-            mithril_default()('h3.header', 'Normal Modal'),
-            mithril_default()('.row', mithril_default()(V, { label: 'Open modal', modalId: 'modal1' }), mithril_default()(we, {
+            app_mithril_default()('h3.header', 'Normal Modal'),
+            app_mithril_default()('.row', app_mithril_default()(app_V, { label: 'Open modal', modalId: 'modal1' }), app_mithril_default()(app_we, {
                 id: 'modal1',
                 title: 'Do you like this library?',
                 description: 'This is some content.',
@@ -3983,7 +3765,7 @@ const ModalPage = () => {
                     },
                 ],
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Button, { label: 'Open modal', modalId: 'modal1' }),
           m(ModalPanel, {
             id: 'modal1',
@@ -4002,13 +3784,13 @@ const ModalPage = () => {
             ],
           })`,
             }),
-            mithril_default()('h3.header', 'Normal Modal with Select and Dropdown'),
-            mithril_default()('.row', mithril_default()(V, { label: 'Open modal', modalId: 'modal1b' }), mithril_default()(we, {
+            app_mithril_default()('h3.header', 'Normal Modal with Select and Dropdown'),
+            app_mithril_default()('.row', app_mithril_default()(app_V, { label: 'Open modal', modalId: 'modal1b' }), app_mithril_default()(app_we, {
                 id: 'modal1b',
                 title: 'Tell me about yourself',
-                description: mithril_default()('.row', // So the content has enough vertical space
+                description: app_mithril_default()('.row', // So the content has enough vertical space
                 [
-                    mithril_default()(Se, {
+                    app_mithril_default()(app_Se, {
                         dropdownOptions: { container: document.body }, // So the select is not hidden
                         iconName: 'person',
                         label: 'What is your favorite hobby?',
@@ -4024,7 +3806,7 @@ const ModalPage = () => {
                         ],
                         onchange: (v) => console.log(v),
                     }),
-                    mithril_default()(ae, {
+                    app_mithril_default()(app_ae, {
                         container: document.body, // So the dropdown is not hidden
                         id: 'hobby',
                         iconName: 'my_location',
@@ -4051,7 +3833,7 @@ const ModalPage = () => {
                     },
                 ],
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Button, { label: 'Open modal', modalId: 'modal1b' }),
           m(ModalPanel, {
             id: 'modal1b',
@@ -4104,8 +3886,8 @@ const ModalPage = () => {
             ],
           })`,
             }),
-            mithril_default()('h3.header', 'Fixed Footer Modal'),
-            mithril_default()('.row', mithril_default()(V, { label: 'Fixed footer modal', modalId: 'modal2' }), mithril_default()(we, {
+            app_mithril_default()('h3.header', 'Fixed Footer Modal'),
+            app_mithril_default()('.row', app_mithril_default()(app_V, { label: 'Fixed footer modal', modalId: 'modal2' }), app_mithril_default()(app_we, {
                 id: 'modal2',
                 title: 'Do you like this library?',
                 fixedFooter: true,
@@ -4153,7 +3935,7 @@ This is some content.<br>
                     },
                 ],
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Button, { label: 'Bottom modal', modalId: 'modal3' }),
           m(ModalPanel, {
             id: 'modal3',
@@ -4173,8 +3955,8 @@ This is some content.<br>
             ],
           })`,
             }),
-            mithril_default()('h3.header', 'Bottom Modal'),
-            mithril_default()('.row', mithril_default()(V, { label: 'Open bottom modal', modalId: 'modal3' }), mithril_default()(we, {
+            app_mithril_default()('h3.header', 'Bottom Modal'),
+            app_mithril_default()('.row', app_mithril_default()(app_V, { label: 'Open bottom modal', modalId: 'modal3' }), app_mithril_default()(app_we, {
                 id: 'modal3',
                 title: 'Do you like this library?',
                 description: 'This is some content.',
@@ -4190,7 +3972,7 @@ This is some content.<br>
                     },
                 ],
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Button, { label: 'Open modal', modalId: 'modal1' }),
           m(ModalPanel, {
             id: 'modal1',
@@ -4209,14 +3991,14 @@ This is some content.<br>
             ],
           })`,
             }),
-            mithril_default()('h3.header', 'Vnode as content'),
-            mithril_default()('.row', mithril_default()(V, { label: 'Open bottom content modal', modalId: 'modal4' }), mithril_default()(we, {
+            app_mithril_default()('h3.header', 'Vnode as content'),
+            app_mithril_default()('.row', app_mithril_default()(app_V, { label: 'Open bottom content modal', modalId: 'modal4' }), app_mithril_default()(app_we, {
                 id: 'modal4',
                 title: 'Content modal',
-                description: mithril_default()(xe, { src: Vincent_van_Gogh_Landscape_at_twilight_Google_Art_Project_namespaceObject, width: 400 }),
+                description: app_mithril_default()(app_xe, { src: app_Vincent_van_Gogh_Landscape_at_twilight_Google_Art_Project_namespaceObject, width: 400 }),
                 bottomSheet: true,
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Button, { label: 'Open bottom content modal', modalId: 'modal4' }),
           m(ModalPanel, {
             id: 'modal4',
@@ -4229,11 +4011,11 @@ This is some content.<br>
     };
 };
 
-;// CONCATENATED MODULE: ./src/components/misc/misc-page.ts
+;// ./src/components/misc/misc-page.ts
 
 
 
-const MiscPage = () => {
+const app_MiscPage = () => {
     const state = {
         activeTabId: '',
         disabled: true,
@@ -4241,29 +4023,29 @@ const MiscPage = () => {
         tabWidthId: 2,
         tabWidths: ['auto', 'fixed', 'fill'],
     };
-    const curPage = () => (mithril_default().route.param('page') ? +mithril_default().route.param('page') : 1);
+    const curPage = () => (app_mithril_default().route.param('page') ? +app_mithril_default().route.param('page') : 1);
     return {
-        view: () => mithril_default()('.col.s12', [
-            mithril_default()('h2.header', 'Miscellaneous'),
-            mithril_default()('p', [
+        view: () => app_mithril_default()('.col.s12', [
+            app_mithril_default()('h2.header', 'Miscellaneous'),
+            app_mithril_default()('p', [
                 'Some miscellaneous components, like the ',
-                mithril_default()('a[href=https://materializecss.com/tabs.html][target=_blank]', 'Tabs'),
+                app_mithril_default()('a[href=https://materializecss.com/tabs.html][target=_blank]', 'Tabs'),
                 ', ',
-                mithril_default()('a[href=https://materializecss.com/media.html][target=_blank]', 'Material box'),
+                app_mithril_default()('a[href=https://materializecss.com/media.html][target=_blank]', 'Material box'),
                 ', ',
-                mithril_default()('a[href=https://materializecss.com/collection.html][target=_blank]', 'Collection'),
+                app_mithril_default()('a[href=https://materializecss.com/collection.html][target=_blank]', 'Collection'),
                 ', ',
-                mithril_default()('a[href=https://materializecss.com/collapsible.html][target=_blank]', 'Collapsible'),
+                app_mithril_default()('a[href=https://materializecss.com/collapsible.html][target=_blank]', 'Collapsible'),
                 ', ',
-                mithril_default()('a[href=https://materializecss.com/carousel.html][target=_blank]', 'Carousel'),
+                app_mithril_default()('a[href=https://materializecss.com/carousel.html][target=_blank]', 'Carousel'),
                 ', ',
-                mithril_default()('a[href=https://materializecss.com/parallax.html][target=_blank]', 'Pagination'),
+                app_mithril_default()('a[href=https://materializecss.com/parallax.html][target=_blank]', 'Pagination'),
                 ' and the ',
-                mithril_default()('a[href=https://materializecss.com/pagination.html][target=_blank]', 'Parallax'),
+                app_mithril_default()('a[href=https://materializecss.com/pagination.html][target=_blank]', 'Parallax'),
                 '.',
             ]),
-            mithril_default()('h3.header', 'Tabs'),
-            mithril_default()(je, {
+            app_mithril_default()('h3.header', 'Tabs'),
+            app_mithril_default()(app_je, {
                 selectedTabId: state.activeTabId,
                 tabWidth: state.tabWidths[state.tabWidthId % 3],
                 onShow: console.log,
@@ -4271,23 +4053,23 @@ const MiscPage = () => {
                     {
                         title: 'Test 1',
                         active: state.activeTab === 1,
-                        vnode: mithril_default()('', 'Show content of tab 1'),
+                        vnode: app_mithril_default()('', 'Show content of tab 1'),
                     },
                     {
                         title: 'Test 2',
                         disabled: state.disabled,
                         active: state.activeTab === 2,
-                        vnode: mithril_default()('', 'Show content of tab 2'),
+                        vnode: app_mithril_default()('', 'Show content of tab 2'),
                     },
                     {
                         title: 'Test 3',
                         active: state.activeTab === 3,
-                        vnode: mithril_default()('', 'Show content of tab 3'),
+                        vnode: app_mithril_default()('', 'Show content of tab 3'),
                     },
                     {
                         title: 'Test 4',
                         active: state.activeTab === 4,
-                        vnode: mithril_default()('', 'Show content of tab 4'),
+                        vnode: app_mithril_default()('', 'Show content of tab 4'),
                     },
                     {
                         title: 'Visit Google',
@@ -4297,31 +4079,31 @@ const MiscPage = () => {
                     },
                 ],
             }),
-            mithril_default()(V, {
+            app_mithril_default()(app_V, {
                 label: 'Switch to tab 1',
                 onclick: () => {
                     state.activeTab = 1;
                     state.activeTabId = '';
                 },
             }),
-            mithril_default()(V, {
+            app_mithril_default()(app_V, {
                 label: 'Switch to tab 4',
                 onclick: () => {
                     state.activeTab = 0;
                     state.activeTabId = 'test4';
                 },
             }),
-            mithril_default()(V, {
+            app_mithril_default()(app_V, {
                 label: `${state.disabled ? 'Enable' : 'Disable'} tab 2`,
                 onclick: () => {
                     state.disabled = !state.disabled;
                 },
             }),
-            mithril_default()(V, {
+            app_mithril_default()(app_V, {
                 label: `Switch tab width from ${state.tabWidths[state.tabWidthId % 3]} to ${state.tabWidths[(state.tabWidthId + 1) % 3]}`,
                 onclick: () => state.tabWidthId++,
             }),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Tabs, {
             onShow: console.log,
             tabs: [
@@ -4351,18 +4133,18 @@ const MiscPage = () => {
             ],
           })`,
             }),
-            mithril_default()('h3.header', 'Parallax'),
-            mithril_default()($e, { src: Vincent_van_Gogh_Landscape_at_twilight_Google_Art_Project_namespaceObject }),
-            mithril_default()(K, {
+            app_mithril_default()('h3.header', 'Parallax'),
+            app_mithril_default()(app_$e, { src: app_Vincent_van_Gogh_Landscape_at_twilight_Google_Art_Project_namespaceObject }),
+            app_mithril_default()(app_K, {
                 code: `          m(Parallax, { src: gogh }) // should be embedded in layout so the width is not limited`,
             }),
-            mithril_default()('h3.header', 'Material box (click on image)'),
-            mithril_default()('.row', mithril_default()(xe, { src: Vincent_van_Gogh_Landscape_at_twilight_Google_Art_Project_namespaceObject, width: 600 })),
-            mithril_default()(K, {
+            app_mithril_default()('h3.header', 'Material box (click on image)'),
+            app_mithril_default()('.row', app_mithril_default()(app_xe, { src: app_Vincent_van_Gogh_Landscape_at_twilight_Google_Art_Project_namespaceObject, width: 600 })),
+            app_mithril_default()(app_K, {
                 code: `          m(MaterialBox, { src: gogh, width: 600 })`,
             }),
-            mithril_default()('h3.header', 'Carousel'),
-            mithril_default()('.row', mithril_default()(F, {
+            app_mithril_default()('h3.header', 'Carousel'),
+            app_mithril_default()('.row', app_mithril_default()(app_F, {
                 items: [
                     { href: '#!/one!', src: 'https://lorempixel.com/250/250/nature/1' },
                     { href: '#!/two!', src: 'https://lorempixel.com/250/250/nature/2' },
@@ -4371,7 +4153,7 @@ const MiscPage = () => {
                     { href: '#!/five!', src: 'https://lorempixel.com/250/250/nature/5' },
                 ],
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Carousel, { items: [
             { href: '#!/one!', src: 'https://lorempixel.com/250/250/nature/1' },
             { href: '#!/two!', src: 'https://lorempixel.com/250/250/nature/2' },
@@ -4380,8 +4162,8 @@ const MiscPage = () => {
             { href: '#!/five!', src: 'https://lorempixel.com/250/250/nature/5' },
           ] })`,
             }),
-            mithril_default()('h3.header', 'Pagination'),
-            mithril_default()('.row', mithril_default()(Ne, {
+            app_mithril_default()('h3.header', 'Pagination'),
+            app_mithril_default()('.row', app_mithril_default()(app_Ne, {
                 size: 5,
                 curPage: curPage(),
                 items: [
@@ -4399,7 +4181,7 @@ const MiscPage = () => {
                     { href: '/misc?page=12' },
                 ],
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `m(Pagination, {
   size: 5,
   items: [
@@ -4422,30 +4204,30 @@ const MiscPage = () => {
     };
 };
 
-;// CONCATENATED MODULE: ./src/components/collections/collections-page.ts
+;// ./src/components/collections/collections-page.ts
 
 
-const collections_page_onclick = (item) => alert(`You clicked ${item.title}.`);
-const CollectionsPage = () => {
+const app_collections_page_onclick = (item) => alert(`You clicked ${item.title}.`);
+const app_CollectionsPage = () => {
     return {
-        view: () => mithril_default()('.col.s12.m8.xl7', [
-            mithril_default()('h2.header', 'Collections and collapsible'),
-            mithril_default()('p', [
+        view: () => app_mithril_default()('.col.s12.m8.xl7', [
+            app_mithril_default()('h2.header', 'Collections and collapsible'),
+            app_mithril_default()('p', [
                 'For more information, see ',
-                mithril_default()('a[href=https://materializecss.com/collections.html][target=_blank]', 'Collections'),
+                app_mithril_default()('a[href=https://materializecss.com/collections.html][target=_blank]', 'Collections'),
                 ' and ',
-                mithril_default()('a[href=https://materializecss.com/collapsible.html][target=_blank]', 'Collapsible'),
+                app_mithril_default()('a[href=https://materializecss.com/collapsible.html][target=_blank]', 'Collapsible'),
                 '.',
             ]),
-            mithril_default()('h3.header', 'Secondary Content Collection'),
-            mithril_default()(ee, {
+            app_mithril_default()('h3.header', 'Secondary Content Collection'),
+            app_mithril_default()(app_ee, {
                 items: [
-                    { id: '1', title: 'John', iconName: 'send', onclick: collections_page_onclick },
-                    { id: '2', title: 'Mary', iconName: 'send', onclick: collections_page_onclick },
-                    { id: '3', title: 'Pete', iconName: 'send', onclick: collections_page_onclick },
+                    { id: '1', title: 'John', iconName: 'send', onclick: app_collections_page_onclick },
+                    { id: '2', title: 'Mary', iconName: 'send', onclick: app_collections_page_onclick },
+                    { id: '3', title: 'Pete', iconName: 'send', onclick: app_collections_page_onclick },
                 ],
             }),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Collection, {
             items: [
               // id is used as key, e.g. when sorting or editing the collection.
@@ -4455,17 +4237,17 @@ const CollectionsPage = () => {
             ],
           })`,
             }),
-            mithril_default()('h3.header', 'Links collection'),
-            mithril_default()(ee, {
+            app_mithril_default()('h3.header', 'Links collection'),
+            app_mithril_default()(app_ee, {
                 header: 'First names',
-                mode: H.LINKS,
+                mode: app_H.LINKS,
                 items: [
                     { title: 'John', onclick: console.log },
                     { title: 'Mary', onclick: console.log, href: '/timeline' },
                     { title: 'Pete', onclick: console.log, href: 'https://www.google.com' },
                 ],
             }),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Collection, {
             header: 'First names',
             mode: CollectionMode.LINKS,
@@ -4476,10 +4258,10 @@ const CollectionsPage = () => {
             ],
           })`,
             }),
-            mithril_default()('h3.header', 'Avatar collection'),
-            mithril_default()(ee, {
+            app_mithril_default()('h3.header', 'Avatar collection'),
+            app_mithril_default()(app_ee, {
                 header: 'First names',
-                mode: H.AVATAR,
+                mode: app_H.AVATAR,
                 items: [
                     {
                         title: 'John',
@@ -4487,14 +4269,14 @@ const CollectionsPage = () => {
                         avatar: 'folder',
                         className: 'green',
                         iconName: 'grade',
-                        onclick: collections_page_onclick,
+                        onclick: app_collections_page_onclick,
                     },
                     {
                         title: 'Mary',
                         content: 'First line<br>Second line',
                         avatar: 'https://pbs.twimg.com/profile_images/665673789112516608/v9itf6uk_400x400.jpg',
                         iconName: 'grade',
-                        onclick: collections_page_onclick,
+                        onclick: app_collections_page_onclick,
                     },
                     {
                         title: 'Pete',
@@ -4506,7 +4288,7 @@ const CollectionsPage = () => {
                     },
                 ],
             }),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Collection, {
             header: 'First names',
             mode: CollectionMode.AVATAR,
@@ -4537,33 +4319,33 @@ const CollectionsPage = () => {
             ],
           })`,
             }),
-            mithril_default()('h3.header', 'Collapsible (accordion)'),
-            mithril_default()('.row', mithril_default()(B, {
+            app_mithril_default()('h3.header', 'Collapsible (accordion)'),
+            app_mithril_default()('.row', app_mithril_default()(app_B, {
                 id: 'testme',
                 className: 'first-second-third',
                 items: [
                     { id: 1, header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama' },
                     { id: 2, header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },
-                    { id: 3, header: 'Third', body: mithril_default()('span', 'Third in a span.'), iconName: 'whatshot' },
+                    { id: 3, header: 'Third', body: app_mithril_default()('span', 'Third in a span.'), iconName: 'whatshot' },
                 ],
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Collapsible, { items: [
             { header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama' },
             { header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },
             { header: 'Third', body: m('span', 'Third in a span.'), iconName: 'whatshot' },
           ] })`,
             }),
-            mithril_default()('h3.header', 'Collapsible (no accordion)'),
-            mithril_default()('.row', mithril_default()(B, {
+            app_mithril_default()('h3.header', 'Collapsible (no accordion)'),
+            app_mithril_default()('.row', app_mithril_default()(app_B, {
                 accordion: false,
                 items: [
                     { id: 1, header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama', active: true },
                     { id: 2, header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },
-                    { id: 3, header: 'Third', body: mithril_default()('span', 'Third in a span.'), iconName: 'whatshot' },
+                    { id: 3, header: 'Third', body: app_mithril_default()('span', 'Third in a span.'), iconName: 'whatshot' },
                 ],
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Collapsible, {
           accordion: false,
           items: [
@@ -4576,10 +4358,10 @@ const CollectionsPage = () => {
     };
 };
 
-;// CONCATENATED MODULE: ./src/components/map-editor/map-editor-page.ts
+;// ./src/components/map-editor/map-editor-page.ts
 
 
-const MapEditorPage = () => {
+const app_MapEditorPage = () => {
     const state = {
         properties: {
             stringArray: ['a', 'b', 'c'],
@@ -4591,9 +4373,9 @@ const MapEditorPage = () => {
         },
     };
     return {
-        view: () => mithril_default()('.col.s12', [
-            mithril_default()('h2.header', 'Key-value pairs editor'),
-            mithril_default()('p', [
+        view: () => app_mithril_default()('.col.s12', [
+            app_mithril_default()('h2.header', 'Key-value pairs editor'),
+            app_mithril_default()('p', [
                 'As materializecss.com did not offer a useful editor for a map of key-value pairs, ',
                 'I have created one myself. It allows you to edit (or just view, when it is disabled), ',
                 'booleans, numbers, strings and arrays of numbers and strings.',
@@ -4603,8 +4385,8 @@ const MapEditorPage = () => {
             //   cells,
             //   addRows: true,
             // }),
-            mithril_default()('h3.header', 'MapEditor'),
-            mithril_default()('.row', mithril_default()(fe, {
+            app_mithril_default()('h3.header', 'MapEditor'),
+            app_mithril_default()('.row', app_mithril_default()(app_fe, {
                 label: 'Properties',
                 isMandatory: true,
                 properties: state.properties,
@@ -4620,7 +4402,7 @@ const MapEditorPage = () => {
                 truthy: ['true', 'yes', 'ja', 'oui', 'si', 'da'],
                 falsy: ['false', 'no', 'nee', 'nein', 'non', 'nu', 'njet'],
             })),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(MapEditor, {
             label: 'Properties',
             isMandatory: true,
@@ -4642,21 +4424,21 @@ const MapEditorPage = () => {
     };
 };
 
-;// CONCATENATED MODULE: ./src/components/timeline/timeline-page.ts
+;// ./src/components/timeline/timeline-page.ts
 
 
-const TimelinePage = () => {
-    const timeFormatter = (d) => `${v(d.getHours())}:${v(d.getMinutes())}:${v(d.getSeconds())}`;
+const app_TimelinePage = () => {
+    const timeFormatter = (d) => `${app_v(d.getHours())}:${app_v(d.getMinutes())}:${app_v(d.getSeconds())}`;
     return {
-        view: () => mithril_default()('.col.s12', [
-            mithril_default()('h2.header', 'Timeline'),
-            mithril_default()('p', [
+        view: () => app_mithril_default()('.col.s12', [
+            app_mithril_default()('h2.header', 'Timeline'),
+            app_mithril_default()('p', [
                 'A simple timeline component based on ',
-                mithril_default()('a[href=https://tympanus.net/codrops/2013/05/02/vertical-timeline/][target=_blank]', `Codrops\' Vertical Timeline`),
+                app_mithril_default()('a[href=https://tympanus.net/codrops/2013/05/02/vertical-timeline/][target=_blank]', `Codrops\' Vertical Timeline`),
                 '.',
             ]),
-            mithril_default()('h3.header', 'Timeline'),
-            mithril_default()(Ee, {
+            app_mithril_default()('h3.header', 'Timeline'),
+            app_mithril_default()(app_Ee, {
                 onSelect: (item) => console.table(item),
                 timeFormatter,
                 items: [
@@ -4690,7 +4472,7 @@ const TimelinePage = () => {
                         title: 'Test Vnode content',
                         iconName: 'play_arrow',
                         datetime: new Date(2019, 2, 3, 10, 5, 0),
-                        content: mithril_default()(ee, {
+                        content: app_mithril_default()(app_ee, {
                             style: 'color: black;',
                             items: [
                                 { title: 'John', iconName: 'send' },
@@ -4714,16 +4496,16 @@ const TimelinePage = () => {
                     },
                     {
                         id: '7',
-                        title: mithril_default()('i', [
+                        title: app_mithril_default()('i', [
                             'Test a Vnode',
-                            mithril_default()(I, { className: 'small', style: 'float: right;', iconName: 'directions_run' }),
+                            app_mithril_default()(app_I, { className: 'small', style: 'float: right;', iconName: 'directions_run' }),
                         ]),
                         iconName: 'visibility',
                         datetime: new Date(2019, 2, 3, 10, 21, 0),
                     },
                 ],
             }),
-            mithril_default()(K, {
+            app_mithril_default()(app_K, {
                 code: `          m(Timeline, {
             onSelect: (item: ITimelineItem) => console.table(item),
             timeFormatter, // Adds seconds to time format
@@ -4788,7 +4570,7 @@ const TimelinePage = () => {
     };
 };
 
-;// CONCATENATED MODULE: ./src/services/dashboard-service.ts
+;// ./src/services/dashboard-service.ts
 
 
 
@@ -4802,7 +4584,7 @@ const TimelinePage = () => {
 
 
 
-var Dashboards;
+var app_Dashboards;
 (function (Dashboards) {
     Dashboards["HOME"] = "HOME";
     Dashboards["BUTTONS"] = "BUTTONS";
@@ -4816,8 +4598,8 @@ var Dashboards;
     Dashboards["KANBAN"] = "KANBAN";
     Dashboards["MISC"] = "MISC";
     Dashboards["ABOUT"] = "ABOUT";
-})(Dashboards || (Dashboards = {}));
-class DashboardService {
+})(app_Dashboards || (app_Dashboards = {}));
+class app_DashboardService {
     layout;
     dashboards;
     constructor(layout, dashboards) {
@@ -4837,109 +4619,109 @@ class DashboardService {
     switchTo(dashboardId, fragment = '') {
         const dashboard = this.dashboards.filter((d) => d.id === dashboardId).shift();
         if (dashboard) {
-            mithril_default().route.set(dashboard.route);
+            app_mithril_default().route.set(dashboard.route);
         }
     }
     get routingTable() {
         return this.dashboards.reduce((p, c) => {
-            p[c.route] = { render: () => mithril_default()(this.layout, mithril_default()(c.component)) };
+            p[c.route] = { render: () => app_mithril_default()(this.layout, app_mithril_default()(c.component)) };
             return p;
         }, {});
     }
 }
-const dashboardSvc = new DashboardService(Layout, [
+const app_dashboardSvc = new app_DashboardService(app_Layout, [
     {
-        id: Dashboards.HOME,
+        id: app_Dashboards.HOME,
         default: true,
         title: 'HOME',
         icon: 'home',
         route: '/home',
         visible: true,
-        component: HomePage,
+        component: app_HomePage,
     },
     {
-        id: Dashboards.BUTTONS,
+        id: app_Dashboards.BUTTONS,
         title: 'BUTTONS',
         icon: 'crop_16_9',
         route: '/buttons',
         visible: true,
-        component: ButtonPage,
+        component: app_ButtonPage,
     },
     {
-        id: Dashboards.INPUTS,
+        id: app_Dashboards.INPUTS,
         title: 'INPUTS',
         icon: 'create',
         route: '/inputs',
         visible: true,
-        component: InputPage,
+        component: app_InputPage,
     },
     {
-        id: Dashboards.PICKERS,
+        id: app_Dashboards.PICKERS,
         title: 'PICKERS',
         icon: 'access_time',
         route: '/pickers',
         visible: true,
-        component: PickerPage,
+        component: app_PickerPage,
     },
     {
-        id: Dashboards.SELECTIONS,
+        id: app_Dashboards.SELECTIONS,
         title: 'SELECTIONS',
         icon: 'check',
         route: '/selections',
         visible: true,
-        component: SelectionPage,
+        component: app_SelectionPage,
     },
     {
-        id: Dashboards.MODALS,
+        id: app_Dashboards.MODALS,
         title: 'MODALS',
         icon: 'all_out',
         route: '/modals',
         visible: true,
-        component: ModalPage,
+        component: app_ModalPage,
     },
     {
-        id: Dashboards.COLLECTIONS,
+        id: app_Dashboards.COLLECTIONS,
         title: 'COLLECTIONS',
         icon: 'collections',
         route: '/collections',
         visible: true,
-        component: CollectionsPage,
+        component: app_CollectionsPage,
     },
     {
-        id: Dashboards.MAP_EDITOR,
+        id: app_Dashboards.MAP_EDITOR,
         title: 'MAP-EDITOR',
         icon: 'playlist_add',
         route: '/map_editor',
         visible: true,
-        component: MapEditorPage,
+        component: app_MapEditorPage,
     },
     {
-        id: Dashboards.TIMELINE,
+        id: app_Dashboards.TIMELINE,
         title: 'TIMELINE',
         icon: 'timeline',
         route: '/timeline',
         visible: true,
-        component: TimelinePage,
+        component: app_TimelinePage,
     },
     {
-        id: Dashboards.MISC,
+        id: app_Dashboards.MISC,
         title: 'MISCELLANEOUS',
         icon: 'image',
         route: '/misc',
         visible: true,
-        component: MiscPage,
+        component: app_MiscPage,
     },
     {
-        id: Dashboards.ABOUT,
+        id: app_Dashboards.ABOUT,
         title: 'ABOUT',
         icon: 'info',
         route: '/about',
         visible: true,
-        component: AboutPage,
+        component: app_AboutPage,
     },
 ]);
 
-;// CONCATENATED MODULE: ./src/app.ts
+;// ./src/app.ts
 
 
 
@@ -4948,7 +4730,7 @@ const dashboardSvc = new DashboardService(Layout, [
 
 // import '@materializecss/materialize/dist/css/materialize.min.css';
 // import '/home/erik/dev/mithril-materialized/node_modules/.pnpm/@materializecss+materialize@2.0.1-alpha/node_modules/@materializecss/materialize/dist/css/materialize.min.css';
-mithril_default().route(document.body, dashboardSvc.defaultRoute, dashboardSvc.routingTable);
+app_mithril_default().route(document.body, app_dashboardSvc.defaultRoute, app_dashboardSvc.routingTable);
 
 })();
 
