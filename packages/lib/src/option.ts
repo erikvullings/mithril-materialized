@@ -15,10 +15,10 @@ export interface IInputCheckbox extends Attributes {
 /** Component to show a check box */
 export const InputCheckbox: FactoryComponent<IInputCheckbox> = () => {
   return {
-    view: ({ attrs: { className = 'col s12', onchange, label, checked, disabled, description } }) => {
+    view: ({ attrs: { className = 'col s12', onchange, label, checked, disabled, description, style } }) => {
       return m(
         `div`,
-        { className },
+        { className, style },
         m('label', [
           m('input[type=checkbox][tabindex=0]', {
             checked,
@@ -109,6 +109,7 @@ export const Options = <T extends string | number>(): Component<IOptions<T>> => 
         checkedId,
         description,
         className = 'col s12',
+        style,
         disabled,
         checkboxClass,
         newRow,
@@ -131,7 +132,7 @@ export const Options = <T extends string | number>(): Component<IOptions<T>> => 
             callback(checkedIds);
           }
         : undefined;
-      return m(`div${clear}`, { className }, [
+      return m(`div${clear}`, { className, style }, [
         m('div', { className: 'input-field options' }, m(Label, { id, label, isMandatory })),
         m(HelperText, { helperText: description }),
         ...options.map((option) =>
