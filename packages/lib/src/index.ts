@@ -23,4 +23,5 @@ export * from './select';
 export * from './switch';
 export * from './tabs';
 export * from './timeline';
+export * from './search-select';
 export * from './utils';

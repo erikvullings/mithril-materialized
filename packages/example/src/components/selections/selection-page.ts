@@ -8,6 +8,8 @@ import {
   Dropdown,
   IDropdownOptions,
   ISelectOptions,
+  SearchSelect,
+  SearchSelectAttrs,
 } from 'mithril-materialized';
 
 export const SelectionPage = () => {
@@ -162,6 +164,48 @@ export const SelectionPage = () => {
               ],
             } as ISelectOptions<number>)
           )`,
+        }),
+
+        m('h3.header', 'Select multiple with search'),
+        m(
+          '.row',
+          m(SearchSelect, {
+            label: 'What are your favorite hobbies?',
+            placeholder: 'Make a choice...',
+            className: 'col s12',
+            initialValue: state.initialValue,
+            onchange: (v) => {
+              console.log(v);
+            },
+            options: [
+              { id: 0, label: 'Watching movies' },
+              { id: 1, label: 'Going out' },
+              { id: 2, label: 'Reading' },
+              { id: 3, label: 'Sex', disabled: true },
+              { id: 4, label: 'Horse riding' },
+            ],
+          })
+        ),
+        m(CodeBlock, {
+          newRow: true,
+          code: `          m(
+            '.row',
+            m(SearchSelect, {
+              label: 'What are your favorite hobbies?',
+              placeholder: 'Make a choice...',
+              className: 'col s12',
+              initialValue: state.initialValue,
+              onchange: (v) => {
+                console.log(v);
+              },
+              options: [
+                { id: 0, label: 'Watching movies' },
+                { id: 1, label: 'Going out' },
+                { id: 2, label: 'Reading' },
+                { id: 3, label: 'Sex', disabled: true },
+                { id: 4, label: 'Horse riding' },
+              ],
+          })`,
         }),
 
         m('h3.header', 'Options'),

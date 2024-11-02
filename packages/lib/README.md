@@ -45,10 +45,15 @@ Supported components:
   - HelperText
 - Not from Materialize-CSS
   - CodeBlock
+  - SearchSelect, a searchable select dropdown
   - [Timeline](https://erikvullings.github.io/mithril-materialized/#!/timeline)
   - [MapEditor](https://erikvullings.github.io/mithril-materialized/#!/map_editor)
 
 ## Version history
+
+v1.2.0: Added Search select, a searchable select dropdown
+
+v1.1.7: Added option to add style to InputCheckbox and Options
 
 v0.17.1: bug fix
 

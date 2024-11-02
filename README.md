@@ -42,7 +42,7 @@ Supported components:
   - HelperText
 - Not from Materialize-CSS
   - CodeBlock
-  - [Kanban](https://erikvullings.github.io/mithril-materialized/#!/kanban)
+  - SearchSelect, a searchable select dropdown
   - [MapEditor](https://erikvullings.github.io/mithril-materialized/#!/map_editor)
   - [Timeline](https://erikvullings.github.io/mithril-materialized/#!/timeline)
 
