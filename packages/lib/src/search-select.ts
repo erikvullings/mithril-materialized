@@ -12,7 +12,7 @@ export interface SearchSelectAttrs<T> {
   options?: Option<T>[];
   /** Initial value */
   initialValue?: T[];
-  onchange?: (selectedOptions: T[]) => void;
+  onchange?: (selectedOptions: T[]) => void | Promise<void>;
   className?: string;
   label?: string;
   placeholder?: string;
@@ -213,11 +213,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
               m(
                 'ul.dropdown-content.select-dropdown',
                 {
-                  style: {
-                    maxHeight,
-                    opacity: 1,
-                    display: 'contents',
-                  },
+                  style: `max-height:${maxHeight};opacity:1;display:block;width:100% !important;`, // Do not use object notation for style.width - did not pass through
                 },
                 filteredOptions.length === 0
                   ? [
