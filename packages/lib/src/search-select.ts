@@ -80,6 +80,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
         state.selectedOptions = state.selectedOptions.some((item) => item.id === option.id)
           ? state.selectedOptions.filter((item) => item.id !== option.id)
           : [...state.selectedOptions, option];
+        state.searchTerm = '';
         onchange && onchange(state.selectedOptions.map((o) => o.id));
         m.redraw();
       };
@@ -160,11 +161,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                 width: '24',
                 xmlns: 'http://www.w3.org/2000/svg',
               },
-              [
-                m('path', { d: 'M7 10l5 5 5-5z' }),
-                m('path', { d: 'M0 0h24v24H0z', fill: 'none' }),
-                // <svg class="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
-              ]
+              [m('path', { d: 'M7 10l5 5 5-5z' }), m('path', { d: 'M0 0h24v24H0z', fill: 'none' })]
             ),
           ]
         ),
@@ -181,40 +178,41 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
               },
               style: {
                 position: 'absolute',
-                width: '100%',
-                background: 'white',
-                border: '1px solid #d1d5db',
-                borderRadius: '0.25rem',
-                marginTop: '0.25rem',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                zIndex: 1000,
+                width: '98%',
+                marginTop: '0.4rem',
               },
             },
             [
-              // Search Input
-              m('.search-input', { style: { padding: '0 .75rem' } }, [
-                m('input', {
-                  type: 'text',
-                  placeholder: 'Search options...',
-                  value: state.searchTerm || '',
-                  oninput: (e: InputEvent) => {
-                    state.searchTerm = (e.target as HTMLInputElement).value;
-                    m.redraw();
-                  },
-                  style: {
-                    width: '100%',
-                    outline: 'none',
-                    fontSize: '0.875rem',
-                  },
-                }),
-              ]),
-
               // Options List
               m(
                 'ul.dropdown-content.select-dropdown',
                 {
-                  style: `max-height:${maxHeight};opacity:1;display:block;width:100% !important;`, // Do not use object notation for style.width - did not pass through
+                  style: {
+                    maxHeight,
+                    opacity: 1,
+                    display: 'block',
+                    width: '100%',
+                  },
                 },
+                m(
+                  'li', // Search Input
+                  m('.search-input', { style: { padding: '0 16px' } }, [
+                    m('input', {
+                      type: 'text',
+                      placeholder: 'Search options...',
+                      value: state.searchTerm || '',
+                      oninput: (e: InputEvent) => {
+                        state.searchTerm = (e.target as HTMLInputElement).value;
+                        m.redraw();
+                      },
+                      style: {
+                        width: '100%',
+                        outline: 'none',
+                        fontSize: '0.875rem',
+                      },
+                    }),
+                  ])
+                ),
                 filteredOptions.length === 0
                   ? [
                       m(
@@ -242,7 +240,6 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                             cursor: 'pointer',
                             lineHeight: '22px',
                             padding: '14px 16px',
-                            '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.08)' },
                           },
                         },
                         [
