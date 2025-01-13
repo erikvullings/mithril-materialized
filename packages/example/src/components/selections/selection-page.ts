@@ -10,6 +10,7 @@ import {
   ISelectOptions,
   SearchSelect,
   SearchSelectAttrs,
+  TextInput,
 } from 'mithril-materialized';
 
 export const SelectionPage = () => {
@@ -307,7 +308,12 @@ export const SelectionPage = () => {
             label: 'What is your gender?',
             left: 'Man',
             right: 'Woman',
+            className: 'col s6 m4',
             onchange,
+          }),
+          m(TextInput, {
+            label: 'What is your name',
+            className: 'col s6 m8',
           })
         ),
         m(CodeBlock, {
