@@ -13,21 +13,11 @@ export interface IChipsOptions extends Partial<M.ChipsOptions>, Attributes {
 export const Chips: FactoryComponent<IChipsOptions> = () => {
   return {
     view: ({
-      attrs: {
-        placeholder,
-        required,
-        isMandatory = required,
-        // data = [],
-        className = 'col s12',
-        label,
-        helperText,
-        onchange,
-        ...params
-      },
+      attrs: { required, isMandatory = required, className = 'col s12', label, helperText, onchange, ...params },
     }) => {
       const cn = [
         'chips chips-autocomplete',
-        placeholder ? 'chips-placeholder' : '',
+        params.placeholder ? 'chips-placeholder' : '',
         params.data ? 'chips-initial' : '',
       ]
         .filter(Boolean)
@@ -62,7 +52,6 @@ export const Chips: FactoryComponent<IChipsOptions> = () => {
               }
             };
             M.Chips.init(dom, params);
-            // data.forEach((d) => chips.addChip(d));
           },
           onupdate: ({ dom }) => {
             if (!params.data || params.data.length === 0) {
