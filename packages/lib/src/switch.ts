@@ -31,9 +31,9 @@ export const Switch: FactoryComponent<ISwitchOptions> = () => {
         className = 'col s12',
         ...params
       } = attrs;
-      const cn = [newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim();
+      const cn = ['input-field', newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim();
       return m('div', { className: cn }, [
-        label ? m(Label, { label: label || '', id, isMandatory }) : undefined,
+        label ? m(Label, { label: label || '', id, isMandatory, className: 'active' }) : undefined,
         m(
           '.switch',
           params,
