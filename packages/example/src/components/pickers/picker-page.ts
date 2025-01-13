@@ -15,7 +15,7 @@ export const PickerPage = () => {
             label: 'Disable pickers',
             left: 'enable',
             right: 'disable',
-            onchange: v => (state.disabled = v),
+            onchange: (v) => (state.disabled = v),
           })
         ),
         m('h3.header', 'DatePicker'),
@@ -25,7 +25,7 @@ export const PickerPage = () => {
             disabled: state.disabled,
             format: 'mmmm d, yyyy',
             label: 'What is your birthday?',
-            yearRange: [1900, new Date().getFullYear() - 17],
+            yearRange: [1970, new Date().getFullYear() + 20],
             initialValue: new Date(),
             onchange,
           })
@@ -34,7 +34,7 @@ export const PickerPage = () => {
           code: `          m(DatePicker, {
             format: 'mmmm d, yyyy',
             label: 'What is your birthday?',
-            yearRange: [1900, new Date().getFullYear() - 17],
+            yearRange: [1970, new Date().getFullYear() + 20],
             initialValue: new Date().toDateString(),
             onchange,
           })`,

@@ -121,7 +121,6 @@ export const Options = <T extends string | number>(): Component<IOptions<T>> => 
         state.checkedId = checkedId;
         state.checkedIds = checkedId instanceof Array ? checkedId : [checkedId];
       }
-      const clear = newRow ? '.clear' : '';
       const onchange = callback
         ? (propId: T, checked: boolean) => {
             const checkedIds = state.checkedIds.filter((i) => i !== propId);
@@ -132,7 +131,8 @@ export const Options = <T extends string | number>(): Component<IOptions<T>> => 
             callback(checkedIds);
           }
         : undefined;
-      return m(`div${clear}`, { className, style }, [
+      const cn = [newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim();
+      return m('div', { className: cn, style }, [
         m('div', { className: 'input-field options' }, m(Label, { id, label, isMandatory })),
         m(HelperText, { helperText: description }),
         ...options.map((option) =>

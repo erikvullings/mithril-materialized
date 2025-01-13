@@ -40,17 +40,15 @@ export interface IRadioButton<T extends string | number> extends Attributes {
 export const RadioButton = <T extends string | number>(): Component<IRadioButton<T>> => ({
   view: ({ attrs: { id, groupId, label, onchange, className = 'col s12', checked, disabled } }) => {
     return m(
-      `div`,
+      'div',
       { className },
       m('label', [
-        m(
-          `input[type=radio][tabindex=0][name=${groupId}]${checked ? '[checked=checked]' : ''}${
-            disabled ? '[disabled]' : ''
-          }`,
-          {
-            onclick: onchange ? () => onchange(id) : undefined,
-          }
-        ),
+        m('input[type=radio][tabindex=0]', {
+          name: groupId,
+          disabled,
+          checked,
+          onclick: onchange ? () => onchange(id) : undefined,
+        }),
         m('span', m.trust(label)),
       ])
     );

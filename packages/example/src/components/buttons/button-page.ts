@@ -61,15 +61,27 @@ export const ButtonPage = () => {
           m(Button, { label: 'First Button', onclick }),
           m(Button, { label: 'Second Button', iconName: 'cloud', onclick }),
           m(Button, { label: 'Third Button', iconName: 'cloud', iconClass: 'right', onclick }),
+          m(Button, {
+            label: 'Fourth Button',
+            iconName: 'cloud',
+            attr: { disabled: true },
+            onclick,
+          }),
         ]),
         m(CodeBlock, {
           code: [
             `const onclick = () => alert('Button clicked');
 m('div', [
-  m(Button, { label: 'Button', onclick }),
-  m(Button, { label: 'Button', iconName: 'cloud', onclick }),
-  m(Button, { label: 'Button', iconName: 'cloud', iconClass: 'right', onclick }),
-]),`,
+  m(Button, { label: 'First Button', onclick }),
+  m(Button, { label: 'Second Button', iconName: 'cloud', onclick }),
+  m(Button, { label: 'Third Button', iconName: 'cloud', iconClass: 'right', onclick }),
+  m(Button, {
+    label: 'Fourth Button',
+    iconName: 'cloud',
+    attr: { disabled: true },
+    onclick,
+  }),
+])`,
           ],
         }),
         m('h3.header[id=flatbutton]', 'FlatButton'),

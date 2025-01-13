@@ -1,5 +1,5 @@
 import m, { FactoryComponent } from 'mithril';
-import { uniqueId, toAttrs } from './utils';
+import { uniqueId } from './utils';
 import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
 
@@ -11,7 +11,7 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
   return {
     view: ({ attrs }) => {
       const id = attrs.id || state.id;
-      const attributes = toAttrs(attrs);
+      // const attributes = toAttrs(attrs);
       const {
         label,
         helperText,
@@ -22,11 +22,16 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
         style,
         iconName,
         isMandatory,
+        ...params
       } = attrs;
       const cn = newRow ? className + ' clear' : className;
       return m(`.input-field${newRow ? '.clear' : ''}`, { className: cn, style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
-        m(`input.autocomplete[type=text][tabindex=0]${attributes}`, {
+        m('input', {
+          ...params,
+          className: 'autocomplete',
+          type: 'text',
+          tabindex: 0,
           id,
           oncreate: ({ dom }) => {
             M.Autocomplete.init(dom, attrs);

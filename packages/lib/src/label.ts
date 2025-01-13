@@ -17,12 +17,17 @@ export interface IMaterialLabel extends Attributes {
 /** Simple label element, used for most components. */
 export const Label: FactoryComponent<IMaterialLabel> = () => {
   return {
-    view: ({ attrs: { label, id, isMandatory, isActive, ...params } }) =>
+    view: ({ attrs: { label, id, isMandatory, isActive, className, ...params } }) =>
       label
-        ? m(`label${isActive ? '.active' : ''}${id ? `[for=${id}]` : ''}`, params, [
-            m.trust(label),
-            isMandatory ? m(Mandatory) : undefined,
-          ])
+        ? m(
+            'label',
+            {
+              ...params,
+              className: [className, isActive ? 'active' : ''].filter(Boolean).join(' ').trim(),
+              for: id,
+            },
+            [m.trust(label), isMandatory ? m(Mandatory) : undefined]
+          )
         : undefined,
   };
 };
@@ -38,7 +43,11 @@ export const HelperText: FactoryComponent<IHelperTextOptions> = () => {
   return {
     view: ({ attrs: { helperText, dataError, dataSuccess, className } }) => {
       return helperText || dataError || dataSuccess
-        ? m('span.helper-text', { className, dataError, dataSuccess }, helperText ? m.trust(helperText) : '')
+        ? m(
+            'span.helper-text',
+            { className, 'data-error': dataError, 'data-success': dataSuccess },
+            helperText ? m.trust(helperText) : ''
+          )
         : undefined;
     },
   };

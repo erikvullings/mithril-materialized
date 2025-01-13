@@ -51,15 +51,16 @@ export const Tabs: FactoryComponent<ITabs> = () => {
   const createId = (title: string, id?: string) => (id ? id : title.replace(/ /g, '').toLowerCase());
   return {
     view: ({
-      attrs: { tabWidth, selectedTabId, tabs, className: cn, style, duration, onShow, swipeable, responsiveThreshold },
+      attrs: { tabWidth, selectedTabId, tabs, className, style, duration, onShow, swipeable, responsiveThreshold },
     }) => {
       const activeTab = tabs.filter((t) => t.active).shift();
       const select = selectedTabId || (activeTab ? createId(activeTab.title, activeTab.id) : '');
+      const cn = [tabWidth === 'fill' ? 'tabs-fixed-width' : '', className].filter(Boolean).join(' ').trim();
       return m('.row', [
         m(
           '.col.s12',
           m(
-            `ul.tabs${tabWidth === 'fill' ? '.tabs-fixed-width' : ''}`,
+            'ul.tabs',
             {
               className: cn,
               style,
@@ -81,25 +82,29 @@ export const Tabs: FactoryComponent<ITabs> = () => {
               },
               onremove: () => state.instance.destroy(),
             },
-            tabs.map(({ className, title, id, active, disabled, target, href }) =>
-              m(
-                `li.tab${disabled ? '.disabled' : ''}${
-                  tabWidth === 'fixed' ? `.col.s${Math.floor(12 / tabs.length)}` : ''
-                }`,
-                { className },
-                m(
-                  `a[id=tab_${createId(title, id)}]${active ? '.active' : ''}`,
-                  { target, href: href || `#${createId(title, id)}` },
-                  title
-                )
-              )
-            )
+            tabs.map(({ className, title, id, active, disabled, target, href }) => {
+              const cn = [tabWidth === 'fixed' ? `col s${Math.floor(12 / tabs.length)}` : '', className]
+                .filter(Boolean)
+                .join(' ')
+                .trim();
+              const anchorId = createId(title, id);
+              const tabId = `tab_${anchorId}`;
+              const cnA = active ? 'active' : '';
+              return m(
+                'li.tab',
+                {
+                  className: cn,
+                  disabled,
+                },
+                m('a', { id: tabId, className: cnA, target, href: href || `#${anchorId}` }, title)
+              );
+            })
           )
         ),
         tabs
           .filter(({ href }) => typeof href === 'undefined')
           .map(({ id, title, vnode, contentClass }) =>
-            m(`.col.s12[id=${createId(title, id)}]`, { className: contentClass }, vnode)
+            m('.col.s12', { id: createId(title, id), className: contentClass }, vnode)
           ),
       ]);
     },

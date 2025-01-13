@@ -27,21 +27,33 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => ({
       onCreate(modal);
     }
   },
-  view: ({ attrs: { id, title, description, fixedFooter, bottomSheet, buttons, richContent } }) => {
-    const ff = fixedFooter ? '.modal-fixed-footer' : '';
-    const bs = bottomSheet ? '.bottom-sheet' : '';
-    return m(`.modal${ff}${bs}[id=${id}]`, [
-      m('.modal-content', [
-        m('h4', title),
-        richContent && typeof description === 'string'
-          ? m.trust(description || '')
-          : typeof description === 'string'
-          ? m('p', description)
-          : description,
-      ]),
-      buttons
-        ? m('.modal-footer', buttons.map(props => m(FlatButton, { ...props, className: 'modal-close' })))
-        : undefined,
-    ]);
+  view: ({ attrs: { id, title, description, fixedFooter, bottomSheet, buttons, richContent, className } }) => {
+    const cn = [className, fixedFooter ? 'modal-fixed-footer' : '', bottomSheet ? 'bottom-sheet' : '']
+      .filter(Boolean)
+      .join(' ')
+      .trim();
+    return m(
+      '.modal',
+      {
+        id,
+        className: cn,
+      },
+      [
+        m('.modal-content', [
+          m('h4', title),
+          richContent && typeof description === 'string'
+            ? m.trust(description || '')
+            : typeof description === 'string'
+            ? m('p', description)
+            : description,
+        ]),
+        buttons
+          ? m(
+              '.modal-footer',
+              buttons.map((props) => m(FlatButton, { ...props, className: 'modal-close' }))
+            )
+          : undefined,
+      ]
+    );
   },
 });

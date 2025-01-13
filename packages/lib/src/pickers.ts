@@ -1,6 +1,6 @@
 import m, { FactoryComponent } from 'mithril';
 import { IInputOptions } from './input-options';
-import { uniqueId, toAttrs } from './utils';
+import { uniqueId } from './utils';
 import { Label, HelperText } from './label';
 
 /** Component to pick a date */
@@ -22,22 +22,27 @@ export const DatePicker: FactoryComponent<IInputOptions<Date> & Partial<M.Datepi
       },
     }) => {
       const id = state.id;
-      const attributes = toAttrs(props);
-      // const {} = attrs;
-      const clear = newRow ? '.clear' : '';
+      // const attributes = toAttrs(props);
       const onClose = onchange ? () => state.dp && onchange(state.dp.date) : undefined;
+      const cn = [newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim();
       return m(
-        `.input-field${clear}`,
+        '.input-field',
         {
-          className,
+          className: cn,
           onremove: () => {
-            // console.log('removing dp');
             return state.dp && state.dp.destroy();
           },
         },
         [
           iconName ? m('i.material-icons.prefix', iconName) : '',
-          m(`input.datepicker[type=text][tabindex=0][id=${id}]${attributes}${disabled ? '[disabled]' : ''}`, {
+          m('input', {
+            ...props,
+            type: 'text',
+            tabindex: 0,
+            className: 'datepicker',
+            id,
+            // attributes,
+            disabled,
             oncreate: ({ dom }) => {
               state.dp = M.Datepicker.init(dom, {
                 format: 'yyyy/mm/dd',
@@ -77,21 +82,26 @@ export const TimePicker: FactoryComponent<IInputOptions & Partial<M.TimepickerOp
       },
     }) => {
       const id = state.id;
-      const attributes = toAttrs(props);
-      const clear = newRow ? '.clear' : '';
+      // const attributes = toAttrs(props);
       const now = new Date();
       const onCloseEnd = onchange
         ? () => state.tp && onchange(state.tp.time || initialValue || `${now.getHours()}:${now.getMinutes()}`)
         : undefined;
+      const cn = ['input-field', 'timepicker', newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim();
       return m(
-        `.input-field.timepicker${clear}`,
+        'div',
         {
-          className,
+          className: cn,
           onremove: () => state.tp && state.tp.destroy(),
         },
         [
           iconName ? m('i.material-icons.prefix', iconName) : '',
-          m(`input[type=text][tabindex=0][id=${id}]${attributes}${disabled ? '[disabled]' : ''}`, {
+          m('input', {
+            ...props,
+            type: 'text',
+            tabindex: 0,
+            id,
+            disabled,
             value: initialValue,
             oncreate: ({ dom }) => {
               state.tp = M.Timepicker.init(dom, {

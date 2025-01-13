@@ -1,5 +1,5 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
-import { uniqueId, toAttrs } from './utils';
+import { uniqueId } from './utils';
 import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
 import './styles/input.css';
@@ -25,10 +25,13 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
         style,
         ...params
       } = attrs;
-      const attributes = toAttrs(params);
-      return m(`.input-field`, { className, style }, [
+      // const attributes = toAttrs(params);
+      return m('.input-field', { className, style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
-        m(`textarea.materialize-textarea[tabindex=0][id=${id}]${attributes}`, {
+        m('textarea.materialize-textarea', {
+          ...params,
+          id,
+          tabindex: 0,
           oncreate: ({ dom }) => {
             M.textareaAutoResize(dom);
             if (attrs.maxLength) {
@@ -111,10 +114,16 @@ const InputField =
           validate,
           ...params
         } = attrs;
-        const attributes = toAttrs(params);
-        return m(`.input-field${newRow ? '.clear' : ''}${defaultClass}`, { className, style }, [
+        // const attributes = toAttrs(params);
+        const cn = [newRow ? 'clear' : '', defaultClass, className].filter(Boolean).join(' ').trim();
+        return m('.input-field', { className: cn, style }, [
           iconName ? m('i.material-icons.prefix', iconName) : undefined,
-          m(`input.validate[type=${type}][tabindex=0][id=${id}]${attributes}`, {
+          m('input.validate', {
+            ...params,
+            type,
+            tabindex: 0,
+            id,
+            // attributes,
             oncreate: ({ dom }) => {
               if (focus(attrs)) {
                 (dom as HTMLElement).focus();
@@ -230,14 +239,14 @@ export const FileInput: FactoryComponent<IFileInputOptions> = () => {
         placeholder,
         onchange,
         className = 'col s12',
-        accept,
+        accept: acceptedFiles,
         label = 'File',
       } = attrs;
-      const accepted = accept ? (accept instanceof Array ? accept.join(', ') : accept) : undefined;
-      const acc = accepted ? `[accept=${accepted}]` : '';
-      const mul = multiple ? '[multiple]' : '';
-      const dis = disabled ? '[disabled]' : '';
-      const ph = placeholder ? `[placeholder=${placeholder}]` : '';
+      const accept = acceptedFiles
+        ? acceptedFiles instanceof Array
+          ? acceptedFiles.join(', ')
+          : acceptedFiles
+        : undefined;
       return m(
         '.file-field.input-field',
         {
@@ -246,7 +255,11 @@ export const FileInput: FactoryComponent<IFileInputOptions> = () => {
         [
           m('.btn', [
             m('span', label),
-            m(`input[type=file]${mul}${dis}${acc}`, {
+            m('input[type=file]', {
+              title: label,
+              accept,
+              multiple,
+              disabled,
               onchange: onchange
                 ? (e: UIEvent) => {
                     const i = e.target as HTMLInputElement;
@@ -260,7 +273,8 @@ export const FileInput: FactoryComponent<IFileInputOptions> = () => {
           ]),
           m(
             '.file-path-wrapper',
-            m(`input.file-path.validate${ph}[type=text]`, {
+            m('input.file-path.validate[type=text]', {
+              placeholder,
               oncreate: ({ dom }) => {
                 i = dom as HTMLInputElement;
                 if (initialValue) i.value = initialValue;
@@ -271,7 +285,12 @@ export const FileInput: FactoryComponent<IFileInputOptions> = () => {
             m(
               'a.waves-effect.waves-teal.btn-flat',
               {
-                style: 'float: right;position: relative;top: -3rem; padding: 0',
+                style: {
+                  float: 'right',
+                  position: 'relative',
+                  top: '-3rem',
+                  padding: 0,
+                },
                 onclick: () => {
                   canClear = false;
                   i.value = '';

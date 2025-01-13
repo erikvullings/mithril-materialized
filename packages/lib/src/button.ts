@@ -1,5 +1,4 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
-import { toAttributeString } from './utils';
 import { Icon } from './icon';
 
 export interface IHtmlAttributes {
@@ -36,28 +35,44 @@ export interface IMaterialButton extends Attributes {
  *
  * @example FlatButton = ButtonFactory('a.waves-effect.waves-teal.btn-flat');
  */
-export const ButtonFactory =
-  (defaultClassNames: string, attributes: string = ''): FactoryComponent<IMaterialButton> =>
-  () => {
-    const dca = `${defaultClassNames}${attributes}`;
+export const ButtonFactory = (
+  element: string,
+  defaultClassNames: string,
+  type: string = ''
+): FactoryComponent<IMaterialButton> => {
+  return () => {
     return {
       view: ({ attrs }) => {
-        const { modalId, tooltip, tooltipPostion, iconName, iconClass, label, attr, ...passThrough } = attrs;
+        const { modalId, tooltip, tooltipPostion, iconName, iconClass, label, attr, ...params } = attrs;
+        const cn = [modalId ? 'modal-trigger' : '', tooltip ? 'tooltipped' : '', defaultClassNames]
+          .filter(Boolean)
+          .join(' ')
+          .trim();
         return m(
-          `${dca}${modalId ? `.modal-trigger[href=#${modalId}]` : ''}${
-            tooltip ? `.tooltipped[data-position=${tooltipPostion || 'top'}][data-tooltip=${tooltip}]` : ''
-          }${toAttributeString(attr)}`,
-          passThrough,
+          element,
+          {
+            ...params,
+            ...attr,
+            className: cn,
+            href: modalId ? `#${modalId}` : undefined,
+            'data-position': tooltip ? tooltipPostion || 'top' : undefined,
+            'data-tooltip': tooltip || undefined,
+            type,
+          },
+          // `${dca}${modalId ? `.modal-trigger[href=#${modalId}]` : ''}${
+          //   tooltip ? `.tooltipped[data-position=${tooltipPostion || 'top'}][data-tooltip=${tooltip}]` : ''
+          // }${toAttributeString(attr)}`, {}
           iconName ? m(Icon, { iconName, className: iconClass || 'left' }) : undefined,
           label ? label : undefined
         );
       },
     };
   };
+};
 
-export const Button = ButtonFactory('a.waves-effect.waves-light.btn', '[type=button]');
-export const LargeButton = ButtonFactory('a.waves-effect.waves-light.btn-large', '[type=button]');
-export const SmallButton = ButtonFactory('a.waves-effect.waves-light.btn-small', '[type=button]');
-export const FlatButton = ButtonFactory('a.waves-effect.waves-teal.btn-flat', '[type=button]');
-export const RoundIconButton = ButtonFactory('button.btn-floating.btn-large.waves-effect.waves-light', '[type=button]');
-export const SubmitButton = ButtonFactory('button.btn.waves-effect.waves-light', '[type=submit]');
+export const Button = ButtonFactory('a', 'waves-effect waves-light btn', 'button');
+export const LargeButton = ButtonFactory('a', 'waves-effect waves-light btn-large', 'button');
+export const SmallButton = ButtonFactory('a', 'waves-effect waves-light btn-small', 'button');
+export const FlatButton = ButtonFactory('a', 'waves-effect waves-teal btn-flat', 'button');
+export const RoundIconButton = ButtonFactory('button', 'btn-floating btn-large waves-effect waves-light', 'button');
+export const SubmitButton = ButtonFactory('button', 'btn waves-effect waves-light', 'submit');

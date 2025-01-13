@@ -66,8 +66,9 @@ export const ListItem: FactoryComponent<{ item: ICollectionItem; mode: Collectio
       const { title, content = '', active, iconName, avatar, className, onclick } = item;
       return mode === CollectionMode.AVATAR
         ? m(
-            `li.collection-item.avatar${active ? '.active' : ''}`,
+            'li.collection-item.avatar',
             {
+              className: active ? 'active' : '',
               onclick: onclick ? () => onclick(item) : undefined,
             },
             [
@@ -80,7 +81,10 @@ export const ListItem: FactoryComponent<{ item: ICollectionItem; mode: Collectio
             ]
           )
         : m(
-            `li.collection-item${active ? '.active' : ''}`,
+            'li.collection-item',
+            {
+              className: active ? 'active' : '',
+            },
             iconName ? m('div', [title, m(SecondaryContent, item)]) : title
           );
     },
@@ -90,7 +94,7 @@ export const ListItem: FactoryComponent<{ item: ICollectionItem; mode: Collectio
 const BasicCollection: FactoryComponent<ICollection> = () => {
   return {
     view: ({ attrs: { header, items, mode = CollectionMode.BASIC, ...params } }) => {
-      const collectionItems = items.map(item => m(ListItem, { key: item.id, item, mode }));
+      const collectionItems = items.map((item) => m(ListItem, { key: item.id, item, mode }));
       return header
         ? m('ul.collection.with-header', params, [m('li.collection-header', m('h4', header)), collectionItems])
         : m('ul.collection', params, collectionItems);
@@ -120,9 +124,13 @@ const LinksCollection: FactoryComponent<ICollection> = () => {
       return header
         ? m('.collection.with-header', params, [
             m('.collection-header', m('h4', header)),
-            items.map(item => m(AnchorItem, { key: item.id, item })),
+            items.map((item) => m(AnchorItem, { key: item.id, item })),
           ])
-        : m('.collection', params, items.map(item => m(AnchorItem, { key: item.id, item })));
+        : m(
+            '.collection',
+            params,
+            items.map((item) => m(AnchorItem, { key: item.id, item }))
+          );
     },
   };
 };

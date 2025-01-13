@@ -81,8 +81,10 @@ export const Dropdown = <T extends string | number>(): Component<IDropdownOption
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(HelperText, { helperText }),
         m(
-          `a.dropdown-trigger.btn.truncate[href=#][data-target=${id}]${disabled ? '[disabled]' : ''}`,
+          'a.dropdown-trigger.btn.truncate[href=#]',
           {
+            'data-target': id,
+            disabled,
             className: 'col s12',
             style: style || (iconName ? 'margin: 0.2em 0 0 3em;' : undefined),
             oncreate: ({ dom }) => {
@@ -92,10 +94,14 @@ export const Dropdown = <T extends string | number>(): Component<IDropdownOption
           title
         ),
         m(
-          `ul.dropdown-content[id=${id}]`,
+          'ul.dropdown-content',
+          { id },
           items.map((i) =>
             m(
-              `li${i.divider ? '.divider[tabindex=-1]' : ''}`,
+              'li[tabindex=-1]',
+              {
+                className: i.divider ? 'divider' : '',
+              },
               i.divider
                 ? undefined
                 : m(

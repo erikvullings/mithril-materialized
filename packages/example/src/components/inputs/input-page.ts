@@ -16,7 +16,7 @@ import {
 import m from 'mithril';
 
 export const InputPage = () => {
-  const onchange = (v: unknown) => alert(`Input changed. New value: ${v}`);
+  const onchange = (v: unknown) => console.log(`Input changed. New value: ${v}`);
   let value = 'click_clear_to_remove.me';
   return {
     view: () =>
@@ -28,6 +28,7 @@ export const InputPage = () => {
           '.row',
           m(TextInput, {
             label: 'What is your name?',
+            required: true,
             helperText: 'Please, be honest!',
             onchange,
             autocomplete: 'off',
@@ -39,6 +40,7 @@ export const InputPage = () => {
         m(CodeBlock, {
           code: `        m(TextInput, {
           label: 'What is your name?',
+          required: true,
           helperText: 'Please, be honest!',
           onchange,
           onkeyup: (ev, value) => console.log(value),
@@ -93,8 +95,9 @@ export const InputPage = () => {
               Apple: null,
               Google: null,
               Facebook: null,
-              PHILIPS: 'http://hdlighting-suriname.com/wp-content/uploads/2013/12/philips.png',
-              TNO: 'https://github.com/TNOCS/spec-tool/raw/master/src/assets/tno.png',
+              PHILIPS:
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Philips_logo.svg/800px-Philips_logo.svg.png',
+              TNO: 'https://tno.github.io/crime_scripts/f418cfa539199976.svg',
             },
             onchange,
           })
@@ -107,8 +110,8 @@ export const InputPage = () => {
               Apple: null,
               Google: null,
               Facebook: null,
-              PHILIPS: 'http://hdlighting-suriname.com/wp-content/uploads/2013/12/philips.png',
-              TNO: 'https://github.com/TNOCS/spec-tool/raw/master/src/assets/tno.png',
+              PHILIPS: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Philips_logo.svg/800px-Philips_logo.svg.png',
+              TNO: 'https://tno.github.io/crime_scripts/f418cfa539199976.svg',
             },
             onchange,
         } as IInputOptions)`,
@@ -118,7 +121,7 @@ export const InputPage = () => {
         m(
           '.row',
           m(TextArea, {
-            label: 'Please, could you describe yourself',
+            label: 'Please, describe yourself',
             helperText: `Don't be shy`,
             maxLength: 100,
             onchange,

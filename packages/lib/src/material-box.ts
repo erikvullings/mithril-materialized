@@ -24,11 +24,6 @@ export const MaterialBox: FactoryComponent<IMaterialBox> = () => {
     oncreate: ({ dom, attrs }) => {
       M.Materialbox.init(dom, attrs);
     },
-    view: ({ attrs }) => {
-      const { src, width, height } = attrs;
-      const w = width ? `[width=${width}]` : '';
-      const h = height ? `[height=${height}]` : '';
-      return m(`img.materialboxed[src=${src}]${w}${h}`, attrs);
-    },
+    view: ({ attrs }) => m('img.materialboxed', attrs),
   };
 };

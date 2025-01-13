@@ -5,6 +5,8 @@ export interface ICarouselItem extends Attributes {
   href: string;
   /** Image source */
   src: string;
+  /** Alternative name */
+  alt?: string;
 }
 
 export interface ICarousel extends Partial<M.CarouselOptions>, Attributes {
@@ -14,8 +16,8 @@ export interface ICarousel extends Partial<M.CarouselOptions>, Attributes {
 
 export const CarouselItem: FactoryComponent<ICarouselItem> = () => {
   return {
-    view: ({ attrs: { href, src } }) => {
-      return m('a.carousel-item', { href }, m(`img[src=${src}]`));
+    view: ({ attrs: { href, src, alt, ...params } }) => {
+      return m('a.carousel-item', { ...params, href }, m('img', { src, alt }));
     },
   };
 };
@@ -36,7 +38,7 @@ export const Carousel: FactoryComponent<ICarousel> = () => {
                 M.Carousel.init(dom, attrs);
               },
             },
-            items.map(item => m(CarouselItem, item))
+            items.map((item) => m(CarouselItem, item))
           )
         : undefined;
     },

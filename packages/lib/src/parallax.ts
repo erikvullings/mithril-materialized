@@ -16,6 +16,6 @@ export const Parallax: FactoryComponent<IParallax> = () => {
     oncreate: ({ dom, attrs }) => {
       M.Parallax.init(dom, attrs);
     },
-    view: ({ attrs: { src } }) => (src ? m('.parallax-container', m('.parallax', m(`img[src=${src}]`))) : undefined),
+    view: ({ attrs: { src } }) => (src ? m('.parallax-container', m('.parallax', m('img', { src }))) : undefined),
   };
 };

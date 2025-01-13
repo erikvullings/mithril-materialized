@@ -35,11 +35,11 @@ const TimelineItem: FactoryComponent<IInternalTimelineItem> = () => {
     view: ({ attrs: { id, title, datetime, active, content, iconName, dateFormatter, timeFormatter, onSelect } }) => {
       const onclick = onSelect ? () => onSelect({ id, title, datetime, active, content }) : undefined;
       const style = onSelect ? 'cursor: pointer;' : undefined;
-      return m(`li${active ? '.active' : ''}${id ? `[id=${id}]` : ''}`, { onclick, style }, [
+      return m('li', { id, className: active ? 'active' : undefined, onclick, style }, [
         m('.mm_time', { datetime }, [m('span', dateFormatter(datetime)), m('span', timeFormatter(datetime))]),
         iconName ? m('.mm_icon', m('i.material-icons', iconName)) : undefined,
         m('.mm_label', [
-          title ? typeof title === 'string' ? m('h5', title) : title : undefined,
+          title ? (typeof title === 'string' ? m('h5', title) : title) : undefined,
           content ? (typeof content === 'string' ? m('p', content) : content) : undefined,
         ]),
       ]);
@@ -58,7 +58,7 @@ export const Timeline: FactoryComponent<ITimeline> = () => {
     view: ({ attrs: { items, onSelect, timeFormatter = tf, dateFormatter = df } }) => {
       return m(
         'ul.mm_timeline',
-        items.map(item => m(TimelineItem, { onSelect, dateFormatter, timeFormatter, ...item }))
+        items.map((item) => m(TimelineItem, { onSelect, dateFormatter, timeFormatter, ...item }))
       );
     },
   };
