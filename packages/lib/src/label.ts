@@ -44,7 +44,7 @@ export const HelperText: FactoryComponent<IHelperTextOptions> = () => {
     view: ({ attrs: { helperText, dataError, dataSuccess, className } }) => {
       return helperText || dataError || dataSuccess
         ? m(
-            'span.helper-text',
+            'span.helper-text.left',
             { className, 'data-error': dataError, 'data-success': dataSuccess },
             helperText ? m.trust(helperText) : ''
           )

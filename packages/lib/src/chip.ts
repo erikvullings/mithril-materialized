@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { uniqueId } from './utils';
-import { Label } from './label';
+import { HelperText, Label } from './label';
 
 export interface ChipData {
   tag: string;
@@ -35,18 +35,18 @@ export interface IChipsOptions {
   onChipSelect?: (chip: ChipData) => void;
 }
 
-export interface ChipsState {
-  chipsData: ChipData[];
-  selectedChip: number | null;
-  focused: boolean;
-  inputValue: string;
-  inputId: string;
-  autocompleteItems: AutocompleteOption[];
-  selectedAutocompleteIndex: number;
-  showAutocomplete: boolean;
-}
-
 export const Chips: m.FactoryComponent<IChipsOptions> = () => {
+  interface ChipsState {
+    chipsData: ChipData[];
+    selectedChip: number | null;
+    focused: boolean;
+    inputValue: string;
+    inputId: string;
+    autocompleteItems: AutocompleteOption[];
+    selectedAutocompleteIndex: number;
+    showAutocomplete: boolean;
+  }
+
   const state: ChipsState = {
     chipsData: [],
     selectedChip: null,
@@ -232,8 +232,8 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
       currentVnode = null;
     },
 
-    view: (vnode) => {
-      console.log(state);
+    view: ({ attrs }) => {
+      // console.log(state);
       const {
         id,
         required,
@@ -243,7 +243,7 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
         helperText,
         placeholder,
         secondaryPlaceholder,
-      } = vnode.attrs;
+      } = attrs;
 
       const getPlaceholder = () => {
         if (!state.chipsData.length && placeholder) {
@@ -255,9 +255,9 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
         return '';
       };
 
-      return m('div', { id, className }, [
+      return m('div.input-field', { id, className }, [
         m(
-          '.chips.input-field.chips-initial',
+          '.chips.chips-initial',
           {
             class: `chips-container ${state.focused ? 'focused' : ''} ${placeholder ? 'chips-placeholder' : ''}`,
           },
@@ -355,26 +355,16 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
                   )
                 )
               ),
-            label &&
-              m(Label, {
-                label,
-                id: state.inputId,
-                isMandatory,
-                isActive: state.focused || state.chipsData.length || placeholder ? true : false,
-              }),
           ]
         ),
-        helperText &&
-          m(
-            '.input-field',
-            {
-              style: {
-                marginTop: '-6px',
-                marginBottom: '12px',
-              },
-            },
-            m('.helper-text', helperText)
-          ),
+        label &&
+          m(Label, {
+            label,
+            id: state.inputId,
+            isMandatory,
+            isActive: state.focused || state.chipsData.length || placeholder ? true : false,
+          }),
+        helperText && m(HelperText, { helperText }),
       ]);
     },
   };
