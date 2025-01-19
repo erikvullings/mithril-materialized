@@ -43,8 +43,8 @@ export const ButtonFactory = (
   return () => {
     return {
       view: ({ attrs }) => {
-        const { modalId, tooltip, tooltipPostion, iconName, iconClass, label, attr, ...params } = attrs;
-        const cn = [modalId ? 'modal-trigger' : '', tooltip ? 'tooltipped' : '', defaultClassNames]
+        const { modalId, tooltip, tooltipPostion, iconName, iconClass, label, className, attr, ...params } = attrs;
+        const cn = [modalId ? 'modal-trigger' : '', tooltip ? 'tooltipped' : '', defaultClassNames, className]
           .filter(Boolean)
           .join(' ')
           .trim();
