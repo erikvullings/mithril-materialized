@@ -5,12 +5,11 @@ import { HelperText, Label } from './label';
 export interface ChipData {
   tag: string;
   image?: string;
+  alt?: string;
 }
 
-export interface AutocompleteOption {
-  text: string;
+export interface AutocompleteOption extends ChipData {
   value?: string;
-  image?: string;
 }
 
 export interface IChipsOptions {
@@ -66,13 +65,13 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
     if (Array.isArray(data)) {
       return data.map((item) => {
         if (typeof item === 'string') {
-          return { text: item };
+          return { tag: item };
         }
         return item;
       });
     }
     return Object.entries(data).map(([text, value]) => ({
-      text,
+      tag: text,
       value: value || text,
     }));
   };
@@ -93,7 +92,7 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
     }
 
     const allOptions = processAutocompleteData(data);
-    const filtered = allOptions.filter((option) => option.text.toLowerCase().includes(input));
+    const filtered = allOptions.filter((option) => option.tag.toLowerCase().includes(input));
 
     const limit = currentVnode.attrs.autocompleteOptions.limit || Infinity;
     state.autocompleteItems = filtered.slice(0, limit);
@@ -103,8 +102,9 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
 
   const selectAutocompleteItem = (item: AutocompleteOption) => {
     addChip({
-      tag: item.text,
+      tag: item.tag,
       image: item.image,
+      alt: item.alt, // Preserve alt text when converting to chip
     });
     state.inputValue = '';
     state.showAutocomplete = false;
@@ -166,6 +166,10 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
           state.selectedAutocompleteIndex + 1,
           state.autocompleteItems.length - 1
         );
+        const selectedItem = currentVnode?.dom.querySelector('.autocomplete-item.selected') as HTMLElement;
+        if (selectedItem) {
+          selectedItem.scrollIntoView({ block: 'nearest' });
+        }
         m.redraw();
         return;
       }
@@ -173,6 +177,10 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
       if (e.key === 'ArrowUp') {
         e.preventDefault();
         state.selectedAutocompleteIndex = Math.max(state.selectedAutocompleteIndex - 1, -1);
+        const selectedItem = currentVnode?.dom.querySelector('.autocomplete-item.selected') as HTMLElement;
+        if (selectedItem) {
+          selectedItem.scrollIntoView({ block: 'nearest' });
+        }
         m.redraw();
         return;
       }
@@ -187,7 +195,11 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
     if (e.key === 'Enter' && target.value.trim()) {
       e.preventDefault();
       addChip({ tag: target.value.trim() });
-    } else if ((e.key === 'Backspace' || e.key === 'ArrowLeft') && !target.value && state.chipsData.length) {
+    } else if (e.key === 'Backspace' && !target.value && state.chipsData.length > 0) {
+      e.preventDefault();
+      // Delete the last chip immediately when backspace is pressed in an empty input
+      deleteChip(state.chipsData.length - 1);
+    } else if (e.key === 'ArrowLeft' && !target.value && state.chipsData.length) {
       e.preventDefault();
       selectChip(state.chipsData.length - 1);
     }
@@ -220,20 +232,11 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
       currentVnode = vnode;
     },
 
-    // onupdate: (vnode) => {
-    //   currentVnode = vnode;
-    //   const { data } = vnode.attrs;
-    //   if (data && JSON.stringify(data) !== JSON.stringify(state.chipsData)) {
-    //     state.chipsData = data;
-    //   }
-    // },
-
     onremove: () => {
       currentVnode = null;
     },
 
     view: ({ attrs }) => {
-      // console.log(state);
       const {
         id,
         required,
@@ -255,7 +258,7 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
         return '';
       };
 
-      return m('div.input-field', { id, className }, [
+      return m('.input-field', { id, className }, [
         m(
           '.chips.chips-initial',
           {
@@ -276,7 +279,7 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
                   chip.image &&
                     m('img', {
                       src: chip.image,
-                      alt: chip.tag,
+                      alt: chip.alt || chip.tag,
                     }),
                   chip.tag,
                   m(
@@ -311,9 +314,10 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
               onblur: () => {
                 state.focused = false;
                 setTimeout(() => {
+                  state.showAutocomplete = false;
                   state.selectedChip = null;
                   m.redraw();
-                }, 100);
+                }, 150);
               },
               onkeydown: handleKeydown,
             }),
@@ -326,31 +330,50 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
                     display: 'block',
                     opacity: 1,
                     transform: 'scaleX(1) scaleY(1)',
-                    width: '120px',
-                    left: '0px',
-                    top: '45px',
-                    height: '50px',
-                    transformOrigin: '0px 0px',
+                    position: 'absolute',
+                    width: '100%',
+                    left: 0,
+                    top: '100%',
+                    maxHeight: '200px',
+                    overflow: 'auto',
+                    zIndex: 1000,
+                    backgroundColor: '#fff',
+                    boxShadow:
+                      '0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2)',
                   },
                 },
                 state.autocompleteItems.map((item, index) =>
                   m(
                     'li.autocomplete-item',
                     {
-                      key: item.text,
+                      key: item.tag,
                       class: state.selectedAutocompleteIndex === index ? 'selected' : '',
+                      style: {
+                        padding: '12px 16px',
+                        cursor: 'pointer',
+                        backgroundColor: state.selectedAutocompleteIndex === index ? '#eee' : 'transparent',
+                      },
                       onmousedown: (e: MouseEvent) => {
                         e.preventDefault();
                         selectAutocompleteItem(item);
+                      },
+                      onmouseover: () => {
+                        state.selectedAutocompleteIndex = index;
                       },
                     },
                     [
                       item.image &&
                         m('img.autocomplete-item-image', {
                           src: item.image,
-                          alt: item.text,
+                          alt: item.alt || item.tag,
+                          style: {
+                            width: '24px',
+                            height: '24px',
+                            marginRight: '8px',
+                            verticalAlign: 'middle',
+                          },
                         }),
-                      m('span.autocomplete-item-text', item.text),
+                      m('span.autocomplete-item-text', item.tag),
                     ]
                   )
                 )
