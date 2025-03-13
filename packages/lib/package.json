@@ -25,7 +25,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "microbundle build ./src/index.t --external mithril,materialize-css",
+    "build": "microbundle build ./src/index.ts --external mithril,materialize-css",
     "dev": "microbundle watch ./src/index.ts --external mithril,materialize-css",
     "start": "npm run dev",
     "clean": "rimraf dist node_modules/.cache",
