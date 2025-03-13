@@ -4,15 +4,29 @@
   "description": "A materialize library for mithril.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
+  "browser": "dist/index.umd.js",
+  "unpkg": "dist/index.umd.js",
+  "jsdelivr": "dist/index.umd.js",
+  "types": "dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.modern.js",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.modern.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.modern.js"
+    },
+    "./modern": "./dist/index.modern.js",
+    "./esm": "./dist/index.esm.js",
+    "./umd": "./dist/index.umd.js",
     "./index.css": "./dist/index.css"
   },
-  "unpkg": "dist/index.umd.js",
-  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "microbundle build ./src/index.ts",
-    "dev": "microbundle watch ./src/index.ts",
+    "build": "microbundle build ./src/index.t --external mithril,materialize-css",
+    "dev": "microbundle watch ./src/index.ts --external mithril,materialize-css",
     "start": "npm run dev",
     "clean": "rimraf dist node_modules/.cache",
     "link:old": "pnpm link",
@@ -35,7 +49,7 @@
   "license": "MIT",
   "dependencies": {
     "materialize-css": "^1.0.0",
-    "mithril": "^2.2.12"
+    "mithril": "^2.2.14"
   },
   "devDependencies": {
     "@types/materialize-css": "^1.0.14",
@@ -44,7 +58,7 @@
     "microbundle": "^0.15.1",
     "rimraf": "^6.0.1",
     "tslib": "^2.8.1",
-    "typedoc": "^0.27.6",
-    "typescript": "^5.7.3"
+    "typedoc": "^0.27.9",
+    "typescript": "^5.8.2"
   }
 }
