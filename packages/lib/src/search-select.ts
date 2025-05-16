@@ -1,47 +1,61 @@
-import m, { Component } from 'mithril';
+import m, { Attributes, Component } from 'mithril';
 
 // Option interface for type safety
-export interface Option<T> {
+export interface Option<T extends string | number> {
   id: T;
   label?: string;
   disabled?: boolean;
 }
 
 // Component attributes interface
-export interface SearchSelectAttrs<T> {
+export interface SearchSelectAttrs<T extends string | number> extends Attributes {
+  /** Options to display in the select */
   options?: Option<T>[];
   /** Initial value */
   initialValue?: T[];
+  /** Callback when user selects or deselects an option */
   onchange?: (selectedOptions: T[]) => void | Promise<void>;
-  className?: string;
+  /** Callback when user creates a new option: should return new ID */
+  oncreateNewOption?: (term: string) => Option<T> | Promise<Option<T>>;
+  /** Label for the search select, no default */
   label?: string;
+  /** Placeholder text for the search input, no default */
   placeholder?: string;
+  /** Placeholder text for the search input, default 'Search options...' */
+  searchPlaceholder?: string;
+  /** When no options are left, displays this text, default 'No options found' */
+  noOptionsFound?: string;
   /** Max height of the dropdown menu, default '25rem' */
   maxHeight?: string;
 }
 
 // Component state interface
-interface SearchSelectState<T> {
+interface SearchSelectState<T extends string | number> {
   isOpen: boolean;
   selectedOptions: Option<T>[];
   searchTerm: string;
   options: Option<T>[];
   inputRef: HTMLElement | null;
   dropdownRef: HTMLElement | null;
+  focusedIndex: number;
+  onchange: any;
 }
 
 /**
  * Mithril Factory Component for Multi-Select Dropdown with search
  */
 export const SearchSelect = <T extends string | number>(): Component<SearchSelectAttrs<T>, SearchSelectState<T>> => {
+  //  (): <T extends string | number>(): Component<SearchSelectAttrs<T>, SearchSelectState<T>> => {
   // State initialization
-  const state: SearchSelectState<T> = {
+  const state: SearchSelectState<string | number> = {
     isOpen: false,
     selectedOptions: [], //options.filter((o) => iv.includes(o.id)),
     searchTerm: '',
     options: [],
     inputRef: null,
     dropdownRef: null,
+    focusedIndex: -1,
+    onchange: null,
   };
 
   // Handle click outside
@@ -56,18 +70,88 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
     }
   };
 
+  // Handle keyboard navigation
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (!state.isOpen) return;
+
+    const filteredOptions = state.options.filter(
+      (option) =>
+        (option.label || option.id.toString()).toLowerCase().includes((state.searchTerm || '').toLowerCase()) &&
+        !state.selectedOptions.some((selected) => selected.id === option.id)
+    );
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        state.focusedIndex = Math.min(state.focusedIndex + 1, filteredOptions.length - 1);
+        m.redraw();
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        state.focusedIndex = Math.max(state.focusedIndex - 1, -1);
+        m.redraw();
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (state.focusedIndex >= 0 && state.focusedIndex < filteredOptions.length) {
+          toggleOption(filteredOptions[state.focusedIndex]);
+        }
+        break;
+      case 'Escape':
+        e.preventDefault();
+        state.isOpen = false;
+        state.focusedIndex = -1;
+        m.redraw();
+        break;
+    }
+  };
+
+  // Toggle option selection
+  const toggleOption = (option: Option<string | number>) => {
+    if (option.disabled) return;
+
+    state.selectedOptions = state.selectedOptions.some((item) => item.id === option.id)
+      ? state.selectedOptions.filter((item) => item.id !== option.id)
+      : [...state.selectedOptions, option];
+    state.searchTerm = '';
+    state.focusedIndex = -1;
+    state.onchange && state.onchange(state.selectedOptions.map((o) => o.id));
+    m.redraw();
+  };
+
+  // Remove a selected option
+  const removeOption = (option: Option<string | number>) => {
+    state.selectedOptions = state.selectedOptions.filter((item) => item.id !== option.id);
+    state.onchange && state.onchange(state.selectedOptions.map((o) => o.id));
+    m.redraw();
+  };
+
   return {
-    oninit: ({ attrs: { options = [], initialValue = [] } }) => {
+    oninit: ({ attrs: { options = [], initialValue = [], onchange } }) => {
       state.options = options;
       state.selectedOptions = options.filter((o) => initialValue.includes(o.id));
+      state.onchange = onchange;
     },
     oncreate() {
       document.addEventListener('click', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
     },
     onremove() {
       document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
     },
-    view({ attrs: { onchange, className, placeholder, label, maxHeight = '25rem' } }) {
+    view({
+      attrs: {
+        // onchange,
+        oncreateNewOption,
+        className,
+        placeholder,
+        searchPlaceholder = 'Search options...',
+        noOptionsFound = 'No options found',
+        label,
+        maxHeight = '25rem',
+      },
+    }) {
       // Safely filter options
       const filteredOptions = state.options.filter(
         (option) =>
@@ -75,22 +159,11 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
           !state.selectedOptions.some((selected) => selected.id === option.id)
       );
 
-      // Toggle option selection
-      const toggleOption = (option: Option<T>) => {
-        state.selectedOptions = state.selectedOptions.some((item) => item.id === option.id)
-          ? state.selectedOptions.filter((item) => item.id !== option.id)
-          : [...state.selectedOptions, option];
-        state.searchTerm = '';
-        onchange && onchange(state.selectedOptions.map((o) => o.id));
-        m.redraw();
-      };
-
-      // Remove a selected option
-      const removeOption = (option: Option<T>) => {
-        state.selectedOptions = state.selectedOptions.filter((item) => item.id !== option.id);
-        onchange && onchange(state.selectedOptions.map((o) => o.id));
-        m.redraw();
-      };
+      // Check if we should show the "add new option" element
+      const showAddNew =
+        oncreateNewOption &&
+        state.searchTerm &&
+        !filteredOptions.some((o) => (o.label || o.id.toString()).toLowerCase() === state.searchTerm.toLowerCase());
 
       // Render the dropdown
       return m('.multi-select-dropdown.input-field', { className }, [
@@ -131,7 +204,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                 ? [m('span', placeholder)]
                 : state.selectedOptions.map((option) =>
                     m('.chip', [
-                      option.label,
+                      option.label || option.id.toString(),
                       m(
                         'button',
                         {
@@ -180,6 +253,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                 position: 'absolute',
                 width: '98%',
                 marginTop: '0.4rem',
+                zIndex: 1000,
               },
             },
             [
@@ -194,64 +268,99 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                     width: '100%',
                   },
                 },
-                m(
-                  'li', // Search Input
-                  m('.search-input', { style: { padding: '0 16px' } }, [
-                    m('input', {
-                      type: 'text',
-                      placeholder: 'Search options...',
-                      value: state.searchTerm || '',
-                      oninput: (e: InputEvent) => {
-                        state.searchTerm = (e.target as HTMLInputElement).value;
-                        m.redraw();
-                      },
-                      style: {
-                        width: '100%',
-                        outline: 'none',
-                        fontSize: '0.875rem',
-                      },
-                    }),
-                  ])
-                ),
-                filteredOptions.length === 0
-                  ? [
-                      m(
-                        'li',
-                        {
-                          style: {
-                            padding: '0.5rem',
-                            textAlign: 'center',
-                            color: '#9ca3af',
-                          },
+                [
+                  m(
+                    'li', // Search Input
+                    {
+                      class: 'search-wrapper',
+                      style: { padding: '0 16px', position: 'relative' },
+                    },
+                    [
+                      m('input', {
+                        type: 'text',
+                        placeholder: searchPlaceholder,
+                        value: state.searchTerm || '',
+                        oninput: (e: InputEvent) => {
+                          state.searchTerm = (e.target as HTMLInputElement).value;
+                          state.focusedIndex = -1; // Reset focus when typing
+                          m.redraw();
                         },
-                        'No options found'
-                      ),
+                        style: {
+                          width: '100%',
+                          outline: 'none',
+                          fontSize: '0.875rem',
+                        },
+                      }),
                     ]
-                  : filteredOptions.map((option) =>
-                      m(
-                        'li',
-                        {
-                          onclick: () => (option.disabled ? undefined : toggleOption(option)),
-                          class: option.disabled ? 'disabled' : undefined,
-                          style: {
-                            // padding: '0 0.5rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            cursor: 'pointer',
-                            lineHeight: '22px',
-                            padding: '14px 16px',
+                  ),
+
+                  // No options found message or list of options
+                  ...(filteredOptions.length === 0 && !showAddNew
+                    ? [
+                        m(
+                          'li',
+                          {
+                            style: {
+                              padding: '0.5rem',
+                              textAlign: 'center',
+                              color: '#9ca3af',
+                            },
                           },
+                          noOptionsFound
+                        ),
+                      ]
+                    : []),
+
+                  // Add new option item
+                  ...(showAddNew
+                    ? [
+                        m(
+                          'li',
+                          {
+                            onclick: async () => {
+                              const option = await oncreateNewOption(state.searchTerm);
+                              state.selectedOptions.push(option);
+                              state.searchTerm = '';
+                              state.focusedIndex = -1;
+                              m.redraw();
+                            },
+                            style: {
+                              display: 'flex',
+                              alignItems: 'center',
+                              cursor: 'pointer',
+                              background: state.focusedIndex === filteredOptions.length ? '#f3f4f6' : '',
+                            },
+                          },
+                          [m('span', `+ "${state.searchTerm}"`)]
+                        ),
+                      ]
+                    : []),
+
+                  // List of filtered options
+                  ...filteredOptions.map((option, index) =>
+                    m(
+                      'li',
+                      {
+                        onclick: () => toggleOption(option),
+                        class: option.disabled ? 'disabled' : undefined,
+                        style: {
+                          display: 'flex',
+                          alignItems: 'center',
+                          cursor: option.disabled ? 'not-allowed' : 'pointer',
+                          background: state.focusedIndex === index ? '#f3f4f6' : '',
                         },
-                        [
-                          m('input', {
-                            type: 'checkbox',
-                            checked: state.selectedOptions.some((selected) => selected.id === option.id),
-                            style: { marginRight: '0.5rem' },
-                          }),
-                          option.label,
-                        ]
-                      )
+                      },
+                      m('span', [
+                        m('input', {
+                          type: 'checkbox',
+                          checked: state.selectedOptions.some((selected) => selected.id === option.id),
+                          style: { marginRight: '0.5rem' },
+                        }),
+                        option.label || option.id.toString(),
+                      ])
                     )
+                  ),
+                ]
               ),
             ]
           ),

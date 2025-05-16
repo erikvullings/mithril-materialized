@@ -12,16 +12,26 @@ import {
   PasswordInput,
   Chips,
   FileInput,
+  SearchSelect,
+  uniqueId,
 } from 'mithril-materialized';
 import m from 'mithril';
 
 export const InputPage = () => {
   const onchange = (v: unknown) => console.log(`Input changed. New value: ${v}`);
   let value = 'click_clear_to_remove.me';
+
+  const searchSelectOptions = [
+    { id: 'option1', label: 'Option 1' },
+    { id: 'option2', label: 'Option 2' },
+    { id: 'option3', label: 'Option 3' },
+  ];
+
   return {
     view: () =>
       m('.col.s12', [
         m('h2.header', 'Inputs'),
+
         m('h3.header', 'TextInput'),
         m('h4.header', 'Normal text input'),
         m(
@@ -115,6 +125,58 @@ export const InputPage = () => {
             },
             onchange,
         } as IInputOptions)`,
+        }),
+
+        m('h3.header', 'Search and select, optionally add'),
+        m(SearchSelect, {
+          options: searchSelectOptions,
+          onchange: (selectedOptions) => console.log('Selected:', selectedOptions),
+          label: 'Select search options',
+          searchPlaceholder: 'Find an option...', // Custom search placeholder
+        }),
+        m(CodeBlock, {
+          code: `        const searchSelectOptions = [
+          { id: 'option1', label: 'Option 1' },
+          { id: 'option2', label: 'Option 2' },
+          { id: 'option3', label: 'Option 3' },
+        ];
+        ...
+        m(SearchSelect, {
+          options: searchSelectOptions,
+          onchange: (selectedOptions) => console.log('Selected:', selectedOptions),
+          label: 'Select search options',
+          searchPlaceholder: 'Find an option...',
+        })`,
+        }),
+        m(SearchSelect, {
+          options: searchSelectOptions,
+          initialValue: ['option1'],
+          onchange: (selectedOptions) => console.log('Selected:', selectedOptions),
+          oncreateNewOption: (searchTerm) => {
+            console.log('Creating new option:', searchTerm);
+            const newOption = { id: uniqueId(), label: searchTerm };
+            // Add the new option to your options array
+            searchSelectOptions.push(newOption);
+            return newOption;
+          },
+          label: 'Select option or add new option',
+          placeholder: 'No options selected',
+        }),
+        m(CodeBlock, {
+          code: `        m(SearchSelect, {
+          options: searchSelectOptions,
+          initialValue: ['option1'],
+          onchange: (selectedOptions) => console.log('Selected:', selectedOptions),
+          oncreateNewOption: (searchTerm) => {
+            console.log('Creating new option:', searchTerm);
+            const newOption = { id: uniqueId(), label: searchTerm };
+            // Add the new option to your options array
+            searchSelectOptions.push(newOption);
+            return newOption;
+          },
+          label: 'Select option or add new option',
+          placeholder: 'No options selected',
+        })`,
         }),
 
         m('h3.header', 'TextArea'),

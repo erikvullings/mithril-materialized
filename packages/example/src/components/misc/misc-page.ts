@@ -97,33 +97,33 @@ export const MiscPage = () => {
         }),
         m(CodeBlock, {
           code: `          m(Tabs, {
-            onShow: console.log,
-            tabs: [
-              {
-                title: 'Test 1',
-                vnode: m('', 'Show content of tab 1'),
-              },
-              {
-                title: 'Test 2',
-                disabled: true,
-                vnode: m('', 'Show content of tab 2'),
-              },
-              {
-                title: 'Test 3',
-                active: true,
-                vnode: m('', 'Show content of tab 3'),
-              },
-              {
-                title: 'Test 4',
-                vnode: m('', 'Show content of tab 4'),
-              },
-              {
-                title: 'Visit Google',
-                target: '_blank',
-                href: 'http://www.google.com',
-              },
-            ],
-          })`,
+                    onShow: console.log,
+                    tabs: [
+                      {
+                        title: 'Test 1',
+                        vnode: m('', 'Show content of tab 1'),
+                      },
+                      {
+                        title: 'Test 2',
+                        disabled: true,
+                        vnode: m('', 'Show content of tab 2'),
+                      },
+                      {
+                        title: 'Test 3',
+                        active: true,
+                        vnode: m('', 'Show content of tab 3'),
+                      },
+                      {
+                        title: 'Test 4',
+                        vnode: m('', 'Show content of tab 4'),
+                      },
+                      {
+                        title: 'Visit Google',
+                        target: '_blank',
+                        href: 'http://www.google.com',
+                      },
+                    ],
+                  })`,
         }),
 
         m('h3.header', 'Parallax'),
@@ -153,12 +153,12 @@ export const MiscPage = () => {
         ),
         m(CodeBlock, {
           code: `          m(Carousel, { items: [
-            { href: '#!/one!', src: 'https://picsum.photos/id/301/200/300' },
-            { href: '#!/two!', src: 'https://picsum.photos/id/302/200/300' },
-            { href: '#!/three!', src: 'https://picsum.photos/id/306/200/300' },
-            { href: '#!/four!', src: 'https://picsum.photos/id/304/200/300' },
-            { href: '#!/five!', src: 'https://picsum.photos/id/305/200/300' },
-          ] })`,
+                    { href: '#!/one!', src: 'https://picsum.photos/id/301/200/300' },
+                    { href: '#!/two!', src: 'https://picsum.photos/id/302/200/300' },
+                    { href: '#!/three!', src: 'https://picsum.photos/id/306/200/300' },
+                    { href: '#!/four!', src: 'https://picsum.photos/id/304/200/300' },
+                    { href: '#!/five!', src: 'https://picsum.photos/id/305/200/300' },
+                  ] })`,
         }),
 
         m('h3.header', 'Pagination'),
@@ -185,22 +185,22 @@ export const MiscPage = () => {
         ),
         m(CodeBlock, {
           code: `m(Pagination, {
-  size: 5,
-  items: [
-    { href: '/misc?page=1' },
-    { href: '/misc?page=2' },
-    { href: '/misc?page=3' },
-    { href: '/misc?page=4' },
-    { href: '/misc?page=5' },
-    { href: '/misc?page=6' },
-    { href: '/misc?page=7' },
-    { href: '/misc?page=8' },
-    { href: '/misc?page=9' },
-    { href: '/misc?page=10' },
-    { href: '/misc?page=11' },
-    { href: '/misc?page=12' },
-  ],
-})`,
+          size: 5,
+          items: [
+            { href: '/misc?page=1' },
+            { href: '/misc?page=2' },
+            { href: '/misc?page=3' },
+            { href: '/misc?page=4' },
+            { href: '/misc?page=5' },
+            { href: '/misc?page=6' },
+            { href: '/misc?page=7' },
+            { href: '/misc?page=8' },
+            { href: '/misc?page=9' },
+            { href: '/misc?page=10' },
+            { href: '/misc?page=11' },
+            { href: '/misc?page=12' },
+          ],
+        })`,
         }),
       ]),
   };
