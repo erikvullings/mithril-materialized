@@ -319,7 +319,6 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                           {
                             onclick: async () => {
                               const option = await oncreateNewOption(state.searchTerm);
-                              state.selectedOptions.push(option);
                               toggleOption(option);
                             },
                             style: {
