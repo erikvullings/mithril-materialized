@@ -1,3 +1,6 @@
+// Import CSS styles
+import './styles/index.css';
+
 export * from './autocomplete';
 export * from './button';
 export * from './carousel';
@@ -14,12 +17,14 @@ export * from './label';
 export * from './map-editor';
 export * from './material-box';
 export * from './modal';
+export * from './modal-v2';
 export * from './option';
 export * from './pagination';
 export * from './parallax';
 export * from './pickers';
 export * from './radio';
 export * from './select';
+export * from './select-v2';
 export * from './switch';
 export * from './tabs';
 export * from './timeline';

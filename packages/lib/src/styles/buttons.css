@@ -1,0 +1,262 @@
+/* Material Design Button Styles - CSS Only */
+
+.btn,
+.btn-flat,
+.btn-floating,
+.btn-large,
+.btn-small {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--md-spacing-sm) var(--md-spacing-md);
+  margin: var(--md-spacing-xs);
+  border: none;
+  border-radius: var(--md-radius-small);
+  font-family: var(--md-font-family);
+  font-size: 14px;
+  font-weight: var(--md-font-weight-medium);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all var(--md-transition-standard);
+  user-select: none;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Raised Button */
+.btn {
+  background-color: var(--md-primary);
+  color: white;
+  box-shadow: var(--md-shadow-1);
+}
+
+.btn:hover {
+  background-color: var(--md-primary-dark);
+  box-shadow: var(--md-shadow-2);
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  box-shadow: var(--md-shadow-3);
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  background-color: var(--md-grey-300);
+  color: var(--md-grey-500);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Flat Button */
+.btn-flat {
+  background-color: transparent;
+  color: var(--md-primary);
+  box-shadow: none;
+}
+
+.btn-flat:hover {
+  background-color: rgba(33, 150, 243, 0.04);
+  color: var(--md-primary-dark);
+}
+
+.btn-flat:active {
+  background-color: rgba(33, 150, 243, 0.12);
+}
+
+.btn-flat:disabled {
+  background-color: transparent;
+  color: var(--md-grey-400);
+  cursor: not-allowed;
+}
+
+/* Large Button */
+.btn-large {
+  padding: var(--md-spacing-md) var(--md-spacing-lg);
+  font-size: 16px;
+  min-height: 56px;
+}
+
+/* Small Button */
+.btn-small {
+  padding: var(--md-spacing-xs) var(--md-spacing-sm);
+  font-size: 12px;
+  min-height: 32px;
+}
+
+/* Floating Action Button */
+.btn-floating {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  padding: 0;
+  background-color: var(--md-secondary);
+  color: white;
+  box-shadow: var(--md-shadow-2);
+}
+
+.btn-floating:hover {
+  background-color: var(--md-secondary-dark);
+  box-shadow: var(--md-shadow-3);
+  transform: translateY(-2px);
+}
+
+.btn-floating:active {
+  transform: translateY(0);
+}
+
+.btn-floating.btn-large {
+  width: 72px;
+  height: 72px;
+}
+
+.btn-floating.btn-small {
+  width: 40px;
+  height: 40px;
+}
+
+/* Color Variants */
+.btn.red { background-color: var(--md-error); }
+.btn.red:hover { background-color: #d32f2f; }
+
+.btn.green { background-color: var(--md-success); }
+.btn.green:hover { background-color: #388e3c; }
+
+.btn.orange { background-color: var(--md-warning); }
+.btn.orange:hover { background-color: #f57c00; }
+
+.btn.purple { background-color: #9c27b0; }
+.btn.purple:hover { background-color: #7b1fa2; }
+
+.btn.teal { background-color: #009688; }
+.btn.teal:hover { background-color: #00796b; }
+
+/* Modal Trigger */
+.modal-trigger {
+  cursor: pointer;
+}
+
+/* Tooltip Support */
+.tooltipped {
+  position: relative;
+}
+
+.tooltipped::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--md-grey-700);
+  color: white;
+  padding: var(--md-spacing-xs) var(--md-spacing-sm);
+  border-radius: var(--md-radius-small);
+  font-size: 12px;
+  font-weight: var(--md-font-weight-regular);
+  white-space: nowrap;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--md-transition-standard), visibility var(--md-transition-standard);
+  pointer-events: none;
+}
+
+.tooltipped::before {
+  content: '';
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--md-grey-700);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--md-transition-standard), visibility var(--md-transition-standard);
+}
+
+.tooltipped:hover::after,
+.tooltipped:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Position variants for tooltips */
+.tooltipped[data-position="bottom"]::after {
+  top: 120%;
+  bottom: auto;
+}
+
+.tooltipped[data-position="bottom"]::before {
+  top: 110%;
+  bottom: auto;
+  border-top-color: transparent;
+  border-bottom-color: var(--md-grey-700);
+}
+
+.tooltipped[data-position="left"]::after {
+  top: 50%;
+  bottom: auto;
+  left: auto;
+  right: 120%;
+  transform: translateY(-50%);
+}
+
+.tooltipped[data-position="left"]::before {
+  top: 50%;
+  bottom: auto;
+  left: auto;
+  right: 110%;
+  transform: translateY(-50%);
+  border-top-color: transparent;
+  border-left-color: var(--md-grey-700);
+}
+
+.tooltipped[data-position="right"]::after {
+  top: 50%;
+  bottom: auto;
+  right: auto;
+  left: 120%;
+  transform: translateY(-50%);
+}
+
+.tooltipped[data-position="right"]::before {
+  top: 50%;
+  bottom: auto;
+  right: auto;
+  left: 110%;
+  transform: translateY(-50%);
+  border-top-color: transparent;
+  border-right-color: var(--md-grey-700);
+}
+
+/* Button group */
+.btn-group {
+  display: inline-flex;
+  border-radius: var(--md-radius-small);
+  overflow: hidden;
+  box-shadow: var(--md-shadow-1);
+}
+
+.btn-group .btn {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.btn-group .btn:not(:last-child) {
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-group .btn:first-child {
+  border-top-left-radius: var(--md-radius-small);
+  border-bottom-left-radius: var(--md-radius-small);
+}
+
+.btn-group .btn:last-child {
+  border-top-right-radius: var(--md-radius-small);
+  border-bottom-right-radius: var(--md-radius-small);
+}

@@ -25,10 +25,18 @@
     "dist"
   ],
   "scripts": {
-    "build": "microbundle build ./src/index.ts --external mithril,materialize-css",
-    "dev": "microbundle watch ./src/index.ts --external mithril,materialize-css",
+    "build": "microbundle build ./src/index.ts --external mithril",
+    "dev": "microbundle watch ./src/index.ts --external mithril",
     "start": "npm run dev",
     "clean": "rimraf dist node_modules/.cache",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ui": "jest --watch --verbose",
+    "test:server": "node test-server.js",
+    "test:visual": "playwright test",
+    "test:visual:ui": "playwright test --ui",
+    "test:all": "npm run test && npm run test:visual",
     "link:old": "pnpm link",
     "typedoc": "typedoc --out ../../docs/typedoc src",
     "build:domain": "npm run clean && npm run build && typedoc --out ../../docs/typedoc src",
@@ -48,17 +56,27 @@
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
   "dependencies": {
-    "materialize-css": "^1.0.0",
-    "mithril": "^2.3.0"
+    "mithril": "^2.3.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/jest": "^29.5.14",
     "@types/materialize-css": "^1.0.14",
     "@types/mithril": "^2.2.7",
+    "express": "^4.21.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "js-yaml": "^4.1.0",
+    "materialize-css": "^1.0.0",
     "microbundle": "^0.15.1",
     "rimraf": "^6.0.1",
+    "ts-jest": "^29.2.5",
     "tslib": "^2.8.1",
-    "typedoc": "^0.28.4",
-    "typescript": "^5.8.3"
+    "typedoc": "^0.28.9",
+    "typescript": "^5.9.2"
   }
 }
