@@ -33,7 +33,8 @@ export function render<T>(
   const testContainer = container || document.createElement('div');
   document.body.appendChild(testContainer);
   
-  // Handle component directly - let mithril handle FactoryComponent logic
+  // For FactoryComponent, let Mithril handle the instantiation
+  // Just pass the function and let Mithril call it at the right time
   m.render(testContainer, m(component, attrs));
   
   return {

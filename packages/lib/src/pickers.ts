@@ -77,19 +77,19 @@ export const DatePicker: FactoryComponent<IInputOptions<Date> & IDatePickerOptio
     if (attrs.onchange) attrs.onchange(date);
     if (attrs.onClose) attrs.onClose();
     
-    m.redraw();
+    m.redraw.sync();
   };
 
   const openPicker = (attrs: IInputOptions<Date> & IDatePickerOptions) => {
     state.isOpen = true;
     if (attrs.onOpen) attrs.onOpen();
-    m.redraw();
+    m.redraw.sync();
   };
 
   const closePicker = (attrs: IInputOptions<Date> & IDatePickerOptions) => {
     state.isOpen = false;
     if (attrs.onClose) attrs.onClose();
-    m.redraw();
+    m.redraw.sync();
   };
 
   return {
@@ -272,19 +272,19 @@ export const TimePicker: FactoryComponent<IInputOptions & ITimePickerOptions> = 
     if (attrs.onchange) attrs.onchange(time);
     if (attrs.onCloseEnd) attrs.onCloseEnd();
     
-    m.redraw();
+    m.redraw.sync();
   };
 
   const openPicker = (attrs: IInputOptions & ITimePickerOptions) => {
     state.isOpen = true;
     if (attrs.onOpen) attrs.onOpen();
-    m.redraw();
+    m.redraw.sync();
   };
 
   const closePicker = (attrs: IInputOptions & ITimePickerOptions) => {
     state.isOpen = false;
     if (attrs.onCloseEnd) attrs.onCloseEnd();
-    m.redraw();
+    m.redraw.sync();
   };
 
   return {
