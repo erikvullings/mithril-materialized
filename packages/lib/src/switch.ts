@@ -37,22 +37,43 @@ export const Switch: FactoryComponent<ISwitchOptions> = () => {
         m(
           '.switch',
           params,
-          m('label', [
-            left || 'Off',
+          m('label', {
+            style: { cursor: 'pointer' },
+            onclick: (e: Event) => {
+              // Let the checkbox handle the click naturally
+              e.stopPropagation();
+            }
+          }, [
+            m('span', left || 'Off'),
             m('input[type=checkbox]', {
               id,
               disabled,
               checked,
-              onclick: onchange
+              onclick: (e: Event) => {
+                // Ensure checkbox state changes
+                e.stopPropagation();
+              },
+              onchange: onchange
                 ? (e: Event) => {
-                    if (e.target && typeof (e.target as HTMLInputElement).checked !== 'undefined') {
-                      onchange((e.target as HTMLInputElement).checked);
+                    const target = e.target as HTMLInputElement;
+                    if (target) {
+                      console.log('Switch changed:', target.checked); // Debug log
+                      onchange(target.checked);
                     }
                   }
                 : undefined,
             }),
-            m('span.lever'),
-            right || 'On',
+            m('span.lever', {
+              onclick: (e: Event) => {
+                // When clicking on lever, trigger checkbox
+                e.preventDefault();
+                const checkbox = (e.target as HTMLElement).parentElement?.querySelector('input[type=checkbox]') as HTMLInputElement;
+                if (checkbox && !disabled) {
+                  checkbox.click();
+                }
+              }
+            }),
+            m('span', right || 'On'),
           ])
         ),
       ]);

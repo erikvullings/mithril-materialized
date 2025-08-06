@@ -11,38 +11,78 @@ export interface ICollapsibleItem extends Attributes {
   iconName?: string;
 }
 
-export interface ICollapsible extends Partial<M.CollapsibleOptions>, Attributes {
+export interface ICollapsible extends Attributes {
   /** The list of accordeon/collabsible items */
   items: ICollapsibleItem[];
+  /** If true, only one item can be expanded at a time (accordion mode) */
+  accordion?: boolean;
 }
 
-export const CollapsibleItem: FactoryComponent<ICollapsibleItem> = () => {
+export const CollapsibleItem: FactoryComponent<ICollapsibleItem & { 
+  isActive: boolean; 
+  onToggle: () => void; 
+}> = () => {
   return {
-    view: ({ attrs: { header, body, active, iconName } }) => {
-      return m(active ? 'li.active' : 'li', [
+    view: ({ attrs: { header, body, iconName, isActive, onToggle } }) => {
+      return m('li', { className: isActive ? 'active' : '' }, [
         header || iconName
-          ? m('.collapsible-header', [
+          ? m('.collapsible-header', {
+              onclick: onToggle,
+              style: { cursor: 'pointer' }
+            }, [
               iconName ? m('i.material-icons', iconName) : undefined,
               header ? (typeof header === 'string' ? m('span', header) : header) : undefined,
             ])
           : undefined,
-        body ? m('.collapsible-body', typeof body === 'string' ? body : body) : undefined,
+        m('.collapsible-body', [
+          m('.collapsible-body-content', body ? (typeof body === 'string' ? m('div', { innerHTML: body }) : body) : undefined)
+        ]),
       ]);
     },
   };
 };
 
 /**
- * Creates a collabsible or accordion (via the accordion option, default true) component.
- * @see https://materializecss.com/collapsible.html
+ * Creates a collabsible or accordion component with pure CSS/Mithril implementation.
+ * No MaterializeCSS JavaScript dependencies.
  */
 export const Collapsible: FactoryComponent<ICollapsible> = () => {
+  const state = {
+    activeItems: new Set<number>()
+  };
+
   return {
-    oncreate: ({ dom, attrs }) => {
-      M.Collapsible.init(dom, attrs);
+    oninit: ({ attrs }) => {
+      // Initialize active items from the items array
+      attrs.items.forEach((item, index) => {
+        if (item.active) {
+          state.activeItems.add(index);
+        }
+      });
     },
+
     view: ({ attrs }) => {
-      const { items, class: c, className, style, id } = attrs;
+      const { items, accordion = true, class: c, className, style, id } = attrs;
+      
+      const toggleItem = (index: number) => {
+        if (accordion) {
+          // Accordion mode: only one item can be active
+          if (state.activeItems.has(index)) {
+            state.activeItems.clear();
+          } else {
+            state.activeItems.clear();
+            state.activeItems.add(index);
+          }
+        } else {
+          // Expandable mode: multiple items can be active
+          if (state.activeItems.has(index)) {
+            state.activeItems.delete(index);
+          } else {
+            state.activeItems.add(index);
+          }
+        }
+      };
+
       return items && items.length > 0
         ? m(
             'ul.collapsible',
@@ -51,7 +91,13 @@ export const Collapsible: FactoryComponent<ICollapsible> = () => {
               style,
               id,
             },
-            items.map((item) => m(CollapsibleItem, item))
+            items.map((item, index) => 
+              m(CollapsibleItem, {
+                ...item,
+                isActive: state.activeItems.has(index),
+                onToggle: () => toggleItem(index)
+              })
+            )
           )
         : undefined;
     },

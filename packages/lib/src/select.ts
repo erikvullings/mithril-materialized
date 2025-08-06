@@ -1,9 +1,8 @@
-import m, { Attributes, Component } from 'mithril';
-import { isNumeric } from './utils';
+import m, { Attributes, Component, FactoryComponent } from 'mithril';
 import { Label, HelperText } from './label';
 import { IInputOption } from './option';
 
-export interface ISelectOptions<T extends string | number> extends Attributes, Partial<M.FormSelectOptions> {
+export interface ISelectOptions<T extends string | number> extends Attributes {
   /** Options to select from */
   options: IInputOption<T>[];
   /** Called when the value is changed, either contains a single or all selected (checked) ids */
@@ -46,43 +45,242 @@ export interface ISelectOptions<T extends string | number> extends Attributes, P
   showClearButton?: boolean;
 }
 
-/** Component to select from a list of values in a dropdowns */
-export const Select = <T extends string | number>(): Component<ISelectOptions<T>> => {
-  const state = {} as {
-    checkedId?: T | T[];
-    initialValue?: T[];
-    instance?: M.FormSelect;
-    /** Only initialized when multiple select */
-    wrapper?: HTMLDivElement;
-    /** Only initialized when multiple select */
-    inputEl?: HTMLInputElement;
-    /** Concatenation of all options IDs, to see if the options have changed and we need to re-init the select */
-    ids?: string;
-  };
-  const optionsIds = (options: IInputOption<T>[]) => options.map((o) => o.id).join('');
+interface ISelectState<T extends string | number> {
+  isOpen: boolean;
+  selectedIds: T[];
+  focusedIndex: number;
+}
 
-  const isSelected = (id?: T, checkedId?: T[], selected = false) =>
-    selected ||
-    (checkedId instanceof Array && (id || typeof id === 'number') ? checkedId.indexOf(id) >= 0 : checkedId === id);
+interface ISelectOptionProps<T extends string | number> {
+  option: IInputOption<T>;
+  index: number;
+  isSelected: boolean;
+  isFocused: boolean;
+  multiple?: boolean;
+  onToggle: (id: T) => void;
+}
+
+/** FactoryComponent for individual select options */
+const SelectOption = <T extends string | number>(): FactoryComponent<ISelectOptionProps<T>> => () => ({
+  view: ({ attrs: { option, isSelected, isFocused, multiple, onToggle } }) => {
+    return m(
+      '.select-dropdown-option',
+      {
+        key: option.id || 'placeholder-label',
+        className: [
+          isSelected ? 'selected' : '',
+          option.disabled ? 'disabled' : '',
+          isFocused ? 'focused' : '',
+        ]
+          .filter(Boolean)
+          .join(' '),
+        onclick: option.disabled ? undefined : () => onToggle(option.id),
+      },
+[
+        // Checkbox for multiple select
+        multiple
+          ? m('input.select-dropdown-option-checkbox', {
+              key: 'checkbox',
+              type: 'checkbox',
+              checked: isSelected,
+              disabled: option.disabled,
+              tabindex: -1,
+            })
+          : null,
+
+        // Option image
+        option.img
+          ? m('img.select-dropdown-option-img', {
+              key: 'image',
+              src: option.img,
+              alt: option.label,
+            })
+          : null,
+
+        // Option text
+        m('.select-dropdown-option-text', { key: 'text' }, option.label?.replace('&amp;', '&')),
+      ].filter(Boolean)
+    );
+  },
+});
+
+/** FactoryComponent for select dropdown */
+const SelectDropdown = <T extends string | number>(): FactoryComponent<{
+  attrs: ISelectOptions<T>;
+  state: ISelectState<T>;
+  isSelected: (id: T, selectedIds: T[]) => boolean;
+  toggleOption: (id: T, multiple: boolean, attrs: ISelectOptions<T>) => void;
+}> => () => ({
+  view: ({ attrs: { attrs, state, isSelected, toggleOption } }) => {
+    const { options, multiple } = attrs;
+
+    // Group options by group if any
+    const groups = options.reduce((acc, option) => {
+      const group = option.group || '';
+      if (!acc[group]) acc[group] = [];
+      acc[group].push(option);
+      return acc;
+    }, {} as Record<string, IInputOption<T>[]>);
+
+    const renderOption = (option: IInputOption<T>, index: number) => {
+      const isOptionSelected = isSelected(option.id, state.selectedIds);
+      const isFocused = index === state.focusedIndex;
+
+      return m(SelectOption<T>(), {
+        key: `option-${option.id}`,
+        option,
+        index,
+        isSelected: isOptionSelected,
+        isFocused,
+        multiple,
+        onToggle: (id: T) => toggleOption(id, multiple || false, attrs),
+      });
+    };
+
+    if (Object.keys(groups).length === 1 && groups['']) {
+      // No groups, render options directly
+      return options.map((option, index) => renderOption(option, index));
+    } else {
+      // Render grouped options
+      let optionIndex = 0;
+      const allElements: any[] = [];
+      
+      Object.entries(groups).forEach(([groupName, groupOptions]) => {
+        // Add group header if groupName exists
+        if (groupName) {
+          allElements.push(
+            m(
+              '.select-dropdown-optgroup',
+              {
+                key: `group-header-${groupName}`,
+              },
+              groupName
+            )
+          );
+        }
+        
+        // Add all options in this group
+        groupOptions.forEach((option) => {
+          allElements.push(renderOption(option, optionIndex++));
+        });
+      });
+      
+      return allElements;
+    }
+  },
+});
+
+/** CSS-only Select component - no Materialize dependencies */
+export const Select = <T extends string | number>(): Component<ISelectOptions<T>> => {
+  const state: ISelectState<T> = {
+    isOpen: false,
+    selectedIds: [],
+    focusedIndex: -1,
+  };
+
+  const isSelected = (id: T, selectedIds: T[]) => {
+    return selectedIds.some((selectedId) => selectedId === id);
+  };
+
+  const toggleOption = (id: T, multiple: boolean, attrs: ISelectOptions<T>) => {
+    if (multiple) {
+      const newIds = isSelected(id, state.selectedIds)
+        ? state.selectedIds.filter((selectedId) => selectedId !== id)
+        : [...state.selectedIds, id];
+      state.selectedIds = newIds;
+      attrs.onchange(newIds);
+      // Close dropdown for multiple select
+      state.isOpen = false;
+    } else {
+      state.selectedIds = [id];
+      // Keep dropdown open for single select
+      state.isOpen = true;
+      attrs.onchange([id]);
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent, attrs: ISelectOptions<T>) => {
+    const { options } = attrs;
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        if (!state.isOpen) {
+          state.isOpen = true;
+          state.focusedIndex = 0;
+        } else {
+          state.focusedIndex = Math.min(state.focusedIndex + 1, options.length - 1);
+        }
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        if (state.isOpen) {
+          state.focusedIndex = Math.max(state.focusedIndex - 1, 0);
+        }
+        break;
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        if (state.isOpen && state.focusedIndex >= 0 && state.focusedIndex < options.length) {
+          const option = options[state.focusedIndex];
+          if (option && !option.disabled) {
+            toggleOption(option.id, attrs.multiple || false, attrs);
+          }
+        } else if (!state.isOpen) {
+          state.isOpen = true;
+          state.focusedIndex = 0; // Set focus to first option when opening
+        }
+        break;
+      case 'Escape':
+        e.preventDefault();
+        state.isOpen = false;
+        state.focusedIndex = -1;
+        break;
+    }
+  };
+
+  const closeDropdown = (e: MouseEvent) => {
+    const target = e.target as Element;
+    if (!target.closest('.select-wrapper-container')) {
+      state.isOpen = false;
+      m.redraw();
+    }
+  };
 
   return {
-    oninit: ({ attrs: { checkedId, initialValue, options } }) => {
-      state.ids = optionsIds(options);
+    oninit: ({ attrs }) => {
+      const { checkedId, initialValue } = attrs;
       const iv = checkedId || initialValue;
-      state.checkedId = checkedId instanceof Array ? [...checkedId] : checkedId;
-      state.initialValue =
-        iv !== null && typeof iv !== 'undefined'
-          ? iv instanceof Array
-            ? iv.filter((i) => i !== null && typeof i !== 'undefined')
-            : [iv]
-          : [];
+
+      if (iv !== null && typeof iv !== 'undefined') {
+        if (iv instanceof Array) {
+          state.selectedIds = [...iv];
+        } else {
+          state.selectedIds = [iv];
+        }
+      }
+
+      // Add global click listener to close dropdown
+      document.addEventListener('click', closeDropdown);
     },
-    view: ({
-      attrs: {
-        id,
+
+    onremove: () => {
+      // Cleanup global listener
+      document.removeEventListener('click', closeDropdown);
+    },
+
+    view: ({ attrs }) => {
+      // Sync external checkedId prop with internal state - do this in view for immediate response
+      const { checkedId } = attrs;
+      if (checkedId !== undefined) {
+        const newIds = checkedId instanceof Array ? checkedId : [checkedId];
+        if (JSON.stringify(newIds) !== JSON.stringify(state.selectedIds)) {
+          state.selectedIds = newIds;
+        }
+      }
+      const {
         newRow,
         className = 'col s12',
-        checkedId,
         key,
         options,
         multiple,
@@ -92,140 +290,129 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
         isMandatory,
         iconName,
         disabled,
-        classes = '',
-        dropdownOptions,
-        // showClearButton,
-        onchange: callback,
-      },
-    }) => {
-      if (state.checkedId !== checkedId) {
-        state.initialValue = checkedId ? (checkedId instanceof Array ? checkedId : [checkedId]) : undefined;
-      }
-      const { initialValue } = state;
-      const onchange = callback
-        ? multiple
-          ? () => {
-              const values = state.instance && state.instance.getSelectedValues();
-              const v = values
-                ? values.length > 0 && isNumeric(values[0])
-                  ? values.map((n) => +n)
-                  : values.filter((i) => i !== null || typeof i !== 'undefined')
-                : undefined;
-              state.initialValue = v ? (v as T[]) : [];
-              callback(state.initialValue);
-            }
-          : (e: Event) => {
-              if (e && e.currentTarget) {
-                const b = e.currentTarget as HTMLButtonElement;
-                const v = (isNumeric(b.value) ? +b.value : b.value) as T;
-                state.initialValue = typeof v !== undefined ? [v] : [];
-              }
-              state.initialValue && callback(state.initialValue);
-            }
-        : undefined;
-      if (newRow) className += ' clear';
-      const noValidSelection = !options.some((o) => isSelected(o.id, initialValue));
-      const groups = options.reduce((acc, cur) => {
-        if (cur.group && acc.indexOf(cur.group) < 0) acc.push(cur.group);
-        return acc;
-      }, [] as string[]);
+        style,
+      } = attrs;
+
+      const finalClassName = newRow ? `${className} clear` : className;
+      const hasValue = state.selectedIds.length > 0;
+      const wrapperClasses = [
+        'select-wrapper',
+        'input-field',
+        hasValue ? 'has-value' : '',
+        state.isOpen ? 'focused' : '',
+        disabled ? 'disabled' : '',
+      ]
+        .filter(Boolean)
+        .join(' ');
+
+      const selectedOptions = options.filter((opt) => isSelected(opt.id, state.selectedIds));
+      const displayText = selectedOptions.length > 0 ? selectedOptions.map((opt) => opt.label).join(', ') : placeholder;
+
+
 
       return m(
-        '.input-field.select-space',
+        '.select-wrapper-container',
         {
-          className,
+          className: finalClassName,
           key,
-          oncreate: multiple ? ({ dom }) => (state.wrapper = dom as HTMLDivElement) : undefined,
+          style,
         },
         [
-          iconName && m('i.material-icons.prefix', iconName),
           m(
-            'select',
+            `.${wrapperClasses}`,
             {
-              id,
-              title: label,
-              disabled,
-              multiple,
-              oncreate: ({ dom }) => {
-                state.instance = M.FormSelect.init(dom, { classes, dropdownOptions });
-              },
-              onupdate: ({ dom }) => {
-                if (multiple) {
-                  const i = iconName ? 1 : 0;
-                  // Ugly hack to remove the placeholder when only one item is selected.
-                  if (
-                    !state.inputEl &&
-                    state.wrapper &&
-                    state.wrapper.childNodes &&
-                    state.wrapper.childNodes.length > 0 &&
-                    state.wrapper.childNodes[i].childNodes &&
-                    state.wrapper.childNodes[i].childNodes[0]
-                  ) {
-                    state.inputEl = state.wrapper.childNodes[i].childNodes[0] as HTMLInputElement;
-                  }
-                  if (state.inputEl && state.inputEl.value && state.inputEl.value.startsWith(`${placeholder}, `)) {
-                    state.inputEl.value = state.inputEl.value.replace(`${placeholder}, `, '');
-                  }
-                }
-                const ids = optionsIds(options);
-                let reinit = checkedId && state.checkedId !== checkedId.toString();
-                if (state.ids !== ids) {
-                  state.ids = ids;
-                  reinit = true;
-                }
-                if (
-                  state.checkedId instanceof Array && checkedId instanceof Array
-                    ? state.checkedId.join() !== checkedId.join()
-                    : state.checkedId !== checkedId
-                ) {
-                  state.checkedId = checkedId;
-                  reinit = true;
-                }
-                if (reinit) {
-                  state.instance = M.FormSelect.init(dom, { classes, dropdownOptions });
-                }
-              },
-              onchange,
+              onclick: disabled
+                ? undefined
+                : () => {
+                    state.isOpen = !state.isOpen;
+                  },
+              onkeydown: disabled ? undefined : (e: KeyboardEvent) => handleKeyDown(e, attrs),
+              tabindex: disabled ? -1 : 0,
+              'aria-expanded': state.isOpen ? 'true' : 'false',
+              'aria-haspopup': 'listbox',
+              role: 'combobox',
             },
-            // groups.length === 0 &&
-            m('option', { value: '', disabled: true, selected: noValidSelection ? true : undefined }, placeholder),
-            groups.length === 0
-              ? options.map((o, i) =>
-                  m(
-                    'option',
-                    {
-                      value: o.id,
-                      title: o.title || undefined,
-                      disabled: o.disabled ? 'true' : undefined,
-                      'data-icon': o.img || undefined,
-                      selected: isSelected(o.id, initialValue, i === 0 && noValidSelection && !placeholder),
-                    },
-                    o.label?.replace('&amp;', '&')
-                  )
-                )
-              : groups.map((g) =>
-                  m(
-                    'optgroup',
-                    { label: g },
-                    options
-                      .filter((o) => o.group === g)
-                      .map((o, i) =>
-                        m(
-                          'option',
-                          {
-                            value: o.id,
-                            title: o.title || undefined,
-                            disabled: o.disabled ? 'true' : undefined,
-                            'data-icon': o.img || undefined,
-                            selected: isSelected(o.id, initialValue, i === 0 && noValidSelection && !placeholder),
-                          },
-                          o.label?.replace('&amp;', '&')
-                        )
+            [
+              // Icon prefix
+              iconName &&
+                m(
+                  'i.material-icons.prefix',
+                  {
+                    className: hasValue || state.isOpen ? 'active' : '',
+                  },
+                  iconName
+                ),
+
+              // Multiple select tags or single select display
+              multiple && hasValue
+                ? m(
+                    '.select-tags',
+                    selectedOptions.map((option) =>
+                      m(
+                        '.select-tag',
+                        {
+                          key: option.id,
+                        },
+                        [
+                          option.label,
+                          !disabled &&
+                            m(
+                              '.select-tag-close',
+                              {
+                                onclick: (e: MouseEvent) => {
+                                  e.stopPropagation();
+                                  toggleOption(option.id, true, attrs);
+                                },
+                              },
+                              '×'
+                            ),
+                        ]
                       )
+                    )
                   )
-                )
+                : m(
+                    '.select-display',
+                    {
+                      className: hasValue ? 'has-value' : '',
+                    },
+                    selectedOptions.length > 0 && selectedOptions[0].img
+                      ? [
+                          m('img.select-display-img', {
+                            src: selectedOptions[0].img,
+                            alt: selectedOptions[0].label,
+                          }),
+                          m('span.select-display-text', displayText)
+                        ]
+                      : displayText
+                  ),
+
+              // Label
+              label &&
+                m(Label, {
+                  label,
+                  isMandatory,
+                  className: hasValue || state.isOpen ? 'active' : '',
+                }),
+
+              // Dropdown
+              m(
+                '.select-dropdown',
+                {
+                  className: state.isOpen ? 'active' : '',
+                  role: 'listbox',
+                  'aria-multiselectable': multiple,
+                },
+                m(SelectDropdown<T>(), {
+                  attrs,
+                  state,
+                  isSelected,
+                  toggleOption,
+                })
+              ),
+            ]
           ),
-          m(Label, { label, isMandatory }),
+
+          // Helper text
           helperText && m(HelperText, { helperText }),
         ]
       );

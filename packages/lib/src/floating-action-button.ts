@@ -1,6 +1,10 @@
 import m, { FactoryComponent } from 'mithril';
 
-export interface IFloatingActionButton extends Partial<M.FloatingActionButtonOptions> {
+interface IFloatingActionButtonState {
+  isOpen: boolean;
+}
+
+export interface IFloatingActionButton {
   /** Optional classes to add to the top element */
   className?: string;
   /** Optional style to add to the top element, e.g. for positioning it inline */
@@ -25,15 +29,38 @@ export interface IFloatingActionButton extends Partial<M.FloatingActionButtonOpt
     /** On click function */
     onClick?: (e: UIEvent) => void;
   }>;
+  /** Direction to open the buttons */
+  direction?: 'top' | 'bottom' | 'left' | 'right';
+  /** Whether to show the toolbar */
+  toolbarEnabled?: boolean;
+  /** Hover behavior */
+  hoverEnabled?: boolean;
 }
 
 /**
- * A Floating Action Button.
- *
- * @example FlatButton = ButtonFactory('a.waves-effect.waves-teal.btn-flat');
+ * Pure TypeScript Floating Action Button - no MaterializeCSS dependencies
  */
 export const FloatingActionButton: FactoryComponent<IFloatingActionButton> = () => {
+  const state: IFloatingActionButtonState = {
+    isOpen: false
+  };
+
+  const handleClickOutside = (e: MouseEvent) => {
+    const target = e.target as Element;
+    if (!target.closest('.fixed-action-btn')) {
+      state.isOpen = false;
+    }
+  };
+
   return {
+    oncreate: () => {
+      document.addEventListener('click', handleClickOutside);
+    },
+
+    onremove: () => {
+      document.removeEventListener('click', handleClickOutside);
+    },
+
     view: ({
       attrs: {
         className,
@@ -46,27 +73,74 @@ export const FloatingActionButton: FactoryComponent<IFloatingActionButton> = () 
           ? 'position: absolute; display: inline-block; right: 24px;'
           : undefined,
         buttons,
-        ...options
+        direction = 'top',
+        hoverEnabled = true
       },
     }) => {
+      const fabClasses = [
+        'fixed-action-btn',
+        direction ? `direction-${direction}` : '',
+        state.isOpen ? 'active' : '',
+        hoverEnabled ? 'hover-enabled' : '',
+        className
+      ].filter(Boolean).join(' ');
+
       const fab = m(
-        '.fixed-action-btn',
+        `.${fabClasses}`,
         {
           style,
-          oncreate: ({ dom }) => M.FloatingActionButton.init(dom, options),
+          onclick: (e: Event) => {
+            e.stopPropagation();
+            if (buttons && buttons.length > 0) {
+              state.isOpen = !state.isOpen;
+            }
+          },
+          onmouseover: hoverEnabled ? () => {
+            if (buttons && buttons.length > 0) {
+              state.isOpen = true;
+            }
+          } : undefined,
+          onmouseleave: hoverEnabled ? () => {
+            state.isOpen = false;
+          } : undefined
         },
         [
-          m('a.btn-floating.btn-large', { className }, m('i.material-icons', { classNames: iconClass }, iconName)),
-          buttons
+          m('a.btn-floating.btn-large.waves-effect.waves-light.red', { 
+            style: {
+              transform: state.isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+              transition: 'transform 0.3s ease'
+            }
+          }, m('i.material-icons', { className: iconClass }, iconName)),
+          buttons && buttons.length > 0
             ? m(
                 'ul',
-                buttons.map(b =>
+                {
+                  style: {
+                    visibility: state.isOpen ? 'visible' : 'hidden',
+                    opacity: state.isOpen ? '1' : '0',
+                    transform: state.isOpen ? 'scale(1)' : 'scale(0.4)',
+                    transition: 'opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease'
+                  }
+                },
+                buttons.map((button, index) =>
                   m(
                     'li',
+                    {
+                      style: {
+                        opacity: state.isOpen ? '1' : '0',
+                        transform: state.isOpen ? 'scale(1)' : 'scale(0.4)',
+                        transition: `all 0.3s ease ${index * 40}ms`
+                      }
+                    },
                     m(
-                      'a.btn-floating',
-                      { className: b.className, onclick: (e: UIEvent) => b.onClick && b.onClick(e) },
-                      m('i.material-icons', { className: b.iconClass }, b.iconName)
+                      `a.btn-floating.waves-effect.waves-light.${button.className || 'red'}`,
+                      { 
+                        onclick: (e: UIEvent) => {
+                          e.stopPropagation();
+                          if (button.onClick) button.onClick(e);
+                        }
+                      },
+                      m('i.material-icons', { className: button.iconClass }, button.iconName)
                     )
                   )
                 )

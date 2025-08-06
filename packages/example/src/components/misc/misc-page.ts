@@ -74,6 +74,7 @@ export const MiscPage = () => {
           onclick: () => {
             state.activeTab = 1;
             state.activeTabId = '';
+            m.redraw();
           },
         }),
         m(Button, {
@@ -81,19 +82,24 @@ export const MiscPage = () => {
           onclick: () => {
             state.activeTab = 0;
             state.activeTabId = 'test4';
+            m.redraw();
           },
         }),
         m(Button, {
           label: `${state.disabled ? 'Enable' : 'Disable'} tab 2`,
           onclick: () => {
             state.disabled = !state.disabled;
+            m.redraw();
           },
         }),
         m(Button, {
           label: `Switch tab width from ${state.tabWidths[state.tabWidthId % 3]} to ${
             state.tabWidths[(state.tabWidthId + 1) % 3]
           }`,
-          onclick: () => state.tabWidthId++,
+          onclick: () => {
+            state.tabWidthId++;
+            m.redraw();
+          },
         }),
         m(CodeBlock, {
           code: `          m(Tabs, {

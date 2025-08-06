@@ -33,7 +33,7 @@ export function render<T>(
   const testContainer = container || document.createElement('div');
   document.body.appendChild(testContainer);
   
-  // Render the component
+  // Handle component directly - let mithril handle FactoryComponent logic
   m.render(testContainer, m(component, attrs));
   
   return {

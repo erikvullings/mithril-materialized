@@ -38,8 +38,8 @@
 
 .input-field textarea {
   height: auto;
-  min-height: 3rem;
-  padding-top: 1rem;
+  min-height: 2rem;
+  padding-top: 0.5rem;
   resize: vertical;
 }
 
@@ -75,7 +75,7 @@
 /* Labels */
 .input-field label {
   position: absolute;
-  top: 0.8rem;
+  top: 1rem;
   left: 0;
   font-size: 16px;
   color: var(--md-grey-600);
@@ -90,7 +90,7 @@
 .input-field label.active {
   font-size: 12px;
   color: var(--md-primary);
-  transform: translateY(-140%);
+  transform: translateY(-150%);
 }
 
 .input-field input:focus ~ label,
@@ -101,7 +101,7 @@
 .input-field textarea[value]:not([value=""]) ~ label {
   font-size: 12px;
   color: var(--md-primary);
-  transform: translateY(-140%);
+  transform: translateY(-150%);
 }
 
 /* Placeholder */
@@ -121,8 +121,12 @@
 .helper-text {
   font-size: 12px;
   color: var(--md-grey-600);
-  margin-top: var(--md-spacing-xs);
+  margin-top: 4px;
   min-height: 18px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .helper-text[data-error] {
@@ -133,15 +137,29 @@
   color: var(--md-success);
 }
 
+/* Show error/success helper text based on input state */
+.input-field input.invalid ~ .helper-text[data-error],
+.input-field textarea.invalid ~ .helper-text[data-error] {
+  color: var(--md-error);
+  display: block;
+}
+
+.input-field input.valid ~ .helper-text[data-success],
+.input-field textarea.valid ~ .helper-text[data-success] {
+  color: var(--md-success);
+  display: block;
+}
+
 /* Prefix icons */
 .input-field .prefix {
   position: absolute;
   width: 3rem;
   font-size: 2rem;
   transition: color var(--md-transition-standard);
-  top: 0.5rem;
+  top: 1rem;
   left: 0;
   color: var(--md-grey-600);
+  line-height: 1;
 }
 
 .input-field .prefix.active {
@@ -170,6 +188,10 @@ input[type='color']:not(.browser-default) {
   box-shadow: none;
   box-sizing: content-box;
   transition: border-bottom var(--md-transition-standard), box-shadow var(--md-transition-standard);
+}
+
+.input-field input[type='color'] ~ label.active {
+  transform: translateY(-180%);
 }
 
 input[type='color']:focus:not(.browser-default) {
@@ -209,6 +231,11 @@ input[type='color']:focus:not(.browser-default) {
   margin-top: -5px;
   cursor: pointer;
   transition: background var(--md-transition-standard);
+  position: relative;
+}
+
+.range-field input[type="range"] {
+  background: linear-gradient(to right, var(--md-primary) 0%, var(--md-primary) var(--range-progress, 0%), var(--md-grey-300) var(--range-progress, 0%), var(--md-grey-300) 100%);
 }
 
 .range-field input[type="range"]:focus::-webkit-slider-thumb {
@@ -299,15 +326,16 @@ span.mandatory {
 /* Autocomplete styles */
 .autocomplete-content {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 8px);
   left: 0;
   right: 0;
   background: white;
   box-shadow: var(--md-shadow-2);
-  border-radius: 0 0 var(--md-radius-small) var(--md-radius-small);
+  border-radius: var(--md-radius-small);
   max-height: 200px;
   overflow-y: auto;
   z-index: 1000;
+  margin-top: 0;
 }
 
 .autocomplete-content li {

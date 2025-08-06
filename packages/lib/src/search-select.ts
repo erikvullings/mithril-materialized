@@ -61,10 +61,15 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
   // Handle click outside
   const handleClickOutside = (e: MouseEvent) => {
     const target = e.target as Node;
+    if (state.dropdownRef && state.dropdownRef.contains(target)) {
+      // Click inside dropdown, do nothing
+      return;
+    }
     if (state.inputRef && state.inputRef.contains(target)) {
-      state.isOpen = !state.isOpen;
-      m.redraw();
-    } else if (state.dropdownRef && !state.dropdownRef.contains(target)) {
+      // Click on trigger handled by onclick event
+      return;
+    } else {
+      // Click outside, close dropdown
       state.isOpen = false;
       m.redraw();
     }
@@ -84,13 +89,11 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
       case 'ArrowDown':
         e.preventDefault();
         state.focusedIndex = Math.min(state.focusedIndex + 1, filteredOptions.length - 1);
-        m.redraw();
-        break;
+          break;
       case 'ArrowUp':
         e.preventDefault();
         state.focusedIndex = Math.max(state.focusedIndex - 1, -1);
-        m.redraw();
-        break;
+          break;
       case 'Enter':
         e.preventDefault();
         if (state.focusedIndex >= 0 && state.focusedIndex < filteredOptions.length) {
@@ -101,8 +104,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
         e.preventDefault();
         state.isOpen = false;
         state.focusedIndex = -1;
-        m.redraw();
-        break;
+          break;
     }
   };
 
@@ -116,14 +118,12 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
     state.searchTerm = '';
     state.focusedIndex = -1;
     state.onchange && state.onchange(state.selectedOptions.map((o) => o.id));
-    m.redraw();
   };
 
   // Remove a selected option
   const removeOption = (option: Option<string | number>) => {
     state.selectedOptions = state.selectedOptions.filter((item) => item.id !== option.id);
     state.onchange && state.onchange(state.selectedOptions.map((o) => o.id));
-    m.redraw();
   };
 
   return {
@@ -180,12 +180,23 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
             oncreate: ({ dom }) => {
               state.inputRef = dom as HTMLElement;
             },
+            onclick: (e: Event) => {
+              console.log('SearchSelect clicked', state.isOpen, e); // Debug log
+              e.preventDefault();
+              e.stopPropagation();
+              state.isOpen = !state.isOpen;
+              console.log('SearchSelect state changed to', state.isOpen); // Debug log
+              m.redraw();
+            },
             style: {
               borderBottom: '2px solid #d1d5db',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
               cursor: 'pointer',
+              pointerEvents: 'auto',
+              position: 'relative',
+              zIndex: 1
             },
           },
           [
@@ -283,8 +294,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                         oninput: (e: InputEvent) => {
                           state.searchTerm = (e.target as HTMLInputElement).value;
                           state.focusedIndex = -1; // Reset focus when typing
-                          m.redraw();
-                        },
+                                            },
                         style: {
                           width: '100%',
                           outline: 'none',

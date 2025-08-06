@@ -170,7 +170,6 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
         if (selectedItem) {
           selectedItem.scrollIntoView({ block: 'nearest' });
         }
-        m.redraw();
         return;
       }
 
@@ -181,7 +180,6 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
         if (selectedItem) {
           selectedItem.scrollIntoView({ block: 'nearest' });
         }
-        m.redraw();
         return;
       }
 
@@ -316,8 +314,7 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
                 setTimeout(() => {
                   state.showAutocomplete = false;
                   state.selectedChip = null;
-                  m.redraw();
-                }, 150);
+                          }, 150);
               },
               onkeydown: handleKeydown,
             }),

@@ -77,6 +77,7 @@ describe('Input Components', () => {
       
       const input = getByLabelText('Validated Input') as HTMLInputElement;
       fireEvent.change(input, 'test value');
+      fireEvent.blur(input); // Validation now happens on blur
       expect(mockValidate).toHaveBeenCalledWith('test value', input);
     });
 

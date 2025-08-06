@@ -33,7 +33,18 @@ export interface ITabItem {
   href?: string;
 }
 
-export interface ITabs extends Partial<M.TabsOptions>, Attributes {
+export interface ITabsOptions {
+  /** Duration of tab change animation in ms */
+  duration?: number;
+  /** Called when a tab is shown */
+  onShow?: (tab: HTMLElement) => void;
+  /** The maximum width at which tabs switch to swipeable mode */
+  responsiveThreshold?: number;
+  /** Enable swiping between tabs on mobile */
+  swipeable?: boolean;
+}
+
+export interface ITabs extends ITabsOptions, Attributes {
   /** Selected tab id */
   selectedTabId?: string;
   /**
@@ -45,18 +56,107 @@ export interface ITabs extends Partial<M.TabsOptions>, Attributes {
   tabs: ITabItem[];
 }
 
+/** CSS-only Tabs component - no MaterializeCSS dependencies */
 export const Tabs: FactoryComponent<ITabs> = () => {
-  const state = {} as { instance: M.Tabs };
+  const state = {
+    activeTabId: '',
+    isDragging: false,
+    startX: 0,
+    translateX: 0,
+  };
 
   const createId = (title: string, id?: string) => (id ? id : title.replace(/ /g, '').toLowerCase());
+
+  const handleTabClick = (tabId: string, tabElement: HTMLElement, attrs: ITabs) => {
+    if (state.activeTabId === tabId) return;
+    
+    state.activeTabId = tabId;
+    
+    // Call onShow callback if provided
+    if (attrs.onShow) {
+      attrs.onShow(tabElement);
+    }
+    
+    m.redraw();
+  };
+
+  // Touch/swipe support for mobile
+  const handleTouchStart = (e: TouchEvent) => {
+    if (!e.touches || e.touches.length === 0) return;
+    state.isDragging = true;
+    state.startX = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: TouchEvent, attrs: ITabs) => {
+    if (!state.isDragging || !e.changedTouches || e.changedTouches.length === 0) return;
+    
+    const endX = e.changedTouches[0].clientX;
+    const deltaX = endX - state.startX;
+    const threshold = 50; // Minimum swipe distance
+    
+    if (Math.abs(deltaX) > threshold) {
+      const currentIndex = attrs.tabs.findIndex(tab => 
+        createId(tab.title, tab.id) === state.activeTabId
+      );
+      
+      if (deltaX > 0 && currentIndex > 0) {
+        // Swipe right - go to previous tab
+        const prevTab = attrs.tabs[currentIndex - 1];
+        if (!prevTab.disabled && !prevTab.href) {
+          state.activeTabId = createId(prevTab.title, prevTab.id);
+        }
+      } else if (deltaX < 0 && currentIndex < attrs.tabs.length - 1) {
+        // Swipe left - go to next tab
+        const nextTab = attrs.tabs[currentIndex + 1];
+        if (!nextTab.disabled && !nextTab.href) {
+          state.activeTabId = createId(nextTab.title, nextTab.id);
+        }
+      }
+    }
+    
+    state.isDragging = false;
+    state.translateX = 0;
+    m.redraw();
+  };
+
   return {
-    view: ({
-      attrs: { tabWidth, selectedTabId, tabs, className, style, duration, onShow, swipeable, responsiveThreshold },
-    }) => {
-      const activeTab = tabs.filter((t) => t.active).shift();
-      const select = selectedTabId || (activeTab ? createId(activeTab.title, activeTab.id) : '');
+    oninit: ({ attrs }) => {
+      // Initialize active tab - active property on tab item takes precedence
+      const activeTab = attrs.tabs.find(t => t.active);
+      const selectedId = attrs.selectedTabId;
+      
+      if (activeTab) {
+        // Active tab property takes precedence over selectedTabId
+        state.activeTabId = createId(activeTab.title, activeTab.id);
+      } else if (selectedId) {
+        state.activeTabId = selectedId;
+      } else {
+        // Default to first non-disabled tab
+        const firstAvailableTab = attrs.tabs.find(t => !t.disabled && !t.href);
+        if (firstAvailableTab) {
+          state.activeTabId = createId(firstAvailableTab.title, firstAvailableTab.id);
+        }
+      }
+    },
+
+
+    view: ({ attrs }) => {
+      const { tabWidth, tabs, className, style, swipeable = false } = attrs;
       const cn = [tabWidth === 'fill' ? 'tabs-fixed-width' : '', className].filter(Boolean).join(' ').trim();
+      
+      // Check for active tab property first, then selectedTabId - do this in view for immediate response
+      const activeTab = attrs.tabs.find(t => t.active);
+      if (activeTab) {
+        const activeTabId = createId(activeTab.title, activeTab.id);
+        if (activeTabId !== state.activeTabId) {
+          state.activeTabId = activeTabId;
+        }
+      } else if (attrs.selectedTabId && attrs.selectedTabId !== state.activeTabId) {
+        state.activeTabId = attrs.selectedTabId;
+      }
+
       return m('.row', [
+        // Tab headers
         m(
           '.col.s12',
           m(
@@ -64,48 +164,66 @@ export const Tabs: FactoryComponent<ITabs> = () => {
             {
               className: cn,
               style,
-              oncreate: ({ dom }) => {
-                state.instance = M.Tabs.init(dom, {
-                  duration,
-                  onShow,
-                  responsiveThreshold,
-                  swipeable,
-                });
-              },
-              onupdate: () => {
-                if (select) {
-                  const el = document.getElementById(`tab_${select}`);
-                  if (el) {
-                    el.click();
-                  }
-                }
-              },
-              onremove: () => state.instance.destroy(),
             },
-            tabs.map(({ className, title, id, active, disabled, target, href }) => {
-              const cn = [tabWidth === 'fixed' ? `col s${Math.floor(12 / tabs.length)}` : '', className]
+            tabs.map((tab) => {
+              const { className: tabClassName, title, id, disabled, target, href } = tab;
+              const cn = [tabWidth === 'fixed' ? `col s${Math.floor(12 / tabs.length)}` : '', tabClassName]
                 .filter(Boolean)
                 .join(' ')
                 .trim();
               const anchorId = createId(title, id);
               const tabId = `tab_${anchorId}`;
-              const cnA = active ? 'active' : '';
+              const isActive = state.activeTabId === anchorId;
+              const cnA = isActive ? 'active' : '';
+
               return m(
                 'li.tab',
                 {
+                  key: anchorId,
                   className: cn,
-                  disabled,
                 },
-                m('a', { id: tabId, className: cnA, target, href: href || `#${anchorId}` }, title)
+                m('a', {
+                  id: tabId,
+                  className: cnA,
+                  target,
+                  href: href || `#${anchorId}`,
+                  onclick: disabled || href ? undefined : (e: Event) => {
+                    e.preventDefault();
+                    handleTabClick(anchorId, e.target as HTMLElement, attrs);
+                  },
+                  style: disabled ? { opacity: '0.6', cursor: 'not-allowed' } : undefined,
+                }, title)
               );
             })
           )
         ),
-        tabs
-          .filter(({ href }) => typeof href === 'undefined')
-          .map(({ id, title, vnode, contentClass }) =>
-            m('.col.s12', { id: createId(title, id), className: contentClass }, vnode)
-          ),
+        
+        // Tab content
+        m(
+          '.col.s12',
+          {
+            ontouchstart: swipeable ? handleTouchStart : undefined,
+            ontouchend: swipeable ? (e: TouchEvent) => handleTouchEnd(e, attrs) : undefined,
+            style: swipeable ? { touchAction: 'pan-y' } : undefined,
+          },
+          tabs
+            .filter(({ href }) => typeof href === 'undefined')
+            .map(({ id, title, vnode, contentClass }) => {
+              const contentId = createId(title, id);
+              const isActive = state.activeTabId === contentId;
+              
+              return m('.tab-content', {
+                key: contentId,
+                id: contentId,
+                className: contentClass,
+                style: {
+                  display: isActive ? 'block' : 'none',
+                  transition: attrs.duration ? `opacity ${attrs.duration}ms ease` : 'opacity 300ms ease',
+                  opacity: isActive ? '1' : '0',
+                },
+              }, isActive ? vnode : null);
+            })
+        ),
       ]);
     },
   };

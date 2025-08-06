@@ -93,7 +93,8 @@ describe('Button Components', () => {
       const { container } = render(RoundIconButton, { iconName: 'add' });
       const button = container.querySelector('button');
       expect(button).toHaveClass('btn-floating');
-      expect(button).toHaveClass('btn-large');
+      expect(button).toHaveClass('waves-effect');
+      expect(button).toHaveClass('waves-light');
     });
   });
 

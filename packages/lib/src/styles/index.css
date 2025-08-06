@@ -1,5 +1,331 @@
 /* Mithril Materialized - CSS-only Material Design Components */
 
+/* ===== CSS RESET ===== */
+/* Modern CSS Reset based on modern-normalize */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+}
+
+body {
+  margin: 0;
+  font-family: inherit;
+  line-height: inherit;
+}
+
+hr {
+  height: 0;
+  color: inherit;
+}
+
+abbr[title] {
+  text-decoration: underline dotted;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 1em;
+}
+
+small {
+  font-size: 80%;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+table {
+  text-indent: 0;
+  border-color: inherit;
+  border-collapse: collapse;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+  -webkit-appearance: button;
+}
+
+::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+legend {
+  padding: 0;
+}
+
+progress {
+  vertical-align: baseline;
+}
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+[type='search'] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+summary {
+  display: list-item;
+}
+
+/* Remove list styles on ul, ol elements with a list role */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Remove default margin and padding from lists */
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove list style from navigation lists */
+nav ul,
+nav ol {
+  list-style: none;
+}
+
+/* ===== NAVIGATION STYLES ===== */
+/* Navigation Bar - Material Design Implementation */
+
+nav {
+  color: #fff;
+  background-color: var(--md-primary);
+  width: 100%;
+  height: 56px;
+  line-height: 56px;
+  box-shadow: var(--md-shadow-1);
+  position: relative;
+}
+
+nav .nav-wrapper {
+  position: relative;
+  height: 100%;
+  padding: 0 var(--md-spacing-md);
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+nav ul.left {
+  float: left;
+}
+
+nav ul.right {
+  float: right;
+  margin-left: auto;
+}
+
+nav ul li {
+  transition: background-color var(--md-transition-fast);
+  float: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+nav ul li a {
+  transition: background-color var(--md-transition-fast);
+  font-size: 1rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--md-spacing-md);
+  cursor: pointer;
+  text-decoration: none;
+  height: 100%;
+}
+
+nav ul li:hover,
+nav ul li.active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav ul li.active a {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Brand logo */
+nav .brand-logo {
+  position: absolute;
+  color: #fff;
+  display: inline-block;
+  font-size: 2.1rem;
+  padding: 0;
+  white-space: nowrap;
+  left: var(--md-spacing-md);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+nav .brand-logo.center {
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+/* Mobile Navigation */
+@media only screen and (max-width: 992px) {
+  nav .nav-wrapper {
+    padding: 0 var(--md-spacing-sm);
+  }
+  
+  nav .brand-logo {
+    left: var(--md-spacing-sm);
+  }
+  
+  nav ul li a {
+    padding: 0 var(--md-spacing-sm);
+  }
+}
+
+/* Side Navigation */
+.sidenav {
+  position: fixed;
+  width: 300px;
+  left: 0;
+  top: 0;
+  margin: 0;
+  transform: translateX(-105%);
+  height: 100%;
+  height: calc(100% + 60px);
+  height: -moz-calc(100%);
+  padding-bottom: 60px;
+  background-color: #fff;
+  z-index: 999;
+  overflow-y: auto;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateX(-105%);
+  transition: transform 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+  box-shadow: var(--md-shadow-2);
+}
+
+.sidenav.open {
+  transform: translateX(0);
+}
+
+.sidenav li {
+  float: none;
+  line-height: 48px;
+}
+
+.sidenav li > a {
+  color: rgba(0, 0, 0, 0.87);
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  height: 48px;
+  line-height: 48px;
+  padding: 0 32px;
+  border-radius: 0;
+}
+
+.sidenav li > a:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.sidenav li.active > a {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--md-primary);
+}
+
+/* Overlay for sidenav */
+.sidenav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 997;
+  display: none;
+}
+
+.sidenav-overlay.show {
+  display: block;
+}
+
 /* ===== FOUNDATION STYLES ===== */
 :root {
   /* Material Design Color Palette */
@@ -88,53 +414,84 @@ body {
   margin: 0 calc(-1 * var(--md-spacing-sm));
 }
 
+/* Responsive behavior for column layouts */
+@media (min-width: 601px) {
+  .row {
+    flex-wrap: nowrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .row {
+    flex-wrap: wrap;
+  }
+}
+
+.row.no-wrap {
+  flex-wrap: nowrap;
+}
+
+/* For horizontal form layouts */
+.row.horizontal {
+  flex-wrap: nowrap;
+  align-items: flex-end;
+}
+
+.row.horizontal > * {
+  margin-right: var(--md-spacing-sm);
+}
+
+.row.horizontal > *:last-child {
+  margin-right: 0;
+}
+
 .col {
   flex: 1;
   padding: 0 var(--md-spacing-sm);
 }
 
 /* Column sizes */
-.col.s1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
-.col.s2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
-.col.s3 { flex: 0 0 25%; max-width: 25%; }
-.col.s4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
-.col.s5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
-.col.s6 { flex: 0 0 50%; max-width: 50%; }
-.col.s7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
-.col.s8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
-.col.s9 { flex: 0 0 75%; max-width: 75%; }
-.col.s10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
-.col.s11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
-.col.s12 { flex: 0 0 100%; max-width: 100%; }
+.col.s1 { flex: 0 0 8.333333%; max-width: 8.333333%; padding: 0 var(--md-spacing-sm); }
+.col.s2 { flex: 0 0 16.666667%; max-width: 16.666667%; padding: 0 var(--md-spacing-sm); }
+.col.s3 { flex: 0 0 25%; max-width: 25%; padding: 0 var(--md-spacing-sm); }
+.col.s4 { flex: 0 0 33.333333%; max-width: 33.333333%; padding: 0 var(--md-spacing-sm); }
+.col.s5 { flex: 0 0 41.666667%; max-width: 41.666667%; padding: 0 var(--md-spacing-sm); }
+.col.s6 { flex: 0 0 50%; max-width: 50%; padding: 0 var(--md-spacing-sm); }
+.col.s7 { flex: 0 0 58.333333%; max-width: 58.333333%; padding: 0 var(--md-spacing-sm); }
+.col.s8 { flex: 0 0 66.666667%; max-width: 66.666667%; padding: 0 var(--md-spacing-sm); }
+.col.s9 { flex: 0 0 75%; max-width: 75%; padding: 0 var(--md-spacing-sm); }
+.col.s10 { flex: 0 0 83.333333%; max-width: 83.333333%; padding: 0 var(--md-spacing-sm); }
+.col.s11 { flex: 0 0 91.666667%; max-width: 91.666667%; padding: 0 var(--md-spacing-sm); }
+.col.s12 { flex: 0 0 100%; max-width: 100%; padding: 0 var(--md-spacing-sm); }
 
 @media (min-width: 768px) {
-  .col.m1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
-  .col.m2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
-  .col.m3 { flex: 0 0 25%; max-width: 25%; }
-  .col.m4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
-  .col.m5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
-  .col.m6 { flex: 0 0 50%; max-width: 50%; }
-  .col.m7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
-  .col.m8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
-  .col.m9 { flex: 0 0 75%; max-width: 75%; }
-  .col.m10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
-  .col.m11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
-  .col.m12 { flex: 0 0 100%; max-width: 100%; }
+  .col.m1 { flex: 0 0 8.333333%; max-width: 8.333333%; padding: 0 var(--md-spacing-sm); }
+  .col.m2 { flex: 0 0 16.666667%; max-width: 16.666667%; padding: 0 var(--md-spacing-sm); }
+  .col.m3 { flex: 0 0 25%; max-width: 25%; padding: 0 var(--md-spacing-sm); }
+  .col.m4 { flex: 0 0 33.333333%; max-width: 33.333333%; padding: 0 var(--md-spacing-sm); }
+  .col.m5 { flex: 0 0 41.666667%; max-width: 41.666667%; padding: 0 var(--md-spacing-sm); }
+  .col.m6 { flex: 0 0 50%; max-width: 50%; padding: 0 var(--md-spacing-sm); }
+  .col.m7 { flex: 0 0 58.333333%; max-width: 58.333333%; padding: 0 var(--md-spacing-sm); }
+  .col.m8 { flex: 0 0 66.666667%; max-width: 66.666667%; padding: 0 var(--md-spacing-sm); }
+  .col.m9 { flex: 0 0 75%; max-width: 75%; padding: 0 var(--md-spacing-sm); }
+  .col.m10 { flex: 0 0 83.333333%; max-width: 83.333333%; padding: 0 var(--md-spacing-sm); }
+  .col.m11 { flex: 0 0 91.666667%; max-width: 91.666667%; padding: 0 var(--md-spacing-sm); }
+  .col.m12 { flex: 0 0 100%; max-width: 100%; padding: 0 var(--md-spacing-sm); }
 }
 
 @media (min-width: 1024px) {
-  .col.l1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
-  .col.l2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
-  .col.l3 { flex: 0 0 25%; max-width: 25%; }
-  .col.l4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
-  .col.l5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
-  .col.l6 { flex: 0 0 50%; max-width: 50%; }
-  .col.l7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
-  .col.l8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
-  .col.l9 { flex: 0 0 75%; max-width: 75%; }
-  .col.l10 { flex: 0 0 83.333333%; max-width: 83.333333%; }
-  .col.l11 { flex: 0 0 91.666667%; max-width: 91.666667%; }
-  .col.l12 { flex: 0 0 100%; max-width: 100%; }
+  .col.l1 { flex: 0 0 8.333333%; max-width: 8.333333%; padding: 0 var(--md-spacing-sm); }
+  .col.l2 { flex: 0 0 16.666667%; max-width: 16.666667%; padding: 0 var(--md-spacing-sm); }
+  .col.l3 { flex: 0 0 25%; max-width: 25%; padding: 0 var(--md-spacing-sm); }
+  .col.l4 { flex: 0 0 33.333333%; max-width: 33.333333%; padding: 0 var(--md-spacing-sm); }
+  .col.l5 { flex: 0 0 41.666667%; max-width: 41.666667%; padding: 0 var(--md-spacing-sm); }
+  .col.l6 { flex: 0 0 50%; max-width: 50%; padding: 0 var(--md-spacing-sm); }
+  .col.l7 { flex: 0 0 58.333333%; max-width: 58.333333%; padding: 0 var(--md-spacing-sm); }
+  .col.l8 { flex: 0 0 66.666667%; max-width: 66.666667%; padding: 0 var(--md-spacing-sm); }
+  .col.l9 { flex: 0 0 75%; max-width: 75%; padding: 0 var(--md-spacing-sm); }
+  .col.l10 { flex: 0 0 83.333333%; max-width: 83.333333%; padding: 0 var(--md-spacing-sm); }
+  .col.l11 { flex: 0 0 91.666667%; max-width: 91.666667%; padding: 0 var(--md-spacing-sm); }
+  .col.l12 { flex: 0 0 100%; max-width: 100%; padding: 0 var(--md-spacing-sm); }
 }
 
 /* Utility Classes */
@@ -1181,6 +1538,189 @@ label+.switch {
   cursor: pointer;
 }
 
+/* ===== COLLECTION STYLES ===== */
+/* Collection - Material Design Implementation */
+
+.collection {
+  margin: var(--md-spacing-sm) 0 var(--md-spacing-lg) 0;
+  border: 1px solid var(--md-grey-300);
+  border-radius: var(--md-radius-small);
+  overflow: hidden;
+  position: relative;
+  background-color: white;
+  box-shadow: var(--md-shadow-1);
+  list-style: none;
+  padding: 0;
+}
+
+.collection .collection-item {
+  background-color: white;
+  line-height: 1.5rem;
+  padding: 10px 20px;
+  margin: 0;
+  border-bottom: 1px solid var(--md-grey-200);
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  transition: background-color var(--md-transition-fast);
+  list-style: none;
+}
+
+.collection .collection-item:last-child {
+  border-bottom: none;
+}
+
+.collection .collection-item.active {
+  background-color: var(--md-primary);
+  color: white;
+}
+
+.collection .collection-item:hover {
+  background-color: var(--md-grey-50);
+}
+
+.collection .collection-item.active:hover {
+  background-color: var(--md-primary-dark);
+}
+
+.collection .collection-header {
+  background-color: var(--md-grey-100);
+  border-bottom: 1px solid var(--md-grey-300);
+  padding: 10px 20px;
+  margin: 0;
+  position: relative;
+}
+
+.collection .collection-header h4 {
+  font-size: 1.4rem;
+  line-height: 1.5rem;
+  margin: 0;
+  color: var(--md-grey-800);
+  font-weight: var(--md-font-weight-medium);
+}
+
+.collection .collection-item.avatar {
+  min-height: 84px;
+  padding-left: 72px;
+  position: relative;
+  align-items: flex-start;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: block;
+}
+
+.collection .collection-item.avatar:not(.circle-clipper) > .circle,
+.collection .collection-item.avatar :not(.circle-clipper) > .circle {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  left: 15px;
+  top: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.collection .collection-item.avatar i.circle {
+  font-size: 18px;
+  line-height: 42px;
+  color: white;
+  background-color: var(--md-grey-500);
+  text-align: center;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+}
+
+.collection .collection-item.avatar i.circle.green {
+  background-color: var(--md-success);
+}
+
+.collection .collection-item.avatar i.circle.red {
+  background-color: var(--md-error);
+}
+
+.collection .collection-item.avatar i.circle.blue {
+  background-color: var(--md-primary);
+}
+
+.collection .collection-item.avatar i.circle.orange {
+  background-color: var(--md-warning);
+}
+
+.collection .collection-item.avatar img.circle {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.collection .collection-item.avatar .title {
+  font-size: 16px;
+  font-weight: var(--md-font-weight-medium);
+  color: var(--md-grey-800);
+  display: block;
+  margin: 0;
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+
+.collection .collection-item.avatar p {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--md-grey-600);
+  font-size: 14px;
+}
+
+.collection .collection-item .secondary-content {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  color: var(--md-grey-600);
+  cursor: pointer;
+  transition: color var(--md-transition-fast);
+}
+
+.collection .collection-item .secondary-content:hover {
+  color: var(--md-primary);
+}
+
+.collection .collection-item.active .secondary-content {
+  color: white;
+}
+
+.collection .collection-item.active .secondary-content:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.collection .collection-item.avatar .secondary-content {
+  top: 20px;
+  transform: none;
+}
+
+/* Links collection - when using anchor tags */
+.collection a.collection-item {
+  display: flex;
+  align-items: center;
+  color: var(--md-grey-800);
+  text-decoration: none;
+  transition: background-color var(--md-transition-fast), color var(--md-transition-fast);
+}
+
+.collection a.collection-item:hover {
+  background-color: var(--md-grey-50);
+  color: var(--md-grey-900);
+}
+
+.collection a.collection-item.active {
+  background-color: var(--md-primary);
+  color: white;
+}
+
+.collection a.collection-item.active:hover {
+  background-color: var(--md-primary-dark);
+}
+
 /* ===== EXISTING STYLES (preserving original styles) ===== */
 .codeblock {
   margin: 1.5rem 0 2.5rem 0;
@@ -1376,4 +1916,695 @@ label+.switch {
     margin: -55px 5px 0 0;
     position: relative;
   }
+}
+
+/* ===== CHIPS STYLES ===== */
+/* Chips Styles - Material Design Implementation */
+
+/* Main chips container */
+.chips {
+  position: relative;
+  margin-bottom: var(--md-spacing-lg);
+  width: 100%;
+}
+
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 48px;
+  border-bottom: 1px solid var(--md-grey-400);
+  transition: border-bottom var(--md-transition-standard);
+  gap: var(--md-spacing-xs);
+  padding: var(--md-spacing-xs) 0;
+}
+
+.chips-container.focused {
+  border-bottom: 2px solid var(--md-primary);
+}
+
+/* Individual chip styling */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--md-grey-200);
+  border-radius: 16px;
+  padding: 0 12px;
+  height: 32px;
+  font-size: 13px;
+  color: var(--md-grey-800);
+  margin: 2px;
+  transition: all var(--md-transition-fast);
+  cursor: default;
+  position: relative;
+}
+
+.chip.selected {
+  background-color: var(--md-primary);
+  color: white;
+}
+
+.chip img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: var(--md-spacing-xs);
+  margin-left: -4px;
+}
+
+.chip .close {
+  font-size: 18px;
+  margin-left: var(--md-spacing-xs);
+  cursor: pointer;
+  color: var(--md-grey-600);
+  transition: color var(--md-transition-fast);
+  line-height: 1;
+}
+
+.chip .close:hover {
+  color: var(--md-error);
+}
+
+.chip.selected .close {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.chip.selected .close:hover {
+  color: white;
+}
+
+/* Chips input field */
+.chips-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  color: var(--md-grey-800);
+  flex: 1;
+  min-width: 120px;
+  height: 32px;
+  margin: 2px;
+  padding: 0;
+  font-family: var(--md-font-family);
+}
+
+.chips-input::placeholder {
+  color: var(--md-grey-500);
+}
+
+/* Label positioning for chips */
+.input-field .chips ~ label {
+  position: absolute;
+  top: 0.8rem;
+  left: 0;
+  font-size: 16px;
+  color: var(--md-grey-600);
+  cursor: text;
+  transition: all var(--md-transition-standard);
+  transform-origin: 0% 100%;
+  text-align: initial;
+  transform: translateY(0);
+  pointer-events: none;
+}
+
+.input-field .chips ~ label.active {
+  font-size: 12px;
+  color: var(--md-primary);
+  transform: translateY(-140%);
+}
+
+/* Remove double horizontal line by ensuring no border-bottom on input */
+.input-field .chips .chips-input {
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+/* Autocomplete dropdown for chips */
+.chips .autocomplete-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  box-shadow: var(--md-shadow-2);
+  border-radius: var(--md-radius-small);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  margin-top: 4px;
+}
+
+.chips .autocomplete-content li {
+  list-style: none;
+  padding: var(--md-spacing-sm) var(--md-spacing-md);
+  cursor: pointer;
+  border-bottom: 1px solid var(--md-grey-200);
+  transition: background-color var(--md-transition-fast);
+}
+
+.chips .autocomplete-content li:hover,
+.chips .autocomplete-content li.selected {
+  background-color: var(--md-grey-100);
+}
+
+.chips .autocomplete-content li:last-child {
+  border-bottom: none;
+}
+
+.chips .autocomplete-item-image {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: var(--md-spacing-sm);
+  vertical-align: middle;
+}
+
+/* Ensure proper spacing when there are multiple chips */
+.chips-container:not(.chips-placeholder) {
+  padding-top: var(--md-spacing-sm);
+}
+
+/* Fix label positioning when there are chips */
+.input-field:has(.chips-container:not(:empty)) label,
+.input-field .chips:not(:empty) ~ label {
+  font-size: 12px;
+  color: var(--md-primary);
+  transform: translateY(-140%);
+}
+
+/* Fallback for browsers that don't support :has() */
+.input-field .chips.chips-initial:not(.chips-placeholder) ~ label {
+  font-size: 12px;
+  color: var(--md-primary);
+  transform: translateY(-140%);
+}
+
+/* ===== COLLAPSIBLE STYLES ===== */
+/* Collapsible/Accordion Styles - Material Design Implementation */
+
+.collapsible {
+  border: none;
+  box-shadow: var(--md-shadow-1);
+  border-radius: var(--md-radius-small);
+  margin: var(--md-spacing-sm) 0 var(--md-spacing-lg) 0;
+  padding: 0;
+  width: 100%; /* Ensure full width by default */
+  list-style-type: none;
+  overflow: hidden;
+}
+
+.collapsible li {
+  position: relative;
+  border-bottom: 1px solid var(--md-grey-200);
+  margin: 0;
+  padding: 0;
+}
+
+.collapsible li:last-child {
+  border-bottom: none;
+}
+
+.collapsible-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 48px;
+  padding: var(--md-spacing-md) var(--md-spacing-lg);
+  background-color: #fff;
+  border-bottom: 1px solid var(--md-grey-200);
+  cursor: pointer;
+  transition: background-color var(--md-transition-standard);
+  user-select: none;
+}
+
+.collapsible li.active .collapsible-header {
+  background-color: var(--md-grey-50);
+}
+
+.collapsible-header:hover {
+  background-color: var(--md-grey-50);
+}
+
+/* Removed dropdown arrow styling */
+
+.collapsible-header i.material-icons {
+  margin-right: var(--md-spacing-md);
+  color: var(--md-grey-600);
+  font-size: 24px;
+}
+
+.collapsible li.active .collapsible-header i.material-icons {
+  color: var(--md-primary);
+}
+
+.collapsible-body {
+  position: relative;
+  background-color: #fff;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.2s ease-out;
+  border-bottom: 1px solid var(--md-grey-200);
+  opacity: 0;
+}
+
+.collapsible-body-content {
+  padding: var(--md-spacing-lg);
+}
+
+.collapsible li.active .collapsible-body {
+  max-height: 1000px; /* Larger max-height but with better timing */
+  opacity: 1;
+  border-bottom: none;
+  transition: max-height 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease-in 0.1s;
+}
+
+.collapsible-body p {
+  margin: 0 0 var(--md-spacing-md) 0;
+  line-height: 1.6;
+  color: var(--md-grey-700);
+}
+
+.collapsible-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Focus styles for accessibility */
+.collapsible-header:focus {
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
+}
+
+.collapsible-header:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ===== FLOATING ACTION BUTTON STYLES ===== */
+/* Floating Action Button - Pure CSS Implementation */
+
+.fixed-action-btn {
+  position: fixed;
+  right: 23px;
+  bottom: 23px;
+  z-index: 1000;
+}
+
+.fixed-action-btn.direction-left {
+  right: auto;
+  left: 23px;
+}
+
+.fixed-action-btn.direction-top {
+  bottom: auto;
+  top: 23px;
+}
+
+.fixed-action-btn.direction-bottom {
+  /* Default positioning */
+}
+
+.fixed-action-btn.direction-right {
+  /* Default positioning */
+}
+
+/* Main FAB button */
+.fixed-action-btn > a.btn-floating {
+  display: block;
+  position: relative;
+  z-index: 1001;
+}
+
+/* FAB button list */
+.fixed-action-btn ul {
+  position: absolute;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* Fix button size for round icon buttons */
+.btn-floating {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 56px !important;
+  height: 56px !important;
+  line-height: 56px !important;
+  padding: 0 !important;
+}
+
+.btn-floating.btn-large {
+  width: 56px !important;
+  height: 56px !important;
+  line-height: 56px !important;
+}
+
+.btn-floating.btn-small {
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 40px !important;
+}
+
+.btn-floating i {
+  font-size: 24px !important;
+  line-height: 1 !important;
+}
+
+/* Fix button alignment issues */
+.btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: top !important;
+  margin: 4px 2px !important;
+}
+
+.btn i {
+  vertical-align: middle !important;
+  margin-right: 8px !important;
+}
+
+.btn i.right {
+  margin-right: 0 !important;
+  margin-left: 8px !important;
+}
+
+/* Select component image display fixes */
+.select-display {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.select-display-img {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 4px !important;
+  object-fit: cover !important;
+}
+
+.select-display-text {
+  flex: 1 !important;
+}
+
+.select-dropdown-option {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 16px !important;
+}
+
+.select-dropdown-option-img {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 4px !important;
+  object-fit: cover !important;
+}
+
+.select-dropdown-option-text {
+  flex: 1 !important;
+}
+
+.fixed-action-btn ul li {
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+}
+
+.fixed-action-btn ul li a.btn-floating {
+  display: block;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: all 0.3s ease;
+}
+
+.fixed-action-btn.active ul li a.btn-floating {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Direction-specific positioning */
+.fixed-action-btn.direction-top ul {
+  bottom: 64px;
+  top: auto;
+}
+
+.fixed-action-btn.direction-bottom ul {
+  top: 64px;
+  bottom: auto;
+}
+
+.fixed-action-btn.direction-left ul {
+  right: 64px;
+  left: auto;
+  text-align: right;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+}
+
+.fixed-action-btn.direction-left ul li {
+  text-align: right;
+  margin-right: 15px;
+  margin-bottom: 0;
+  display: inline-block;
+}
+
+.fixed-action-btn.direction-right ul {
+  left: 64px;
+  right: auto;
+  text-align: left;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+}
+
+.fixed-action-btn.direction-right ul li {
+  text-align: left;
+  margin-left: 15px;
+  margin-bottom: 0;
+}
+
+/* Hover effects for FAB */
+.fixed-action-btn.hover-enabled:hover ul li a.btn-floating {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.fixed-action-btn.hover-enabled:hover > a.btn-floating {
+  transform: rotate(45deg);
+}
+
+/* Inline positioning */
+.fixed-action-btn[style*="position: absolute"] {
+  position: absolute !important;
+}
+
+/* Tabs styles */
+.tabs {
+  background-color: transparent;
+  border-bottom: 1px solid var(--md-grey-300);
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+
+.tabs.tabs-fixed-width {
+  display: flex;
+  width: 100%;
+}
+
+.tabs .tab {
+  cursor: pointer;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  transition: background-color var(--md-transition-standard);
+}
+
+.tabs .tab a {
+  align-items: center;
+  border-bottom: 2px solid transparent;
+  color: var(--md-grey-600);
+  display: flex;
+  font-size: 14px;
+  font-weight: var(--md-font-weight-medium);
+  height: 48px;
+  justify-content: center;
+  padding: 0 var(--md-spacing-md);
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color var(--md-transition-standard), border-bottom-color var(--md-transition-standard);
+  width: 100%;
+}
+
+.tabs .tab a:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  color: var(--md-grey-800);
+}
+
+.tabs .tab a.active {
+  border-bottom-color: var(--md-primary);
+  color: var(--md-primary);
+}
+
+.tabs .tab a:focus {
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
+}
+
+.tabs .tab a:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.tab-content {
+  animation: fadeIn var(--md-transition-standard) ease;
+  padding: var(--md-spacing-lg) 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive tabs */
+@media (max-width: 768px) {
+  .tabs .tab a {
+    font-size: 12px;
+    padding: 0 var(--md-spacing-sm);
+  }
+}
+
+/* Parallax styles */
+.parallax-container {
+  position: relative;
+  overflow: hidden;
+  height: 500px;
+}
+
+.parallax {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.parallax img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate3d(-50%, -50%, 0);
+  object-fit: cover;
+  z-index: -1;
+  will-change: transform;
+}
+
+/* ===== PAGINATION STYLES ===== */
+/* Pagination - Material Design Implementation */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  margin: var(--md-spacing-lg) 0;
+  padding: 0;
+  background-color: transparent;
+  border-radius: var(--md-radius-small);
+}
+
+.pagination li {
+  display: inline-block;
+  margin: 0 var(--md-spacing-xs);
+}
+
+.pagination li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: var(--md-spacing-xs) var(--md-spacing-sm);
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--md-grey-600);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: var(--md-font-weight-medium);
+  transition: all var(--md-transition-standard);
+  border: 1px solid transparent;
+}
+
+.pagination li.waves-effect a:hover {
+  background-color: var(--md-grey-100);
+  color: var(--md-grey-800);
+}
+
+.pagination li.active a {
+  background-color: var(--md-primary);
+  color: white;
+  border-color: var(--md-primary);
+}
+
+.pagination li.active a:hover {
+  background-color: var(--md-primary-dark);
+  border-color: var(--md-primary-dark);
+}
+
+.pagination li.disabled a {
+  color: var(--md-grey-400);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.pagination li.disabled a:hover {
+  background-color: transparent;
+  color: var(--md-grey-400);
+}
+
+/* Arrow icons in pagination */
+.pagination li a .material-icons {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Compact pagination variant */
+.pagination.pagination-sm li a {
+  min-width: 32px;
+  height: 32px;
+  font-size: 12px;
+}
+
+/* Large pagination variant */
+.pagination.pagination-lg li a {
+  min-width: 48px;
+  height: 48px;
+  font-size: 16px;
 }

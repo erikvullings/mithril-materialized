@@ -46,7 +46,7 @@ export const HelperText: FactoryComponent<IHelperTextOptions> = () => {
         ? m(
             'span.helper-text.left',
             { className, 'data-error': dataError, 'data-success': dataSuccess },
-            helperText ? m.trust(helperText) : ''
+            dataError ? m.trust(dataError) : dataSuccess ? m.trust(dataSuccess) : helperText ? m.trust(helperText) : ''
           )
         : undefined;
     },

@@ -1,8 +1,8 @@
-import { SelectV2 } from '../src/select-v2';
+import { Select } from '../src/select';
 import { render, fireEvent, cleanup } from '../src/test-utils';
 import { IInputOption } from '../src/option';
 
-describe('SelectV2 Component', () => {
+describe('Select Component', () => {
   const mockOptions: IInputOption<string>[] = [
     { id: 'option1', label: 'Option 1' },
     { id: 'option2', label: 'Option 2' },
@@ -20,7 +20,7 @@ describe('SelectV2 Component', () => {
   });
 
   it('renders select with label', () => {
-    const { getByText } = render(SelectV2, {
+    const { getByText } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -31,7 +31,7 @@ describe('SelectV2 Component', () => {
   });
 
   it('renders select with placeholder', () => {
-    const { getByText } = render(SelectV2, {
+    const { getByText } = render(Select<string>(), {
       id: 'test-select',
       placeholder: 'Choose an option',
       options: mockOptions,
@@ -42,7 +42,7 @@ describe('SelectV2 Component', () => {
   });
 
   it('renders all options when dropdown is opened', () => {
-    const { container, getByText } = render(SelectV2, {
+    const { container, getByText } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -60,7 +60,7 @@ describe('SelectV2 Component', () => {
 
   it('calls onchange when option is selected', () => {
     const mockOnChange = jest.fn();
-    const { container, getByText } = render(SelectV2, {
+    const { container, getByText } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -79,7 +79,7 @@ describe('SelectV2 Component', () => {
 
   it('handles single select correctly', () => {
     const mockOnChange = jest.fn();
-    const { container, getByText } = render(SelectV2, {
+    const { container, getByText } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -100,7 +100,7 @@ describe('SelectV2 Component', () => {
 
   it('handles multiple select correctly', () => {
     const mockOnChange = jest.fn();
-    const { container, getByText } = render(SelectV2, {
+    const { container, getByText } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -124,7 +124,7 @@ describe('SelectV2 Component', () => {
   });
 
   it('respects initialValue prop', () => {
-    const { container } = render(SelectV2, {
+    const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -137,7 +137,7 @@ describe('SelectV2 Component', () => {
   });
 
   it('respects checkedId prop', () => {
-    const { container } = render(SelectV2, {
+    const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -151,7 +151,7 @@ describe('SelectV2 Component', () => {
 
   it('handles disabled state', () => {
     const mockOnChange = jest.fn();
-    const { container } = render(SelectV2, {
+    const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -170,7 +170,7 @@ describe('SelectV2 Component', () => {
 
   it('handles disabled options', () => {
     const mockOnChange = jest.fn();
-    const { container, getByText } = render(SelectV2, {
+    const { container, getByText } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -190,7 +190,7 @@ describe('SelectV2 Component', () => {
   });
 
   it('renders with icon prefix', () => {
-    const { container } = render(SelectV2, {
+    const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       iconName: 'person',
@@ -204,7 +204,7 @@ describe('SelectV2 Component', () => {
   });
 
   it('renders helper text', () => {
-    const { getByText } = render(SelectV2, {
+    const { getByText } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       helperText: 'Choose wisely',
@@ -223,7 +223,7 @@ describe('SelectV2 Component', () => {
       { id: 'veg2', label: 'Broccoli', group: 'Vegetables' },
     ];
 
-    const { container, getByText } = render(SelectV2, {
+    const { container, getByText } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: groupedOptions,
@@ -246,7 +246,7 @@ describe('SelectV2 Component', () => {
       { id: 'option2', label: 'Option 2', img: 'https://example.com/image2.jpg' },
     ];
 
-    const { container } = render(SelectV2, {
+    const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: optionsWithImages,
@@ -263,7 +263,7 @@ describe('SelectV2 Component', () => {
   });
 
   it('displays multiple selected options as tags', () => {
-    const { container } = render(SelectV2, {
+    const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -280,7 +280,7 @@ describe('SelectV2 Component', () => {
 
   it('allows removing tags in multiple select', () => {
     const mockOnChange = jest.fn();
-    const { container } = render(SelectV2, {
+    const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -298,7 +298,7 @@ describe('SelectV2 Component', () => {
   });
 
   it('has proper accessibility attributes', () => {
-    const { container } = render(SelectV2, {
+    const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -317,7 +317,7 @@ describe('SelectV2 Component', () => {
 
   it.skip('handles keyboard navigation', () => {
     const mockOnChange = jest.fn();
-    const { container, getByText } = render(SelectV2, {
+    const { container, getByText } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -339,7 +339,7 @@ describe('SelectV2 Component', () => {
   });
 
   it('closes dropdown on Escape key', () => {
-    const { container, getByText, queryByText } = render(SelectV2, {
+    const { container, getByText, queryByText } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -362,7 +362,7 @@ describe('SelectV2 Component', () => {
 
   it('works with numeric option IDs', () => {
     const mockOnChange = jest.fn();
-    const { container, getByText } = render(SelectV2, {
+    const { container, getByText } = render(Select<number>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockNumericOptions,
