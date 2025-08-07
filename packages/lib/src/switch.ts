@@ -28,9 +28,10 @@ export const Switch: FactoryComponent<ISwitchOptions> = () => {
         'div',
         {
           className: cn,
-          onclick: () => {
+          onclick: (e: MouseEvent) => {
             state.checked = !state.checked;
             onchange && onchange(state.checked);
+            e.preventDefault();
           },
         },
         [
