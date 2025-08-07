@@ -28,14 +28,35 @@ export const CollapsibleItem: FactoryComponent<ICollapsibleItem & {
         header || iconName
           ? m('.collapsible-header', {
               onclick: onToggle,
-              style: { cursor: 'pointer' }
+              style: { 
+                cursor: 'pointer',
+                padding: '1rem',
+                backgroundColor: '#fff',
+                borderBottom: '1px solid #ddd',
+                display: 'flex',
+                alignItems: 'center',
+                transition: 'background-color 0.2s ease'
+              },
+              onmouseover: (e: MouseEvent) => {
+                (e.target as HTMLElement).style.backgroundColor = '#f5f5f5';
+              },
+              onmouseleave: (e: MouseEvent) => {
+                (e.target as HTMLElement).style.backgroundColor = '#fff';
+              }
             }, [
-              iconName ? m('i.material-icons', iconName) : undefined,
+              iconName ? m('i.material-icons', { style: { marginRight: '1rem' } }, iconName) : undefined,
               header ? (typeof header === 'string' ? m('span', header) : header) : undefined,
             ])
           : undefined,
-        m('.collapsible-body', [
-          m('.collapsible-body-content', body ? (typeof body === 'string' ? m('div', { innerHTML: body }) : body) : undefined)
+        m('.collapsible-body', {
+          style: {
+            display: isActive ? 'block' : 'none',
+            transition: 'display 0.3s ease'
+          }
+        }, [
+          m('.collapsible-body-content', {
+            style: { padding: '2rem' }
+          }, body ? (typeof body === 'string' ? m('div', { innerHTML: body }) : body) : undefined)
         ]),
       ]);
     },
@@ -88,12 +109,18 @@ export const Collapsible: FactoryComponent<ICollapsible> = () => {
             'ul.collapsible',
             {
               class: c || className,
-              style,
+              style: {
+                border: '1px solid #ddd',
+                borderRadius: '2px',
+                margin: '0.5rem 0 1rem 0',
+                ...style
+              },
               id,
             },
             items.map((item, index) => 
               m(CollapsibleItem, {
                 ...item,
+                key: index,
                 isActive: state.activeItems.has(index),
                 onToggle: () => toggleItem(index)
               })

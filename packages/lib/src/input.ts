@@ -4,25 +4,91 @@ import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
 // import './styles/input.css';
 
+/** Shared label management utility */
+const createLabelManager = (element: HTMLInputElement | HTMLTextAreaElement) => {
+  const parentElement = element.parentElement as HTMLElement;
+  const label = parentElement.querySelector('label');
+  
+  const updateLabelState = () => {
+    if (label) {
+      if (element.value !== '' || document.activeElement === element || element.placeholder) {
+        label.classList.add('active');
+      } else {
+        label.classList.remove('active');
+      }
+    }
+  };
+  
+  const cleanup = () => {
+    element.removeEventListener('focus', updateLabelState);
+    element.removeEventListener('blur', updateLabelState);
+    element.removeEventListener('input', updateLabelState);
+  };
+  
+  // Add event listeners
+  element.addEventListener('focus', updateLabelState);
+  element.addEventListener('blur', updateLabelState);
+  element.addEventListener('input', updateLabelState);
+  
+  // Initial label state
+  updateLabelState();
+  
+  return { updateLabelState, cleanup };
+};
+
 /** Character counter component that tracks text length against maxLength */
-const CharacterCounter: FactoryComponent<{ currentLength: number; maxLength: number }> = () => {
+const CharacterCounter: FactoryComponent<{ currentLength: number; maxLength: number; show: boolean }> = () => {
   return {
     view: ({ attrs }) => {
-      const { currentLength, maxLength } = attrs;
+      const { currentLength, maxLength, show } = attrs;
+      if (!show) return null;
+
       const isOverLimit = currentLength > maxLength;
-      return m('span.character-counter', {
-        style: {
-          color: isOverLimit ? 'var(--md-error)' : 'var(--md-grey-600)'
-        }
-      }, `${currentLength}/${maxLength}`);
-    }
+      return m(
+        'span.character-counter',
+        {
+          style: {
+            color: isOverLimit ? '#F44336' : '#9e9e9e',
+            fontSize: '12px',
+            display: 'block',
+            textAlign: 'right',
+            marginTop: '8px',
+          },
+        },
+        `${currentLength}/${maxLength}`
+      );
+    },
   };
 };
 
 /** Create a TextArea */
 export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
-  const state = { id: uniqueId(), currentLength: 0, hasInteracted: false, isValid: true };
+  const state = {
+    id: uniqueId(),
+    currentLength: 0,
+    hasInteracted: false,
+    isValid: true,
+    height: 'auto',
+  };
+  
+  let labelManager: { updateLabelState: () => void; cleanup: () => void } | null = null;
+
+  const updateHeight = (textarea: HTMLTextAreaElement) => {
+    textarea.style.height = 'auto';
+    const newHeight = textarea.scrollHeight + 'px';
+    if (state.height !== newHeight) {
+      state.height = newHeight;
+      m.redraw();
+    }
+  };
+
   return {
+    onremove: () => {
+      if (labelManager) {
+        labelManager.cleanup();
+        labelManager = null;
+      }
+    },
     view: ({ attrs }) => {
       const {
         className = 'col s12',
@@ -48,37 +114,61 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
           ...params,
           id,
           tabindex: 0,
+          style: {
+            height: state.height,
+            resize: 'none',
+            overflow: 'hidden',
+          },
           oncreate: ({ dom }) => {
-            // Auto-resize functionality
             const textarea = dom as HTMLTextAreaElement;
-            const autoResize = () => {
-              textarea.style.height = 'auto';
-              textarea.style.height = textarea.scrollHeight + 'px';
-            };
-            textarea.addEventListener('input', autoResize);
-            autoResize(); // Initial resize
-            
+
+            // Set initial value and height if provided
+            if (initialValue !== undefined) {
+              textarea.value = String(initialValue);
+              updateHeight(textarea);
+            } else {
+              updateHeight(textarea);
+            }
+
+            // Setup label management
+            labelManager = createLabelManager(textarea);
+
             // Update character count state for counter component
             if (maxLength) {
-              const updateLength = () => {
-                state.currentLength = textarea.value.length;
-                m.redraw();
-              };
-              textarea.addEventListener('input', updateLength);
               state.currentLength = textarea.value.length; // Initial count
             }
           },
-          oninput: () => {
-            state.hasInteracted = true;
+          onupdate: ({ dom }) => {
+            const textarea = dom as HTMLTextAreaElement;
+            textarea.style.height = state.height;
           },
-          onchange: onchange
-            ? (e: Event) => {
-                const target = e.target as HTMLInputElement;
-                const value = target && typeof target.value === 'string' ? target.value : '';
-                state.hasInteracted = true;
-                onchange(value);
-              }
-            : undefined,
+          oninput: (e: Event) => {
+            state.hasInteracted = false;
+            const target = e.target as HTMLTextAreaElement;
+
+            // Update height for auto-resize
+            updateHeight(target);
+
+            // Update character count
+            if (maxLength) {
+              state.currentLength = target.value.length;
+              state.hasInteracted = target.value.length > 0;
+            }
+
+            // Call onchange handler
+            if (onchange) {
+              onchange(target.value);
+            }
+          },
+          onblur: (e: FocusEvent) => {
+            // const target = e.target as HTMLTextAreaElement;
+            state.hasInteracted = true;
+
+            // Call original onblur if provided
+            if (onblur) {
+              onblur(e);
+            }
+          },
           value: initialValue,
           onkeyup: onkeyup
             ? (ev: KeyboardEvent) => {
@@ -95,15 +185,20 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
                 onkeypress(ev, (ev.target as HTMLTextAreaElement).value);
               }
             : undefined,
-          onblur,
         }),
         m(Label, { label, id, isMandatory, isActive: initialValue || attrs.placeholder }),
-        m(HelperText, { 
-          helperText, 
+        m(HelperText, {
+          helperText,
           dataError: state.hasInteracted && attrs.dataError ? attrs.dataError : undefined,
-          dataSuccess: state.hasInteracted && attrs.dataSuccess ? attrs.dataSuccess : undefined 
+          dataSuccess: state.hasInteracted && attrs.dataSuccess ? attrs.dataSuccess : undefined,
         }),
-        maxLength ? m(CharacterCounter, { currentLength: state.currentLength, maxLength }) : undefined,
+        maxLength
+          ? m(CharacterCounter, {
+              currentLength: state.currentLength,
+              maxLength,
+              show: state.currentLength > 0,
+            })
+          : undefined,
       ]);
     },
   };
@@ -116,6 +211,10 @@ const InputField =
   <T>(type: InputType, defaultClass = ''): FactoryComponent<IInputOptions<T>> =>
   () => {
     const state = { id: uniqueId(), currentLength: 0, hasInteracted: false, isValid: true };
+    let labelManager: { updateLabelState: () => void; cleanup: () => void } | null = null;
+    let lengthUpdateHandler: (() => void) | null = null;
+    let inputElement: HTMLInputElement | null = null;
+    
     const getValue = (target: HTMLInputElement) => {
       const val = target.value as any as T;
       return (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
@@ -131,6 +230,17 @@ const InputField =
       autofocus ? (typeof autofocus === 'boolean' ? autofocus : autofocus()) : false;
 
     return {
+      onremove: () => {
+        if (labelManager) {
+          labelManager.cleanup();
+          labelManager = null;
+        }
+        if (lengthUpdateHandler && inputElement) {
+          inputElement.removeEventListener('input', lengthUpdateHandler);
+          lengthUpdateHandler = null;
+        }
+        inputElement = null;
+      },
       view: ({ attrs }) => {
         const {
           className = 'col s12',
@@ -168,42 +278,26 @@ const InputField =
               }
 
               const input = dom as HTMLInputElement;
-              const parentElement = input.parentElement as HTMLElement;
+              inputElement = input;
 
               // Set initial value if provided
               if (initialValue !== undefined) {
                 input.value = String(initialValue);
               }
 
+              // Setup label management
+              labelManager = createLabelManager(input);
+
               // Update character count state for counter component
               if (maxLength) {
-                const updateLength = () => {
+                lengthUpdateHandler = () => {
                   state.currentLength = input.value.length;
+                  state.hasInteracted = input.value.length > 0;
                   m.redraw();
                 };
-                input.addEventListener('input', updateLength);
+                input.addEventListener('input', lengthUpdateHandler);
                 state.currentLength = input.value.length; // Initial count
               }
-
-              // Add focus and blur event handlers for label animation
-              const label = parentElement.querySelector('label');
-
-              const updateLabelState = () => {
-                if (label) {
-                  if (input.value !== '' || document.activeElement === input || input.placeholder) {
-                    label.classList.add('active');
-                  } else {
-                    label.classList.remove('active');
-                  }
-                }
-              };
-
-              input.addEventListener('focus', updateLabelState);
-              input.addEventListener('blur', updateLabelState);
-              input.addEventListener('input', updateLabelState);
-
-              // Initial label state
-              updateLabelState();
 
               // Range input functionality
               if (type === 'range') {
@@ -242,40 +336,31 @@ const InputField =
               : undefined,
             oninput: (e: Event) => {
               const target = e.target as HTMLInputElement;
-              state.hasInteracted = true;
-              
+
               // Handle original oninput logic
               const value = getValue(target);
               if (onchange) {
                 onchange(value);
               }
-              
-              // Validate on input if there's content and user has interacted
-              if (validate && target.value.length > 0) {
-                const validationResult = validate(value, target);
-                state.isValid = typeof validationResult === 'boolean' ? validationResult : false;
-                setValidity(target, validationResult);
 
-                // Update visual validation state
-                if (typeof validationResult === 'boolean') {
-                  if (validationResult) {
-                    target.classList.remove('invalid');
-                    target.classList.add('valid');
-                  } else {
-                    target.classList.remove('valid');
-                    target.classList.add('invalid');
-                  }
-                } else if (typeof validationResult === 'string') {
-                  target.classList.remove('valid');
-                  target.classList.add('invalid');
-                  state.isValid = false;
+              // Don't validate on input, only clear error states if user is typing
+              if (validate && target.classList.contains('invalid') && target.value.length > 0) {
+                const validationResult = validate(value, target);
+                if (typeof validationResult === 'boolean' && validationResult) {
+                  target.classList.remove('invalid');
+                  target.classList.add('valid');
+                  state.isValid = true;
+                } else if (typeof validationResult === 'string' && validationResult === '') {
+                  target.classList.remove('invalid');
+                  target.classList.add('valid');
+                  state.isValid = true;
                 }
               }
             },
             onblur: (e: FocusEvent) => {
               const target = e.target as HTMLInputElement;
               state.hasInteracted = true;
-              
+
               if (target && validate) {
                 const value = getValue(target);
                 // Only validate if user has entered some text
@@ -325,12 +410,18 @@ const InputField =
                 ? true
                 : false,
           }),
-          m(HelperText, { 
-            helperText, 
-            dataError: state.hasInteracted && !state.isValid ? dataError : undefined, 
-            dataSuccess: state.hasInteracted && state.isValid && initialValue ? dataSuccess : undefined 
+          m(HelperText, {
+            helperText,
+            dataError: state.hasInteracted && !state.isValid ? dataError : undefined,
+            dataSuccess: state.hasInteracted && state.isValid && initialValue ? dataSuccess : undefined,
           }),
-          maxLength ? m(CharacterCounter, { currentLength: state.currentLength, maxLength }) : undefined,
+          maxLength
+            ? m(CharacterCounter, {
+                currentLength: state.currentLength,
+                maxLength,
+                show: state.currentLength > 0,
+              })
+            : undefined,
         ]);
       },
     };

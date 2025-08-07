@@ -115,9 +115,23 @@ export const Parallax: FactoryComponent<IParallax> = () => {
       if (!src) return undefined;
 
       return m('.parallax-container', {
-        style: { height }
+        style: { 
+          height,
+          position: 'relative',
+          overflow: 'hidden',
+          display: 'block'
+        }
       }, [
-        m('.parallax', [
+        m('.parallax', {
+          style: {
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            height: '120%' // Slightly larger for parallax effect
+          }
+        }, [
           m('img', {
             src,
             alt,
@@ -128,9 +142,18 @@ export const Parallax: FactoryComponent<IParallax> = () => {
               top: '50%',
               minWidth: '100%',
               minHeight: '100%',
+              width: 'auto',
+              height: 'auto',
               transform: 'translate3d(-50%, -50%, 0)',
               objectFit: 'cover',
-              zIndex: '-1',
+              zIndex: '1',
+              backgroundColor: '#f0f0f0' // Fallback background
+            },
+            onerror: (e: Event) => {
+              console.warn('Parallax image failed to load:', src);
+              const img = e.target as HTMLImageElement;
+              img.style.backgroundColor = '#ddd';
+              img.alt = 'Image failed to load';
             }
           })
         ])

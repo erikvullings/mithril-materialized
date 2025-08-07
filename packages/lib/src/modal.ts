@@ -141,7 +141,16 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => {
         m('div', {
           className: overlayClasses,
           onclick: closeOnBackdropClick ? () => closeModal(attrs) : undefined,
-          style: { display: state.isOpen ? 'block' : 'none' },
+          style: {
+            display: state.isOpen ? 'block' : 'none',
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: '1002'
+          },
         }),
 
         // Modal content
@@ -154,7 +163,21 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => {
             role: 'dialog',
             'aria-labelledby': `${id}-title`,
             'aria-describedby': description ? `${id}-desc` : undefined,
-            style: { display: state.isOpen ? 'block' : 'none' },
+            style: {
+              display: state.isOpen ? 'block' : 'none',
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              backgroundColor: '#fff',
+              borderRadius: '4px',
+              maxWidth: '75%',
+              maxHeight: '85%',
+              overflow: 'auto',
+              zIndex: '1003',
+              padding: '0',
+              boxShadow: '0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px -7px rgba(0,0,0,0.20)'
+            },
             onclick: (e: Event) => e.stopPropagation(), // Prevent backdrop click when clicking inside modal
           },
           [
@@ -179,8 +202,10 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => {
               ),
 
             // Modal content
-            m('.modal-content', [
-              m('h4', { id: `${id}-title` }, title),
+            m('.modal-content', {
+              style: { padding: '24px', paddingTop: showCloseButton ? '48px' : '24px' }
+            }, [
+              m('h4', { id: `${id}-title`, style: { margin: '0 0 20px 0' } }, title),
               description &&
                 m(
                   'div',
@@ -197,6 +222,13 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => {
               buttons.length > 0 &&
               m(
                 '.modal-footer',
+                {
+                  style: {
+                    padding: '4px 6px',
+                    borderTop: '1px solid rgba(160,160,160,0.2)',
+                    textAlign: 'right'
+                  }
+                },
                 buttons.map((buttonProps) =>
                   m(FlatButton, {
                     // key: `modal-button-${index}`,

@@ -75,6 +75,25 @@ const SelectOption = <T extends string | number>(): FactoryComponent<ISelectOpti
           .filter(Boolean)
           .join(' '),
         onclick: option.disabled ? undefined : () => onToggle(option.id),
+        style: {
+          padding: '12px 16px',
+          cursor: option.disabled ? 'not-allowed' : 'pointer',
+          borderBottom: '1px solid #eee',
+          backgroundColor: isSelected ? '#e3f2fd' : 'transparent',
+          opacity: option.disabled ? 0.5 : 1,
+          display: 'flex',
+          alignItems: 'center'
+        },
+        onmouseover: option.disabled ? undefined : (e: MouseEvent) => {
+          if (!isSelected) {
+            (e.target as HTMLElement).style.backgroundColor = '#f5f5f5';
+          }
+        },
+        onmouseleave: option.disabled ? undefined : (e: MouseEvent) => {
+          if (!isSelected) {
+            (e.target as HTMLElement).style.backgroundColor = 'transparent';
+          }
+        }
       },
 [
         // Checkbox for multiple select
@@ -189,12 +208,11 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
         : [...state.selectedIds, id];
       state.selectedIds = newIds;
       attrs.onchange(newIds);
-      // Close dropdown for multiple select
-      state.isOpen = false;
+      // Keep dropdown open for multiple select
     } else {
       state.selectedIds = [id];
-      // Keep dropdown open for single select
-      state.isOpen = true;
+      // Close dropdown for single select
+      state.isOpen = false;
       attrs.onchange([id]);
     }
   };
@@ -331,6 +349,10 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
               'aria-expanded': state.isOpen ? 'true' : 'false',
               'aria-haspopup': 'listbox',
               role: 'combobox',
+              style: {
+                position: 'relative',
+                cursor: disabled ? 'not-allowed' : 'pointer'
+              }
             },
             [
               // Icon prefix
@@ -401,13 +423,27 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
                   className: state.isOpen ? 'active' : '',
                   role: 'listbox',
                   'aria-multiselectable': multiple,
+                  style: {
+                    display: state.isOpen ? 'block' : 'none',
+                    position: 'absolute',
+                    top: '100%',
+                    left: '0',
+                    right: '0',
+                    backgroundColor: '#fff',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.16), 0 2px 10px rgba(0,0,0,0.12)',
+                    maxHeight: '300px',
+                    overflowY: 'auto',
+                    zIndex: '1000',
+                    border: '1px solid #ddd',
+                    borderRadius: '2px'
+                  }
                 },
-                m(SelectDropdown<T>(), {
+                state.isOpen ? m(SelectDropdown<T>(), {
                   attrs,
                   state,
                   isSelected,
                   toggleOption,
-                })
+                }) : null
               ),
             ]
           ),

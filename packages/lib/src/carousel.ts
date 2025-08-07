@@ -221,8 +221,8 @@ export const Carousel: FactoryComponent<ICarousel> = () => {
             ])
           )),
 
-          // Navigation arrows
-          !fullWidth && items.length > numVisible && [
+          // Navigation arrows - show for fullWidth too if more than one item
+          items.length > 1 && [
             m('button.carousel-prev', {
               onclick: () => prevSlide(attrs),
               style: {
@@ -281,7 +281,7 @@ export const Carousel: FactoryComponent<ICarousel> = () => {
               height: '12px',
               borderRadius: '50%',
               border: 'none',
-              background: index === state.currentIndex ? 'var(--md-primary)' : 'var(--md-grey-400)',
+              background: index === state.currentIndex ? '#26a69a' : '#9e9e9e',
               cursor: 'pointer',
               transition: 'background-color 200ms ease',
             }
