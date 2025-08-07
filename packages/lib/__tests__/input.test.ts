@@ -1,5 +1,5 @@
 import { TextInput, NumberInput, TextArea, EmailInput, PasswordInput } from '../src/input';
-import { render, fireEvent, cleanup } from '../src/test-utils';
+import { render, fireEvent, cleanup } from './test-utils';
 
 describe('Input Components', () => {
   afterEach(cleanup);

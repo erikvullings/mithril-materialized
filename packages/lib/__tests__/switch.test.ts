@@ -1,5 +1,5 @@
 import { Switch } from '../src/switch';
-import { render, fireEvent, cleanup } from '../src/test-utils';
+import { render, fireEvent, cleanup } from './test-utils';
 
 describe('Switch Component', () => {
   afterEach(cleanup);

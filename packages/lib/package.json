@@ -27,8 +27,8 @@
     "sass"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
+    "build": "rollup -c rollup.config.mjs",
+    "dev": "rollup -c rollup.config.mjs -w",
     "start": "npm run dev",
     "clean": "rimraf dist node_modules/.cache",
     "test": "jest",
@@ -70,6 +70,7 @@
     "@types/jest": "^30.0.0",
     "@types/materialize-css": "^1.0.14",
     "@types/mithril": "^2.2.7",
+    "autoprefixer": "^10.4.21",
     "express": "^5.1.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.0.5",
@@ -78,7 +79,7 @@
     "materialize-css": "^1.0.0",
     "rimraf": "^6.0.1",
     "rollup": "^4.46.2",
-    "rollup-plugin-sass": "^1.15.3",
+    "rollup-plugin-postcss": "^4.0.2",
     "sass": "^1.90.0",
     "ts-jest": "^29.4.1",
     "tslib": "^2.8.1",

@@ -1,5 +1,5 @@
 import { Button, FlatButton, RoundIconButton, SubmitButton } from '../src/button';
-import { render, fireEvent, cleanup } from '../src/test-utils';
+import { render, fireEvent, cleanup } from './test-utils';
 
 describe('Button Components', () => {
   afterEach(cleanup);

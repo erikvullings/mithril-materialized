@@ -11,14 +11,14 @@ import {
 
 export interface MithrilTestUtils {
   container: HTMLElement;
-  getByRole: typeof getByRole;
-  getByLabelText: typeof getByLabelText;
-  getByText: typeof getByText;
-  getByDisplayValue: typeof getByDisplayValue;
-  queryByRole: typeof queryByRole;
-  queryByLabelText: typeof queryByLabelText;
-  queryByText: typeof queryByText;
-  rerender: (component: ComponentTypes) => void;
+  getByRole: (role: any, options?: any) => HTMLElement;
+  getByLabelText: (text: any, options?: any) => HTMLElement;
+  getByText: (text: any, options?: any) => HTMLElement;
+  getByDisplayValue: (value: any, options?: any) => HTMLElement;
+  queryByRole: (role: any, options?: any) => HTMLElement | null;
+  queryByLabelText: (text: any, options?: any) => HTMLElement | null;
+  queryByText: (text: any, options?: any) => HTMLElement | null;
+  rerender: (component: ComponentTypes, newAttrs?: any) => void;
   unmount: () => void;
 }
 
@@ -31,19 +31,19 @@ export function render<T>(component: ComponentTypes<T, any>, attrs?: T, containe
 
   // For FactoryComponent, let Mithril handle the instantiation
   // Just pass the function and let Mithril call it at the right time
-  m.render(testContainer, m(component, attrs));
+  m.render(testContainer, m(component as any, attrs as any));
 
   return {
     container: testContainer,
-    getByRole: (role, options?) => getByRole(testContainer, role, options),
-    getByLabelText: (text, options?) => getByLabelText(testContainer, text, options),
-    getByText: (text, options?) => getByText(testContainer, text, options),
-    getByDisplayValue: (value, options?) => getByDisplayValue(testContainer, value, options),
-    queryByRole: (role, options?) => queryByRole(testContainer, role, options),
-    queryByLabelText: (text, options?) => queryByLabelText(testContainer, text, options),
-    queryByText: (text, options?) => queryByText(testContainer, text, options),
-    rerender: (newComponent: ComponentTypes) => {
-      m.render(testContainer, m(newComponent, attrs));
+    getByRole: (role: any, options?: any) => getByRole(testContainer, role, options),
+    getByLabelText: (text: any, options?: any) => getByLabelText(testContainer, text, options),
+    getByText: (text: any, options?: any) => getByText(testContainer, text, options),
+    getByDisplayValue: (value: any, options?: any) => getByDisplayValue(testContainer, value, options),
+    queryByRole: (role: any, options?: any) => queryByRole(testContainer, role, options),
+    queryByLabelText: (text: any, options?: any) => queryByLabelText(testContainer, text, options),
+    queryByText: (text: any, options?: any) => queryByText(testContainer, text, options),
+    rerender: (newComponent: ComponentTypes, newAttrs?: T) => {
+      m.render(testContainer, m(newComponent as any, (newAttrs || attrs) as any));
     },
     unmount: () => {
       m.render(testContainer, []);
@@ -64,7 +64,7 @@ export const fireEvent = {
     m.redraw.sync();
   },
 
-  change: (element: HTMLInputElement, value: string) => {
+  change: (element: HTMLInputElement | HTMLTextAreaElement, value: string) => {
     element.value = value;
     element.dispatchEvent(new Event('input', { bubbles: true }));
     element.dispatchEvent(new Event('change', { bubbles: true }));

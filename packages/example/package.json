@@ -5,10 +5,10 @@
   "description": "Example project voor the mithril-materialized library.",
   "scripts": {
     "clean": "rimraf ./.cache ../docs",
-    "dev": "npm start",
+    "dev": "pnpm start",
     "start": "webpack serve --env development --open",
     "build": "webpack --env production",
-    "build:domain": "npm run clean && pnpm run build",
+    "build:domain": "pnpm run clean && pnpm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

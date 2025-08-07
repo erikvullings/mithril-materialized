@@ -10,14 +10,19 @@ module.exports = {
     '**/*.test.tsx'
   ],
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.tsx?$': ['ts-jest', {
+      tsconfig: {
+        target: 'es2017',
+        lib: ['dom', 'es2017', 'es2018']
+      }
+    }],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
-  setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/__tests__/test-setup.ts'],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
-    '!src/test-setup.ts',
+    '!__tests__/test-setup.ts',
     '!src/index.ts'
   ],
   coverageDirectory: 'coverage',

@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { Tabs, ITabs, ITabItem } from '../src/tabs';
-import { render, fireEvent, cleanup } from '../src/test-utils';
+import { render, fireEvent, cleanup } from './test-utils';
 
 describe('Tabs Component', () => {
   afterEach(() => {
@@ -31,8 +31,7 @@ describe('Tabs Component', () => {
   };
 
   test('renders tabs with correct structure', () => {
-    const TabsInstance = Tabs();
-    const { container } = render(TabsInstance, defaultTabsAttrs);
+    const { container } = render(Tabs, defaultTabsAttrs);
 
     const row = container.querySelector('.row');
     const tabsList = container.querySelector('ul.tabs');
@@ -44,8 +43,7 @@ describe('Tabs Component', () => {
   });
 
   test('renders tab labels correctly', () => {
-    const TabsInstance = Tabs();
-    const { container } = render(TabsInstance, defaultTabsAttrs);
+    const { container } = render(Tabs, defaultTabsAttrs);
 
     const tabLinks = container.querySelectorAll('.tab a');
     expect(tabLinks[0].textContent).toBe('Tab 1');
@@ -54,16 +52,14 @@ describe('Tabs Component', () => {
   });
 
   test('sets active tab correctly', () => {
-    const TabsInstance = Tabs();
-    const { container } = render(TabsInstance, defaultTabsAttrs);
+    const { container } = render(Tabs, defaultTabsAttrs);
 
     const activeTabLink = container.querySelector('.tab a.active');
     expect(activeTabLink?.textContent).toBe('Tab 1');
   });
 
   test('displays active tab content', () => {
-    const TabsInstance = Tabs();
-    const { container } = render(TabsInstance, defaultTabsAttrs);
+    const { container } = render(Tabs, defaultTabsAttrs);
 
     const tabContents = container.querySelectorAll('.tab-content');
     const visibleContent = Array.from(tabContents).find(content => 
@@ -75,7 +71,7 @@ describe('Tabs Component', () => {
 
   test('handles tab switching on click', () => {
     const onShow = jest.fn();
-    const TabsInstance = Tabs();
+    const TabsInstance = Tabs;
     const { container, rerender } = render(TabsInstance, { ...defaultTabsAttrs, onShow });
 
     const secondTabLink = container.querySelectorAll('.tab a')[1] as HTMLElement;
@@ -97,7 +93,7 @@ describe('Tabs Component', () => {
       { title: 'Tab 2', vnode: m('div', 'Content 2'), id: 'tab2', disabled: true },
       { title: 'Tab 3', vnode: m('div', 'Content 3'), id: 'tab3' },
     ];
-    const TabsInstance = Tabs();
+    const TabsInstance = Tabs;
     const { container } = render(TabsInstance, { ...defaultTabsAttrs, tabs });
 
     const secondTabLink = container.querySelectorAll('.tab a')[1] as HTMLElement;
@@ -113,7 +109,7 @@ describe('Tabs Component', () => {
       { title: 'Tab 2', vnode: m('div', 'Content 2'), id: 'tab2', disabled: true },
       { title: 'Tab 3', vnode: m('div', 'Content 3'), id: 'tab3' },
     ];
-    const TabsInstance = Tabs();
+    const TabsInstance = Tabs;
     const { container } = render(TabsInstance, { ...defaultTabsAttrs, tabs, onShow });
 
     const secondTabLink = container.querySelectorAll('.tab a')[1] as HTMLElement;
@@ -123,7 +119,7 @@ describe('Tabs Component', () => {
   });
 
   test('applies fixed width when tabWidth is set to fill', () => {
-    const TabsInstance = Tabs();
+    const TabsInstance = Tabs;
     const { container } = render(TabsInstance, { ...defaultTabsAttrs, tabWidth: 'fill' });
 
     const tabsList = container.querySelector('ul.tabs');
@@ -131,7 +127,7 @@ describe('Tabs Component', () => {
   });
 
   test('applies column classes when tabWidth is fixed', () => {
-    const TabsInstance = Tabs();
+    const TabsInstance = Tabs;
     const { container } = render(TabsInstance, { ...defaultTabsAttrs, tabWidth: 'fixed' });
 
     const tabItems = container.querySelectorAll('.tab');
@@ -142,8 +138,7 @@ describe('Tabs Component', () => {
   });
 
   test('creates correct href for tabs', () => {
-    const TabsInstance = Tabs();
-    const { container } = render(TabsInstance, defaultTabsAttrs);
+    const { container } = render(Tabs, defaultTabsAttrs);
 
     const firstTabLink = container.querySelector('.tab a') as HTMLAnchorElement;
     expect(firstTabLink.href).toContain('#tab1');
@@ -154,7 +149,7 @@ describe('Tabs Component', () => {
       { title: 'External Link', href: 'https://example.com', target: '_blank' as const },
       { title: 'Tab 2', vnode: m('div', 'Content 2'), id: 'tab2' },
     ];
-    const TabsInstance = Tabs();
+    const TabsInstance = Tabs;
     const { container } = render(TabsInstance, { ...defaultTabsAttrs, tabs });
 
     const externalLink = container.querySelector('.tab a') as HTMLAnchorElement;
@@ -163,7 +158,7 @@ describe('Tabs Component', () => {
   });
 
   test('applies custom className', () => {
-    const TabsInstance = Tabs();
+    const TabsInstance = Tabs;
     const { container } = render(TabsInstance, { ...defaultTabsAttrs, className: 'custom-tabs' });
 
     const tabsList = container.querySelector('ul.tabs');
@@ -171,7 +166,7 @@ describe('Tabs Component', () => {
   });
 
   test('syncs selectedTabId prop with internal state', () => {
-    const TabsInstance = Tabs();
+    const TabsInstance = Tabs;
     const { container, rerender } = render(TabsInstance, defaultTabsAttrs);
 
     // Initially tab1 should be active
@@ -191,7 +186,7 @@ describe('Tabs Component', () => {
       tabs: createTestTabs(),
     };
     
-    const TabsInstance = Tabs();
+    const TabsInstance = Tabs;
     const { container } = render(TabsInstance, tabsWithoutSelection);
 
     const activeTabLink = container.querySelector('.tab a.active');

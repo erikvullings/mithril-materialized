@@ -1,7 +1,6 @@
-import m from 'mithril';
 import { DatePicker, TimePicker, IDatePickerOptions, ITimePickerOptions } from '../src/pickers';
 import { IInputOptions } from '../src/input-options';
-import { render, fireEvent, cleanup } from '../src/test-utils';
+import { render, fireEvent, cleanup } from './test-utils';
 
 describe('DatePicker Component', () => {
   afterEach(() => {
@@ -13,8 +12,7 @@ describe('DatePicker Component', () => {
   };
 
   test('renders date picker with correct structure', () => {
-    const DatePickerInstance = DatePicker();
-    const { container } = render(DatePickerInstance, defaultDatePickerAttrs);
+    const { container } = render(DatePicker, defaultDatePickerAttrs);
 
     const inputField = container.querySelector('.input-field');
     const input = container.querySelector('input.datepicker');
@@ -27,7 +25,7 @@ describe('DatePicker Component', () => {
 
   test('renders with initial date value', () => {
     const initialDate = new Date('2023-06-15');
-    const DatePickerInstance = DatePicker();
+    const DatePickerInstance = DatePicker;
     const { container } = render(DatePickerInstance, { 
       ...defaultDatePickerAttrs, 
       initialValue: initialDate 
@@ -39,7 +37,7 @@ describe('DatePicker Component', () => {
 
   test('opens picker when input is clicked', () => {
     const onOpen = jest.fn();
-    const DatePickerInstance = DatePicker();
+    const DatePickerInstance = DatePicker;
     const { container } = render(DatePickerInstance, { 
       ...defaultDatePickerAttrs, 
       onOpen 
@@ -57,7 +55,7 @@ describe('DatePicker Component', () => {
 
   test('calls onOpen callback when picker opens', () => {
     const onOpen = jest.fn();
-    const DatePickerInstance = DatePicker();
+    const DatePickerInstance = DatePicker;
     const { container } = render(DatePickerInstance, { 
       ...defaultDatePickerAttrs, 
       onOpen 
@@ -72,7 +70,7 @@ describe('DatePicker Component', () => {
   test('handles date selection', () => {
     const onchange = jest.fn();
     const onSelect = jest.fn();
-    const DatePickerInstance = DatePicker();
+    const DatePickerInstance = DatePicker;
     const { container } = render(DatePickerInstance, { 
       ...defaultDatePickerAttrs, 
       onchange, 
@@ -81,6 +79,7 @@ describe('DatePicker Component', () => {
 
     // Test date formatting functionality by checking if initial value is formatted correctly
     const input = container.querySelector('input') as HTMLInputElement;
+    expect(input).toBeTruthy();
     
     // Simulate a direct component interaction for testing - check if callbacks work
     // This would normally be triggered by the date picker popup
@@ -93,7 +92,7 @@ describe('DatePicker Component', () => {
   });
 
   test('applies disabled state', () => {
-    const DatePickerInstance = DatePicker();
+    const DatePickerInstance = DatePicker;
     const { container } = render(DatePickerInstance, { 
       ...defaultDatePickerAttrs, 
       disabled: true 
@@ -105,7 +104,7 @@ describe('DatePicker Component', () => {
   });
 
   test('renders with icon prefix', () => {
-    const DatePickerInstance = DatePicker();
+    const DatePickerInstance = DatePicker;
     const { container } = render(DatePickerInstance, { 
       ...defaultDatePickerAttrs, 
       iconName: 'date_range' 
@@ -126,8 +125,7 @@ describe('TimePicker Component', () => {
   };
 
   test('renders time picker with correct structure', () => {
-    const TimePickerInstance = TimePicker();
-    const { container } = render(TimePickerInstance, defaultTimePickerAttrs);
+    const { container } = render(TimePicker, defaultTimePickerAttrs);
 
     const inputField = container.querySelector('.input-field.timepicker');
     const input = container.querySelector('input');
@@ -139,7 +137,7 @@ describe('TimePicker Component', () => {
   });
 
   test('renders with initial time value', () => {
-    const TimePickerInstance = TimePicker();
+    const TimePickerInstance = TimePicker;
     const { container } = render(TimePickerInstance, { 
       ...defaultTimePickerAttrs, 
       initialValue: '14:30' 
@@ -150,7 +148,7 @@ describe('TimePicker Component', () => {
   });
 
   test('formats time in 12-hour format when specified', () => {
-    const TimePickerInstance = TimePicker();
+    const TimePickerInstance = TimePicker;
     const { container } = render(TimePickerInstance, { 
       ...defaultTimePickerAttrs,
       initialValue: '14:30',
@@ -163,7 +161,7 @@ describe('TimePicker Component', () => {
 
   test('opens picker when input is clicked', () => {
     const onOpen = jest.fn();
-    const TimePickerInstance = TimePicker();
+    const TimePickerInstance = TimePicker;
     const { container } = render(TimePickerInstance, { 
       ...defaultTimePickerAttrs, 
       onOpen 
@@ -181,7 +179,7 @@ describe('TimePicker Component', () => {
 
   test('calls onOpen callback when picker opens', () => {
     const onOpen = jest.fn();
-    const TimePickerInstance = TimePicker();
+    const TimePickerInstance = TimePicker;
     const { container } = render(TimePickerInstance, { 
       ...defaultTimePickerAttrs, 
       onOpen 
@@ -196,7 +194,7 @@ describe('TimePicker Component', () => {
   test('handles time selection', () => {
     const onchange = jest.fn();
     const onSelect = jest.fn();
-    const TimePickerInstance = TimePicker();
+    const TimePickerInstance = TimePicker;
     const { container } = render(TimePickerInstance, { 
       ...defaultTimePickerAttrs, 
       onchange, 
@@ -205,6 +203,7 @@ describe('TimePicker Component', () => {
 
     // Test time formatting functionality by checking if initial value is formatted correctly
     const input = container.querySelector('input') as HTMLInputElement;
+    expect(input).toBeTruthy();
     
     // Simulate a direct component interaction for testing - check if callbacks work
     // This would normally be triggered by the time picker popup
@@ -216,7 +215,7 @@ describe('TimePicker Component', () => {
   });
 
   test('applies disabled state', () => {
-    const TimePickerInstance = TimePicker();
+    const TimePickerInstance = TimePicker;
     const { container } = render(TimePickerInstance, { 
       ...defaultTimePickerAttrs, 
       disabled: true 

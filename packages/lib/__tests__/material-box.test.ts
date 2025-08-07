@@ -1,5 +1,5 @@
 import { MaterialBox, IMaterialBox } from '../src/material-box';
-import { render, fireEvent, cleanup } from '../src/test-utils';
+import { render, fireEvent, cleanup } from './test-utils';
 
 describe('MaterialBox Component', () => {
   afterEach(() => {

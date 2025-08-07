@@ -1,5 +1,5 @@
 import { ModalPanel } from '../src/modal';
-import { render, fireEvent, cleanup } from '../src/test-utils';
+import { render, fireEvent, cleanup } from './test-utils';
 
 describe('ModalPanel Component', () => {
   afterEach(() => {
@@ -77,7 +77,7 @@ describe('ModalPanel Component', () => {
 
   it('calls onToggle when modal state changes', () => {
     const mockToggle = jest.fn();
-    const { container, rerender } = render(ModalPanel, {
+    const { rerender } = render(ModalPanel, {
       id: 'test-modal',
       title: 'Test Modal',
       onToggle: mockToggle,
@@ -172,11 +172,10 @@ describe('ModalPanel Component', () => {
     });
 
     const modal = container.querySelector('.modal');
-    const overlay = container.querySelector('.modal-overlay');
 
     // Clicking inside modal should not trigger backdrop click
     if (modal) {
-      fireEvent.click(modal);
+      fireEvent.click(modal as HTMLElement);
       expect(mockBackdropClick).not.toHaveBeenCalled();
     }
   });

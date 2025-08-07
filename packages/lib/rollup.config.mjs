@@ -1,5 +1,6 @@
 import typescript from '@rollup/plugin-typescript';
-import sass from 'rollup-plugin-sass';
+import postcss from 'rollup-plugin-postcss';
+import autoprefixer from 'autoprefixer';
 
 export default {
   input: './src/index.ts',
@@ -25,12 +26,20 @@ export default {
   plugins: [
     typescript({
       // Exclude test files from the build
-      exclude: ['**/__tests__', '**/test-utils.ts', '**/test-setup.ts'],
+      exclude: ['**/__tests__/**/*'],
     }), // Handles TypeScript compilation
-    sass({
-      // This will compile Sass files and output a separate CSS file
-      output: 'dist/index.css',
-      insert: false,
+    postcss({
+      // Use modern Sass API
+      use: [
+        ['sass', { 
+          api: 'modern-compiler',
+          silenceDeprecations: ['legacy-js-api']
+        }]
+      ],
+      // Extract to separate CSS file
+      extract: 'index.css',
+      // Add autoprefixer
+      plugins: [autoprefixer()],
     }),
   ],
 };

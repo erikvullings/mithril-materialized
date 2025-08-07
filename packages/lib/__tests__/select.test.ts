@@ -1,5 +1,5 @@
 import { Select } from '../src/select';
-import { render, fireEvent, cleanup } from '../src/test-utils';
+import { render, fireEvent, cleanup } from './test-utils';
 import { IInputOption } from '../src/option';
 
 describe('Select Component', () => {
@@ -51,7 +51,7 @@ describe('Select Component', () => {
 
     // Click to open dropdown
     const selectWrapper = container.querySelector('.select-wrapper');
-    fireEvent.click(selectWrapper!);
+    fireEvent.click(selectWrapper! as HTMLElement);
 
     expect(getByText('Option 1')).toBeInTheDocument();
     expect(getByText('Option 2')).toBeInTheDocument();
@@ -69,7 +69,7 @@ describe('Select Component', () => {
 
     // Open dropdown
     const selectWrapper = container.querySelector('.select-wrapper');
-    fireEvent.click(selectWrapper!);
+    fireEvent.click(selectWrapper! as HTMLElement);
 
     // Select option
     fireEvent.click(getByText('Option 1'));
@@ -89,7 +89,7 @@ describe('Select Component', () => {
 
     // Open dropdown and select first option
     const selectWrapper = container.querySelector('.select-wrapper');
-    fireEvent.click(selectWrapper!);
+    fireEvent.click(selectWrapper! as HTMLElement);
     fireEvent.click(getByText('Option 1'));
 
     expect(mockOnChange).toHaveBeenCalledWith(['option1']);
@@ -110,7 +110,7 @@ describe('Select Component', () => {
 
     // Open dropdown
     const selectWrapper = container.querySelector('.select-wrapper');
-    fireEvent.click(selectWrapper!);
+    fireEvent.click(selectWrapper! as HTMLElement);
 
     // Select multiple options
     fireEvent.click(getByText('Option 1'));
@@ -163,7 +163,7 @@ describe('Select Component', () => {
     expect(selectWrapper).toHaveClass('disabled');
     
     // Should not respond to clicks when disabled
-    fireEvent.click(selectWrapper!);
+    fireEvent.click(selectWrapper! as HTMLElement);
     expect(container.querySelector('.select-dropdown.active')).toBeNull();
     expect(mockOnChange).not.toHaveBeenCalled();
   });
@@ -179,7 +179,7 @@ describe('Select Component', () => {
 
     // Open dropdown
     const selectWrapper = container.querySelector('.select-wrapper');
-    fireEvent.click(selectWrapper!);
+    fireEvent.click(selectWrapper! as HTMLElement);
 
     // Try to click disabled option
     const disabledOption = getByText('Option 3').closest('.select-dropdown-option');
@@ -232,7 +232,7 @@ describe('Select Component', () => {
 
     // Open dropdown
     const selectWrapper = container.querySelector('.select-wrapper');
-    fireEvent.click(selectWrapper!);
+    fireEvent.click(selectWrapper! as HTMLElement);
 
     expect(getByText('Fruits')).toBeInTheDocument();
     expect(getByText('Vegetables')).toBeInTheDocument();
@@ -255,7 +255,7 @@ describe('Select Component', () => {
 
     // Open dropdown
     const selectWrapper = container.querySelector('.select-wrapper');
-    fireEvent.click(selectWrapper!);
+    fireEvent.click(selectWrapper! as HTMLElement);
 
     const images = container.querySelectorAll('.select-dropdown-option-img');
     expect(images).toHaveLength(2);
@@ -293,7 +293,7 @@ describe('Select Component', () => {
     expect(closeButtons).toHaveLength(2);
 
     // Remove first tag
-    fireEvent.click(closeButtons[0]);
+    fireEvent.click(closeButtons[0] as HTMLElement);
     expect(mockOnChange).toHaveBeenCalledWith(['option2']);
   });
 
@@ -327,19 +327,19 @@ describe('Select Component', () => {
     const selectWrapper = container.querySelector('.select-wrapper');
     
     // Press ArrowDown to open dropdown
-    fireEvent.keyDown(selectWrapper!, { key: 'ArrowDown' });
+    fireEvent.keyDown(selectWrapper! as HTMLElement, 'ArrowDown');
     
     // Check if dropdown opened (by checking aria-expanded)
     expect(selectWrapper).toHaveAttribute('aria-expanded', 'true');
     expect(getByText('Option 1')).toBeInTheDocument();
     
     // Verify that keyboard navigation doesn't cause errors and dropdown stays open
-    fireEvent.keyDown(selectWrapper!, { key: 'ArrowDown' });
+    fireEvent.keyDown(selectWrapper! as HTMLElement, 'ArrowDown');
     expect(selectWrapper).toHaveAttribute('aria-expanded', 'true');
   });
 
   it('closes dropdown on Escape key', () => {
-    const { container, getByText, queryByText } = render(Select<string>(), {
+    const { container, getByText } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -349,11 +349,11 @@ describe('Select Component', () => {
     const selectWrapper = container.querySelector('.select-wrapper');
     
     // Open dropdown
-    fireEvent.click(selectWrapper!);
+    fireEvent.click(selectWrapper! as HTMLElement);
     expect(getByText('Option 1')).toBeInTheDocument();
 
     // Press Escape to close
-    fireEvent.keyDown(selectWrapper!, { key: 'Escape' });
+    fireEvent.keyDown(selectWrapper! as HTMLElement, 'Escape');
     
     // Options should no longer be visible or should be hidden
     // We need to wait for state change, so let's check the aria-expanded attribute instead
@@ -371,7 +371,7 @@ describe('Select Component', () => {
 
     // Open dropdown and select option
     const selectWrapper = container.querySelector('.select-wrapper');
-    fireEvent.click(selectWrapper!);
+    fireEvent.click(selectWrapper! as HTMLElement);
     fireEvent.click(getByText('Two'));
 
     expect(mockOnChange).toHaveBeenCalledWith([2]);
