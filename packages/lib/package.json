@@ -27,8 +27,8 @@
     "sass"
   ],
   "scripts": {
-    "build": "microbundle build ./src/index.ts --external mithril",
-    "dev": "microbundle watch ./src/index.ts --external mithril",
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
     "start": "npm run dev",
     "clean": "rimraf dist node_modules/.cache",
     "test": "jest",
@@ -63,6 +63,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.54.2",
+    "@rollup/plugin-typescript": "^12.1.4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/user-event": "^14.6.1",
@@ -75,8 +76,9 @@
     "jest-environment-jsdom": "^30.0.5",
     "js-yaml": "^4.1.0",
     "materialize-css": "^1.0.0",
-    "microbundle": "^0.15.1",
     "rimraf": "^6.0.1",
+    "rollup": "^4.46.2",
+    "rollup-plugin-sass": "^1.15.3",
     "sass": "^1.90.0",
     "ts-jest": "^29.4.1",
     "tslib": "^2.8.1",

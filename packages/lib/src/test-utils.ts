@@ -1,12 +1,12 @@
-import m, { Component, ComponentTypes } from 'mithril';
-import { 
-  getByRole, 
-  getByLabelText, 
-  getByText, 
+import m, { ComponentTypes } from 'mithril';
+import {
+  getByRole,
+  getByLabelText,
+  getByText,
   getByDisplayValue,
-  queryByRole, 
-  queryByLabelText, 
-  queryByText 
+  queryByRole,
+  queryByLabelText,
+  queryByText,
 } from '@testing-library/dom';
 
 export interface MithrilTestUtils {
@@ -25,18 +25,14 @@ export interface MithrilTestUtils {
 /**
  * Render a Mithril component for testing
  */
-export function render<T>(
-  component: ComponentTypes<T, any>,
-  attrs?: T,
-  container?: HTMLElement
-): MithrilTestUtils {
+export function render<T>(component: ComponentTypes<T, any>, attrs?: T, container?: HTMLElement): MithrilTestUtils {
   const testContainer = container || document.createElement('div');
   document.body.appendChild(testContainer);
-  
+
   // For FactoryComponent, let Mithril handle the instantiation
   // Just pass the function and let Mithril call it at the right time
   m.render(testContainer, m(component, attrs));
-  
+
   return {
     container: testContainer,
     getByRole: (role, options?) => getByRole(testContainer, role, options),
@@ -54,7 +50,7 @@ export function render<T>(
       if (testContainer.parentNode) {
         testContainer.parentNode.removeChild(testContainer);
       }
-    }
+    },
   };
 }
 
@@ -67,35 +63,35 @@ export const fireEvent = {
     // Trigger Mithril's auto-redraw
     m.redraw.sync();
   },
-  
+
   change: (element: HTMLInputElement, value: string) => {
     element.value = value;
     element.dispatchEvent(new Event('input', { bubbles: true }));
     element.dispatchEvent(new Event('change', { bubbles: true }));
     m.redraw.sync();
   },
-  
+
   focus: (element: HTMLElement) => {
     element.focus();
     element.dispatchEvent(new Event('focus', { bubbles: true }));
     m.redraw.sync();
   },
-  
+
   blur: (element: HTMLElement) => {
     element.blur();
     element.dispatchEvent(new Event('blur', { bubbles: true }));
     m.redraw.sync();
   },
-  
+
   keyDown: (element: HTMLElement, key: string, options: KeyboardEventInit = {}) => {
     element.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, ...options }));
     m.redraw.sync();
   },
-  
+
   keyUp: (element: HTMLElement, key: string, options: KeyboardEventInit = {}) => {
     element.dispatchEvent(new KeyboardEvent('keyup', { key, bubbles: true, ...options }));
     m.redraw.sync();
-  }
+  },
 };
 
 /**
@@ -103,17 +99,17 @@ export const fireEvent = {
  */
 export const waitFor = async (callback: () => void | Promise<void>, timeout = 5000) => {
   const startTime = Date.now();
-  
+
   while (Date.now() - startTime < timeout) {
     try {
       await callback();
       return;
     } catch (error) {
       // Wait a bit before trying again
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
     }
   }
-  
+
   throw new Error(`waitFor timed out after ${timeout}ms`);
 };
 
