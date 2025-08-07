@@ -1,6 +1,9 @@
+@use 'sass:math';
+@use "variables";
+
 .sidenav {
   position: fixed;
-  width: $sidenav-width;
+  width: variables.$sidenav-width;
   left: 0;
   top: 0;
   margin: 0;
@@ -9,14 +12,14 @@
   height: calc(100% + 60px);
   height: -moz-calc(100%); //Temporary Firefox Fix
   padding-bottom: 60px;
-  background-color: $sidenav-bg-color;
+  background-color: variables.$sidenav-bg-color;
   z-index: 999;
   overflow-y: auto;
   will-change: transform;
   backface-visibility: hidden;
   transform: translateX(-105%);
 
-  @extend .z-depth-1;
+  @extend .z-depth-1 !optional;
 
   // Right Align
   &.right-aligned {
@@ -33,7 +36,7 @@
 
   li {
     float: none;
-    line-height: $sidenav-line-height;
+    line-height: variables.$sidenav-line-height;
 
     &.active { background-color: rgba(0,0,0,.05); }
   }
@@ -42,33 +45,33 @@
   li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.btn-floating) {
     &:hover { background-color: rgba(0,0,0,.05);}
 
-    color: $sidenav-font-color;
+    color: variables.$sidenav-font-color;
     display: block;
-    font-size: $sidenav-font-size;
+    font-size: variables.$sidenav-font-size;
     font-weight: 500;
-    height: $sidenav-item-height;
-    line-height: $sidenav-line-height;
-    padding: 0 ($sidenav-padding * 2);
+    height: variables.$sidenav-item-height;
+    line-height: variables.$sidenav-line-height;
+    padding: 0 (variables.$sidenav-padding * 2);
 
     & > i,
     & > [class^="mdi-"], li > a > [class*="mdi-"],
     & > i.material-icons {
       float: left;
-      height: $sidenav-item-height;
-      line-height: $sidenav-line-height;
-      margin: 0 ($sidenav-padding * 2) 0 0;
-      width: $sidenav-item-height / 2;
+      height: variables.$sidenav-item-height;
+      line-height: variables.$sidenav-line-height;
+      margin: 0 (variables.$sidenav-padding * 2) 0 0;
+      width: math.div(variables.$sidenav-item-height, 2);
       color: rgba(0,0,0,.54);
     }
   }
 
   // Stlye btn anchors
   li > .btn, li > .btn-large, li > .btn-flat, li > .btn-floating {
-    margin: 10px ($sidenav-padding * 2);
+    margin: 10px (variables.$sidenav-padding * 2);
   }
 
   .divider {
-    margin: ($sidenav-padding / 2) 0 0 0;
+    margin: math.div(variables.$sidenav-padding, 2) 0 0 0;
   }
 
   .subheader {
@@ -79,15 +82,15 @@
     cursor: initial;
     pointer-events: none;
     color: rgba(0,0,0,.54);
-    font-size: $sidenav-font-size;
+    font-size: variables.$sidenav-font-size;
     font-weight: 500;
-    line-height: $sidenav-line-height;
+    line-height: variables.$sidenav-line-height;
   }
 
   .user-view {
     position: relative;
-    padding: ($sidenav-padding * 2) ($sidenav-padding * 2) 0;
-    margin-bottom: $sidenav-padding / 2;
+    padding: (variables.$sidenav-padding * 2) (variables.$sidenav-padding * 2) 0;
+    margin-bottom: math.div(variables.$sidenav-padding, 2);
 
     & > a {
       &:hover { background-color: transparent; }
@@ -116,8 +119,8 @@
 
     .name,
     .email {
-      font-size: $sidenav-font-size;
-      line-height: $sidenav-line-height / 2;
+      font-size: variables.$sidenav-font-size;
+      line-height: math.div(variables.$sidenav-line-height, 2);
     }
 
     .name {
@@ -163,7 +166,7 @@
 }
 
 // Fixed Sidenav hide on smaller
-@media #{$medium-and-down} {
+@media #{variables.$medium-and-down} {
   .sidenav {
     &.sidenav-fixed {
       transform: translateX(-105%);
@@ -174,11 +177,11 @@
     }
 
     > a {
-      padding: 0 $sidenav-padding;
+      padding: 0 variables.$sidenav-padding;
     }
 
     .user-view {
-      padding: $sidenav-padding $sidenav-padding 0;
+      padding: variables.$sidenav-padding variables.$sidenav-padding 0;
     }
   }
 }
@@ -186,9 +189,9 @@
 
 .sidenav .collapsible-body > ul:not(.collapsible) > li.active,
 .sidenav.sidenav-fixed .collapsible-body > ul:not(.collapsible) > li.active {
-  background-color: $primary-color;
+  background-color: variables.$primary-color;
   a {
-    color: $sidenav-bg-color;
+    color: variables.$sidenav-bg-color;
   }
 }
 .sidenav .collapsible-body {

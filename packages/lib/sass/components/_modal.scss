@@ -1,9 +1,11 @@
+@use "variables";
+
 .modal {
   &:focus {
     outline: none;
   }
 
-  @extend .z-depth-5;
+  @extend .z-depth-5 !optional;
 
   display: none;
   position: fixed;
@@ -19,7 +21,7 @@
   border-radius: 2px;
   will-change: top, opacity;
 
-  @media #{$medium-and-down} {
+  @media #{variables.$medium-and-down} {
    width: 80%;
   }
 

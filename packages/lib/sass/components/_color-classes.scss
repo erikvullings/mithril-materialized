@@ -1,6 +1,8 @@
+@use "color-variables";
+
 // Color Classes
 
-@each $color_name, $color in $colors {
+@each $color_name, $color in color-variables.$colors {
   @each $color_type, $color_value in $color {
     @if $color_type == "base" {
       .#{$color_name} {
@@ -22,7 +24,7 @@
 }
 
 // Shade classes
-@each $color, $color_value in $shades {
+@each $color, $color_value in color-variables.$shades {
   .#{$color} {
     background-color: $color_value !important;
   }

@@ -43,6 +43,7 @@
     "typedoc": "typedoc --out ../../docs/typedoc src",
     "build:domain": "npm run clean && npm run build && typedoc --out ../../docs/typedoc src",
     "dry-run": "npm publish --dry-run",
+    "sass:watch": "sass --watch ./sass/materialize.scss ./dist/index.css",
     "patch-release": "npm run clean && npm run build && npm version patch --force -m \"Patch release\" && npm publish && git push --follow-tags",
     "minor-release": "npm run clean && npm run build && npm version minor --force -m \"Minor release\" && npm publish && git push --follow-tags",
     "major-release": "npm run clean && npm run build && npm version major --force -m \"Major release\" && npm publish && git push --follow-tags"

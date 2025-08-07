@@ -1,22 +1,25 @@
+@use "sass:meta";
+@use "../variables";
+
 // Remove Focus Boxes
 select:focus {
-  outline: $select-focus;
+  outline: variables.$select-focus;
 }
 
 button:focus {
   outline: none;
-  background-color: $button-background-focus;
+  background-color: variables.$button-background-focus;
 }
 
 label {
-  font-size: $label-font-size;
-  color: $input-border-color;
+  font-size: variables.$label-font-size;
+  color: variables.$input-border-color;
 }
 
-@import 'input-fields';
-@import 'radio-buttons';
-@import 'checkboxes';
-@import 'switches';
-@import 'select';
-@import 'file-input';
-@import 'range';
+@include meta.load-css('input-fields');
+@include meta.load-css('radio-buttons');
+@include meta.load-css('checkboxes');
+@include meta.load-css('switches');
+@include meta.load-css('select');
+@include meta.load-css('file-input');
+@include meta.load-css('range');

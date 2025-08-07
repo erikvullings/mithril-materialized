@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "variables";
+
 /***************
     Nav List
 ***************/
@@ -20,14 +23,14 @@
     display: inline-block;
 
     &:hover {
-      color: lighten(#757575, 20%);
+      color: color.adjust(#757575, $lightness: 20%);
       padding-left: 15px;
-      border-left: 1px solid $primary-color;
+      border-left: 1px solid variables.$primary-color;
     }
     &.active {
       font-weight: 500;
       padding-left: 14px;
-      border-left: 2px solid $primary-color;
+      border-left: 2px solid variables.$primary-color;
     }
   }
 }

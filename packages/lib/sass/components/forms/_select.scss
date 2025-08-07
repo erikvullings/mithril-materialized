@@ -1,15 +1,17 @@
+@use "../variables";
+
 /* Select Field
    ========================================================================== */
 
 select.browser-default { opacity: 1; }
 select {
   opacity: 0;
-  background-color: $select-background;
+  background-color: variables.$select-background;
   width: 100%;
-  padding: $select-padding;
-  border: $select-border;
-  border-radius: $select-radius;
-  height: $input-height;
+  padding: variables.$select-padding;
+  border: variables.$select-border;
+  border-radius: variables.$select-radius;
+  height: variables.$input-height;
 }
 
 .select-label {
@@ -19,27 +21,27 @@ select {
 .select-wrapper {
   &.valid .helper-text[data-success],
   &.invalid ~ .helper-text[data-error] {
-    @extend %hidden-text;
+    @extend %hidden-text !optional;
   }
 
   &.valid {
     & > input.select-dropdown {
-      @extend %valid-input-style;
+      @extend %valid-input-style !optional;
     }
 
     & ~ .helper-text:after {
-      @extend %custom-success-message;
+      @extend %custom-success-message !optional;
     }
   }
 
   &.invalid {
     & > input.select-dropdown,
     & > input.select-dropdown:focus {
-      @extend %invalid-input-style;
+      @extend %invalid-input-styl !optional;
     }
 
     & ~ .helper-text:after {
-      @extend %custom-error-message;
+      @extend %custom-error-message !optional;
     }
   }
 
@@ -50,26 +52,26 @@ select {
   }
 
   & + label:after {
-    @extend %input-after-style;
+    @extend %input-after-style !optional;
   }
 
   position: relative;
 
   input.select-dropdown {
     &:focus {
-      border-bottom: 1px solid $input-focus-color;
+      border-bottom: 1px solid variables.$input-focus-color;
     }
     position: relative;
     cursor: pointer;
     background-color: transparent;
     border: none;
-    border-bottom: $input-border;
+    border-bottom: variables.$input-border;
     outline: none;
-    height: $input-height;
-    line-height: $input-height;
+    height: variables.$input-height;
+    line-height: variables.$input-height;
     width: 100%;
-    font-size: $input-font-size;
-    margin: $input-margin;
+    font-size: variables.$input-font-size;
+    margin: variables.$input-margin;
     padding: 0;
     display: block;
     user-select:none;
@@ -89,7 +91,7 @@ select {
   & + label {
     position: absolute;
     top: -26px;
-    font-size: $label-font-size;
+    font-size: variables.$label-font-size;
   }
 
   // Hide select with overflow hidden instead of using display none
@@ -106,49 +108,49 @@ select {
 
 // Disabled styles
 select:disabled {
-  color: $input-disabled-color;
+  color: variables.$input-disabled-color;
 }
 
 .select-wrapper.disabled {
   + label {
-    color: $input-disabled-color;
+    color: variables.$input-disabled-color;
   }
   .caret {
-    fill: $input-disabled-color;
+    fill: variables.$input-disabled-color;
   }
 }
 
 .select-wrapper input.select-dropdown:disabled {
-  color: $input-disabled-color;
+  color: variables.$input-disabled-color;
   cursor: default;
   user-select: none;
 }
 
 .select-wrapper i {
-  color: $select-disabled-color;
+  color: variables.$select-disabled-color;
 }
 
 .select-dropdown li.disabled,
 .select-dropdown li.disabled > span,
 .select-dropdown li.optgroup {
-  color: $select-disabled-color;
+  color: variables.$select-disabled-color;
   background-color: transparent;
 }
 
 body.keyboard-focused {
   .select-dropdown.dropdown-content li:focus {
-    background-color: $select-option-focus;
+    background-color: variables.$select-option-focus;
   }
 }
 
 .select-dropdown.dropdown-content {
   li {
     &:hover {
-      background-color: $select-option-hover;
+      background-color: variables.$select-option-hover;
     }
 
     &.selected {
-      background-color: $select-option-selected;
+      background-color: variables.$select-option-selected;
     }
   }
 }
@@ -165,8 +167,8 @@ body.keyboard-focused {
 // Icons
 .select-dropdown li {
   img {
-    height: $dropdown-item-height - 10;
-    width: $dropdown-item-height - 10;
+    height: variables.$dropdown-item-height - 10;
+    width: variables.$dropdown-item-height - 10;
     margin: 5px 15px;
     float: right;
   }
@@ -174,7 +176,7 @@ body.keyboard-focused {
 
 // Optgroup styles
 .select-dropdown li.optgroup {
-  border-top: 1px solid $dropdown-hover-bg-color;
+  border-top: 1px solid variables.$dropdown-hover-bg-color;
 
   &.selected > span {
     color: rgba(0, 0, 0, .7);

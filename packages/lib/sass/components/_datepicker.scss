@@ -1,3 +1,5 @@
+@use "variables";
+
 /* Modal */
 .datepicker-modal {
   max-width: 325px;
@@ -56,7 +58,7 @@
 /* Date Display */
 .datepicker-date-display {
   flex: 1 auto;
-  background-color: $secondary-color;
+  background-color: variables.$secondary-color;
   color: #fff;
   padding: 20px 22px;
   font-weight: 500;
@@ -65,7 +67,7 @@
     display: block;
     font-size: 1.5rem;
     line-height: 25px;
-    color: $datepicker-year;
+    color: variables.$datepicker-year;
   }
 
   .date-text {
@@ -102,22 +104,22 @@
 
   abbr {
     text-decoration: none;
-    color: $datepicker-calendar-header-color;
+    color: variables.$datepicker-calendar-header-color;
   }
 
   td {
     &.is-today {
-      color: $secondary-color;
+      color: variables.$secondary-color;
     }
 
     &.is-selected {
-      background-color: $secondary-color;
+      background-color: variables.$secondary-color;
       color: #fff;
     }
 
     &.is-outside-current-month,
     &.is-disabled {
-      color: $datepicker-disabled-day-color;
+      color: variables.$datepicker-disabled-day-color;
       pointer-events: none;
     }
 
@@ -128,7 +130,7 @@
 
 .datepicker-day-button {
   &:focus {
-    background-color: $datepicker-day-focus;
+    background-color: variables.$datepicker-day-focus;
   }
 
   background-color: transparent;
@@ -156,17 +158,17 @@
 .datepicker-clear,
 .datepicker-today,
 .datepicker-done {
-  color: $secondary-color;
+  color: variables.$secondary-color;
   padding: 0 1rem;
 }
 
 .datepicker-clear {
-  color: $error-color;
+  color: variables.$error-color;
 }
 
 
 /* Media Queries */
-@media #{$medium-and-up} {
+@media #{variables.$medium-and-up} {
   .datepicker-modal {
     max-width: 625px;
   }

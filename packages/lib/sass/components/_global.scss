@@ -1,3 +1,7 @@
+@use "sass:color";
+@use "color-variables";
+@use "variables";
+
 //Default styles
 
 html {
@@ -22,7 +26,7 @@ input,
 optgroup,
 select,
 textarea {
-  font-family: $font-stack;
+  font-family: variables.$font-stack;
 }
 
 ul {
@@ -37,7 +41,7 @@ ul {
 }
 
 a {
-	color: $link-color;
+	color: variables.$link-color;
 	text-decoration: none;
 
   // Gets rid of tap active state
@@ -114,7 +118,7 @@ a {
 .divider {
   height: 1px;
   overflow: hidden;
-  background-color: color("grey", "lighten-2");
+  background-color: color-variables.color("grey", "lighten-2");
 }
 
 
@@ -123,7 +127,7 @@ a {
 blockquote {
   margin: 20px 0;
   padding-left: 1.5rem;
-  border-left: 5px solid $primary-color;
+  border-left: 5px solid variables.$primary-color;
 }
 
 // Icon Styles
@@ -182,7 +186,7 @@ video.responsive-video {
 
     &.active a { color: #fff; }
 
-    &.active { background-color: $primary-color; }
+    &.active { background-color: variables.$primary-color; }
 
     &.disabled a {
       cursor: default;
@@ -200,7 +204,7 @@ video.responsive-video {
     float: none;
   }
 }
-@media #{$medium-and-down} {
+@media #{variables.$medium-and-down} {
   .pagination {
     width: 100%;
 
@@ -307,62 +311,62 @@ ul.staggered-list li {
   Media Query Classes
 **********************/
 .hide-on-small-only, .hide-on-small-and-down {
-  @media #{$small-and-down} {
+  @media #{variables.$small-and-down} {
     display: none !important;
   }
 }
 .hide-on-med-and-down {
-  @media #{$medium-and-down} {
+  @media #{variables.$medium-and-down} {
     display: none !important;
   }
 }
 .hide-on-med-and-up {
-  @media #{$medium-and-up} {
+  @media #{variables.$medium-and-up} {
     display: none !important;
   }
 }
 .hide-on-med-only {
-  @media only screen and (min-width: $small-screen) and (max-width: $medium-screen) {
+  @media only screen and (min-width: variables.$small-screen) and (max-width: variables.$medium-screen) {
     display: none !important;
   }
 }
 .hide-on-large-only {
-  @media #{$large-and-up} {
+  @media #{variables.$large-and-up} {
     display: none !important;
   }
 }
 .hide-on-extra-large-only {
-  @media #{$extra-large-and-up} {
+  @media #{variables.$extra-large-and-up} {
     display: none !important;
   }
 }
 .show-on-extra-large {
-  @media #{$extra-large-and-up} {
+  @media #{variables.$extra-large-and-up} {
     display: block !important;
   }
 }
 .show-on-large {
-  @media #{$large-and-up} {
+  @media #{variables.$large-and-up} {
     display: block !important;
   }
 }
 .show-on-medium {
-  @media only screen and (min-width: $small-screen) and (max-width: $medium-screen) {
+  @media only screen and (min-width: variables.$small-screen) and (max-width: variables.$medium-screen) {
     display: block !important;
   }
 }
 .show-on-small {
-  @media #{$small-and-down} {
+  @media #{variables.$small-and-down} {
     display: block !important;
   }
 }
 .show-on-medium-and-up {
-  @media #{$medium-and-up} {
+  @media #{variables.$medium-and-up} {
     display: block !important;
   }
 }
 .show-on-medium-and-down {
-  @media #{$medium-and-down} {
+  @media #{variables.$medium-and-down} {
     display: block !important;
   }
 }
@@ -370,7 +374,7 @@ ul.staggered-list li {
 
 // Center text on mobile
 .center-on-small-only {
-  @media #{$small-and-down} {
+  @media #{variables.$small-and-down} {
     text-align: center;
   }
 }
@@ -378,8 +382,8 @@ ul.staggered-list li {
 // Footer
 .page-footer {
   padding-top: 20px;
-  color: $footer-font-color;
-  background-color: $footer-bg-color;
+  color: variables.$footer-font-color;
+  background-color: variables.$footer-bg-color;
 
   .footer-copyright {
     overflow: hidden;
@@ -388,8 +392,8 @@ ul.staggered-list li {
     align-items: center;
     justify-content: space-between;
     padding: 10px 0px;
-    color: $footer-copyright-font-color;
-    background-color: $footer-copyright-bg-color;
+    color: variables.$footer-copyright-font-color;
+    background-color: variables.$footer-copyright-bg-color;
   }
 }
 
@@ -411,7 +415,7 @@ table {
 
     > tbody {
       > tr:nth-child(odd) {
-        background-color: $table-striped-color;
+        background-color: variables.$table-striped-color;
       }
 
       > tr > td {
@@ -423,7 +427,7 @@ table {
   &.highlight > tbody > tr {
     transition: background-color .25s ease;
     &:hover {
-      background-color: $table-striped-color;
+      background-color: variables.$table-striped-color;
     }
   }
 
@@ -435,7 +439,7 @@ table {
 }
 
 tr {
-  border-bottom: 1px solid $table-border-color;
+  border-bottom: 1px solid variables.$table-border-color;
 }
 
 td, th{
@@ -447,7 +451,7 @@ td, th{
 }
 
 // Responsive Table
-@media #{$medium-and-down} {
+@media #{variables.$medium-and-down} {
 
   table.responsive-table {
     width: 100%;
@@ -509,7 +513,7 @@ td, th{
     /* sort out borders */
     thead {
       border: 0;
-      border-right: 1px solid $table-border-color;
+      border-right: 1px solid variables.$table-border-color;
     }
   }
 
@@ -518,18 +522,18 @@ td, th{
 
 // Collections
 .collection {
-  margin: $element-top-margin 0 $element-bottom-margin 0;
-  border: 1px solid $collection-border-color;
+  margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
+  border: 1px solid variables.$collection-border-color;
   border-radius: 2px;
   overflow: hidden;
   position: relative;
 
   .collection-item {
-    background-color: $collection-bg-color;
-    line-height: $collection-line-height;
+    background-color: variables.$collection-bg-color;
+    line-height: variables.$collection-line-height;
     padding: 10px 20px;
     margin: 0;
-    border-bottom: 1px solid $collection-border-color;
+    border-bottom: 1px solid variables.$collection-border-color;
 
     // Avatar Collection
     &.avatar {
@@ -579,8 +583,8 @@ td, th{
     }
 
     &.active {
-      background-color: $collection-active-bg-color;
-      color: $collection-active-color;
+      background-color: variables.$collection-active-bg-color;
+      color: variables.$collection-active-color;
 
       .secondary-content {
         color: #fff;
@@ -590,18 +594,18 @@ td, th{
   a.collection-item{
     display: block;
     transition: .25s;
-    color: $collection-link-color;
+    color: variables.$collection-link-color;
     &:not(.active) {
       &:hover {
-        background-color: $collection-hover-bg-color;
+        background-color: variables.$collection-hover-bg-color;
       }
     }
   }
 
   &.with-header {
     .collection-header {
-      background-color: $collection-bg-color;
-      border-bottom: 1px solid $collection-border-color;
+      background-color: variables.$collection-bg-color;
+      border-bottom: 1px solid variables.$collection-border-color;
       padding: 10px 20px;
     }
     .collection-item {
@@ -616,7 +620,7 @@ td, th{
 // Made less specific to allow easier overriding
 .secondary-content {
   float: right;
-  color: $secondary-color;
+  color: variables.$secondary-color;
 }
 .collapsible .collection {
   margin: 0;
@@ -647,20 +651,20 @@ td, th{
     height: 4px;
     display: block;
     width: 100%;
-    background-color: lighten($progress-bar-color, 40%);
+    background-color: color.adjust(variables.$progress-bar-color, $lightness: 40%);
     border-radius: 2px;
-    margin: $element-top-margin 0 $element-bottom-margin 0;
+    margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
     overflow: hidden;
   .determinate {
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
-    background-color: $progress-bar-color;
+    background-color: variables.$progress-bar-color;
     transition: width .3s linear;
   }
   .indeterminate {
-    background-color: $progress-bar-color;
+    background-color: variables.$progress-bar-color;
     &:before {
       content: '';
       position: absolute;

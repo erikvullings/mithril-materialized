@@ -1,3 +1,5 @@
+@use "../variables";
+
 /* Range
    ========================================================================== */
 
@@ -7,7 +9,7 @@
 
 input[type=range],
 input[type=range] + .thumb {
-  @extend .no-select;
+  @extend .no-select !optional;
   cursor: pointer;
 }
 
@@ -33,7 +35,7 @@ input[type=range] + .thumb {
   height: 0;
   width: 0;
   border-radius: 50%;
-  background-color: $radio-fill-color;
+  background-color: variables.$radio-fill-color;
   margin-left: 7px;
 
   transform-origin: 50% 50%;
@@ -43,7 +45,7 @@ input[type=range] + .thumb {
     display: block;
     width: 30px;
     text-align: center;
-    color: $radio-fill-color;
+    color: variables.$radio-fill-color;
     font-size: 0;
     transform: rotate(45deg);
   }
@@ -52,7 +54,7 @@ input[type=range] + .thumb {
     border-radius: 50% 50% 50% 0;
 
     .value {
-      color: $input-background;
+      color: variables.$input-background;
       margin-left: -1px;
       margin-top: 8px;
       font-size: 10px;
@@ -62,17 +64,17 @@ input[type=range] + .thumb {
 
 // Shared
 @mixin range-track {
-  height: $track-height;
+  height: variables.$track-height;
   background: #c2c0c2;
   border: none;
 }
 
 @mixin range-thumb {
   border: none;
-  height: $range-height;
-  width: $range-width;
+  height: variables.$range-height;
+  width: variables.$range-width;
   border-radius: 50%;
-  background: $radio-fill-color;
+  background: variables.$radio-fill-color;
   transition: box-shadow .3s;
 }
 
@@ -88,14 +90,14 @@ input[type=range]::-webkit-slider-runnable-track {
 input[type=range]::-webkit-slider-thumb {
   @include range-thumb;
   -webkit-appearance: none;
-  background-color: $radio-fill-color;
+  background-color: variables.$radio-fill-color;
   transform-origin: 50% 50%;
   margin: -5px 0 0 0;
 
 }
 
 .keyboard-focused input[type=range]:focus:not(.active)::-webkit-slider-thumb {
-  box-shadow: 0 0 0 10px rgba($radio-fill-color, .26);
+  box-shadow: 0 0 0 10px rgba(variables.$radio-fill-color, .26);
 }
 
 // FireFox
@@ -126,12 +128,12 @@ input[type=range]:-moz-focusring {
 }
 
 .keyboard-focused input[type=range]:focus:not(.active)::-moz-range-thumb {
-  box-shadow: 0 0 0 10px rgba($radio-fill-color, .26);
+  box-shadow: 0 0 0 10px rgba(variables.$radio-fill-color, .26);
 }
 
 // IE 10+
 input[type=range]::-ms-track {
-  height: $track-height;
+  height: variables.$track-height;
 
   // remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead
   background: transparent;
@@ -157,5 +159,5 @@ input[type=range]::-ms-thumb {
 }
 
 .keyboard-focused input[type=range]:focus:not(.active)::-ms-thumb {
-  box-shadow: 0 0 0 10px rgba($radio-fill-color, .26);
+  box-shadow: 0 0 0 10px rgba(variables.$radio-fill-color, .26);
 }

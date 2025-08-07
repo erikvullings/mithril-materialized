@@ -1,9 +1,11 @@
+@use "variables";
+
 nav {
   &.nav-extended {
     height: auto;
 
     .nav-wrapper {
-      min-height: $navbar-height-mobile;
+      min-height: variables.$navbar-height-mobile;
       height: auto;
     }
 
@@ -13,22 +15,22 @@ nav {
     }
   }
 
-  color: $navbar-font-color;
-  @extend .z-depth-1;
-  background-color: $primary-color;
+  color: variables.$navbar-font-color;
+  @extend .z-depth-1 !optional;
+  background-color: variables.$primary-color;
   width: 100%;
-  height: $navbar-height-mobile;
-  line-height: $navbar-line-height-mobile;
+  height: variables.$navbar-height-mobile;
+  line-height: variables.$navbar-line-height-mobile;
 
-  a { color: $navbar-font-color; }
+  a { color: variables.$navbar-font-color; }
 
   i,
   [class^="mdi-"], [class*="mdi-"],
   i.material-icons {
     display: block;
     font-size: 24px;
-    height: $navbar-height-mobile;
-    line-height: $navbar-line-height-mobile;
+    height: variables.$navbar-height-mobile;
+    line-height: variables.$navbar-line-height-mobile;
   }
 
   .nav-wrapper {
@@ -36,7 +38,7 @@ nav {
     height: 100%;
   }
 
-  @media #{$large-and-up} {
+  @media #{variables.$large-and-up} {
     a.sidenav-trigger { display: none; }
   }
 
@@ -46,12 +48,12 @@ nav {
     float: left;
     position: relative;
     z-index: 1;
-    height: $navbar-height-mobile;
+    height: variables.$navbar-height-mobile;
     margin: 0 18px;
 
     i {
-      height: $navbar-height-mobile;
-      line-height: $navbar-line-height-mobile;
+      height: variables.$navbar-height-mobile;
+      line-height: variables.$navbar-line-height-mobile;
     }
   }
 
@@ -59,9 +61,9 @@ nav {
   // Logo
   .brand-logo {
     position: absolute;
-    color: $navbar-font-color;
+    color: variables.$navbar-font-color;
     display: inline-block;
-    font-size: $navbar-brand-font-size;
+    font-size: variables.$navbar-brand-font-size;
     padding: 0;
 
     &.center {
@@ -69,7 +71,7 @@ nav {
       transform: translateX(-50%);
     }
 
-    @media #{$medium-and-down} {
+    @media #{variables.$medium-and-down} {
       left: 50%;
       transform: translateX(-50%);
 
@@ -122,8 +124,8 @@ nav {
     }
     a {
       transition: background-color .3s;
-      font-size: $navbar-font-size;
-      color: $navbar-font-color;
+      font-size: variables.$navbar-font-size;
+      color: variables.$navbar-font-color;
       display: block;
       padding: 0 15px;
       cursor: pointer;
@@ -179,7 +181,7 @@ nav {
         color: rgba(255,255,255,.7);
         transition: color .3s;
       }
-      &.active i { color: $navbar-font-color; }
+      &.active i { color: variables.$navbar-font-color; }
     }
   }
 }
@@ -187,22 +189,22 @@ nav {
 // Fixed Navbar
 .navbar-fixed {
   position: relative;
-  height: $navbar-height-mobile;
+  height: variables.$navbar-height-mobile;
   z-index: 997;
 
   nav {
     position: fixed;
   }
 }
-@media #{$medium-and-up} {
+@media #{variables.$medium-and-up} {
   nav.nav-extended .nav-wrapper {
-    min-height: $navbar-height;
+    min-height: variables.$navbar-height;
   }
   nav, nav .nav-wrapper i, nav a.sidenav-trigger, nav a.sidenav-trigger i {
-    height: $navbar-height;
-    line-height: $navbar-line-height;
+    height: variables.$navbar-height;
+    line-height: variables.$navbar-line-height;
   }
   .navbar-fixed {
-    height: $navbar-height;
+    height: variables.$navbar-height;
   }
 }

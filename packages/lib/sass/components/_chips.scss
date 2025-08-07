@@ -1,7 +1,9 @@
+@use "variables";
+
 .chip {
   &:focus {
     outline: none;
-    background-color: $chip-selected-color;
+    background-color: variables.$chip-selected-color;
     color: #fff;
   }
 
@@ -13,9 +15,9 @@
   line-height: 32px;
   padding: 0 12px;
   border-radius: 16px;
-  background-color: $chip-bg-color;
-  margin-bottom: $chip-margin;
-  margin-right: $chip-margin;
+  background-color: variables.$chip-bg-color;
+  margin-bottom: variables.$chip-margin;
+  margin-right: variables.$chip-margin;
 
   > img {
     float: left;
@@ -36,16 +38,16 @@
 
 .chips {
   border: none;
-  border-bottom: 1px solid $chip-border-color;
+  border-bottom: 1px solid variables.$chip-border-color;
   box-shadow: none;
-  margin: $input-margin;
+  margin: variables.$input-margin;
   min-height: 45px;
   outline: none;
   transition: all .3s;
 
   &.focus {
-    border-bottom: 1px solid $chip-selected-color;
-    box-shadow: 0 1px 0 0 $chip-selected-color;
+    border-bottom: 1px solid variables.$chip-selected-color;
+    box-shadow: 0 1px 0 0 variables.$chip-selected-color;
   }
 
   &:hover {
@@ -57,8 +59,8 @@
     border: 0;
     color: rgba(0,0,0,.6);
     display: inline-block;
-    font-size: $input-font-size;
-    height: $input-height;
+    font-size: variables.$input-font-size;
+    height: variables.$input-height;
     line-height: 32px;
     outline: 0;
     margin: 0;

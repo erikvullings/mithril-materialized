@@ -3,4 +3,5 @@ packages:
   - '!**/test/**'
 
 onlyBuiltDependencies:
+  - '@parcel/watcher'
   - unrs-resolver

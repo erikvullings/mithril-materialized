@@ -1,9 +1,11 @@
+@use "variables";
+
 .collapsible {
-  border-top: 1px solid $collapsible-border-color;
-  border-right: 1px solid $collapsible-border-color;
-  border-left: 1px solid $collapsible-border-color;
-  margin: $element-top-margin 0 $element-bottom-margin 0;
-  @extend .z-depth-1;
+  border-top: 1px solid variables.$collapsible-border-color;
+  border-right: 1px solid variables.$collapsible-border-color;
+  border-left: 1px solid variables.$collapsible-border-color;
+  margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
+  @extend .z-depth-1 !optional;
 }
 
 .collapsible-header {
@@ -16,8 +18,8 @@
   -webkit-tap-highlight-color: transparent;
   line-height: 1.5;
   padding: 1rem;
-  background-color: $collapsible-header-color;
-  border-bottom: 1px solid $collapsible-border-color;
+  background-color: variables.$collapsible-header-color;
+  border-bottom: 1px solid variables.$collapsible-border-color;
 
   i {
     width: 2rem;
@@ -33,7 +35,7 @@
 
 .collapsible-body {
   display: none;
-  border-bottom: 1px solid $collapsible-border-color;
+  border-bottom: 1px solid variables.$collapsible-border-color;
   box-sizing: border-box;
   padding: 2rem;
 }
@@ -54,7 +56,7 @@
     border: none;
     line-height: inherit;
     height: inherit;
-    padding: 0 $sidenav-padding;
+    padding: 0 variables.$sidenav-padding;
 
     &:hover { background-color: rgba(0,0,0,.05); }
     i { line-height: inherit; }
@@ -62,11 +64,11 @@
 
   .collapsible-body {
     border: 0;
-    background-color: $collapsible-header-color;
+    background-color: variables.$collapsible-header-color;
 
     li a {
-      padding: 0 (7.5px + $sidenav-padding)
-               0 (15px + $sidenav-padding);
+      padding: 0 (7.5px + variables.$sidenav-padding)
+               0 (15px + variables.$sidenav-padding);
     }
   }
 

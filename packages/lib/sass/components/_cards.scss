@@ -1,21 +1,22 @@
+@use "variables";
 
 
 .card-panel {
   transition: box-shadow .25s;
-  padding: $card-padding;
-  margin: $element-top-margin 0 $element-bottom-margin 0;
+  padding: variables.$card-padding;
+  margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
   border-radius: 2px;
-  @extend .z-depth-1;
-  background-color: $card-bg-color;
+  @extend .z-depth-1 !optional;
+  background-color: variables.$card-bg-color;
 }
 
 .card {
   position: relative;
-  margin: $element-top-margin 0 $element-bottom-margin 0;
-  background-color: $card-bg-color;
+  margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
+  background-color: variables.$card-bg-color;
   transition: box-shadow .25s;
   border-radius: 2px;
-  @extend .z-depth-1;
+  @extend .z-depth-1 !optional;
 
 
   .card-title {
@@ -129,17 +130,17 @@
     }
 
     .card-title {
-      color: $card-bg-color;
+      color: variables.$card-bg-color;
       position: absolute;
       bottom: 0;
       left: 0;
       max-width: 100%;
-      padding: $card-padding;
+      padding: variables.$card-padding;
     }
   }
 
   .card-content {
-    padding: $card-padding;
+    padding: variables.$card-padding;
     border-radius: 0 0 2px 2px;
 
     p {
@@ -163,22 +164,22 @@
     background-color: inherit; // Use inherit to inherit color classes
     border-top: 1px solid rgba(160,160,160,.2);
     position: relative;
-    padding: 16px $card-padding;
+    padding: 16px variables.$card-padding;
 
     a:not(.btn):not(.btn-large):not(.btn-floating) {
-      color: $card-link-color;
-      margin-right: $card-padding;
+      color: variables.$card-link-color;
+      margin-right: variables.$card-padding;
       transition: color .3s ease;
       text-transform: uppercase;
 
-      &:hover { color: $card-link-color-light; }
+      &:hover { color: variables.$card-link-color-light; }
     }
   }
 
   .card-reveal {
-    padding: $card-padding;
+    padding: variables.$card-padding;
     position: absolute;
-    background-color: $card-bg-color;
+    background-color: variables.$card-bg-color;
     width: 100%;
     overflow-y: auto;
     left: 0;

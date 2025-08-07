@@ -603,7 +603,7 @@ $height: auto;
 .tabs-wrapper {
   position: relative;
   height: 48px;
-  @extend .hide-on-small-only;
+  @extend .hide-on-small-only !optional;
 
   .row.pinned {
     position: fixed;
@@ -1248,7 +1248,7 @@ body.themes {
     }
 
     padding: 60px 0 40px 0;
-    @extend .valign-wrapper;
+    @extend .valign-wrapper !optional;
 
     .theme-preview {
       width: 100%;
@@ -1261,7 +1261,7 @@ body.themes {
     .badge.new {
       &.modal-trigger {
         &:hover {
-          @extend .z-depth-2;
+          @extend .z-depth-2 !optional;
           opacity: .8;
         }
         cursor: pointer;

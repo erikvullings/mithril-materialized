@@ -1,3 +1,5 @@
+@use "../variables";
+
 /* File Input
    ========================================================================== */
 
@@ -13,8 +15,8 @@
 
   .btn {
     float: left;
-    height: $input-height;
-    line-height: $input-height;
+    height: variables.$input-height;
+    line-height: variables.$input-height;
   }
 
   span {

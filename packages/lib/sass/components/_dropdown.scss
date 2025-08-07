@@ -1,11 +1,15 @@
+@use "sass:color";
+@use 'sass:math';
+@use "variables";
+
 .dropdown-content {
   &:focus {
     outline: 0;
   }
 
 
-  @extend .z-depth-1;
-  background-color: $dropdown-bg-color;
+  @extend .z-depth-1 !optional;
+  background-color: variables.$dropdown-bg-color;
   margin: 0;
   display: none;
   min-width: 100px;
@@ -20,7 +24,7 @@
 
   li {
     &:hover, &.active {
-      background-color: $dropdown-hover-bg-color;
+      background-color: variables.$dropdown-hover-bg-color;
     }
 
     &:focus {
@@ -34,10 +38,10 @@
 
     & > a, & > span {
       font-size: 16px;
-      color: $dropdown-color;
+      color: variables.$dropdown-color;
       display: block;
       line-height: 22px;
-      padding: (($dropdown-item-height - 22) / 2) 16px;
+      padding: math.div((variables.$dropdown-item-height - 22px), 2) 16px;
     }
 
     & > span > label {
@@ -57,9 +61,9 @@
 
 
     clear: both;
-    color: $off-black;
+    color: variables.$off-black;
     cursor: pointer;
-    min-height: $dropdown-item-height;
+    min-height: variables.$dropdown-item-height;
     line-height: 1.5rem;
     width: 100%;
     text-align: left;
@@ -68,7 +72,7 @@
 
 body.keyboard-focused {
   .dropdown-content li:focus {
-    background-color: darken($dropdown-hover-bg-color, 8%);
+    background-color: color.adjust(variables.$dropdown-hover-bg-color, $lightness: -8%);
   }
 }
 

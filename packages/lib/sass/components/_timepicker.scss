@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "variables";
+
 /* Timepicker Containers */
 .timepicker-modal {
   max-width: 325px;
@@ -18,7 +21,7 @@
 /* Clock Digital Display */
 .timepicker-digital-display {
   flex: 1 auto;
-  background-color: $secondary-color;
+  background-color: variables.$secondary-color;
   padding: 10px;
   font-weight: 300;
 }
@@ -62,7 +65,7 @@
 }
 
 .timepicker-plate {
-	background-color: $timepicker-clock-plate-bg;
+	background-color: variables.$timepicker-clock-plate-bg;
 	border-radius: 50%;
 	width: 270px;
 	height: 270px;
@@ -88,7 +91,7 @@
 
 .timepicker-tick {
 	border-radius: 50%;
-	color: $timepicker-clock-color;
+	color: variables.$timepicker-clock-color;
 	line-height: 40px;
 	text-align: center;
 	width: 40px;
@@ -100,7 +103,7 @@
 
 .timepicker-tick.active,
 .timepicker-tick:hover {
-	background-color: transparentize($secondary-color, .75);
+	background-color: color.adjust(variables.$secondary-color, $alpha: -.75);
 }
 .timepicker-dial {
 	transition: transform 350ms, opacity 350ms;
@@ -120,7 +123,7 @@
 	transition: opacity 175ms;
 
   line {
-	  stroke: $secondary-color;
+	  stroke: variables.$secondary-color;
 	  stroke-width: 4;
 	  stroke-linecap: round;
   }
@@ -130,11 +133,11 @@
 }
 .timepicker-canvas-bearing {
 	stroke: none;
-	fill: $secondary-color;
+	fill: variables.$secondary-color;
 }
 .timepicker-canvas-bg {
 	stroke: none;
-	fill: $secondary-color;
+	fill: variables.$secondary-color;
 }
 
 
@@ -147,11 +150,11 @@
 }
 
 .timepicker-clear {
-  color: $error-color;
+  color: variables.$error-color;
 }
 
 .timepicker-close {
-  color: $secondary-color;
+  color: variables.$secondary-color;
 }
 
 .timepicker-clear,
@@ -160,7 +163,7 @@
 }
 
 /* Media Queries */
-@media #{$medium-and-up} {
+@media #{variables.$medium-and-up} {
   .timepicker-modal {
     max-width: 600px;
   }
