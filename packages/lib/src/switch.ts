@@ -2,7 +2,7 @@ import m, { FactoryComponent } from 'mithril';
 import { uniqueId } from './utils';
 import { IInputOptions } from './input-options';
 import { Label } from './label';
-import './styles/switch.css';
+// Styles are imported via the main index or individual component imports
 
 export interface ISwitchOptions extends Partial<IInputOptions<boolean>> {
   /** Left text label */
@@ -44,14 +44,14 @@ export const Switch: FactoryComponent<ISwitchOptions> = () => {
                 style: { cursor: 'pointer' },
               },
               [
-                left && m('span', left),
+                m('span', left || 'Off'),
                 m('input[type=checkbox]', {
                   id,
                   disabled,
                   checked: state.checked,
                 }),
                 m('span.lever'),
-                right && m('span', right),
+                m('span', right || 'On'),
               ]
             )
           ),

@@ -1,4 +1,4 @@
-import './styles/codeblock.css';
+// Styles are imported via the main index or individual component imports
 import m, { FactoryComponent, Attributes } from 'mithril';
 
 export interface ICodeBlock extends Attributes {

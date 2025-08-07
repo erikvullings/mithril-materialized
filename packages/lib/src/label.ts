@@ -1,5 +1,5 @@
 import m, { FactoryComponent, Component, Attributes } from 'mithril';
-import './styles/input.css';
+// import './styles/input.css';
 
 export const Mandatory: Component = { view: ({ attrs }) => m('span.mandatory', attrs, '*') };
 

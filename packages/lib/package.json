@@ -18,11 +18,13 @@
     "./modern": "./dist/index.modern.js",
     "./esm": "./dist/index.esm.js",
     "./umd": "./dist/index.umd.js",
-    "./index.css": "./dist/index.css"
+    "./index.css": "./dist/index.css",
+    "./sass/*": "./sass/*"
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "sass"
   ],
   "scripts": {
     "build": "microbundle build ./src/index.ts --external mithril",
@@ -74,6 +76,7 @@
     "materialize-css": "^1.0.0",
     "microbundle": "^0.15.1",
     "rimraf": "^6.0.1",
+    "sass": "^1.90.0",
     "ts-jest": "^29.4.1",
     "tslib": "^2.8.1",
     "typedoc": "^0.28.9",

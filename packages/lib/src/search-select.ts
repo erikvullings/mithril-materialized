@@ -76,36 +76,41 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
   };
 
   // Handle keyboard navigation
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = (e: KeyboardEvent, filteredOptions: Option<string | number>[], showAddNew: boolean) => {
     if (!state.isOpen) return;
 
-    const filteredOptions = state.options.filter(
-      (option) =>
-        (option.label || option.id.toString()).toLowerCase().includes((state.searchTerm || '').toLowerCase()) &&
-        !state.selectedOptions.some((selected) => selected.id === option.id)
-    );
+    const totalOptions = filteredOptions.length + (showAddNew ? 1 : 0);
 
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        state.focusedIndex = Math.min(state.focusedIndex + 1, filteredOptions.length - 1);
-          break;
+        state.focusedIndex = Math.min(state.focusedIndex + 1, totalOptions - 1);
+        m.redraw();
+        break;
       case 'ArrowUp':
         e.preventDefault();
         state.focusedIndex = Math.max(state.focusedIndex - 1, -1);
-          break;
+        m.redraw();
+        break;
       case 'Enter':
         e.preventDefault();
-        if (state.focusedIndex >= 0 && state.focusedIndex < filteredOptions.length) {
-          toggleOption(filteredOptions[state.focusedIndex]);
+        if (state.focusedIndex >= 0) {
+          if (showAddNew && state.focusedIndex === filteredOptions.length) {
+            // Handle add new option
+            return 'addNew';
+          } else if (state.focusedIndex < filteredOptions.length) {
+            toggleOption(filteredOptions[state.focusedIndex]);
+          }
         }
         break;
       case 'Escape':
         e.preventDefault();
         state.isOpen = false;
         state.focusedIndex = -1;
-          break;
+        m.redraw();
+        break;
     }
+    return null;
   };
 
   // Toggle option selection
@@ -134,11 +139,9 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
     },
     oncreate() {
       document.addEventListener('click', handleClickOutside);
-      document.addEventListener('keydown', handleKeyDown);
     },
     onremove() {
       document.removeEventListener('click', handleClickOutside);
-      document.removeEventListener('keydown', handleKeyDown);
     },
     view({
       attrs: {
@@ -291,14 +294,28 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                         type: 'text',
                         placeholder: searchPlaceholder,
                         value: state.searchTerm || '',
+                        oncreate: ({ dom }) => {
+                          // Auto-focus the search input when dropdown opens
+                          (dom as HTMLInputElement).focus();
+                        },
                         oninput: (e: InputEvent) => {
                           state.searchTerm = (e.target as HTMLInputElement).value;
                           state.focusedIndex = -1; // Reset focus when typing
-                                            },
+                        },
+                        onkeydown: async (e: KeyboardEvent) => {
+                          const result = handleKeyDown(e, filteredOptions, !!showAddNew);
+                          if (result === 'addNew' && oncreateNewOption) {
+                            const option = await oncreateNewOption(state.searchTerm);
+                            toggleOption(option);
+                          }
+                        },
                         style: {
                           width: '100%',
                           outline: 'none',
                           fontSize: '0.875rem',
+                          border: 'none',
+                          padding: '8px 0',
+                          borderBottom: '1px solid #9e9e9e'
                         },
                       }),
                     ]
@@ -335,8 +352,15 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                               display: 'flex',
                               alignItems: 'center',
                               cursor: 'pointer',
-                              background: state.focusedIndex === filteredOptions.length ? '#f3f4f6' : '',
+                              padding: '12px 16px',
+                              background: state.focusedIndex === filteredOptions.length ? '#e3f2fd' : 'transparent',
+                              borderBottom: '1px solid #eeeeee',
+                              transition: 'background-color 0.3s ease',
                             },
+                            onmouseover: () => {
+                              state.focusedIndex = filteredOptions.length;
+                              m.redraw();
+                            }
                           },
                           [m('span', `+ "${state.searchTerm}"`)]
                         ),
@@ -348,14 +372,28 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                     m(
                       'li',
                       {
-                        onclick: () => toggleOption(option),
+                        onclick: (e: Event) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          toggleOption(option);
+                        },
                         class: option.disabled ? 'disabled' : undefined,
                         style: {
                           display: 'flex',
                           alignItems: 'center',
                           cursor: option.disabled ? 'not-allowed' : 'pointer',
-                          background: state.focusedIndex === index ? '#f3f4f6' : '',
+                          padding: '12px 16px',
+                          background: state.focusedIndex === index ? '#e3f2fd' : 'transparent',
+                          borderBottom: index < filteredOptions.length - 1 ? '1px solid #eeeeee' : 'none',
+                          transition: 'background-color 0.3s ease',
+                          opacity: option.disabled ? '0.5' : '1'
                         },
+                        onmouseover: () => {
+                          if (!option.disabled) {
+                            state.focusedIndex = index;
+                            m.redraw();
+                          }
+                        }
                       },
                       m('span', [
                         m('input', {

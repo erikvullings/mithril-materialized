@@ -1,5 +1,5 @@
-// Import CSS styles
-import './styles/index.css';
+// Import complete Materialize CSS styles
+import './index.scss';
 
 export * from './autocomplete';
 export * from './button';
@@ -14,7 +14,6 @@ export * from './icon';
 export * from './input-options';
 export * from './input';
 export * from './label';
-export * from './map-editor';
 export * from './material-box';
 export * from './modal';
 export * from './option';
@@ -25,6 +24,5 @@ export * from './radio';
 export * from './select';
 export * from './switch';
 export * from './tabs';
-export * from './timeline';
 export * from './search-select';
 export * from './utils';

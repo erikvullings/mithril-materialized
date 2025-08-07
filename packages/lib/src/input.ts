@@ -2,11 +2,26 @@ import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
 import { IInputOptions } from './input-options';
 import { Label, HelperText } from './label';
-import './styles/input.css';
+// import './styles/input.css';
+
+/** Character counter component that tracks text length against maxLength */
+const CharacterCounter: FactoryComponent<{ currentLength: number; maxLength: number }> = () => {
+  return {
+    view: ({ attrs }) => {
+      const { currentLength, maxLength } = attrs;
+      const isOverLimit = currentLength > maxLength;
+      return m('span.character-counter', {
+        style: {
+          color: isOverLimit ? 'var(--md-error)' : 'var(--md-grey-600)'
+        }
+      }, `${currentLength}/${maxLength}`);
+    }
+  };
+};
 
 /** Create a TextArea */
 export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
-  const state = { id: uniqueId() };
+  const state = { id: uniqueId(), currentLength: 0, hasInteracted: false, isValid: true };
   return {
     view: ({ attrs }) => {
       const {
@@ -17,6 +32,7 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
         initialValue,
         isMandatory,
         label,
+        maxLength,
         onchange,
         onkeydown,
         onkeypress,
@@ -42,28 +58,24 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
             textarea.addEventListener('input', autoResize);
             autoResize(); // Initial resize
             
-            // Character counter functionality
-            if (attrs.maxLength) {
-              const updateCounter = () => {
-                const length = textarea.value.length;
-                const maxLength = attrs.maxLength || 0;
-                let counter = textarea.parentElement?.querySelector('.character-counter') as HTMLElement;
-                if (!counter) {
-                  counter = document.createElement('span');
-                  counter.className = 'character-counter';
-                  textarea.parentElement?.appendChild(counter);
-                }
-                counter.textContent = `${length}/${maxLength}`;
-                counter.style.color = length > maxLength ? 'var(--md-error)' : 'var(--md-grey-600)';
+            // Update character count state for counter component
+            if (maxLength) {
+              const updateLength = () => {
+                state.currentLength = textarea.value.length;
+                m.redraw();
               };
-              textarea.addEventListener('input', updateCounter);
-              updateCounter(); // Initial count
+              textarea.addEventListener('input', updateLength);
+              state.currentLength = textarea.value.length; // Initial count
             }
+          },
+          oninput: () => {
+            state.hasInteracted = true;
           },
           onchange: onchange
             ? (e: Event) => {
                 const target = e.target as HTMLInputElement;
                 const value = target && typeof target.value === 'string' ? target.value : '';
+                state.hasInteracted = true;
                 onchange(value);
               }
             : undefined,
@@ -86,7 +98,12 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
           onblur,
         }),
         m(Label, { label, id, isMandatory, isActive: initialValue || attrs.placeholder }),
-        m(HelperText, { helperText }),
+        m(HelperText, { 
+          helperText, 
+          dataError: state.hasInteracted && attrs.dataError ? attrs.dataError : undefined,
+          dataSuccess: state.hasInteracted && attrs.dataSuccess ? attrs.dataSuccess : undefined 
+        }),
+        maxLength ? m(CharacterCounter, { currentLength: state.currentLength, maxLength }) : undefined,
       ]);
     },
   };
@@ -98,7 +115,7 @@ export type InputType = 'url' | 'color' | 'text' | 'number' | 'email' | 'range' 
 const InputField =
   <T>(type: InputType, defaultClass = ''): FactoryComponent<IInputOptions<T>> =>
   () => {
-    const state = { id: uniqueId() };
+    const state = { id: uniqueId(), currentLength: 0, hasInteracted: false, isValid: true };
     const getValue = (target: HTMLInputElement) => {
       const val = target.value as any as T;
       return (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
@@ -149,35 +166,28 @@ const InputField =
               if (focus(attrs)) {
                 (dom as HTMLElement).focus();
               }
-              
+
               const input = dom as HTMLInputElement;
               const parentElement = input.parentElement as HTMLElement;
-              
+
               // Set initial value if provided
               if (initialValue !== undefined) {
                 input.value = String(initialValue);
               }
-              
-              // Character counter functionality
+
+              // Update character count state for counter component
               if (maxLength) {
-                const updateCounter = () => {
-                  const length = input.value.length;
-                  let counter = parentElement.querySelector('.character-counter') as HTMLElement;
-                  if (!counter) {
-                    counter = document.createElement('span');
-                    counter.className = 'character-counter';
-                    parentElement.appendChild(counter);
-                  }
-                  counter.textContent = `${length}/${maxLength}`;
-                  counter.style.color = length > maxLength ? 'var(--md-error)' : 'var(--md-grey-600)';
+                const updateLength = () => {
+                  state.currentLength = input.value.length;
+                  m.redraw();
                 };
-                input.addEventListener('input', updateCounter);
-                updateCounter(); // Initial count
+                input.addEventListener('input', updateLength);
+                state.currentLength = input.value.length; // Initial count
               }
-              
+
               // Add focus and blur event handlers for label animation
               const label = parentElement.querySelector('label');
-              
+
               const updateLabelState = () => {
                 if (label) {
                   if (input.value !== '' || document.activeElement === input || input.placeholder) {
@@ -187,21 +197,22 @@ const InputField =
                   }
                 }
               };
-              
+
               input.addEventListener('focus', updateLabelState);
               input.addEventListener('blur', updateLabelState);
               input.addEventListener('input', updateLabelState);
-              
+
               // Initial label state
               updateLabelState();
-              
+
               // Range input functionality
               if (type === 'range') {
                 const updateThumb = () => {
                   const value = input.value;
                   const min = input.min || '0';
                   const max = input.max || '100';
-                  const percentage = ((parseFloat(value) - parseFloat(min)) / (parseFloat(max) - parseFloat(min))) * 100;
+                  const percentage =
+                    ((parseFloat(value) - parseFloat(min)) / (parseFloat(max) - parseFloat(min))) * 100;
                   input.style.setProperty('--range-progress', `${percentage}%`);
                 };
                 input.addEventListener('input', updateThumb);
@@ -229,24 +240,50 @@ const InputField =
                   setValidity(target, validate(getValue(target), target));
                 }
               : undefined,
-            onchange: (e: UIEvent) => {
+            oninput: (e: Event) => {
               const target = e.target as HTMLInputElement;
-              if (target) {
-                const value = getValue(target);
-                if (onchange) {
-                  onchange(value);
+              state.hasInteracted = true;
+              
+              // Handle original oninput logic
+              const value = getValue(target);
+              if (onchange) {
+                onchange(value);
+              }
+              
+              // Validate on input if there's content and user has interacted
+              if (validate && target.value.length > 0) {
+                const validationResult = validate(value, target);
+                state.isValid = typeof validationResult === 'boolean' ? validationResult : false;
+                setValidity(target, validationResult);
+
+                // Update visual validation state
+                if (typeof validationResult === 'boolean') {
+                  if (validationResult) {
+                    target.classList.remove('invalid');
+                    target.classList.add('valid');
+                  } else {
+                    target.classList.remove('valid');
+                    target.classList.add('invalid');
+                  }
+                } else if (typeof validationResult === 'string') {
+                  target.classList.remove('valid');
+                  target.classList.add('invalid');
+                  state.isValid = false;
                 }
               }
             },
             onblur: (e: FocusEvent) => {
               const target = e.target as HTMLInputElement;
+              state.hasInteracted = true;
+              
               if (target && validate) {
                 const value = getValue(target);
                 // Only validate if user has entered some text
                 if (value && String(value).length > 0) {
                   const validationResult = validate(value, target);
+                  state.isValid = typeof validationResult === 'boolean' ? validationResult : false;
                   setValidity(target, validationResult);
-                  
+
                   // Update visual validation state
                   if (typeof validationResult === 'boolean') {
                     if (validationResult) {
@@ -259,13 +296,15 @@ const InputField =
                   } else if (typeof validationResult === 'string') {
                     target.classList.remove('valid');
                     target.classList.add('invalid');
+                    state.isValid = false;
                   }
                 } else {
                   // Clear validation state if no text
                   target.classList.remove('valid', 'invalid');
+                  state.isValid = true;
                 }
               }
-              
+
               // Also call the original onblur handler if provided
               if (attrs.onblur) {
                 attrs.onblur(e);
@@ -286,7 +325,12 @@ const InputField =
                 ? true
                 : false,
           }),
-          m(HelperText, { helperText, dataError, dataSuccess }),
+          m(HelperText, { 
+            helperText, 
+            dataError: state.hasInteracted && !state.isValid ? dataError : undefined, 
+            dataSuccess: state.hasInteracted && state.isValid && initialValue ? dataSuccess : undefined 
+          }),
+          maxLength ? m(CharacterCounter, { currentLength: state.currentLength, maxLength }) : undefined,
         ]);
       },
     };

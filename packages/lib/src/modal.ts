@@ -1,6 +1,6 @@
 import m, { FactoryComponent, Vnode, Attributes } from 'mithril';
 import { FlatButton } from './button';
-import './styles/modal.css';
+// Styles are imported via the main index or individual component imports
 
 export interface IModalState {
   isOpen: boolean;
