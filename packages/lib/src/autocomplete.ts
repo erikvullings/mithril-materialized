@@ -23,6 +23,7 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
     isOpen: false,
     suggestions: [] as Array<{ key: string; value: string | null }>,
     selectedIndex: -1,
+    inputElement: null as HTMLInputElement | null,
   };
 
   const filterSuggestions = (input: string, data: Record<string, string | null>, limit: number, minLength: number) => {
@@ -69,6 +70,7 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
       case 'Enter':
         e.preventDefault();
         if (state.selectedIndex >= 0 && state.suggestions[state.selectedIndex]) {
+          state.isOpen = false;
           selectSuggestion(state.suggestions[state.selectedIndex], attrs);
         }
         break;
@@ -82,10 +84,44 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
 
   const closeDropdown = (e: Event) => {
     const target = e.target as Element;
-    if (!target.closest('.autocomplete-wrapper')) {
+    const autocompleteWrapper = target.closest('.autocomplete-wrapper');
+    const dropdownContent = target.closest('.autocomplete-content');
+    
+    // Close if clicking outside both the input wrapper and dropdown content
+    if (!autocompleteWrapper && !dropdownContent) {
       state.isOpen = false;
       state.selectedIndex = -1;
+      m.redraw();
     }
+  };
+
+  const getDropdownStyles = () => {
+    if (!state.inputElement) {
+      return {
+        display: 'block',
+        width: '100%',
+        height: `${state.suggestions.length * 50}px`,
+        transformOrigin: '0px 0px',
+        opacity: state.isOpen ? 1 : 0,
+        transform: 'scaleX(1) scaleY(1)',
+      };
+    }
+
+    const rect = state.inputElement.getBoundingClientRect();
+    const inputWidth = rect.width;
+
+    return {
+      display: 'block',
+      width: `${inputWidth}px`,
+      height: `${state.suggestions.length * 50}px`,
+      transformOrigin: '0px 0px',
+      opacity: state.isOpen ? 1 : 0,
+      transform: 'scaleX(1) scaleY(1)',
+      position: 'absolute',
+      top: '100%',
+      left: '0',
+      zIndex: 1000,
+    };
   };
 
   return {
@@ -119,12 +155,20 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
 
       // Update suggestions when input changes
       state.suggestions = filterSuggestions(state.inputValue, data, limit, minLength);
-      state.isOpen = state.suggestions.length > 0 && state.inputValue.length >= minLength;
+      
+      // Check if there's a perfect match (exact key match, case-insensitive)
+      const hasExactMatch = state.inputValue.length >= minLength && 
+        Object.keys(data).some(key => key.toLowerCase() === state.inputValue.toLowerCase());
+      
+      // Only open dropdown if there are suggestions and no perfect match
+      state.isOpen = state.suggestions.length > 0 && 
+                    state.inputValue.length >= minLength && 
+                    !hasExactMatch;
 
       const replacer = new RegExp(`(${state.inputValue})`, 'i');
 
       return m(
-        '.input-field',
+        '.input-field.autocomplete-wrapper',
         {
           className: cn,
           style,
@@ -138,6 +182,9 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
             tabindex: 0,
             id,
             value: state.inputValue,
+            oncreate: (vnode) => {
+              state.inputElement = vnode.dom as HTMLInputElement;
+            },
             oninput: (e: Event) => {
               const target = e.target as HTMLInputElement;
               state.inputValue = target.value;
@@ -158,7 +205,11 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
             onfocus: () => {
               state.isActive = true;
               if (state.inputValue.length >= minLength) {
-                state.isOpen = state.suggestions.length > 0;
+                // Check for perfect match on focus too
+                const hasExactMatch = Object.keys(data).some(key => 
+                  key.toLowerCase() === state.inputValue.toLowerCase()
+                );
+                state.isOpen = state.suggestions.length > 0 && !hasExactMatch;
               }
             },
             onblur: (e: FocusEvent) => {
@@ -179,22 +230,14 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
             m(
               'ul.autocomplete-content.dropdown-content',
               {
-                style: {
-                  display: 'block',
-                  width: '845.5px',
-                  left: '11.25px',
-                  top: '46px',
-                  height: `${state.suggestions.length * 50}px`,
-                  transformOrigin: '0px 0px',
-                  opacity: 1,
-                  transform: 'scaleX(1) scaleY(1)',
-                },
+                style: getDropdownStyles(),
               },
               state.suggestions.map((suggestion, index) =>
                 m(
                   'li',
                   {
                     key: suggestion.key,
+                    class: state.selectedIndex === index ? 'active' : '',
                     onclick: (e: Event) => {
                       e.preventDefault();
                       e.stopPropagation();
