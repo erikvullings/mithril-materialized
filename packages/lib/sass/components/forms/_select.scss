@@ -1,4 +1,5 @@
 @use "../variables";
+@use "input-fields";
 
 /* Select Field
    ========================================================================== */
@@ -37,7 +38,7 @@ select {
   &.invalid {
     & > input.select-dropdown,
     & > input.select-dropdown:focus {
-      @extend %invalid-input-styl !optional;
+      @extend %invalid-input-style !optional;
     }
 
     & ~ .helper-text:after {

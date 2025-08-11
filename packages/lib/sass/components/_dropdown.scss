@@ -1,6 +1,7 @@
 @use "sass:color";
 @use 'sass:math';
 @use "variables";
+@use "global";
 
 .dropdown-content {
   &:focus {
