@@ -42,7 +42,7 @@ export interface IFloatingActionButton {
  */
 export const FloatingActionButton: FactoryComponent<IFloatingActionButton> = () => {
   const state: IFloatingActionButtonState = {
-    isOpen: false
+    isOpen: false,
   };
 
   const handleClickOutside = (e: MouseEvent) => {
@@ -74,83 +74,83 @@ export const FloatingActionButton: FactoryComponent<IFloatingActionButton> = () 
           : undefined,
         buttons,
         direction = 'top',
-        hoverEnabled = true
+        hoverEnabled = true,
       },
     }) => {
       const fabClasses = [
         'fixed-action-btn',
         direction ? `direction-${direction}` : '',
         state.isOpen ? 'active' : '',
-        hoverEnabled ? 'hover-enabled' : '',
-        className
-      ].filter(Boolean).join(' ');
+        // hoverEnabled ? 'hover-enabled' : '',
+      ]
+        .filter(Boolean)
+        .join(' ');
 
-      const fab = m(
-        `.${fabClasses}`,
+      return m(
+        'div',
         {
-          style,
-          onclick: (e: Event) => {
-            e.stopPropagation();
-            if (buttons && buttons.length > 0) {
-              state.isOpen = !state.isOpen;
-            }
-          },
-          onmouseover: hoverEnabled ? () => {
-            if (buttons && buttons.length > 0) {
-              state.isOpen = true;
-            }
-          } : undefined,
-          onmouseleave: hoverEnabled ? () => {
-            state.isOpen = false;
-          } : undefined
+          style:
+            position === 'inline-right' || position === 'inline-left' ? 'position: relative; height: 70px;' : undefined,
         },
-        [
-          m('a.btn-floating.btn-large.waves-effect.waves-light.red', { 
-            style: {
-              transform: state.isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
-              transition: 'transform 0.3s ease'
-            }
-          }, m('i.material-icons', { className: iconClass }, iconName)),
-          buttons && buttons.length > 0
-            ? m(
-                'ul',
-                {
-                  style: {
-                    visibility: state.isOpen ? 'visible' : 'hidden',
-                    opacity: state.isOpen ? '1' : '0',
-                    transform: state.isOpen ? 'scale(1)' : 'scale(0.4)',
-                    transition: 'opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease'
+        m(
+          `.${fabClasses}`,
+          {
+            style,
+            onclick: (e: Event) => {
+              e.stopPropagation();
+              if (buttons && buttons.length > 0) {
+                state.isOpen = !state.isOpen;
+              }
+            },
+            onmouseover: hoverEnabled
+              ? () => {
+                  if (buttons && buttons.length > 0) {
+                    state.isOpen = true;
                   }
-                },
+                }
+              : undefined,
+            onmouseleave: hoverEnabled
+              ? () => {
+                  state.isOpen = false;
+                }
+              : undefined,
+          },
+          [
+            m(
+              'a.btn-floating.btn-large',
+              {
+                className,
+              },
+              m('i.material-icons', { className: iconClass }, iconName)
+            ),
+            buttons &&
+              buttons.length > 0 &&
+              m(
+                'ul',
                 buttons.map((button, index) =>
                   m(
                     'li',
-                    {
-                      style: {
-                        opacity: state.isOpen ? '1' : '0',
-                        transform: state.isOpen ? 'scale(1)' : 'scale(0.4)',
-                        transition: `all 0.3s ease ${index * 40}ms`
-                      }
-                    },
                     m(
-                      `a.btn-floating.waves-effect.waves-light.${button.className || 'red'}`,
-                      { 
+                      `a.btn-floating.${button.className || 'red'}`,
+                      {
+                        style: {
+                          opacity: state.isOpen ? '1' : '0',
+                          transform: state.isOpen ? 'scale(1)' : 'scale(0.4)',
+                          transition: `all 0.3s ease ${index * 40}ms`,
+                        },
                         onclick: (e: UIEvent) => {
                           e.stopPropagation();
                           if (button.onClick) button.onClick(e);
-                        }
+                        },
                       },
                       m('i.material-icons', { className: button.iconClass }, button.iconName)
                     )
                   )
                 )
-              )
-            : undefined,
-        ]
+              ),
+          ]
+        )
       );
-      return position === 'inline-right' || position === 'inline-left'
-        ? m('div', { style: 'position: relative; height: 70px;' }, fab)
-        : fab;
     },
   };
 };

@@ -74,5 +74,5 @@ export const Button = ButtonFactory('a', 'waves-effect waves-light btn', 'button
 export const LargeButton = ButtonFactory('a', 'waves-effect waves-light btn-large', 'button');
 export const SmallButton = ButtonFactory('a', 'waves-effect waves-light btn-small', 'button');
 export const FlatButton = ButtonFactory('a', 'waves-effect waves-teal btn-flat', 'button');
-export const RoundIconButton = ButtonFactory('button', 'btn-floating waves-effect waves-light', 'button');
+export const RoundIconButton = ButtonFactory('button', 'btn-floating btn-large waves-effect waves-light', 'button');
 export const SubmitButton = ButtonFactory('button', 'btn waves-effect waves-light', 'submit');
