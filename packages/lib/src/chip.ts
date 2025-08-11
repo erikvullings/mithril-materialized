@@ -260,7 +260,7 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
         m(
           '.chips.chips-initial',
           {
-            class: `chips-container ${state.focused ? 'focused' : ''} ${placeholder ? 'chips-placeholder' : ''}`,
+            class: `chips-container${state.focused ? ' focused' : ''}${placeholder ? ' chips-placeholder' : ''}`,
           },
           [
             // Chips
@@ -270,7 +270,7 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
                 {
                   key: `${chip.tag}-${index}`,
                   tabindex: 0,
-                  class: state.selectedChip === index ? 'selected' : '',
+                  class: state.selectedChip === index ? 'selected' : undefined,
                   onkeydown: (e: KeyboardEvent) => handleChipKeydown(e, index),
                 },
                 [
@@ -295,7 +295,7 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
             ),
 
             // Input
-            m('input.chips-input.input', {
+            m('input[type=text].chips-input.input.browser-default', {
               id: state.inputId,
               title: 'label',
               value: state.inputValue,
@@ -314,7 +314,7 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
                 setTimeout(() => {
                   state.showAutocomplete = false;
                   state.selectedChip = null;
-                          }, 150);
+                }, 150);
               },
               onkeydown: handleKeydown,
             }),
