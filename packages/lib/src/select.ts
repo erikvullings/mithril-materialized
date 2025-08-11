@@ -1,6 +1,7 @@
 import m, { Attributes, Component, FactoryComponent } from 'mithril';
 import { Label, HelperText } from './label';
 import { IInputOption } from './option';
+import { Caret, getDropdownStyles, uniqueId } from './utils';
 
 export interface ISelectOptions<T extends string | number> extends Attributes {
   /** Options to select from */
@@ -46,9 +47,12 @@ export interface ISelectOptions<T extends string | number> extends Attributes {
 }
 
 interface ISelectState<T extends string | number> {
+  id: string;
   isOpen: boolean;
   selectedIds: T[];
   focusedIndex: number;
+  inputRef?: HTMLElement | null;
+  dropdownRef?: HTMLElement | null;
 }
 
 interface ISelectOptionProps<T extends string | number> {
@@ -61,140 +65,147 @@ interface ISelectOptionProps<T extends string | number> {
 }
 
 /** FactoryComponent for individual select options */
-const SelectOption = <T extends string | number>(): FactoryComponent<ISelectOptionProps<T>> => () => ({
-  view: ({ attrs: { option, isSelected, isFocused, multiple, onToggle } }) => {
-    return m(
-      '.select-dropdown-option',
-      {
-        key: option.id || 'placeholder-label',
-        className: [
-          isSelected ? 'selected' : '',
-          option.disabled ? 'disabled' : '',
-          isFocused ? 'focused' : '',
-        ]
-          .filter(Boolean)
-          .join(' '),
-        onclick: option.disabled ? undefined : () => onToggle(option.id),
-        style: {
-          padding: '12px 16px',
-          cursor: option.disabled ? 'not-allowed' : 'pointer',
-          borderBottom: '1px solid #eee',
-          backgroundColor: isSelected ? '#e3f2fd' : 'transparent',
-          opacity: option.disabled ? 0.5 : 1,
-          display: 'flex',
-          alignItems: 'center'
+const SelectOption =
+  <T extends string | number>(): FactoryComponent<ISelectOptionProps<T>> =>
+  () => ({
+    view: ({ attrs: { option, isSelected, isFocused, multiple, onToggle } }) => {
+      return m(
+        '.select-dropdown-option',
+        {
+          key: option.id || 'placeholder-label',
+          className: [isSelected ? 'selected' : '', option.disabled ? 'disabled' : '', isFocused ? 'focused' : '']
+            .filter(Boolean)
+            .join(' '),
+          onclick: option.disabled ? undefined : () => onToggle(option.id),
+          style: {
+            padding: '12px 16px',
+            cursor: option.disabled ? 'not-allowed' : 'pointer',
+            borderBottom: '1px solid #eee',
+            backgroundColor: isSelected ? '#e3f2fd' : 'transparent',
+            opacity: option.disabled ? 0.5 : 1,
+            display: 'flex',
+            alignItems: 'center',
+          },
+          onmouseover: option.disabled
+            ? undefined
+            : (e: MouseEvent) => {
+                if (!isSelected) {
+                  (e.target as HTMLElement).style.backgroundColor = '#f5f5f5';
+                }
+              },
+          onmouseleave: option.disabled
+            ? undefined
+            : (e: MouseEvent) => {
+                if (!isSelected) {
+                  (e.target as HTMLElement).style.backgroundColor = 'transparent';
+                }
+              },
         },
-        onmouseover: option.disabled ? undefined : (e: MouseEvent) => {
-          if (!isSelected) {
-            (e.target as HTMLElement).style.backgroundColor = '#f5f5f5';
-          }
-        },
-        onmouseleave: option.disabled ? undefined : (e: MouseEvent) => {
-          if (!isSelected) {
-            (e.target as HTMLElement).style.backgroundColor = 'transparent';
-          }
-        }
-      },
-[
-        // Checkbox for multiple select
-        multiple
-          ? m('input.select-dropdown-option-checkbox', {
-              key: 'checkbox',
-              type: 'checkbox',
-              checked: isSelected,
-              disabled: option.disabled,
-              tabindex: -1,
-            })
-          : null,
+        [
+          // Checkbox for multiple select
+          multiple
+            ? m('input.select-dropdown-option-checkbox', {
+                key: 'checkbox',
+                type: 'checkbox',
+                checked: isSelected,
+                disabled: option.disabled,
+                tabindex: -1,
+              })
+            : null,
 
-        // Option image
-        option.img
-          ? m('img.select-dropdown-option-img', {
-              key: 'image',
-              src: option.img,
-              alt: option.label,
-            })
-          : null,
+          // Option image
+          option.img
+            ? m('img.select-dropdown-option-img', {
+                key: 'image',
+                src: option.img,
+                alt: option.label,
+              })
+            : null,
 
-        // Option text
-        m('.select-dropdown-option-text', { key: 'text' }, option.label?.replace('&amp;', '&')),
-      ].filter(Boolean)
-    );
-  },
-});
+          // Option text
+          m('.select-dropdown-option-text', { key: 'text' }, option.label?.replace('&amp;', '&')),
+        ].filter(Boolean)
+      );
+    },
+  });
 
 /** FactoryComponent for select dropdown */
-const SelectDropdown = <T extends string | number>(): FactoryComponent<{
-  attrs: ISelectOptions<T>;
-  state: ISelectState<T>;
-  isSelected: (id: T, selectedIds: T[]) => boolean;
-  toggleOption: (id: T, multiple: boolean, attrs: ISelectOptions<T>) => void;
-}> => () => ({
-  view: ({ attrs: { attrs, state, isSelected, toggleOption } }) => {
-    const { options, multiple } = attrs;
+const SelectDropdown =
+  <T extends string | number>(): FactoryComponent<{
+    attrs: ISelectOptions<T>;
+    state: ISelectState<T>;
+    isSelected: (id: T, selectedIds: T[]) => boolean;
+    toggleOption: (id: T, multiple: boolean, attrs: ISelectOptions<T>) => void;
+  }> =>
+  () => ({
+    view: ({ attrs: { attrs, state, isSelected, toggleOption } }) => {
+      const { options, multiple } = attrs;
 
-    // Group options by group if any
-    const groups = options.reduce((acc, option) => {
-      const group = option.group || '';
-      if (!acc[group]) acc[group] = [];
-      acc[group].push(option);
-      return acc;
-    }, {} as Record<string, IInputOption<T>[]>);
+      // Group options by group if any
+      const groups = options.reduce((acc, option) => {
+        const group = option.group || '';
+        if (!acc[group]) acc[group] = [];
+        acc[group].push(option);
+        return acc;
+      }, {} as Record<string, IInputOption<T>[]>);
 
-    const renderOption = (option: IInputOption<T>, index: number) => {
-      const isOptionSelected = isSelected(option.id, state.selectedIds);
-      const isFocused = index === state.focusedIndex;
+      const renderOption = (option: IInputOption<T>, index: number) => {
+        const isOptionSelected = isSelected(option.id, state.selectedIds);
+        const isFocused = index === state.focusedIndex;
 
-      return m(SelectOption<T>(), {
-        key: `option-${option.id}`,
-        option,
-        index,
-        isSelected: isOptionSelected,
-        isFocused,
-        multiple,
-        onToggle: (id: T) => toggleOption(id, multiple || false, attrs),
-      });
-    };
-
-    if (Object.keys(groups).length === 1 && groups['']) {
-      // No groups, render options directly
-      return options.map((option, index) => renderOption(option, index));
-    } else {
-      // Render grouped options
-      let optionIndex = 0;
-      const allElements: any[] = [];
-      
-      Object.entries(groups).forEach(([groupName, groupOptions]) => {
-        // Add group header if groupName exists
-        if (groupName) {
-          allElements.push(
-            m(
-              '.select-dropdown-optgroup',
-              {
-                key: `group-header-${groupName}`,
-              },
-              groupName
-            )
-          );
-        }
-        
-        // Add all options in this group
-        groupOptions.forEach((option) => {
-          allElements.push(renderOption(option, optionIndex++));
+        return m(SelectOption<T>(), {
+          key: `option-${option.id}`,
+          option,
+          index,
+          isSelected: isOptionSelected,
+          isFocused,
+          multiple,
+          onToggle: (id: T) => toggleOption(id, multiple || false, attrs),
         });
-      });
-      
-      return allElements;
-    }
-  },
-});
+      };
+
+      if (Object.keys(groups).length === 1 && groups['']) {
+        // No groups, render options directly
+        return options.map((option, index) => renderOption(option, index));
+      } else {
+        // Render grouped options
+        let optionIndex = 0;
+        const allElements: any[] = [];
+
+        Object.entries(groups).forEach(([groupName, groupOptions]) => {
+          // Add group header if groupName exists
+          if (groupName) {
+            allElements.push(
+              m(
+                '.select-dropdown-optgroup',
+                {
+                  key: `group-header-${groupName}`,
+                },
+                groupName
+              )
+            );
+          }
+
+          // Add all options in this group
+          groupOptions.forEach((option) => {
+            allElements.push(renderOption(option, optionIndex++));
+          });
+        });
+
+        return allElements;
+      }
+    },
+  });
 
 /** CSS-only Select component - no Materialize dependencies */
 export const Select = <T extends string | number>(): Component<ISelectOptions<T>> => {
   const state: ISelectState<T> = {
+    id: '',
     isOpen: false,
     selectedIds: [],
     focusedIndex: -1,
+    inputRef: null,
+    dropdownRef: null,
   };
 
   const isSelected = (id: T, selectedIds: T[]) => {
@@ -203,11 +214,13 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
 
   const toggleOption = (id: T, multiple: boolean, attrs: ISelectOptions<T>) => {
     if (multiple) {
-      const newIds = isSelected(id, state.selectedIds)
-        ? state.selectedIds.filter((selectedId) => selectedId !== id)
+      const newIds = state.selectedIds.includes(id)
+        ? // isSelected(id, state.selectedIds)
+          state.selectedIds.filter((selectedId) => selectedId !== id)
         : [...state.selectedIds, id];
       state.selectedIds = newIds;
       attrs.onchange(newIds);
+      console.log(newIds);
       // Keep dropdown open for multiple select
     } else {
       state.selectedIds = [id];
@@ -267,7 +280,8 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
 
   return {
     oninit: ({ attrs }) => {
-      const { checkedId, initialValue } = attrs;
+      const { checkedId, initialValue, id } = attrs;
+      state.id = id || uniqueId();
       const iv = checkedId || initialValue;
 
       if (iv !== null && typeof iv !== 'undefined') {
@@ -301,7 +315,7 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
         className = 'col s12',
         key,
         options,
-        multiple,
+        multiple = false,
         label,
         helperText,
         placeholder = '',
@@ -312,32 +326,20 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
       } = attrs;
 
       const finalClassName = newRow ? `${className} clear` : className;
-      const hasValue = state.selectedIds.length > 0;
-      const wrapperClasses = [
-        'select-wrapper',
-        'input-field',
-        hasValue ? 'has-value' : '',
-        state.isOpen ? 'focused' : '',
-        disabled ? 'disabled' : '',
-      ]
-        .filter(Boolean)
-        .join(' ');
-
       const selectedOptions = options.filter((opt) => isSelected(opt.id, state.selectedIds));
-      const displayText = selectedOptions.length > 0 ? selectedOptions.map((opt) => opt.label).join(', ') : placeholder;
-
-
 
       return m(
-        '.select-wrapper-container',
+        '.input-field.select-space',
         {
           className: finalClassName,
           key,
           style,
         },
         [
+          // Icon prefix
+          iconName && m('i.material-icons.prefix', iconName),
           m(
-            `.${wrapperClasses}`,
+            '.select-wrapper',
             {
               onclick: disabled
                 ? undefined
@@ -349,104 +351,84 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
               'aria-expanded': state.isOpen ? 'true' : 'false',
               'aria-haspopup': 'listbox',
               role: 'combobox',
-              style: {
-                position: 'relative',
-                cursor: disabled ? 'not-allowed' : 'pointer'
-              }
             },
             [
-              // Icon prefix
-              iconName &&
+              m('input[type=text][readonly=true].select-dropdown.dropdown-trigger', {
+                id: state.id,
+                value:
+                  selectedOptions.length > 0 ? selectedOptions.map((o) => o.label || o.id).join(', ') : placeholder,
+                oncreate: ({ dom }) => {
+                  state.inputRef = dom as HTMLElement;
+                },
+                onclick: (e: Event) => {
+                  console.log('Input clicked', state.isOpen, e); // Debug log
+                  e.preventDefault();
+                  e.stopPropagation();
+                  state.isOpen = !state.isOpen;
+                  console.log('Input state changed to', state.isOpen); // Debug log
+                },
+              }),
+              // Dropdown Menu
+              state.isOpen &&
                 m(
-                  'i.material-icons.prefix',
+                  'ul.dropdown-content.select-dropdown',
                   {
-                    className: hasValue || state.isOpen ? 'active' : '',
+                    oncreate: ({ dom }) => {
+                      state.dropdownRef = dom as HTMLElement;
+                    },
+                    onremove: () => {
+                      state.dropdownRef = null;
+                    },
+                    style: getDropdownStyles(state.inputRef, true),
                   },
-                  iconName
-                ),
-
-              // Multiple select tags or single select display
-              multiple && hasValue
-                ? m(
-                    '.select-tags',
-                    selectedOptions.map((option) =>
+                  placeholder && m('li.disabled', m('span', placeholder)),
+                  options.map((option) =>
+                    m(
+                      'li',
+                      option.disabled
+                        ? {
+                            class: 'disabled',
+                          }
+                        : {
+                            onclick: (e: MouseEvent) => {
+                              console.log(`Clicked ${option.label}`);
+                              e.stopPropagation();
+                              toggleOption(option.id, multiple, attrs);
+                            },
+                          },
                       m(
-                        '.select-tag',
-                        {
-                          key: option.id,
-                        },
-                        [
-                          option.label,
-                          !disabled &&
-                            m(
-                              '.select-tag-close',
-                              {
+                        'span',
+                        multiple
+                          ? m(
+                              'label',
+                              { for: option.id },
+                              m('input', {
+                                id: option.id,
+                                type: 'checkbox',
+                                checked: state.selectedIds.includes(option.id),
+                                disabled: option.disabled ? true : undefined,
                                 onclick: (e: MouseEvent) => {
                                   e.stopPropagation();
-                                  toggleOption(option.id, true, attrs);
                                 },
-                              },
-                              '×'
-                            ),
-                        ]
+                              }),
+                              m('span', option.label)
+                            )
+                          : option.label
                       )
                     )
                   )
-                : m(
-                    '.select-display',
-                    {
-                      className: hasValue ? 'has-value' : '',
-                    },
-                    selectedOptions.length > 0 && selectedOptions[0].img
-                      ? [
-                          m('img.select-display-img', {
-                            src: selectedOptions[0].img,
-                            alt: selectedOptions[0].label,
-                          }),
-                          m('span.select-display-text', displayText)
-                        ]
-                      : displayText
-                  ),
-
-              // Label
-              label &&
-                m(Label, {
-                  label,
-                  isMandatory,
-                  className: hasValue || state.isOpen ? 'active' : '',
-                }),
-
-              // Dropdown
-              m(
-                '.select-dropdown',
-                {
-                  className: state.isOpen ? 'active' : '',
-                  role: 'listbox',
-                  'aria-multiselectable': multiple,
-                  style: {
-                    display: state.isOpen ? 'block' : 'none',
-                    position: 'absolute',
-                    top: '100%',
-                    left: '0',
-                    right: '0',
-                    backgroundColor: '#fff',
-                    boxShadow: '0 2px 5px rgba(0,0,0,0.16), 0 2px 10px rgba(0,0,0,0.12)',
-                    maxHeight: '300px',
-                    overflowY: 'auto',
-                    zIndex: '1000',
-                    border: '1px solid #ddd',
-                    borderRadius: '2px'
-                  }
-                },
-                state.isOpen ? m(SelectDropdown<T>(), {
-                  attrs,
-                  state,
-                  isSelected,
-                  toggleOption,
-                }) : null
-              ),
+                ),
+              m(Caret),
             ]
           ),
+
+          // Label
+          label &&
+            m(Label, {
+              id: state.id,
+              label,
+              isMandatory,
+            }),
 
           // Helper text
           helperText && m(HelperText, { helperText }),

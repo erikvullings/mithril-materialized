@@ -44,13 +44,13 @@ export const SelectionPage = () => {
               // { id: 0, label: 'Option 0' },
               {
                 id: 'movies',
-                img: 'https://loremflickr.com/320/240?random=1',
+                // img: 'https://loremflickr.com/320/240?random=1',
                 label: 'Watching movies',
                 title: 'Sitting for the TV, doing nothing',
               },
               {
                 id: 'out',
-                img: 'https://loremflickr.com/320/240?random=2',
+                // img: 'https://loremflickr.com/320/240?random=2',
                 label: 'Going out',
                 title: 'Scanning the environment, talking to strangers',
               },

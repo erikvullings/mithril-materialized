@@ -1,3 +1,5 @@
+import m, { FactoryComponent } from 'mithril';
+
 /**
  * Create a unique ID
  * @see https://stackoverflow.com/a/2117523/319711
@@ -38,3 +40,41 @@ export const isNumeric = (n: string | number) => !isNaN(parseFloat(n as string))
  * @returns
  */
 export const padLeft = (n: string | number, width: number = 2, z: string = '0') => String(n).padStart(width, z);
+
+export const Caret: FactoryComponent = () => {
+  return {
+    view: () => {
+      return m(
+        'svg',
+        { class: 'caret', height: '24', viewBox: '0 0 24 24', width: '24', xmlns: 'http://www.w3.org/2000/svg' },
+        [m('path', { d: 'M7 10l5 5 5-5z' }), m('path', { d: 'M0 0h24v24H0z', fill: 'none' })]
+      );
+    },
+  };
+};
+
+// Keep only essential dropdown positioning styles
+export const getDropdownStyles = (inputRef?: HTMLElement | null, overlap = false) => {
+  if (!inputRef) {
+    return {
+      display: 'block',
+      opacity: 1,
+      position: 'absolute',
+      top: overlap ? 0 : '100%',
+      left: '0',
+      zIndex: 1000,
+      width: '100%',
+    };
+  }
+
+  const rect = inputRef.getBoundingClientRect();
+  return {
+    display: 'block',
+    opacity: 1,
+    position: 'absolute',
+    top: overlap ? 0 : '100%',
+    left: '0',
+    zIndex: 1000,
+    width: `${rect.width}px`,
+  };
+};

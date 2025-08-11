@@ -1,5 +1,5 @@
 import m, { Attributes, Component } from 'mithril';
-import { uniqueId } from './utils';
+import { getDropdownStyles, uniqueId } from './utils';
 
 // Option interface for type safety
 export interface Option<T extends string | number> {
@@ -135,32 +135,6 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
     state.onchange && state.onchange(state.selectedOptions.map((o) => o.id));
   };
 
-  // Keep only essential dropdown positioning styles
-  const getDropdownStyles = () => {
-    if (!state.inputRef) {
-      return {
-        display: 'block',
-        opacity: 1,
-        position: 'absolute',
-        top: '100%',
-        left: '0',
-        zIndex: 1000,
-        width: '100%',
-      };
-    }
-
-    const rect = state.inputRef.getBoundingClientRect();
-    return {
-      display: 'block',
-      opacity: 1,
-      position: 'absolute',
-      top: '100%',
-      left: '0',
-      zIndex: 1000,
-      width: `${rect.width}px`,
-    };
-  };
-
   return {
     oninit: ({ attrs: { options = [], initialValue = [], onchange } }) => {
       state.options = options;
@@ -182,7 +156,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
         searchPlaceholder = 'Search options...',
         noOptionsFound = 'No options found',
         label,
-        maxHeight = '25rem',
+        // maxHeight = '25rem',
       },
     }) {
       // Safely filter options
@@ -212,7 +186,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
               e.stopPropagation();
               state.isOpen = !state.isOpen;
               console.log('SearchSelect state changed to', state.isOpen); // Debug log
-              m.redraw();
+              // m.redraw();
             },
             style: {
               display: 'flex',
@@ -223,6 +197,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
             },
           },
           [
+            // TODO FIXME Add to existing input
             // Hidden input for label association and accessibility
             m('input', {
               type: 'text',
@@ -298,7 +273,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
               onremove: () => {
                 state.dropdownRef = null;
               },
-              style: getDropdownStyles(),
+              style: getDropdownStyles(state.inputRef),
             },
             [
               m(
