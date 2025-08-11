@@ -8,7 +8,7 @@ import { Label, HelperText } from './label';
 const createLabelManager = (element: HTMLInputElement | HTMLTextAreaElement) => {
   const parentElement = element.parentElement as HTMLElement;
   const label = parentElement.querySelector('label');
-  
+
   const updateLabelState = () => {
     if (label) {
       if (element.value !== '' || document.activeElement === element || element.placeholder) {
@@ -18,21 +18,21 @@ const createLabelManager = (element: HTMLInputElement | HTMLTextAreaElement) => 
       }
     }
   };
-  
+
   const cleanup = () => {
     element.removeEventListener('focus', updateLabelState);
     element.removeEventListener('blur', updateLabelState);
     element.removeEventListener('input', updateLabelState);
   };
-  
+
   // Add event listeners
   element.addEventListener('focus', updateLabelState);
   element.addEventListener('blur', updateLabelState);
   element.addEventListener('input', updateLabelState);
-  
+
   // Initial label state
   updateLabelState();
-  
+
   return { updateLabelState, cleanup };
 };
 
@@ -68,18 +68,15 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
     currentLength: 0,
     hasInteracted: false,
     isValid: true,
-    height: 'auto',
+    height: undefined as undefined | string,
   };
-  
+
   let labelManager: { updateLabelState: () => void; cleanup: () => void } | null = null;
 
   const updateHeight = (textarea: HTMLTextAreaElement) => {
     textarea.style.height = 'auto';
     const newHeight = textarea.scrollHeight + 'px';
-    if (state.height !== newHeight) {
-      state.height = newHeight;
-      m.redraw();
-    }
+    state.height = textarea.value.length === 0 ? undefined : newHeight;
   };
 
   return {
@@ -116,8 +113,6 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
           tabindex: 0,
           style: {
             height: state.height,
-            resize: 'none',
-            overflow: 'hidden',
           },
           oncreate: ({ dom }) => {
             const textarea = dom as HTMLTextAreaElement;
@@ -127,7 +122,7 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
               textarea.value = String(initialValue);
               updateHeight(textarea);
             } else {
-              updateHeight(textarea);
+              // updateHeight(textarea);
             }
 
             // Setup label management
@@ -140,7 +135,7 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
           },
           onupdate: ({ dom }) => {
             const textarea = dom as HTMLTextAreaElement;
-            textarea.style.height = state.height;
+            if (state.height) textarea.style.height = state.height;
           },
           oninput: (e: Event) => {
             state.hasInteracted = false;
@@ -214,7 +209,7 @@ const InputField =
     let labelManager: { updateLabelState: () => void; cleanup: () => void } | null = null;
     let lengthUpdateHandler: (() => void) | null = null;
     let inputElement: HTMLInputElement | null = null;
-    
+
     const getValue = (target: HTMLInputElement) => {
       const val = target.value as any as T;
       return (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
@@ -413,7 +408,7 @@ const InputField =
           m(HelperText, {
             helperText,
             dataError: state.hasInteracted && !state.isValid ? dataError : undefined,
-            dataSuccess: state.hasInteracted && state.isValid && initialValue ? dataSuccess : undefined,
+            dataSuccess: state.hasInteracted && state.isValid ? dataSuccess : undefined,
           }),
           maxLength
             ? m(CharacterCounter, {
