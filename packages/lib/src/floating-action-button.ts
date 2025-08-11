@@ -65,7 +65,7 @@ export const FloatingActionButton: FactoryComponent<IFloatingActionButton> = () 
       attrs: {
         className,
         iconName,
-        iconClass = 'large',
+        iconClass,
         position,
         style = position === 'left' || position === 'inline-left'
           ? 'position: absolute; display: inline-block; left: 24px;'
