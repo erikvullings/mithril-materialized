@@ -1,5 +1,11 @@
-@use "sass:meta";
 @use "../variables";
+@use "input-fields";
+@use "radio-buttons";
+@use "checkboxes";
+@use "switches";
+@use "select";
+@use "file-input";
+@use "range";
 
 // Remove Focus Boxes
 select:focus {
@@ -15,11 +21,3 @@ label {
   font-size: variables.$label-font-size;
   color: variables.$input-border-color;
 }
-
-@include meta.load-css('input-fields');
-@include meta.load-css('radio-buttons');
-@include meta.load-css('checkboxes');
-@include meta.load-css('switches');
-@include meta.load-css('select');
-@include meta.load-css('file-input');
-@include meta.load-css('range');
