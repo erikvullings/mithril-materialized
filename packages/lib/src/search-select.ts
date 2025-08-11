@@ -1,4 +1,5 @@
 import m, { Attributes, Component } from 'mithril';
+import { uniqueId } from './utils';
 
 // Option interface for type safety
 export interface Option<T extends string | number> {
@@ -57,6 +58,9 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
     focusedIndex: -1,
     onchange: null,
   };
+
+  const componentId = uniqueId();
+  const searchInputId = `${componentId}-search`;
 
   // Handle click outside
   const handleClickOutside = (e: MouseEvent) => {
@@ -131,6 +135,32 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
     state.onchange && state.onchange(state.selectedOptions.map((o) => o.id));
   };
 
+  // Keep only essential dropdown positioning styles
+  const getDropdownStyles = () => {
+    if (!state.inputRef) {
+      return {
+        display: 'block',
+        opacity: 1,
+        position: 'absolute',
+        top: '100%',
+        left: '0',
+        zIndex: 1000,
+        width: '100%',
+      };
+    }
+
+    const rect = state.inputRef.getBoundingClientRect();
+    return {
+      display: 'block',
+      opacity: 1,
+      position: 'absolute',
+      top: '100%',
+      left: '0',
+      zIndex: 1000,
+      width: `${rect.width}px`,
+    };
+  };
+
   return {
     oninit: ({ attrs: { options = [], initialValue = [], onchange } }) => {
       state.options = options;
@@ -169,16 +199,9 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
         !filteredOptions.some((o) => (o.label || o.id.toString()).toLowerCase() === state.searchTerm.toLowerCase());
 
       // Render the dropdown
-      return m('.multi-select-dropdown.input-field', { className }, [
+      return m('.input-field.multi-select-dropdown', { className }, [
         m(
-          'label',
-          {
-            class: placeholder || state.selectedOptions.length > 0 ? 'active' : '',
-          },
-          label
-        ),
-        m(
-          '.dropdown-trigger',
+          '.chips.chips-initial.chips-container',
           {
             oncreate: ({ dom }) => {
               state.inputRef = dom as HTMLElement;
@@ -192,70 +215,82 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
               m.redraw();
             },
             style: {
-              borderBottom: '2px solid #d1d5db',
               display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              alignItems: 'end',
+              flexWrap: 'wrap',
               cursor: 'pointer',
-              pointerEvents: 'auto',
               position: 'relative',
-              zIndex: 1
             },
           },
           [
-            // Selected Options
-            m(
-              '.selected-options',
-              {
-                style: {
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  minHeight: '50px',
-                  paddingTop: '12px',
-                },
-              },
-              state.selectedOptions.length === 0
-                ? [m('span', placeholder)]
-                : state.selectedOptions.map((option) =>
-                    m('.chip', [
-                      option.label || option.id.toString(),
-                      m(
-                        'button',
-                        {
-                          onclick: (e: Event) => {
-                            e.stopPropagation();
-                            removeOption(option);
-                          },
-                          style: {
-                            marginLeft: '0.25rem',
-                            background: 'none',
-                            border: 'none',
-                            cursor: 'pointer',
-                          },
-                        },
-                        '×'
-                      ),
-                    ])
-                  )
+            // Hidden input for label association and accessibility
+            m('input', {
+              type: 'text',
+              id: componentId,
+              value: state.selectedOptions.map((o) => o.label || o.id.toString()).join(', '),
+              readonly: true,
+              style: { position: 'absolute', left: '-9999px', opacity: 0 },
+            }),
+
+            // Selected Options (chips)
+            ...state.selectedOptions.map((option) =>
+              m('.chip', [
+                option.label || option.id.toString(),
+                m(
+                  'i.material-icons.close',
+                  {
+                    onclick: (e: Event) => {
+                      e.stopPropagation();
+                      removeOption(option);
+                    },
+                  },
+                  'close'
+                ),
+              ])
             ),
-            // Dropdown Icon
+
+            // Placeholder when no options selected
+            state.selectedOptions.length === 0 &&
+              placeholder &&
+              m(
+                'span.placeholder',
+                {
+                  style: {
+                    color: '#9e9e9e',
+                    flexGrow: 1,
+                    padding: '8px 0',
+                  },
+                },
+                placeholder
+              ),
+
+            // Spacer to push caret to the right
+            m('span.spacer', { style: { flexGrow: 1 } }),
+
+            // Dropdown Icon (caret)
             m(
-              'svg.caret',
+              'i.material-icons.caret',
               {
-                class: 'caret',
-                height: '24',
-                viewBox: '0 0 24 24',
-                width: '24',
-                xmlns: 'http://www.w3.org/2000/svg',
+                style: { marginLeft: 'auto', cursor: 'pointer' },
               },
-              [m('path', { d: 'M7 10l5 5 5-5z' }), m('path', { d: 'M0 0h24v24H0z', fill: 'none' })]
+              state.isOpen ? 'arrow_drop_up' : 'arrow_drop_down'
             ),
           ]
         ),
+        // Label
+        label &&
+          m(
+            'label',
+            {
+              for: componentId,
+              class: placeholder || state.selectedOptions.length > 0 ? 'active' : '',
+            },
+            label
+          ),
         // Dropdown Menu
         state.isOpen &&
           m(
-            '.dropdown-menu',
+            'ul.dropdown-content.select-dropdown',
             {
               oncreate: ({ dom }) => {
                 state.dropdownRef = dom as HTMLElement;
@@ -263,149 +298,110 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
               onremove: () => {
                 state.dropdownRef = null;
               },
-              style: {
-                position: 'absolute',
-                width: '98%',
-                marginTop: '0.4rem',
-                zIndex: 1000,
-              },
+              style: getDropdownStyles(),
             },
             [
-              // Options List
               m(
-                'ul.dropdown-content.select-dropdown',
+                'li', // Search Input
                 {
-                  style: {
-                    maxHeight,
-                    opacity: 1,
-                    display: 'block',
-                    width: '100%',
-                  },
+                  class: 'search-wrapper',
+                  style: { padding: '0 16px', position: 'relative' },
                 },
                 [
-                  m(
-                    'li', // Search Input
-                    {
-                      class: 'search-wrapper',
-                      style: { padding: '0 16px', position: 'relative' },
+                  m('input', {
+                    type: 'text',
+                    id: searchInputId,
+                    placeholder: searchPlaceholder,
+                    value: state.searchTerm || '',
+                    oncreate: ({ dom }) => {
+                      // Auto-focus the search input when dropdown opens
+                      (dom as HTMLInputElement).focus();
                     },
-                    [
-                      m('input', {
-                        type: 'text',
-                        placeholder: searchPlaceholder,
-                        value: state.searchTerm || '',
-                        oncreate: ({ dom }) => {
-                          // Auto-focus the search input when dropdown opens
-                          (dom as HTMLInputElement).focus();
-                        },
-                        oninput: (e: InputEvent) => {
-                          state.searchTerm = (e.target as HTMLInputElement).value;
-                          state.focusedIndex = -1; // Reset focus when typing
-                        },
-                        onkeydown: async (e: KeyboardEvent) => {
-                          const result = handleKeyDown(e, filteredOptions, !!showAddNew);
-                          if (result === 'addNew' && oncreateNewOption) {
-                            const option = await oncreateNewOption(state.searchTerm);
-                            toggleOption(option);
-                          }
-                        },
-                        style: {
-                          width: '100%',
-                          outline: 'none',
-                          fontSize: '0.875rem',
-                          border: 'none',
-                          padding: '8px 0',
-                          borderBottom: '1px solid #9e9e9e'
-                        },
-                      }),
-                    ]
-                  ),
+                    oninput: (e: InputEvent) => {
+                      state.searchTerm = (e.target as HTMLInputElement).value;
+                      state.focusedIndex = -1; // Reset focus when typing
+                    },
+                    onkeydown: async (e: KeyboardEvent) => {
+                      const result = handleKeyDown(e, filteredOptions, !!showAddNew);
+                      if (result === 'addNew' && oncreateNewOption) {
+                        const option = await oncreateNewOption(state.searchTerm);
+                        toggleOption(option);
+                      }
+                    },
+                    style: {
+                      width: '100%',
+                      outline: 'none',
+                      fontSize: '0.875rem',
+                      border: 'none',
+                      padding: '8px 0',
+                      borderBottom: '1px solid #9e9e9e',
+                    },
+                  }),
+                ]
+              ),
 
-                  // No options found message or list of options
-                  ...(filteredOptions.length === 0 && !showAddNew
-                    ? [
-                        m(
-                          'li',
-                          {
-                            style: {
-                              padding: '0.5rem',
-                              textAlign: 'center',
-                              color: '#9ca3af',
-                            },
-                          },
-                          noOptionsFound
-                        ),
-                      ]
-                    : []),
+              // No options found message or list of options
+              ...(filteredOptions.length === 0 && !showAddNew
+                ? [
+                    m(
+                      'li',
+                      // {
+                      //   style: getNoOptionsStyles(),
+                      // },
+                      noOptionsFound
+                    ),
+                  ]
+                : []),
 
-                  // Add new option item
-                  ...(showAddNew
-                    ? [
-                        m(
-                          'li',
-                          {
-                            onclick: async () => {
-                              const option = await oncreateNewOption(state.searchTerm);
-                              toggleOption(option);
-                            },
-                            style: {
-                              display: 'flex',
-                              alignItems: 'center',
-                              cursor: 'pointer',
-                              padding: '12px 16px',
-                              background: state.focusedIndex === filteredOptions.length ? '#e3f2fd' : 'transparent',
-                              borderBottom: '1px solid #eeeeee',
-                              transition: 'background-color 0.3s ease',
-                            },
-                            onmouseover: () => {
-                              state.focusedIndex = filteredOptions.length;
-                              m.redraw();
-                            }
-                          },
-                          [m('span', `+ "${state.searchTerm}"`)]
-                        ),
-                      ]
-                    : []),
-
-                  // List of filtered options
-                  ...filteredOptions.map((option, index) =>
+              // Add new option item
+              ...(showAddNew
+                ? [
                     m(
                       'li',
                       {
-                        onclick: (e: Event) => {
-                          e.preventDefault();
-                          e.stopPropagation();
+                        onclick: async () => {
+                          const option = await oncreateNewOption(state.searchTerm);
                           toggleOption(option);
                         },
-                        class: option.disabled ? 'disabled' : undefined,
-                        style: {
-                          display: 'flex',
-                          alignItems: 'center',
-                          cursor: option.disabled ? 'not-allowed' : 'pointer',
-                          padding: '12px 16px',
-                          background: state.focusedIndex === index ? '#e3f2fd' : 'transparent',
-                          borderBottom: index < filteredOptions.length - 1 ? '1px solid #eeeeee' : 'none',
-                          transition: 'background-color 0.3s ease',
-                          opacity: option.disabled ? '0.5' : '1'
-                        },
+                        class: state.focusedIndex === filteredOptions.length ? 'active' : '',
                         onmouseover: () => {
-                          if (!option.disabled) {
-                            state.focusedIndex = index;
-                            m.redraw();
-                          }
-                        }
+                          state.focusedIndex = filteredOptions.length;
+                          m.redraw();
+                        },
                       },
-                      m('span', [
-                        m('input', {
-                          type: 'checkbox',
-                          checked: state.selectedOptions.some((selected) => selected.id === option.id),
-                          style: { marginRight: '0.5rem' },
-                        }),
-                        option.label || option.id.toString(),
-                      ])
-                    )
-                  ),
-                ]
+                      [m('span', `+ "${state.searchTerm}"`)]
+                    ),
+                  ]
+                : []),
+
+              // List of filtered options
+              ...filteredOptions.map((option, index) =>
+                m(
+                  'li',
+                  {
+                    onclick: (e: Event) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleOption(option);
+                    },
+                    class: `${option.disabled ? 'disabled' : ''} ${
+                      state.focusedIndex === index ? 'active' : ''
+                    }`.trim(),
+                    onmouseover: () => {
+                      if (!option.disabled) {
+                        state.focusedIndex = index;
+                        m.redraw();
+                      }
+                    },
+                  },
+                  m('span', [
+                    m('input', {
+                      type: 'checkbox',
+                      checked: state.selectedOptions.some((selected) => selected.id === option.id),
+                    }),
+                    option.label || option.id.toString(),
+                  ])
+                )
               ),
             ]
           ),
