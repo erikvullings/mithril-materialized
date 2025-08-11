@@ -1,4 +1,4 @@
-import m, { Attributes, Component, FactoryComponent } from 'mithril';
+import m, { Attributes, Component } from 'mithril';
 import { Label, HelperText } from './label';
 import { IInputOption } from './option';
 import { Caret, getDropdownStyles, uniqueId } from './utils';
@@ -55,16 +55,7 @@ interface ISelectState<T extends string | number> {
   dropdownRef?: HTMLElement | null;
 }
 
-interface ISelectOptionProps<T extends string | number> {
-  option: IInputOption<T>;
-  index: number;
-  isSelected: boolean;
-  isFocused: boolean;
-  multiple?: boolean;
-  onToggle: (id: T) => void;
-}
-
-/** CSS-only Select component - no Materialize dependencies */
+/** Select component */
 export const Select = <T extends string | number>(): Component<ISelectOptions<T>> => {
   const state: ISelectState<T> = {
     id: '',
