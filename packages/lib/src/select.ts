@@ -90,6 +90,7 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
 
   const handleKeyDown = (e: KeyboardEvent, attrs: ISelectOptions<T>) => {
     const { options } = attrs;
+    const selectableOptions = options.filter((opt) => !opt.disabled);
 
     switch (e.key) {
       case 'ArrowDown':
@@ -98,13 +99,19 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
           state.isOpen = true;
           state.focusedIndex = 0;
         } else {
-          state.focusedIndex = Math.min(state.focusedIndex + 1, options.length - 1);
+          const currentSelectableIndex = selectableOptions.findIndex((opt) => opt === options[state.focusedIndex]);
+          const nextSelectableIndex = Math.min(currentSelectableIndex + 1, selectableOptions.length - 1);
+          const nextOption = selectableOptions[nextSelectableIndex];
+          state.focusedIndex = options.findIndex((opt) => opt === nextOption);
         }
         break;
       case 'ArrowUp':
         e.preventDefault();
         if (state.isOpen) {
-          state.focusedIndex = Math.max(state.focusedIndex - 1, 0);
+          const currentSelectableIndex = selectableOptions.findIndex((opt) => opt === options[state.focusedIndex]);
+          const prevSelectableIndex = Math.max(currentSelectableIndex - 1, 0);
+          const prevOption = selectableOptions[prevSelectableIndex];
+          state.focusedIndex = options.findIndex((opt) => opt === prevOption);
         }
         break;
       case 'Enter':
@@ -117,7 +124,7 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
           }
         } else if (!state.isOpen) {
           state.isOpen = true;
-          state.focusedIndex = 0; // Set focus to first option when opening
+          state.focusedIndex = 0;
         }
         break;
       case 'Escape':
@@ -134,6 +141,113 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
       state.isOpen = false;
       m.redraw();
     }
+  };
+
+  const renderGroupedOptions = (options: IInputOption<T>[], multiple: boolean, attrs: ISelectOptions<T>) => {
+    const groupedOptions: { [key: string]: IInputOption<T>[] } = {};
+    const ungroupedOptions: IInputOption<T>[] = [];
+
+    // Group options by their group property
+    options.forEach((option) => {
+      if (option.group) {
+        if (!groupedOptions[option.group]) {
+          groupedOptions[option.group] = [];
+        }
+        groupedOptions[option.group].push(option);
+      } else {
+        ungroupedOptions.push(option);
+      }
+    });
+
+    const renderElements: any[] = [];
+
+    // Render ungrouped options first
+    ungroupedOptions.forEach((option) => {
+      renderElements.push(
+        m(
+          'li',
+          {
+            class: option.disabled ? 'disabled' : state.focusedIndex === options.indexOf(option) ? 'focused' : '',
+            ...(option.disabled
+              ? {}
+              : {
+                  onclick: (e: MouseEvent) => {
+                    e.stopPropagation();
+                    toggleOption(option.id, multiple, attrs);
+                  },
+                }),
+          },
+          m(
+            'span',
+            multiple
+              ? m(
+                  'label',
+                  { for: option.id },
+                  m('input', {
+                    id: option.id,
+                    type: 'checkbox',
+                    checked: state.selectedIds.includes(option.id),
+                    disabled: option.disabled ? true : undefined,
+                    onclick: (e: MouseEvent) => {
+                      e.stopPropagation();
+                    },
+                  }),
+                  m('span', option.label)
+                )
+              : option.label
+          )
+        )
+      );
+    });
+
+    // Render grouped options
+    Object.keys(groupedOptions).forEach((groupName) => {
+      // Add group header
+      renderElements.push(m('li.optgroup', { tabindex: 0 }, m('span', groupName)));
+
+      // Add group options
+      groupedOptions[groupName].forEach((option) => {
+        renderElements.push(
+          m(
+            'li',
+            {
+              class: `optgroup-option${option.disabled ? ' disabled' : ''}${
+                isSelected(option.id, state.selectedIds) ? ' selected' : ''
+              }${state.focusedIndex === options.indexOf(option) ? ' focused' : ''}`,
+              ...(option.disabled
+                ? {}
+                : {
+                    onclick: (e: MouseEvent) => {
+                      e.stopPropagation();
+                      toggleOption(option.id, multiple, attrs);
+                    },
+                  }),
+            },
+            m(
+              'span',
+              multiple
+                ? m(
+                    'label',
+                    { for: option.id },
+                    m('input', {
+                      id: option.id,
+                      type: 'checkbox',
+                      checked: state.selectedIds.includes(option.id),
+                      disabled: option.disabled ? true : undefined,
+                      onclick: (e: MouseEvent) => {
+                        e.stopPropagation();
+                      },
+                    }),
+                    m('span', option.label)
+                  )
+                : option.label
+            )
+          )
+        );
+      });
+    });
+
+    return renderElements;
   };
 
   return {
@@ -219,11 +333,9 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
                   state.inputRef = dom as HTMLElement;
                 },
                 onclick: (e: Event) => {
-                  console.log('Input clicked', state.isOpen, e); // Debug log
                   e.preventDefault();
                   e.stopPropagation();
                   state.isOpen = !state.isOpen;
-                  console.log('Input state changed to', state.isOpen); // Debug log
                 },
               }),
               // Dropdown Menu
@@ -231,50 +343,19 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
                 m(
                   'ul.dropdown-content.select-dropdown',
                   {
+                    tabindex: 0,
                     oncreate: ({ dom }) => {
                       state.dropdownRef = dom as HTMLElement;
                     },
                     onremove: () => {
                       state.dropdownRef = null;
                     },
-                    style: getDropdownStyles(state.inputRef, true),
+                    style: getDropdownStyles(state.inputRef, true, options),
                   },
-                  placeholder && m('li.disabled', m('span', placeholder)),
-                  options.map((option) =>
-                    m(
-                      'li',
-                      option.disabled
-                        ? {
-                            class: 'disabled',
-                          }
-                        : {
-                            onclick: (e: MouseEvent) => {
-                              console.log(`Clicked ${option.label}`);
-                              e.stopPropagation();
-                              toggleOption(option.id, multiple, attrs);
-                            },
-                          },
-                      m(
-                        'span',
-                        multiple
-                          ? m(
-                              'label',
-                              { for: option.id },
-                              m('input', {
-                                id: option.id,
-                                type: 'checkbox',
-                                checked: state.selectedIds.includes(option.id),
-                                disabled: option.disabled ? true : undefined,
-                                onclick: (e: MouseEvent) => {
-                                  e.stopPropagation();
-                                },
-                              }),
-                              m('span', option.label)
-                            )
-                          : option.label
-                      )
-                    )
-                  )
+                  [
+                    placeholder && m('li.disabled', { tabindex: 0 }, m('span', placeholder)),
+                    ...renderGroupedOptions(options, multiple, attrs),
+                  ]
                 ),
               m(Caret),
             ]

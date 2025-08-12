@@ -54,7 +54,7 @@ export const Caret: FactoryComponent = () => {
 };
 
 // Keep only essential dropdown positioning styles
-export const getDropdownStyles = (inputRef?: HTMLElement | null, overlap = false) => {
+export const getDropdownStyles = (inputRef?: HTMLElement | null, overlap = false, options?: any[]) => {
   if (!inputRef) {
     return {
       display: 'block',
@@ -68,13 +68,81 @@ export const getDropdownStyles = (inputRef?: HTMLElement | null, overlap = false
   }
 
   const rect = inputRef.getBoundingClientRect();
-  return {
+  const viewportHeight = window.innerHeight;
+
+  // Calculate dropdown height based on options
+  let estimatedHeight = 200; // Default fallback
+  if (options) {
+    const itemHeight = 53; // Standard height for dropdown items
+    const groupHeaderHeight = 53; // Height for group headers
+
+    // Count groups and total options
+    const groups = new Set();
+    let totalOptions = 0;
+
+    options.forEach((option) => {
+      totalOptions++;
+      if (option.group) {
+        groups.add(option.group);
+      }
+    });
+
+    // Calculate total height: options + group headers + padding
+    estimatedHeight = totalOptions * itemHeight + groups.size * groupHeaderHeight;
+  }
+  const spaceBelow = viewportHeight - rect.bottom;
+  const spaceAbove = rect.top;
+
+  // If there's not enough space below and more space above, position dropdown above
+  const shouldPositionAbove = spaceBelow < estimatedHeight && spaceAbove > spaceBelow;
+
+  // Calculate available space and whether scrolling is needed
+  const availableSpace = shouldPositionAbove ? spaceAbove : spaceBelow;
+
+  // When positioning above, we need to consider the actual space from viewport top to input
+  let effectiveAvailableSpace = availableSpace;
+  if (shouldPositionAbove) {
+    effectiveAvailableSpace = rect.top - 10; // Space from viewport top to input, minus margin
+  }
+
+  const needsScrolling = estimatedHeight > effectiveAvailableSpace;
+
+  // Calculate the actual height the dropdown will take
+  const actualHeight = needsScrolling ? effectiveAvailableSpace : estimatedHeight;
+
+  // Calculate positioning when dropdown should appear above
+  let topOffset;
+  if (shouldPositionAbove) {
+    // Calculate how much space we actually have from top of viewport to top of input
+    const availableSpaceFromViewportTop = rect.top;
+
+    // If dropdown fits comfortably above input, use normal positioning
+    if (actualHeight <= availableSpaceFromViewportTop - 10) {
+      topOffset = -actualHeight; // Bottom of dropdown aligns with top of input
+    } else {
+      // If dropdown is too tall, position it at the very top of viewport
+      // This makes the dropdown use all available space from viewport top to input top
+      topOffset = -availableSpaceFromViewportTop + 5; // 5px margin from viewport top
+    }
+  } else {
+    topOffset = overlap ? 0 : '100%';
+  }
+
+  const styles: any = {
     display: 'block',
     opacity: 1,
     position: 'absolute',
-    top: overlap ? 0 : '100%',
+    top: typeof topOffset === 'number' ? `${topOffset}px` : topOffset,
     left: '0',
     zIndex: 1000,
     width: `${rect.width}px`,
   };
+
+  // Only add scrolling constraints when necessary
+  if (needsScrolling) {
+    styles.maxHeight = `${actualHeight}px`;
+    styles.overflowY = 'auto';
+  }
+
+  return styles;
 };
