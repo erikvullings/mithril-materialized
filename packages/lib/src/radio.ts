@@ -1,7 +1,6 @@
 import m, { Attributes, Component } from 'mithril';
 import { uniqueId } from './utils';
 import { IInputOption } from './option';
-import { Label } from './label';
 
 export interface IRadioButtons<T extends string | number> extends Attributes {
   /** Element ID */
@@ -26,6 +25,8 @@ export interface IRadioButtons<T extends string | number> extends Attributes {
   checkboxClass?: string;
   /** Disable the button */
   disabled?: boolean;
+  /** Layout for the options: 'vertical' (default) or 'horizontal' */
+  layout?: 'vertical' | 'horizontal';
 }
 
 export interface IRadioButton<T extends string | number> extends Attributes {
@@ -35,15 +36,19 @@ export interface IRadioButton<T extends string | number> extends Attributes {
   label: string;
   groupId: string;
   disabled?: boolean;
+  /** Optional input id for the radio button */
+  inputId?: string;
 }
 
 export const RadioButton = <T extends string | number>(): Component<IRadioButton<T>> => ({
-  view: ({ attrs: { id, groupId, label, onchange, className = 'col s12', checked, disabled } }) => {
+  view: ({ attrs: { id, groupId, label, onchange, className = 'col s12', checked, disabled, inputId } }) => {
+    const radioId = inputId || `${groupId}-${id}`;
     return m(
-      'div',
+      'p',
       { className },
-      m('label', [
+      m('label', { for: radioId }, [
         m('input[type=radio][tabindex=0]', {
+          id: radioId,
           name: groupId,
           disabled,
           checked,
@@ -63,15 +68,16 @@ export const RadioButtons = <T extends string | number>(): Component<IRadioButto
     oldCheckedId?: T;
     checkedId?: T;
     onchange: (id: T) => void;
+    componentId: string;
   };
   return {
-    oninit: ({ attrs: { checkedId, initialValue } }) => {
+    oninit: ({ attrs: { checkedId, initialValue, id } }) => {
       state.oldCheckedId = checkedId;
       state.checkedId = checkedId || initialValue;
+      state.componentId = id || uniqueId();
     },
     view: ({
       attrs: {
-        id,
         checkedId: cid,
         newRow,
         className = 'col s12',
@@ -81,13 +87,14 @@ export const RadioButtons = <T extends string | number>(): Component<IRadioButto
         options,
         isMandatory,
         checkboxClass,
+        layout = 'vertical',
         onchange: callback,
       },
     }) => {
       if (state.oldCheckedId !== cid) {
         state.oldCheckedId = state.checkedId = cid;
       }
-      const { groupId, checkedId } = state;
+      const { groupId, checkedId, componentId } = state;
       const onchange = (propId: T) => {
         state.checkedId = propId;
         if (callback) {
@@ -95,20 +102,38 @@ export const RadioButtons = <T extends string | number>(): Component<IRadioButto
         }
       };
 
-      if (newRow) className += ' clear';
-      return m('div', { id, className }, [
-        m('div', { className: 'input-field options' }, m(Label, { id, label, isMandatory })),
-        description ? m('p.helper-text', m.trust(description)) : '',
-        ...options.map((r) =>
-          m(RadioButton, {
-            ...r,
-            onchange,
-            groupId,
-            disabled,
-            className: checkboxClass,
-            checked: r.id === checkedId,
-          } as IRadioButton<T>)
-        ),
+      const cn = [newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim();
+      
+      const optionsContent = layout === 'horizontal' 
+        ? m('div.grid-container', 
+            options.map((r) =>
+              m(RadioButton, {
+                ...r,
+                onchange,
+                groupId,
+                disabled: disabled || r.disabled,
+                className: checkboxClass,
+                checked: r.id === checkedId,
+                inputId: `${componentId}-${r.id}`,
+              } as IRadioButton<T>)
+            )
+          )
+        : options.map((r) =>
+            m(RadioButton, {
+              ...r,
+              onchange,
+              groupId,
+              disabled: disabled || r.disabled,
+              className: checkboxClass,
+              checked: r.id === checkedId,
+              inputId: `${componentId}-${r.id}`,
+            } as IRadioButton<T>)
+          );
+
+      return m('div', { id: componentId, className: cn }, [
+        label && m('h5.form-group-label', label + (isMandatory ? ' *' : '')),
+        description && m('p.helper-text', m.trust(description)),
+        m('form', { action: '#' }, optionsContent),
       ]);
     },
   };

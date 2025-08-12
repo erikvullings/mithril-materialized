@@ -1,0 +1,28 @@
+@use "../variables";
+
+/* Shared styles for form groups (Options and RadioButtons components) */
+
+/* New grid-based style for horizontal and consistent alignment */
+.grid-container {
+  display: grid;
+  /* Create columns that are at least 150px wide and fill the available space */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  /* Add space between grid items */
+  gap: 15px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+/* The paragraph elements don't need margin anymore as gap handles it */
+.grid-container p {
+  margin: 0;
+}
+
+.form-group-label {
+  font-size: variables.$label-font-size;
+  color: variables.$input-border-color;
+  margin-bottom: 15px;
+  display: block;
+  cursor: text;
+  text-align: initial;
+}
