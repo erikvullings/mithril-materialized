@@ -91,8 +91,6 @@ export const Tabs: FactoryComponent<ITabs> = () => {
 
   const updateIndicator = () => {
     const tabElement = document.getElementById(state.activeTabId);
-    console.log(state.activeTabId);
-    console.log(tabElement);
     if (tabElement) {
       const tabsContainer = tabElement.closest('.tabs');
       if (tabsContainer) {
