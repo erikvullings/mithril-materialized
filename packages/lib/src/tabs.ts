@@ -45,7 +45,7 @@ export interface ITabsOptions {
 }
 
 export interface ITabs extends ITabsOptions, Attributes {
-  /** Selected tab id */
+  /** Selected tab id, takes precedence over tab.active property */
   selectedTabId?: string;
   /**
    * Tab width, can be `auto` to use the width of the title,
@@ -54,30 +54,79 @@ export interface ITabs extends ITabsOptions, Attributes {
   tabWidth?: 'auto' | 'fixed' | 'fill';
   /** List of tab items */
   tabs: ITabItem[];
+  /** Callback when tab changes */
+  onTabChange?: (tabId: string) => void;
 }
 
 /** CSS-only Tabs component - no MaterializeCSS dependencies */
 export const Tabs: FactoryComponent<ITabs> = () => {
+  type AnchoredTabItem = ITabItem & {
+    anchorId: string;
+    tabId: string;
+  };
+
+  const toAnchored = () => {
+    let activeTabFound = false;
+    return (tab: ITabItem) => {
+      const active = activeTabFound ? false : tab.active;
+      if (active) activeTabFound = true;
+      const tabId = createId(tab.title, tab.id);
+      return { ...tab, active, tabId, anchorId: `anchor-${tabId}` } as AnchoredTabItem;
+    };
+  };
+
   const state = {
     activeTabId: '',
     isDragging: false,
     startX: 0,
     translateX: 0,
+    indicatorStyle: {
+      left: '0px',
+      width: '0px',
+    },
+    lastIndicatorUpdate: '',
   };
 
   const createId = (title: string, id?: string) => (id ? id : title.replace(/ /g, '').toLowerCase());
 
+  const updateIndicator = () => {
+    const tabElement = document.getElementById(state.activeTabId);
+    console.log(state.activeTabId);
+    console.log(tabElement);
+    if (tabElement) {
+      const tabsContainer = tabElement.closest('.tabs');
+      if (tabsContainer) {
+        const containerRect = tabsContainer.getBoundingClientRect();
+        const tabRect = tabElement.getBoundingClientRect();
+
+        const newLeft = `${tabRect.left - containerRect.left}px`;
+        const newWidth = `${tabRect.width}px`;
+
+        // Only update if values actually changed - NO m.redraw()!
+        if (state.indicatorStyle.left !== newLeft || state.indicatorStyle.width !== newWidth) {
+          state.indicatorStyle = {
+            left: newLeft,
+            width: newWidth,
+          };
+        }
+      }
+    }
+  };
+
   const handleTabClick = (tabId: string, tabElement: HTMLElement, attrs: ITabs) => {
     if (state.activeTabId === tabId) return;
-    
+
     state.activeTabId = tabId;
-    
+
     // Call onShow callback if provided
     if (attrs.onShow) {
       attrs.onShow(tabElement);
     }
-    
-    m.redraw();
+
+    // Call onTabChange callback if provided
+    if (attrs.onTabChange) {
+      attrs.onTabChange(tabId);
+    }
   };
 
   // Touch/swipe support for mobile
@@ -89,71 +138,86 @@ export const Tabs: FactoryComponent<ITabs> = () => {
 
   const handleTouchEnd = (e: TouchEvent, attrs: ITabs) => {
     if (!state.isDragging || !e.changedTouches || e.changedTouches.length === 0) return;
-    
+
     const endX = e.changedTouches[0].clientX;
     const deltaX = endX - state.startX;
     const threshold = 50; // Minimum swipe distance
-    
+
     if (Math.abs(deltaX) > threshold) {
-      const currentIndex = attrs.tabs.findIndex(tab => 
-        createId(tab.title, tab.id) === state.activeTabId
-      );
-      
+      const currentIndex = attrs.tabs.findIndex((tab) => createId(tab.title, tab.id) === state.activeTabId);
+
       if (deltaX > 0 && currentIndex > 0) {
         // Swipe right - go to previous tab
         const prevTab = attrs.tabs[currentIndex - 1];
         if (!prevTab.disabled && !prevTab.href) {
-          state.activeTabId = createId(prevTab.title, prevTab.id);
+          const newTabId = createId(prevTab.title, prevTab.id);
+          state.activeTabId = newTabId;
+          if (attrs.onTabChange) {
+            attrs.onTabChange(newTabId);
+          }
         }
       } else if (deltaX < 0 && currentIndex < attrs.tabs.length - 1) {
         // Swipe left - go to next tab
         const nextTab = attrs.tabs[currentIndex + 1];
         if (!nextTab.disabled && !nextTab.href) {
-          state.activeTabId = createId(nextTab.title, nextTab.id);
+          const newTabId = createId(nextTab.title, nextTab.id);
+          state.activeTabId = newTabId;
+          if (attrs.onTabChange) {
+            attrs.onTabChange(newTabId);
+          }
         }
       }
     }
-    
+
     state.isDragging = false;
     state.translateX = 0;
-    m.redraw();
+    // m.redraw();
+  };
+
+  /** Initialize active tab - selectedTabId takes precedence, next active property or first available tab */
+  const setActiveTabId = (anchoredTabs: AnchoredTabItem[], selectedTabId?: string): AnchoredTabItem | undefined => {
+    const selectedTab = selectedTabId ? anchoredTabs.find((a) => a.tabId === selectedTabId) : undefined;
+    if (selectedTab) {
+      state.activeTabId = selectedTab.tabId;
+      selectedTab.active = true;
+      return selectedTab;
+    }
+
+    const activeTab = anchoredTabs.find((t) => t.active);
+    if (activeTab) {
+      // Active tab property takes precedence over selectedTabId
+      state.activeTabId = activeTab.tabId;
+      return activeTab;
+    }
+
+    // Default to first non-disabled tab
+    const firstAvailableTab = anchoredTabs.find((t) => !t.disabled && !t.href);
+    if (firstAvailableTab) {
+      state.activeTabId = firstAvailableTab.tabId;
+      firstAvailableTab.active = true;
+      return firstAvailableTab;
+    }
+    return undefined;
   };
 
   return {
     oninit: ({ attrs }) => {
-      // Initialize active tab - active property on tab item takes precedence
-      const activeTab = attrs.tabs.find(t => t.active);
-      const selectedId = attrs.selectedTabId;
-      
-      if (activeTab) {
-        // Active tab property takes precedence over selectedTabId
-        state.activeTabId = createId(activeTab.title, activeTab.id);
-      } else if (selectedId) {
-        state.activeTabId = selectedId;
-      } else {
-        // Default to first non-disabled tab
-        const firstAvailableTab = attrs.tabs.find(t => !t.disabled && !t.href);
-        if (firstAvailableTab) {
-          state.activeTabId = createId(firstAvailableTab.title, firstAvailableTab.id);
-        }
-      }
+      const anchoredTabs = attrs.tabs.map(toAnchored());
+      setActiveTabId(anchoredTabs, attrs.selectedTabId);
     },
 
+    oncreate: () => {
+      updateIndicator();
+      m.redraw();
+    },
 
     view: ({ attrs }) => {
       const { tabWidth, tabs, className, style, swipeable = false } = attrs;
       const cn = [tabWidth === 'fill' ? 'tabs-fixed-width' : '', className].filter(Boolean).join(' ').trim();
-      
-      // Check for active tab property first, then selectedTabId - do this in view for immediate response
-      const activeTab = attrs.tabs.find(t => t.active);
-      if (activeTab) {
-        const activeTabId = createId(activeTab.title, activeTab.id);
-        if (activeTabId !== state.activeTabId) {
-          state.activeTabId = activeTabId;
-        }
-      } else if (attrs.selectedTabId && attrs.selectedTabId !== state.activeTabId) {
-        state.activeTabId = attrs.selectedTabId;
-      }
+
+      const anchoredTabs = tabs.map(toAnchored());
+      const activeTab = setActiveTabId(anchoredTabs, attrs.selectedTabId);
+      updateIndicator();
 
       return m('.row', [
         // Tab headers
@@ -165,64 +229,71 @@ export const Tabs: FactoryComponent<ITabs> = () => {
               className: cn,
               style,
             },
-            tabs.map((tab) => {
-              const { className: tabClassName, title, id, disabled, target, href } = tab;
-              const cn = [tabWidth === 'fixed' ? `col s${Math.floor(12 / tabs.length)}` : '', tabClassName]
-                .filter(Boolean)
-                .join(' ')
-                .trim();
-              const anchorId = createId(title, id);
-              const tabId = `tab_${anchorId}`;
-              const isActive = state.activeTabId === anchorId;
-              const cnA = isActive ? 'active' : '';
+            [
+              ...anchoredTabs.map((tab) => {
+                const { className: tabClassName, title, anchorId, tabId, disabled, target, href } = tab;
+                const cn = ['tab', tabWidth === 'fixed' ? `col s${Math.floor(12 / tabs.length)}` : '', tabClassName]
+                  .filter(Boolean)
+                  .join(' ')
+                  .trim();
 
-              return m(
-                'li.tab',
-                {
-                  key: anchorId,
-                  className: cn,
-                },
-                m('a', {
-                  id: tabId,
-                  className: cnA,
-                  target,
-                  href: href || `#${anchorId}`,
-                  onclick: disabled || href ? undefined : (e: Event) => {
-                    e.preventDefault();
-                    handleTabClick(anchorId, e.target as HTMLElement, attrs);
+                return m(
+                  'li',
+                  {
+                    key: tabId,
+                    id: tabId,
+                    className: cn,
+                    disabled,
                   },
-                  style: disabled ? { opacity: '0.6', cursor: 'not-allowed' } : undefined,
-                }, title)
-              );
-            })
-          )
-        ),
-        
-        // Tab content
-        m(
-          '.col.s12',
-          {
-            ontouchstart: swipeable ? handleTouchStart : undefined,
-            ontouchend: swipeable ? (e: TouchEvent) => handleTouchEnd(e, attrs) : undefined,
-            style: swipeable ? { touchAction: 'pan-y' } : undefined,
-          },
-          tabs
-            .filter(({ href }) => typeof href === 'undefined')
-            .map(({ id, title, vnode, contentClass }) => {
-              const contentId = createId(title, id);
-              const isActive = state.activeTabId === contentId;
-              
-              return m('.tab-content', {
-                key: contentId,
-                id: contentId,
-                className: contentClass,
+                  m(
+                    'a',
+                    {
+                      id: anchorId,
+                      className: tab.active ? 'active' : undefined,
+                      target,
+                      href: href || `#${anchorId}`,
+                      onclick:
+                        disabled || href
+                          ? undefined
+                          : (e: Event) => {
+                              e.preventDefault();
+                              handleTabClick(tabId, e.target as HTMLElement, attrs);
+                            },
+                      style: disabled ? { opacity: '0.6', cursor: 'not-allowed' } : undefined,
+                    },
+                    title
+                  )
+                );
+              }),
+              // Add the indicator element
+              m('li.indicator', {
+                key: 'indicator',
                 style: {
-                  display: isActive ? 'block' : 'none',
-                  transition: attrs.duration ? `opacity ${attrs.duration}ms ease` : 'opacity 300ms ease',
-                  opacity: isActive ? '1' : '0',
+                  display: state.activeTabId ? 'block' : 'none',
+                  left: state.indicatorStyle.left,
+                  width: state.indicatorStyle.width,
+                  transition: 'left 0.35s ease, width 0.35s ease',
                 },
-              }, isActive ? vnode : null);
-            })
+              }),
+            ]
+          ),
+          activeTab &&
+            m(
+              '.col.s12',
+              {
+                ontouchstart: swipeable ? handleTouchStart : undefined,
+                ontouchend: swipeable ? (e: TouchEvent) => handleTouchEnd(e, attrs) : undefined,
+                style: swipeable ? { touchAction: 'pan-y' } : undefined,
+              },
+
+              m(
+                '.tab-content',
+                {
+                  className: activeTab.contentClass,
+                },
+                activeTab.vnode
+              )
+            )
         ),
       ]);
     },

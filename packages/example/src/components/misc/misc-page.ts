@@ -39,27 +39,56 @@ export const MiscPage = () => {
           selectedTabId: state.activeTabId,
           tabWidth: state.tabWidths[state.tabWidthId % 3],
           onShow: console.log,
+          onTabChange: (tabId: string) => {
+            console.log('Tab changed to:', tabId);
+            state.activeTabId = tabId;
+          },
           tabs: [
             {
               title: 'Test 1',
+              id: 'test1',
               active: state.activeTab === 1,
-              vnode: m('', 'Show content of tab 1'),
+              vnode: m('div', [
+                m('h4', 'Content for Test 1'),
+                m('p', 'This is the content for the first tab. Click on other tabs to see them in action!'),
+              ]),
             },
             {
               title: 'Test 2',
+              id: 'test2',
               disabled: state.disabled,
               active: state.activeTab === 2,
-              vnode: m('', 'Show content of tab 2'),
+              vnode: m('div', [
+                m('h4', 'Content for Test 2'),
+                m(
+                  'p',
+                  'This is the content for the second tab. You can disable/enable this tab with the button below.'
+                ),
+              ]),
             },
             {
               title: 'Test 3',
+              id: 'test3',
               active: state.activeTab === 3,
-              vnode: m('', 'Show content of tab 3'),
+              vnode: m('div', [
+                m('h4', 'Content for Test 3'),
+                m(
+                  'p',
+                  'This is the content for the third tab. Notice how the active indicator moves when you click tabs.'
+                ),
+              ]),
             },
             {
               title: 'Test 4',
+              id: 'test4',
               active: state.activeTab === 4,
-              vnode: m('', 'Show content of tab 4'),
+              vnode: m('div', [
+                m('h4', 'Content for Test 4'),
+                m(
+                  'p',
+                  'This is the content for the fourth tab. The tabs now properly handle clicking and content switching.'
+                ),
+              ]),
             },
             {
               title: 'Visit Google',
@@ -74,7 +103,6 @@ export const MiscPage = () => {
           onclick: () => {
             state.activeTab = 1;
             state.activeTabId = '';
-            m.redraw();
           },
         }),
         m(Button, {
@@ -82,14 +110,12 @@ export const MiscPage = () => {
           onclick: () => {
             state.activeTab = 0;
             state.activeTabId = 'test4';
-            m.redraw();
           },
         }),
         m(Button, {
           label: `${state.disabled ? 'Enable' : 'Disable'} tab 2`,
           onclick: () => {
             state.disabled = !state.disabled;
-            m.redraw();
           },
         }),
         m(Button, {
@@ -98,7 +124,6 @@ export const MiscPage = () => {
           }`,
           onclick: () => {
             state.tabWidthId++;
-            m.redraw();
           },
         }),
         m(CodeBlock, {
