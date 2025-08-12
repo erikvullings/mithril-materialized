@@ -1,8 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 
 export interface IParallaxOptions {
-  /** Parallax speed ratio (0 = no movement, 1 = normal movement) */
-  speed?: number;
   /** Enable responsive parallax (disable on mobile for performance) */
   responsiveThreshold?: number;
 }
@@ -12,97 +10,111 @@ export interface IParallax extends IParallaxOptions, Attributes {
   src: string;
   /** Alt text for the image */
   alt?: string;
-  /** Height of the parallax container */
-  height?: string;
 }
 
 /**
- * CSS-only Parallax component - no MaterializeCSS dependencies
- * Parallax is an effect where the background content or image in this case,
- * is moved at a different speed than the foreground content while scrolling.
+ * MaterializeCSS Parallax component with dynamic positioning
+ * Port of the original MaterializeCSS parallax logic
  */
 export const Parallax: FactoryComponent<IParallax> = () => {
-  let container: HTMLElement | null = null;
-  let img: HTMLElement | null = null;
-  let animationId: number | null = null;
+  let containerEl: HTMLElement | null = null;
+  let imgEl: HTMLImageElement | null = null;
+  let scrollThrottle: number | null = null;
+  let lastScrollTop = -1;
 
-  const updateParallax = (speed: number = 0.5) => {
-    if (!container || !img) return;
+  // MaterializeCSS parallax logic - exact port from original source
+  const updateParallax = () => {
+    if (!containerEl || !imgEl) return;
 
-    const rect = container.getBoundingClientRect();
-    const containerTop = rect.top;
-    const containerHeight = rect.height;
+    const containerHeight = containerEl.offsetHeight > 0 ? containerEl.offsetHeight : containerEl.parentElement?.offsetHeight || 1;
+    const imgHeight = imgEl.offsetHeight;
+    const parallaxDist = imgHeight - containerHeight;
+    const bottom = containerEl.offsetTop + containerHeight;
+    const top = containerEl.offsetTop;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     const windowHeight = window.innerHeight;
+    const windowBottom = scrollTop + windowHeight;
+    const percentScrolled = (windowBottom - top) / (containerHeight + windowHeight);
+    
+    // MaterializeCSS formula: start at negative parallaxDist/2, move toward positive parallaxDist/2
+    const parallax = Math.round((parallaxDist * percentScrolled) - (parallaxDist / 2));
 
-    // Check if container is in viewport
-    if (containerTop < windowHeight && containerTop + containerHeight > 0) {
-      // Calculate parallax offset
-      const scrollRatio = (windowHeight - containerTop) / (windowHeight + containerHeight);
-      const parallaxOffset = (scrollRatio * containerHeight * speed) - (containerHeight * speed * 0.5);
-      
-      // Apply transform
-      img.style.transform = `translate3d(0, ${parallaxOffset}px, 0)`;
+    // Only update if we're in the viewport and scroll position changed
+    if (bottom > scrollTop && top < windowBottom && scrollTop !== lastScrollTop) {
+      // Match MaterializeCSS transform format: translate3d(-50%, Ypx, 0px) with opacity
+      imgEl.style.transform = `translate3d(-50%, ${parallax}px, 0px)`;
+      imgEl.style.opacity = '1';
+      lastScrollTop = scrollTop;
     }
   };
 
-  const handleScroll = (speed: number) => {
-    if (animationId) {
-      cancelAnimationFrame(animationId);
-    }
-    
-    animationId = requestAnimationFrame(() => {
-      updateParallax(speed);
+  const handleScroll = () => {
+    if (scrollThrottle) return;
+
+    scrollThrottle = requestAnimationFrame(() => {
+      updateParallax();
+      scrollThrottle = null;
     });
   };
 
-  const setupParallax = (containerEl: HTMLElement, speed: number, responsiveThreshold: number) => {
-    container = containerEl;
-    img = container.querySelector('.parallax img') as HTMLElement;
-    
-    if (!img) return;
+  const handleResize = () => {
+    updateParallax();
+  };
+
+  const setupParallax = (containerElement: HTMLElement, responsiveThreshold: number) => {
+    containerEl = containerElement;
+    imgEl = containerElement.querySelector('.parallax img') as HTMLImageElement;
+
+    if (!imgEl) return;
 
     // Check if we should enable parallax based on screen size
     const shouldEnableParallax = window.innerWidth >= responsiveThreshold;
-    
+
     if (shouldEnableParallax) {
-      const scrollHandler = () => handleScroll(speed);
-      
-      // Initial parallax calculation
-      updateParallax(speed);
-      
-      // Add scroll listener
-      window.addEventListener('scroll', scrollHandler, { passive: true });
-      window.addEventListener('resize', scrollHandler, { passive: true });
-      
+      // Set initial MaterializeCSS styles on the image
+      imgEl.style.transform = 'translate3d(-50%, 0px, 0px)';
+      imgEl.style.opacity = '1';
+
+      // Wait for image to load before calculating parallax
+      if (imgEl.complete) {
+        updateParallax();
+      } else {
+        imgEl.onload = () => updateParallax();
+      }
+
+      // Add event listeners
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('resize', handleResize, { passive: true });
+
       // Store cleanup function
-      container.setAttribute('data-parallax-cleanup', 'true');
-      (container as any)._parallaxCleanup = () => {
-        window.removeEventListener('scroll', scrollHandler);
-        window.removeEventListener('resize', scrollHandler);
-        if (animationId) {
-          cancelAnimationFrame(animationId);
-          animationId = null;
+      (containerEl as any)._parallaxCleanup = () => {
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', handleResize);
+        if (scrollThrottle) {
+          cancelAnimationFrame(scrollThrottle);
+          scrollThrottle = null;
         }
       };
     }
   };
 
   const cleanup = () => {
-    if (container && (container as any)._parallaxCleanup) {
-      (container as any)._parallaxCleanup();
+    if (containerEl && (containerEl as any)._parallaxCleanup) {
+      (containerEl as any)._parallaxCleanup();
     }
-    container = null;
-    img = null;
-    if (animationId) {
-      cancelAnimationFrame(animationId);
-      animationId = null;
+    containerEl = null;
+    imgEl = null;
+    if (scrollThrottle) {
+      cancelAnimationFrame(scrollThrottle);
+      scrollThrottle = null;
     }
+    lastScrollTop = -1;
   };
 
   return {
     oncreate: ({ dom, attrs }) => {
-      const { speed = 0.5, responsiveThreshold = 768 } = attrs;
-      setupParallax(dom as HTMLElement, speed, responsiveThreshold);
+      const { responsiveThreshold = 768 } = attrs;
+      setupParallax(dom as HTMLElement, responsiveThreshold);
     },
 
     onremove: () => {
@@ -110,53 +122,23 @@ export const Parallax: FactoryComponent<IParallax> = () => {
     },
 
     view: ({ attrs }) => {
-      const { src, alt = '', height = '500px' } = attrs;
-      
+      const { src, alt = '' } = attrs;
+
       if (!src) return undefined;
 
-      return m('.parallax-container', {
-        style: { 
-          height,
-          position: 'relative',
-          overflow: 'hidden',
-          display: 'block'
-        }
-      }, [
-        m('.parallax', {
-          style: {
-            position: 'absolute',
-            top: '0',
-            left: '0',
-            right: '0',
-            bottom: '0',
-            height: '120%' // Slightly larger for parallax effect
-          }
-        }, [
+      return m('.parallax-container', [
+        m('.parallax', [
           m('img', {
             src,
             alt,
-            style: {
-              display: 'block',
-              position: 'absolute',
-              left: '50%',
-              top: '50%',
-              minWidth: '100%',
-              minHeight: '100%',
-              width: 'auto',
-              height: 'auto',
-              transform: 'translate3d(-50%, -50%, 0)',
-              objectFit: 'cover',
-              zIndex: '1',
-              backgroundColor: '#f0f0f0' // Fallback background
-            },
             onerror: (e: Event) => {
               console.warn('Parallax image failed to load:', src);
               const img = e.target as HTMLImageElement;
               img.style.backgroundColor = '#ddd';
               img.alt = 'Image failed to load';
-            }
-          })
-        ])
+            },
+          }),
+        ]),
       ]);
     },
   };
