@@ -1,6 +1,6 @@
 import m, { Component, Attributes } from 'mithril';
 import { HelperText } from './label';
-import { uniqueId } from './utils';
+import { uniqueId, getDropdownStyles, Caret } from './utils';
 
 export interface IDropdownOption<T extends string | number> {
   /** ID property of the selected item */
@@ -51,6 +51,8 @@ interface IDropdownState<T extends string | number> {
   initialValue?: T;
   id: T;
   focusedIndex: number;
+  inputRef?: HTMLElement | null;
+  dropdownRef?: HTMLElement | null;
 }
 
 /** Pure TypeScript Dropdown component - no Materialize dependencies */
@@ -59,12 +61,14 @@ export const Dropdown = <T extends string | number>(): Component<IDropdownOption
     isOpen: false,
     initialValue: undefined,
     id: '' as T,
-    focusedIndex: -1
+    focusedIndex: -1,
+    inputRef: null,
+    dropdownRef: null,
   };
 
   const handleKeyDown = (e: KeyboardEvent, items: IDropdownOption<T>[], onchange?: (value: T) => void) => {
-    const availableItems = items.filter(item => !item.divider && !item.disabled);
-    
+    const availableItems = items.filter((item) => !item.divider && !item.disabled);
+
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
@@ -104,157 +108,144 @@ export const Dropdown = <T extends string | number>(): Component<IDropdownOption
     }
   };
 
-  const handleClickOutside = (e: MouseEvent) => {
-    const target = e.target as Element;
-    if (!target.closest('.dropdown-wrapper')) {
-      state.isOpen = false;
-      state.focusedIndex = -1;
-    }
-  };
-
   return {
     oninit: ({ attrs: { id = uniqueId(), initialValue, checkedId } }) => {
       state.id = id as T;
       state.initialValue = initialValue || checkedId;
-      document.addEventListener('click', handleClickOutside);
-    },
-
-    onremove: () => {
-      document.removeEventListener('click', handleClickOutside);
+      // Mithril will handle click events through the component structure
     },
 
     view: ({
-      attrs: {
-        key,
-        label,
-        onchange,
-        disabled = false,
-        items,
-        iconName,
-        helperText,
-        style,
-        className = 'col s12'
-      },
+      attrs: { key, label, onchange, disabled = false, items, iconName, helperText, style, className = 'col s12' },
     }) => {
-      const { id, initialValue } = state;
+      const { initialValue } = state;
       const selectedItem = initialValue
         ? items.filter((i: IDropdownOption<T>) => (i.id ? i.id === initialValue : i.label === initialValue)).shift()
         : undefined;
       const title = selectedItem ? selectedItem.label : label || 'Select';
-      const availableItems = items.filter(item => !item.divider && !item.disabled);
+      const availableItems = items.filter((item) => !item.divider && !item.disabled);
 
       return m('.dropdown-wrapper.input-field', { className, key, style }, [
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(HelperText, { helperText }),
         m(
-          'button.dropdown-trigger.btn.truncate',
+          '.select-wrapper',
           {
-            id: `${id}-trigger`,
-            disabled,
-            className: 'col s12',
-            style: style || (iconName ? 'margin: 0.2em 0 0 3em;' : undefined),
-            onclick: () => {
-              if (!disabled) {
-                state.isOpen = !state.isOpen;
-                state.focusedIndex = state.isOpen ? 0 : -1;
-              }
-            },
-            onkeydown: (e: KeyboardEvent) => {
-              if (!disabled) {
-                handleKeyDown(e, items, onchange);
-              }
-            },
-            'aria-haspopup': 'listbox',
+            onclick: disabled
+              ? undefined
+              : () => {
+                  state.isOpen = !state.isOpen;
+                  state.focusedIndex = state.isOpen ? 0 : -1;
+                },
+            onkeydown: disabled ? undefined : (e: KeyboardEvent) => handleKeyDown(e, items, onchange),
+            tabindex: disabled ? -1 : 0,
             'aria-expanded': state.isOpen ? 'true' : 'false',
-            'aria-controls': id,
-            tabindex: disabled ? -1 : 0
+            'aria-haspopup': 'listbox',
+            role: 'combobox',
           },
           [
-            title,
-            m('i.material-icons.right', 'arrow_drop_down')
+            m('input[type=text][readonly=true].select-dropdown.dropdown-trigger', {
+              id: state.id,
+              value: title,
+              oncreate: ({ dom }) => {
+                state.inputRef = dom as HTMLElement;
+              },
+              onclick: (e: Event) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!disabled) {
+                  state.isOpen = !state.isOpen;
+                  state.focusedIndex = state.isOpen ? 0 : -1;
+                }
+              },
+            }),
+            // Dropdown Menu using Select component's positioning logic
+            state.isOpen &&
+              m(
+                'ul.dropdown-content.select-dropdown',
+                {
+                  tabindex: 0,
+                  role: 'listbox',
+                  'aria-labelledby': state.id,
+                  oncreate: ({ dom }) => {
+                    state.dropdownRef = dom as HTMLElement;
+                  },
+                  onremove: () => {
+                    state.dropdownRef = null;
+                  },
+                  style: getDropdownStyles(
+                    state.inputRef,
+                    true,
+                    items.map((item) => ({
+                      ...item,
+                      // Convert dropdown items to format expected by getDropdownStyles
+                      group: undefined, // Dropdown doesn't use groups
+                    })),
+                    true
+                  ),
+                },
+                items.map((item, index) => {
+                  if (item.divider) {
+                    return m('li.divider', {
+                      key: `divider-${index}`,
+                    });
+                  }
+
+                  const itemIndex = availableItems.indexOf(item);
+                  const isFocused = itemIndex === state.focusedIndex;
+
+                  return m(
+                    'li',
+                    {
+                      key: item.id || `item-${index}`,
+                      class: [
+                        item.disabled ? 'disabled' : '',
+                        isFocused ? 'focused' : '',
+                        selectedItem?.id === item.id || selectedItem?.label === item.label ? 'selected' : '',
+                      ]
+                        .filter(Boolean)
+                        .join(' '),
+                      ...(item.disabled
+                        ? {}
+                        : {
+                            onclick: (e: MouseEvent) => {
+                              e.stopPropagation();
+                              const value = (item.id || item.label) as T;
+                              state.initialValue = value;
+                              state.isOpen = false;
+                              state.focusedIndex = -1;
+                              if (onchange) onchange(value);
+                            },
+                          }),
+                    },
+                    m(
+                      'span',
+                      {
+                        style: {
+                          display: 'flex',
+                          alignItems: 'center',
+                          padding: '14px 16px',
+                        },
+                      },
+                      [
+                        item.iconName
+                          ? m(
+                              'i.material-icons',
+                              {
+                                style: { marginRight: '32px' },
+                              },
+                              item.iconName
+                            )
+                          : undefined,
+                        item.label,
+                      ]
+                    )
+                  );
+                })
+              ),
+            m(Caret),
           ]
         ),
-        state.isOpen && m(
-          'ul.dropdown-content.active',
-          { 
-            id,
-            role: 'listbox',
-            'aria-labelledby': `${id}-trigger`,
-            style: {
-              display: 'block',
-              opacity: 1,
-              position: 'absolute',
-              zIndex: 1000,
-              width: '100%',
-              top: '100%',
-              left: 0,
-              backgroundColor: 'white',
-              boxShadow: '0 2px 5px rgba(0,0,0,0.16), 0 2px 10px rgba(0,0,0,0.12)',
-              borderRadius: '2px',
-              maxHeight: '200px',
-              overflowY: 'auto'
-            }
-          },
-          items.map((item, index) => {
-            if (item.divider) {
-              return m('li.divider', { 
-                key: `divider-${index}`,
-                style: {
-                  height: '1px',
-                  backgroundColor: '#e0e0e0',
-                  margin: '5px 0'
-                }
-              });
-            }
-
-            const itemIndex = availableItems.indexOf(item);
-            const isFocused = itemIndex === state.focusedIndex;
-            
-            return m(
-              'li',
-              {
-                key: item.id || `item-${index}`,
-                tabindex: -1,
-                className: [
-                  item.disabled ? 'disabled' : '',
-                  isFocused ? 'focused' : ''
-                ].filter(Boolean).join(' '),
-                style: {
-                  backgroundColor: isFocused ? '#f5f5f5' : 'transparent',
-                  cursor: item.disabled ? 'not-allowed' : 'pointer'
-                },
-                role: 'option',
-                'aria-selected': selectedItem?.id === item.id || selectedItem?.label === item.label
-              },
-              m(
-                'a',
-                {
-                  onclick: !item.disabled && onchange ? (e: Event) => {
-                    e.preventDefault();
-                    const value = (item.id || item.label) as T;
-                    state.initialValue = value;
-                    state.isOpen = false;
-                    state.focusedIndex = -1;
-                    onchange(value);
-                  } : undefined,
-                  style: {
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '14px 16px',
-                    color: item.disabled ? '#9e9e9e' : '#212121',
-                    textDecoration: 'none'
-                  }
-                },
-                [
-                  item.iconName ? m('i.material-icons', { 
-                    style: { marginRight: '32px' } 
-                  }, item.iconName) : undefined, 
-                  item.label
-                ]
-              )
-            );
-          })
-        )
       ]);
     },
   };

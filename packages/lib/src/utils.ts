@@ -54,7 +54,23 @@ export const Caret: FactoryComponent = () => {
 };
 
 // Keep only essential dropdown positioning styles
-export const getDropdownStyles = (inputRef?: HTMLElement | null, overlap = false, options?: any[]) => {
+export const getDropdownStyles = (
+  inputRef?: HTMLElement | null,
+  overlap = false,
+  options?: {
+    /** ID property of the selected item */
+    id?: string | number;
+    /** Label to show in the dropdown */
+    label: string;
+    /** Optional group  */
+    group?: string;
+    /** Can we select the item */
+    disabled?: boolean;
+    /** Add a divider */
+    divider?: boolean;
+  }[],
+  isDropDown = false
+) => {
   if (!inputRef) {
     return {
       display: 'block',
@@ -72,20 +88,22 @@ export const getDropdownStyles = (inputRef?: HTMLElement | null, overlap = false
 
   // Calculate dropdown height based on options
   let estimatedHeight = 200; // Default fallback
+  const itemHeight = 52; // Standard height for dropdown items
   if (options) {
-    const itemHeight = 53; // Standard height for dropdown items
-    const groupHeaderHeight = 53; // Height for group headers
+    const groupHeaderHeight = 52; // Height for group headers
 
     // Count groups and total options
     const groups = new Set();
     let totalOptions = 0;
 
-    options.forEach((option) => {
-      totalOptions++;
-      if (option.group) {
-        groups.add(option.group);
-      }
-    });
+    options
+      .filter((o) => !o.divider)
+      .forEach((option) => {
+        totalOptions++;
+        if (option.group) {
+          groups.add(option.group);
+        }
+      });
 
     // Calculate total height: options + group headers + padding
     estimatedHeight = totalOptions * itemHeight + groups.size * groupHeaderHeight;
@@ -117,8 +135,8 @@ export const getDropdownStyles = (inputRef?: HTMLElement | null, overlap = false
     const availableSpaceFromViewportTop = rect.top;
 
     // If dropdown fits comfortably above input, use normal positioning
-    if (actualHeight <= availableSpaceFromViewportTop - 10) {
-      topOffset = -actualHeight; // Bottom of dropdown aligns with top of input
+    if (actualHeight <= availableSpaceFromViewportTop) {
+      topOffset = 12 - actualHeight + (isDropDown ? itemHeight : 0); // Bottom of dropdown aligns with top of input
     } else {
       // If dropdown is too tall, position it at the very top of viewport
       // This makes the dropdown use all available space from viewport top to input top
