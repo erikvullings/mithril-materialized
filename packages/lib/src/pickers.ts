@@ -3,11 +3,33 @@ import { IInputOptions } from './input-options';
 import { uniqueId } from './utils';
 import { Label, HelperText } from './label';
 
-export interface IDatePickerOptions {
-  /** Date format string */
-  format?: string;
+export interface IDatePickerI18n {
+  /** Label for date field */
+  dateLabel?: string;
+  /** Helper text showing format */
+  helperText?: string;
+  /** Today button text */
+  todayLabel?: string;
+  /** Clear button text */
+  clearLabel?: string;
+  /** Close button text */
+  closeLabel?: string;
+  /** Icon for date input */
+  iconName?: string;
+}
+
+export interface IDatePickerFormat {
+  /** Date format for display (e.g., 'yyyy-mm-dd', 'dd/mm/yyyy', 'mm/dd/yyyy') */
+  displayFormat?: string;
+  /** Date format for value (always ISO format for consistency) */
+  valueFormat?: string;
+}
+
+export interface IDatePickerOptions extends IDatePickerI18n, IDatePickerFormat {
   /** Show clear button */
   showClearBtn?: boolean;
+  /** Show today button */
+  showTodayBtn?: boolean;
   /** Default date */
   defaultDate?: Date;
   /** Minimum selectable date */
@@ -28,193 +50,166 @@ export interface IDatePickerOptions {
   onOpen?: () => void;
   /** Callback when picker is closed */
   onClose?: () => void;
+  /** Change handler for the date value (ISO string) */
+  onChange?: (value: string) => void;
 }
 
-/** Pure TypeScript DatePicker component - no MaterializeCSS dependencies */
-export const DatePicker: FactoryComponent<IInputOptions<Date> & IDatePickerOptions> = () => {
+/** Enhanced DatePicker component with i18n support and improved functionality */
+export const DatePicker: FactoryComponent<IInputOptions<string> & IDatePickerOptions> = () => {
   const state = { 
     id: uniqueId(),
-    isOpen: false,
-    selectedDate: null as Date | null,
-    currentMonth: new Date().getMonth(),
-    currentYear: new Date().getFullYear(),
-    inputElement: null as HTMLInputElement | null,
+    date: '',
   };
 
-  const formatDate = (date: Date, format: string = 'yyyy/mm/dd'): string => {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    
-    const monthNames = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-    const shortMonthNames = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ];
-    
-    return format
-      .replace('yyyy', String(year))
-      .replace('mmmm', monthNames[month - 1])
-      .replace('mmm', shortMonthNames[month - 1])
-      .replace('mm', String(month).padStart(2, '0'))
-      .replace('dd', String(day).padStart(2, '0'))
-      .replace('d', String(day));
+  // Default i18n values
+  const getI18nDefaults = (): Required<IDatePickerI18n> => ({
+    dateLabel: 'Date',
+    helperText: 'YYYY-MM-DD',
+    todayLabel: 'Today',
+    clearLabel: 'Clear',
+    closeLabel: 'Close',
+    iconName: 'event',
+  });
+
+  // Get today's date in ISO format
+  const todayISO = (): string => {
+    return new Date().toISOString().slice(0, 10);
   };
 
+  // Format date for display based on specified format (utility for future custom display formats)
+  // Currently the native date input handles this automatically
+  // const formatDateForDisplay = (isoDate: string, displayFormat: string = 'yyyy-mm-dd'): string => { ... }
 
-  const selectDate = (date: Date, attrs: IInputOptions<Date> & IDatePickerOptions) => {
-    state.selectedDate = date;
-    state.isOpen = false;
-    
-    if (state.inputElement) {
-      state.inputElement.value = formatDate(date, attrs.format);
+  // Parse display format back to ISO date (utility for future use)
+  // const parseDisplayDate = (displayDate: string, displayFormat: string = 'yyyy-mm-dd'): string => {
+  //   // Implementation available for custom text input parsing if needed
+  // };
+
+  // Set date value
+  const setDate = (newDate: string, attrs: IInputOptions<string> & IDatePickerOptions) => {
+    state.date = newDate;
+    if (attrs.onChange) attrs.onChange(newDate);
+    if (attrs.onchange) attrs.onchange(newDate);
+    if (attrs.onSelect && newDate) {
+      attrs.onSelect(new Date(newDate));
     }
-    
-    if (attrs.onSelect) attrs.onSelect(date);
-    if (attrs.onchange) attrs.onchange(date);
-    if (attrs.onClose) attrs.onClose();
-    
-    m.redraw.sync();
-  };
-
-  const openPicker = (attrs: IInputOptions<Date> & IDatePickerOptions) => {
-    state.isOpen = true;
-    if (attrs.onOpen) attrs.onOpen();
-    m.redraw.sync();
-  };
-
-  const closePicker = (attrs: IInputOptions<Date> & IDatePickerOptions) => {
-    state.isOpen = false;
-    if (attrs.onClose) attrs.onClose();
-    m.redraw.sync();
   };
 
   return {
+    oninit: ({ attrs }) => {
+      // Initialize date from value or defaultDate
+      const initialDate = attrs.value || 
+                          (attrs.defaultDate ? attrs.defaultDate.toISOString().slice(0, 10) : '') ||
+                          (attrs.initialValue ? String(attrs.initialValue) : '');
+      state.date = initialDate;
+    },
+
     view: ({ attrs }) => {
+      const i18n = { ...getI18nDefaults(), ...attrs };
       const {
-        label,
-        helperText,
-        initialValue,
+        label = i18n.dateLabel,
+        helperText = i18n.helperText,
         newRow,
         className = 'col s12',
-        iconName,
+        iconName = i18n.iconName,
         isMandatory,
-        onchange,
-        disabled,
-        format = 'yyyy/mm/dd',
+        disabled = false,
+        required = false,
+        displayFormat = 'yyyy-mm-dd',
         showClearBtn = true,
-        defaultDate,
+        showTodayBtn = true,
+        maxWidth = '320px',
+        style = {},
         ...props
       } = attrs;
-      const id = state.id;
-      const cn = [newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim();
-      
-      // Initialize selected date from initial value or default
-      if (!state.selectedDate && (initialValue || defaultDate)) {
-        state.selectedDate = initialValue || defaultDate || null;
-      }
 
-      return m(
-        '.input-field',
-        {
-          className: cn,
-        },
-        [
-          iconName ? m('i.material-icons.prefix', iconName) : '',
-          m('input', {
-            ...props,
-            type: 'text',
-            className: 'datepicker',
-            id,
-            disabled,
-            readonly: true,
-            value: state.selectedDate ? formatDate(state.selectedDate, format) : '',
-            onclick: disabled ? undefined : () => openPicker(attrs),
-            oncreate: ({ dom }) => {
-              state.inputElement = dom as HTMLInputElement;
-            },
-            style: {
-              cursor: disabled ? 'not-allowed' : 'pointer',
-            }
-          }),
-          m(Label, { label, id, isMandatory, isActive: !!state.selectedDate }),
-          m(HelperText, { helperText }),
-          
-          // Simple date picker popup (basic implementation)
-          state.isOpen && m('.datepicker-popup', {
-            style: {
-              position: 'absolute',
-              top: '100%',
-              left: '0',
-              right: '0',
-              background: 'white',
-              border: '1px solid var(--md-grey-300)',
-              borderRadius: 'var(--md-radius-small)',
-              boxShadow: 'var(--md-shadow-2)',
-              zIndex: 1000,
-              padding: 'var(--md-spacing-md)',
-            }
-          }, [
-            // Simple date input for now
-            m('input', {
-              type: 'date',
-              value: state.selectedDate ? state.selectedDate.toISOString().split('T')[0] : '',
-              onchange: (e: Event) => {
-                const target = e.target as HTMLInputElement;
-                const date = new Date(target.value);
-                if (!isNaN(date.getTime())) {
-                  selectDate(date, attrs);
-                }
-              },
-              style: {
-                width: '100%',
-                padding: 'var(--md-spacing-sm)',
-                border: '1px solid var(--md-grey-400)',
-                borderRadius: 'var(--md-radius-small)',
-              }
-            }),
-            m('.datepicker-actions', {
-              style: {
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginTop: 'var(--md-spacing-sm)',
-              }
-            }, [
-              showClearBtn && m('button', {
+      const id = state.id;
+      const finalClassName = newRow ? `${className} clear` : className;
+      // Display value for reference (could be used for custom display formats in the future)
+      // const displayValue = formatDateForDisplay(state.date, displayFormat);
+
+      return m('.input-field', {
+        className: finalClassName,
+        style: { maxWidth, ...style }
+      }, [
+        // Icon prefix
+        iconName && m('i.material-icons.prefix', iconName),
+        
+        // Main date input (readonly, triggers native date picker)
+        m('input.validate', {
+          ...props,
+          id,
+          type: 'date',
+          value: state.date,
+          disabled,
+          required,
+          onchange: (e: Event) => {
+            const target = e.target as HTMLInputElement;
+            setDate(target.value, attrs);
+          },
+        }),
+        
+        // Label
+        m('label.active', { for: id }, label),
+        
+        // Helper text
+        helperText && m('span.helper-text', helperText),
+
+        // Action buttons panel
+        m('.card-panel', {
+          style: { 
+            padding: '12px', 
+            marginTop: '8px',
+            border: 'none',
+            boxShadow: '0 2px 5px rgba(0,0,0,0.16), 0 2px 10px rgba(0,0,0,0.12)'
+          }
+        }, [
+          m('.row', { style: { marginBottom: 0 } }, [
+            // Today button
+            showTodayBtn && m('.col.s6', [
+              m('button.btn-flat', {
                 type: 'button',
-                onclick: () => {
-                  state.selectedDate = null;
-                  if (state.inputElement) state.inputElement.value = '';
-                  if (onchange) onchange(null as any);
-                  closePicker(attrs);
-                },
+                disabled,
+                onclick: () => setDate(todayISO(), attrs),
                 style: {
-                  background: 'transparent',
-                  border: '1px solid var(--md-grey-400)',
-                  padding: 'var(--md-spacing-xs) var(--md-spacing-sm)',
-                  borderRadius: 'var(--md-radius-small)',
-                  cursor: 'pointer',
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }
-              }, 'Clear'),
-              m('button', {
+              }, [
+                m('i.material-icons.left', 'today'),
+                i18n.todayLabel
+              ]),
+            ]),
+            
+            // Clear button
+            showClearBtn && m(`.col.s${showTodayBtn ? '6' : '12'}`, [
+              m('button.btn-flat', {
                 type: 'button',
-                onclick: () => closePicker(attrs),
+                disabled,
+                onclick: () => setDate('', attrs),
                 style: {
-                  background: 'var(--md-primary)',
-                  color: 'white',
-                  border: 'none',
-                  padding: 'var(--md-spacing-xs) var(--md-spacing-sm)',
-                  borderRadius: 'var(--md-radius-small)',
-                  cursor: 'pointer',
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }
-              }, 'Close')
-            ])
-          ])
-        ]
-      );
+              }, [
+                m('i.material-icons.left', 'clear'),
+                i18n.clearLabel
+              ]),
+            ]),
+          ]),
+        ]),
+
+        // Hidden input with current value for form submission
+        m('input', { 
+          type: 'hidden', 
+          name: id, 
+          value: state.date 
+        }),
+      ]);
     },
   };
 };
