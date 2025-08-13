@@ -32,7 +32,7 @@ describe('DatePicker Component', () => {
     });
 
     const input = container.querySelector('input') as HTMLInputElement;
-    expect(input.value).toBe('2023/06/15');
+    expect(input.value).toBe('2023-06-15'); // HTML5 date inputs use ISO format
   });
 
   test('opens picker when input is clicked', () => {

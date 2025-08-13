@@ -141,7 +141,7 @@ describe('Tabs Component', () => {
     const { container } = render(Tabs, defaultTabsAttrs);
 
     const firstTabLink = container.querySelector('.tab a') as HTMLAnchorElement;
-    expect(firstTabLink.href).toContain('#tab1');
+    expect(firstTabLink.href).toContain('#anchor-tab1'); // Browser resolves to full URL with anchor prefix
   });
 
   test('handles external links when href and target are provided', () => {

@@ -112,9 +112,19 @@ export const DatePicker: FactoryComponent<IInputOptions<string> & IDatePickerOpt
   return {
     oninit: ({ attrs }) => {
       // Initialize date from value or defaultDate
-      const initialDate = attrs.value || 
-                          (attrs.defaultDate ? attrs.defaultDate.toISOString().slice(0, 10) : '') ||
-                          (attrs.initialValue ? String(attrs.initialValue) : '');
+      let initialDate = attrs.value || 
+                        (attrs.defaultDate ? attrs.defaultDate.toISOString().slice(0, 10) : '');
+      
+      // Handle initialValue which might be a Date object or string
+      if (attrs.initialValue) {
+        if (attrs.initialValue instanceof Date) {
+          // Convert Date to ISO format for HTML5 date input
+          initialDate = attrs.initialValue.toISOString().slice(0, 10);
+        } else {
+          initialDate = String(attrs.initialValue);
+        }
+      }
+      
       state.date = initialDate;
     },
 
@@ -151,7 +161,7 @@ export const DatePicker: FactoryComponent<IInputOptions<string> & IDatePickerOpt
         iconName && m('i.material-icons.prefix', iconName),
         
         // Main date input
-        m('input.validate', {
+        m('input.validate.datepicker', {
           ...props,
           id,
           type: 'date',
@@ -161,7 +171,11 @@ export const DatePicker: FactoryComponent<IInputOptions<string> & IDatePickerOpt
           required,
           onfocus: () => {
             state.hasFocus = true;
+            if (attrs.onOpen) attrs.onOpen();
             m.redraw();
+          },
+          onclick: () => {
+            if (attrs.onOpen) attrs.onOpen();
           },
           onblur: () => {
             // Fire onchange when losing focus if valid date
@@ -183,6 +197,9 @@ export const DatePicker: FactoryComponent<IInputOptions<string> & IDatePickerOpt
             setDate(target.value, attrs, false);
             // Don't fire onchange here - only on blur
           },
+          style: {
+            cursor: disabled ? 'not-allowed' : 'default',
+          }
         }),
         
         // Label
@@ -558,7 +575,7 @@ export const TimePicker: FactoryComponent<IInputOptions<string> & ITimePickerOpt
       const showButtons = state.hasFocus && isInteractive && (showNowBtn || showClearBtn || allowFormatToggle);
       const displayFormat = state.currentTwelveHour;
 
-      return m('.input-field', {
+      return m('.input-field.timepicker', {
         className: finalClassName,
         style: { maxWidth, ...style }
       }, [
@@ -574,10 +591,13 @@ export const TimePicker: FactoryComponent<IInputOptions<string> & ITimePickerOpt
           disabled,
           readonly: useModal,
           required,
-          onclick: useModal ? () => openPicker(attrs) : undefined,
+          onclick: useModal ? () => openPicker(attrs) : (() => {
+            if (attrs.onOpen) attrs.onOpen();
+          }),
           onfocus: () => {
             state.hasFocus = true;
             if (useModal) openPicker(attrs);
+            else if (attrs.onOpen) attrs.onOpen();
             m.redraw();
           },
           onblur: (e: FocusEvent) => {
@@ -604,7 +624,7 @@ export const TimePicker: FactoryComponent<IInputOptions<string> & ITimePickerOpt
             }, 150);
           },
           style: {
-            cursor: useModal && isInteractive ? 'pointer' : 'default',
+            cursor: disabled ? 'not-allowed' : (useModal && isInteractive ? 'pointer' : 'default'),
           }
         }),
         
