@@ -1,4 +1,4 @@
-import { DatePicker, TimePicker, IDatePickerOptions, ITimePickerOptions } from '../src/pickers';
+import { DatePicker, TimePicker, DatePickerOptions, TimePickerOptions } from '../src/pickers';
 import { IInputOptions } from '../src/input-options';
 import { render, fireEvent, cleanup } from './test-utils';
 
@@ -7,7 +7,7 @@ describe('DatePicker Component', () => {
     cleanup();
   });
 
-  const defaultDatePickerAttrs: IInputOptions<Date> & IDatePickerOptions = {
+  const defaultDatePickerAttrs: IInputOptions<Date | string> & DatePickerOptions = {
     label: 'Select Date',
   };
 
@@ -26,9 +26,9 @@ describe('DatePicker Component', () => {
   test('renders with initial date value', () => {
     const initialDate = new Date('2023-06-15');
     const DatePickerInstance = DatePicker;
-    const { container } = render(DatePickerInstance, { 
-      ...defaultDatePickerAttrs, 
-      initialValue: initialDate 
+    const { container } = render(DatePickerInstance, {
+      ...defaultDatePickerAttrs,
+      initialValue: initialDate,
     });
 
     const input = container.querySelector('input') as HTMLInputElement;
@@ -38,13 +38,13 @@ describe('DatePicker Component', () => {
   test('opens picker when input is clicked', () => {
     const onOpen = jest.fn();
     const DatePickerInstance = DatePicker;
-    const { container } = render(DatePickerInstance, { 
-      ...defaultDatePickerAttrs, 
-      onOpen 
+    const { container } = render(DatePickerInstance, {
+      ...defaultDatePickerAttrs,
+      onOpen,
     });
 
     const input = container.querySelector('input') as HTMLInputElement;
-    
+
     // Manually trigger the click event with event object
     const clickEvent = new MouseEvent('click', { bubbles: true });
     input.dispatchEvent(clickEvent);
@@ -56,9 +56,9 @@ describe('DatePicker Component', () => {
   test('calls onOpen callback when picker opens', () => {
     const onOpen = jest.fn();
     const DatePickerInstance = DatePicker;
-    const { container } = render(DatePickerInstance, { 
-      ...defaultDatePickerAttrs, 
-      onOpen 
+    const { container } = render(DatePickerInstance, {
+      ...defaultDatePickerAttrs,
+      onOpen,
     });
 
     const input = container.querySelector('input') as HTMLInputElement;
@@ -71,16 +71,16 @@ describe('DatePicker Component', () => {
     const onchange = jest.fn();
     const onSelect = jest.fn();
     const DatePickerInstance = DatePicker;
-    const { container } = render(DatePickerInstance, { 
-      ...defaultDatePickerAttrs, 
-      onchange, 
-      onSelect 
+    const { container } = render(DatePickerInstance, {
+      ...defaultDatePickerAttrs,
+      onchange,
+      onSelect,
     });
 
     // Test date formatting functionality by checking if initial value is formatted correctly
     const input = container.querySelector('input') as HTMLInputElement;
     expect(input).toBeTruthy();
-    
+
     // Simulate a direct component interaction for testing - check if callbacks work
     // This would normally be triggered by the date picker popup
     const testDate = new Date('2023-06-15');
@@ -93,21 +93,22 @@ describe('DatePicker Component', () => {
 
   test('applies disabled state', () => {
     const DatePickerInstance = DatePicker;
-    const { container } = render(DatePickerInstance, { 
-      ...defaultDatePickerAttrs, 
-      disabled: true 
+    const { container } = render(DatePickerInstance, {
+      ...defaultDatePickerAttrs,
+      disabled: true,
     });
 
     const input = container.querySelector('input') as HTMLInputElement;
     expect(input.disabled).toBe(true);
-    expect(input.style.cursor).toBe('not-allowed');
+    // Cursor styling is now handled in CSS, not inline styles
+    expect(input.classList.contains('datepicker')).toBe(true);
   });
 
   test('renders with icon prefix', () => {
     const DatePickerInstance = DatePicker;
-    const { container } = render(DatePickerInstance, { 
-      ...defaultDatePickerAttrs, 
-      iconName: 'date_range' 
+    const { container } = render(DatePickerInstance, {
+      ...defaultDatePickerAttrs,
+      iconName: 'date_range',
     });
 
     const icon = container.querySelector('i.material-icons.prefix');
@@ -120,7 +121,7 @@ describe('TimePicker Component', () => {
     cleanup();
   });
 
-  const defaultTimePickerAttrs: IInputOptions & ITimePickerOptions = {
+  const defaultTimePickerAttrs: IInputOptions & TimePickerOptions = {
     label: 'Select Time',
   };
 
@@ -138,9 +139,9 @@ describe('TimePicker Component', () => {
 
   test('renders with initial time value', () => {
     const TimePickerInstance = TimePicker;
-    const { container } = render(TimePickerInstance, { 
-      ...defaultTimePickerAttrs, 
-      initialValue: '14:30' 
+    const { container } = render(TimePickerInstance, {
+      ...defaultTimePickerAttrs,
+      initialValue: '14:30',
     });
 
     const input = container.querySelector('input') as HTMLInputElement;
@@ -149,10 +150,10 @@ describe('TimePicker Component', () => {
 
   test('formats time in 12-hour format when specified', () => {
     const TimePickerInstance = TimePicker;
-    const { container } = render(TimePickerInstance, { 
+    const { container } = render(TimePickerInstance, {
       ...defaultTimePickerAttrs,
       initialValue: '14:30',
-      twelveHour: true 
+      twelveHour: true,
     });
 
     const input = container.querySelector('input') as HTMLInputElement;
@@ -162,13 +163,13 @@ describe('TimePicker Component', () => {
   test('opens picker when input is clicked', () => {
     const onOpen = jest.fn();
     const TimePickerInstance = TimePicker;
-    const { container } = render(TimePickerInstance, { 
-      ...defaultTimePickerAttrs, 
-      onOpen 
+    const { container } = render(TimePickerInstance, {
+      ...defaultTimePickerAttrs,
+      onOpen,
     });
 
     const input = container.querySelector('input') as HTMLInputElement;
-    
+
     // Manually trigger the click event with event object
     const clickEvent = new MouseEvent('click', { bubbles: true });
     input.dispatchEvent(clickEvent);
@@ -180,9 +181,9 @@ describe('TimePicker Component', () => {
   test('calls onOpen callback when picker opens', () => {
     const onOpen = jest.fn();
     const TimePickerInstance = TimePicker;
-    const { container } = render(TimePickerInstance, { 
-      ...defaultTimePickerAttrs, 
-      onOpen 
+    const { container } = render(TimePickerInstance, {
+      ...defaultTimePickerAttrs,
+      onOpen,
     });
 
     const input = container.querySelector('input') as HTMLInputElement;
@@ -195,16 +196,16 @@ describe('TimePicker Component', () => {
     const onchange = jest.fn();
     const onSelect = jest.fn();
     const TimePickerInstance = TimePicker;
-    const { container } = render(TimePickerInstance, { 
-      ...defaultTimePickerAttrs, 
-      onchange, 
-      onSelect 
+    const { container } = render(TimePickerInstance, {
+      ...defaultTimePickerAttrs,
+      onchange,
+      onSelect,
     });
 
     // Test time formatting functionality by checking if initial value is formatted correctly
     const input = container.querySelector('input') as HTMLInputElement;
     expect(input).toBeTruthy();
-    
+
     // Simulate a direct component interaction for testing - check if callbacks work
     // This would normally be triggered by the time picker popup
     onSelect(14, 30);
@@ -216,13 +217,15 @@ describe('TimePicker Component', () => {
 
   test('applies disabled state', () => {
     const TimePickerInstance = TimePicker;
-    const { container } = render(TimePickerInstance, { 
-      ...defaultTimePickerAttrs, 
-      disabled: true 
+    const { container } = render(TimePickerInstance, {
+      ...defaultTimePickerAttrs,
+      disabled: true,
     });
 
     const input = container.querySelector('input') as HTMLInputElement;
     expect(input.disabled).toBe(true);
-    expect(input.style.cursor).toBe('not-allowed');
+    // Cursor styling is now handled in CSS, not inline styles
+    const inputField = container.querySelector('.input-field.timepicker');
+    expect(inputField).toBeTruthy();
   });
 });

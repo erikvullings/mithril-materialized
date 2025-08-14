@@ -30,7 +30,8 @@ export const PickerPage = () => {
             dateLabel: 'What is your birthday?',
             helperText: 'Select your date of birth',
             iconName: 'cake',
-            value: '1990-01-15',
+            // value: '1990-01-15',
+            initialValue: new Date(),
             oninput,
             onchange,
           })
@@ -43,7 +44,7 @@ export const PickerPage = () => {
           m(DatePicker, {
             disabled: state.disabled,
             dateLabel: 'Project Start Date',
-            helperText: 'DD/MM/YYYY format',
+            helperText: 'Date format follows browser locale',
             displayFormat: 'dd/mm/yyyy',
             iconName: 'event',
             onchange,
@@ -57,7 +58,7 @@ export const PickerPage = () => {
           m(DatePicker, {
             disabled: state.disabled,
             dateLabel: 'Appointment Date',
-            helperText: 'MM/DD/YYYY format',
+            helperText: 'Date format follows browser locale',
             displayFormat: 'mm/dd/yyyy',
             iconName: 'schedule',
             onchange,
@@ -162,7 +163,7 @@ m(DatePicker, {
             timeLabel: 'When do you normally get up?',
             helperText: 'Select your wake-up time',
             iconName: 'alarm',
-            value: '09:00',
+            initialValue: '09:00',
             onchange,
           })
         ),
@@ -177,7 +178,7 @@ m(DatePicker, {
             helperText: 'HH:MM AM/PM format',
             twelveHour: true,
             iconName: 'schedule',
-            value: '14:30',
+            initialValue: '13:30',
             onchange,
           })
         ),
@@ -259,7 +260,7 @@ m(DatePicker, {
               disabled: true,
               timeLabel: 'Disabled Time',
               helperText: 'Cannot interact',
-              value: '14:30',
+              initialValue: '15:30',
               iconName: 'block',
               onchange,
             })
@@ -270,7 +271,7 @@ m(DatePicker, {
               readonly: true,
               timeLabel: 'Readonly Time',
               helperText: 'View only',
-              value: '09:15',
+              initialValue: '09:15',
               iconName: 'visibility',
               useModal: false,
               onchange,
@@ -301,7 +302,7 @@ m(TimePicker, {
 m(TimePicker, {
   disabled: true, // or readonly: true
   timeLabel: 'Disabled Time',
-  value: '14:30',
+  initialValue: '14:30',
   onchange,
 })`,
         }),

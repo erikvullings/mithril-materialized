@@ -1,186 +1,170 @@
 @use "sass:color";
 @use "variables";
 
-/* Timepicker Containers */
+/* Enhanced TimePicker Styles */
+.input-field.timepicker {
+  input[disabled] {
+    cursor: not-allowed;
+  }
+}
+
+.timepicker-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 12px;
+
+  .btn-flat {
+    padding: 2px 8px;
+    min-width: auto;
+    height: 24px;
+    line-height: 20px;
+    font-size: 11px;
+    text-transform: none;
+
+    i.material-icons {
+      font-size: 14px;
+      margin-right: 4px;
+    }
+  }
+}
+
+.inline-time-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 12px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  font-size: 14px;
+
+  .time-controls-12h {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    input[type="number"] {
+      width: 50px;
+      text-align: center;
+      padding: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    select {
+      padding: 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-left: 4px;
+    }
+  }
+
+  input[type="time"] {
+    font-size: 16px;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 120px;
+  }
+
+  .btn-flat {
+    padding: 4px 8px;
+    font-size: 11px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    min-width: auto;
+  }
+}
+
 .timepicker-modal {
-  max-width: 325px;
-  max-height: none;
-}
-
-.timepicker-container.modal-content {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-}
-
-.text-primary {
-	color: rgba(255, 255, 255, 1);
-}
-
-
-/* Clock Digital Display */
-.timepicker-digital-display {
-  flex: 1 auto;
-  background-color: variables.$secondary-color;
-  padding: 10px;
-  font-weight: 300;
-}
-
-.timepicker-text-container {
-	font-size: 4rem;
-	font-weight: bold;
-	text-align: center;
-	color: rgba(255, 255, 255, 0.6);
-  font-weight: 400;
-	position: relative;
-  user-select: none;
-}
-
-.timepicker-span-hours,
-.timepicker-span-minutes,
-.timepicker-span-am-pm div {
-	cursor: pointer;
-}
-
-.timepicker-span-hours {
-  margin-right: 3px;
-}
-
-.timepicker-span-minutes {
-  margin-left: 3px;
-}
-
-.timepicker-display-am-pm {
-  font-size: 1.3rem;
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  font-weight: 400;
-}
-
-
-/* Analog Clock Display */
-.timepicker-analog-display {
-  flex: 2.5 auto;
-}
-
-.timepicker-plate {
-	background-color: variables.$timepicker-clock-plate-bg;
-	border-radius: 50%;
-	width: 270px;
-	height: 270px;
-	overflow: visible;
-	position: relative;
-  margin: auto;
-  margin-top: 25px;
-  margin-bottom: 5px;
-	user-select: none;
-}
-
-.timepicker-canvas,
-.timepicker-dial {
-	position: absolute;
-	left: 0;
-  right: 0;
+  position: fixed;
   top: 0;
-  bottom: 0;
-}
-.timepicker-minutes {
-	visibility: hidden;
-}
-
-.timepicker-tick {
-	border-radius: 50%;
-	color: variables.$timepicker-clock-color;
-	line-height: 40px;
-	text-align: center;
-	width: 40px;
-	height: 40px;
-	position: absolute;
-	cursor: pointer;
-  font-size: 15px;
-}
-
-.timepicker-tick.active,
-.timepicker-tick:hover {
-	background-color: color.adjust(variables.$secondary-color, $alpha: -.75);
-}
-.timepicker-dial {
-	transition: transform 350ms, opacity 350ms;
-}
-.timepicker-dial-out {
-  &.timepicker-hours {
-	  transform: scale(1.1, 1.1);
-  }
-
-  &.timepicker-minutes {
-	  transform: scale(.8, .8);
-  }
-
-	opacity: 0;
-}
-.timepicker-canvas {
-	transition: opacity 175ms;
-
-  line {
-	  stroke: variables.$secondary-color;
-	  stroke-width: 4;
-	  stroke-linecap: round;
-  }
-}
-.timepicker-canvas-out {
-	opacity: 0.25;
-}
-.timepicker-canvas-bearing {
-	stroke: none;
-	fill: variables.$secondary-color;
-}
-.timepicker-canvas-bg {
-	stroke: none;
-	fill: variables.$secondary-color;
-}
-
-
-/* Footer */
-.timepicker-footer {
-  margin: 0 auto;
-  padding: 5px 1rem;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: space-between;
-}
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
 
-.timepicker-clear {
-  color: variables.$error-color;
-}
+  .timepicker-content {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    min-width: 320px;
+    max-width: 400px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 
-.timepicker-close {
-  color: variables.$secondary-color;
-}
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
 
-.timepicker-clear,
-.timepicker-close {
-  padding: 0 20px;
-}
+      h5 {
+        margin: 0;
+      }
 
-/* Media Queries */
-@media #{variables.$medium-and-up} {
-  .timepicker-modal {
-    max-width: 600px;
+      .btn-flat {
+        padding: 4px 8px;
+        font-size: 11px;
+        min-width: auto;
+
+        i.material-icons {
+          font-size: 14px;
+          margin-right: 4px;
+        }
+      }
+    }
+
+    .time-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      font-size: 2.5rem;
+      font-weight: 300;
+
+      input[type="number"] {
+        width: 80px;
+        text-align: center;
+        font-size: 2.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 8px;
+      }
+
+      .ampm-selector {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        button {
+          min-width: 60px;
+          padding: 4px 8px;
+        }
+      }
+    }
+
+    .timepicker-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 24px;
+
+      > div {
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn-flat {
+        padding: 0 20px;
+      }
+    }
   }
-
-  .timepicker-container.modal-content {
-    flex-direction: row;
-  }
-
-  .timepicker-text-container {
-		top: 32%;
-	}
-
-	.timepicker-display-am-pm {
-	  position: relative;
-	  right: auto;
-	  bottom: auto;
-	  text-align: center;
-	  margin-top: 1.2rem;
-	}
 }
+
+/* Legacy styles kept for applications using old Materialize TimePicker */
