@@ -2,12 +2,12 @@ import m, { FactoryComponent, Vnode, Attributes } from 'mithril';
 import { FlatButton } from './button';
 // Styles are imported via the main index or individual component imports
 
-export interface IModalState {
+export interface ModalState {
   isOpen: boolean;
   id: string;
 }
 
-export interface IMaterialModal extends Attributes {
+export interface ModalAttributes extends Attributes {
   id: string;
   title: string;
   description?: string | Vnode<any, any>;
@@ -43,15 +43,15 @@ export interface IMaterialModal extends Attributes {
  * CSS-only Modal Panel component - no JavaScript dependencies
  * Uses modern CSS techniques for modal functionality
  */
-export const ModalPanel: FactoryComponent<IMaterialModal> = () => {
-  const state: IModalState = {
+export const ModalPanel: FactoryComponent<ModalAttributes> = () => {
+  const state: ModalState = {
     isOpen: false,
     id: '',
   };
 
   let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
 
-  const closeModal = (attrs: IMaterialModal) => {
+  const closeModal = (attrs: ModalAttributes) => {
     state.isOpen = false;
     if (attrs.onToggle) attrs.onToggle(false);
     if (attrs.onClose) attrs.onClose();
@@ -66,7 +66,7 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => {
     document.body.style.overflow = '';
   };
 
-  const openModal = (attrs: IMaterialModal) => {
+  const openModal = (attrs: ModalAttributes) => {
     state.isOpen = true;
     if (attrs.onToggle) attrs.onToggle(true);
 
@@ -90,7 +90,6 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => {
       }
     },
 
-
     onremove: () => {
       // Cleanup on component removal
       if (keydownHandler) {
@@ -109,7 +108,7 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => {
           closeModal(attrs);
         }
       }
-      
+
       const {
         id,
         title,
@@ -149,7 +148,7 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => {
             width: '100%',
             height: '100%',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: '1002'
+            zIndex: '1002',
           },
         }),
 
@@ -176,7 +175,8 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => {
               overflow: 'auto',
               zIndex: '1003',
               padding: '0',
-              boxShadow: '0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px -7px rgba(0,0,0,0.20)'
+              boxShadow:
+                '0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px -7px rgba(0,0,0,0.20)',
             },
             onclick: (e: Event) => e.stopPropagation(), // Prevent backdrop click when clicking inside modal
           },
@@ -202,20 +202,24 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => {
               ),
 
             // Modal content
-            m('.modal-content', {
-              style: { padding: '24px', paddingTop: showCloseButton ? '48px' : '24px' }
-            }, [
-              m('h4', { id: `${id}-title`, style: { margin: '0 0 20px 0' } }, title),
-              description &&
-                m(
-                  'div',
-                  {
-                    id: `${id}-desc`,
-                    ...(richContent && typeof description === 'string' ? { innerHTML: description } : {}),
-                  },
-                  richContent && typeof description === 'string' ? undefined : description
-                ),
-            ]),
+            m(
+              '.modal-content',
+              {
+                style: { padding: '24px', paddingTop: showCloseButton ? '48px' : '24px' },
+              },
+              [
+                m('h4', { id: `${id}-title`, style: { margin: '0 0 20px 0' } }, title),
+                description &&
+                  m(
+                    'div',
+                    {
+                      id: `${id}-desc`,
+                      ...(richContent && typeof description === 'string' ? { innerHTML: description } : {}),
+                    },
+                    richContent && typeof description === 'string' ? undefined : description
+                  ),
+              ]
+            ),
 
             // Modal footer with buttons
             buttons &&
@@ -226,8 +230,8 @@ export const ModalPanel: FactoryComponent<IMaterialModal> = () => {
                   style: {
                     padding: '4px 6px',
                     borderTop: '1px solid rgba(160,160,160,0.2)',
-                    textAlign: 'right'
-                  }
+                    textAlign: 'right',
+                  },
                 },
                 buttons.map((buttonProps) =>
                   m(FlatButton, {

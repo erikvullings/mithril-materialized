@@ -1,6 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 
-export interface IMaterialBoxOptions {
+export interface MaterialBoxOptions {
   /** Animation duration in ms */
   inDuration?: number;
   /** Animation duration in ms for closing */
@@ -15,7 +15,7 @@ export interface IMaterialBoxOptions {
   onCloseEnd?: () => void;
 }
 
-export interface IMaterialBox extends IMaterialBoxOptions, Attributes {
+export interface MaterialBoxAttributes extends MaterialBoxOptions, Attributes {
   /** Source image path */
   src: string;
   /** Alt text for the image */
@@ -38,7 +38,7 @@ export interface IMaterialBox extends IMaterialBoxOptions, Attributes {
  * Pure TypeScript MaterialBox - creates an image lightbox that fills the screen when clicked
  * No MaterializeCSS dependencies
  */
-export const MaterialBox: FactoryComponent<IMaterialBox> = () => {
+export const MaterialBox: FactoryComponent<MaterialBoxAttributes> = () => {
   const state = {
     isOpen: false,
     originalImage: null as HTMLImageElement | null,
@@ -46,7 +46,7 @@ export const MaterialBox: FactoryComponent<IMaterialBox> = () => {
     overlayImage: null as HTMLImageElement | null,
   };
 
-  const openBox = (img: HTMLImageElement, attrs: IMaterialBox) => {
+  const openBox = (img: HTMLImageElement, attrs: MaterialBoxAttributes) => {
     if (state.isOpen) return;
 
     state.isOpen = true;
@@ -75,20 +75,20 @@ export const MaterialBox: FactoryComponent<IMaterialBox> = () => {
     enlargedImg.src = img.src;
     enlargedImg.alt = img.alt || '';
     enlargedImg.className = 'materialbox-image';
-    
+
     // Get original image dimensions and position
     const imgRect = img.getBoundingClientRect();
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
-    
+
     // Calculate final size maintaining aspect ratio
     const aspectRatio = img.naturalWidth / img.naturalHeight;
     const maxWidth = windowWidth * 0.9;
     const maxHeight = windowHeight * 0.9;
-    
+
     let finalWidth = maxWidth;
     let finalHeight = maxWidth / aspectRatio;
-    
+
     if (finalHeight > maxHeight) {
       finalHeight = maxHeight;
       finalWidth = maxHeight * aspectRatio;
@@ -147,7 +147,7 @@ export const MaterialBox: FactoryComponent<IMaterialBox> = () => {
       enlargedImg.style.left = `${(windowWidth - finalWidth) / 2}px`;
       enlargedImg.style.width = `${finalWidth}px`;
       enlargedImg.style.height = `${finalHeight}px`;
-      
+
       if (caption) {
         caption.style.opacity = '1';
       }
@@ -167,7 +167,7 @@ export const MaterialBox: FactoryComponent<IMaterialBox> = () => {
     }, attrs.inDuration || 275);
   };
 
-  const closeBox = (attrs: IMaterialBox) => {
+  const closeBox = (attrs: MaterialBoxAttributes) => {
     if (!state.isOpen || !state.originalImage || !state.overlay || !state.overlayImage) return;
 
     if (attrs.onCloseStart) attrs.onCloseStart();
@@ -203,7 +203,7 @@ export const MaterialBox: FactoryComponent<IMaterialBox> = () => {
 
       // Restore body scroll
       document.body.style.overflow = '';
-      
+
       state.isOpen = false;
       state.originalImage = null;
 
@@ -225,7 +225,7 @@ export const MaterialBox: FactoryComponent<IMaterialBox> = () => {
 
     view: ({ attrs }) => {
       const { src, alt, width, height, caption, className, style, ...otherAttrs } = attrs;
-      
+
       return m('img.materialboxed', {
         ...otherAttrs,
         src,

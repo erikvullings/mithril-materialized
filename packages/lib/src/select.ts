@@ -1,11 +1,11 @@
 import m, { Attributes, Component } from 'mithril';
 import { Label, HelperText } from './label';
-import { IInputOption } from './option';
+import { InputOption } from './option';
 import { Caret, getDropdownStyles, uniqueId } from './utils';
 
-export interface ISelectOptions<T extends string | number> extends Attributes {
+export interface SelectAttributes<T extends string | number> extends Attributes {
   /** Options to select from */
-  options: IInputOption<T>[];
+  options: InputOption<T>[];
   /** Called when the value is changed, either contains a single or all selected (checked) ids */
   onchange: (checkedIds: T[]) => void;
   /**
@@ -46,7 +46,7 @@ export interface ISelectOptions<T extends string | number> extends Attributes {
   showClearButton?: boolean;
 }
 
-interface ISelectState<T extends string | number> {
+interface SelectState<T extends string | number> {
   id: string;
   isOpen: boolean;
   selectedIds: T[];
@@ -56,8 +56,8 @@ interface ISelectState<T extends string | number> {
 }
 
 /** Select component */
-export const Select = <T extends string | number>(): Component<ISelectOptions<T>> => {
-  const state: ISelectState<T> = {
+export const Select = <T extends string | number>(): Component<SelectAttributes<T>> => {
+  const state: SelectState<T> = {
     id: '',
     isOpen: false,
     selectedIds: [],
@@ -70,7 +70,7 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
     return selectedIds.some((selectedId) => selectedId === id);
   };
 
-  const toggleOption = (id: T, multiple: boolean, attrs: ISelectOptions<T>) => {
+  const toggleOption = (id: T, multiple: boolean, attrs: SelectAttributes<T>) => {
     if (multiple) {
       const newIds = state.selectedIds.includes(id)
         ? // isSelected(id, state.selectedIds)
@@ -88,7 +88,7 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent, attrs: ISelectOptions<T>) => {
+  const handleKeyDown = (e: KeyboardEvent, attrs: SelectAttributes<T>) => {
     const { options } = attrs;
     const selectableOptions = options.filter((opt) => !opt.disabled);
 
@@ -143,9 +143,9 @@ export const Select = <T extends string | number>(): Component<ISelectOptions<T>
     }
   };
 
-  const renderGroupedOptions = (options: IInputOption<T>[], multiple: boolean, attrs: ISelectOptions<T>) => {
-    const groupedOptions: { [key: string]: IInputOption<T>[] } = {};
-    const ungroupedOptions: IInputOption<T>[] = [];
+  const renderGroupedOptions = (options: InputOption<T>[], multiple: boolean, attrs: SelectAttributes<T>) => {
+    const groupedOptions: { [key: string]: InputOption<T>[] } = {};
+    const ungroupedOptions: InputOption<T>[] = [];
 
     // Group options by their group property
     options.forEach((option) => {

@@ -1,6 +1,6 @@
 import { Attributes } from 'mithril';
 
-export interface IInputOptions<T = string> extends Attributes {
+export interface InputAttributes<T = string> extends Attributes {
   /** Optional label. */
   label?: string;
   /** Optional ID. */
@@ -39,6 +39,8 @@ export interface IInputOptions<T = string> extends Attributes {
   /** Invoked when the element looses focus */
   onblur?: (ev: FocusEvent) => void;
   /** Invoked when the value changes. */
+  oninput?: (value: T) => void;
+  /** Invoked when the input looses focus. */
   onchange?: (value: T) => void;
   /** Add a a placeholder to the input field. */
   placeholder?: string;

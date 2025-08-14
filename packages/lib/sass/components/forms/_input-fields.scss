@@ -259,6 +259,9 @@ textarea.materialize-textarea {
   }
 }
 
+.input-field input[type=color]:not(.browser-default) {
+  margin-top: 8px;
+}
 
 /* Search Field */
 

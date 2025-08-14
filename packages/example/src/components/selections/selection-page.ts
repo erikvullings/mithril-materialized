@@ -6,10 +6,9 @@ import {
   Switch,
   RadioButtons,
   Dropdown,
-  IDropdownOptions,
-  ISelectOptions,
+  DropdownAttributes,
+  SelectAttributes,
   SearchSelect,
-  SearchSelectAttrs,
   TextInput,
 } from 'mithril-materialized';
 
@@ -56,7 +55,7 @@ export const SelectionPage = () => {
               },
             ],
             onchange: (ids) => (state.checkedId = ids),
-          } as ISelectOptions<string>)
+          } as SelectAttributes<string>)
         ),
         m(CodeBlock, {
           newRow: true,
@@ -96,7 +95,7 @@ export const SelectionPage = () => {
               { id: 3, label: 'Sex', disabled: true },
               { id: 4, label: 'Horse riding' },
             ],
-          } as ISelectOptions<number>)
+          } as SelectAttributes<number>)
         ),
         m(CodeBlock, {
           newRow: true,
@@ -119,7 +118,7 @@ export const SelectionPage = () => {
                 { id: 3, label: 'Sex', disabled: true },
                 { id: 4, label: 'Horse riding' },
               ],
-            } as ISelectOptions<number>)
+            } as SelectAttributes<number>)
           )`,
         }),
 
@@ -141,7 +140,7 @@ export const SelectionPage = () => {
               { id: 4, group: 'Outdoors', label: 'Going out' },
               { id: 5, group: 'Outdoors', label: 'Horse riding' },
             ],
-          } as ISelectOptions<number>)
+          } as SelectAttributes<number>)
         ),
         m(CodeBlock, {
           newRow: true,
@@ -163,7 +162,7 @@ export const SelectionPage = () => {
                 { id: 4, group: 'Outdoors', label: 'Going out' },
                 { id: 5, group: 'Outdoors', label: 'Horse riding' },
               ],
-            } as ISelectOptions<number>)
+            } as SelectAttributes<number>)
           )`,
         }),
 
@@ -345,7 +344,7 @@ export const SelectionPage = () => {
               { label: 'Sex', id: 'sex', iconName: 'group' },
             ],
             onchange: (v) => console.log(v),
-          } as IDropdownOptions<string>)
+          } as DropdownAttributes<string>)
         ),
         m(CodeBlock, {
           newRow: true,

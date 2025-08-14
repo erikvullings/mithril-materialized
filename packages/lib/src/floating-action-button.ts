@@ -1,10 +1,10 @@
 import m, { FactoryComponent } from 'mithril';
 
-interface IFloatingActionButtonState {
+interface FloatingActionButtonState {
   isOpen: boolean;
 }
 
-export interface IFloatingActionButton {
+export interface FloatingActionButtonAttributes {
   /** Optional classes to add to the top element */
   className?: string;
   /** Optional style to add to the top element, e.g. for positioning it inline */
@@ -38,10 +38,10 @@ export interface IFloatingActionButton {
 }
 
 /**
- * Pure TypeScript Floating Action Button - no MaterializeCSS dependencies
+ * Floating Action Button
  */
-export const FloatingActionButton: FactoryComponent<IFloatingActionButton> = () => {
-  const state: IFloatingActionButtonState = {
+export const FloatingActionButton: FactoryComponent<FloatingActionButtonAttributes> = () => {
+  const state: FloatingActionButtonState = {
     isOpen: false,
   };
 

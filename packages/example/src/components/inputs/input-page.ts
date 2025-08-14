@@ -2,7 +2,7 @@ import {
   ColorInput,
   NumberInput,
   TextInput,
-  IInputOptions,
+  InputAttributes,
   CodeBlock,
   TextArea,
   EmailInput,
@@ -18,7 +18,8 @@ import {
 import m from 'mithril';
 
 export const InputPage = () => {
-  const onchange = (v: unknown) => console.log(`Input changed. New value: ${v}`);
+  const oninput = (v: unknown) => console.log(`Input changed. New value: ${v}`);
+  const onchange = (v: unknown) => console.log(`Final value: ${v}`);
   let value = 'click_clear_to_remove.me';
 
   const searchSelectOptions = [
@@ -40,12 +41,13 @@ export const InputPage = () => {
             label: 'What is your name?',
             required: true,
             helperText: 'Please, be honest!',
+            oninput,
             onchange,
             autocomplete: 'off',
             onkeyup: (ev, value) => console.log(value),
             autofocus: true,
             maxLength: 50,
-          } as IInputOptions)
+          } as InputAttributes)
         ),
         m(CodeBlock, {
           code: `        m(TextInput, {
@@ -56,7 +58,7 @@ export const InputPage = () => {
           onkeyup: (ev, value) => console.log(value),
           autofocus: true // This may also be a function that resolves to a boolean
           maxLength: 50,
-        } as IInputOptions)`,
+        } as InputAttributes)`,
         }),
         m('h4.header', 'TextInput with icon'),
         m(
@@ -66,7 +68,7 @@ export const InputPage = () => {
             iconName: 'account_circle',
             onchange,
             maxLength: 50,
-          } as IInputOptions)
+          } as InputAttributes)
         ),
         m(CodeBlock, {
           code: `        m(TextInput, {
@@ -74,7 +76,7 @@ export const InputPage = () => {
           iconName: 'account_circle',
           onchange,
           maxLength: 50,
-        } as IInputOptions)`,
+        } as InputAttributes)`,
         }),
 
         m('h4.header', 'TextInput with custom validation'),
@@ -85,7 +87,7 @@ export const InputPage = () => {
             dataSuccess: 'Great minds think alike',
             dataError: 'Seriously?',
             validate: (v) => v && v.toLowerCase() === 'google',
-          } as IInputOptions)
+          } as InputAttributes)
         ),
         m(CodeBlock, {
           code: `          m(TextInput, {
@@ -93,7 +95,7 @@ export const InputPage = () => {
             dataSuccess: 'Great minds think alike',
             dataError: 'Seriously?',
             validate: v => v && v.toLowerCase() === 'google',
-          } as IInputOptions)`,
+          } as InputAttributes)`,
         }),
 
         m('h3.header', 'Autocomplete'),
@@ -124,7 +126,7 @@ export const InputPage = () => {
               TNO: 'https://tno.github.io/crime_scripts/f418cfa539199976.svg',
             },
             onchange,
-        } as IInputOptions)`,
+        } as InputAttributes)`,
         }),
 
         m('h3.header', 'Search and select, optionally add'),

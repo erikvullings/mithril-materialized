@@ -1,43 +1,10 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
-import { IInputOptions } from './input-options';
+import { InputAttributes } from './input-options';
 import { Label, HelperText } from './label';
-// import './styles/input.css';
-
-/** Shared label management utility */
-const createLabelManager = (element: HTMLInputElement | HTMLTextAreaElement) => {
-  const parentElement = element.parentElement as HTMLElement;
-  const label = parentElement.querySelector('label');
-
-  const updateLabelState = () => {
-    if (label) {
-      if (element.value !== '' || document.activeElement === element || element.placeholder) {
-        label.classList.add('active');
-      } else {
-        label.classList.remove('active');
-      }
-    }
-  };
-
-  const cleanup = () => {
-    element.removeEventListener('focus', updateLabelState);
-    element.removeEventListener('blur', updateLabelState);
-    element.removeEventListener('input', updateLabelState);
-  };
-
-  // Add event listeners
-  element.addEventListener('focus', updateLabelState);
-  element.addEventListener('blur', updateLabelState);
-  element.addEventListener('input', updateLabelState);
-
-  // Initial label state
-  updateLabelState();
-
-  return { updateLabelState, cleanup };
-};
 
 /** Character counter component that tracks text length against maxLength */
-const CharacterCounter: FactoryComponent<{ currentLength: number; maxLength: number; show: boolean }> = () => {
+export const CharacterCounter: FactoryComponent<{ currentLength: number; maxLength: number; show: boolean }> = () => {
   return {
     view: ({ attrs }) => {
       const { currentLength, maxLength, show } = attrs;
@@ -62,13 +29,15 @@ const CharacterCounter: FactoryComponent<{ currentLength: number; maxLength: num
 };
 
 /** Create a TextArea */
-export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
+export const TextArea: FactoryComponent<InputAttributes<string>> = () => {
   const state = {
     id: uniqueId(),
     currentLength: 0,
     hasInteracted: false,
     isValid: true,
     height: undefined as undefined | string,
+    active: false,
+    textarea: undefined as undefined | HTMLTextAreaElement,
   };
 
   let labelManager: { updateLabelState: () => void; cleanup: () => void } | null = null;
@@ -93,9 +62,11 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
         iconName,
         id = state.id,
         initialValue,
+        placeholder,
         isMandatory,
         label,
         maxLength,
+        oninput,
         onchange,
         onkeydown,
         onkeypress,
@@ -115,29 +86,31 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
             height: state.height,
           },
           oncreate: ({ dom }) => {
-            const textarea = dom as HTMLTextAreaElement;
+            const textarea = (state.textarea = dom as HTMLTextAreaElement);
 
             // Set initial value and height if provided
             if (initialValue !== undefined) {
               textarea.value = String(initialValue);
               updateHeight(textarea);
-            } else {
+              // } else {
               // updateHeight(textarea);
             }
-
-            // Setup label management
-            labelManager = createLabelManager(textarea);
 
             // Update character count state for counter component
             if (maxLength) {
               state.currentLength = textarea.value.length; // Initial count
+              m.redraw();
             }
           },
           onupdate: ({ dom }) => {
             const textarea = dom as HTMLTextAreaElement;
             if (state.height) textarea.style.height = state.height;
           },
+          onfocus: () => {
+            state.active = true;
+          },
           oninput: (e: Event) => {
+            state.active = true;
             state.hasInteracted = false;
             const target = e.target as HTMLTextAreaElement;
 
@@ -151,17 +124,22 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
             }
 
             // Call onchange handler
-            if (onchange) {
-              onchange(target.value);
+            if (oninput) {
+              oninput(target.value);
             }
           },
           onblur: (e: FocusEvent) => {
+            state.active = false;
             // const target = e.target as HTMLTextAreaElement;
             state.hasInteracted = true;
 
             // Call original onblur if provided
             if (onblur) {
               onblur(e);
+            }
+
+            if (onchange && state.textarea) {
+              onchange(state.textarea.value);
             }
           },
           value: initialValue,
@@ -181,7 +159,12 @@ export const TextArea: FactoryComponent<IInputOptions<string>> = () => {
               }
             : undefined,
         }),
-        m(Label, { label, id, isMandatory, isActive: initialValue || attrs.placeholder }),
+        m(Label, {
+          label,
+          id,
+          isMandatory,
+          isActive: state.textarea?.value || initialValue || placeholder || state.active,
+        }),
         m(HelperText, {
           helperText,
           dataError: state.hasInteracted && attrs.dataError ? attrs.dataError : undefined,
@@ -203,17 +186,25 @@ export type InputType = 'url' | 'color' | 'text' | 'number' | 'email' | 'range' 
 
 /** Default component for all kinds of input fields. */
 const InputField =
-  <T>(type: InputType, defaultClass = ''): FactoryComponent<IInputOptions<T>> =>
+  <T>(type: InputType, defaultClass = ''): FactoryComponent<InputAttributes<T>> =>
   () => {
-    const state = { id: uniqueId(), currentLength: 0, hasInteracted: false, isValid: true };
-    let labelManager: { updateLabelState: () => void; cleanup: () => void } | null = null;
-    let lengthUpdateHandler: (() => void) | null = null;
-    let inputElement: HTMLInputElement | null = null;
+    const state = {
+      id: uniqueId(),
+      currentLength: 0,
+      hasInteracted: false,
+      isValid: true,
+      active: false,
+      inputElement: null as null | HTMLInputElement,
+    };
+    // let labelManager: { updateLabelState: () => void; cleanup: () => void } | null = null;
+    // let lengthUpdateHandler: (() => void) | null = null;
+    // let inputElement: HTMLInputElement | null = null;
 
     const getValue = (target: HTMLInputElement) => {
       const val = target.value as any as T;
       return (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
     };
+
     const setValidity = (target: HTMLInputElement, validationResult: string | boolean) => {
       if (typeof validationResult === 'boolean') {
         target.setCustomValidity(validationResult ? '' : 'Custom validation failed');
@@ -221,21 +212,19 @@ const InputField =
         target.setCustomValidity(validationResult);
       }
     };
-    const focus = ({ autofocus }: IInputOptions<T>) =>
+
+    const focus = ({ autofocus }: InputAttributes<T>) =>
       autofocus ? (typeof autofocus === 'boolean' ? autofocus : autofocus()) : false;
 
+    const lengthUpdateHandler = () => {
+      const length = state.inputElement?.value.length;
+      if (length) {
+        state.currentLength = length;
+        state.hasInteracted = length > 0;
+      }
+    };
+
     return {
-      onremove: () => {
-        if (labelManager) {
-          labelManager.cleanup();
-          labelManager = null;
-        }
-        if (lengthUpdateHandler && inputElement) {
-          inputElement.removeEventListener('input', lengthUpdateHandler);
-          lengthUpdateHandler = null;
-        }
-        inputElement = null;
-      },
       view: ({ attrs }) => {
         const {
           className = 'col s12',
@@ -245,10 +234,12 @@ const InputField =
           iconName,
           id = state.id,
           initialValue,
+          placeholder,
           isMandatory,
           label,
           maxLength,
           newRow,
+          oninput,
           onchange,
           onkeydown,
           onkeypress,
@@ -268,29 +259,18 @@ const InputField =
             id,
             // attributes,
             oncreate: ({ dom }) => {
+              const input = (state.inputElement = dom as HTMLInputElement);
               if (focus(attrs)) {
-                (dom as HTMLElement).focus();
+                input.focus();
               }
-
-              const input = dom as HTMLInputElement;
-              inputElement = input;
 
               // Set initial value if provided
               if (initialValue !== undefined) {
                 input.value = String(initialValue);
               }
 
-              // Setup label management
-              labelManager = createLabelManager(input);
-
               // Update character count state for counter component
               if (maxLength) {
-                lengthUpdateHandler = () => {
-                  state.currentLength = input.value.length;
-                  state.hasInteracted = input.value.length > 0;
-                  m.redraw();
-                };
-                input.addEventListener('input', lengthUpdateHandler);
                 state.currentLength = input.value.length; // Initial count
               }
 
@@ -330,12 +310,17 @@ const InputField =
                 }
               : undefined,
             oninput: (e: Event) => {
+              state.active = true;
               const target = e.target as HTMLInputElement;
 
               // Handle original oninput logic
               const value = getValue(target);
-              if (onchange) {
-                onchange(value);
+              if (oninput) {
+                oninput(value);
+              }
+
+              if (maxLength) {
+                lengthUpdateHandler();
               }
 
               // Don't validate on input, only clear error states if user is typing
@@ -352,7 +337,11 @@ const InputField =
                 }
               }
             },
+            onfocus: () => {
+              state.active = true;
+            },
             onblur: (e: FocusEvent) => {
+              state.active = false;
               const target = e.target as HTMLInputElement;
               state.hasInteracted = true;
 
@@ -389,6 +378,9 @@ const InputField =
               if (attrs.onblur) {
                 attrs.onblur(e);
               }
+              if (onchange && state.inputElement) {
+                onchange(getValue(state.inputElement));
+              }
             },
             value: initialValue,
           }),
@@ -397,8 +389,10 @@ const InputField =
             id,
             isMandatory,
             isActive:
-              typeof initialValue !== 'undefined' ||
-              attrs.placeholder ||
+              state.active ||
+              state.inputElement?.value ||
+              initialValue ||
+              placeholder ||
               type === 'number' ||
               type === 'color' ||
               type === 'range'
@@ -437,7 +431,7 @@ export const RangeInput = InputField<number>('range', '.range-field');
 /** Component for entering an email */
 export const EmailInput = InputField<string>('email');
 
-export interface IFileInputOptions extends Attributes {
+export interface FileInputAttributes extends Attributes {
   /** Displayed on the button, @default File */
   label?: string;
   /** Current value of the file input, write only */
@@ -459,7 +453,7 @@ export interface IFileInputOptions extends Attributes {
 }
 
 /** Component for uploading a file */
-export const FileInput: FactoryComponent<IFileInputOptions> = () => {
+export const FileInput: FactoryComponent<FileInputAttributes> = () => {
   let canClear = false;
   let i: HTMLInputElement;
   return {

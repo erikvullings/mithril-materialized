@@ -1,6 +1,6 @@
 import m, { FactoryComponent, Attributes, Vnode } from 'mithril';
 
-export interface ICollapsibleItem extends Attributes {
+export interface CollapsibleItem extends Attributes {
   /** Header of the collabsible item, may contain HTML or may be a Vnode */
   header?: string | Vnode<any, any>;
   /** Body of the collabsible item, may contain HTML or may be a Vnode */
@@ -11,53 +11,67 @@ export interface ICollapsibleItem extends Attributes {
   iconName?: string;
 }
 
-export interface ICollapsible extends Attributes {
+export interface CollapsibleAttributes extends Attributes {
   /** The list of accordeon/collabsible items */
-  items: ICollapsibleItem[];
+  items: CollapsibleItem[];
   /** If true, only one item can be expanded at a time (accordion mode) */
   accordion?: boolean;
 }
 
-export const CollapsibleItem: FactoryComponent<ICollapsibleItem & { 
-  isActive: boolean; 
-  onToggle: () => void; 
-}> = () => {
+export const CollapsibleItem: FactoryComponent<
+  CollapsibleItem & {
+    isActive: boolean;
+    onToggle: () => void;
+  }
+> = () => {
   return {
     view: ({ attrs: { header, body, iconName, isActive, onToggle } }) => {
       return m('li', { className: isActive ? 'active' : '' }, [
         header || iconName
-          ? m('.collapsible-header', {
-              onclick: onToggle,
-              style: { 
-                cursor: 'pointer',
-                padding: '1rem',
-                backgroundColor: '#fff',
-                borderBottom: '1px solid #ddd',
-                display: 'flex',
-                alignItems: 'center',
-                transition: 'background-color 0.2s ease'
+          ? m(
+              '.collapsible-header',
+              {
+                onclick: onToggle,
+                style: {
+                  cursor: 'pointer',
+                  padding: '1rem',
+                  backgroundColor: '#fff',
+                  borderBottom: '1px solid #ddd',
+                  display: 'flex',
+                  alignItems: 'center',
+                  transition: 'background-color 0.2s ease',
+                },
+                onmouseover: (e: MouseEvent) => {
+                  (e.target as HTMLElement).style.backgroundColor = '#f5f5f5';
+                },
+                onmouseleave: (e: MouseEvent) => {
+                  (e.target as HTMLElement).style.backgroundColor = '#fff';
+                },
               },
-              onmouseover: (e: MouseEvent) => {
-                (e.target as HTMLElement).style.backgroundColor = '#f5f5f5';
-              },
-              onmouseleave: (e: MouseEvent) => {
-                (e.target as HTMLElement).style.backgroundColor = '#fff';
-              }
-            }, [
-              iconName ? m('i.material-icons', { style: { marginRight: '1rem' } }, iconName) : undefined,
-              header ? (typeof header === 'string' ? m('span', header) : header) : undefined,
-            ])
+              [
+                iconName ? m('i.material-icons', { style: { marginRight: '1rem' } }, iconName) : undefined,
+                header ? (typeof header === 'string' ? m('span', header) : header) : undefined,
+              ]
+            )
           : undefined,
-        m('.collapsible-body', {
-          style: {
-            display: isActive ? 'block' : 'none',
-            transition: 'display 0.3s ease'
-          }
-        }, [
-          m('.collapsible-body-content', {
-            style: { padding: '2rem' }
-          }, body ? (typeof body === 'string' ? m('div', { innerHTML: body }) : body) : undefined)
-        ]),
+        m(
+          '.collapsible-body',
+          {
+            style: {
+              display: isActive ? 'block' : 'none',
+              transition: 'display 0.3s ease',
+            },
+          },
+          [
+            m(
+              '.collapsible-body-content',
+              {
+                style: { padding: '2rem' },
+              },
+              body ? (typeof body === 'string' ? m('div', { innerHTML: body }) : body) : undefined
+            ),
+          ]
+        ),
       ]);
     },
   };
@@ -67,9 +81,9 @@ export const CollapsibleItem: FactoryComponent<ICollapsibleItem & {
  * Creates a collabsible or accordion component with pure CSS/Mithril implementation.
  * No MaterializeCSS JavaScript dependencies.
  */
-export const Collapsible: FactoryComponent<ICollapsible> = () => {
+export const Collapsible: FactoryComponent<CollapsibleAttributes> = () => {
   const state = {
-    activeItems: new Set<number>()
+    activeItems: new Set<number>(),
   };
 
   return {
@@ -84,7 +98,7 @@ export const Collapsible: FactoryComponent<ICollapsible> = () => {
 
     view: ({ attrs }) => {
       const { items, accordion = true, class: c, className, style, id } = attrs;
-      
+
       const toggleItem = (index: number) => {
         if (accordion) {
           // Accordion mode: only one item can be active
@@ -113,16 +127,16 @@ export const Collapsible: FactoryComponent<ICollapsible> = () => {
                 border: '1px solid #ddd',
                 borderRadius: '2px',
                 margin: '0.5rem 0 1rem 0',
-                ...style
+                ...style,
               },
               id,
             },
-            items.map((item, index) => 
+            items.map((item, index) =>
               m(CollapsibleItem, {
                 ...item,
                 key: index,
                 isActive: state.activeItems.has(index),
-                onToggle: () => toggleItem(index)
+                onToggle: () => toggleItem(index),
               })
             )
           )

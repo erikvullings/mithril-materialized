@@ -2,7 +2,7 @@ import m, { Vnode, FactoryComponent, Attributes, Component } from 'mithril';
 import { HelperText } from './label';
 import { uniqueId } from './utils';
 
-export interface IInputCheckbox extends Attributes {
+export interface InputCheckboxAttributes extends Attributes {
   /** Optional event handler when a checkbox is clicked */
   onchange?: (checked: boolean) => void;
   /** Label of the checkbox, can be a string or Vnode */
@@ -16,7 +16,7 @@ export interface IInputCheckbox extends Attributes {
 }
 
 /** Component to show a check box */
-export const InputCheckbox: FactoryComponent<IInputCheckbox> = () => {
+export const InputCheckbox: FactoryComponent<InputCheckboxAttributes> = () => {
   return {
     view: ({ attrs: { className = 'col s12', onchange, label, checked, disabled, description, style, inputId } }) => {
       const checkboxId = inputId || uniqueId();
@@ -44,7 +44,7 @@ export const InputCheckbox: FactoryComponent<IInputCheckbox> = () => {
   };
 };
 
-export interface IInputOption<T extends string | number> {
+export interface InputOption<T extends string | number> {
   /** Option ID */
   id: T;
   /** Displayed label */
@@ -63,20 +63,15 @@ export interface IInputOption<T extends string | number> {
   description?: string;
 }
 
-export interface IOptions<T extends string | number> extends Attributes {
+export interface OptionsAttributes<T extends string | number> extends Attributes {
   /** Element ID */
   id?: string;
   /** Optional title or label */
   label?: string;
   /** The options that you have */
-  options: IInputOption<T>[];
+  options: InputOption<T>[];
   /** Event handler that is called when an option is changed */
   onchange?: (checkedId: T[]) => void;
-  /**
-   * Selected id or ids (in case of multiple options)
-   * @deprecated Please use initialValue instead
-   */
-  checkedId?: T | T[];
   /** Selected id or ids (in case of multiple options) */
   initialValue?: T | T[];
   /** Optional description */
@@ -96,7 +91,7 @@ export interface IOptions<T extends string | number> extends Attributes {
 }
 
 /** A list of checkboxes */
-export const Options = <T extends string | number>(): Component<IOptions<T>> => {
+export const Options = <T extends string | number>(): Component<OptionsAttributes<T>> => {
   const state = {} as {
     checkedId?: T | T[];
     checkedIds: T[];
@@ -105,8 +100,8 @@ export const Options = <T extends string | number>(): Component<IOptions<T>> => 
 
   const isChecked = (id: T) => state.checkedIds.indexOf(id) >= 0;
 
-  const selectAll = (options: IInputOption<T>[], callback?: (checkedId: T[]) => void) => {
-    const allIds = options.map(option => option.id);
+  const selectAll = (options: InputOption<T>[], callback?: (checkedId: T[]) => void) => {
+    const allIds = options.map((option) => option.id);
     state.checkedIds = [...allIds];
     if (callback) callback(allIds);
   };
@@ -127,7 +122,6 @@ export const Options = <T extends string | number>(): Component<IOptions<T>> => 
       attrs: {
         label,
         options,
-        checkedId,
         description,
         className = 'col s12',
         style,
@@ -140,10 +134,6 @@ export const Options = <T extends string | number>(): Component<IOptions<T>> => 
         onchange: callback,
       },
     }) => {
-      if (checkedId && state.checkedId !== checkedId) {
-        state.checkedId = checkedId;
-        state.checkedIds = checkedId instanceof Array ? checkedId : [checkedId];
-      }
       const onchange = callback
         ? (propId: T, checked: boolean) => {
             const checkedIds = state.checkedIds.filter((i) => i !== propId);
@@ -155,10 +145,24 @@ export const Options = <T extends string | number>(): Component<IOptions<T>> => 
           }
         : undefined;
       const cn = [newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim();
-      
-      const optionsContent = layout === 'horizontal' 
-        ? m('div.grid-container', 
-            options.map((option) =>
+
+      const optionsContent =
+        layout === 'horizontal'
+          ? m(
+              'div.grid-container',
+              options.map((option) =>
+                m(InputCheckbox, {
+                  disabled: disabled || option.disabled,
+                  label: option.label,
+                  onchange: onchange ? (v: boolean) => onchange(option.id, v) : undefined,
+                  className: option.className || checkboxClass,
+                  checked: isChecked(option.id),
+                  description: option.description,
+                  inputId: `${state.componentId}-${option.id}`,
+                })
+              )
+            )
+          : options.map((option) =>
               m(InputCheckbox, {
                 disabled: disabled || option.disabled,
                 label: option.label,
@@ -168,33 +172,36 @@ export const Options = <T extends string | number>(): Component<IOptions<T>> => 
                 description: option.description,
                 inputId: `${state.componentId}-${option.id}`,
               })
-            )
-          )
-        : options.map((option) =>
-            m(InputCheckbox, {
-              disabled: disabled || option.disabled,
-              label: option.label,
-              onchange: onchange ? (v: boolean) => onchange(option.id, v) : undefined,
-              className: option.className || checkboxClass,
-              checked: isChecked(option.id),
-              description: option.description,
-              inputId: `${state.componentId}-${option.id}`,
-            })
-          );
+            );
 
       return m('div', { id: state.componentId, className: cn, style }, [
         label && m('h5.form-group-label', label + (isMandatory ? ' *' : '')),
-        showSelectAll && m('div.select-all-controls', { style: 'margin-bottom: 10px;' }, [
-          m('a', { 
-            href: '#', 
-            onclick: (e: Event) => { e.preventDefault(); selectAll(options, callback); },
-            style: 'margin-right: 15px;'
-          }, 'Select All'),
-          m('a', { 
-            href: '#', 
-            onclick: (e: Event) => { e.preventDefault(); selectNone(callback); }
-          }, 'Select None'),
-        ]),
+        showSelectAll &&
+          m('div.select-all-controls', { style: 'margin-bottom: 10px;' }, [
+            m(
+              'a',
+              {
+                href: '#',
+                onclick: (e: Event) => {
+                  e.preventDefault();
+                  selectAll(options, callback);
+                },
+                style: 'margin-right: 15px;',
+              },
+              'Select All'
+            ),
+            m(
+              'a',
+              {
+                href: '#',
+                onclick: (e: Event) => {
+                  e.preventDefault();
+                  selectNone(callback);
+                },
+              },
+              'Select None'
+            ),
+          ]),
         description && m(HelperText, { helperText: description }),
         m('form', { action: '#' }, optionsContent),
       ]);

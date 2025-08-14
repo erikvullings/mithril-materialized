@@ -5,24 +5,24 @@ import {
   Button,
   MaterialBox,
   Select,
-  ISelectOptions,
+  SelectAttributes,
   Dropdown,
-  IDropdownOptions,
+  DropdownAttributes,
 } from 'mithril-materialized';
 import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
 export const ModalPage = () => {
   const onchange = (v: unknown) => alert(v);
-  
+
   // State to control modal visibility
   const state = {
     modal1Open: false,
     modal1bOpen: false,
     modal2Open: false,
     modal3Open: false,
-    modal4Open: false
+    modal4Open: false,
   };
-  
+
   return {
     view: () =>
       m('.col.s12', [
@@ -36,20 +36,20 @@ export const ModalPage = () => {
         m('h3.header', 'Normal Modal'),
         m(
           '.row',
-          m(Button, { 
-            label: 'Open modal', 
-            onclick: () => { 
-              state.modal1Open = true; 
+          m(Button, {
+            label: 'Open modal',
+            onclick: () => {
+              state.modal1Open = true;
               m.redraw();
-            }
+            },
           }),
           m(ModalPanel, {
             id: 'modal1',
             title: 'Do you like this library?',
             description: 'This is some content.',
             isOpen: state.modal1Open,
-            onToggle: (open: boolean) => { 
-              state.modal1Open = open; 
+            onToggle: (open: boolean) => {
+              state.modal1Open = open;
               m.redraw();
             },
             buttons: [
@@ -87,26 +87,26 @@ export const ModalPage = () => {
         m('h3.header', 'Normal Modal with Select and Dropdown'),
         m(
           '.row',
-          m(Button, { 
-            label: 'Open modal', 
-            onclick: () => { 
-              state.modal1bOpen = true; 
+          m(Button, {
+            label: 'Open modal',
+            onclick: () => {
+              state.modal1bOpen = true;
               m.redraw();
-            }
+            },
           }),
           m(ModalPanel, {
             id: 'modal1b',
             title: 'Tell me about yourself',
             isOpen: state.modal1bOpen,
-            onToggle: (open: boolean) => { 
-              state.modal1bOpen = open; 
+            onToggle: (open: boolean) => {
+              state.modal1bOpen = open;
               m.redraw();
             },
             description: m(
               '.row', // So the content has enough vertical space
               [
                 m(Select, {
-                  dropdownOptions: { container: document.body }, // So the select is not hidden
+                  dropdownAttributes: { container: document.body }, // So the select is not hidden
                   iconName: 'person',
                   label: 'What is your favorite hobby?',
                   placeholder: 'Pick one',
@@ -120,7 +120,7 @@ export const ModalPage = () => {
                     { id: 'sleep', label: 'Sleeping' },
                   ],
                   onchange: (v) => console.log(v),
-                } as ISelectOptions<string>),
+                } as SelectAttributes<string>),
                 m(Dropdown, {
                   container: document.body, // So the dropdown is not hidden
                   id: 'hobby',
@@ -136,7 +136,7 @@ export const ModalPage = () => {
                     { label: 'Sex', id: 'sex', iconName: 'group' },
                   ],
                   onchange: (v) => console.log(v),
-                } as IDropdownOptions<string>),
+                } as DropdownAttributes<string>),
               ]
             ),
             buttons: [
@@ -158,7 +158,7 @@ export const ModalPage = () => {
                       '.row', // So the content has enough vertical space
                       [
                         m(Select, {
-                          dropdownOptions: { container: document.body }, // So the select is not hidden
+                          dropdownAttributes: { container: document.body }, // So the select is not hidden
                           iconName: 'person',
                           label: 'What is your favorite hobby?',
                           placeholder: 'Pick one',
@@ -172,7 +172,7 @@ export const ModalPage = () => {
                             { id: 'sleep', label: 'Sleeping' },
                           ],
                           onchange: v => console.log(v),
-                        } as ISelectOptions),
+                        } as SelectAttributes),
                         m(Dropdown, {
                           container: document.body, // So the dropdown is not hidden
                           id: 'hobby',
@@ -188,7 +188,7 @@ export const ModalPage = () => {
                             { label: 'Sex', id: 'sex', iconName: 'group' },
                           ],
                           onchange: v => console.log(v),
-                        } as IDropdownOptions),
+                        } as DropdownAttributes),
                       ]
                     ),
                     options: { opacity: 0.7 },
@@ -206,19 +206,19 @@ export const ModalPage = () => {
         m('h3.header', 'Fixed Footer Modal'),
         m(
           '.row',
-          m(Button, { 
-            label: 'Fixed footer modal', 
-            onclick: () => { 
-              state.modal2Open = true; 
+          m(Button, {
+            label: 'Fixed footer modal',
+            onclick: () => {
+              state.modal2Open = true;
               m.redraw();
-            }
+            },
           }),
           m(ModalPanel, {
             id: 'modal2',
             title: 'Do you like this library?',
             isOpen: state.modal2Open,
-            onToggle: (open: boolean) => { 
-              state.modal2Open = open; 
+            onToggle: (open: boolean) => {
+              state.modal2Open = open;
               m.redraw();
             },
             fixedFooter: true,
@@ -291,20 +291,20 @@ export const ModalPage = () => {
         m('h3.header', 'Bottom Modal'),
         m(
           '.row',
-          m(Button, { 
-            label: 'Open bottom modal', 
-            onclick: () => { 
-              state.modal3Open = true; 
+          m(Button, {
+            label: 'Open bottom modal',
+            onclick: () => {
+              state.modal3Open = true;
               m.redraw();
-            }
+            },
           }),
           m(ModalPanel, {
             id: 'modal3',
             title: 'Do you like this library?',
             description: 'This is some content.',
             isOpen: state.modal3Open,
-            onToggle: (open: boolean) => { 
-              state.modal3Open = open; 
+            onToggle: (open: boolean) => {
+              state.modal3Open = open;
               m.redraw();
             },
             bottomSheet: true,
@@ -343,20 +343,20 @@ export const ModalPage = () => {
         m('h3.header', 'Vnode as content'),
         m(
           '.row',
-          m(Button, { 
-            label: 'Open bottom content modal', 
-            onclick: () => { 
-              state.modal4Open = true; 
+          m(Button, {
+            label: 'Open bottom content modal',
+            onclick: () => {
+              state.modal4Open = true;
               m.redraw();
-            }
+            },
           }),
           m(ModalPanel, {
             id: 'modal4',
             title: 'Content modal',
             description: m(MaterialBox, { src: gogh, width: 400 }),
             isOpen: state.modal4Open,
-            onToggle: (open: boolean) => { 
-              state.modal4Open = open; 
+            onToggle: (open: boolean) => {
+              state.modal4Open = open;
               m.redraw();
             },
             bottomSheet: true,

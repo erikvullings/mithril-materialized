@@ -3,7 +3,7 @@ import m, { FactoryComponent, Component, Attributes } from 'mithril';
 
 export const Mandatory: Component = { view: ({ attrs }) => m('span.mandatory', attrs, '*') };
 
-export interface IMaterialLabel extends Attributes {
+export interface LabelAttributes extends Attributes {
   /** Optional title/label */
   label?: string;
   /** Optional ID */
@@ -15,7 +15,7 @@ export interface IMaterialLabel extends Attributes {
 }
 
 /** Simple label element, used for most components. */
-export const Label: FactoryComponent<IMaterialLabel> = () => {
+export const Label: FactoryComponent<LabelAttributes> = () => {
   return {
     view: ({ attrs: { label, id, isMandatory, isActive, className, ...params } }) =>
       label
@@ -23,7 +23,7 @@ export const Label: FactoryComponent<IMaterialLabel> = () => {
             'label',
             {
               ...params,
-              className: [className, isActive ? 'active' : ''].filter(Boolean).join(' ').trim(),
+              className: [className, isActive ? 'active' : ''].filter(Boolean).join(' ').trim() || undefined,
               for: id,
             },
             [m.trust(label), isMandatory ? m(Mandatory) : undefined]
@@ -32,14 +32,14 @@ export const Label: FactoryComponent<IMaterialLabel> = () => {
   };
 };
 
-export interface IHelperTextOptions extends Attributes {
+export interface HelperTextOptions extends Attributes {
   helperText?: string;
   dataError?: string;
   dataSuccess?: string;
 }
 
 /** Create a helper text, often used for displaying a small help text. May be replaced by the validation message. */
-export const HelperText: FactoryComponent<IHelperTextOptions> = () => {
+export const HelperText: FactoryComponent<HelperTextOptions> = () => {
   return {
     view: ({ attrs: { helperText, dataError, dataSuccess, className } }) => {
       return helperText || dataError || dataSuccess

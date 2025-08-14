@@ -7,7 +7,7 @@ export enum CollectionMode {
   AVATAR,
 }
 
-export interface ICollectionItem {
+export interface CollectionItem {
   /** If available, will be used as the key, so all items need an id. */
   id?: string | number;
   /** Title of the collection item */
@@ -25,23 +25,23 @@ export interface ICollectionItem {
   /** Add a material icon as secondary content. */
   iconName?: string;
   /** Onclick event handler */
-  onclick?: (item: ICollectionItem) => void;
+  onclick?: (item: CollectionItem) => void;
   /** Any other virtual element properties, including attributes and event handlers. */
   [property: string]: any;
 }
 
-export interface ICollection extends Attributes {
+export interface CollectionAttributes extends Attributes {
   /** Optional header */
   header?: string;
   /** The list of items */
-  items: ICollectionItem[];
+  items: CollectionItem[];
   /** Mode of operation */
   mode?: CollectionMode;
 }
 
 const isNonLocalRoute = (url?: string) => url && /https?:\/\//.test(url);
 
-export const SecondaryContent: FactoryComponent<ICollectionItem> = () => {
+export const SecondaryContent: FactoryComponent<CollectionItem> = () => {
   return {
     view: ({ attrs }) => {
       const { href, iconName = 'send', onclick, style = { cursor: 'pointer' } } = attrs;
@@ -60,7 +60,7 @@ export const SecondaryContent: FactoryComponent<ICollectionItem> = () => {
 
 const avatarIsImage = (avatar = '') => /\./.test(avatar);
 
-export const ListItem: FactoryComponent<{ item: ICollectionItem; mode: CollectionMode }> = () => {
+export const ListItem: FactoryComponent<{ item: CollectionItem; mode: CollectionMode }> = () => {
   return {
     view: ({ attrs: { item, mode } }) => {
       const { title, content = '', active, iconName, avatar, className, onclick } = item;
@@ -91,7 +91,7 @@ export const ListItem: FactoryComponent<{ item: ICollectionItem; mode: Collectio
   };
 };
 
-const BasicCollection: FactoryComponent<ICollection> = () => {
+const BasicCollection: FactoryComponent<CollectionAttributes> = () => {
   return {
     view: ({ attrs: { header, items, mode = CollectionMode.BASIC, ...params } }) => {
       const collectionItems = items.map((item) => m(ListItem, { key: item.id, item, mode }));
@@ -102,7 +102,7 @@ const BasicCollection: FactoryComponent<ICollection> = () => {
   };
 };
 
-export const AnchorItem: FactoryComponent<{ item: ICollectionItem }> = () => {
+export const AnchorItem: FactoryComponent<{ item: CollectionItem }> = () => {
   return {
     view: ({ attrs: { item } }) => {
       const { title, active, href, ...params } = item;
@@ -118,7 +118,7 @@ export const AnchorItem: FactoryComponent<{ item: ICollectionItem }> = () => {
   };
 };
 
-const LinksCollection: FactoryComponent<ICollection> = () => {
+const LinksCollection: FactoryComponent<CollectionAttributes> = () => {
   return {
     view: ({ attrs: { items, header, ...params } }) => {
       return header
@@ -139,7 +139,7 @@ const LinksCollection: FactoryComponent<ICollection> = () => {
  * Creates a Collection of items, optionally containing links, headers, secondary content or avatars.
  * @see https://materializecss.com/collections.html
  */
-export const Collection: FactoryComponent<ICollection> = () => {
+export const Collection: FactoryComponent<CollectionAttributes> = () => {
   return {
     view: ({ attrs: { items, header, mode = CollectionMode.BASIC, ...params } }) => {
       return header || (items && items.length > 0)

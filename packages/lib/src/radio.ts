@@ -1,14 +1,14 @@
 import m, { Attributes, Component } from 'mithril';
 import { uniqueId } from './utils';
-import { IInputOption } from './option';
+import { InputOption } from './option';
 
-export interface IRadioButtons<T extends string | number> extends Attributes {
+export interface RadioButtonsAttributes<T extends string | number> extends Attributes {
   /** Element ID */
   id?: string;
   /** Optional title or label */
   label?: string;
   /** The options that you have */
-  options: IInputOption<T>[];
+  options: InputOption<T>[];
   /** Event handler that is called when an option is changed */
   onchange: (id: T) => void;
   /** Selected id (in oninit lifecycle) */
@@ -29,7 +29,7 @@ export interface IRadioButtons<T extends string | number> extends Attributes {
   layout?: 'vertical' | 'horizontal';
 }
 
-export interface IRadioButton<T extends string | number> extends Attributes {
+export interface RadioButtonAttributes<T extends string | number> extends Attributes {
   id: T;
   checked?: boolean;
   onchange: (id: T) => void;
@@ -40,7 +40,7 @@ export interface IRadioButton<T extends string | number> extends Attributes {
   inputId?: string;
 }
 
-export const RadioButton = <T extends string | number>(): Component<IRadioButton<T>> => ({
+export const RadioButton = <T extends string | number>(): Component<RadioButtonAttributes<T>> => ({
   view: ({ attrs: { id, groupId, label, onchange, className = 'col s12', checked, disabled, inputId } }) => {
     const radioId = inputId || `${groupId}-${id}`;
     return m(
@@ -62,7 +62,7 @@ export const RadioButton = <T extends string | number>(): Component<IRadioButton
 
 /** Component to show a list of radio buttons, from which you can choose one. */
 // export const RadioButtons: FactoryComponent<IRadioButtons<T>> = () => {
-export const RadioButtons = <T extends string | number>(): Component<IRadioButtons<T>> => {
+export const RadioButtons = <T extends string | number>(): Component<RadioButtonsAttributes<T>> => {
   const state = { groupId: uniqueId() } as {
     groupId: string;
     oldCheckedId?: T;
@@ -103,10 +103,24 @@ export const RadioButtons = <T extends string | number>(): Component<IRadioButto
       };
 
       const cn = [newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim();
-      
-      const optionsContent = layout === 'horizontal' 
-        ? m('div.grid-container', 
-            options.map((r) =>
+
+      const optionsContent =
+        layout === 'horizontal'
+          ? m(
+              'div.grid-container',
+              options.map((r) =>
+                m(RadioButton, {
+                  ...r,
+                  onchange,
+                  groupId,
+                  disabled: disabled || r.disabled,
+                  className: checkboxClass,
+                  checked: r.id === checkedId,
+                  inputId: `${componentId}-${r.id}`,
+                } as RadioButtonAttributes<T>)
+              )
+            )
+          : options.map((r) =>
               m(RadioButton, {
                 ...r,
                 onchange,
@@ -115,20 +129,8 @@ export const RadioButtons = <T extends string | number>(): Component<IRadioButto
                 className: checkboxClass,
                 checked: r.id === checkedId,
                 inputId: `${componentId}-${r.id}`,
-              } as IRadioButton<T>)
-            )
-          )
-        : options.map((r) =>
-            m(RadioButton, {
-              ...r,
-              onchange,
-              groupId,
-              disabled: disabled || r.disabled,
-              className: checkboxClass,
-              checked: r.id === checkedId,
-              inputId: `${componentId}-${r.id}`,
-            } as IRadioButton<T>)
-          );
+              } as RadioButtonAttributes<T>)
+            );
 
       return m('div', { id: componentId, className: cn }, [
         label && m('h5.form-group-label', label + (isMandatory ? ' *' : '')),

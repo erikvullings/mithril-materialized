@@ -1,7 +1,7 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { Icon } from './icon';
 
-export interface IHtmlAttributes {
+export interface HtmlAttributes {
   id?: string;
   for?: string;
   placeholder?: string;
@@ -10,7 +10,7 @@ export interface IHtmlAttributes {
   type?: 'submit' | 'button' | 'text' | 'textarea' | 'number';
 }
 
-export interface IMaterialButton extends Attributes {
+export interface ButtonAttributes extends Attributes {
   /** Optional (e.g. in case you only want to use an icon) button label */
   label?: string;
   /** Optional icon material-icons name, @see https://materializecss.com/icons.html */
@@ -23,7 +23,7 @@ export interface IMaterialButton extends Attributes {
    */
   modalId?: string;
   /** Some additional HTML attributes that can be attached to the button */
-  attr?: IHtmlAttributes;
+  attr?: HtmlAttributes;
   /** Optional text-based tooltip, @see https://materializecss.com/tooltips.html */
   tooltip?: string;
   /** Optional location for the tooltip */
@@ -39,7 +39,7 @@ export const ButtonFactory = (
   element: string,
   defaultClassNames: string,
   type: string = ''
-): FactoryComponent<IMaterialButton> => {
+): FactoryComponent<ButtonAttributes> => {
   return () => {
     return {
       view: ({ attrs }) => {

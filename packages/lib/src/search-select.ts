@@ -9,7 +9,7 @@ export interface Option<T extends string | number> {
 }
 
 // Component attributes interface
-export interface SearchSelectAttrs<T extends string | number> extends Attributes {
+export interface SearchSelectAttributes<T extends string | number> extends Attributes {
   /** Options to display in the select */
   options?: Option<T>[];
   /** Initial value */
@@ -45,7 +45,10 @@ interface SearchSelectState<T extends string | number> {
 /**
  * Mithril Factory Component for Multi-Select Dropdown with search
  */
-export const SearchSelect = <T extends string | number>(): Component<SearchSelectAttrs<T>, SearchSelectState<T>> => {
+export const SearchSelect = <T extends string | number>(): Component<
+  SearchSelectAttributes<T>,
+  SearchSelectState<T>
+> => {
   //  (): <T extends string | number>(): Component<SearchSelectAttrs<T>, SearchSelectState<T>> => {
   // State initialization
   const state: SearchSelectState<string | number> = {
@@ -89,12 +92,10 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
       case 'ArrowDown':
         e.preventDefault();
         state.focusedIndex = Math.min(state.focusedIndex + 1, totalOptions - 1);
-        m.redraw();
         break;
       case 'ArrowUp':
         e.preventDefault();
         state.focusedIndex = Math.max(state.focusedIndex - 1, -1);
-        m.redraw();
         break;
       case 'Enter':
         e.preventDefault();
@@ -111,7 +112,6 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
         e.preventDefault();
         state.isOpen = false;
         state.focusedIndex = -1;
-        m.redraw();
         break;
     }
     return null;
@@ -181,12 +181,11 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
               state.inputRef = dom as HTMLElement;
             },
             onclick: (e: Event) => {
-              console.log('SearchSelect clicked', state.isOpen, e); // Debug log
+              // console.log('SearchSelect clicked', state.isOpen, e); // Debug log
               e.preventDefault();
               e.stopPropagation();
               state.isOpen = !state.isOpen;
-              console.log('SearchSelect state changed to', state.isOpen); // Debug log
-              // m.redraw();
+              // console.log('SearchSelect state changed to', state.isOpen); // Debug log
             },
             style: {
               display: 'flex',
@@ -341,7 +340,6 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                         class: state.focusedIndex === filteredOptions.length ? 'active' : '',
                         onmouseover: () => {
                           state.focusedIndex = filteredOptions.length;
-                          m.redraw();
                         },
                       },
                       [m('span', `+ "${state.searchTerm}"`)]
@@ -365,7 +363,6 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                     onmouseover: () => {
                       if (!option.disabled) {
                         state.focusedIndex = index;
-                        m.redraw();
                       }
                     },
                   },

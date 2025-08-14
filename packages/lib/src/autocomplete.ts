@@ -1,9 +1,9 @@
 import m, { FactoryComponent } from 'mithril';
 import { uniqueId } from './utils';
-import { IInputOptions } from './input-options';
+import { InputAttributes } from './input-options';
 import { Label, HelperText } from './label';
 
-export interface IAutoCompleteOptions extends IInputOptions<string> {
+export interface AutoCompleteAttributes extends InputAttributes<string> {
   /** The data object defining the autocomplete options */
   data?: Record<string, string | null>;
   /** Limit of how many options are shown. Default: Infinity */
@@ -15,7 +15,7 @@ export interface IAutoCompleteOptions extends IInputOptions<string> {
 }
 
 /** Component to auto complete your text input - Pure Mithril implementation */
-export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
+export const Autocomplete: FactoryComponent<AutoCompleteAttributes> = () => {
   const state = {
     id: uniqueId(),
     isActive: false,
@@ -39,7 +39,7 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
     return filtered;
   };
 
-  const selectSuggestion = (suggestion: { key: string; value: string | null }, attrs: IAutoCompleteOptions) => {
+  const selectSuggestion = (suggestion: { key: string; value: string | null }, attrs: AutoCompleteAttributes) => {
     state.inputValue = suggestion.key;
     state.isOpen = false;
     state.selectedIndex = -1;
@@ -55,7 +55,7 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
     m.redraw();
   };
 
-  const handleKeydown = (e: KeyboardEvent, attrs: IAutoCompleteOptions) => {
+  const handleKeydown = (e: KeyboardEvent, attrs: AutoCompleteAttributes) => {
     if (!state.isOpen) return;
 
     switch (e.key) {
@@ -86,12 +86,11 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
     const target = e.target as Element;
     const autocompleteWrapper = target.closest('.autocomplete-wrapper');
     const dropdownContent = target.closest('.autocomplete-content');
-    
+
     // Close if clicking outside both the input wrapper and dropdown content
     if (!autocompleteWrapper && !dropdownContent) {
       state.isOpen = false;
       state.selectedIndex = -1;
-      m.redraw();
     }
   };
 
@@ -155,15 +154,14 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
 
       // Update suggestions when input changes
       state.suggestions = filterSuggestions(state.inputValue, data, limit, minLength);
-      
+
       // Check if there's a perfect match (exact key match, case-insensitive)
-      const hasExactMatch = state.inputValue.length >= minLength && 
-        Object.keys(data).some(key => key.toLowerCase() === state.inputValue.toLowerCase());
-      
+      const hasExactMatch =
+        state.inputValue.length >= minLength &&
+        Object.keys(data).some((key) => key.toLowerCase() === state.inputValue.toLowerCase());
+
       // Only open dropdown if there are suggestions and no perfect match
-      state.isOpen = state.suggestions.length > 0 && 
-                    state.inputValue.length >= minLength && 
-                    !hasExactMatch;
+      state.isOpen = state.suggestions.length > 0 && state.inputValue.length >= minLength && !hasExactMatch;
 
       const replacer = new RegExp(`(${state.inputValue})`, 'i');
 
@@ -206,8 +204,8 @@ export const Autocomplete: FactoryComponent<IAutoCompleteOptions> = () => {
               state.isActive = true;
               if (state.inputValue.length >= minLength) {
                 // Check for perfect match on focus too
-                const hasExactMatch = Object.keys(data).some(key => 
-                  key.toLowerCase() === state.inputValue.toLowerCase()
+                const hasExactMatch = Object.keys(data).some(
+                  (key) => key.toLowerCase() === state.inputValue.toLowerCase()
                 );
                 state.isOpen = state.suggestions.length > 0 && !hasExactMatch;
               }

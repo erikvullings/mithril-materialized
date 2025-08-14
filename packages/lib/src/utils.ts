@@ -61,7 +61,7 @@ export const getDropdownStyles = (
     /** ID property of the selected item */
     id?: string | number;
     /** Label to show in the dropdown */
-    label: string;
+    label?: string;
     /** Optional group  */
     group?: string;
     /** Can we select the item */

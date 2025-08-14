@@ -27,6 +27,9 @@ export default {
     typescript({
       // Exclude test files from the build
       exclude: ['**/__tests__/**/*'],
+      declaration: true,
+      declarationDir: './dist',
+      rootDir: './src',
     }), // Handles TypeScript compilation
     postcss({
       // Use modern Sass API

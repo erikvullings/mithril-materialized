@@ -1,7 +1,7 @@
-import { CodeBlock, Collapsible, Collection, ICollectionItem, CollectionMode } from 'mithril-materialized';
+import { CodeBlock, Collapsible, Collection, CollectionItem, CollectionMode } from 'mithril-materialized';
 import m from 'mithril';
 
-const onclick = (item: ICollectionItem) => alert(`You clicked ${item.title}.`);
+const onclick = (item: CollectionItem) => alert(`You clicked ${item.title}.`);
 
 export const CollectionsPage = () => {
   return {

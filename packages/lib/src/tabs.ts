@@ -9,7 +9,7 @@ import m, { Vnode, FactoryComponent, Attributes } from 'mithril';
  */
 export type AnchorTarget = '_blank' | '_self' | '_parent' | '_top';
 
-export interface ITabItem {
+export interface TabItem {
   /** Title of the tab */
   title: string;
   /** Vnode to render: may be empty in case of a using the tab as a hyperlink. */
@@ -33,7 +33,7 @@ export interface ITabItem {
   href?: string;
 }
 
-export interface ITabsOptions {
+export interface TabsOptions {
   /** Duration of tab change animation in ms */
   duration?: number;
   /** Called when a tab is shown */
@@ -44,7 +44,7 @@ export interface ITabsOptions {
   swipeable?: boolean;
 }
 
-export interface ITabs extends ITabsOptions, Attributes {
+export interface TabsAttributes extends TabsOptions, Attributes {
   /** Selected tab id, takes precedence over tab.active property */
   selectedTabId?: string;
   /**
@@ -53,21 +53,21 @@ export interface ITabs extends ITabsOptions, Attributes {
    */
   tabWidth?: 'auto' | 'fixed' | 'fill';
   /** List of tab items */
-  tabs: ITabItem[];
+  tabs: TabItem[];
   /** Callback when tab changes */
   onTabChange?: (tabId: string) => void;
 }
 
 /** CSS-only Tabs component - no MaterializeCSS dependencies */
-export const Tabs: FactoryComponent<ITabs> = () => {
-  type AnchoredTabItem = ITabItem & {
+export const Tabs: FactoryComponent<TabsAttributes> = () => {
+  type AnchoredTabItem = TabItem & {
     anchorId: string;
     tabId: string;
   };
 
   const toAnchored = () => {
     let activeTabFound = false;
-    return (tab: ITabItem) => {
+    return (tab: TabItem) => {
       const active = activeTabFound ? false : tab.active;
       if (active) activeTabFound = true;
       const tabId = createId(tab.title, tab.id);
@@ -111,7 +111,7 @@ export const Tabs: FactoryComponent<ITabs> = () => {
     }
   };
 
-  const handleTabClick = (tabId: string, tabElement: HTMLElement, attrs: ITabs) => {
+  const handleTabClick = (tabId: string, tabElement: HTMLElement, attrs: TabsAttributes) => {
     if (state.activeTabId === tabId) return;
 
     state.activeTabId = tabId;
@@ -134,7 +134,7 @@ export const Tabs: FactoryComponent<ITabs> = () => {
     state.startX = e.touches[0].clientX;
   };
 
-  const handleTouchEnd = (e: TouchEvent, attrs: ITabs) => {
+  const handleTouchEnd = (e: TouchEvent, attrs: TabsAttributes) => {
     if (!state.isDragging || !e.changedTouches || e.changedTouches.length === 0) return;
 
     const endX = e.changedTouches[0].clientX;

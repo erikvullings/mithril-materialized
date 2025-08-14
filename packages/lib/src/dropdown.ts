@@ -2,7 +2,7 @@ import m, { Component, Attributes } from 'mithril';
 import { HelperText } from './label';
 import { uniqueId, getDropdownStyles, Caret } from './utils';
 
-export interface IDropdownOption<T extends string | number> {
+export interface DropdownItem<T extends string | number> {
   /** ID property of the selected item */
   id?: T;
   /** Label to show in the dropdown */
@@ -15,7 +15,7 @@ export interface IDropdownOption<T extends string | number> {
   divider?: boolean;
 }
 
-export interface IDropdownOptions<T extends string | number> extends Attributes {
+export interface DropdownAttributes<T extends string | number> extends Attributes {
   /**
    * Optional id of the dropdown element
    * @default 'dropdown'
@@ -30,7 +30,7 @@ export interface IDropdownOptions<T extends string | number> extends Attributes 
   /** If true, disable the selection */
   disabled?: boolean;
   /** Item array to show in the dropdown. If the value is not supplied, uses he name. */
-  items: IDropdownOption<T>[];
+  items: DropdownItem<T>[];
   /**
    * Selected value or name
    * @deprecated Use initialValue instead
@@ -46,7 +46,7 @@ export interface IDropdownOptions<T extends string | number> extends Attributes 
   helperText?: string;
 }
 
-interface IDropdownState<T extends string | number> {
+interface DropdownState<T extends string | number> {
   isOpen: boolean;
   initialValue?: T;
   id: T;
@@ -56,8 +56,8 @@ interface IDropdownState<T extends string | number> {
 }
 
 /** Pure TypeScript Dropdown component - no Materialize dependencies */
-export const Dropdown = <T extends string | number>(): Component<IDropdownOptions<T>> => {
-  const state: IDropdownState<T> = {
+export const Dropdown = <T extends string | number>(): Component<DropdownAttributes<T>> => {
+  const state: DropdownState<T> = {
     isOpen: false,
     initialValue: undefined,
     id: '' as T,
@@ -66,7 +66,7 @@ export const Dropdown = <T extends string | number>(): Component<IDropdownOption
     dropdownRef: null,
   };
 
-  const handleKeyDown = (e: KeyboardEvent, items: IDropdownOption<T>[], onchange?: (value: T) => void) => {
+  const handleKeyDown = (e: KeyboardEvent, items: DropdownItem<T>[], onchange?: (value: T) => void) => {
     const availableItems = items.filter((item) => !item.divider && !item.disabled);
 
     switch (e.key) {
@@ -120,7 +120,7 @@ export const Dropdown = <T extends string | number>(): Component<IDropdownOption
     }) => {
       const { initialValue } = state;
       const selectedItem = initialValue
-        ? items.filter((i: IDropdownOption<T>) => (i.id ? i.id === initialValue : i.label === initialValue)).shift()
+        ? items.filter((i: DropdownItem<T>) => (i.id ? i.id === initialValue : i.label === initialValue)).shift()
         : undefined;
       const title = selectedItem ? selectedItem.label : label || 'Select';
       const availableItems = items.filter((item) => !item.divider && !item.disabled);

@@ -1,11 +1,8 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 
-export interface IParallaxOptions {
+export interface ParallaxAttributes extends Attributes {
   /** Enable responsive parallax (disable on mobile for performance) */
   responsiveThreshold?: number;
-}
-
-export interface IParallax extends IParallaxOptions, Attributes {
   /** Image source */
   src: string;
   /** Alt text for the image */
@@ -16,7 +13,7 @@ export interface IParallax extends IParallaxOptions, Attributes {
  * MaterializeCSS Parallax component with dynamic positioning
  * Port of the original MaterializeCSS parallax logic
  */
-export const Parallax: FactoryComponent<IParallax> = () => {
+export const Parallax: FactoryComponent<ParallaxAttributes> = () => {
   let containerEl: HTMLElement | null = null;
   let imgEl: HTMLImageElement | null = null;
   let scrollThrottle: number | null = null;
@@ -26,7 +23,8 @@ export const Parallax: FactoryComponent<IParallax> = () => {
   const updateParallax = () => {
     if (!containerEl || !imgEl) return;
 
-    const containerHeight = containerEl.offsetHeight > 0 ? containerEl.offsetHeight : containerEl.parentElement?.offsetHeight || 1;
+    const containerHeight =
+      containerEl.offsetHeight > 0 ? containerEl.offsetHeight : containerEl.parentElement?.offsetHeight || 1;
     const imgHeight = imgEl.offsetHeight;
     const parallaxDist = imgHeight - containerHeight;
     const bottom = containerEl.offsetTop + containerHeight;
@@ -35,9 +33,9 @@ export const Parallax: FactoryComponent<IParallax> = () => {
     const windowHeight = window.innerHeight;
     const windowBottom = scrollTop + windowHeight;
     const percentScrolled = (windowBottom - top) / (containerHeight + windowHeight);
-    
+
     // MaterializeCSS formula: start at negative parallaxDist/2, move toward positive parallaxDist/2
-    const parallax = Math.round((parallaxDist * percentScrolled) - (parallaxDist / 2));
+    const parallax = Math.round(parallaxDist * percentScrolled - parallaxDist / 2);
 
     // Only update if we're in the viewport and scroll position changed
     if (bottom > scrollTop && top < windowBottom && scrollTop !== lastScrollTop) {

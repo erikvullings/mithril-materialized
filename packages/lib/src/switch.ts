@@ -1,10 +1,10 @@
 import m, { FactoryComponent } from 'mithril';
 import { uniqueId } from './utils';
-import { IInputOptions } from './input-options';
+import { InputAttributes } from './input-options';
 import { Label } from './label';
 // Styles are imported via the main index or individual component imports
 
-export interface ISwitchOptions extends Partial<IInputOptions<boolean>> {
+export interface SwitchOptions extends Partial<InputAttributes<boolean>> {
   /** Left text label */
   left?: string;
   /** Right text label */
@@ -14,7 +14,7 @@ export interface ISwitchOptions extends Partial<IInputOptions<boolean>> {
 }
 
 /** Component to display a switch with two values. */
-export const Switch: FactoryComponent<ISwitchOptions> = () => {
+export const Switch: FactoryComponent<SwitchOptions> = () => {
   const state = { id: uniqueId(), checked: false };
   return {
     oninit: ({ attrs: { checked } }) => {

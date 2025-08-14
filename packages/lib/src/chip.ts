@@ -12,7 +12,7 @@ export interface AutocompleteOption extends ChipData {
   value?: string;
 }
 
-export interface IChipsOptions {
+export interface ChipsAttributes {
   id?: string;
   data?: ChipData[];
   placeholder?: string;
@@ -34,7 +34,7 @@ export interface IChipsOptions {
   onChipSelect?: (chip: ChipData) => void;
 }
 
-export const Chips: m.FactoryComponent<IChipsOptions> = () => {
+export const Chips: m.FactoryComponent<ChipsAttributes> = () => {
   interface ChipsState {
     chipsData: ChipData[];
     selectedChip: number | null;
@@ -57,7 +57,7 @@ export const Chips: m.FactoryComponent<IChipsOptions> = () => {
     showAutocomplete: false,
   };
 
-  let currentVnode: m.VnodeDOM<IChipsOptions, any> | null = null;
+  let currentVnode: m.VnodeDOM<ChipsAttributes, any> | null = null;
 
   const processAutocompleteData = (
     data: Record<string, string | null> | AutocompleteOption[]

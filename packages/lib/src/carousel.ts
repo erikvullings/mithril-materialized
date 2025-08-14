@@ -1,6 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 
-export interface ICarouselItem extends Attributes {
+export interface CarouselItem extends Attributes {
   /** Relative page link, e.g. '#one' */
   href: string;
   /** Image source */
@@ -9,7 +9,7 @@ export interface ICarouselItem extends Attributes {
   alt?: string;
 }
 
-export interface ICarouselOptions {
+export interface CarouselOptions {
   /** Duration of carousel item change animation in ms */
   duration?: number;
   /** Zoom scale (perspective distance) */
@@ -28,18 +28,18 @@ export interface ICarouselOptions {
   noWrap?: boolean;
 }
 
-export interface ICarousel extends ICarouselOptions, Attributes {
+export interface CarouselAttributes extends CarouselOptions, Attributes {
   /** The list of images */
-  items: ICarouselItem[];
+  items: CarouselItem[];
   /** Called when carousel item changes */
-  onCycleTo?: (item: ICarouselItem, index: number, dragged: boolean) => void;
+  onCycleTo?: (item: CarouselItem, index: number, dragged: boolean) => void;
 }
 
 /**
  * Materialize CSS Carousel component with dynamic positioning
  * Port of the original MaterializeCSS carousel logic
  */
-export const Carousel: FactoryComponent<ICarousel> = () => {
+export const Carousel: FactoryComponent<CarouselAttributes> = () => {
   // Default options based on original Materialize CSS
   const defaults = {
     duration: 200, // ms
@@ -139,7 +139,7 @@ export const Carousel: FactoryComponent<ICarousel> = () => {
     el.style.visibility = 'visible';
   };
 
-  const scroll = (x?: number, attrs?: ICarousel) => {
+  const scroll = (x?: number, attrs?: CarouselAttributes) => {
     const carouselEl = document.querySelector('.carousel') as HTMLElement;
     if (!carouselEl) return;
 
@@ -261,7 +261,11 @@ export const Carousel: FactoryComponent<ICarousel> = () => {
     }
   };
 
-  const cycleTo = (n: number, callback?: (item: HTMLElement, dragged: boolean) => void, _attrs?: ICarousel) => {
+  const cycleTo = (
+    n: number,
+    callback?: (item: HTMLElement, dragged: boolean) => void,
+    _attrs?: CarouselAttributes
+  ) => {
     const items = document.querySelectorAll('.carousel-item');
     const count = items.length;
     if (count === 0) return;
@@ -322,7 +326,7 @@ export const Carousel: FactoryComponent<ICarousel> = () => {
     state.ticker = setInterval(track, 100);
   };
 
-  const handleCarouselDrag = (e: MouseEvent | TouchEvent, attrs: ICarousel) => {
+  const handleCarouselDrag = (e: MouseEvent | TouchEvent, attrs: CarouselAttributes) => {
     if (state.pressed) {
       const x = xpos(e);
       const y = ypos(e);
@@ -352,7 +356,7 @@ export const Carousel: FactoryComponent<ICarousel> = () => {
     return true;
   };
 
-  const handleCarouselRelease = (e: MouseEvent | TouchEvent, _attrs: ICarousel) => {
+  const handleCarouselRelease = (e: MouseEvent | TouchEvent, _attrs: CarouselAttributes) => {
     if (state.pressed) {
       state.pressed = false;
     } else {
@@ -390,7 +394,7 @@ export const Carousel: FactoryComponent<ICarousel> = () => {
     return false;
   };
 
-  const handleCarouselClick = (e: MouseEvent, attrs: ICarousel) => {
+  const handleCarouselClick = (e: MouseEvent, attrs: CarouselAttributes) => {
     if (state.dragged) {
       e.preventDefault();
       e.stopPropagation();
@@ -412,7 +416,7 @@ export const Carousel: FactoryComponent<ICarousel> = () => {
     return true;
   };
 
-  const handleIndicatorClick = (e: MouseEvent, attrs: ICarousel) => {
+  const handleIndicatorClick = (e: MouseEvent, attrs: CarouselAttributes) => {
     e.stopPropagation();
     const indicator = (e.target as HTMLElement).closest('.indicator-item') as HTMLElement;
     if (indicator) {
@@ -423,44 +427,6 @@ export const Carousel: FactoryComponent<ICarousel> = () => {
   };
 
   return {
-    oncreate: ({ attrs }) => {
-      // Merge options with defaults
-      Object.assign(defaults, attrs);
-
-      const carouselEl = document.querySelector('.carousel') as HTMLElement;
-      const items = carouselEl.querySelectorAll('.carousel-item');
-
-      state.hasMultipleSlides = items.length > 1;
-      state.showIndicators = defaults.indicators && state.hasMultipleSlides;
-      state.noWrap = defaults.noWrap || !state.hasMultipleSlides;
-
-      if (items.length > 0) {
-        const firstItem = items[0] as HTMLElement;
-        state.itemWidth = firstItem.offsetWidth;
-        state.itemHeight = firstItem.offsetHeight;
-        state.dim = state.itemWidth * 2 + defaults.padding || 1;
-      }
-
-      // Cap numVisible at count
-      defaults.numVisible = Math.min(items.length, defaults.numVisible);
-
-      // Setup event handlers
-      carouselEl.addEventListener('mousedown', handleCarouselTap);
-      carouselEl.addEventListener('mousemove', (e) => handleCarouselDrag(e, attrs));
-      carouselEl.addEventListener('mouseup', (e) => handleCarouselRelease(e, attrs));
-      carouselEl.addEventListener('mouseleave', (e) => handleCarouselRelease(e, attrs));
-      carouselEl.addEventListener('click', (e) => handleCarouselClick(e, attrs));
-
-      if (typeof window.ontouchstart !== 'undefined') {
-        carouselEl.addEventListener('touchstart', handleCarouselTap);
-        carouselEl.addEventListener('touchmove', (e) => handleCarouselDrag(e, attrs));
-        carouselEl.addEventListener('touchend', (e) => handleCarouselRelease(e, attrs));
-      }
-
-      // Initial scroll
-      scroll(state.offset, attrs);
-    },
-
     view: ({ attrs }) => {
       const { items, indicators = false } = attrs;
 
@@ -469,34 +435,70 @@ export const Carousel: FactoryComponent<ICarousel> = () => {
       // Merge options
       Object.assign(defaults, attrs);
 
-      return m('.carousel', [
-        // Carousel items
-        ...items.map((item) =>
-          m(
-            'a.carousel-item',
-            {
-              // key: index,
-              href: item.href,
-              style: 'visibility: hidden;', // Initially hidden, will be shown by scroll
-            },
-            m('img', { src: item.src, alt: item.alt })
-          )
-        ),
+      const supportTouch = typeof window.ontouchstart !== 'undefined';
 
-        // Indicators
-        indicators &&
-          items.length > 1 &&
-          m(
-            'ul.indicators',
-            items.map((_, index) =>
-              m('li.indicator-item', {
-                key: `indicator-${index}`,
-                className: index === 0 ? 'active' : '',
-                onclick: (e: MouseEvent) => handleIndicatorClick(e, attrs),
-              })
+      return m(
+        '.carousel',
+        {
+          oncreate: ({ attrs, dom }) => {
+            const carouselEl = dom as HTMLElement;
+            const items = carouselEl.querySelectorAll('.carousel-item');
+
+            state.hasMultipleSlides = items.length > 1;
+            state.showIndicators = defaults.indicators && state.hasMultipleSlides;
+            state.noWrap = defaults.noWrap || !state.hasMultipleSlides;
+
+            if (items.length > 0) {
+              const firstItem = items[0] as HTMLElement;
+              state.itemWidth = firstItem.offsetWidth;
+              state.itemHeight = firstItem.offsetHeight;
+              state.dim = state.itemWidth * 2 + defaults.padding || 1;
+            }
+
+            // Cap numVisible at count
+            defaults.numVisible = Math.min(items.length, defaults.numVisible);
+
+            // Initial scroll
+            scroll(state.offset, attrs);
+          },
+          onmousedown: (e: MouseEvent) => handleCarouselTap(e),
+          onmousemove: (e: MouseEvent) => handleCarouselDrag(e, attrs),
+          onmouseup: (e: MouseEvent) => handleCarouselRelease(e, attrs),
+          onmouseleave: (e: MouseEvent) => handleCarouselRelease(e, attrs),
+          onclick: (e: MouseEvent) => handleCarouselClick(e, attrs),
+          ontouchstart: supportTouch ? (e: TouchEvent) => handleCarouselTap(e) : undefined,
+          ontouchmove: supportTouch ? (e: TouchEvent) => handleCarouselDrag(e, attrs) : undefined,
+          ontouchend: supportTouch ? (e: TouchEvent) => handleCarouselRelease(e, attrs) : undefined,
+        },
+        [
+          // Carousel items
+          ...items.map((item) =>
+            m(
+              'a.carousel-item',
+              {
+                // key: index,
+                href: item.href,
+                style: 'visibility: hidden;', // Initially hidden, will be shown by scroll
+              },
+              m('img', { src: item.src, alt: item.alt })
             )
           ),
-      ]);
+
+          // Indicators
+          indicators &&
+            items.length > 1 &&
+            m(
+              'ul.indicators',
+              items.map((_, index) =>
+                m('li.indicator-item', {
+                  key: `indicator-${index}`,
+                  className: index === 0 ? 'active' : '',
+                  onclick: (e: MouseEvent) => handleIndicatorClick(e, attrs),
+                })
+              )
+            ),
+        ]
+      );
     },
   };
 };
