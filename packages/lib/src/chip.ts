@@ -1,6 +1,7 @@
 import m from 'mithril';
 import { uniqueId } from './utils';
 import { HelperText, Label } from './label';
+import { MaterialIcon } from './material-icon';
 
 export interface ChipData {
   tag: string;
@@ -280,16 +281,14 @@ export const Chips: m.FactoryComponent<ChipsAttributes> = () => {
                       alt: chip.alt || chip.tag,
                     }),
                   chip.tag,
-                  m(
-                    'i.material-icons.close',
-                    {
-                      onclick: (e: MouseEvent) => {
-                        e.stopPropagation();
-                        deleteChip(index);
-                      },
+                  m(MaterialIcon, {
+                    name: 'close',
+                    className: 'close',
+                    onclick: (e: MouseEvent) => {
+                      e.stopPropagation();
+                      deleteChip(index);
                     },
-                    'close'
-                  ),
+                  }),
                 ]
               )
             ),

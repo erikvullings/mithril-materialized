@@ -1,6 +1,7 @@
 import m, { Component, Attributes } from 'mithril';
 import { HelperText } from './label';
-import { uniqueId, getDropdownStyles, Caret } from './utils';
+import { uniqueId, getDropdownStyles } from './utils';
+import { MaterialIcon } from './material-icon';
 
 export interface DropdownItem<T extends string | number> {
   /** ID property of the selected item */
@@ -243,7 +244,10 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttribu
                   );
                 })
               ),
-            m(Caret),
+            m(MaterialIcon, {
+              name: 'caret',
+              direction: 'down',
+            }),
           ]
         ),
       ]);

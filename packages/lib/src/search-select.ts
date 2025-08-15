@@ -1,5 +1,6 @@
 import m, { Attributes, Component } from 'mithril';
 import { getDropdownStyles, uniqueId } from './utils';
+import { MaterialIcon } from './material-icon';
 
 // Option interface for type safety
 export interface Option<T extends string | number> {
@@ -210,16 +211,14 @@ export const SearchSelect = <T extends string | number>(): Component<
             ...state.selectedOptions.map((option) =>
               m('.chip', [
                 option.label || option.id.toString(),
-                m(
-                  'i.material-icons.close',
-                  {
-                    onclick: (e: Event) => {
-                      e.stopPropagation();
-                      removeOption(option);
-                    },
+                m(MaterialIcon, {
+                  name: 'close',
+                  className: 'close',
+                  onclick: (e: Event) => {
+                    e.stopPropagation();
+                    removeOption(option);
                   },
-                  'close'
-                ),
+                }),
               ])
             ),
 
@@ -241,14 +240,11 @@ export const SearchSelect = <T extends string | number>(): Component<
             // Spacer to push caret to the right
             m('span.spacer', { style: { flexGrow: 1 } }),
 
-            // Dropdown Icon (caret)
-            m(
-              'i.material-icons.caret',
-              {
-                style: { marginLeft: 'auto', cursor: 'pointer' },
-              },
-              state.isOpen ? 'arrow_drop_up' : 'arrow_drop_down'
-            ),
+            m(MaterialIcon, {
+              name: 'caret',
+              direction: state.isOpen ? 'up' : 'down',
+              style: { marginLeft: 'auto', cursor: 'pointer' },
+            }),
           ]
         ),
         // Label

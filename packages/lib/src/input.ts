@@ -2,6 +2,7 @@ import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
 import { InputAttributes } from './input-options';
 import { Label, HelperText } from './label';
+import { MaterialIcon } from './material-icon';
 
 /** Character counter component that tracks text length against maxLength */
 export const CharacterCounter: FactoryComponent<{ currentLength: number; maxLength: number; show: boolean }> = () => {
@@ -431,7 +432,7 @@ export const RangeInput = InputField<number>('range', '.range-field');
 /** Component for entering an email */
 export const EmailInput = InputField<string>('email');
 
-export interface FileInputAttributes extends Attributes {
+export interface FileInputAttrs extends Attributes {
   /** Displayed on the button, @default File */
   label?: string;
   /** Current value of the file input, write only */
@@ -453,7 +454,7 @@ export interface FileInputAttributes extends Attributes {
 }
 
 /** Component for uploading a file */
-export const FileInput: FactoryComponent<FileInputAttributes> = () => {
+export const FileInput: FactoryComponent<FileInputAttrs> = () => {
   let canClear = false;
   let i: HTMLInputElement;
   return {
@@ -523,7 +524,10 @@ export const FileInput: FactoryComponent<FileInputAttributes> = () => {
                   onchange && onchange({} as FileList);
                 },
               },
-              m('i.material-icons', 'clear')
+              m(MaterialIcon, {
+                name: 'close',
+                className: 'close',
+              })
             ),
         ]
       );

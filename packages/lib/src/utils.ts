@@ -41,18 +41,6 @@ export const isNumeric = (n: string | number) => !isNaN(parseFloat(n as string))
  */
 export const padLeft = (n: string | number, width: number = 2, z: string = '0') => String(n).padStart(width, z);
 
-export const Caret: FactoryComponent = () => {
-  return {
-    view: () => {
-      return m(
-        'svg',
-        { class: 'caret', height: '24', viewBox: '0 0 24 24', width: '24', xmlns: 'http://www.w3.org/2000/svg' },
-        [m('path', { d: 'M7 10l5 5 5-5z' }), m('path', { d: 'M0 0h24v24H0z', fill: 'none' })]
-      );
-    },
-  };
-};
-
 // Keep only essential dropdown positioning styles
 export const getDropdownStyles = (
   inputRef?: HTMLElement | null,

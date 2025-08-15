@@ -43,4 +43,8 @@
     opacity: 0;
     filter: alpha(opacity=0);
   }
+
+  & .close {
+    height: 20px;
+  }
 }

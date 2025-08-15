@@ -1,7 +1,8 @@
 import m, { Attributes, Component } from 'mithril';
 import { Label, HelperText } from './label';
 import { InputOption } from './option';
-import { Caret, getDropdownStyles, uniqueId } from './utils';
+import { getDropdownStyles, uniqueId } from './utils';
+import { MaterialIcon } from './material-icon';
 
 export interface SelectAttributes<T extends string | number> extends Attributes {
   /** Options to select from */
@@ -357,7 +358,10 @@ export const Select = <T extends string | number>(): Component<SelectAttributes<
                     ...renderGroupedOptions(options, multiple, attrs),
                   ]
                 ),
-              m(Caret),
+              m(MaterialIcon, {
+                name: 'caret',
+                direction: 'down',
+              }),
             ]
           ),
 
