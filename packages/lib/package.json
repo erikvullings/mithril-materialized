@@ -11,11 +11,11 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.modern.js",
+      "import": "./dist/index.esm.js",
       "require": "./dist/index.js",
-      "default": "./dist/index.modern.js"
+      "default": "./dist/index.esm.js"
     },
-    "./modern": "./dist/index.modern.js",
+    "./modern": "./dist/index.esm.js",
     "./esm": "./dist/index.esm.js",
     "./umd": "./dist/index.umd.js",
     "./index.css": "./dist/index.css",
