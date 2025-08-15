@@ -66,7 +66,7 @@ export const HomePage = () => ({
             code: `import m from 'mithril';
 import { TextInput, Button, DatePicker } from 'mithril-materialized';
 // Optional: import CSS for Material Design styling
-import 'mithril-materialized/dist/index.css';
+import 'mithril-materialized/index.css';
 
 const MyApp = () => ({
   view: () => m('.container', [
@@ -89,7 +89,7 @@ const MyApp = () => ({
           m('p', 'The library includes independent CSS styling (no conflicts with other CSS frameworks):'),
           m(CodeBlock, {
             code: `// Import ready-to-use CSS
-import 'mithril-materialized/dist/index.css';
+import 'mithril-materialized/index.css';
 
 // OR use SASS for customization
 @import 'mithril-materialized/sass/materialize.scss';`,

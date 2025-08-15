@@ -26,11 +26,13 @@ This is a **major breaking release** that removes all external JavaScript depend
 ### 📈 Migration from v1.x
 
 **Old installation (v1.x):**
+
 ```bash
 npm install materialize-css material-icons mithril mithril-materialized
 ```
 
 **New installation (v2.x):**
+
 ```bash
 npm install mithril mithril-materialized
 ```
@@ -75,27 +77,29 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
 - Additional
   - Label
   - HelperText
-- Not from Materialize-CSS
   - CodeBlock
   - SearchSelect, a searchable select dropdown
-  - [MapEditor](https://erikvullings.github.io/mithril-materialized/#!/map_editor)
-  - [Timeline](https://erikvullings.github.io/mithril-materialized/#!/timeline)
+  - Icon, a simple wrapper for creating icons using material-icons font
+  - MaterialIcon, for creating the close/clear and caret as SVG
 
 ## 📖 Usage Instructions
 
 ### Quick Start
 
 1. **Install the package**:
+
    ```bash
    npm install mithril mithril-materialized
    ```
 
 2. **Import the CSS** (optional, for Material Design styling):
+
    ```typescript
-   import 'mithril-materialized/dist/index.css';
+   import 'mithril-materialized/index.css';
    ```
 
 3. **Use components in your app**:
+
    ```typescript
    import m from 'mithril';
    import { TextInput, Button, DatePicker } from 'mithril-materialized';
@@ -141,11 +145,12 @@ To install the dependencies, you can use `npm i`, or, alternatively, use `pnpm m
 The library includes carefully crafted CSS that provides Material Design styling without external dependencies. You can import the ready-to-use CSS:
 
 ```typescript
-import 'mithril-materialized/dist/index.css';
+import 'mithril-materialized/index.css';
 ```
 
 **Important**: The CSS styling is **completely independent** of the original materialize-css. This means:
-- ✅ No conflicting styles from materialize-css 
+
+- ✅ No conflicting styles from materialize-css
 - ✅ Smaller CSS bundle size
 - ✅ Custom optimizations for better performance
 - ✅ No external font dependencies
