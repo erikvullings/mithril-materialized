@@ -32,7 +32,7 @@ describe('DatePicker Component', () => {
     });
 
     const input = container.querySelector('input') as HTMLInputElement;
-    expect(input.value).toBe('2023-06-15'); // HTML5 date inputs use ISO format
+    expect(input.value).toBe('Jun 15, 2023'); // DatePicker uses mmm dd, yyyy format by default
   });
 
   test('opens picker when input is clicked', () => {
@@ -128,8 +128,8 @@ describe('TimePicker Component', () => {
   test('renders time picker with correct structure', () => {
     const { container } = render(TimePicker, defaultTimePickerAttrs);
 
-    const inputField = container.querySelector('.input-field.timepicker');
-    const input = container.querySelector('input');
+    const inputField = container.querySelector('.input-field');
+    const input = container.querySelector('input.timepicker');
     const label = container.querySelector('label');
 
     expect(inputField).toBeTruthy();
@@ -225,7 +225,7 @@ describe('TimePicker Component', () => {
     const input = container.querySelector('input') as HTMLInputElement;
     expect(input.disabled).toBe(true);
     // Cursor styling is now handled in CSS, not inline styles
-    const inputField = container.querySelector('.input-field.timepicker');
+    const inputField = container.querySelector('.input-field');
     expect(inputField).toBeTruthy();
   });
 });

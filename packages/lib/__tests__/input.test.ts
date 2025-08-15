@@ -35,6 +35,7 @@ describe('Input Components', () => {
       
       const input = getByLabelText('Name') as HTMLInputElement;
       fireEvent.change(input, 'New Value');
+      fireEvent.blur(input); // onchange is triggered on blur
       expect(mockChange).toHaveBeenCalledWith('New Value');
     });
 
@@ -118,6 +119,7 @@ describe('Input Components', () => {
       
       const input = getByLabelText('Count') as HTMLInputElement;
       fireEvent.change(input, '42');
+      fireEvent.blur(input); // onchange is triggered on blur
       expect(mockChange).toHaveBeenCalledWith(42);
     });
   });
@@ -163,6 +165,7 @@ describe('Input Components', () => {
       
       const textarea = getByLabelText('Message') as HTMLTextAreaElement;
       fireEvent.change(textarea, 'New message content');
+      fireEvent.blur(textarea); // onchange is triggered on blur
       expect(mockChange).toHaveBeenCalledWith('New message content');
     });
 
