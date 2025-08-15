@@ -1,3 +1,10 @@
+# [2.0.0-beta.3](https://github.com/erikvullings/mithril-materialized/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2025-08-15)
+
+
+### Bug Fixes
+
+* correct module resolution by fixing package.json exports ([2d81de1](https://github.com/erikvullings/mithril-materialized/commit/2d81de15ffc46ed88b05aa49de7cd8d8c7c8a25b))
+
 # [2.0.0-beta.2](https://github.com/erikvullings/mithril-materialized/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2025-08-15)
 
 
