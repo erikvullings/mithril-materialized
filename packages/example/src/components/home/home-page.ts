@@ -8,33 +8,91 @@ export const HomePage = () => ({
       m(
         '.col.s12.m7.l8',
         m('.introduction', [
-          m('h2', 'About Mithril-Materialized'),
+          m('h2', 'Mithril-Materialized v2.0.0 Beta'),
+          m('.card.blue.lighten-4', [
+            m('.card-content', [
+              m('span.card-title', '🚀 Major Release - Breaking Changes'),
+              m('p', [
+                'This is a ',
+                m('strong', 'major breaking release'),
+                ' that removes all external JavaScript dependencies, making the library completely self-contained and significantly reducing bundle sizes.',
+              ]),
+            ]),
+          ]),
           m(
             'p',
-            `I like Mithril, and I also like materialize-css. However, to create some materialized components
-          is a bit cumbersome as it requires a lot of HTML elements and a specific nesting which can easily go
-          wrong. For that reason, the mithril-materialized library provides you with several ready-made
-          Mithril components, so you can easily use them in your own application.`
+            `I like Mithril, and I also like Material Design. However, depending on large external libraries
+          like materialize-css can be problematic with bundle sizes and conflicting dependencies. For that reason,
+          mithril-materialized v2.0 provides you with self-contained Mithril components that implement Material Design
+          principles without external JavaScript dependencies.`
           ),
+          m('h3', '✨ What\'s New in v2.0.0'),
+          m('ul.collection', [
+            m('li.collection-item', [m('i.material-icons.tiny', '🔥'), ' Zero external JavaScript dependencies']),
+            m('li.collection-item', [m('i.material-icons.tiny', '📦'), ' Significantly smaller bundle size']),
+            m('li.collection-item', [m('i.material-icons.tiny', '🎨'), ' Custom SVG icons (no font dependencies)']),
+            m('li.collection-item', [m('i.material-icons.tiny', '⚡'), ' Better performance without jQuery']),
+            m('li.collection-item', [m('i.material-icons.tiny', '🛠️'), ' Enhanced DatePicker and TimePicker components']),
+          ]),
+          m('h3', '💥 Breaking Changes from v1.x'),
+          m('ul.collection', [
+            m('li.collection-item', [
+              m('span.red-text', 'Removed dependencies: '),
+              'No longer requires materialize-css or material-icons packages',
+            ]),
+            m('li.collection-item', [
+              m('span.red-text', 'Simplified installation: '),
+              'Only need to install mithril and mithril-materialized',
+            ]),
+            m('li.collection-item', [
+              m('span.red-text', 'Custom icons: '),
+              'Uses built-in SVG icons instead of Material Icons font',
+            ]),
+          ]),
           m('p', [
-            'You can check out the API documentation ',
+            'Check out the complete API documentation ',
             m('a[href="https://erikvullings.github.io/mithril-materialized/typedoc/index.html"]', 'here'),
             '.',
           ]),
-          m('h3', 'Installation'),
-          m('p', 'First, you need to install the required packages:'),
+          m('h3', '📦 Installation'),
+          m('p', 'Install the package (much simpler now!):'),
           m(CodeBlock, {
             language: 'console',
-            code: `npm i materialize-css material-icons mithril mithril-materialized
-# Also install the typings if you use TypeScript
-npm i --save-dev @types/materialize-css @types/mithril`,
+            code: `npm install mithril mithril-materialized
+# TypeScript types are included`,
           }),
-          m('p', 'Next, you can use them inside your application:'),
+          m('p', 'Use the components in your application:'),
           m(CodeBlock, {
-            code: `import 'materialize-css/dist/css/materialize.min.css';
-import 'material-icons/iconfont/material-icons.css';
-import { TextArea } from 'mithril-materialized';
-`,
+            code: `import m from 'mithril';
+import { TextInput, Button, DatePicker } from 'mithril-materialized';
+// Optional: import CSS for Material Design styling
+import 'mithril-materialized/dist/index.css';
+
+const MyApp = () => ({
+  view: () => m('.container', [
+    m(TextInput, {
+      label: 'Your name',
+      onchange: (value) => console.log(value)
+    }),
+    m(Button, {
+      label: 'Submit',
+      onclick: () => alert('Hello!')
+    }),
+    m(DatePicker, {
+      label: 'Select date',
+      onchange: (date) => console.log(date)
+    })
+  ])
+});`,
+          }),
+          m('h3', '🎨 Styling Options'),
+          m('p', 'The library includes independent CSS styling (no conflicts with other CSS frameworks):'),
+          m(CodeBlock, {
+            code: `// Import ready-to-use CSS
+import 'mithril-materialized/dist/index.css';
+
+// OR use SASS for customization
+@import 'mithril-materialized/sass/materialize.scss';`,
           }),
         ])
       ),

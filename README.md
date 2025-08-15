@@ -1,8 +1,43 @@
 # mithril-materialized
 
-A [materialize-css](https://materializecss.com) library, [available on npm](https://www.npmjs.com/package/mithril-materialized), for the Mithril framework (tested with v2.0.0-rc7 and higher, but presumably, it should work with v1.1.6 too), making it easier to use a Materialize theme in your application. This library provides you with Mithril components, wrapping around the materialize-css functionality.
+A Mithril.js component library inspired by [materialize-css](https://materializecss.com) design principles, [available on npm](https://www.npmjs.com/package/mithril-materialized). This library provides you with ready-to-use Mithril components that follow Material Design guidelines, with **no external JavaScript dependencies**.
 
-Supported components:
+## 🚀 v2.0.0 Beta - Major Release
+
+This is a **major breaking release** that removes all external JavaScript dependencies, making the library completely self-contained and significantly reducing bundle sizes.
+
+### ✨ What's New
+
+- **🔥 Zero External JS Dependencies**: No longer requires `materialize-css` JavaScript or `material-icons` fonts
+- **📦 Smaller Bundle Size**: Reduced package size by eliminating external dependencies
+- **🎨 Custom SVG Icons**: Built-in MaterialIcon component with custom SVG icons (caret, close)
+- **⚡ Better Performance**: Direct implementations without jQuery or other heavy dependencies
+- **🛠️ Enhanced Components**: Improved DatePicker and TimePicker with custom implementations
+- **📱 Modern Architecture**: Factory components with proper TypeScript support
+- **🎯 CSS-Only Styling**: Uses only CSS for styling - no JavaScript initialization needed
+
+### 💥 Breaking Changes from v1.x
+
+- **Removed dependencies**: No longer requires `materialize-css` or `material-icons` packages
+- **Component updates**: DatePicker and TimePicker now have custom implementations
+- **Icon changes**: Uses custom SVG icons instead of Material Icons font
+- **Installation**: Simpler installation process with fewer dependencies
+
+### 📈 Migration from v1.x
+
+**Old installation (v1.x):**
+```bash
+npm install materialize-css material-icons mithril mithril-materialized
+```
+
+**New installation (v2.x):**
+```bash
+npm install mithril mithril-materialized
+```
+
+Your CSS imports can remain the same, but you no longer need the materialize-css JavaScript.
+
+## Supported Components
 
 - [Buttons](https://erikvullings.github.io/mithril-materialized/#!/buttons)
   - Button
@@ -46,9 +81,52 @@ Supported components:
   - [MapEditor](https://erikvullings.github.io/mithril-materialized/#!/map_editor)
   - [Timeline](https://erikvullings.github.io/mithril-materialized/#!/timeline)
 
-## Usage instructions
+## 📖 Usage Instructions
 
-See the [documentation](https://erikvullings.github.io/mithril-materialized/index.html) for examples on how to use this library in your own application. Please note that the library does not include mithril, nor the materialize-css JavaScript or CSS, so you have to include them yourself, as documented.
+### Quick Start
+
+1. **Install the package**:
+   ```bash
+   npm install mithril mithril-materialized
+   ```
+
+2. **Import the CSS** (optional, for Material Design styling):
+   ```typescript
+   import 'mithril-materialized/dist/index.css';
+   ```
+
+3. **Use components in your app**:
+   ```typescript
+   import m from 'mithril';
+   import { TextInput, Button, DatePicker } from 'mithril-materialized';
+
+   const MyComponent = () => ({
+     view: () => m('.container', [
+       m(TextInput, {
+         label: 'Your name',
+         onchange: (value) => console.log(value)
+       }),
+       m(Button, { 
+         label: 'Submit',
+         onclick: () => alert('Hello!')
+       }),
+       m(DatePicker, {
+         label: 'Select date',
+         onchange: (date) => console.log(date)
+       })
+     ])
+   });
+   ```
+
+### Integration with Build Tools
+
+**Webpack/Vite/Parcel**: The library works out-of-the-box with modern bundlers.
+
+**CSS Framework Integration**: You can use the components with any CSS framework. The included CSS provides Material Design styling, but you can override it with your own styles.
+
+**TypeScript**: Full TypeScript support with comprehensive type definitions included.
+
+See the [live documentation](https://erikvullings.github.io/mithril-materialized/index.html) for examples and component APIs.
 
 ## Build instructions
 
@@ -56,15 +134,50 @@ This repository consists of two packages, combined using `lerna`: the `lib` pack
 
 To install the dependencies, you can use `npm i`, or, alternatively, use `pnpm m i` (assuming you have installed `pnpm` as alternative package manager using `npm i -g pnpm`) to perform a multi-repository install. Next, build everything using `npm start` and visit the documentation page on [http://localhost:1234](http://localhost:1234) in case port 1234 is not occupied already.
 
-## CSS
+## 🎨 Styling & CSS
 
-Although I've tried to limit the CSS adaptations to a minimum, I needed to tweak certain parts to make it look better. You can either copy them manually, or import them, e.g.
+### CSS Usage
 
-```ts
+The library includes carefully crafted CSS that provides Material Design styling without external dependencies. You can import the ready-to-use CSS:
+
+```typescript
 import 'mithril-materialized/dist/index.css';
 ```
 
-Here are the styles I've added.
+**Important**: The CSS styling is **completely independent** of the original materialize-css. This means:
+- ✅ No conflicting styles from materialize-css 
+- ✅ Smaller CSS bundle size
+- ✅ Custom optimizations for better performance
+- ✅ No external font dependencies
+
+### SASS Usage
+
+For advanced customization, you can use the SASS source files directly:
+
+```scss
+// Import all SASS components
+@import 'mithril-materialized/sass/materialize.scss';
+
+// Or import individual components
+@import 'mithril-materialized/sass/components/buttons';
+@import 'mithril-materialized/sass/components/forms';
+@import 'mithril-materialized/sass/components/grid';
+```
+
+**SASS Variables**: You can customize colors, spacing, and other design tokens by overriding SASS variables before importing:
+
+```scss
+// Customize Material Design variables
+$primary-color: #2196F3;
+$secondary-color: #FF9800;
+
+// Then import the library
+@import 'mithril-materialized/sass/materialize.scss';
+```
+
+### Custom Styles
+
+The library includes these additional styles for enhanced functionality:
 
 ```css
 /* For the switch */
