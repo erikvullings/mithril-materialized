@@ -164,3 +164,9 @@ export const getDropdownStyles = (
 
   return styles;
 };
+
+/**
+ * Generate a range of numbers from a to and including b, i.e. [a, b]
+ * @example: console.log(range(5, 10)); // [5, 6, 7, 8, 9, 10]
+ */
+export const range = (a: number, b: number): number[] => Array.from({ length: b - a + 1 }, (_, i) => a + i);

@@ -1,31 +1,251 @@
-@use "variables";
-
-/* Enhanced DatePicker Styles */
-.input-field {
-  input.datepicker[disabled] {
-    cursor: not-allowed;
-  }
+/* Modal */
+.datepicker-modal {
+  max-width: 325px;
+  min-width: 300px;
+  max-height: none;
+  overflow: visible;
 }
 
-.datepicker-actions {
+.datepicker-container.modal-content {
   display: flex;
-  gap: 8px;
-  margin-top: 4px;
-  font-size: 12px;
+  flex-direction: column;
+  padding: 0;
+  overflow: visible;
+}
 
-  .btn-flat {
-    padding: 2px 8px;
-    min-width: auto;
-    height: 24px;
-    line-height: 20px;
-    font-size: 11px;
-    text-transform: none;
+.datepicker-controls {
+  display: flex;
+  justify-content: space-between;
+  width: 280px;
+  margin: 0 auto;
+  overflow: visible;
 
-    i.material-icons {
-      font-size: 14px;
-      margin-right: 4px;
+  .selects-container {
+    display: flex;
+    overflow: visible;
+  }
+
+  .select-wrapper {
+    position: relative;
+    overflow: visible;
+
+    input {
+      &:focus {
+        border-bottom: none;
+      }
+      border-bottom: none;
+      text-align: center;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .caret {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+      fill: rgba(0, 0, 0, 0.54);
+    }
+
+    .dropdown-content {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background-color: white;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      z-index: 20000;
+      border: 1px solid #ddd;
+      border-radius: 2px;
+      display: block;
+      opacity: 1;
+
+      .dropdown-item {
+        padding: 8px 16px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background-color 0.2s;
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+
+        &.selected {
+          background-color: #f5f5f5;
+        }
+      }
+    }
+  }
+
+  .select-year {
+    input {
+      width: 50px;
+    }
+
+    .dropdown-content {
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+  }
+
+  .select-month {
+    input {
+      width: 80px;
+    }
+
+    .dropdown-content {
+      width: auto;
+      min-width: 120px;
+      left: auto;
+      right: 0;
     }
   }
 }
 
-/* Legacy styles kept for applications using old Materialize DatePicker */
+.month-prev, .month-next {
+  margin-top: 4px;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+}
+
+
+/* Date Display */
+.datepicker-date-display {
+  flex: 1 auto;
+  background-color: #26a69a;
+  color: #fff;
+  padding: 20px 22px;
+  font-weight: 500;
+
+  .year-text {
+    display: block;
+    font-size: 1.5rem;
+    line-height: 25px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .date-text {
+    display: block;
+    font-size: 2.8rem;
+    line-height: 47px;
+    font-weight: 500;
+  }
+}
+
+
+/* Calendar */
+.datepicker-calendar-container {
+  flex: 2.5 auto;
+}
+
+.datepicker-table {
+  width: 280px;
+  font-size: 1rem;
+  margin: 0 auto;
+
+  thead {
+    border-bottom: none;
+  }
+
+  th {
+    padding: 10px 5px;
+    text-align: center;
+  }
+
+  tr {
+    border: none;
+  }
+
+  abbr {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  td {
+    &.is-today {
+      color: #26a69a;
+    }
+
+    &.is-selected {
+      background-color: #26a69a;
+      color: #fff;
+    }
+
+    &.is-outside-current-month,
+    &.is-disabled {
+      color: rgba(0, 0, 0, 0.3);
+      pointer-events: none;
+    }
+
+    border-radius: 50%;
+    padding: 0;
+  }
+}
+
+.datepicker-day-button {
+  &:focus {
+    background-color: #eee;
+  }
+
+  background-color: transparent;
+  border: none;
+  line-height: 38px;
+  display: block;
+  width: 100%;
+  border-radius: 50%;
+  padding: 0 5px;
+  cursor: pointer;
+  color: inherit;
+}
+
+
+/* Footer */
+.datepicker-footer {
+  width: 280px;
+  margin: 0 auto;
+  padding-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.datepicker-cancel,
+.datepicker-clear,
+.datepicker-today,
+.datepicker-done {
+  color: #26a69a;
+  padding: 0 1rem;
+}
+
+.datepicker-clear {
+  color: #f44336;
+}
+
+
+/* Media Queries */
+@media only screen and (min-width: 601px) {
+  .datepicker-modal {
+    max-width: 625px;
+  }
+
+  .datepicker-container.modal-content {
+    flex-direction: row;
+  }
+
+  .datepicker-date-display {
+    flex: 0 1 270px;
+  }
+
+  .datepicker-controls,
+  .datepicker-table,
+  .datepicker-footer {
+    width: 320px;
+  }
+
+  .datepicker-day-button {
+    line-height: 44px;
+  }
+}

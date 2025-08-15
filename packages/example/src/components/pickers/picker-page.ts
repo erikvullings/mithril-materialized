@@ -19,21 +19,47 @@ export const PickerPage = () => {
             onchange: (v) => (state.disabled = v),
           })
         ),
-        m('h3.header', 'DatePicker - Enhanced with i18n support'),
+        m('h3.header', 'DatePicker - Enhanced with custom text input and display formats'),
 
         // Basic date picker
-        m('h4', 'Basic Date Picker (ISO format)'),
+        m('h4', 'Basic Date Picker (ISO format - YYYY-MM-DD)'),
         m(
           '.row',
           m(DatePicker, {
             disabled: state.disabled,
             dateLabel: 'What is your birthday?',
-            helperText: 'Select your date of birth',
+            helperText: 'Enter date in YYYY-MM-DD format or click to select',
             iconName: 'cake',
-            // value: '1990-01-15',
-            initialValue: new Date(),
+            displayFormat: 'yyyy-mm-dd',
+            initialValue: '1990-01-15',
             oninput,
             onchange,
+          })
+        ),
+
+        // New Materialize CSS style DatePicker with format attribute
+        m('h4', 'New DatePicker with format attribute'),
+        m(
+          '.row',
+          m(DatePicker, {
+            disabled: state.disabled,
+            label: 'What is your birthday?',
+            helperText: 'Uses the new format attribute',
+            iconName: 'cake',
+            format: 'mmmm d, yyyy',
+            yearrange: '1970,2045',
+            initialValue: '1990-01-15', // Add initial value so date displays
+            showClearBtn: true,
+            autoClose: true,
+            i18n: {
+              done: 'Ok',
+              clear: 'Clear',
+              cancel: 'Cancel'
+            },
+            onchange: (value) => {
+              console.log('New DatePicker selected:', value);
+              onchange(value);
+            },
           })
         ),
 
@@ -44,9 +70,11 @@ export const PickerPage = () => {
           m(DatePicker, {
             disabled: state.disabled,
             dateLabel: 'Project Start Date',
-            helperText: 'Date format follows browser locale',
+            helperText: 'Type in DD/MM/YYYY format (e.g., 25/12/2024)',
             displayFormat: 'dd/mm/yyyy',
             iconName: 'event',
+            initialValue: '2024-03-15',
+            oninput,
             onchange,
           })
         ),
@@ -58,9 +86,11 @@ export const PickerPage = () => {
           m(DatePicker, {
             disabled: state.disabled,
             dateLabel: 'Appointment Date',
-            helperText: 'Date format follows browser locale',
+            helperText: 'Type in MM/DD/YYYY format (e.g., 12/25/2024)',
             displayFormat: 'mm/dd/yyyy',
             iconName: 'schedule',
+            initialValue: '2024-07-04',
+            oninput,
             onchange,
           })
         ),
@@ -72,13 +102,30 @@ export const PickerPage = () => {
           m(DatePicker, {
             disabled: state.disabled,
             dateLabel: 'Geburtsdatum',
-            helperText: 'TT.MM.JJJJ Format',
+            helperText: 'Format: TT.MM.JJJJ (z.B., 25.12.2024)',
             displayFormat: 'dd.mm.yyyy',
-            todayLabel: 'Heute',
-            clearLabel: 'Löschen',
             iconName: 'person',
-            showTodayBtn: true,
+            initialValue: '1985-11-09',
             showClearBtn: true,
+            i18n: {
+              cancel: 'Abbrechen',
+              clear: 'Löschen',
+              done: 'Fertig',
+              previousMonth: '‹',
+              nextMonth: '›',
+              months: [
+                'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
+              ],
+              monthsShort: [
+                'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'
+              ],
+              weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+              weekdaysShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+              weekdaysAbbrev: ['S', 'M', 'D', 'M', 'D', 'F', 'S']
+            },
+            oninput,
             onchange,
           })
         ),
@@ -93,6 +140,7 @@ export const PickerPage = () => {
             showTodayBtn: false,
             showClearBtn: true,
             clearLabel: 'Remove',
+            initialValue: '2024-01-01',
             onchange,
           })
         ),
@@ -106,7 +154,7 @@ export const PickerPage = () => {
               disabled: true,
               dateLabel: 'Disabled Date',
               helperText: 'Cannot interact',
-              value: '2024-01-15',
+              initialValue: '2024-01-15',
               iconName: 'block',
               onchange,
             })
@@ -117,7 +165,7 @@ export const PickerPage = () => {
               readonly: true,
               dateLabel: 'Readonly Date',
               helperText: 'View only',
-              value: '2024-12-25',
+              initialValue: '2024-12-25',
               iconName: 'visibility',
               onchange,
             })
@@ -125,31 +173,41 @@ export const PickerPage = () => {
         ]),
 
         m(CodeBlock, {
-          code: `// Basic usage with i18n support
+          code: `// Basic usage with custom text input and display formats
 m(DatePicker, {
   dateLabel: 'What is your birthday?',
-  helperText: 'Select your date of birth',
+  helperText: 'Enter date in YYYY-MM-DD format',
   iconName: 'cake',
-  value: '1990-01-15',
-  onChange: (dateString) => console.log('Selected:', dateString),
+  displayFormat: 'yyyy-mm-dd', // Supports various formats
+  initialValue: '1990-01-15',
+  oninput: (v) => console.log('Input:', v), // Fires on typing
+  onchange: (v) => console.log('Change:', v), // Fires on blur
 })
 
-// European format with custom labels
+// European format with custom text input
 m(DatePicker, {
   dateLabel: 'Geburtsdatum',
-  displayFormat: 'dd.mm.yyyy',
+  displayFormat: 'dd.mm.yyyy', // User types DD.MM.YYYY
   todayLabel: 'Heute',
   clearLabel: 'Löschen',
-  onChange,
+  helperText: 'Format: TT.MM.JJJJ',
+  onchange,
 })
 
-// US format
+// US format with validation
 m(DatePicker, {
   dateLabel: 'Appointment Date',
-  displayFormat: 'mm/dd/yyyy',
-  helperText: 'MM/DD/YYYY format',
-  onChange,
-})`,
+  displayFormat: 'mm/dd/yyyy', // User types MM/DD/YYYY
+  helperText: 'Type in MM/DD/YYYY format',
+  onchange, // Always returns ISO format internally
+})
+
+// Supported display formats:
+// - 'yyyy-mm-dd' (ISO format)
+// - 'dd/mm/yyyy' (European)
+// - 'mm/dd/yyyy' (US)
+// - 'dd.mm.yyyy' (German-style)
+// - 'dd-mm-yyyy' (Alternative format)`,
         }),
 
         m('h3.header', 'TimePicker - Enhanced with i18n support'),
