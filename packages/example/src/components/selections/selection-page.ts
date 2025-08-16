@@ -6,8 +6,8 @@ import {
   Switch,
   RadioButtons,
   Dropdown,
-  DropdownAttributes,
-  SelectAttributes,
+  DropdownAttrs,
+  SelectAttrs,
   SearchSelect,
   TextInput,
 } from 'mithril-materialized';
@@ -55,7 +55,7 @@ export const SelectionPage = () => {
               },
             ],
             onchange: (ids) => (state.checkedId = ids),
-          } as SelectAttributes<string>)
+          } as SelectAttrs<string>)
         ),
         m(CodeBlock, {
           newRow: true,
@@ -95,7 +95,7 @@ export const SelectionPage = () => {
               { id: 3, label: 'Sex', disabled: true },
               { id: 4, label: 'Horse riding' },
             ],
-          } as SelectAttributes<number>)
+          } as SelectAttrs<number>)
         ),
         m(CodeBlock, {
           newRow: true,
@@ -118,7 +118,7 @@ export const SelectionPage = () => {
                 { id: 3, label: 'Sex', disabled: true },
                 { id: 4, label: 'Horse riding' },
               ],
-            } as SelectAttributes<number>)
+            } as SelectAttrs<number>)
           )`,
         }),
 
@@ -140,7 +140,7 @@ export const SelectionPage = () => {
               { id: 4, group: 'Outdoors', label: 'Going out' },
               { id: 5, group: 'Outdoors', label: 'Horse riding' },
             ],
-          } as SelectAttributes<number>)
+          } as SelectAttrs<number>)
         ),
         m(CodeBlock, {
           newRow: true,
@@ -162,7 +162,7 @@ export const SelectionPage = () => {
                 { id: 4, group: 'Outdoors', label: 'Going out' },
                 { id: 5, group: 'Outdoors', label: 'Horse riding' },
               ],
-            } as SelectAttributes<number>)
+            } as SelectAttrs<number>)
           )`,
         }),
 
@@ -344,7 +344,7 @@ export const SelectionPage = () => {
               { label: 'Sex', id: 'sex', iconName: 'group' },
             ],
             onchange: (v) => console.log(v),
-          } as DropdownAttributes<string>)
+          } as DropdownAttrs<string>)
         ),
         m(CodeBlock, {
           newRow: true,

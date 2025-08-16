@@ -34,6 +34,8 @@ export const PickerPage = () => {
             initialValue: '1990-01-15',
             oninput,
             onchange,
+            showWeekNumbers: true,
+            weekNumbering: 'iso',
           })
         ),
 
@@ -54,7 +56,7 @@ export const PickerPage = () => {
             i18n: {
               done: 'Ok',
               clear: 'Clear',
-              cancel: 'Cancel'
+              cancel: 'Cancel',
             },
             onchange: (value) => {
               console.log('New DatePicker selected:', value);
@@ -114,16 +116,23 @@ export const PickerPage = () => {
               previousMonth: '‹',
               nextMonth: '›',
               months: [
-                'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
-                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
+                'Januar',
+                'Februar',
+                'März',
+                'April',
+                'Mai',
+                'Juni',
+                'Juli',
+                'August',
+                'September',
+                'Oktober',
+                'November',
+                'Dezember',
               ],
-              monthsShort: [
-                'Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun',
-                'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'
-              ],
+              monthsShort: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
               weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
               weekdaysShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-              weekdaysAbbrev: ['S', 'M', 'D', 'M', 'D', 'F', 'S']
+              weekdaysAbbrev: ['S', 'M', 'D', 'M', 'D', 'F', 'S'],
             },
             oninput,
             onchange,
@@ -148,28 +157,24 @@ export const PickerPage = () => {
         // Disabled and Readonly examples
         m('h4', 'Disabled and Readonly Examples'),
         m('.row', [
-          m(
-            '.col.s6',
-            m(DatePicker, {
-              disabled: true,
-              dateLabel: 'Disabled Date',
-              helperText: 'Cannot interact',
-              initialValue: '2024-01-15',
-              iconName: 'block',
-              onchange,
-            })
-          ),
-          m(
-            '.col.s6',
-            m(DatePicker, {
-              readonly: true,
-              dateLabel: 'Readonly Date',
-              helperText: 'View only',
-              initialValue: '2024-12-25',
-              iconName: 'visibility',
-              onchange,
-            })
-          ),
+          m(DatePicker, {
+            class: 'col s6',
+            disabled: true,
+            dateLabel: 'Disabled Date',
+            helperText: 'Cannot interact',
+            initialValue: '2024-01-15',
+            iconName: 'block',
+            onchange,
+          }),
+          m(DatePicker, {
+            class: 'col s6',
+            readonly: true,
+            dateLabel: 'Readonly Date',
+            helperText: 'View only',
+            initialValue: '2024-12-25',
+            iconName: 'visibility',
+            onchange,
+          }),
         ]),
 
         m(CodeBlock, {
@@ -218,7 +223,7 @@ m(DatePicker, {
           '.row',
           m(TimePicker, {
             disabled: state.disabled,
-            timeLabel: 'When do you normally get up?',
+            label: 'When do you normally get up?',
             helperText: 'Select your wake-up time',
             iconName: 'alarm',
             initialValue: '09:00',
@@ -232,7 +237,7 @@ m(DatePicker, {
           '.row',
           m(TimePicker, {
             disabled: state.disabled,
-            timeLabel: 'Appointment Time',
+            label: 'Appointment Time',
             helperText: 'HH:MM AM/PM format',
             twelveHour: true,
             iconName: 'schedule',
@@ -247,7 +252,7 @@ m(DatePicker, {
           '.row',
           m(TimePicker, {
             disabled: state.disabled,
-            timeLabel: 'Meeting Time',
+            label: 'Meeting Time',
             helperText: 'Use arrow buttons to adjust',
             useModal: false,
             allowFormatToggle: true,
@@ -264,7 +269,7 @@ m(DatePicker, {
           '.row',
           m(TimePicker, {
             disabled: state.disabled,
-            timeLabel: 'Appointment Time',
+            label: 'Appointment Time',
             helperText: 'Click to open modal',
             useModal: true,
             allowFormatToggle: true,
@@ -281,7 +286,7 @@ m(DatePicker, {
           '.row',
           m(TimePicker, {
             disabled: state.disabled,
-            timeLabel: 'Startzeit',
+            label: 'Startzeit',
             helperText: 'Wählen Sie eine Zeit',
             nowLabel: 'Jetzt',
             clearLabel: 'Löschen',
@@ -301,7 +306,7 @@ m(DatePicker, {
           '.row',
           m(TimePicker, {
             disabled: state.disabled,
-            timeLabel: 'Optional Time',
+            label: 'Optional Time',
             showNowBtn: false,
             showClearBtn: true,
             clearLabel: 'Remove',
@@ -312,35 +317,31 @@ m(DatePicker, {
         // Disabled and Readonly examples for TimePicker
         m('h4', 'Disabled and Readonly Time Examples'),
         m('.row', [
-          m(
-            '.col.s6',
-            m(TimePicker, {
-              disabled: true,
-              timeLabel: 'Disabled Time',
-              helperText: 'Cannot interact',
-              initialValue: '15:30',
-              iconName: 'block',
-              onchange,
-            })
-          ),
-          m(
-            '.col.s6',
-            m(TimePicker, {
-              readonly: true,
-              timeLabel: 'Readonly Time',
-              helperText: 'View only',
-              initialValue: '09:15',
-              iconName: 'visibility',
-              useModal: false,
-              onchange,
-            })
-          ),
+          m(TimePicker, {
+            class: 'col s6',
+            disabled: true,
+            label: 'Disabled Time',
+            helperText: 'Cannot interact',
+            initialValue: '15:30',
+            iconName: 'block',
+            onchange,
+          }),
+          m(TimePicker, {
+            class: 'col s6',
+            readonly: true,
+            label: 'Readonly Time',
+            helperText: 'View only',
+            initialValue: '09:15',
+            iconName: 'visibility',
+            useModal: false,
+            onchange,
+          }),
         ]),
 
         m(CodeBlock, {
           code: `// Inline time picker (no modal) - direct time input
 m(TimePicker, {
-  timeLabel: 'Meeting Time',
+  label: 'Meeting Time',
   useModal: false, // Shows HTML5 time input
   allowFormatToggle: true,
   oninput: (v) => console.log('Input:', v), // Fires on every change
@@ -349,7 +350,7 @@ m(TimePicker, {
 
 // Modal time picker with format toggle
 m(TimePicker, {
-  timeLabel: 'Appointment Time',
+  label: 'Appointment Time',
   useModal: true, // Default - shows modal
   allowFormatToggle: true,
   oninput: oninput,
@@ -359,7 +360,7 @@ m(TimePicker, {
 // Disabled/readonly examples
 m(TimePicker, {
   disabled: true, // or readonly: true
-  timeLabel: 'Disabled Time',
+  label: 'Disabled Time',
   initialValue: '14:30',
   onchange,
 })`,

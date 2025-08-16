@@ -41,7 +41,7 @@ export const CollectionsPage = () => {
           mode: CollectionMode.LINKS,
           items: [
             { title: 'John', onclick: console.log },
-            { title: 'Mary', onclick: console.log, href: '/timeline' },
+            { title: 'Mary', onclick: console.log, href: '/home' },
             { title: 'Pete', onclick: console.log, href: 'https://www.google.com' },
           ],
         }),
@@ -51,7 +51,7 @@ export const CollectionsPage = () => {
             mode: CollectionMode.LINKS,
             items: [
               { title: 'John', onclick: console.log },
-              { title: 'Mary', onclick: console.log, href: '/timeline' },
+              { title: 'Mary', onclick: console.log, href: '/home' },
               { title: 'Pete', onclick: console.log, href: 'https://www.google.com' },
             ],
           })`,

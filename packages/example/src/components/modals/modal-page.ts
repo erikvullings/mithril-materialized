@@ -5,9 +5,9 @@ import {
   Button,
   MaterialBox,
   Select,
-  SelectAttributes,
+  SelectAttrs,
   Dropdown,
-  DropdownAttributes,
+  DropdownAttrs,
 } from 'mithril-materialized';
 import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
@@ -120,7 +120,7 @@ export const ModalPage = () => {
                     { id: 'sleep', label: 'Sleeping' },
                   ],
                   onchange: (v) => console.log(v),
-                } as SelectAttributes<string>),
+                } as SelectAttrs<string>),
                 m(Dropdown, {
                   container: document.body, // So the dropdown is not hidden
                   id: 'hobby',
@@ -136,7 +136,7 @@ export const ModalPage = () => {
                     { label: 'Sex', id: 'sex', iconName: 'group' },
                   ],
                   onchange: (v) => console.log(v),
-                } as DropdownAttributes<string>),
+                } as DropdownAttrs<string>),
               ]
             ),
             buttons: [
@@ -172,7 +172,7 @@ export const ModalPage = () => {
                             { id: 'sleep', label: 'Sleeping' },
                           ],
                           onchange: v => console.log(v),
-                        } as SelectAttributes),
+                        } as SelectAttrs),
                         m(Dropdown, {
                           container: document.body, // So the dropdown is not hidden
                           id: 'hobby',
@@ -188,7 +188,7 @@ export const ModalPage = () => {
                             { label: 'Sex', id: 'sex', iconName: 'group' },
                           ],
                           onchange: v => console.log(v),
-                        } as DropdownAttributes),
+                        } as DropdownAttrs),
                       ]
                     ),
                     options: { opacity: 0.7 },

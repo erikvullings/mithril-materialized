@@ -2,7 +2,7 @@ import {
   ColorInput,
   NumberInput,
   TextInput,
-  InputAttributes,
+  InputAttrs,
   CodeBlock,
   TextArea,
   EmailInput,
@@ -47,7 +47,7 @@ export const InputPage = () => {
             onkeyup: (ev, value) => console.log(value),
             autofocus: true,
             maxLength: 50,
-          } as InputAttributes)
+          } as InputAttrs)
         ),
         m(CodeBlock, {
           code: `        m(TextInput, {
@@ -58,7 +58,7 @@ export const InputPage = () => {
           onkeyup: (ev, value) => console.log(value),
           autofocus: true // This may also be a function that resolves to a boolean
           maxLength: 50,
-        } as InputAttributes)`,
+        } as InputAttrs)`,
         }),
         m('h4.header', 'TextInput with icon'),
         m(
@@ -68,7 +68,7 @@ export const InputPage = () => {
             iconName: 'account_circle',
             onchange,
             maxLength: 50,
-          } as InputAttributes)
+          } as InputAttrs)
         ),
         m(CodeBlock, {
           code: `        m(TextInput, {
@@ -76,7 +76,7 @@ export const InputPage = () => {
           iconName: 'account_circle',
           onchange,
           maxLength: 50,
-        } as InputAttributes)`,
+        } as InputAttrs)`,
         }),
 
         m('h4.header', 'TextInput with custom validation'),
@@ -87,7 +87,7 @@ export const InputPage = () => {
             dataSuccess: 'Great minds think alike',
             dataError: 'Seriously?',
             validate: (v) => v && v.toLowerCase() === 'google',
-          } as InputAttributes)
+          } as InputAttrs)
         ),
         m(CodeBlock, {
           code: `          m(TextInput, {
@@ -95,7 +95,7 @@ export const InputPage = () => {
             dataSuccess: 'Great minds think alike',
             dataError: 'Seriously?',
             validate: v => v && v.toLowerCase() === 'google',
-          } as InputAttributes)`,
+          } as InputAttrs)`,
         }),
 
         m('h3.header', 'Autocomplete'),
@@ -126,7 +126,7 @@ export const InputPage = () => {
               TNO: 'https://tno.github.io/crime_scripts/f418cfa539199976.svg',
             },
             onchange,
-        } as InputAttributes)`,
+        } as InputAttrs)`,
         }),
 
         m('h3.header', 'Search and select, optionally add'),
