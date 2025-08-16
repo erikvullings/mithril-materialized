@@ -247,6 +247,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
             m(MaterialIcon, {
               name: 'caret',
               direction: 'down',
+              class: 'caret',
             }),
           ]
         ),

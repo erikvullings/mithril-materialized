@@ -240,6 +240,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
             m(MaterialIcon, {
               name: 'caret',
               direction: state.isOpen ? 'up' : 'down',
+              class: 'caret',
               style: { marginLeft: 'auto', cursor: 'pointer' },
             }),
           ]

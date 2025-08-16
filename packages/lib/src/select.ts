@@ -361,6 +361,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
               m(MaterialIcon, {
                 name: 'caret',
                 direction: 'down',
+                class: 'caret',
               }),
             ]
           ),
