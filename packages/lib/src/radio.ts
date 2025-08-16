@@ -2,7 +2,7 @@ import m, { Attributes, Component } from 'mithril';
 import { uniqueId } from './utils';
 import { InputOption } from './option';
 
-export interface RadioButtonsAttributes<T extends string | number> extends Attributes {
+export interface RadioButtonsAttrs<T extends string | number> extends Attributes {
   /** Element ID */
   id?: string;
   /** Optional title or label */
@@ -29,7 +29,7 @@ export interface RadioButtonsAttributes<T extends string | number> extends Attri
   layout?: 'vertical' | 'horizontal';
 }
 
-export interface RadioButtonAttributes<T extends string | number> extends Attributes {
+export interface RadioButtonAttrs<T extends string | number> extends Attributes {
   id: T;
   checked?: boolean;
   onchange: (id: T) => void;
@@ -40,7 +40,7 @@ export interface RadioButtonAttributes<T extends string | number> extends Attrib
   inputId?: string;
 }
 
-export const RadioButton = <T extends string | number>(): Component<RadioButtonAttributes<T>> => ({
+export const RadioButton = <T extends string | number>(): Component<RadioButtonAttrs<T>> => ({
   view: ({ attrs: { id, groupId, label, onchange, className = 'col s12', checked, disabled, inputId } }) => {
     const radioId = inputId || `${groupId}-${id}`;
     return m(
@@ -62,7 +62,7 @@ export const RadioButton = <T extends string | number>(): Component<RadioButtonA
 
 /** Component to show a list of radio buttons, from which you can choose one. */
 // export const RadioButtons: FactoryComponent<IRadioButtons<T>> = () => {
-export const RadioButtons = <T extends string | number>(): Component<RadioButtonsAttributes<T>> => {
+export const RadioButtons = <T extends string | number>(): Component<RadioButtonsAttrs<T>> => {
   const state = { groupId: uniqueId() } as {
     groupId: string;
     oldCheckedId?: T;
@@ -117,7 +117,7 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
                   className: checkboxClass,
                   checked: r.id === checkedId,
                   inputId: `${componentId}-${r.id}`,
-                } as RadioButtonAttributes<T>)
+                } as RadioButtonAttrs<T>)
               )
             )
           : options.map((r) =>
@@ -129,7 +129,7 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
                 className: checkboxClass,
                 checked: r.id === checkedId,
                 inputId: `${componentId}-${r.id}`,
-              } as RadioButtonAttributes<T>)
+              } as RadioButtonAttrs<T>)
             );
 
       return m('div', { id: componentId, className: cn }, [

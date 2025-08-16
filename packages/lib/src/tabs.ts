@@ -44,7 +44,7 @@ export interface TabsOptions {
   swipeable?: boolean;
 }
 
-export interface TabsAttributes extends TabsOptions, Attributes {
+export interface TabsAttrs extends TabsOptions, Attributes {
   /** Selected tab id, takes precedence over tab.active property */
   selectedTabId?: string;
   /**
@@ -59,7 +59,7 @@ export interface TabsAttributes extends TabsOptions, Attributes {
 }
 
 /** CSS-only Tabs component - no MaterializeCSS dependencies */
-export const Tabs: FactoryComponent<TabsAttributes> = () => {
+export const Tabs: FactoryComponent<TabsAttrs> = () => {
   type AnchoredTabItem = TabItem & {
     anchorId: string;
     tabId: string;
@@ -111,7 +111,7 @@ export const Tabs: FactoryComponent<TabsAttributes> = () => {
     }
   };
 
-  const handleTabClick = (tabId: string, tabElement: HTMLElement, attrs: TabsAttributes) => {
+  const handleTabClick = (tabId: string, tabElement: HTMLElement, attrs: TabsAttrs) => {
     if (state.activeTabId === tabId) return;
 
     state.activeTabId = tabId;
@@ -134,7 +134,7 @@ export const Tabs: FactoryComponent<TabsAttributes> = () => {
     state.startX = e.touches[0].clientX;
   };
 
-  const handleTouchEnd = (e: TouchEvent, attrs: TabsAttributes) => {
+  const handleTouchEnd = (e: TouchEvent, attrs: TabsAttrs) => {
     if (!state.isDragging || !e.changedTouches || e.changedTouches.length === 0) return;
 
     const endX = e.changedTouches[0].clientX;

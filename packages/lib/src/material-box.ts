@@ -15,7 +15,7 @@ export interface MaterialBoxOptions {
   onCloseEnd?: () => void;
 }
 
-export interface MaterialBoxAttributes extends MaterialBoxOptions, Attributes {
+export interface MaterialBoxAttrs extends MaterialBoxOptions, Attributes {
   /** Source image path */
   src: string;
   /** Alt text for the image */
@@ -38,7 +38,7 @@ export interface MaterialBoxAttributes extends MaterialBoxOptions, Attributes {
  * Pure TypeScript MaterialBox - creates an image lightbox that fills the screen when clicked
  * No MaterializeCSS dependencies
  */
-export const MaterialBox: FactoryComponent<MaterialBoxAttributes> = () => {
+export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
   const state = {
     isOpen: false,
     originalImage: null as HTMLImageElement | null,
@@ -46,7 +46,7 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttributes> = () => {
     overlayImage: null as HTMLImageElement | null,
   };
 
-  const openBox = (img: HTMLImageElement, attrs: MaterialBoxAttributes) => {
+  const openBox = (img: HTMLImageElement, attrs: MaterialBoxAttrs) => {
     if (state.isOpen) return;
 
     state.isOpen = true;
@@ -167,7 +167,7 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttributes> = () => {
     }, attrs.inDuration || 275);
   };
 
-  const closeBox = (attrs: MaterialBoxAttributes) => {
+  const closeBox = (attrs: MaterialBoxAttrs) => {
     if (!state.isOpen || !state.originalImage || !state.overlay || !state.overlayImage) return;
 
     if (attrs.onCloseStart) attrs.onCloseStart();

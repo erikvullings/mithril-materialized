@@ -7,7 +7,7 @@ export interface ModalState {
   id: string;
 }
 
-export interface ModalAttributes extends Attributes {
+export interface ModalAttrs extends Attributes {
   id: string;
   title: string;
   description?: string | Vnode<any, any>;
@@ -43,7 +43,7 @@ export interface ModalAttributes extends Attributes {
  * CSS-only Modal Panel component - no JavaScript dependencies
  * Uses modern CSS techniques for modal functionality
  */
-export const ModalPanel: FactoryComponent<ModalAttributes> = () => {
+export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
   const state: ModalState = {
     isOpen: false,
     id: '',
@@ -51,7 +51,7 @@ export const ModalPanel: FactoryComponent<ModalAttributes> = () => {
 
   let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
 
-  const closeModal = (attrs: ModalAttributes) => {
+  const closeModal = (attrs: ModalAttrs) => {
     state.isOpen = false;
     if (attrs.onToggle) attrs.onToggle(false);
     if (attrs.onClose) attrs.onClose();
@@ -66,7 +66,7 @@ export const ModalPanel: FactoryComponent<ModalAttributes> = () => {
     document.body.style.overflow = '';
   };
 
-  const openModal = (attrs: ModalAttributes) => {
+  const openModal = (attrs: ModalAttrs) => {
     state.isOpen = true;
     if (attrs.onToggle) attrs.onToggle(true);
 

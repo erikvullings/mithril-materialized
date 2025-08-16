@@ -1,4 +1,5 @@
-import { DatePicker, TimePicker, DatePickerOptions, TimePickerOptions } from '../src/pickers';
+import { DatePicker, DatePickerOptions } from '../src/datepicker';
+import { TimePicker, TimepickerOptions as TimePickerOptions } from '../src/timepicker';
 import { IInputOptions } from '../src/input-options';
 import { render, fireEvent, cleanup } from './test-utils';
 

@@ -4,7 +4,7 @@ import { InputOption } from './option';
 import { getDropdownStyles, uniqueId } from './utils';
 import { MaterialIcon } from './material-icon';
 
-export interface SelectAttributes<T extends string | number> extends Attributes {
+export interface SelectAttrs<T extends string | number> extends Attributes {
   /** Options to select from */
   options: InputOption<T>[];
   /** Called when the value is changed, either contains a single or all selected (checked) ids */
@@ -57,7 +57,7 @@ interface SelectState<T extends string | number> {
 }
 
 /** Select component */
-export const Select = <T extends string | number>(): Component<SelectAttributes<T>> => {
+export const Select = <T extends string | number>(): Component<SelectAttrs<T>> => {
   const state: SelectState<T> = {
     id: '',
     isOpen: false,
@@ -71,7 +71,7 @@ export const Select = <T extends string | number>(): Component<SelectAttributes<
     return selectedIds.some((selectedId) => selectedId === id);
   };
 
-  const toggleOption = (id: T, multiple: boolean, attrs: SelectAttributes<T>) => {
+  const toggleOption = (id: T, multiple: boolean, attrs: SelectAttrs<T>) => {
     if (multiple) {
       const newIds = state.selectedIds.includes(id)
         ? // isSelected(id, state.selectedIds)
@@ -89,7 +89,7 @@ export const Select = <T extends string | number>(): Component<SelectAttributes<
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent, attrs: SelectAttributes<T>) => {
+  const handleKeyDown = (e: KeyboardEvent, attrs: SelectAttrs<T>) => {
     const { options } = attrs;
     const selectableOptions = options.filter((opt) => !opt.disabled);
 
@@ -144,7 +144,7 @@ export const Select = <T extends string | number>(): Component<SelectAttributes<
     }
   };
 
-  const renderGroupedOptions = (options: InputOption<T>[], multiple: boolean, attrs: SelectAttributes<T>) => {
+  const renderGroupedOptions = (options: InputOption<T>[], multiple: boolean, attrs: SelectAttrs<T>) => {
     const groupedOptions: { [key: string]: InputOption<T>[] } = {};
     const ungroupedOptions: InputOption<T>[] = [];
 

@@ -3,7 +3,7 @@ import m, { FactoryComponent, Component, Attributes } from 'mithril';
 
 export const Mandatory: Component = { view: ({ attrs }) => m('span.mandatory', attrs, '*') };
 
-export interface LabelAttributes extends Attributes {
+export interface LabelAttrs extends Attributes {
   /** Optional title/label */
   label?: string;
   /** Optional ID */
@@ -15,7 +15,7 @@ export interface LabelAttributes extends Attributes {
 }
 
 /** Simple label element, used for most components. */
-export const Label: FactoryComponent<LabelAttributes> = () => {
+export const Label: FactoryComponent<LabelAttrs> = () => {
   return {
     view: ({ attrs: { label, id, isMandatory, isActive, className, ...params } }) =>
       label

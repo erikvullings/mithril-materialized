@@ -1,6 +1,6 @@
 import m, { FactoryComponent, Attributes, Vnode } from 'mithril';
 
-interface InternalPaginationAttributes extends PaginationItem {
+interface InternalPaginationAttrs extends PaginationItem {
   active?: boolean;
   title: number | Vnode<any, any>;
 }
@@ -10,7 +10,7 @@ export interface PaginationItem extends Attributes {
   disabled?: boolean;
 }
 
-const PaginationItem: FactoryComponent<InternalPaginationAttributes> = () => ({
+const PaginationItem: FactoryComponent<InternalPaginationAttrs> = () => ({
   view: ({ attrs: { title, href, active, disabled } }) =>
     m(
       'li',
@@ -19,7 +19,7 @@ const PaginationItem: FactoryComponent<InternalPaginationAttributes> = () => ({
     ),
 });
 
-export interface PaginationAttributes extends Attributes {
+export interface PaginationAttrs extends Attributes {
   /**
    * How many items do we show
    * @default 9 or items.length, whatever is the smallest
@@ -30,7 +30,7 @@ export interface PaginationAttributes extends Attributes {
   items: PaginationItem[];
 }
 
-export const Pagination: FactoryComponent<PaginationAttributes> = () => {
+export const Pagination: FactoryComponent<PaginationAttrs> = () => {
   const state = {
     pagIndex: 0,
   };

@@ -11,7 +11,7 @@ export interface CollapsibleItem extends Attributes {
   iconName?: string;
 }
 
-export interface CollapsibleAttributes extends Attributes {
+export interface CollapsibleAttrs extends Attributes {
   /** The list of accordeon/collabsible items */
   items: CollapsibleItem[];
   /** If true, only one item can be expanded at a time (accordion mode) */
@@ -81,7 +81,7 @@ export const CollapsibleItem: FactoryComponent<
  * Creates a collabsible or accordion component with pure CSS/Mithril implementation.
  * No MaterializeCSS JavaScript dependencies.
  */
-export const Collapsible: FactoryComponent<CollapsibleAttributes> = () => {
+export const Collapsible: FactoryComponent<CollapsibleAttrs> = () => {
   const state = {
     activeItems: new Set<number>(),
   };

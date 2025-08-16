@@ -28,7 +28,7 @@ export interface CarouselOptions {
   noWrap?: boolean;
 }
 
-export interface CarouselAttributes extends CarouselOptions, Attributes {
+export interface CarouselAttrs extends CarouselOptions, Attributes {
   /** The list of images */
   items: CarouselItem[];
   /** Called when carousel item changes */
@@ -39,7 +39,7 @@ export interface CarouselAttributes extends CarouselOptions, Attributes {
  * Materialize CSS Carousel component with dynamic positioning
  * Port of the original MaterializeCSS carousel logic
  */
-export const Carousel: FactoryComponent<CarouselAttributes> = () => {
+export const Carousel: FactoryComponent<CarouselAttrs> = () => {
   // Default options based on original Materialize CSS
   const defaults = {
     duration: 200, // ms
@@ -139,7 +139,7 @@ export const Carousel: FactoryComponent<CarouselAttributes> = () => {
     el.style.visibility = 'visible';
   };
 
-  const scroll = (x?: number, attrs?: CarouselAttributes) => {
+  const scroll = (x?: number, attrs?: CarouselAttrs) => {
     const carouselEl = document.querySelector('.carousel') as HTMLElement;
     if (!carouselEl) return;
 
@@ -261,11 +261,7 @@ export const Carousel: FactoryComponent<CarouselAttributes> = () => {
     }
   };
 
-  const cycleTo = (
-    n: number,
-    callback?: (item: HTMLElement, dragged: boolean) => void,
-    _attrs?: CarouselAttributes
-  ) => {
+  const cycleTo = (n: number, callback?: (item: HTMLElement, dragged: boolean) => void, _attrs?: CarouselAttrs) => {
     const items = document.querySelectorAll('.carousel-item');
     const count = items.length;
     if (count === 0) return;
@@ -326,7 +322,7 @@ export const Carousel: FactoryComponent<CarouselAttributes> = () => {
     state.ticker = setInterval(track, 100);
   };
 
-  const handleCarouselDrag = (e: MouseEvent | TouchEvent, attrs: CarouselAttributes) => {
+  const handleCarouselDrag = (e: MouseEvent | TouchEvent, attrs: CarouselAttrs) => {
     if (state.pressed) {
       const x = xpos(e);
       const y = ypos(e);
@@ -356,7 +352,7 @@ export const Carousel: FactoryComponent<CarouselAttributes> = () => {
     return true;
   };
 
-  const handleCarouselRelease = (e: MouseEvent | TouchEvent, _attrs: CarouselAttributes) => {
+  const handleCarouselRelease = (e: MouseEvent | TouchEvent, _attrs: CarouselAttrs) => {
     if (state.pressed) {
       state.pressed = false;
     } else {
@@ -394,7 +390,7 @@ export const Carousel: FactoryComponent<CarouselAttributes> = () => {
     return false;
   };
 
-  const handleCarouselClick = (e: MouseEvent, attrs: CarouselAttributes) => {
+  const handleCarouselClick = (e: MouseEvent, attrs: CarouselAttrs) => {
     if (state.dragged) {
       e.preventDefault();
       e.stopPropagation();
@@ -416,7 +412,7 @@ export const Carousel: FactoryComponent<CarouselAttributes> = () => {
     return true;
   };
 
-  const handleIndicatorClick = (e: MouseEvent, attrs: CarouselAttributes) => {
+  const handleIndicatorClick = (e: MouseEvent, attrs: CarouselAttrs) => {
     e.stopPropagation();
     const indicator = (e.target as HTMLElement).closest('.indicator-item') as HTMLElement;
     if (indicator) {

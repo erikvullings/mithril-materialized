@@ -30,7 +30,7 @@ export interface CollectionItem {
   [property: string]: any;
 }
 
-export interface CollectionAttributes extends Attributes {
+export interface CollectionAttrs extends Attributes {
   /** Optional header */
   header?: string;
   /** The list of items */
@@ -91,7 +91,7 @@ export const ListItem: FactoryComponent<{ item: CollectionItem; mode: Collection
   };
 };
 
-const BasicCollection: FactoryComponent<CollectionAttributes> = () => {
+const BasicCollection: FactoryComponent<CollectionAttrs> = () => {
   return {
     view: ({ attrs: { header, items, mode = CollectionMode.BASIC, ...params } }) => {
       const collectionItems = items.map((item) => m(ListItem, { key: item.id, item, mode }));
@@ -118,7 +118,7 @@ export const AnchorItem: FactoryComponent<{ item: CollectionItem }> = () => {
   };
 };
 
-const LinksCollection: FactoryComponent<CollectionAttributes> = () => {
+const LinksCollection: FactoryComponent<CollectionAttrs> = () => {
   return {
     view: ({ attrs: { items, header, ...params } }) => {
       return header
@@ -139,7 +139,7 @@ const LinksCollection: FactoryComponent<CollectionAttributes> = () => {
  * Creates a Collection of items, optionally containing links, headers, secondary content or avatars.
  * @see https://materializecss.com/collections.html
  */
-export const Collection: FactoryComponent<CollectionAttributes> = () => {
+export const Collection: FactoryComponent<CollectionAttrs> = () => {
   return {
     view: ({ attrs: { items, header, mode = CollectionMode.BASIC, ...params } }) => {
       return header || (items && items.length > 0)

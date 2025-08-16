@@ -1,4 +1,4 @@
-import m, { FactoryComponent } from 'mithril';
+// Utility functions for the library
 
 /**
  * Create a unique ID

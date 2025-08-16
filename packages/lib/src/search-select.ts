@@ -10,7 +10,7 @@ export interface Option<T extends string | number> {
 }
 
 // Component attributes interface
-export interface SearchSelectAttributes<T extends string | number> extends Attributes {
+export interface SearchSelectAttrs<T extends string | number> extends Attributes {
   /** Options to display in the select */
   options?: Option<T>[];
   /** Initial value */
@@ -46,10 +46,7 @@ interface SearchSelectState<T extends string | number> {
 /**
  * Mithril Factory Component for Multi-Select Dropdown with search
  */
-export const SearchSelect = <T extends string | number>(): Component<
-  SearchSelectAttributes<T>,
-  SearchSelectState<T>
-> => {
+export const SearchSelect = <T extends string | number>(): Component<SearchSelectAttrs<T>, SearchSelectState<T>> => {
   //  (): <T extends string | number>(): Component<SearchSelectAttrs<T>, SearchSelectState<T>> => {
   // State initialization
   const state: SearchSelectState<string | number> = {

@@ -1,6 +1,6 @@
 {
   "name": "mithril-materialized",
-  "version": "2.0.0-beta.3",
+  "version": "2.0.0-beta.4",
   "description": "A materialize library for mithril.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -19,6 +19,7 @@
     "./esm": "./dist/index.esm.js",
     "./umd": "./dist/index.umd.js",
     "./index.css": "./dist/index.css",
+    "./index.min.css": "./dist/index.min.css",
     "./sass/*": "./sass/*"
   },
   "sideEffects": false,
@@ -27,7 +28,8 @@
     "sass"
   ],
   "scripts": {
-    "build": "rollup -c rollup.config.mjs",
+    "build": "rollup -c rollup.config.mjs && npm run build:css-min",
+    "build:css-min": "sass --no-source-map --style=compressed ./src/index.scss ./dist/index.min.css",
     "dev": "rollup -c rollup.config.mjs -w",
     "start": "npm run dev",
     "clean": "rimraf dist node_modules/.cache",

@@ -1,6 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
-import { InputAttributes } from './input-options';
+import { InputAttrs } from './input-options';
 import { Label, HelperText } from './label';
 import { MaterialIcon } from './material-icon';
 
@@ -30,7 +30,7 @@ export const CharacterCounter: FactoryComponent<{ currentLength: number; maxLeng
 };
 
 /** Create a TextArea */
-export const TextArea: FactoryComponent<InputAttributes<string>> = () => {
+export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
   const state = {
     id: uniqueId(),
     currentLength: 0,
@@ -187,7 +187,7 @@ export type InputType = 'url' | 'color' | 'text' | 'number' | 'email' | 'range' 
 
 /** Default component for all kinds of input fields. */
 const InputField =
-  <T>(type: InputType, defaultClass = ''): FactoryComponent<InputAttributes<T>> =>
+  <T>(type: InputType, defaultClass = ''): FactoryComponent<InputAttrs<T>> =>
   () => {
     const state = {
       id: uniqueId(),
@@ -214,7 +214,7 @@ const InputField =
       }
     };
 
-    const focus = ({ autofocus }: InputAttributes<T>) =>
+    const focus = ({ autofocus }: InputAttrs<T>) =>
       autofocus ? (typeof autofocus === 'boolean' ? autofocus : autofocus()) : false;
 
     const lengthUpdateHandler = () => {

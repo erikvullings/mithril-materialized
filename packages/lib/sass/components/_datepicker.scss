@@ -146,6 +146,10 @@
   width: 280px;
   font-size: 1rem;
   margin: 0 auto;
+  
+  &.with-week-numbers {
+    width: 310px;
+  }
 
   thead {
     border-bottom: none;
@@ -154,6 +158,14 @@
   th {
     padding: 10px 5px;
     text-align: center;
+    
+    &.datepicker-week-header {
+      color: rgba(0, 0, 0, 0.38);
+      font-size: 0.8rem;
+      font-weight: 600;
+      width: 30px;
+      padding: 10px 2px;
+    }
   }
 
   tr {
@@ -181,15 +193,28 @@
       pointer-events: none;
     }
 
+    &.datepicker-week-number {
+      color: rgba(0, 0, 0, 0.38);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-align: center;
+      vertical-align: middle;
+      border-radius: 0;
+      width: 30px;
+      padding: 5px 2px;
+      background-color: rgba(0, 0, 0, 0.02);
+      border-right: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
     border-radius: 50%;
     padding: 0;
   }
 }
 
 .datepicker-day-button {
-  &:focus {
-    background-color: #eee;
-  }
+  // &:focus {
+  //   background-color: #eee;
+  // }
 
   background-color: transparent;
   border: none;
@@ -243,6 +268,10 @@
   .datepicker-table,
   .datepicker-footer {
     width: 320px;
+  }
+  
+  .datepicker-table.with-week-numbers {
+    width: 350px;
   }
 
   .datepicker-day-button {

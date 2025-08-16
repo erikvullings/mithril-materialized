@@ -1,10 +1,10 @@
 import m, { FactoryComponent } from 'mithril';
 import { uniqueId } from './utils';
-import { InputAttributes } from './input-options';
+import { InputAttrs } from './input-options';
 import { Label } from './label';
 // Styles are imported via the main index or individual component imports
 
-export interface SwitchOptions extends Partial<InputAttributes<boolean>> {
+export interface SwitchOptions extends Partial<InputAttrs<boolean>> {
   /** Left text label */
   left?: string;
   /** Right text label */

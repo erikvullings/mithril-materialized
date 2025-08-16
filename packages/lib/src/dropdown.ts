@@ -16,7 +16,7 @@ export interface DropdownItem<T extends string | number> {
   divider?: boolean;
 }
 
-export interface DropdownAttributes<T extends string | number> extends Attributes {
+export interface DropdownAttrs<T extends string | number> extends Attributes {
   /**
    * Optional id of the dropdown element
    * @default 'dropdown'
@@ -57,7 +57,7 @@ interface DropdownState<T extends string | number> {
 }
 
 /** Pure TypeScript Dropdown component - no Materialize dependencies */
-export const Dropdown = <T extends string | number>(): Component<DropdownAttributes<T>> => {
+export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T>> => {
   const state: DropdownState<T> = {
     isOpen: false,
     initialValue: undefined,

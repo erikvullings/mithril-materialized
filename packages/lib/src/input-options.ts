@@ -1,6 +1,6 @@
 import { Attributes } from 'mithril';
 
-export interface InputAttributes<T = string> extends Attributes {
+export interface InputAttrs<T = string> extends Attributes {
   /** Optional label. */
   label?: string;
   /** Optional ID. */

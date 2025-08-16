@@ -1,6 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 
-export interface ParallaxAttributes extends Attributes {
+export interface ParallaxAttrs extends Attributes {
   /** Enable responsive parallax (disable on mobile for performance) */
   responsiveThreshold?: number;
   /** Image source */
@@ -13,7 +13,7 @@ export interface ParallaxAttributes extends Attributes {
  * MaterializeCSS Parallax component with dynamic positioning
  * Port of the original MaterializeCSS parallax logic
  */
-export const Parallax: FactoryComponent<ParallaxAttributes> = () => {
+export const Parallax: FactoryComponent<ParallaxAttrs> = () => {
   let containerEl: HTMLElement | null = null;
   let imgEl: HTMLImageElement | null = null;
   let scrollThrottle: number | null = null;

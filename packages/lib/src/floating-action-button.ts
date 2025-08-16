@@ -4,7 +4,7 @@ interface FloatingActionButtonState {
   isOpen: boolean;
 }
 
-export interface FloatingActionButtonAttributes {
+export interface FloatingActionButtonAttrs {
   /** Optional classes to add to the top element */
   className?: string;
   /** Optional style to add to the top element, e.g. for positioning it inline */
@@ -40,7 +40,7 @@ export interface FloatingActionButtonAttributes {
 /**
  * Floating Action Button
  */
-export const FloatingActionButton: FactoryComponent<FloatingActionButtonAttributes> = () => {
+export const FloatingActionButton: FactoryComponent<FloatingActionButtonAttrs> = () => {
   const state: FloatingActionButtonState = {
     isOpen: false,
   };

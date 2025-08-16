@@ -2,7 +2,7 @@ import m, { Vnode, FactoryComponent, Attributes, Component } from 'mithril';
 import { HelperText } from './label';
 import { uniqueId } from './utils';
 
-export interface InputCheckboxAttributes extends Attributes {
+export interface InputCheckboxAttrs extends Attributes {
   /** Optional event handler when a checkbox is clicked */
   onchange?: (checked: boolean) => void;
   /** Label of the checkbox, can be a string or Vnode */
@@ -16,7 +16,7 @@ export interface InputCheckboxAttributes extends Attributes {
 }
 
 /** Component to show a check box */
-export const InputCheckbox: FactoryComponent<InputCheckboxAttributes> = () => {
+export const InputCheckbox: FactoryComponent<InputCheckboxAttrs> = () => {
   return {
     view: ({ attrs: { className = 'col s12', onchange, label, checked, disabled, description, style, inputId } }) => {
       const checkboxId = inputId || uniqueId();
@@ -63,7 +63,7 @@ export interface InputOption<T extends string | number> {
   description?: string;
 }
 
-export interface OptionsAttributes<T extends string | number> extends Attributes {
+export interface OptionsAttrs<T extends string | number> extends Attributes {
   /** Element ID */
   id?: string;
   /** Optional title or label */
@@ -91,7 +91,7 @@ export interface OptionsAttributes<T extends string | number> extends Attributes
 }
 
 /** A list of checkboxes */
-export const Options = <T extends string | number>(): Component<OptionsAttributes<T>> => {
+export const Options = <T extends string | number>(): Component<OptionsAttrs<T>> => {
   const state = {} as {
     checkedId?: T | T[];
     checkedIds: T[];

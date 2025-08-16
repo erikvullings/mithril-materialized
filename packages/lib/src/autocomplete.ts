@@ -1,9 +1,9 @@
 import m, { FactoryComponent } from 'mithril';
 import { uniqueId } from './utils';
-import { InputAttributes } from './input-options';
+import { InputAttrs } from './input-options';
 import { Label, HelperText } from './label';
 
-export interface AutoCompleteAttributes extends InputAttributes<string> {
+export interface AutoCompleteAttrs extends InputAttrs<string> {
   /** The data object defining the autocomplete options */
   data?: Record<string, string | null>;
   /** Limit of how many options are shown. Default: Infinity */
@@ -15,7 +15,7 @@ export interface AutoCompleteAttributes extends InputAttributes<string> {
 }
 
 /** Component to auto complete your text input - Pure Mithril implementation */
-export const Autocomplete: FactoryComponent<AutoCompleteAttributes> = () => {
+export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
   const state = {
     id: uniqueId(),
     isActive: false,
@@ -39,7 +39,7 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttributes> = () => {
     return filtered;
   };
 
-  const selectSuggestion = (suggestion: { key: string; value: string | null }, attrs: AutoCompleteAttributes) => {
+  const selectSuggestion = (suggestion: { key: string; value: string | null }, attrs: AutoCompleteAttrs) => {
     state.inputValue = suggestion.key;
     state.isOpen = false;
     state.selectedIndex = -1;
@@ -55,7 +55,7 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttributes> = () => {
     m.redraw();
   };
 
-  const handleKeydown = (e: KeyboardEvent, attrs: AutoCompleteAttributes) => {
+  const handleKeydown = (e: KeyboardEvent, attrs: AutoCompleteAttrs) => {
     if (!state.isOpen) return;
 
     switch (e.key) {
