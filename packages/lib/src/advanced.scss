@@ -1,0 +1,14 @@
+// Mithril Materialized - Advanced Components
+// Import this for advanced/specialized components
+// Requires core.scss to be imported first
+
+@charset "UTF-8";
+
+// Advanced/specialized components
+@use '../sass/components/carousel';
+@use '../sass/components/sidenav';
+@use '../sass/components/navbar';
+@use '../sass/components/preloader';
+@use '../sass/components/slider';
+@use '../sass/components/tapTarget';
+@use '../sass/components/table_of_contents';

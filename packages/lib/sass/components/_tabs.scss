@@ -34,7 +34,8 @@
   overflow-y: hidden;
   height: 48px;
   width: 100%;
-  background-color: variables.$tabs-bg-color;
+  background-color: var(--mm-background-color, variables.$tabs-bg-color);
+  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
   margin: 0 auto;
   white-space: nowrap;
 
@@ -57,10 +58,10 @@
       &:hover,
       &.active {
         background-color: transparent;
-        color: variables.$tabs-text-color;
+        color: var(--mm-primary-color, variables.$tabs-text-color);
       }
 
-      color: rgba(variables.$tabs-text-color, .7);
+      color: var(--mm-text-secondary, rgba(variables.$tabs-text-color, .7));
       display: block;
       width: 100%;
       height: 100%;
@@ -73,7 +74,7 @@
 
     &.disabled a,
     &.disabled a:hover {
-      color: rgba(variables.$tabs-text-color, .4);
+      color: var(--mm-text-disabled, rgba(variables.$tabs-text-color, .4));
       cursor: default;
     }
   }

@@ -279,7 +279,7 @@ button.btn-floating {
 .btn-flat {
   box-shadow: none;
   background-color: transparent;
-  color: variables.$button-flat-color;
+  color: var(--mm-button-flat-text, variables.$button-flat-color);
   cursor: pointer;
   transition: background-color .2s;
   &:focus,
@@ -287,12 +287,12 @@ button.btn-floating {
     box-shadow: none;
   }
   &:focus {
-    background-color: rgba(0, 0, 0, .1);
+    background-color: var(--mm-border-color, rgba(0, 0, 0, .1));
   }
   &.disabled,
   &.btn-flat[disabled]  {
     background-color: transparent !important;
-    color: variables.$button-flat-disabled-color !important;
+    color: var(--mm-text-disabled, variables.$button-flat-disabled-color) !important;
     cursor: default;
   }
 }

@@ -32,24 +32,9 @@ export const CollapsibleItem: FactoryComponent<
               '.collapsible-header',
               {
                 onclick: onToggle,
-                style: {
-                  cursor: 'pointer',
-                  padding: '1rem',
-                  backgroundColor: '#fff',
-                  borderBottom: '1px solid #ddd',
-                  display: 'flex',
-                  alignItems: 'center',
-                  transition: 'background-color 0.2s ease',
-                },
-                onmouseover: (e: MouseEvent) => {
-                  (e.target as HTMLElement).style.backgroundColor = '#f5f5f5';
-                },
-                onmouseleave: (e: MouseEvent) => {
-                  (e.target as HTMLElement).style.backgroundColor = '#fff';
-                },
               },
               [
-                iconName ? m('i.material-icons', { style: { marginRight: '1rem' } }, iconName) : undefined,
+                iconName ? m('i.material-icons', iconName) : undefined,
                 header ? (typeof header === 'string' ? m('span', header) : header) : undefined,
               ]
             )

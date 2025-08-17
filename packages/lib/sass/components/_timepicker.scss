@@ -35,7 +35,7 @@
   gap: 8px;
   margin-top: 8px;
   padding: 12px;
-  background-color: #f5f5f5;
+  background-color: var(--mm-border-color, #f5f5f5);
   border-radius: 4px;
   font-size: 14px;
 
@@ -48,13 +48,13 @@
       width: 50px;
       text-align: center;
       padding: 4px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--mm-border-color, #ccc);
       border-radius: 4px;
     }
 
     select {
       padding: 4px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--mm-border-color, #ccc);
       border-radius: 4px;
       margin-left: 4px;
     }
@@ -63,7 +63,7 @@
   input[type="time"] {
     font-size: 16px;
     padding: 4px 8px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--mm-border-color, #ccc);
     border-radius: 4px;
     min-width: 120px;
   }
@@ -71,7 +71,7 @@
   .btn-flat {
     padding: 4px 8px;
     font-size: 11px;
-    background-color: #e0e0e0;
+    background-color: var(--mm-border-color, #e0e0e0);
     border-radius: 4px;
     min-width: auto;
   }

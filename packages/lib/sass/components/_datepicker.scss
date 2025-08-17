@@ -11,6 +11,8 @@
   flex-direction: column;
   padding: 0;
   overflow: visible;
+  background-color: var(--mm-surface-color, #ffffff);
+  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
 }
 
 .datepicker-controls {
@@ -47,7 +49,7 @@
       cursor: pointer;
       width: 16px;
       height: 16px;
-      fill: rgba(0, 0, 0, 0.54);
+      fill: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
     }
 
     .dropdown-content {
@@ -55,10 +57,10 @@
       top: 100%;
       left: 0;
       right: 0;
-      background-color: white;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      background-color: var(--mm-surface-color, white);
+      box-shadow: 0 4px 20px var(--mm-shadow-color, rgba(0, 0, 0, 0.3));
       z-index: 20000;
-      border: 1px solid #ddd;
+      border: 1px solid var(--mm-border-color, #ddd);
       border-radius: 2px;
       display: block;
       opacity: 1;
@@ -70,11 +72,11 @@
         transition: background-color 0.2s;
 
         &:hover {
-          background-color: #f5f5f5;
+          background-color: var(--mm-border-color, #f5f5f5);
         }
 
         &.selected {
-          background-color: #f5f5f5;
+          background-color: var(--mm-border-color, #f5f5f5);
         }
       }
     }
@@ -160,7 +162,7 @@
     text-align: center;
     
     &.datepicker-week-header {
-      color: rgba(0, 0, 0, 0.38);
+      color: var(--mm-text-hint, rgba(0, 0, 0, 0.38));
       font-size: 0.8rem;
       font-weight: 600;
       width: 30px;
@@ -174,27 +176,27 @@
 
   abbr {
     text-decoration: none;
-    color: rgba(0, 0, 0, 0.54);
+    color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
   }
 
   td {
     &.is-today {
-      color: #26a69a;
+      color: var(--mm-primary-color, #26a69a);
     }
 
     &.is-selected {
-      background-color: #26a69a;
-      color: #fff;
+      background-color: var(--mm-primary-color, #26a69a);
+      color: var(--mm-button-text, #fff);
     }
 
     &.is-outside-current-month,
     &.is-disabled {
-      color: rgba(0, 0, 0, 0.3);
+      color: var(--mm-text-disabled, rgba(0, 0, 0, 0.3));
       pointer-events: none;
     }
 
     &.datepicker-week-number {
-      color: rgba(0, 0, 0, 0.38);
+      color: var(--mm-text-hint, rgba(0, 0, 0, 0.38));
       font-size: 0.8rem;
       font-weight: 600;
       text-align: center;
@@ -202,8 +204,8 @@
       border-radius: 0;
       width: 30px;
       padding: 5px 2px;
-      background-color: rgba(0, 0, 0, 0.02);
-      border-right: 1px solid rgba(0, 0, 0, 0.05);
+      background-color: var(--mm-border-color, rgba(0, 0, 0, 0.02));
+      border-right: 1px solid var(--mm-border-color, rgba(0, 0, 0, 0.05));
     }
 
     border-radius: 50%;

@@ -1,5 +1,8 @@
 @charset "UTF-8";
 
+// Theme Variables (must be first for CSS custom properties)
+@use "components/theme-variables";
+
 // Color
 @use "components/color-variables";
 @use "components/color-classes";
@@ -39,3 +42,7 @@
 @use "components/pulse";
 @use "components/datepicker";
 @use "components/timepicker";
+@use "components/theme-switcher";
+@use "components/file-upload";
+@use "components/breadcrumb";
+@use "components/wizard";

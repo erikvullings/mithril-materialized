@@ -32,3 +32,8 @@ export * from './timepicker';
 export * from './toast';
 export * from './tooltip';
 export * from './utils';
+export * from './theme-switcher';
+export * from './file-upload';
+export * from './sidenav';
+export * from './breadcrumb';
+export * from './wizard';

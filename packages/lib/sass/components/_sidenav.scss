@@ -2,6 +2,114 @@
 @use "variables";
 @use "global";
 
+// Modern Sidenav Component Styles (v2.0+)
+.sidenav-container {
+  position: relative;
+  z-index: 997;
+}
+
+.sidenav-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--mm-overlay-background, rgba(0, 0, 0, 0.5));
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 998;
+  cursor: pointer;
+  
+  &.show {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.sidenav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+  min-height: 48px;
+  
+  &:hover:not(.disabled) {
+    background: var(--mm-border-color, rgba(0, 0, 0, 0.12));
+    color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+    text-decoration: none;
+  }
+  
+  &.active {
+    background: var(--mm-primary-color-light, rgba(38, 166, 154, 0.1));
+    color: var(--mm-primary-color, #26a69a);
+    
+    .sidenav-icon {
+      color: var(--mm-primary-color, #26a69a);
+    }
+  }
+  
+  &.disabled {
+    color: var(--mm-text-disabled, rgba(0, 0, 0, 0.38));
+    cursor: not-allowed;
+    
+    .sidenav-icon {
+      color: var(--mm-text-disabled, rgba(0, 0, 0, 0.38));
+    }
+  }
+}
+
+.sidenav-icon {
+  margin-right: 1rem;
+  font-size: 1.5rem;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
+  flex-shrink: 0;
+}
+
+.sidenav-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidenav-divider {
+  height: 1px;
+  background: var(--mm-divider-color, rgba(0, 0, 0, 0.12));
+  margin: 0.5rem 0;
+}
+
+.sidenav-subheader {
+  padding: 1rem 1rem 0.5rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.5;
+}
+
+.sidenav-content {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+// Legacy Sidenav Styles (maintain backward compatibility)
+
 .sidenav {
   position: fixed;
   width: variables.$sidenav-width;
@@ -13,14 +121,51 @@
   height: calc(100% + 60px);
   height: -moz-calc(100%); //Temporary Firefox Fix
   padding-bottom: 60px;
-  background-color: variables.$sidenav-bg-color;
+  background-color: var(--mm-surface-color, variables.$sidenav-bg-color);
   z-index: 999;
   overflow-y: auto;
   will-change: transform;
   backface-visibility: hidden;
   transform: translateX(-105%);
+  transition: transform 0.3s ease, left 0.3s ease, right 0.3s ease;
 
   @extend .z-depth-1 !optional;
+  
+  // New component position variants
+  &.sidenav-left {
+    left: 0;
+  }
+  
+  &.sidenav-right {
+    right: 0;
+    left: auto;
+    transform: translateX(100%);
+  }
+  
+  // New component mode variants
+  &.sidenav-overlay {
+    position: fixed;
+  }
+  
+  &.sidenav-push {
+    position: relative;
+    box-shadow: var(--mm-border-color, rgba(0, 0, 0, 0.12)) 1px 0 0 0;
+  }
+  
+  // New component state variants
+  &.closed {
+    &.sidenav-left {
+      transform: translateX(-100%);
+    }
+    
+    &.sidenav-right {
+      transform: translateX(100%);
+    }
+  }
+  
+  &.open {
+    transform: translateX(0);
+  }
 
   // Right Align
   &.right-aligned {
@@ -44,9 +189,9 @@
 
   // Style non btn anchors
   li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.btn-floating) {
-    &:hover { background-color: rgba(0,0,0,.05);}
+    &:hover { background-color: var(--mm-border-color, rgba(0,0,0,.05));}
 
-    color: variables.$sidenav-font-color;
+    color: var(--mm-text-primary, variables.$sidenav-font-color);
     display: block;
     font-size: variables.$sidenav-font-size;
     font-weight: 500;
@@ -62,7 +207,7 @@
       line-height: variables.$sidenav-line-height;
       margin: 0 (variables.$sidenav-padding * 2) 0 0;
       width: math.div(variables.$sidenav-item-height, 2);
-      color: rgba(0,0,0,.54);
+      color: var(--mm-text-secondary, rgba(0,0,0,.54));
     }
   }
 
@@ -82,10 +227,14 @@
 
     cursor: initial;
     pointer-events: none;
-    color: rgba(0,0,0,.54);
+    color: var(--mm-text-secondary, rgba(0,0,0,.54));
     font-size: variables.$sidenav-font-size;
     font-weight: 500;
     line-height: variables.$sidenav-line-height;
+    padding: 0 (variables.$sidenav-padding * 2);
+    height: variables.$sidenav-item-height;
+    display: flex;
+    align-items: center;
   }
 
   .user-view {
@@ -205,9 +354,17 @@
   top: 0;
   left: 0;
   right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
-  height: 120vh;
-  background-color: rgba(0,0,0,.5);
+  background-color: var(--mm-overlay-background, rgba(0,0,0,.5));
   z-index: 997;
   display: none;
+  transition: opacity 0.3s ease;
+}
+
+// Ensure overlay sidenav doesn't affect main content layout
+.sidenav-overlay {
+  pointer-events: auto;
 }

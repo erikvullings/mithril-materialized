@@ -1,0 +1,187 @@
+// Theme Variables using CSS Custom Properties
+// This enables runtime theme switching including dark mode
+
+:root {
+  // Light theme (default)
+  --mm-primary-color: #26a69a;
+  --mm-primary-color-light: #80cbc4;
+  --mm-primary-color-dark: #00695c;
+  
+  --mm-secondary-color: #ff6f00;
+  --mm-secondary-color-light: #ffa726;
+  --mm-secondary-color-dark: #ef6c00;
+  
+  // Background colors
+  --mm-background-color: #ffffff;
+  --mm-surface-color: #ffffff;
+  --mm-card-background: #ffffff;
+  
+  // Text colors
+  --mm-text-primary: rgba(0, 0, 0, 0.87);
+  --mm-text-secondary: rgba(0, 0, 0, 0.6);
+  --mm-text-disabled: rgba(0, 0, 0, 0.38);
+  --mm-text-hint: rgba(0, 0, 0, 0.38);
+  
+  // Border and divider colors
+  --mm-border-color: rgba(0, 0, 0, 0.12);
+  --mm-divider-color: rgba(0, 0, 0, 0.12);
+  
+  // Input colors
+  --mm-input-background: #ffffff;
+  --mm-input-border: rgba(0, 0, 0, 0.42);
+  --mm-input-border-focus: var(--mm-primary-color);
+  --mm-input-text: var(--mm-text-primary);
+  
+  // Button colors
+  --mm-button-background: var(--mm-primary-color);
+  --mm-button-text: #ffffff;
+  --mm-button-flat-text: var(--mm-primary-color);
+  
+  // Navigation colors
+  --mm-nav-background: var(--mm-primary-color);
+  --mm-nav-text: #ffffff;
+  --mm-nav-active-text: #ffffff;
+  
+  // Modal and overlay colors
+  --mm-modal-background: #ffffff;
+  --mm-overlay-background: rgba(0, 0, 0, 0.5);
+  
+  // Shadow colors
+  --mm-shadow-color: rgba(0, 0, 0, 0.16);
+  --mm-shadow-umbra: rgba(0, 0, 0, 0.2);
+  --mm-shadow-penumbra: rgba(0, 0, 0, 0.14);
+  --mm-shadow-ambient: rgba(0, 0, 0, 0.12);
+  
+  // Switch colors
+  --mm-switch-checked-track: rgba(38, 166, 154, 0.3);
+  --mm-switch-checked-thumb: #26a69a;
+  --mm-switch-unchecked-track: rgba(0, 0, 0, 0.6);
+  --mm-switch-unchecked-thumb: #f5f5f5;
+  --mm-switch-disabled-track: rgba(0, 0, 0, 0.12);
+  --mm-switch-disabled-thumb: #bdbdbd;
+}
+
+// Apply theme variables to body and main containers
+body {
+  background-color: var(--mm-background-color);
+  color: var(--mm-text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container, .main {
+  color: var(--mm-text-primary);
+}
+
+// Dark theme
+[data-theme="dark"] {
+  --mm-primary-color: #80cbc4;
+  --mm-primary-color-light: #b2dfdb;
+  --mm-primary-color-dark: #4db6ac;
+  
+  --mm-secondary-color: #ffa726;
+  --mm-secondary-color-light: #ffcc02;
+  --mm-secondary-color-dark: #ff8f00;
+  
+  // Background colors
+  --mm-background-color: #121212;
+  --mm-surface-color: #1e1e1e;
+  --mm-card-background: #2d2d2d;
+  
+  // Text colors
+  --mm-text-primary: rgba(255, 255, 255, 0.87);
+  --mm-text-secondary: rgba(255, 255, 255, 0.6);
+  --mm-text-disabled: rgba(255, 255, 255, 0.38);
+  --mm-text-hint: rgba(255, 255, 255, 0.38);
+  
+  // Border and divider colors
+  --mm-border-color: rgba(255, 255, 255, 0.12);
+  --mm-divider-color: rgba(255, 255, 255, 0.12);
+  
+  // Input colors
+  --mm-input-background: #2d2d2d;
+  --mm-input-border: rgba(255, 255, 255, 0.42);
+  --mm-input-border-focus: var(--mm-primary-color);
+  --mm-input-text: var(--mm-text-primary);
+  
+  // Button colors
+  --mm-button-background: var(--mm-primary-color);
+  --mm-button-text: #000000;
+  --mm-button-flat-text: var(--mm-primary-color);
+  
+  // Navigation colors
+  --mm-nav-background: #1e1e1e;
+  --mm-nav-text: #ffffff;
+  --mm-nav-active-text: #000000;
+  
+  // Modal and overlay colors
+  --mm-modal-background: #2d2d2d;
+  --mm-overlay-background: rgba(0, 0, 0, 0.8);
+  
+  // Shadow colors
+  --mm-shadow-color: rgba(0, 0, 0, 0.5);
+  --mm-shadow-umbra: rgba(0, 0, 0, 0.5);
+  --mm-shadow-penumbra: rgba(0, 0, 0, 0.36);
+  --mm-shadow-ambient: rgba(0, 0, 0, 0.3);
+  
+  // Switch colors (dark theme)
+  --mm-switch-checked-track: rgba(128, 203, 196, 0.3);
+  --mm-switch-checked-thumb: #80cbc4;
+  --mm-switch-unchecked-track: rgba(255, 255, 255, 0.6);
+  --mm-switch-unchecked-thumb: #616161;
+  --mm-switch-disabled-track: rgba(255, 255, 255, 0.12);
+  --mm-switch-disabled-thumb: #424242;
+}
+
+// Auto dark mode based on user preference
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --mm-primary-color: #80cbc4;
+    --mm-primary-color-light: #b2dfdb;
+    --mm-primary-color-dark: #4db6ac;
+    
+    --mm-secondary-color: #ffa726;
+    --mm-secondary-color-light: #ffcc02;
+    --mm-secondary-color-dark: #ff8f00;
+    
+    --mm-background-color: #121212;
+    --mm-surface-color: #1e1e1e;
+    --mm-card-background: #2d2d2d;
+    
+    --mm-text-primary: rgba(255, 255, 255, 0.87);
+    --mm-text-secondary: rgba(255, 255, 255, 0.6);
+    --mm-text-disabled: rgba(255, 255, 255, 0.38);
+    --mm-text-hint: rgba(255, 255, 255, 0.38);
+    
+    --mm-border-color: rgba(255, 255, 255, 0.12);
+    --mm-divider-color: rgba(255, 255, 255, 0.12);
+    
+    --mm-input-background: #2d2d2d;
+    --mm-input-border: rgba(255, 255, 255, 0.42);
+    --mm-input-border-focus: var(--mm-primary-color);
+    --mm-input-text: var(--mm-text-primary);
+    
+    --mm-button-background: var(--mm-primary-color);
+    --mm-button-text: #000000;
+    --mm-button-flat-text: var(--mm-primary-color);
+    
+    --mm-nav-background: #1e1e1e;
+    --mm-nav-text: #ffffff;
+    --mm-nav-active-text: #000000;
+    
+    --mm-modal-background: #2d2d2d;
+    --mm-overlay-background: rgba(0, 0, 0, 0.8);
+    
+    --mm-shadow-color: rgba(0, 0, 0, 0.5);
+    --mm-shadow-umbra: rgba(0, 0, 0, 0.5);
+    --mm-shadow-penumbra: rgba(0, 0, 0, 0.36);
+    --mm-shadow-ambient: rgba(0, 0, 0, 0.3);
+    
+    // Switch colors (auto dark theme)
+    --mm-switch-checked-track: rgba(128, 203, 196, 0.3);
+    --mm-switch-checked-thumb: #80cbc4;
+    --mm-switch-unchecked-track: rgba(255, 255, 255, 0.6);
+    --mm-switch-unchecked-thumb: #616161;
+    --mm-switch-disabled-track: rgba(255, 255, 255, 0.12);
+    --mm-switch-disabled-thumb: #424242;
+  }
+}

@@ -2,9 +2,9 @@
 @use "global";
 
 .collapsible {
-  border-top: 1px solid variables.$collapsible-border-color;
-  border-right: 1px solid variables.$collapsible-border-color;
-  border-left: 1px solid variables.$collapsible-border-color;
+  border-top: 1px solid var(--mm-border-color, variables.$collapsible-border-color);
+  border-right: 1px solid var(--mm-border-color, variables.$collapsible-border-color);
+  border-left: 1px solid var(--mm-border-color, variables.$collapsible-border-color);
   margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
   @extend .z-depth-1 !optional;
 }
@@ -19,8 +19,7 @@
   -webkit-tap-highlight-color: transparent;
   line-height: 1.5;
   padding: 1rem;
-  background-color: variables.$collapsible-header-color;
-  border-bottom: 1px solid variables.$collapsible-border-color;
+  border-bottom: 1px solid var(--mm-border-color, variables.$collapsible-border-color);
 
   i {
     width: 2rem;
@@ -31,12 +30,12 @@
   }
 }
 .keyboard-focused .collapsible-header:focus {
-  background-color: #eee;
+  background-color: var(--mm-border-color, rgba(0, 0, 0, 0.05));
 }
 
 .collapsible-body {
   display: none;
-  border-bottom: 1px solid variables.$collapsible-border-color;
+  border-bottom: 1px solid var(--mm-border-color, variables.$collapsible-border-color);
   box-sizing: border-box;
   padding: 2rem;
 }
@@ -65,7 +64,8 @@
 
   .collapsible-body {
     border: 0;
-    background-color: variables.$collapsible-header-color;
+    background-color: var(--mm-surface-color, variables.$collapsible-header-color);
+  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
 
     li a {
       padding: 0 (7.5px + variables.$sidenav-padding)

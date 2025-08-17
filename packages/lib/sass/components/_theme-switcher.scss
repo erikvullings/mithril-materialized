@@ -1,0 +1,120 @@
+// Theme Switcher Component Styles
+
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  
+  .theme-switcher-label {
+    font-size: 0.875rem;
+    color: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
+    font-weight: 500;
+  }
+  
+  .theme-switcher-buttons {
+    display: flex;
+    background: var(--mm-surface-color, #ffffff);
+    border: 1px solid var(--mm-border-color, rgba(0, 0, 0, 0.12));
+    border-radius: 0.5rem;
+    overflow: hidden;
+    
+    .btn-flat {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem 0.75rem;
+      margin: 0;
+      border: none;
+      background: transparent;
+      color: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
+      font-size: 0.875rem;
+      border-radius: 0;
+      min-width: auto;
+      height: auto;
+      line-height: 1;
+      text-transform: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      
+      &:hover {
+        background: var(--mm-border-color, rgba(0, 0, 0, 0.12));
+        color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+      }
+      
+      &.active {
+        background: var(--mm-primary-color, #26a69a);
+        color: var(--mm-button-text, #ffffff);
+        
+        &:hover {
+          background: var(--mm-primary-color-dark, #00695c);
+        }
+      }
+      
+      .material-icons {
+        font-size: 1rem;
+      }
+      
+      span {
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.theme-toggle {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mm-surface-color, #ffffff);
+  border: 1px solid var(--mm-border-color, rgba(0, 0, 0, 0.12));
+  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: var(--mm-primary-color, #26a69a);
+    color: var(--mm-button-text, #ffffff);
+    border-color: var(--mm-primary-color, #26a69a);
+  }
+  
+  .material-icons {
+    font-size: 1.25rem;
+  }
+}
+
+// Navbar theme toggle specific styles
+nav .theme-toggle {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  width: 64px;
+  height: 64px;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+  }
+  
+  &:focus {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 600px) {
+  .theme-switcher {
+    .theme-switcher-buttons {
+      .btn-flat {
+        padding: 0.5rem;
+        
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+}

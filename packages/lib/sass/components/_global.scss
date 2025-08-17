@@ -523,17 +523,18 @@ td, th{
 // Collections
 .collection {
   margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
-  border: 1px solid variables.$collection-border-color;
+  border: 1px solid var(--mm-border-color, variables.$collection-border-color);
   border-radius: 2px;
   overflow: hidden;
   position: relative;
 
   .collection-item {
-    background-color: variables.$collection-bg-color;
+    background-color: var(--mm-surface-color, variables.$collection-bg-color);
+    color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
     line-height: variables.$collection-line-height;
     padding: 10px 20px;
     margin: 0;
-    border-bottom: 1px solid variables.$collection-border-color;
+    border-bottom: 1px solid var(--mm-border-color, variables.$collection-border-color);
 
     // Avatar Collection
     &.avatar {
@@ -604,8 +605,9 @@ td, th{
 
   &.with-header {
     .collection-header {
-      background-color: variables.$collection-bg-color;
-      border-bottom: 1px solid variables.$collection-border-color;
+      background-color: var(--mm-surface-color, variables.$collection-bg-color);
+      color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+      border-bottom: 1px solid var(--mm-border-color, variables.$collection-border-color);
       padding: 10px 20px;
     }
     .collection-item {

@@ -1,0 +1,18 @@
+// Mithril Materialized - UI Components
+// Import this file for interactive components (buttons, modals, etc.)
+// Requires core.scss to be imported first
+
+@charset "UTF-8";
+
+// Interactive UI Components
+@use '../sass/components/buttons';
+@use '../sass/components/modal';
+@use '../sass/components/dropdown';
+@use '../sass/components/tabs';
+@use '../sass/components/tooltip';
+@use '../sass/components/collapsible';
+@use '../sass/components/materialbox';
+@use '../sass/components/waves';
+@use '../sass/components/sidenav';
+@use '../sass/components/breadcrumb';
+@use '../sass/components/wizard';

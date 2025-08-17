@@ -1,0 +1,14 @@
+// Mithril Materialized - Utility Components
+// Import this for utility components and visual enhancements
+// Requires core.scss to be imported first
+
+@charset "UTF-8";
+
+// Utility and visual components
+@use '../sass/components/badges';
+@use '../sass/components/color-classes';
+@use '../sass/components/icons-material-design';
+@use '../sass/components/chips';
+@use '../sass/components/cards';
+@use '../sass/components/toast';
+@use '../sass/components/pulse';

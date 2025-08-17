@@ -1,0 +1,228 @@
+// File Upload Component Styles
+
+.file-upload-container {
+  margin-bottom: 1rem;
+}
+
+.file-upload-area {
+  border: 2px dashed var(--mm-border-color, rgba(0, 0, 0, 0.12));
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--mm-input-background, #ffffff);
+  
+  &:hover:not(.disabled) {
+    border-color: var(--mm-primary-color, #26a69a);
+    background: var(--mm-surface-color, #f5f5f5);
+  }
+  
+  &.drag-over {
+    border-color: var(--mm-primary-color, #26a69a);
+    background: var(--mm-primary-color-light, rgba(38, 166, 154, 0.1));
+    transform: scale(1.02);
+  }
+  
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--mm-border-color, rgba(0, 0, 0, 0.05));
+  }
+  
+  &.error {
+    border-color: #f44336;
+  }
+  
+  &.has-files {
+    padding: 1rem;
+  }
+}
+
+.file-upload-content {
+  .file-upload-icon {
+    font-size: 3rem;
+    color: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
+    margin-bottom: 0.5rem;
+  }
+  
+  .file-upload-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+    margin: 0.5rem 0;
+  }
+  
+  .file-upload-helper {
+    font-size: 0.875rem;
+    color: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
+    margin: 0.25rem 0;
+  }
+  
+  .file-upload-types {
+    font-size: 0.75rem;
+    color: var(--mm-text-hint, rgba(0, 0, 0, 0.38));
+    margin: 0.25rem 0 0 0;
+    font-style: italic;
+  }
+}
+
+.file-upload-error {
+  color: #f44336;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  text-align: left;
+}
+
+.file-upload-list {
+  margin-top: 1rem;
+  
+  h6 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+  }
+}
+
+.file-upload-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  background: var(--mm-surface-color, #ffffff);
+  border: 1px solid var(--mm-border-color, rgba(0, 0, 0, 0.12));
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: var(--mm-card-background, #f5f5f5);
+  }
+  
+  .file-preview {
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    background: var(--mm-border-color, rgba(0, 0, 0, 0.05));
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  
+  .file-info {
+    flex: 1;
+    min-width: 0;
+    
+    .file-name {
+      font-weight: 500;
+      color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+      margin-bottom: 0.25rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .file-details {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.75rem;
+      color: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
+    }
+    
+    .file-progress {
+      margin-top: 0.5rem;
+      
+      .progress {
+        height: 0.25rem;
+        background-color: var(--mm-border-color, rgba(0, 0, 0, 0.12));
+        border-radius: 0.125rem;
+        overflow: hidden;
+        
+        .determinate {
+          background-color: var(--mm-primary-color, #26a69a);
+          height: 100%;
+          transition: width 0.3s ease;
+        }
+      }
+    }
+    
+    .file-error {
+      color: #f44336;
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+  }
+  
+  .file-remove {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: rgba(244, 67, 54, 0.1);
+      color: #f44336;
+    }
+    
+    .material-icons {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 600px) {
+  .file-upload-area {
+    padding: 1.5rem 1rem;
+    
+    .file-upload-content {
+      .file-upload-icon {
+        font-size: 2.5rem;
+      }
+      
+      .file-upload-label {
+        font-size: 1rem;
+      }
+    }
+  }
+  
+  .file-upload-item {
+    gap: 0.75rem;
+    padding: 0.5rem;
+    
+    .file-preview {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+    
+    .file-info {
+      .file-details {
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+    }
+  }
+}
+
+// Dark theme specific adjustments
+[data-theme="dark"] {
+  .file-upload-area {
+    &.drag-over {
+      background: var(--mm-primary-color-dark, rgba(38, 166, 154, 0.2));
+    }
+  }
+}

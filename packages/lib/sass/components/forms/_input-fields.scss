@@ -8,7 +8,7 @@
 /* Style Placeholders */
 
 ::placeholder {
-  color: variables.$placeholder-text-color;
+  color: var(--mm-text-hint, variables.$placeholder-text-color);
 }
 
 /* Text inputs */
@@ -30,7 +30,7 @@ textarea.materialize-textarea {
   // General Styles
   background-color: transparent;
   border: none;
-  border-bottom: variables.$input-border;
+  border-bottom: 1px solid var(--mm-input-border, variables.$input-border);
   border-radius: 0;
   outline: none;
   height: variables.$input-height;
@@ -41,29 +41,30 @@ textarea.materialize-textarea {
   box-shadow: none;
   box-sizing: content-box;
   transition: box-shadow .3s, border .3s;
+  color: var(--mm-input-text, inherit);
 
   // Disabled input style
   &:disabled,
   &[readonly="readonly"] {
-    color: variables.$input-disabled-color;
-    border-bottom: variables.$input-disabled-border;
+    color: var(--mm-text-disabled, variables.$input-disabled-color);
+    border-bottom: 1px dotted var(--mm-input-border, variables.$input-disabled-border);
   }
 
   // Disabled label style
   &:disabled+label,
   &[readonly="readonly"]+label {
-    color: variables.$input-disabled-color;
+    color: var(--mm-text-disabled, variables.$input-disabled-color);
   }
 
   // Focused input style
   &:focus:not([readonly]) {
-    border-bottom: 1px solid variables.$input-focus-color;
-    box-shadow: 0 1px 0 0 variables.$input-focus-color;
+    border-bottom: 1px solid var(--mm-input-border-focus, variables.$input-focus-color);
+    box-shadow: 0 1px 0 0 var(--mm-input-border-focus, variables.$input-focus-color);
   }
 
   // Focused label style
   &:focus:not([readonly])+label {
-    color: variables.$input-focus-color;
+    color: var(--mm-input-border-focus, variables.$input-focus-color);
   }
 
   // Hide helper text on data message
@@ -112,6 +113,27 @@ textarea.materialize-textarea {
   // Form Message Shared Styles
   & + label:after {
     @extend %input-after-style !optional;
+  }
+
+  // Enhanced autofill prevention for all browsers including Edge
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--mm-input-background, transparent) inset !important;
+    -webkit-text-fill-color: var(--mm-input-text, inherit) !important;
+    background-color: transparent !important;
+    color: var(--mm-input-text, inherit) !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  // Edge specific autofill styles
+  &:-ms-input-placeholder {
+    color: var(--mm-text-hint, variables.$placeholder-text-color) !important;
+  }
+  
+  &::-ms-input-placeholder {
+    color: var(--mm-text-hint, variables.$placeholder-text-color) !important;
   }
 }
 
@@ -217,7 +239,7 @@ textarea.materialize-textarea {
     min-height: 18px;
     display: block;
     font-size: 12px;
-    color: rgba(0,0,0,.54);
+    color: var(--mm-text-secondary, rgba(0,0,0,.54));
   }
 
   // Prefix Icons
@@ -279,15 +301,15 @@ textarea.materialize-textarea {
   }
 
   &:focus:not(.browser-default) {
-    background-color: variables.$input-background;
+    background-color: var(--mm-input-background, variables.$input-background);
     border: 0;
     box-shadow: none;
-    color: #444;
+    color: var(--mm-input-text, #444);
 
     & + label i,
     & ~ .mdi-navigation-close,
     & ~ .material-icons {
-      color: #444;
+      color: var(--mm-input-text, #444);
     }
   }
 

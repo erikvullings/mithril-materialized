@@ -1,0 +1,17 @@
+// Mithril Materialized - Form Components
+// Import this for form-specific components (inputs, selects, switches, etc.)
+// Requires core.scss to be imported first
+
+@charset "UTF-8";
+
+// Form-specific components
+@use '../sass/components/forms/input-fields';
+@use '../sass/components/forms/select';
+@use '../sass/components/forms/checkboxes';
+@use '../sass/components/forms/radio-buttons';
+@use '../sass/components/forms/switches';
+@use '../sass/components/forms/range';
+@use '../sass/components/forms/file-input';
+@use '../sass/components/forms/form-groups';
+@use '../sass/components/file-upload';
+@use '../sass/components/theme-switcher';

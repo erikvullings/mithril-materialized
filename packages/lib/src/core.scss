@@ -1,0 +1,18 @@
+// Mithril Materialized - Core Styles Only
+// This includes only the essential foundational styles
+// For component-specific styles, import individual components
+
+@charset "UTF-8";
+
+// Essential foundation
+@use '../sass/components/color-variables';
+@use '../sass/components/variables'; 
+@use '../sass/components/normalize';
+@use '../sass/components/global';
+@use '../sass/components/grid';
+@use '../sass/components/typography';
+@use '../sass/components/transitions';
+
+// Essential form styles (most components need these)
+@use '../sass/components/forms/forms';
+@use '../sass/components/forms/input-fields';

@@ -16,14 +16,14 @@ nav {
     }
   }
 
-  color: variables.$navbar-font-color;
+  color: var(--mm-nav-text, variables.$navbar-font-color);
   @extend .z-depth-1 !optional;
-  background-color: variables.$primary-color;
+  background-color: var(--mm-nav-background, variables.$primary-color);
   width: 100%;
   height: variables.$navbar-height-mobile;
   line-height: variables.$navbar-line-height-mobile;
 
-  a { color: variables.$navbar-font-color; }
+  a { color: var(--mm-nav-text, variables.$navbar-font-color); }
 
   i,
   [class^="mdi-"], [class*="mdi-"],
@@ -120,7 +120,15 @@ nav {
       padding: 0;
 
       &.active {
-        background-color: rgba(0,0,0,.1);
+        background-color: var(--mm-primary-color-light, rgba(0,0,0,.1));
+        
+        a {
+          color: var(--mm-nav-active-text, variables.$navbar-font-color);
+        }
+        
+        i, .material-icons {
+          color: var(--mm-nav-active-text, variables.$navbar-font-color);
+        }
       }
     }
     a {
@@ -182,7 +190,7 @@ nav {
         color: rgba(255,255,255,.7);
         transition: color .3s;
       }
-      &.active i { color: variables.$navbar-font-color; }
+      &.active i { color: var(--mm-nav-text, variables.$navbar-font-color); }
     }
   }
 }

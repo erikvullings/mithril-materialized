@@ -1,0 +1,9 @@
+// Mithril Materialized - Date/Time Pickers
+// Import this only if you use DatePicker or TimePicker components
+// Requires core.scss to be imported first
+
+@charset "UTF-8";
+
+// Picker components (larger CSS footprint)
+@use '../sass/components/datepicker';
+@use '../sass/components/timepicker';
