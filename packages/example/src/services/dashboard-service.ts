@@ -10,6 +10,8 @@ import { SelectionPage } from '../components/selections/selection-page';
 import { ModalPage } from '../components/modals/modal-page';
 import { MiscPage } from '../components/misc/misc-page';
 import { CollectionsPage } from '../components/collections/collections-page';
+import { ThemePage } from '../components/theme/theme-page';
+import { NavigationPage } from '../components/navigation/navigation-page';
 
 export enum Dashboards {
   HOME = 'HOME',
@@ -22,6 +24,8 @@ export enum Dashboards {
   MODALS = 'MODALS',
   TIMELINE = 'TIMELINE',
   KANBAN = 'KANBAN',
+  THEME = 'THEME',
+  NAVIGATION = 'NAVIGATION',
   MISC = 'MISC',
   ABOUT = 'ABOUT',
 }
@@ -118,6 +122,22 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
     route: '/collections',
     visible: true,
     component: CollectionsPage,
+  },
+  {
+    id: Dashboards.THEME,
+    title: 'THEME',
+    icon: 'palette',
+    route: '/theme',
+    visible: true,
+    component: ThemePage,
+  },
+  {
+    id: Dashboards.NAVIGATION,
+    title: 'NAVIGATION',
+    icon: 'navigation',
+    route: '/navigation',
+    visible: true,
+    component: NavigationPage,
   },
   {
     id: Dashboards.MISC,
