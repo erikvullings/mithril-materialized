@@ -333,9 +333,9 @@ export const Chips: m.FactoryComponent<ChipsAttrs> = () => {
                     maxHeight: '200px',
                     overflow: 'auto',
                     zIndex: 1000,
-                    backgroundColor: '#fff',
+                    backgroundColor: 'var(--mm-surface-color, #fff)',
                     boxShadow:
-                      '0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2)',
+                      '0 2px 2px 0 var(--mm-shadow-penumbra, rgba(0,0,0,0.14)), 0 3px 1px -2px var(--mm-shadow-umbra, rgba(0,0,0,0.12)), 0 1px 5px 0 var(--mm-shadow-ambient, rgba(0,0,0,0.2))',
                   },
                 },
                 state.autocompleteItems.map((item, index) =>
@@ -347,7 +347,8 @@ export const Chips: m.FactoryComponent<ChipsAttrs> = () => {
                       style: {
                         padding: '12px 16px',
                         cursor: 'pointer',
-                        backgroundColor: state.selectedAutocompleteIndex === index ? '#eee' : 'transparent',
+                        backgroundColor: state.selectedAutocompleteIndex === index ? 'var(--mm-border-color, #eee)' : 'transparent',
+                        color: 'var(--mm-text-primary, inherit)',
                       },
                       onmousedown: (e: MouseEvent) => {
                         e.preventDefault();

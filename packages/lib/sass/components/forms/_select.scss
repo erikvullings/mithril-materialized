@@ -86,7 +86,7 @@ select {
     bottom: 0;
     margin: auto 0;
     z-index: 0;
-    fill: rgba(0,0,0,.87);
+    fill: var(--mm-text-primary, rgba(0,0,0,.87));
   }
 
   & + label {
@@ -134,24 +134,24 @@ select:disabled {
 .select-dropdown li.disabled,
 .select-dropdown li.disabled > span,
 .select-dropdown li.optgroup {
-  color: variables.$select-disabled-color;
+  color: var(--mm-text-disabled, variables.$select-disabled-color);
   background-color: transparent;
 }
 
 body.keyboard-focused {
   .select-dropdown.dropdown-content li:focus {
-    background-color: variables.$select-option-focus;
+    background-color: var(--mm-dropdown-focus, variables.$select-option-focus);
   }
 }
 
 .select-dropdown.dropdown-content {
   li {
     &:hover {
-      background-color: variables.$select-option-hover;
+      background-color: var(--mm-dropdown-hover, variables.$select-option-hover);
     }
 
     &.selected {
-      background-color: variables.$select-option-selected;
+      background-color: var(--mm-dropdown-selected, variables.$select-option-selected);
     }
   }
 }
@@ -177,14 +177,14 @@ body.keyboard-focused {
 
 // Optgroup styles
 .select-dropdown li.optgroup {
-  border-top: 1px solid variables.$dropdown-hover-bg-color;
+  border-top: 1px solid var(--mm-border-color, variables.$dropdown-hover-bg-color);
 
   &.selected > span {
-    color: rgba(0, 0, 0, .7);
+    color: var(--mm-text-secondary, rgba(0, 0, 0, .7));
   }
 
   & > span {
-    color: rgba(0, 0, 0, .4);
+    color: var(--mm-text-hint, rgba(0, 0, 0, .4));
   }
 
   & ~ li.optgroup-option {

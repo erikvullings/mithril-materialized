@@ -48,6 +48,15 @@
   
   // Shadow colors
   --mm-shadow-color: rgba(0, 0, 0, 0.16);
+  
+  // Chip colors
+  --mm-chip-bg: #e4e4e4;
+  --mm-chip-text: var(--mm-text-secondary);
+  
+  // Dropdown colors
+  --mm-dropdown-hover: #eee;
+  --mm-dropdown-focus: #ddd;
+  --mm-dropdown-selected: #e3f2fd;
   --mm-shadow-umbra: rgba(0, 0, 0, 0.2);
   --mm-shadow-penumbra: rgba(0, 0, 0, 0.14);
   --mm-shadow-ambient: rgba(0, 0, 0, 0.12);
@@ -122,6 +131,15 @@ body {
   --mm-shadow-umbra: rgba(0, 0, 0, 0.5);
   --mm-shadow-penumbra: rgba(0, 0, 0, 0.36);
   --mm-shadow-ambient: rgba(0, 0, 0, 0.3);
+  
+  // Chip colors
+  --mm-chip-bg: #424242;
+  --mm-chip-text: var(--mm-text-secondary);
+  
+  // Dropdown colors
+  --mm-dropdown-hover: #444;
+  --mm-dropdown-focus: #555;
+  --mm-dropdown-selected: #1e3a8a;
   
   // Switch colors (dark theme)
   --mm-switch-checked-track: rgba(128, 203, 196, 0.3);

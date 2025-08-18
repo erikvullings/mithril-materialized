@@ -226,7 +226,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                 'span.placeholder',
                 {
                   style: {
-                    color: '#9e9e9e',
+                    color: 'var(--mm-text-hint, #9e9e9e)',
                     flexGrow: 1,
                     padding: '8px 0',
                   },
@@ -302,7 +302,9 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                       fontSize: '0.875rem',
                       border: 'none',
                       padding: '8px 0',
-                      borderBottom: '1px solid #9e9e9e',
+                      borderBottom: '1px solid var(--mm-input-border, #9e9e9e)',
+                      backgroundColor: 'transparent',
+                      color: 'var(--mm-text-primary, inherit)',
                     },
                   }),
                 ]

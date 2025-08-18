@@ -90,7 +90,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
             const textarea = (state.textarea = dom as HTMLTextAreaElement);
 
             // Set initial value and height if provided
-            if (initialValue !== undefined) {
+            if (initialValue) {
               textarea.value = String(initialValue);
               updateHeight(textarea);
               // } else {
@@ -143,7 +143,6 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
               onchange(state.textarea.value);
             }
           },
-          value: initialValue,
           onkeyup: onkeyup
             ? (ev: KeyboardEvent) => {
                 onkeyup(ev, (ev.target as HTMLTextAreaElement).value);
@@ -164,7 +163,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
           label,
           id,
           isMandatory,
-          isActive: state.textarea?.value || initialValue || placeholder || state.active,
+          isActive: state.textarea?.value || placeholder || state.active,
         }),
         m(HelperText, {
           helperText,
@@ -266,7 +265,7 @@ const InputField =
               }
 
               // Set initial value if provided
-              if (initialValue !== undefined) {
+              if (initialValue) {
                 input.value = String(initialValue);
               }
 
@@ -383,7 +382,6 @@ const InputField =
                 onchange(getValue(state.inputElement));
               }
             },
-            value: initialValue,
           }),
           m(Label, {
             label,
@@ -392,7 +390,6 @@ const InputField =
             isActive:
               state.active ||
               state.inputElement?.value ||
-              initialValue ||
               placeholder ||
               type === 'number' ||
               type === 'color' ||
@@ -508,7 +505,7 @@ export const FileInput: FactoryComponent<FileInputAttrs> = () => {
               },
             })
           ),
-          (canClear || initialValue) &&
+          (canClear || i?.value) &&
             m(
               'a.waves-effect.waves-teal.btn-flat',
               {

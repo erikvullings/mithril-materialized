@@ -10,7 +10,7 @@
 
 
   @extend .z-depth-1 !optional;
-  background-color: variables.$dropdown-bg-color;
+  background-color: var(--mm-surface-color, variables.$dropdown-bg-color);
   margin: 0;
   display: none;
   min-width: 100px;
@@ -25,7 +25,7 @@
 
   li {
     &:hover, &.active {
-      background-color: variables.$dropdown-hover-bg-color;
+      background-color: var(--mm-dropdown-hover, variables.$dropdown-hover-bg-color);
     }
 
     &:focus {
@@ -39,7 +39,7 @@
 
     & > a, & > span {
       font-size: 16px;
-      color: variables.$dropdown-color;
+      color: var(--mm-text-primary, variables.$dropdown-color);
       display: block;
       line-height: 22px;
       padding: math.div((variables.$dropdown-item-height - 22px), 2) 16px;
@@ -62,7 +62,7 @@
 
 
     clear: both;
-    color: variables.$off-black;
+    color: var(--mm-text-primary, variables.$off-black);
     cursor: pointer;
     min-height: variables.$dropdown-item-height;
     line-height: 1.5rem;
@@ -73,7 +73,7 @@
 
 body.keyboard-focused {
   .dropdown-content li:focus {
-    background-color: color.adjust(variables.$dropdown-hover-bg-color, $lightness: -8%);
+    background-color: var(--mm-dropdown-focus, color.adjust(variables.$dropdown-hover-bg-color, $lightness: -8%));
   }
 }
 

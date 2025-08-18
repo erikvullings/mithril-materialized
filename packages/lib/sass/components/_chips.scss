@@ -3,19 +3,19 @@
 .chip {
   &:focus {
     outline: none;
-    background-color: variables.$chip-selected-color;
-    color: #fff;
+    background-color: var(--mm-primary-color, variables.$chip-selected-color);
+    color: var(--mm-button-text, #fff);
   }
 
   display: inline-block;
   height: 32px;
   font-size: 13px;
   font-weight: 500;
-  color: rgba(0,0,0,.6);
+  color: var(--mm-text-secondary, rgba(0,0,0,.6));
   line-height: 32px;
   padding: 0 12px;
   border-radius: 16px;
-  background-color: variables.$chip-bg-color;
+  background-color: var(--mm-chip-bg, variables.$chip-bg-color);
   margin-bottom: variables.$chip-margin;
   margin-right: variables.$chip-margin;
 
@@ -38,7 +38,7 @@
 
 .chips {
   border: none;
-  border-bottom: 1px solid variables.$chip-border-color;
+  border-bottom: 1px solid var(--mm-input-border, variables.$chip-border-color);
   box-shadow: none;
   margin: variables.$input-margin;
   min-height: 45px;
@@ -46,8 +46,8 @@
   transition: all .3s;
 
   &.focus {
-    border-bottom: 1px solid variables.$chip-selected-color;
-    box-shadow: 0 1px 0 0 variables.$chip-selected-color;
+    border-bottom: 1px solid var(--mm-primary-color, variables.$chip-selected-color);
+    box-shadow: 0 1px 0 0 var(--mm-primary-color, variables.$chip-selected-color);
   }
 
   &:hover {
@@ -57,7 +57,7 @@
   .input {
     background: none;
     border: 0;
-    color: rgba(0,0,0,.6);
+    color: var(--mm-text-primary, rgba(0,0,0,.6));
     display: inline-block;
     font-size: variables.$input-font-size;
     height: variables.$input-height;
