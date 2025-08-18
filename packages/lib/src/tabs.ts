@@ -16,8 +16,6 @@ export interface TabItem {
   vnode?: Vnode<any, any>;
   /** ID of the tab element. Default the title in lowercase */
   id?: string;
-  /** If the tab should be active */
-  active?: boolean;
   /** If the tab should be disabled */
   disabled?: boolean;
   /** CSS class for the tab (li), default `.tab.col.s3` */
@@ -66,12 +64,9 @@ export const Tabs: FactoryComponent<TabsAttrs> = () => {
   };
 
   const toAnchored = () => {
-    let activeTabFound = false;
     return (tab: TabItem) => {
-      const active = activeTabFound ? false : tab.active;
-      if (active) activeTabFound = true;
       const tabId = createId(tab.title, tab.id);
-      return { ...tab, active, tabId, anchorId: `anchor-${tabId}` } as AnchoredTabItem;
+      return { ...tab, tabId, anchorId: `anchor-${tabId}` } as AnchoredTabItem;
     };
   };
 
@@ -112,6 +107,7 @@ export const Tabs: FactoryComponent<TabsAttrs> = () => {
   };
 
   const handleTabClick = (tabId: string, tabElement: HTMLElement, attrs: TabsAttrs) => {
+    console.log({ state, tabId });
     if (state.activeTabId === tabId) return;
 
     state.activeTabId = tabId;
@@ -177,22 +173,16 @@ export const Tabs: FactoryComponent<TabsAttrs> = () => {
     const selectedTab = selectedTabId ? anchoredTabs.find((a) => a.tabId === selectedTabId) : undefined;
     if (selectedTab) {
       state.activeTabId = selectedTab.tabId;
-      selectedTab.active = true;
       return selectedTab;
     }
 
-    const activeTab = anchoredTabs.find((t) => t.active);
-    if (activeTab) {
-      // Active tab property takes precedence over selectedTabId
-      state.activeTabId = activeTab.tabId;
-      return activeTab;
-    }
+    const curTab = state.activeTabId && anchoredTabs.find((a) => a.tabId === state.activeTabId);
+    if (curTab) return curTab;
 
     // Default to first non-disabled tab
-    const firstAvailableTab = anchoredTabs.find((t) => !t.disabled && !t.href);
+    const firstAvailableTab = anchoredTabs.find((a) => !a.disabled && !a.href);
     if (firstAvailableTab) {
       state.activeTabId = firstAvailableTab.tabId;
-      firstAvailableTab.active = true;
       return firstAvailableTab;
     }
     return undefined;
@@ -247,7 +237,7 @@ export const Tabs: FactoryComponent<TabsAttrs> = () => {
                     'a',
                     {
                       id: anchorId,
-                      className: tab.active ? 'active' : undefined,
+                      className: tab.tabId === state.activeTabId ? 'active' : undefined,
                       target,
                       href: href || `#${anchorId}`,
                       onclick:

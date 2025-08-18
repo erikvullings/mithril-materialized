@@ -1,10 +1,22 @@
-import { MaterialBox, CodeBlock, Carousel, Parallax, Pagination, Tabs, Button, toast, ToastComponent, initTooltips, initPushpins } from 'mithril-materialized';
+import {
+  MaterialBox,
+  CodeBlock,
+  Carousel,
+  Parallax,
+  Pagination,
+  Tabs,
+  Button,
+  toast,
+  ToastComponent,
+  initTooltips,
+  initPushpins,
+} from 'mithril-materialized';
 import m from 'mithril';
 import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
 export const MiscPage = () => {
   const state = {
-    activeTabId: '',
+    selectedTabId: '',
     disabled: true,
     activeTab: 3,
     tabWidthId: 2,
@@ -94,12 +106,16 @@ toast({
         m('p', 'Tooltips are small, interactive, textual hints for mainly graphical elements.'),
         m('.row', [
           m('p', [
-            m('a[href=#!].btn.tooltipped[data-position=top][data-tooltip=I am a tooltip]', {
-              oncreate: () => {
-                // Initialize tooltips after the element is created
-                setTimeout(() => initTooltips(), 100);
+            m(
+              'a[href=#!].btn.tooltipped[data-position=top][data-tooltip=I am a tooltip]',
+              {
+                oncreate: () => {
+                  // Initialize tooltips after the element is created
+                  setTimeout(() => initTooltips(), 100);
+                },
               },
-            }, 'Hover me! (top)'),
+              'Hover me! (top)'
+            ),
             ' ',
             m('a[href=#!].btn.tooltipped[data-position=right][data-tooltip=I am a tooltip]', 'Hover me! (right)'),
             ' ',
@@ -125,39 +141,84 @@ initTooltips('.my-tooltips', {
         }),
 
         m('h3.header', 'Pushpin'),
-        m('p', 'Pushpin is a fixed positioning plugin. Pin elements to the top of the page when they scroll past them.'),
-        m('p.grey-text.text-darken-2', '⚠️ Note: The pushpin element below will pin to the navbar when you scroll past it. This is normal behavior for the demo.'),
+        m(
+          'p',
+          'Pushpin is a fixed positioning plugin. Pin elements to the top of the page when they scroll past them.'
+        ),
+        m(
+          'p.grey-text.text-darken-2',
+          '⚠️ Note: The pushpin element below will pin to the navbar when you scroll past it. This is normal behavior for the demo.'
+        ),
         m('.row', [
           m('.col.s12', [
-            m('div', { style: 'height: 100px; background: #f9f9f9; padding: 15px; margin: 15px 0; border-left: 4px solid #ddd;' }, [
-              m('p', { style: 'margin: 0; font-size: 0.9em; color: #666;' }, 'Content before the pinned element. The small blue element below will demonstrate pushpin behavior.'),
-            ]),
-            m('.chip.pushpin-element', {
-              style: 'background-color: #e3f2fd; border: 1px solid #2196f3; display: inline-block; padding: 8px 12px; margin: 10px 0; font-size: 0.85em;',
-              oncreate: (vnode) => {
-                // Initialize pushpin on this element
-                setTimeout(() => {
-                  initPushpins('.pushpin-element', {
-                    top: 64, // Account for navbar height
-                    bottom: Infinity,
-                    onPositionChange: (position) => {
-                      console.log('Pushpin position:', position);
-                      // Update the element text to show current state
-                      const el = document.querySelector('.pushpin-element');
-                      if (el) {
-                        el.textContent = `Pushpin: ${position}`;
-                      }
-                    },
-                  });
-                }, 100);
+            m(
+              'div',
+              {
+                style:
+                  'height: 100px; background: #f9f9f9; padding: 15px; margin: 15px 0; border-left: 4px solid #ddd;',
               },
-            }, 'Pushpin: pin-top'),
-            m('div', { style: 'height: 400px; background: #f9f9f9; padding: 15px; margin: 15px 0; border-left: 4px solid #ddd;' }, [
-              m('p', { style: 'margin: 0 0 10px 0; font-size: 0.9em; color: #666;' }, 'Content after the pinned element...'),
-              m('p', { style: 'margin: 0 0 10px 0; font-size: 0.9em; color: #666;' }, 'The small blue chip above should now be pinned to the top navigation.'),
-              m('p', { style: 'margin: 0 0 10px 0; font-size: 0.9em; color: #666;' }, 'Continue scrolling to see more components below.'),
-              m('p', { style: 'margin: 0; font-size: 0.85em; color: #999;' }, 'This demonstrates how pushpin works without being visually disruptive.'),
-            ]),
+              [
+                m(
+                  'p',
+                  { style: 'margin: 0; font-size: 0.9em; color: #666;' },
+                  'Content before the pinned element. The small blue element below will demonstrate pushpin behavior.'
+                ),
+              ]
+            ),
+            m(
+              '.chip.pushpin-element',
+              {
+                style:
+                  'background-color: #e3f2fd; border: 1px solid #2196f3; display: inline-block; padding: 8px 12px; margin: 10px 0; font-size: 0.85em;',
+                oncreate: (vnode) => {
+                  // Initialize pushpin on this element
+                  setTimeout(() => {
+                    initPushpins('.pushpin-element', {
+                      top: 64, // Account for navbar height
+                      bottom: Infinity,
+                      onPositionChange: (position) => {
+                        console.log('Pushpin position:', position);
+                        // Update the element text to show current state
+                        const el = document.querySelector('.pushpin-element');
+                        if (el) {
+                          el.textContent = `Pushpin: ${position}`;
+                        }
+                      },
+                    });
+                  }, 100);
+                },
+              },
+              'Pushpin: pin-top'
+            ),
+            m(
+              'div',
+              {
+                style:
+                  'height: 400px; background: #f9f9f9; padding: 15px; margin: 15px 0; border-left: 4px solid #ddd;',
+              },
+              [
+                m(
+                  'p',
+                  { style: 'margin: 0 0 10px 0; font-size: 0.9em; color: #666;' },
+                  'Content after the pinned element...'
+                ),
+                m(
+                  'p',
+                  { style: 'margin: 0 0 10px 0; font-size: 0.9em; color: #666;' },
+                  'The small blue chip above should now be pinned to the top navigation.'
+                ),
+                m(
+                  'p',
+                  { style: 'margin: 0 0 10px 0; font-size: 0.9em; color: #666;' },
+                  'Continue scrolling to see more components below.'
+                ),
+                m(
+                  'p',
+                  { style: 'margin: 0; font-size: 0.85em; color: #999;' },
+                  'This demonstrates how pushpin works without being visually disruptive.'
+                ),
+              ]
+            ),
           ]),
         ]),
         m(CodeBlock, {
@@ -178,18 +239,17 @@ oncreate: (vnode) => {
 
         m('h3.header', 'Tabs'),
         m(Tabs, {
-          selectedTabId: state.activeTabId,
+          selectedTabId: state.selectedTabId,
           tabWidth: state.tabWidths[state.tabWidthId % 3],
           onShow: console.log,
           onTabChange: (tabId: string) => {
             console.log('Tab changed to:', tabId);
-            state.activeTabId = tabId;
+            state.selectedTabId = tabId;
           },
           tabs: [
             {
               title: 'Test 1',
               id: 'test1',
-              active: state.activeTab === 1,
               vnode: m('div', [
                 m('h4', 'Content for Test 1'),
                 m('p', 'This is the content for the first tab. Click on other tabs to see them in action!'),
@@ -199,7 +259,6 @@ oncreate: (vnode) => {
               title: 'Test 2',
               id: 'test2',
               disabled: state.disabled,
-              active: state.activeTab === 2,
               vnode: m('div', [
                 m('h4', 'Content for Test 2'),
                 m(
@@ -211,7 +270,6 @@ oncreate: (vnode) => {
             {
               title: 'Test 3',
               id: 'test3',
-              active: state.activeTab === 3,
               vnode: m('div', [
                 m('h4', 'Content for Test 3'),
                 m(
@@ -223,7 +281,6 @@ oncreate: (vnode) => {
             {
               title: 'Test 4',
               id: 'test4',
-              active: state.activeTab === 4,
               vnode: m('div', [
                 m('h4', 'Content for Test 4'),
                 m(
@@ -243,15 +300,13 @@ oncreate: (vnode) => {
         m(Button, {
           label: 'Switch to tab 1',
           onclick: () => {
-            state.activeTab = 1;
-            state.activeTabId = '';
+            state.selectedTabId = 'test1';
           },
         }),
         m(Button, {
           label: 'Switch to tab 4',
           onclick: () => {
-            state.activeTab = 0;
-            state.activeTabId = 'test4';
+            state.selectedTabId = 'test4';
           },
         }),
         m(Button, {
