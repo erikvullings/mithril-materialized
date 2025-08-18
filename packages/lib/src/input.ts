@@ -164,6 +164,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
           id,
           isMandatory,
           isActive: state.textarea?.value || placeholder || state.active,
+          initialValue: initialValue !== undefined,
         }),
         m(HelperText, {
           helperText,
@@ -250,6 +251,10 @@ const InputField =
         } = attrs;
         // const attributes = toAttrs(params);
         const cn = [newRow ? 'clear' : '', defaultClass, className].filter(Boolean).join(' ').trim();
+        const isActive =
+          state.active || state.inputElement?.value || placeholder || type === 'color' || type === 'range'
+            ? true
+            : false;
         return m('.input-field', { className: cn, style }, [
           iconName ? m('i.material-icons.prefix', iconName) : undefined,
           m('input.validate', {
@@ -387,15 +392,8 @@ const InputField =
             label,
             id,
             isMandatory,
-            isActive:
-              state.active ||
-              state.inputElement?.value ||
-              placeholder ||
-              type === 'number' ||
-              type === 'color' ||
-              type === 'range'
-                ? true
-                : false,
+            isActive,
+            initialValue: initialValue !== undefined,
           }),
           m(HelperText, {
             helperText,

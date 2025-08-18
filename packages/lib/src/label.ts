@@ -12,12 +12,14 @@ export interface LabelAttrs extends Attributes {
   isMandatory?: boolean;
   /** Add the active class to the label */
   isActive?: boolean | string;
+  /** Determines the initial value of its active state, only used during oncreate */
+  initialValue?: boolean;
 }
 
 /** Simple label element, used for most components. */
 export const Label: FactoryComponent<LabelAttrs> = () => {
   return {
-    view: ({ attrs: { label, id, isMandatory, isActive, className, ...params } }) =>
+    view: ({ attrs: { label, id, isMandatory, isActive, className, initialValue, ...params } }) =>
       label
         ? m(
             'label',
@@ -25,6 +27,11 @@ export const Label: FactoryComponent<LabelAttrs> = () => {
               ...params,
               className: [className, isActive ? 'active' : ''].filter(Boolean).join(' ').trim() || undefined,
               for: id,
+              oncreate: ({ dom }) => {
+                if (!initialValue) return;
+                const labelEl = dom as HTMLLabelElement;
+                labelEl.classList.add('active');
+              },
             },
             [m.trust(label), isMandatory ? m(Mandatory) : undefined]
           )
