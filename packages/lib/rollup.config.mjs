@@ -36,7 +36,9 @@ export default {
       use: [
         ['sass', { 
           api: 'modern-compiler',
-          silenceDeprecations: ['legacy-js-api']
+          silenceDeprecations: ['legacy-js-api'],
+          // Disable charset to match the minified version
+          charset: false
         }]
       ],
       // Extract to separate CSS file

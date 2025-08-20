@@ -45,25 +45,18 @@ export const Layout = () => ({
             // tslint:disable-next-line:max-line-length
             '.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}'
           ),
-          m(
-            'ul.right',
-            [
-              ...dashboardSvc
-                .getList()
-                .filter(d => d.visible)
-                .map(d =>
-                  m(
-                    `li${isActive(d.route)}`,
-                    m(
-                      m.route.Link,
-                      { href: d.route },
-                      m('i.material-icons.right', d.icon ? m('i.material-icons', d.icon) : d.title)
-                    )
-                  )
-                ),
-              m('li', m(ThemeToggle, { className: 'white-text' }))
-            ]
-          ),
+          m('ul.right', [
+            ...dashboardSvc
+              .getList()
+              .filter((d) => d.visible)
+              .map((d) =>
+                m(
+                  `li${isActive(d.route)}`,
+                  m(m.route.Link, { href: d.route }, d.icon ? m('i.material-icons', d.icon) : d.title)
+                )
+              ),
+            m('li', m(ThemeToggle, { className: 'white-text' })),
+          ]),
         ])
       ),
       m('.container', m('.row', vnode.children)),

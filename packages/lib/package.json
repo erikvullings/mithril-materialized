@@ -1,6 +1,6 @@
 {
   "name": "mithril-materialized",
-  "version": "2.0.0-beta.8",
+  "version": "2.0.0-beta.9",
   "description": "A materialize library for mithril.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -36,7 +36,7 @@
   ],
   "scripts": {
     "build": "rollup -c rollup.config.mjs && npm run build:css-min",
-    "build:css-min": "sass --no-source-map --style=compressed ./src/index.scss ./dist/index.min.css && npm run build:css-modules",
+    "build:css-min": "sass --no-source-map --style=compressed --no-charset ./src/index.scss ./dist/index.min.css && npm run build:css-modules",
     "build:css-modules": "sass --no-source-map ./src/core.scss ./dist/core.css && sass --no-source-map ./src/components.scss ./dist/components.css && sass --no-source-map ./src/forms.scss ./dist/forms.css && sass --no-source-map ./src/pickers.scss ./dist/pickers.css && sass --no-source-map ./src/advanced.scss ./dist/advanced.css && sass --no-source-map ./src/utilities.scss ./dist/utilities.css",
     "dev": "rollup -c rollup.config.mjs -w",
     "start": "npm run dev",
