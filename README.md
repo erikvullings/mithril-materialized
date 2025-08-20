@@ -378,7 +378,7 @@ m(ThemeToggle); // Simple toggle button
 
 For advanced customization, you can use the SASS source files directly:
 
-```scss
+```css
 // Import all SASS components
 @import 'mithril-materialized/sass/materialize.scss';
 
@@ -390,7 +390,7 @@ For advanced customization, you can use the SASS source files directly:
 
 **SASS Variables**: You can customize colors, spacing, and other design tokens by overriding SASS variables before importing:
 
-```scss
+```css
 // Customize Material Design variables
 $primary-color: #2196F3;
 $secondary-color: #FF9800;
