@@ -5,6 +5,13 @@
 
 * ensure consistent CSS output between index.css and index.min.css ([262a2fd](https://github.com/erikvullings/mithril-materialized/commit/262a2fd03f0787311fd1ab9274e27e3ea5fcd70b))
 
+# [2.0.0-beta.4](https://github.com/erikvullings/mithril-materialized/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2025-08-20)
+
+
+### Bug Fixes
+
+* ensure consistent CSS output between index.css and index.min.css ([262a2fd](https://github.com/erikvullings/mithril-materialized/commit/262a2fd03f0787311fd1ab9274e27e3ea5fcd70b))
+
 # [2.0.0-beta.3](https://github.com/erikvullings/mithril-materialized/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2025-08-15)
 
 
