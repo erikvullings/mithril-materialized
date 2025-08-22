@@ -128,7 +128,7 @@ select:disabled {
 }
 
 .select-wrapper i {
-  color: variables.$select-disabled-color;
+  color: var(--mm-text-primary, rgba(0,0,0,.87))
 }
 
 .select-dropdown li.disabled,

@@ -163,18 +163,31 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
             'aria-labelledby': `${id}-title`,
             'aria-describedby': description ? `${id}-desc` : undefined,
             style: {
-              display: state.isOpen ? 'block' : 'none',
+              display: state.isOpen ? 'flex' : 'none',
               position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              backgroundColor: '#fff',
-              borderRadius: '4px',
-              maxWidth: '75%',
+              ...(bottomSheet ? {
+                // Bottom sheet positioning
+                top: 'auto',
+                bottom: '0',
+                left: '0',
+                right: '0',
+                transform: 'none',
+                maxWidth: '100%',
+                borderRadius: '8px 8px 0 0',
+              } : {
+                // Regular modal positioning
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                maxWidth: '75%',
+                borderRadius: '4px',
+              }),
+              backgroundColor: 'var(--mm-modal-background, #fff)',
               maxHeight: '85%',
               overflow: 'auto',
               zIndex: '1003',
               padding: '0',
+              flexDirection: 'column',
               boxShadow:
                 '0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px -7px rgba(0,0,0,0.20)',
             },
@@ -205,7 +218,12 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
             m(
               '.modal-content',
               {
-                style: { padding: '24px', paddingTop: showCloseButton ? '48px' : '24px' },
+                style: { 
+                  padding: '24px', 
+                  paddingTop: showCloseButton ? '48px' : '24px',
+                  minHeight: 'auto',
+                  flex: '1 1 auto',
+                },
               },
               [
                 m('h4', { id: `${id}-title`, style: { margin: '0 0 20px 0' } }, title),
@@ -229,7 +247,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
                 {
                   style: {
                     padding: '4px 6px',
-                    borderTop: '1px solid rgba(160,160,160,0.2)',
+                    borderTop: '1px solid var(--mm-border-color, rgba(160,160,160,0.2))',
                     textAlign: 'right',
                   },
                 },

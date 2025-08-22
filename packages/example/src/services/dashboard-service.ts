@@ -12,6 +12,7 @@ import { MiscPage } from '../components/misc/misc-page';
 import { CollectionsPage } from '../components/collections/collections-page';
 import { ThemePage } from '../components/theme/theme-page';
 import { NavigationPage } from '../components/navigation/navigation-page';
+import { DataTablePage } from '../components/datatable/datatable-page';
 
 export enum Dashboards {
   HOME = 'HOME',
@@ -26,6 +27,7 @@ export enum Dashboards {
   KANBAN = 'KANBAN',
   THEME = 'THEME',
   NAVIGATION = 'NAVIGATION',
+  DATATABLE = 'DATATABLE',
   MISC = 'MISC',
   ABOUT = 'ABOUT',
 }
@@ -122,6 +124,14 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
     route: '/collections',
     visible: true,
     component: CollectionsPage,
+  },
+  {
+    id: Dashboards.DATATABLE,
+    title: 'DATA TABLE',
+    icon: 'table_chart',
+    route: '/datatable',
+    visible: true,
+    component: DataTablePage,
   },
   {
     id: Dashboards.THEME,

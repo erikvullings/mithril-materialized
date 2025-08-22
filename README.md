@@ -20,7 +20,7 @@ This is a **major breaking release** that removes all external JavaScript depend
 
 - **Removed dependencies**: No longer requires `materialize-css` or `material-icons` packages
 - **Component updates**: DatePicker and TimePicker now have custom implementations
-- **Icon changes**: Uses custom SVG icons instead of Material Icons font
+- **Icon changes**: Library uses custom SVG icons. Material Icons font is supported too, but not required.
 - **Installation**: Simpler installation process with fewer dependencies
 
 ### 📈 Migration from v1.x
@@ -81,7 +81,10 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
   - MaterialBox
   - Carousel
   - Pagination
+  - PaginationControls
   - Parallax
+- Data & Tables
+  - DataTable (sorting, filtering, pagination, selection)
 - Additional
   - Label
   - HelperText
@@ -114,6 +117,7 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
      TextInput, 
      Button, 
      DatePicker,
+     DataTable,
      ThemeToggle,
      FileUpload,
      Sidenav,
@@ -183,16 +187,23 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 - ✅ Breadcrumb navigation component
 - ✅ Wizard/Stepper component for multi-step forms
 
-**🔄 Currently Working On:**
+**✅ Recently Completed:**
 
-- 🔄 DataTable component with sorting, filtering, and pagination
-
-**📋 Phase 1 Remaining:**
-
-- Enhanced TypeScript definitions with better JSDoc comments
-- Performance optimizations and bundle size improvements
+- ✅ DataTable component with sorting, filtering, and pagination
+- ✅ Enhanced TypeScript definitions with better JSDoc comments
+- ✅ Performance optimizations and bundle size improvements
 
 ### 🎯 Phase 2: Advanced Components & Features
+
+**Data Display:**
+
+- TreeView component for hierarchical data
+- Card layouts with enhanced Material Design 3.0 styling
+
+**Input & Forms:**
+
+- Advanced date range picker
+- Autocomplete with async data loading
 
 **Navigation & Layout:**
 
@@ -200,18 +211,6 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 - Bottom navigation component for mobile apps
 - Drawer/Sidebar component with overlay and push modes
 - Grid system enhancements with CSS Grid support
-
-**Data Display:**
-
-- Enhanced DataTable with virtual scrolling for large datasets
-- TreeView component for hierarchical data
-- Card layouts with enhanced Material Design 3.0 styling
-- List components with advanced features (virtual scrolling, infinite load)
-
-**Input & Forms:**
-
-- Advanced date range picker
-- Autocomplete with async data loading
 
 ### 🔮 Phase 3: Modern Features & Integration
 
@@ -240,7 +239,7 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 
 **Current Status (v2.0.0-beta.5):**
 
-- Total: 64KB gzipped (44KB JS + 20KB CSS)
+- Total: 70KB gzipped (44KB JS + 26KB CSS)
 - Modular CSS can reduce bundle by 30-50%
 
 **Phase 1 Targets:**

@@ -4,6 +4,7 @@ import {
   Carousel,
   Parallax,
   Pagination,
+  PaginationControls,
   Tabs,
   Button,
   toast,
@@ -22,6 +23,12 @@ export const MiscPage = () => {
     tabWidthId: 2,
     tabWidths: ['auto', 'fixed', 'fill'] as Array<'auto' | 'fixed' | 'fill'>,
     showToast: false,
+    // DataTable Pagination state
+    dataTablePagination: {
+      page: 0,
+      pageSize: 10,
+      total: 247,
+    },
   };
   const curPage = () => (m.route.param('page') ? +m.route.param('page') : 1);
 
@@ -168,8 +175,6 @@ initTooltips('.my-tooltips', {
             m(
               '.chip.pushpin-element',
               {
-                style:
-                  'background-color: #e3f2fd; border: 1px solid #2196f3; display: inline-block; padding: 8px 12px; margin: 10px 0; font-size: 0.85em;',
                 oncreate: (vnode) => {
                   // Initialize pushpin on this element
                   setTimeout(() => {
@@ -429,6 +434,50 @@ oncreate: (vnode) => {
             { href: '/misc?page=12' },
           ],
         })`,
+        }),
+
+        m('h3.header', 'Pagination Controls'),
+        m(
+          'p',
+          'Standalone pagination controls component with customizable text and navigation. Used by DataTable but also available for any paginated content.'
+        ),
+        m(
+          '.row',
+          m(
+            '.card',
+            m(
+              '.card-content',
+              m(PaginationControls, {
+                pagination: state.dataTablePagination,
+                onPaginationChange: (newPagination) => {
+                  state.dataTablePagination = newPagination;
+                  console.log('Pagination changed:', newPagination);
+                },
+                i18n: {
+                  showing: 'Showing',
+                  to: 'to',
+                  of: 'of',
+                  entries: 'items',
+                  page: 'Page',
+                },
+              })
+            )
+          )
+        ),
+        m(CodeBlock, {
+          code: `m(PaginationControls, {
+  pagination: { page: 0, pageSize: 10, total: 247 },
+  onPaginationChange: (newPagination) => {
+    console.log('Page changed:', newPagination);
+  },
+  i18n: {
+    showing: 'Showing',
+    to: 'to',
+    of: 'of', 
+    entries: 'items',
+    page: 'Page',
+  },
+})`,
         }),
       ]),
   };

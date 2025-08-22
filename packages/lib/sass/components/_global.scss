@@ -177,20 +177,20 @@ video.responsive-video {
     height: 30px;
 
     a {
-      color: #444;
+      color: var(--mm-text-primary, #444);
       display: inline-block;
       font-size: 1.2rem;
       padding: 0 10px;
       line-height: 30px;
     }
 
-    &.active a { color: #fff; }
+    &.active a { color: var(--mm-text-on-primary, #fff); }
 
     &.active { background-color: variables.$primary-color; }
 
     &.disabled a {
       cursor: default;
-      color: #999;
+      color: var(--mm-text-disabled, #999);
     }
 
     i {
@@ -556,8 +556,8 @@ td, th{
       i.circle {
         font-size: 18px;
         line-height: 42px;
-        color: #fff;
-        background-color: #999;
+        color: var(--mm-text-on-primary, #fff);
+        background-color: var(--mm-text-disabled, #999);
         text-align: center;
       }
 
@@ -588,7 +588,7 @@ td, th{
       color: variables.$collection-active-color;
 
       .secondary-content {
-        color: #fff;
+        color: var(--mm-text-on-primary, #fff);
       }
     }
   }

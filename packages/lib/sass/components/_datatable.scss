@@ -1,0 +1,417 @@
+@use "variables";
+
+// DataTable Container
+.datatable-container {
+  background: var(--mm-card-background);
+  color: var(--mm-text-primary);
+  border-radius: 4px;
+
+  .datatable-title {
+    color: var(--mm-text-primary);
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+
+  .datatable-global-search {
+    padding-top: .5rem;
+  }
+
+  .datatable-wrapper {
+    position: relative;
+    background: var(--mm-card-background);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
+    background: var(--mm-card-background);
+  }
+
+  // Loading State
+  .datatable-loading {
+    padding: 2rem;
+    text-align: center;
+    color: var(--mm-text-secondary);
+    background: var(--mm-card-background);
+
+    .preloader-wrapper {
+      margin-bottom: 1rem;
+    }
+  }
+
+  // Empty State
+  .datatable-empty {
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--mm-text-secondary);
+    font-style: italic;
+    background: var(--mm-card-background);
+  }
+}
+
+// DataTable Specific Enhancements
+.datatable {
+  background: var(--mm-card-background);
+  color: var(--mm-text-primary);
+  border-collapse: collapse;
+  width: 100%;
+
+  // Table headers
+  thead {
+    background: var(--mm-card-background);
+    
+    th {
+      background: var(--mm-card-background);
+      color: var(--mm-text-primary);
+      border-bottom: 1px solid var(--mm-border-color);
+      font-weight: 500;
+      padding: 12px 16px;
+      text-align: left;
+    }
+  }
+
+  // Table body
+  tbody {
+    background: var(--mm-card-background);
+    
+    td {
+      background: var(--mm-card-background);
+      color: var(--mm-text-primary);
+      border-bottom: 1px solid var(--mm-border-color);
+      padding: 12px 16px;
+    }
+  }
+
+  // Sortable column headers
+  thead th.sortable {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: var(--mm-dropdown-hover);
+    }
+
+    .sort-indicators {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+
+      .sort-icon {
+        font-size: 16px;
+        color: var(--mm-text-disabled);
+        transition: color 0.2s ease;
+
+        &.active {
+          color: var(--mm-primary-color);
+        }
+      }
+
+      .sort-asc {
+        margin-bottom: 0px;
+      }
+
+      .sort-desc {
+        margin-top: 0px;
+      }
+    }
+
+    // Add padding for sort icons
+    padding-right: 32px;
+  }
+
+  // Column alignment classes
+  .align-left {
+    text-align: left;
+  }
+
+  .align-center {
+    text-align: center;
+  }
+
+  .align-right {
+    text-align: right;
+  }
+
+  // Row hover effects
+  tbody tr {
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--mm-dropdown-hover);
+      
+      td {
+        background-color: var(--mm-dropdown-hover);
+      }
+    }
+  }
+
+  // Enhanced striped rows for dark theme
+  &.striped tbody tr:nth-child(odd) {
+    background-color: var(--mm-dropdown-focus);
+    
+    td {
+      background-color: var(--mm-dropdown-focus);
+    }
+    
+    &:hover {
+      background-color: var(--mm-dropdown-hover);
+      
+      td {
+        background-color: var(--mm-dropdown-hover);
+      }
+    }
+  }
+
+  // Selection styles
+  .selection-checkbox {
+    width: 40px;
+    text-align: center;
+    padding: 0 8px !important;
+    
+    label {
+      margin: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    input[type="checkbox"] {
+      opacity: 1;
+      position: relative;
+      left: auto;
+      top: auto;
+      transform: none;
+      margin-right: 0;
+    }
+  }
+
+  // Selected row styles
+  tbody tr.selected {
+    background-color: var(--mm-dropdown-selected) !important;
+    
+    td {
+      background-color: var(--mm-dropdown-selected) !important;
+    }
+    
+    &:hover {
+      background-color: var(--mm-dropdown-selected) !important;
+      opacity: 0.9;
+      
+      td {
+        background-color: var(--mm-dropdown-selected) !important;
+        opacity: 0.9;
+      }
+    }
+  }
+
+  // Fixed header styles
+  &.fixed-header {
+    thead th {
+      position: sticky;
+      top: 0;
+      background: var(--mm-card-background);
+      z-index: 10;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  }
+}
+
+// Pagination Component
+.datatable-pagination {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: var(--mm-card-background);
+  color: var(--mm-text-primary);
+  padding: 1rem;
+  border-top: 1px solid var(--mm-border-color);
+
+  .pagination-info {
+    color: var(--mm-text-secondary);
+    font-size: 0.9rem;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    button.btn-flat {
+      min-width: 40px;
+      height: 40px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background-color 0.2s ease;
+      background: transparent;
+      color: var(--mm-text-primary);
+      border: 1px solid var(--mm-border-color);
+
+      &:hover:not(:disabled) {
+        background-color: var(--mm-dropdown-hover);
+      }
+
+      &:disabled {
+        color: var(--mm-text-disabled);
+        cursor: not-allowed;
+        border-color: var(--mm-text-disabled);
+        opacity: 0.6;
+      }
+
+      i {
+        font-size: 20px;
+      }
+    }
+
+    .page-info {
+      margin: 0 0.5rem;
+      color: var(--mm-text-secondary);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+  }
+}
+
+// Responsive enhancements
+@media #{variables.$medium-and-down} {
+  .datatable-container {
+    .datatable-search {
+      max-width: 100%;
+    }
+
+    .datatable-pagination {
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center;
+
+      .pagination-info {
+        order: 2;
+        margin-top: 0.5rem;
+        text-align: center;
+      }
+
+      .pagination-controls {
+        order: 1;
+        justify-content: center;
+      }
+    }
+  }
+
+  // Enhanced responsive table
+  .datatable.responsive-table {
+    // Hide certain columns on mobile if needed
+    &.mobile-hide-secondary {
+      th:nth-child(n+4),
+      td:nth-child(n+4) {
+        display: none;
+      }
+    }
+
+    // Stack table cells on very small screens
+    @media #{variables.$small-and-down} {
+      &.mobile-stack {
+        thead {
+          display: none;
+        }
+
+        tbody tr {
+          display: block;
+          border: 1px solid var(--mm-border-color);
+          margin-bottom: 1rem;
+          padding: 1rem;
+          border-radius: 4px;
+          background: var(--mm-card-background);
+        }
+
+        tbody td {
+          display: block;
+          text-align: left !important;
+          padding: 0.5rem 0;
+          border: none;
+          
+          &::before {
+            content: attr(data-label) ": ";
+            font-weight: bold;
+            color: var(--mm-text-secondary);
+            display: inline-block;
+            min-width: 100px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Dark theme specific adjustments
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .datatable-container,
+  [data-theme="dark"] .datatable-container {
+    .datatable thead th.sortable:hover {
+      background-color: var(--mm-dropdown-hover);
+    }
+
+    .datatable tbody tr:hover {
+      background-color: var(--mm-dropdown-hover);
+    }
+
+    .datatable.striped tbody tr:nth-child(odd) {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .datatable.fixed-header thead th {
+      border-bottom: 1px solid var(--mm-border-color);
+    }
+  }
+}
+
+// Future: Virtual scrolling styles will be added in Phase 2
+
+// Performance optimizations
+.datatable {
+  // Use contain for better performance
+  contain: layout style paint;
+  
+  // Enable hardware acceleration for smooth scrolling
+  &.virtual-table {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  // Optimize row rendering
+  tbody tr {
+    // Use transform3d for better performance
+    transform: translateZ(0);
+    
+    // Optimize paint operations
+    will-change: transform;
+  }
+
+  // Optimize table layout
+  &.fixed-layout {
+    table-layout: fixed;
+    
+    th, td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

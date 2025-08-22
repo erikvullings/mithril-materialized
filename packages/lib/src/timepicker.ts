@@ -202,12 +202,15 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
 
   const updateTimeFromInput = (inputValue: string) => {
     let value: string[] = ((inputValue || options.defaultTime || '') + '').split(':');
+    let amPmWasProvided = false;
 
     if (options.twelveHour && value.length > 1) {
       if (value[1].toUpperCase().indexOf('AM') > -1) {
         state.amOrPm = 'AM';
+        amPmWasProvided = true;
       } else if (value[1].toUpperCase().indexOf('PM') > -1) {
         state.amOrPm = 'PM';
+        amPmWasProvided = true;
       }
       value[1] = value[1].replace('AM', '').replace('PM', '').trim();
     }
@@ -217,22 +220,33 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
       value = [now.getHours().toString(), now.getMinutes().toString()];
       if (options.twelveHour) {
         state.amOrPm = parseInt(value[0]) >= 12 ? 'PM' : 'AM';
+        amPmWasProvided = false; // For 'now', we need to do conversion
       }
     }
 
     let hours = +value[0] || 0;
     let minutes = +value[1] || 0;
 
-    // Handle 24-hour to 12-hour conversion if needed
-    if (options.twelveHour && hours >= 12) {
-      state.amOrPm = 'PM';
-      if (hours > 12) {
-        hours = hours - 12;
-      }
-    } else if (options.twelveHour && hours < 12) {
-      state.amOrPm = 'AM';
-      if (hours === 0) {
-        hours = 12;
+    if (options.twelveHour) {
+      if (!amPmWasProvided) {
+        // No AM/PM was provided, assume this is 24-hour format input - convert it
+        if (hours >= 12) {
+          state.amOrPm = 'PM';
+          if (hours > 12) {
+            hours = hours - 12;
+          }
+        } else {
+          state.amOrPm = 'AM';
+          if (hours === 0) {
+            hours = 12;
+          }
+        }
+      } else {
+        // AM/PM was provided, hours are already in 12-hour format
+        // Just handle midnight/noon edge cases
+        if (hours === 0 && state.amOrPm === 'AM') {
+          hours = 12;
+        }
       }
     }
 

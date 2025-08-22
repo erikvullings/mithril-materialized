@@ -39,6 +39,7 @@ export const InputPage = () => {
           '.row',
           m(TextInput, {
             label: 'What is your name?',
+            // placeholder: 'Erik was here',
             required: true,
             helperText: 'Please, be honest!',
             oninput,

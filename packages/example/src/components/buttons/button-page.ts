@@ -96,7 +96,6 @@ m('div', [
           m(SubmitButton, {
             label: 'Submit',
             iconName: 'send',
-            iconClass: 'right',
             onclick,
           })
         ),

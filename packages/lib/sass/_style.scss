@@ -1068,13 +1068,13 @@ body.parallax-demo footer {
 #pushpin-demo-1 {
   display: block;
   height: inherit;
-  background-color: #ddd;
+  background-color: var(--mm-surface-color, #ddd);
 }
 
 // Valign Demo
 .valign-demo {
   height: 400px;
-  background-color: #ddd;
+  background-color: var(--mm-surface-color, #ddd);
 }
 .talign-demo {
   height: 100px;

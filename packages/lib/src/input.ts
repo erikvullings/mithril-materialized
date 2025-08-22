@@ -3,6 +3,7 @@ import { uniqueId } from './utils';
 import { InputAttrs } from './input-options';
 import { Label, HelperText } from './label';
 import { MaterialIcon } from './material-icon';
+import { InputType } from './types';
 
 /** Character counter component that tracks text length against maxLength */
 export const CharacterCounter: FactoryComponent<{ currentLength: number; maxLength: number; show: boolean }> = () => {
@@ -183,7 +184,6 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
   };
 };
 
-export type InputType = 'url' | 'color' | 'text' | 'number' | 'email' | 'range' | 'password';
 
 /** Default component for all kinds of input fields. */
 const InputField =
@@ -262,6 +262,7 @@ const InputField =
             type,
             tabindex: 0,
             id,
+            placeholder,
             // attributes,
             oncreate: ({ dom }) => {
               const input = (state.inputElement = dom as HTMLInputElement);

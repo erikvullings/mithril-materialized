@@ -8,13 +8,15 @@
   margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
   border-radius: 2px;
   @extend .z-depth-1 !optional;
-  background-color: variables.$card-bg-color;
+  background-color: var(--mm-card-background, variables.$card-bg-color);
+  color: var(--mm-text-primary);
 }
 
 .card {
   position: relative;
   margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
-  background-color: variables.$card-bg-color;
+  background-color: var(--mm-card-background, variables.$card-bg-color);
+  color: var(--mm-text-primary);
   transition: box-shadow .25s;
   border-radius: 2px;
   @extend .z-depth-1 !optional;
@@ -143,6 +145,8 @@
   .card-content {
     padding: variables.$card-padding;
     border-radius: 0 0 2px 2px;
+    background-color: var(--mm-card-background, variables.$card-bg-color);
+    color: var(--mm-text-primary);
 
     p {
       margin: 0;
@@ -151,6 +155,7 @@
       display: block;
       line-height: 32px;
       margin-bottom: 8px;
+      color: var(--mm-text-primary);
 
       i {
         line-height: 32px;
@@ -180,7 +185,8 @@
   .card-reveal {
     padding: variables.$card-padding;
     position: absolute;
-    background-color: variables.$card-bg-color;
+    background-color: var(--mm-card-background, variables.$card-bg-color);
+    color: var(--mm-text-primary);
     width: 100%;
     overflow-y: auto;
     left: 0;
@@ -192,6 +198,7 @@
     .card-title {
       cursor: pointer;
       display: block;
+      color: var(--mm-text-primary);
     }
   }
 }

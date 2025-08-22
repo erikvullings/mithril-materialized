@@ -1,6 +1,6 @@
 {
   "name": "mithril-materialized",
-  "version": "2.0.0-beta.4",
+  "version": "2.0.0-beta.10",
   "description": "A materialize library for mithril.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -38,7 +38,7 @@
     "build": "rollup -c rollup.config.mjs && npm run build:css-min",
     "build:css-min": "sass --no-source-map --style=compressed --no-charset ./src/index.scss ./dist/index.min.css && npm run build:css-modules",
     "build:css-modules": "sass --no-source-map ./src/core.scss ./dist/core.css && sass --no-source-map ./src/components.scss ./dist/components.css && sass --no-source-map ./src/forms.scss ./dist/forms.css && sass --no-source-map ./src/pickers.scss ./dist/pickers.css && sass --no-source-map ./src/advanced.scss ./dist/advanced.css && sass --no-source-map ./src/utilities.scss ./dist/utilities.css",
-    "dev": "rollup -c rollup.config.mjs -w",
+    "dev": "concurrently \"rollup -c rollup.config.mjs -w\" \"npm run css:watch\"",
     "start": "npm run dev",
     "clean": "rimraf dist node_modules/.cache",
     "test": "jest",
@@ -54,6 +54,8 @@
     "build:domain": "npm run clean && npm run build && typedoc --out ../../docs/typedoc src",
     "dry-run": "npm publish --dry-run",
     "sass:watch": "sass --watch ./sass/materialize.scss ./dist/index.css",
+    "css:watch": "sass --watch --no-source-map --style=compressed --no-charset ./src/index.scss ./dist/index.min.css",
+    "dev:full": "npm run dev & npm run css:watch",
     "patch-release": "npm run clean && npm run build && npm version patch --force -m \"Patch release\" && npm publish && git push --follow-tags",
     "minor-release": "npm run clean && npm run build && npm version minor --force -m \"Minor release\" && npm publish && git push --follow-tags",
     "major-release": "npm run clean && npm run build && npm version major --force -m \"Major release\" && npm publish && git push --follow-tags"
@@ -80,6 +82,7 @@
     "@types/jest": "^30.0.0",
     "@types/mithril": "^2.2.7",
     "autoprefixer": "^10.4.21",
+    "concurrently": "^9.2.0",
     "express": "^5.1.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.0.5",
