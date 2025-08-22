@@ -1,3 +1,10 @@
+# [2.0.0-beta.5](https://github.com/erikvullings/mithril-materialized/compare/v2.0.0-beta.4...v2.0.0-beta.5) (2025-08-22)
+
+
+### Features
+
+* comprehensive dark theme improvements, modal fixes, and component enhancements ([bcca040](https://github.com/erikvullings/mithril-materialized/commit/bcca040574bad7ee4332da05b9e0a2c725c7f62b))
+
 # [2.0.0-beta.4](https://github.com/erikvullings/mithril-materialized/compare/v2.0.0-beta.3...v2.0.0-beta.4) (2025-08-20)
 
 
