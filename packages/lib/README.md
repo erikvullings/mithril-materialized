@@ -85,6 +85,7 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
   - Parallax
 - Data & Tables
   - DataTable (sorting, filtering, pagination, selection)
+  - TreeView (hierarchical data with expand/collapse, selection, and customizable icons)
 - Additional
   - Label
   - HelperText
@@ -118,6 +119,7 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
      Button, 
      DatePicker,
      DataTable,
+     TreeView,
      ThemeToggle,
      FileUpload,
      Sidenav,
@@ -158,6 +160,25 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
          accept: 'image/*',
          multiple: true,
          onFilesSelected: (files) => console.log(files)
+       }),
+       
+       // TreeView for hierarchical data
+       m(TreeView, {
+         data: [
+           {
+             id: 'root',
+             label: 'Project Root',
+             expanded: true,
+             children: [
+               { id: 'src', label: 'src/' },
+               { id: 'docs', label: 'docs/' },
+             ]
+           }
+         ],
+         selectionMode: 'multiple',
+         iconType: 'caret',
+         showConnectors: true,
+         onselection: (selectedIds) => console.log('Selected:', selectedIds)
        })
      ])
    });
@@ -190,6 +211,7 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 **✅ Recently Completed:**
 
 - ✅ DataTable component with sorting, filtering, and pagination
+- ✅ TreeView component for hierarchical data with expand/collapse, selection, and VSCode-style connectors
 - ✅ Enhanced TypeScript definitions with better JSDoc comments
 - ✅ Performance optimizations and bundle size improvements
 
@@ -197,8 +219,8 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 
 **Data Display:**
 
-- TreeView component for hierarchical data
 - Card layouts with enhanced Material Design 3.0 styling
+- Advanced tree operations (drag & drop, context menus)
 
 **Input & Forms:**
 

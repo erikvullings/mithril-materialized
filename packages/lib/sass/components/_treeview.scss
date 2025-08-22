@@ -1,0 +1,353 @@
+/* TreeView Component Styles */
+
+// CSS Custom Properties for theming
+:root {
+  --tree-node-height: 36px;
+  --tree-indent-size: 24px;
+  --tree-connector-width: 1px;
+  --tree-expand-icon-size: 20px;
+  
+  // Light theme colors
+  --tree-bg-color: #ffffff;
+  --tree-text-color: #212121;
+  --tree-text-color-secondary: #757575;
+  --tree-border-color: #e0e0e0;
+  --tree-connector-color: #bdbdbd;
+  --tree-hover-bg: #f5f5f5;
+  --tree-selected-bg: #e3f2fd;
+  --tree-selected-color: #1976d2;
+  --tree-focused-outline: #2196f3;
+  --tree-disabled-color: #9e9e9e;
+  --tree-disabled-bg: #fafafa;
+}
+
+// Dark theme
+[data-theme="dark"], 
+.dark-theme,
+body.dark {
+  --tree-bg-color: #1e1e1e;
+  --tree-text-color: #e0e0e0;
+  --tree-text-color-secondary: #a0a0a0;
+  --tree-border-color: #333333;
+  --tree-connector-color: #555555;
+  --tree-hover-bg: #2d2d2d;
+  --tree-selected-bg: #282a45;
+  --tree-selected-color: #90caf9;
+  --tree-focused-outline: #64b5f6;
+  --tree-disabled-color: #616161;
+  --tree-disabled-bg: #2d2d2d;
+}
+
+.tree-view {
+  background-color: var(--tree-bg-color);
+  color: var(--tree-text-color);
+  border: 1px solid var(--tree-border-color);
+  border-radius: 4px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  
+  .tree-root {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tree-node {
+    list-style: none;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    
+    &.disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      
+      .tree-node-content {
+        pointer-events: none;
+        color: var(--tree-disabled-color);
+        background-color: var(--tree-disabled-bg);
+      }
+    }
+  }
+
+  .tree-node-content {
+    display: flex;
+    align-items: center;
+    min-height: var(--tree-node-height);
+    padding: 4px 8px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    user-select: none;
+
+    &:hover:not(:disabled) {
+      background-color: var(--tree-hover-bg);
+    }
+  }
+
+  // Selected state
+  .tree-node.selected .tree-node-content {
+    background-color: var(--tree-selected-bg);
+    color: var(--tree-selected-color);
+    font-weight: 500;
+  }
+
+  // Focused state
+  .tree-node.focused .tree-node-content {
+    background-color: var(--tree-hover-bg);
+    border-right: 1px solid var(--tree-focused-outline);
+  }
+
+  .tree-node.selected.focused .tree-node-content {
+    background-color: var(--tree-selected-bg);
+  }
+
+  // VSCode-style connector lines (can be toggled via showConnectors prop)
+  &.show-connectors {
+    .tree-connectors {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .tree-connector {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: var(--tree-connector-width);
+      background-color: var(--tree-connector-color);
+      
+      // Horizontal connector to the node
+      &::after {
+        content: '';
+        position: absolute;
+        top: calc(var(--tree-node-height) / 2);
+        left: 0;
+        width: 12px;
+        height: var(--tree-connector-width);
+        background-color: var(--tree-connector-color);
+      }
+    }
+
+    // For the last child at the deepest level only, show half the vertical line
+    // But only if there are no more siblings at any parent level
+    .tree-node:last-child .tree-node-content .tree-connector:last-child {
+      height: calc(var(--tree-node-height) / 2 + 2px);
+    }
+
+    // Override for nodes that have siblings at parent levels - keep full height
+    .tree-node:not(.tree-last-in-branch) .tree-node-content .tree-connector {
+      height: 100% !important;
+    }
+  }
+
+  // Expand/collapse icon
+  .tree-expand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--tree-expand-icon-size);
+    height: var(--tree-expand-icon-size);
+    margin-right: 8px;
+    margin-left: 2px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+
+    &:hover {
+      background-color: var(--tree-hover-bg);
+    }
+
+    // Plus/minus style
+    &.plus-minus {
+      .tree-plus-minus {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        border: 1px solid var(--tree-connector-color);
+        border-radius: 2px;
+        background-color: var(--tree-bg-color);
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 1;
+        transition: all 0.2s ease;
+      }
+    }
+
+    // Triangle style
+    &.triangle {
+      .tree-triangle {
+        font-size: 10px;
+        transition: transform 0.2s ease;
+        color: var(--tree-text-color-secondary);
+        
+        &.expanded {
+          transform: rotate(90deg);
+        }
+      }
+    }
+
+    // Caret/chevron style
+    .tree-caret-icon,
+    .tree-chevron-icon {
+      transition: transform 0.2s ease;
+    }
+  }
+
+  // Spacer for nodes without children to maintain alignment
+  .tree-expand-spacer {
+    width: var(--tree-expand-icon-size);
+    height: var(--tree-expand-icon-size);
+    margin-right: 8px;
+    margin-left: 2px;
+    flex-shrink: 0;
+  }
+
+  // Selection indicator (checkbox for multiple selection)
+  .tree-selection-indicator {
+    margin-right: 8px;
+    flex-shrink: 0;
+    
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      cursor: pointer;
+      accent-color: var(--tree-selected-color);
+    }
+  }
+
+  // Node icon
+  .tree-node-icon {
+    margin-right: 8px;
+    font-size: 18px;
+    color: var(--tree-text-color-secondary);
+    flex-shrink: 0;
+  }
+
+  // Node label
+  .tree-node-label {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // Children container
+  .tree-children {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    // Animation states
+    &.tree-collapsing {
+      max-height: 0;
+      opacity: 0;
+    }
+
+    &.tree-expanding {
+      max-height: 1000px; // Large enough value for content
+      opacity: 1;
+    }
+  }
+}
+
+// Smooth expand/collapse animations
+.tree-node {
+  .tree-children {
+    animation-duration: 0.3s;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+// Animation keyframes
+@keyframes tree-expand {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 1000px;
+    opacity: 1;
+  }
+}
+
+@keyframes tree-collapse {
+  from {
+    max-height: 1000px;
+    opacity: 1;
+  }
+  to {
+    max-height: 0;
+    opacity: 0;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .tree-view {
+    --tree-node-height: 40px;
+    --tree-indent-size: 20px;
+    
+    .tree-node-content {
+      padding: 0 12px;
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .tree-view {
+    --tree-border-color: #000000;
+    --tree-connector-color: #000000;
+    --tree-focused-outline: #0066cc;
+    
+    .tree-node-content:focus {
+      outline-width: 3px;
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .tree-view {
+    .tree-children,
+    .tree-expand-icon .tree-triangle,
+    .tree-expand-icon .tree-caret-icon,
+    .tree-expand-icon .tree-plus-minus,
+    .tree-node-content {
+      transition: none;
+      animation: none;
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .tree-view {
+    --tree-bg-color: white;
+    --tree-text-color: black;
+    --tree-border-color: black;
+    
+    .tree-expand-icon {
+      display: none;
+    }
+    
+    .tree-children {
+      display: block !important;
+      opacity: 1 !important;
+      max-height: none !important;
+    }
+  }
+}
