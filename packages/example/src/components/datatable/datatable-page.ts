@@ -6,6 +6,8 @@ import {
   DataTablePagination,
   DataTableSelection,
   DataTableFilter,
+  TreeView,
+  TreeNode,
 } from 'mithril-materialized';
 
 // Sample data types
@@ -73,6 +75,115 @@ const generateProducts = (count: number): Product[] => {
   }));
 };
 
+// Generate sample tree data
+const generateTreeData = (): TreeNode[] => {
+  return [
+    {
+      id: 'company',
+      label: 'Acme Corporation',
+      icon: 'business',
+      expanded: true,
+      children: [
+        {
+          id: 'engineering',
+          label: 'Engineering',
+          icon: 'code',
+          expanded: true,
+          children: [
+            {
+              id: 'frontend',
+              label: 'Frontend Team',
+              icon: 'web',
+              children: [
+                { id: 'react-dev', label: 'React Developer', icon: 'person' },
+                { id: 'vue-dev', label: 'Vue Developer', icon: 'person' },
+                { id: 'mithril-dev', label: 'Mithril Developer', icon: 'person' },
+              ],
+            },
+            {
+              id: 'backend',
+              label: 'Backend Team',
+              icon: 'storage',
+              expanded: false,
+              children: [
+                { id: 'node-dev', label: 'Node.js Developer', icon: 'person' },
+                { id: 'python-dev', label: 'Python Developer', icon: 'person' },
+                { id: 'go-dev', label: 'Go Developer', icon: 'person' },
+              ],
+            },
+            {
+              id: 'devops',
+              label: 'DevOps Team',
+              icon: 'cloud',
+              children: [
+                { id: 'k8s-engineer', label: 'Kubernetes Engineer', icon: 'person' },
+                { id: 'aws-architect', label: 'AWS Architect', icon: 'person' },
+              ],
+            },
+          ],
+        },
+        {
+          id: 'marketing',
+          label: 'Marketing',
+          icon: 'campaign',
+          children: [
+            { id: 'digital-marketing', label: 'Digital Marketing', icon: 'person' },
+            { id: 'content-marketing', label: 'Content Marketing', icon: 'person' },
+            { id: 'seo-specialist', label: 'SEO Specialist', icon: 'person' },
+          ],
+        },
+        {
+          id: 'sales',
+          label: 'Sales',
+          icon: 'trending_up',
+          expanded: true,
+          children: [
+            { id: 'enterprise-sales', label: 'Enterprise Sales', icon: 'person' },
+            { id: 'smb-sales', label: 'SMB Sales', icon: 'person' },
+            { id: 'inside-sales', label: 'Inside Sales', icon: 'person', disabled: true },
+          ],
+        },
+        {
+          id: 'hr',
+          label: 'Human Resources',
+          icon: 'people',
+          children: [
+            { id: 'recruiting', label: 'Recruiting', icon: 'person_search' },
+            { id: 'benefits', label: 'Benefits Administration', icon: 'favorite' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'projects',
+      label: 'Active Projects',
+      icon: 'folder',
+      expanded: false,
+      children: [
+        {
+          id: 'project-alpha',
+          label: 'Project Alpha',
+          icon: 'assignment',
+          children: [
+            { id: 'alpha-frontend', label: 'Frontend Module', icon: 'web' },
+            { id: 'alpha-backend', label: 'Backend API', icon: 'api' },
+            { id: 'alpha-testing', label: 'Testing Suite', icon: 'bug_report' },
+          ],
+        },
+        {
+          id: 'project-beta',
+          label: 'Project Beta',
+          icon: 'assignment',
+          children: [
+            { id: 'beta-research', label: 'Research Phase', icon: 'science' },
+            { id: 'beta-prototype', label: 'Prototype', icon: 'build' },
+          ],
+        },
+      ],
+    },
+  ];
+};
+
 // Component state
 interface DataTablePageState {
   // User table state
@@ -91,6 +202,10 @@ interface DataTablePageState {
   // Large dataset for performance demo
   largeDataset: User[];
   largeDatasetPagination: DataTablePagination;
+
+  // TreeView state
+  treeData: TreeNode[];
+  selectedTreeNodes: string[];
 }
 
 export const DataTablePage: FactoryComponent = () => {
@@ -101,6 +216,8 @@ export const DataTablePage: FactoryComponent = () => {
       state.users = generateUsers(25);
       state.products = generateProducts(30);
       state.largeDataset = generateUsers(5000);
+      state.treeData = generateTreeData();
+      state.selectedTreeNodes = [];
 
       // Initialize user table state
       state.userSort = { column: 'name', direction: 'asc' };
@@ -139,6 +256,8 @@ export const DataTablePage: FactoryComponent = () => {
         productFilter,
         productPagination,
         largeDatasetPagination,
+        treeData,
+        selectedTreeNodes,
       } = state;
 
       // User table columns
@@ -394,6 +513,230 @@ export const DataTablePage: FactoryComponent = () => {
                   enableGlobalSearch: true,
                   emptyMessage: 'No data found',
                 }),
+              ]),
+            ]),
+          ]),
+        ]),
+
+        // TreeView Section
+        m('.row', [
+          m('.col.s12', [
+            m('h3', { style: 'margin-top: 3rem;' }, 'TreeView Component'),
+            m(
+              'p.grey-text',
+              'Hierarchical tree component with expand/collapse, selection, and customizable icons.'
+            ),
+          ]),
+        ]),
+
+        // TreeView Examples
+        m('.row', [
+          m('.col.s12.m6', [
+            m('h5', 'Organization Structure'),
+            m('p', 'TreeView with multiple selection and caret icons.'),
+            
+            m('.card', [
+              m('.card-content', [
+                m('div', { style: 'margin-bottom: 1rem;' }, [
+                  m('strong', `Selected: ${selectedTreeNodes.length} node(s)`),
+                  selectedTreeNodes.length > 0 && 
+                    m('div', { style: 'margin-top: 0.5rem; font-size: 0.9em; color: #666;' }, 
+                      selectedTreeNodes.join(', ')
+                    ),
+                ]),
+
+                m(TreeView, {
+                  data: treeData,
+                  selectionMode: 'multiple',
+                  selectedIds: selectedTreeNodes,
+                  iconType: 'caret',
+                  showConnectors: true,
+                  keyboardNavigation: true,
+                  onselection: (selectedIds) => {
+                    state.selectedTreeNodes = selectedIds;
+                    console.log('Selected nodes:', selectedIds);
+                  },
+                  onexpand: ({ nodeId, expanded }) => {
+                    console.log(`Node ${nodeId} ${expanded ? 'expanded' : 'collapsed'}`);
+                  },
+                }),
+              ]),
+            ]),
+          ]),
+
+          m('.col.s12.m6', [
+            m('h5', 'File System Tree'),
+            m('p', 'TreeView with single selection and different icon styles.'),
+
+            // Different icon style examples
+            m('.card', [
+              m('.card-content', [
+                m('h6', 'Plus/Minus Icons'),
+                m(TreeView, {
+                  data: [
+                    {
+                      id: 'root',
+                      label: 'Project Root',
+                      expanded: true,
+                      children: [
+                        {
+                          id: 'src',
+                          label: 'src/',
+                          expanded: true,
+                          children: [
+                            { id: 'components', label: 'components/' },
+                            { id: 'utils', label: 'utils/' },
+                            { id: 'index', label: 'index.ts' },
+                          ],
+                        },
+                        { id: 'package', label: 'package.json' },
+                        { id: 'readme', label: 'README.md' },
+                      ],
+                    },
+                  ],
+                  selectionMode: 'single',
+                  iconType: 'plus-minus',
+                  showConnectors: true,
+                }),
+              ]),
+            ]),
+
+            m('.card', { style: 'margin-top: 1rem;' }, [
+              m('.card-content', [
+                m('h6', 'Triangle Icons'),
+                m(TreeView, {
+                  data: [
+                    {
+                      id: 'config',
+                      label: 'Configuration',
+                      expanded: false,
+                      children: [
+                        { id: 'database', label: 'Database Settings' },
+                        { id: 'api', label: 'API Configuration' },
+                        { id: 'security', label: 'Security Settings' },
+                      ],
+                    },
+                  ],
+                  selectionMode: 'single',
+                  iconType: 'triangle',
+                  showConnectors: false,
+                }),
+              ]),
+            ]),
+
+            m('.card', { style: 'margin-top: 1rem;' }, [
+              m('.card-content', [
+                m('h6', 'Chevron Icons'),
+                m(TreeView, {
+                  data: [
+                    {
+                      id: 'menu',
+                      label: 'Navigation Menu',
+                      expanded: true,
+                      children: [
+                        { id: 'home', label: 'Home' },
+                        { 
+                          id: 'products', 
+                          label: 'Products',
+                          expanded: false,
+                          children: [
+                            { id: 'electronics', label: 'Electronics' },
+                            { id: 'clothing', label: 'Clothing' },
+                          ],
+                        },
+                        { id: 'contact', label: 'Contact' },
+                      ],
+                    },
+                  ],
+                  selectionMode: 'none',
+                  iconType: 'chevron',
+                  showConnectors: true,
+                }),
+              ]),
+            ]),
+          ]),
+        ]),
+
+        // TreeView Code Examples
+        m('.row', [
+          m('.col.s12', [
+            m('h5', 'TreeView Usage Examples'),
+
+            m('.card', [
+              m('.card-content', [
+                m('h6', 'Basic Usage'),
+                m(
+                  'pre',
+                  m(
+                    'code',
+                    `
+import { TreeView, TreeNode } from 'mithril-materialized';
+
+const treeData: TreeNode[] = [
+  {
+    id: "1",
+    label: "Root",
+    expanded: true,
+    children: [
+      { id: "2", label: "Child A" },
+      { id: "3", label: "Child B" },
+    ]
+  }
+];
+
+m(TreeView, {
+  data: treeData,
+  selectionMode: 'single',
+  iconType: 'caret',
+  showConnectors: true,
+  onselection: (selectedIds) => console.log('Selected:', selectedIds),
+});
+              `.trim()
+                  )
+                ),
+
+                m('h6', 'With Multiple Selection'),
+                m(
+                  'pre',
+                  m(
+                    'code',
+                    `
+m(TreeView, {
+  data: treeData,
+  selectionMode: 'multiple',
+  selectedIds: ['node1', 'node2'],
+  iconType: 'plus-minus',
+  showConnectors: true,
+  onselection: (selectedIds) => {
+    console.log('Multi-select:', selectedIds);
+  },
+  onexpand: ({ nodeId, expanded }) => {
+    console.log(\`Node \${nodeId} \${expanded ? 'expanded' : 'collapsed'}\`);
+  },
+});
+              `.trim()
+                  )
+                ),
+
+                m('h6', 'Different Icon Types'),
+                m(
+                  'pre',
+                  m(
+                    'code',
+                    `
+// Available icon types
+iconType: 'caret'      // Default - Material Design caret
+iconType: 'chevron'    // Chevron arrow
+iconType: 'plus-minus' // + / - symbols
+iconType: 'triangle'   // ▶ triangle
+
+// Other configuration options
+showConnectors: true   // VSCode-style connecting lines
+keyboardNavigation: true // Enable arrow key navigation
+selectionMode: 'single' | 'multiple' | 'none'
+              `.trim()
+                  )
+                ),
               ]),
             ]),
           ]),

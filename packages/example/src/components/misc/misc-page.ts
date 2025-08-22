@@ -8,7 +8,6 @@ import {
   Tabs,
   Button,
   toast,
-  ToastComponent,
   initTooltips,
   initPushpins,
 } from 'mithril-materialized';
@@ -59,7 +58,6 @@ export const MiscPage = () => {
           m('a[href=https://materializecss.com/pagination.html][target=_blank]', 'Parallax'),
           '.',
         ]),
-
         m('h3.header', 'Toast'),
         m('p', 'Toast provides brief feedback about an operation through a message at the bottom of the screen.'),
         m('.row', [
