@@ -144,7 +144,7 @@ export const Options = <T extends string | number>(): Component<OptionsAttrs<T>>
             callback(checkedIds);
           }
         : undefined;
-      const cn = [newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim();
+      const cn = [newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim() || undefined;
 
       const optionsContent =
         layout === 'horizontal'

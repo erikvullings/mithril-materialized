@@ -45,71 +45,79 @@ export const Breadcrumb: FactoryComponent<BreadcrumbAttrs> = () => {
         className = '',
         showIcons = false,
         maxItems,
-        showHome = false
+        showHome = false,
       } = attrs;
-      
+
       if (items.length === 0) {
         return null;
       }
-      
+
       let displayItems = [...items];
-      
+
       // Handle max items with ellipsis
       if (maxItems && items.length > maxItems) {
         const firstItem = items[0];
         const lastItems = items.slice(-(maxItems - 2));
-        
-        displayItems = [
-          firstItem,
-          { text: '...', disabled: true, className: 'breadcrumb-ellipsis' },
-          ...lastItems
-        ];
+
+        displayItems = [firstItem, { text: '...', disabled: true, className: 'breadcrumb-ellipsis' }, ...lastItems];
       }
-      
+
       return m('nav.breadcrumb', { class: className }, [
-        m('ol.breadcrumb-list', 
-          displayItems.map((item, index) => {
-            const isLast = index === displayItems.length - 1;
-            const isFirst = index === 0;
-            
-            return [
-              // Breadcrumb item
-              m('li.breadcrumb-item', {
-                class: [
-                  item.active || isLast ? 'active' : '',
-                  item.disabled ? 'disabled' : '',
-                  item.className || ''
-                ].filter(Boolean).join(' ')
-              }, [
-                item.href && !item.disabled && !isLast ? 
-                  // Link item
-                  m('a.breadcrumb-link', {
-                    href: item.href,
-                    onclick: item.onclick
-                  }, [
-                    (showIcons && item.icon) && m('i.material-icons.breadcrumb-icon', item.icon),
-                    (showHome && isFirst && !item.icon) && m('i.material-icons.breadcrumb-icon', 'home'),
-                    m('span.breadcrumb-text', item.text)
-                  ]) :
-                  // Text item (active or disabled)
-                  m('span.breadcrumb-text', {
-                    onclick: item.disabled ? undefined : item.onclick
-                  }, [
-                    (showIcons && item.icon) && m('i.material-icons.breadcrumb-icon', item.icon),
-                    (showHome && isFirst && !item.icon) && m('i.material-icons.breadcrumb-icon', 'home'),
-                    item.text
-                  ])
-              ]),
-              
-              // Separator (except for last item)
-              !isLast && m('li.breadcrumb-separator', [
-                m('i.material-icons', separator)
-              ])
-            ];
-          }).reduce((acc, val) => acc.concat(val), [])
-        )
+        m(
+          'ol.breadcrumb-list',
+          displayItems
+            .map((item, index) => {
+              const isLast = index === displayItems.length - 1;
+              const isFirst = index === 0;
+
+              return [
+                // Breadcrumb item
+                m(
+                  'li.breadcrumb-item',
+                  {
+                    class:
+                      [item.active || isLast ? 'active' : '', item.disabled ? 'disabled' : '', item.className || '']
+                        .filter(Boolean)
+                        .join(' ') || undefined,
+                  },
+                  [
+                    item.href && !item.disabled && !isLast
+                      ? // Link item
+                        m(
+                          'a.breadcrumb-link',
+                          {
+                            href: item.href,
+                            onclick: item.onclick,
+                          },
+                          [
+                            showIcons && item.icon && m('i.material-icons.breadcrumb-icon', item.icon),
+                            showHome && isFirst && !item.icon && m('i.material-icons.breadcrumb-icon', 'home'),
+                            m('span.breadcrumb-text', item.text),
+                          ]
+                        )
+                      : // Text item (active or disabled)
+                        m(
+                          'span.breadcrumb-text',
+                          {
+                            onclick: item.disabled ? undefined : item.onclick,
+                          },
+                          [
+                            showIcons && item.icon && m('i.material-icons.breadcrumb-icon', item.icon),
+                            showHome && isFirst && !item.icon && m('i.material-icons.breadcrumb-icon', 'home'),
+                            item.text,
+                          ]
+                        ),
+                  ]
+                ),
+
+                // Separator (except for last item)
+                !isLast && m('li.breadcrumb-separator', [m('i.material-icons', separator)]),
+              ];
+            })
+            .reduce((acc, val) => acc.concat(val), [])
+        ),
       ]);
-    }
+    },
   };
 };
 
@@ -119,27 +127,27 @@ export const Breadcrumb: FactoryComponent<BreadcrumbAttrs> = () => {
 export const createBreadcrumb = (path: string, basePath = '/'): BreadcrumbItemAttrs[] => {
   const segments = path.split('/').filter(Boolean);
   const items: BreadcrumbItemAttrs[] = [];
-  
+
   // Add home item
   items.push({
     text: 'Home',
     href: basePath,
-    icon: 'home'
+    icon: 'home',
   });
-  
+
   // Add path segments
   let currentPath = basePath;
   segments.forEach((segment, index) => {
     currentPath += (currentPath.endsWith('/') ? '' : '/') + segment;
     const isLast = index === segments.length - 1;
-    
+
     items.push({
       text: segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' '),
       href: isLast ? undefined : currentPath,
-      active: isLast
+      active: isLast,
     });
   });
-  
+
   return items;
 };
 
@@ -153,33 +161,32 @@ export class BreadcrumbManager {
   static fromRoute(route: string, routeConfig: Record<string, string> = {}): BreadcrumbItemAttrs[] {
     const segments = route.split('/').filter(Boolean);
     const items: BreadcrumbItemAttrs[] = [];
-    
+
     // Add home
     items.push({
       text: 'Home',
       href: '/',
-      icon: 'home'
+      icon: 'home',
     });
-    
+
     let currentPath = '';
     segments.forEach((segment, index) => {
       currentPath += '/' + segment;
       const isLast = index === segments.length - 1;
-      
+
       // Use custom text from config or format segment
-      const text = routeConfig[currentPath] || 
-                   segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
-      
+      const text = routeConfig[currentPath] || segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, ' ');
+
       items.push({
         text,
         href: isLast ? undefined : currentPath,
-        active: isLast
+        active: isLast,
       });
     });
-    
+
     return items;
   }
-  
+
   /**
    * Create breadcrumb items from a hierarchical object
    */
@@ -187,7 +194,7 @@ export class BreadcrumbManager {
     return hierarchy.map((item, index) => ({
       text: item[textKey],
       href: index === hierarchy.length - 1 ? undefined : item[pathKey],
-      active: index === hierarchy.length - 1
+      active: index === hierarchy.length - 1,
     }));
   }
 }

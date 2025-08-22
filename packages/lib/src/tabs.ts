@@ -201,7 +201,8 @@ export const Tabs: FactoryComponent<TabsAttrs> = () => {
 
     view: ({ attrs }) => {
       const { tabWidth, tabs, className, style, swipeable = false } = attrs;
-      const cn = [tabWidth === 'fill' ? 'tabs-fixed-width' : '', className].filter(Boolean).join(' ').trim();
+      const cn =
+        [tabWidth === 'fill' ? 'tabs-fixed-width' : '', className].filter(Boolean).join(' ').trim() || undefined;
 
       const anchoredTabs = tabs.map(toAnchored());
       const activeTab = setActiveTabId(anchoredTabs, attrs.selectedTabId);

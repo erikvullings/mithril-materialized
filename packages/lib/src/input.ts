@@ -184,7 +184,6 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
   };
 };
 
-
 /** Default component for all kinds of input fields. */
 const InputField =
   <T>(type: InputType, defaultClass = ''): FactoryComponent<InputAttrs<T>> =>
@@ -250,7 +249,7 @@ const InputField =
           ...params
         } = attrs;
         // const attributes = toAttrs(params);
-        const cn = [newRow ? 'clear' : '', defaultClass, className].filter(Boolean).join(' ').trim();
+        const cn = [newRow ? 'clear' : '', defaultClass, className].filter(Boolean).join(' ').trim() || undefined;
         const isActive =
           state.active || state.inputElement?.value || placeholder || type === 'color' || type === 'range'
             ? true

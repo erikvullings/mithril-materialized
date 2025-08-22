@@ -213,7 +213,7 @@ export const Wizard: FactoryComponent<WizardAttrs> = () => {
                   hasError ? 'error' : '',
                   step.disabled ? 'disabled' : '',
                   step.optional ? 'optional' : ''
-                ].filter(Boolean).join(' '),
+                ].filter(Boolean).join(' ') || undefined,
                 onclick: allowHeaderNavigation && !step.disabled ? 
                   () => goToStep(index, attrs) : undefined
               }, [

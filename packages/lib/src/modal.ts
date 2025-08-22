@@ -133,7 +133,8 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
         .join(' ')
         .trim();
 
-      const overlayClasses = ['modal-overlay', state.isOpen ? 'active' : ''].filter(Boolean).join(' ').trim();
+      const overlayClasses =
+        ['modal-overlay', state.isOpen ? 'active' : ''].filter(Boolean).join(' ').trim() || undefined;
 
       return m('div', { className: 'modal-container' }, [
         // Modal overlay
@@ -165,23 +166,25 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
             style: {
               display: state.isOpen ? 'flex' : 'none',
               position: 'fixed',
-              ...(bottomSheet ? {
-                // Bottom sheet positioning
-                top: 'auto',
-                bottom: '0',
-                left: '0',
-                right: '0',
-                transform: 'none',
-                maxWidth: '100%',
-                borderRadius: '8px 8px 0 0',
-              } : {
-                // Regular modal positioning
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                maxWidth: '75%',
-                borderRadius: '4px',
-              }),
+              ...(bottomSheet
+                ? {
+                    // Bottom sheet positioning
+                    top: 'auto',
+                    bottom: '0',
+                    left: '0',
+                    right: '0',
+                    transform: 'none',
+                    maxWidth: '100%',
+                    borderRadius: '8px 8px 0 0',
+                  }
+                : {
+                    // Regular modal positioning
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    maxWidth: '75%',
+                    borderRadius: '4px',
+                  }),
               backgroundColor: 'var(--mm-modal-background, #fff)',
               maxHeight: '85%',
               overflow: 'auto',
@@ -218,8 +221,8 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
             m(
               '.modal-content',
               {
-                style: { 
-                  padding: '24px', 
+                style: {
+                  padding: '24px',
                   paddingTop: showCloseButton ? '48px' : '24px',
                   minHeight: 'auto',
                   flex: '1 1 auto',

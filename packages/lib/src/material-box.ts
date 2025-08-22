@@ -232,7 +232,7 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
         alt: alt || '',
         width,
         height,
-        className: ['materialboxed', className].filter(Boolean).join(' '),
+        className: ['materialboxed', className].filter(Boolean).join(' ') || undefined,
         style: {
           cursor: 'zoom-in',
           transition: 'opacity 200ms ease',

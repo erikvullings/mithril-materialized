@@ -63,48 +63,48 @@ interface SidenavState {
  */
 export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
   let state: SidenavState;
-  
+
   const handleBackdropClick = (attrs: SidenavAttrs) => {
     if (attrs.closeOnBackdropClick !== false && attrs.onToggle) {
       attrs.onToggle(false);
     }
   };
-  
+
   const handleEscapeKey = (e: KeyboardEvent, attrs: SidenavAttrs) => {
     if (e.key === 'Escape' && attrs.closeOnEscape !== false && attrs.onToggle) {
       attrs.onToggle(false);
     }
   };
-  
+
   const setBodyOverflow = (isOpen: boolean, mode: string) => {
     if (typeof document !== 'undefined') {
       document.body.style.overflow = isOpen && mode === 'overlay' ? 'hidden' : '';
     }
   };
-  
+
   return {
     oninit: ({ attrs }) => {
       state = {
         id: attrs.id || uniqueId(),
         isOpen: attrs.isOpen || false,
-        isAnimating: false
+        isAnimating: false,
       };
-      
+
       // Set up keyboard listener
       if (typeof document !== 'undefined' && attrs.closeOnEscape !== false) {
         document.addEventListener('keydown', (e) => handleEscapeKey(e, attrs));
       }
     },
-    
+
     onbeforeupdate: ({ attrs }) => {
       const wasOpen = state.isOpen;
       const isOpen = attrs.isOpen || false;
-      
+
       if (wasOpen !== isOpen) {
         state.isOpen = isOpen;
         state.isAnimating = true;
         setBodyOverflow(isOpen, attrs.mode || 'overlay');
-        
+
         // Clear animation state after animation completes
         setTimeout(() => {
           state.isAnimating = false;
@@ -112,7 +112,7 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
         }, attrs.animationDuration || 300);
       }
     },
-    
+
     onremove: ({ attrs }) => {
       // Clean up
       setBodyOverflow(false, attrs.mode || 'overlay');
@@ -120,7 +120,7 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
         document.removeEventListener('keydown', (e) => handleEscapeKey(e, attrs));
       }
     },
-    
+
     view: ({ attrs, children }) => {
       const {
         position = 'left',
@@ -129,38 +129,42 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
         className = '',
         showBackdrop = true,
         animationDuration = 300,
-        fixed = false
+        fixed = false,
       } = attrs;
-      
+
       const isOpen = state.isOpen;
-      
+
       return [
         // Backdrop (using existing materialize class)
-        showBackdrop && mode === 'overlay' && m('.sidenav-overlay', {
-          style: {
-            display: isOpen ? 'block' : 'none',
-            opacity: isOpen ? '1' : '0'
-          },
-          onclick: () => handleBackdropClick(attrs)
-        }),
-        
+        showBackdrop &&
+          mode === 'overlay' &&
+          m('.sidenav-overlay', {
+            style: {
+              display: isOpen ? 'block' : 'none',
+              opacity: isOpen ? '1' : '0',
+            },
+            onclick: () => handleBackdropClick(attrs),
+          }),
+
         // Sidenav (using existing materialize structure)
-        m('ul.sidenav', {
-          id: state.id,
-          class: [
-            position === 'right' ? 'right-aligned' : '',
-            fixed ? 'sidenav-fixed' : '',
-            className
-          ].filter(Boolean).join(' '),
-          style: {
-            width: `${width}px`,
-            transform: isOpen ? 'translateX(0)' : 
-              position === 'left' ? 'translateX(-105%)' : 'translateX(105%)',
-            'transition-duration': `${animationDuration}ms`
-          }
-        }, children)
+        m(
+          'ul.sidenav',
+          {
+            id: state.id,
+            class:
+              [position === 'right' ? 'right-aligned' : '', fixed ? 'sidenav-fixed' : '', className]
+                .filter(Boolean)
+                .join(' ') || undefined,
+            style: {
+              width: `${width}px`,
+              transform: isOpen ? 'translateX(0)' : position === 'left' ? 'translateX(-105%)' : 'translateX(105%)',
+              'transition-duration': `${animationDuration}ms`,
+            },
+          },
+          children
+        ),
       ];
-    }
+    },
   };
 };
 
@@ -180,44 +184,46 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
         href,
         className = '',
         divider = false,
-        subheader = false
+        subheader = false,
       } = attrs;
-      
+
       if (divider) {
         return m('li.divider');
       }
-      
+
       if (subheader) {
         return m('li.subheader', text || children);
       }
-      
-      const itemClasses = [
-        active ? 'active' : '',
-        disabled ? 'disabled' : '',
-        className
-      ].filter(Boolean).join(' ');
-      
-      const content = [
-        icon && m('i.material-icons', icon),
-        text || children
-      ];
-      
+
+      const itemClasses =
+        [active ? 'active' : '', disabled ? 'disabled' : '', className].filter(Boolean).join(' ') || undefined;
+
+      const content = [icon && m('i.material-icons', icon), text || children];
+
       if (href && !disabled) {
         return m('li', { class: itemClasses }, [
-          m('a', {
-            href,
-            onclick: disabled ? undefined : onclick
-          }, content)
+          m(
+            'a',
+            {
+              href,
+              onclick: disabled ? undefined : onclick,
+            },
+            content
+          ),
         ]);
       }
-      
+
       return m('li', { class: itemClasses }, [
-        m('a', {
-          onclick: disabled ? undefined : onclick,
-          href: '#!'
-        }, content)
+        m(
+          'a',
+          {
+            onclick: disabled ? undefined : onclick,
+            href: '#!',
+          },
+          content
+        ),
       ]);
-    }
+    },
   };
 };
 
@@ -235,7 +241,7 @@ export class SidenavManager {
       element.classList.remove('closed');
     }
   }
-  
+
   /**
    * Close a sidenav by ID
    */
@@ -246,7 +252,7 @@ export class SidenavManager {
       element.classList.add('closed');
     }
   }
-  
+
   /**
    * Toggle a sidenav by ID
    */

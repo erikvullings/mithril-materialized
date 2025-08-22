@@ -14,7 +14,7 @@ export const CodeBlock: FactoryComponent<CodeBlockAttrs> = () => ({
     const lang = language || 'lang-TypeScript';
     const label = lang.replace('lang-', '');
     const cb = code instanceof Array ? code.join('\n') : code;
-    const cn = [newRow ? 'clear' : '', lang, className].filter(Boolean).join(' ').trim();
+    const cn = [newRow ? 'clear' : '', lang, className].filter(Boolean).join(' ').trim() || undefined;
     return m(`pre.codeblock${newRow ? '.clear' : ''}`, attrs, [
       m('div', m('label', label)),
       m(

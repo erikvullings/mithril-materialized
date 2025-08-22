@@ -23,7 +23,7 @@ export const Switch: FactoryComponent<SwitchOptions> = () => {
     view: ({ attrs }) => {
       const id = attrs.id || state.id;
       const { label, left, right, disabled, newRow, onchange, isMandatory, className = 'col s12', ...params } = attrs;
-      const cn = ['input-field', newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim();
+      const cn = ['input-field', newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim() || undefined;
       return m(
         'div',
         {
