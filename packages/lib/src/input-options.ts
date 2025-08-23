@@ -38,10 +38,10 @@ export interface InputAttrs<T = string> extends Attributes {
   onkeyup?: (ev: KeyboardEvent, value?: T) => void;
   /** Invoked when the element looses focus */
   onblur?: (ev: FocusEvent) => void;
-  /** Invoked when the value changes. */
-  oninput?: (value: T) => void;
-  /** Invoked when the input looses focus. */
-  onchange?: (value: T) => void;
+  /** Invoked when the value changes (immediate feedback). For range sliders with minmax, second parameter is maxValue. */
+  oninput?: (value: T, maxValue?: T) => void;
+  /** Invoked when the input looses focus. For range sliders with minmax, second parameter is maxValue. */
+  onchange?: (value: T, maxValue?: T) => void;
   /** Add a a placeholder to the input field. */
   placeholder?: string;
   /** Add a description underneath the input field. */
@@ -83,4 +83,18 @@ export interface InputAttrs<T = string> extends Attributes {
   isMandatory?: boolean;
   /** Add the required and aria-required attributes to the input element */
   required?: boolean;
+  /** For range inputs: render vertically instead of horizontally */
+  vertical?: boolean;
+  /** For range inputs: enable dual thumb (min/max) range selection */
+  minmax?: boolean;
+  /** For range inputs with minmax: initial minimum value */
+  minValue?: number;
+  /** For range inputs with minmax: initial maximum value */
+  maxValue?: number;
+  /** For range inputs: show value labels on thumbs */
+  showValue?: boolean;
+  /** For vertical range inputs: height of the slider */
+  height?: string;
+  /** For range inputs with showValue: position of value tooltips */
+  tooltipPos?: 'top' | 'bottom' | 'left' | 'right';
 }

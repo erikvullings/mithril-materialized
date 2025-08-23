@@ -54,7 +54,7 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
   - EmailInput
   - NumberInput
   - ColorInput
-  - RangeInput
+  - RangeInput (with vertical and double-thumb support)
   - Chips
 - [Pickers](https://erikvullings.github.io/mithril-materialized/#!/pickers)
   - DatePicker (with optional week numbers)
@@ -117,6 +117,7 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
    import { 
      TextInput, 
      Button, 
+     RangeInput,
      DatePicker,
      DataTable,
      TreeView,
@@ -150,6 +151,38 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
          label: 'Your name',
          onchange: (value) => console.log(value)
        }),
+       
+       // Enhanced range sliders
+       m(RangeInput, {
+         label: 'Volume',
+         min: 0,
+         max: 100,
+         showValue: true,
+         onchange: (value) => console.log('Volume:', value)
+       }),
+       
+       m(RangeInput, {
+         label: 'Price Range',
+         min: 0,
+         max: 1000,
+         minmax: true,
+         minValue: 100,
+         maxValue: 500,
+         showValue: true,
+         onchange: (min, max) => console.log('Range:', min, '-', max)
+       }),
+       
+       m(RangeInput, {
+         label: 'Vertical Slider',
+         min: 0,
+         max: 100,
+         vertical: true,
+         height: '200px',
+         showValue: true,
+         tooltipPos: 'right',
+         onchange: (value) => console.log('Vertical:', value)
+       }),
+       
        m(Button, { 
          label: 'Submit',
          onclick: () => alert('Hello!')
@@ -214,6 +247,7 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 - ✅ TreeView component for hierarchical data with expand/collapse, selection, and VSCode-style connectors
 - ✅ Enhanced TypeScript definitions with better JSDoc comments
 - ✅ Performance optimizations and bundle size improvements
+- ✅ Enhanced RangeInput with vertical orientation and double-thumb range selection
 
 ### 🎯 Phase 2: Advanced Components & Features
 

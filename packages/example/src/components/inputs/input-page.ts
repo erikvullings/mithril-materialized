@@ -344,6 +344,130 @@ export const InputPage = () => {
           })`,
         }),
 
+        m('h4.header', 'RangeInput with Tooltip'),
+        m(
+          '.row',
+          m(RangeInput, {
+            min: 0,
+            max: 100,
+            initialValue: 75,
+            label: 'Range with tooltip',
+            showValue: true,
+            tooltipPos: 'top',
+            oninput: (value: number) => console.log('Range input:', value),
+            onchange: (value: number) => console.log('Range change:', value),
+          } as InputAttrs<number>)
+        ),
+        m(CodeBlock, {
+          code: `          m(RangeInput, {
+            min: 0,
+            max: 100,
+            initialValue: 75,
+            label: 'Range with tooltip',
+            showValue: true,
+            tooltipPos: 'top',
+            oninput: (value: number) => console.log('Range input:', value),
+            onchange: (value: number) => console.log('Range change:', value),
+          } as InputAttrs<number>)`,
+        }),
+
+        m('h3.header', 'Enhanced Range Sliders'),
+
+        m('h4.header', 'Vertical Range Slider'),
+        m(
+          '.row',
+          m(
+            '.col.s6',
+            m(RangeInput, {
+              min: 0,
+              max: 100,
+              initialValue: 50,
+              label: 'Vertical Slider',
+              height: '150px',
+              vertical: true,
+              showValue: true,
+              tooltipPos: 'top',
+              oninput: (value: number) => console.log('Vertical slider input:', value),
+              onchange: (value: number) => console.log('Vertical slider change:', value),
+            } as InputAttrs<number>)
+          )
+        ),
+        m(CodeBlock, {
+          code: `          m(RangeInput, {
+            min: 0,
+            max: 100,
+            initialValue: 50,
+            label: 'Vertical Slider',
+            height: '200px',
+            vertical: true,
+            showValue: true,
+            onchange: (value: number) => console.log('Vertical slider:', value),
+          } as InputAttrs<number>)`,
+        }),
+
+        m('h4.header', 'Double Range Slider (From/To)'),
+        m(
+          '.row',
+          m(RangeInput, {
+            min: 0,
+            max: 100,
+            minValue: 20,
+            maxValue: 80,
+            label: 'Select Range',
+            showValue: true,
+            minmax: true,
+            onchange: (minVal: number, maxVal: number) => console.log('Range:', minVal, '-', maxVal),
+          } as InputAttrs<number>)
+        ),
+        m(CodeBlock, {
+          code: `          m(RangeInput, {
+            min: 0,
+            max: 100,
+            minValue: 20,
+            maxValue: 80,
+            label: 'Select Range',
+            showValue: true,
+            minmax: true,
+            onchange: (minVal: number, maxVal: number) => console.log('Range:', minVal, '-', maxVal),
+          } as InputAttrs<number>)`,
+        }),
+
+        m('h4.header', 'Vertical Double Range Slider'),
+        m(
+          '.row',
+          m(
+            '.col.s6',
+            m(RangeInput, {
+              min: 0,
+              max: 100,
+              minValue: 30,
+              maxValue: 70,
+              label: 'Vertical Range',
+              height: '250px',
+              vertical: true,
+              minmax: true,
+              showValue: true,
+              tooltipPos: 'right',
+              oninput: (minVal: number, maxVal: number) => console.log('Vertical range input:', minVal, '-', maxVal),
+              onchange: (minVal: number, maxVal: number) => console.log('Vertical range change:', minVal, '-', maxVal),
+            } as InputAttrs<number>)
+          )
+        ),
+        m(CodeBlock, {
+          code: `          m(RangeInput, {
+            min: 0,
+            max: 100,
+            minValue: 30,
+            maxValue: 70,
+            label: 'Vertical Range',
+            height: '250px',
+            vertical: true,
+            minmax: true,
+            showValue: true,
+            onchange: (minVal: number, maxVal: number) => console.log('Vertical range:', minVal, '-', maxVal),
+          } as InputAttrs<number>)`,
+        }),
+
         m('h3.header', 'Chips'),
         m(
           '.row',

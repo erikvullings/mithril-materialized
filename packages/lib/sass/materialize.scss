@@ -33,6 +33,7 @@
 @use "components/chips";
 @use "components/materialbox";
 @use "components/forms/forms";
+@use "components/forms/range-enhanced"; // Enhanced custom range sliders with vertical and double-thumb support
 @use "components/table_of_contents";
 @use "components/sidenav";
 @use "components/preloader";

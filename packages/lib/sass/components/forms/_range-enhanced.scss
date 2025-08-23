@@ -1,0 +1,353 @@
+@use "../variables";
+@use "../global";
+
+/* Enhanced Range Sliders
+   ========================================================================== */
+
+.range-slider {
+  &.vertical {
+    -webkit-appearance: none;
+    appearance: none;
+    writing-mode: vertical-lr;
+    direction: rtl;
+    width: 6px;
+    transform: none;
+    
+    &::-webkit-slider-runnable-track {
+      width: 6px;
+      height: 100%;
+    }
+    
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: variables.$range-height;
+      height: variables.$range-width;
+      margin-left: -4px;
+      margin-top: 0;
+    }
+    
+    &::-moz-range-track {
+      width: 6px;
+      height: 100%;
+    }
+    
+    &::-moz-range-thumb {
+      width: variables.$range-height;
+      height: variables.$range-width;
+      margin-left: -12px;
+      margin-top: 0;
+    }
+  }
+  
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    
+    &::-webkit-slider-thumb {
+      cursor: not-allowed;
+    }
+    
+    &::-moz-range-thumb {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.single-range-slider {
+  // Container styles
+  outline: none; // Remove default focus outline
+  // border-radius: 4px; // Slight rounding for focus indicator
+  
+  &.horizontal {
+    height: 40px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  &.vertical {
+    width: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .track {
+    background-color: var(--mm-border-color, #c2c0c2);
+    border-radius: 2px;
+    
+    &.horizontal {
+      position: absolute;
+      top: 25%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 4px;
+    }
+    
+    &.vertical {
+      position: absolute;
+      bottom: 10px;
+      width: 4px;
+      height: 100%;
+    }
+  }
+  
+  .range-progress {
+    background-color: var(--mm-primary-color, #26a69a);
+    border-radius: 2px;
+    
+    &.horizontal {
+      position: absolute;
+      top: 25%;
+      transform: translateY(-50%);
+      height: 4px;
+    }
+    
+    &.vertical {
+      position: absolute;
+      bottom: 10px;
+      width: 4px;
+    }
+  }
+  
+  .thumb {
+    background-color: var(--mm-primary-color, #26a69a);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: none;
+    
+    &.horizontal {
+      position: absolute;
+      transform: translateY(-50%);
+    }
+    
+    &.vertical {
+      position: absolute;
+    }
+    
+    &:hover {
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    .value-tooltip {
+      position: absolute;
+      background: var(--mm-primary-color, #26a69a);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      min-width: 24px;
+      text-align: center;
+      pointer-events: none;
+      z-index: 20;
+      
+      &.top {
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-bottom: 8px;
+      }
+      
+      &.bottom {
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 8px;
+      }
+      
+      &.left {
+        right: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-right: 8px;
+      }
+      
+      &.right {
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 8px;
+      }
+    }
+  }
+  
+  // Focus styling - show outline only on thumb when slider has focus
+  &:focus .thumb,
+  &:focus-visible .thumb {
+    box-shadow: 0 0 0 3px var(--mm-primary-color-alpha-30, rgba(38, 166, 154, 0.3)), 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+  &:focus .thumb:hover,
+  &:focus-visible .thumb:hover {
+    box-shadow: 0 0 0 3px var(--mm-primary-color-alpha-30, rgba(38, 166, 154, 0.3)), 0 4px 8px rgba(0,0,0,0.3);
+  }
+}
+
+.double-range-slider {
+  // Container styles
+  outline: none; // Remove default focus outline
+  border-radius: 4px; // Slight rounding for focus indicator
+  
+  &.horizontal {
+    height: 40px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  &.vertical {
+    width: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+    
+  .track {
+    background-color: var(--mm-border-color, #c2c0c2);
+    border-radius: 2px;
+    
+    &.horizontal {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 4px;
+    }
+    
+    &.vertical {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 100%;
+    }
+  }
+  
+  .range {
+    background-color: var(--mm-primary-color, #26a69a);
+    border-radius: 2px;
+    
+    &.horizontal {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 4px;
+    }
+    
+    &.vertical {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+    }
+  }
+  
+  .thumb {
+    background-color: var(--mm-primary-color, #26a69a);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: none;
+    
+    &.horizontal {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    &.vertical {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    &:hover {
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    .value {
+      position: absolute;
+      background: var(--mm-primary-color, #26a69a);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      min-width: 24px;
+      text-align: center;
+      pointer-events: none;
+      z-index: 20;
+      
+      &.horizontal {
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        
+        &::after {
+          content: '';
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          border: 4px solid transparent;
+          border-top-color: var(--mm-primary-color, #26a69a);
+        }
+      }
+      
+      &.vertical {
+        top: 50%;
+        left: -35px;
+        transform: translateY(-50%);
+        
+        &::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 100%;
+          transform: translateY(-50%);
+          border: 4px solid transparent;
+          border-left-color: var(--mm-primary-color, #26a69a);
+        }
+      }
+    }
+  }
+  
+  // Focus styling for active thumb
+  &:focus .thumb.min-thumb.active,
+  &:focus .thumb.max-thumb.active,
+  &:focus-visible .thumb.min-thumb.active,
+  &:focus-visible .thumb.max-thumb.active {
+    box-shadow: 0 0 0 3px var(--mm-primary-color-alpha-30, rgba(38, 166, 154, 0.3)), 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+  &:focus .thumb.min-thumb.active:hover,
+  &:focus .thumb.max-thumb.active:hover,
+  &:focus-visible .thumb.min-thumb.active:hover,
+  &:focus-visible .thumb.max-thumb.active:hover {
+    box-shadow: 0 0 0 3px var(--mm-primary-color-alpha-30, rgba(38, 166, 154, 0.3)), 0 4px 8px rgba(0,0,0,0.3);
+  }
+}
+
+.range-field.vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100px;
+  padding-top: 20px;
+  
+  .double-range-slider {
+    height: 100%;
+  }
+}
