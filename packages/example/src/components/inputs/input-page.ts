@@ -379,8 +379,8 @@ export const InputPage = () => {
           m(
             '.col.s6',
             m(RangeInput, {
-              min: 0,
-              max: 100,
+              min: 18,
+              max: 67,
               initialValue: 50,
               label: 'Vertical Slider',
               height: '150px',
@@ -394,8 +394,8 @@ export const InputPage = () => {
         ),
         m(CodeBlock, {
           code: `          m(RangeInput, {
-            min: 0,
-            max: 100,
+            min: 18,
+            max: 67,
             initialValue: 50,
             label: 'Vertical Slider',
             height: '200px',
