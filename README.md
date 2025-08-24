@@ -245,6 +245,8 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
 
 See the [live documentation](https://erikvullings.github.io/mithril-materialized/index.html) for examples and component APIs.
 
+> **Note**: The date range picker is now fully implemented with comprehensive validation and formatting support.
+
 ## 🗺️ Roadmap & Planned Improvements
 
 ### 🚀 Phase 1: Core Optimizations & New Components (In Progress)
