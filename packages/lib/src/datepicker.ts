@@ -72,7 +72,7 @@ export interface DatePickerOptions {
   weekNumbering?: 'iso' | 'local';
   /** Internationalization */
   i18n?: DatePickerI18n;
-  /** Enable date range selection mode */
+  /** Enable date range selection mode for selecting start and end dates */
   dateRange?: boolean;
   /** Initial start date for range selection */
   initialStartDate?: Date;
