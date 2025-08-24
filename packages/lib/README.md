@@ -312,7 +312,7 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 
 ### 📊 Bundle Size Targets
 
-**Current Status (v2.0.0-beta.5):**
+**Current Status (v2.0.0-beta.15):**
 
 - Total: 70KB gzipped (44KB JS + 26KB CSS)
 - Modular CSS can reduce bundle by 30-50%
