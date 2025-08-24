@@ -153,6 +153,16 @@
         left: 50%;
         transform: translateX(-50%);
         margin-bottom: 8px;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          border: 4px solid transparent;
+          border-top-color: var(--mm-primary-color, #26a69a);
+        }
       }
       
       &.bottom {
@@ -160,6 +170,16 @@
         left: 50%;
         transform: translateX(-50%);
         margin-top: 8px;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          border: 4px solid transparent;
+          border-bottom-color: var(--mm-primary-color, #26a69a);
+        }
       }
       
       &.left {
@@ -167,6 +187,16 @@
         top: 50%;
         transform: translateY(-50%);
         margin-right: 8px;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 100%;
+          transform: translateY(-50%);
+          border: 4px solid transparent;
+          border-left-color: var(--mm-primary-color, #26a69a);
+        }
       }
       
       &.right {
@@ -174,6 +204,16 @@
         top: 50%;
         transform: translateY(-50%);
         margin-left: 8px;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          right: 100%;
+          transform: translateY(-50%);
+          border: 4px solid transparent;
+          border-right-color: var(--mm-primary-color, #26a69a);
+        }
       }
     }
   }

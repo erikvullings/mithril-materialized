@@ -15,6 +15,7 @@ export * from './floating-action-button';
 export * from './icon';
 export * from './input-options';
 export * from './input';
+export * from './range-slider';
 export * from './label';
 export * from './material-box';
 export * from './material-icon';
