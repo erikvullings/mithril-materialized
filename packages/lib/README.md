@@ -57,7 +57,7 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
   - RangeInput (with vertical and double-thumb support)
   - Chips
 - [Pickers](https://erikvullings.github.io/mithril-materialized/#!/pickers)
-  - DatePicker (with optional week numbers)
+  - DatePicker (with optional week numbers and date range selection)
   - TimePicker
 - [Selections](https://erikvullings.github.io/mithril-materialized/#!/selections)
   - Select
@@ -183,6 +183,24 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
          onchange: (value) => console.log('Vertical:', value)
        }),
        
+       // Enhanced DatePicker with range selection
+       m(DatePicker, {
+         label: 'Event Date',
+         helperText: 'Select a single date',
+         format: 'mmmm d, yyyy',
+         onchange: (value) => console.log('Date:', value)
+       }),
+       
+       m(DatePicker, {
+         dateRange: true,
+         label: 'Project Timeline',
+         helperText: 'Select start and end dates',
+         format: 'mmmm d, yyyy',
+         minDateRange: 1,
+         maxDateRange: 30,
+         onchange: (value) => console.log('Date range:', value)
+       }),
+       
        m(Button, { 
          label: 'Submit',
          onclick: () => alert('Hello!')
@@ -248,6 +266,7 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 - ✅ Enhanced TypeScript definitions with better JSDoc comments
 - ✅ Performance optimizations and bundle size improvements
 - ✅ Enhanced RangeInput with vertical orientation and double-thumb range selection
+- ✅ Advanced DatePicker with date range selection, constraints, and format support
 
 ### 🎯 Phase 2: Advanced Components & Features
 
@@ -258,7 +277,7 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 
 **Input & Forms:**
 
-- Advanced date range picker
+- ✅ Advanced date range picker with validation and constraints
 - Autocomplete with async data loading
 
 **Navigation & Layout:**
