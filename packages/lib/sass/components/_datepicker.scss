@@ -135,6 +135,37 @@
     font-size: 2.8rem;
     line-height: 47px;
     font-weight: 500;
+
+    &.placeholder {
+      font-size: 1.8rem;
+      line-height: 30px;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 400;
+    }
+
+    .range-separator {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.5rem;
+      font-weight: 400;
+    }
+
+    .end-date.placeholder {
+      color: rgba(255, 255, 255, 0.5);
+      font-style: italic;
+      font-size: 1.2rem;
+      font-weight: 300;
+    }
+  }
+
+  &.range-display {
+    .date-text {
+      font-size: 1.6rem;
+      line-height: 28px;
+      
+      .start-date, .end-date {
+        display: inline-block;
+      }
+    }
   }
 }
 
@@ -187,6 +218,32 @@
     &.is-selected {
       background-color: var(--mm-primary-color, #26a69a);
       color: var(--mm-button-text, #fff);
+    }
+
+    // Range selection states
+    &.is-range-start {
+      background-color: var(--mm-primary-color, #26a69a);
+      color: var(--mm-button-text, #fff);
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &.is-range-end {
+      background-color: var(--mm-primary-color, #26a69a);
+      color: var(--mm-button-text, #fff);
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &.is-in-range {
+      background-color: var(--mm-primary-color-alpha-20, rgba(38, 166, 154, 0.2));
+      color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+      border-radius: 0;
+    }
+
+    &.is-range-preview {
+      background-color: var(--mm-primary-color-alpha-10, rgba(38, 166, 154, 0.1));
+      color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
     }
 
     &.is-outside-current-month,

@@ -6,6 +6,8 @@ export const PickerPage = () => {
 
   const onchange = (v: unknown) => console.log(`onchange fired. New value: ${v}`);
   const oninput = (v: unknown) => console.log(`oninput fired. New value: ${v}`);
+  const year = new Date().getUTCFullYear();
+
   return {
     view: () =>
       m('.col.s12', [
@@ -72,10 +74,10 @@ export const PickerPage = () => {
           m(DatePicker, {
             disabled: state.disabled,
             dateLabel: 'Project Start Date',
-            helperText: 'Type in DD/MM/YYYY format (e.g., 25/12/2024)',
+            helperText: `Type in DD/MM/YYYY format (e.g., 25/12/${year})`,
             displayFormat: 'dd/mm/yyyy',
             iconName: 'event',
-            initialValue: '2024-03-15',
+            initialValue: `${year}-03-15`,
             oninput,
             onchange,
           })
@@ -88,10 +90,10 @@ export const PickerPage = () => {
           m(DatePicker, {
             disabled: state.disabled,
             dateLabel: 'Appointment Date',
-            helperText: 'Type in MM/DD/YYYY format (e.g., 12/25/2024)',
+            helperText: `Type in MM/DD/YYYY format (e.g., 12/25/${year})`,
             displayFormat: 'mm/dd/yyyy',
             iconName: 'schedule',
-            initialValue: '2024-07-04',
+            initialValue: `${year}-07-04`,
             oninput,
             onchange,
           })
@@ -104,7 +106,7 @@ export const PickerPage = () => {
           m(DatePicker, {
             disabled: state.disabled,
             dateLabel: 'Geburtsdatum',
-            helperText: 'Format: TT.MM.JJJJ (z.B., 25.12.2024)',
+            helperText: `Format: TT.MM.JJJJ (z.B., 25.12.${year})`,
             displayFormat: 'dd.mm.yyyy',
             iconName: 'person',
             initialValue: '1985-11-09',
@@ -149,7 +151,7 @@ export const PickerPage = () => {
             showTodayBtn: false,
             showClearBtn: true,
             clearLabel: 'Remove',
-            initialValue: '2024-01-01',
+            initialValue: `${year}-01-01`,
             onchange,
           })
         ),
@@ -162,7 +164,7 @@ export const PickerPage = () => {
             disabled: true,
             dateLabel: 'Disabled Date',
             helperText: 'Cannot interact',
-            initialValue: '2024-01-15',
+            initialValue: `${year}-01-15`,
             iconName: 'block',
             onchange,
           }),
@@ -171,11 +173,103 @@ export const PickerPage = () => {
             readonly: true,
             dateLabel: 'Readonly Date',
             helperText: 'View only',
-            initialValue: '2024-12-25',
+            initialValue: `${year}-12-25`,
             iconName: 'visibility',
             onchange,
           }),
         ]),
+
+        // Date Range Picker Examples
+        m('h3.header', 'Date Range Picker'),
+
+        m('h4', 'Basic Date Range Picker'),
+        m(
+          '.row',
+          m(DatePicker, {
+            disabled: state.disabled,
+            dateRange: true,
+            label: 'Select Date Range',
+            helperText: 'Click to select start and end dates',
+            iconName: 'date_range',
+            initialStartDate: new Date(`${year}-03-01`),
+            initialEndDate: new Date(`${year}-03-15`),
+            showClearBtn: true,
+            onchange: (value) => {
+              console.log('Date range selected:', value);
+              onchange(value);
+            },
+          })
+        ),
+
+        m('h4', 'Date Range with Constraints'),
+        m(
+          '.row',
+          m(DatePicker, {
+            disabled: state.disabled,
+            dateRange: true,
+            label: 'Project Timeline',
+            helperText: 'Min 3 days, max 30 days range',
+            iconName: 'work',
+            minDateRange: 3,
+            maxDateRange: 30,
+            format: 'mmmm d, yyyy',
+            onchange: (value) => {
+              console.log('Project timeline:', value);
+              onchange(value);
+            },
+          })
+        ),
+
+        m('h4', 'Date Range with Min/Max Dates'),
+        m(
+          '.row',
+          m(DatePicker, {
+            disabled: state.disabled,
+            dateRange: true,
+            label: 'Vacation Dates',
+            helperText: 'Select dates within this year',
+            iconName: 'flight_takeoff',
+            minDate: new Date(`${year}-01-01`),
+            maxDate: new Date(`${year}-12-31`),
+            autoClose: true,
+            onchange: (value) => {
+              console.log('Vacation dates:', value);
+              onchange(value);
+            },
+          })
+        ),
+
+        m(CodeBlock, {
+          code: `// Basic Date Range Picker
+m(DatePicker, {
+  dateRange: true,
+  label: 'Select Date Range',
+  helperText: 'Click to select start and end dates',
+  initialStartDate: new Date('${year}-03-01'),
+  initialEndDate: new Date('${year}-03-15'),
+  onchange: (value) => console.log('Range:', value), // Returns "YYYY-MM-DD - YYYY-MM-DD"
+})
+
+// Date Range with Constraints
+m(DatePicker, {
+  dateRange: true,
+  label: 'Project Timeline',
+  minDateRange: 3,  // Minimum 3 days
+  maxDateRange: 30, // Maximum 30 days
+  format: 'mmmm d, yyyy',
+  onchange: (value) => console.log('Timeline:', value),
+})
+
+// Date Range with Date Limits
+m(DatePicker, {
+  dateRange: true,
+  label: 'Vacation Dates',
+  minDate: new Date('${year}-01-01'),
+  maxDate: new Date('${year}-12-31'),
+  autoClose: true, // Closes after selecting both dates
+  onchange: (value) => console.log('Vacation:', value),
+})`,
+        }),
 
         m(CodeBlock, {
           code: `// Basic usage with custom text input and display formats

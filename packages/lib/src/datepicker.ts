@@ -72,8 +72,18 @@ export interface DatePickerOptions {
   weekNumbering?: 'iso' | 'local';
   /** Internationalization */
   i18n?: DatePickerI18n;
-  /** Callback when date is selected */
-  onSelect?: (date: Date) => void;
+  /** Enable date range selection mode */
+  dateRange?: boolean;
+  /** Initial start date for range selection */
+  initialStartDate?: Date;
+  /** Initial end date for range selection */
+  initialEndDate?: Date;
+  /** Minimum number of days between start and end dates */
+  minDateRange?: number;
+  /** Maximum number of days between start and end dates */
+  maxDateRange?: number;
+  /** Callback when date is selected (single date or range start/end) */
+  onSelect?: (date: Date, endDate?: Date) => void;
   /** Callback when picker is opened */
   onOpen?: () => void;
   /** Callback when picker is closed */
@@ -169,6 +179,10 @@ interface DatePickerState {
   id: string;
   isOpen: boolean;
   date: Date | null;
+  startDate: Date | null;
+  endDate: Date | null;
+  selectionMode: 'start' | 'end' | null;
+  isSelectingRange: boolean;
   calendars: Calendar[];
   formats: { [key: string]: () => string | number };
   monthDropdownOpen: boolean;
@@ -249,6 +263,47 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
     return result;
   };
 
+  // New function to format any specific date (not just state.date)
+  const formatDate = (date: Date | null, format: string, options: Required<DatePickerOptions>): string => {
+    if (!date || !isDate(date)) {
+      return '';
+    }
+
+    // Split format into tokens - match longer patterns first
+    const formatTokens = /(dddd|ddd|dd|d|mmmm|mmm|mm|m|yyyy|yy)/g;
+    let result = format;
+
+    // Create temporary formats for the specific date
+    const dateFormats = {
+      d: () => date.getDate(),
+      dd: () => {
+        const d = date.getDate();
+        return (d < 10 ? '0' : '') + d;
+      },
+      ddd: () => options.i18n.weekdaysShort![date.getDay()],
+      dddd: () => options.i18n.weekdays![date.getDay()],
+      m: () => date.getMonth() + 1,
+      mm: () => {
+        const m = date.getMonth() + 1;
+        return (m < 10 ? '0' : '') + m;
+      },
+      mmm: () => options.i18n.monthsShort![date.getMonth()],
+      mmmm: () => options.i18n.months![date.getMonth()],
+      yy: () => ('' + date.getFullYear()).slice(2),
+      yyyy: () => date.getFullYear(),
+    };
+
+    // Replace all format tokens with actual values
+    result = result.replace(formatTokens, (match) => {
+      if (dateFormats[match as keyof typeof dateFormats]) {
+        return String(dateFormats[match as keyof typeof dateFormats]());
+      }
+      return match;
+    });
+
+    return result;
+  };
+
   const setDate = (date: Date | null, preventOnSelect: boolean = false, options: Required<DatePickerOptions>) => {
     if (!date) {
       state.date = null;
@@ -278,6 +333,62 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
 
     if (!preventOnSelect && options.onSelect) {
       options.onSelect(state.date);
+    }
+  };
+
+  const handleRangeSelection = (date: Date, options: Required<DatePickerOptions>) => {
+    setToStartOfDay(date);
+
+    // First click or reset - set start date
+    if (!state.startDate || (state.startDate && state.endDate)) {
+      state.startDate = new Date(date.getTime());
+      state.endDate = null;
+      state.selectionMode = 'end';
+      state.isSelectingRange = true;
+    }
+    // Second click - set end date
+    else if (state.startDate && !state.endDate) {
+      // Ensure proper order (start <= end)
+      if (date < state.startDate) {
+        state.endDate = new Date(state.startDate.getTime());
+        state.startDate = new Date(date.getTime());
+      } else {
+        state.endDate = new Date(date.getTime());
+      }
+
+      // Validate range constraints
+      if (options.minDateRange || options.maxDateRange) {
+        const daysDiff = Math.ceil((state.endDate.getTime() - state.startDate.getTime()) / (1000 * 60 * 60 * 24));
+        
+        if (options.minDateRange && daysDiff < options.minDateRange) {
+          // Range too short, reset
+          state.startDate = new Date(date.getTime());
+          state.endDate = null;
+          state.selectionMode = 'end';
+          return;
+        }
+        
+        if (options.maxDateRange && daysDiff > options.maxDateRange) {
+          // Range too long, reset
+          state.startDate = new Date(date.getTime());
+          state.endDate = null;
+          state.selectionMode = 'end';
+          return;
+        }
+      }
+
+      state.selectionMode = null;
+      state.isSelectingRange = false;
+
+      // Call onSelect with both dates
+      if (options.onSelect) {
+        options.onSelect(state.startDate, state.endDate);
+      }
+
+      // Auto-close if enabled
+      if (options.autoClose) {
+        state.isOpen = false;
+      }
     }
   };
 
@@ -354,6 +465,25 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
           ariaSelected = 'true';
         }
 
+        // Range selection states
+        if (opts.isRangeStart) {
+          arr.push('is-range-start');
+          ariaSelected = 'true';
+        }
+
+        if (opts.isRangeEnd) {
+          arr.push('is-range-end');
+          ariaSelected = 'true';
+        }
+
+        if (opts.isInRange) {
+          arr.push('is-in-range');
+        }
+
+        if (opts.isRangePreview) {
+          arr.push('is-range-preview');
+        }
+
         if (opts.hasEvent) {
           arr.push('has-event');
         }
@@ -380,9 +510,14 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                     const month = parseInt(target.getAttribute('data-month') || '0', 10);
                     const day = parseInt(target.getAttribute('data-day') || '0', 10);
                     const selectedDate = new Date(year, month, day);
-                    setDate(selectedDate, false, options);
-                    if (options.autoClose) {
-                      state.isOpen = false;
+                    
+                    if (options.dateRange) {
+                      handleRangeSelection(selectedDate, options);
+                    } else {
+                      setDate(selectedDate, false, options);
+                      if (options.autoClose) {
+                        state.isOpen = false;
+                      }
                     }
                   }
                 },
@@ -461,16 +596,39 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
             (options.disableWeekends && isWeekend(day)) ||
             (options.disableDayFn && options.disableDayFn(day));
 
+          // Range selection states
+          let isRangeStart = false;
+          let isRangeEnd = false;
+          let isInRange = false;
+          let isRangePreview = false;
+
+          if (options.dateRange) {
+            if (state.startDate && compareDates(day, state.startDate)) {
+              isRangeStart = true;
+            }
+            if (state.endDate && compareDates(day, state.endDate)) {
+              isRangeEnd = true;
+            }
+            if (state.startDate && state.endDate && day > state.startDate && day < state.endDate) {
+              isInRange = true;
+            }
+            // TODO: Add hover preview logic for range selection
+          }
+
           const dayConfig = {
             day: dayNumber,
             month: monthNumber,
             year: yearNumber,
             hasEvent: false,
-            isSelected: isSelected,
+            isSelected: !options.dateRange && isSelected, // Only use isSelected in single date mode
             isToday: isToday,
             isDisabled: isDisabled,
             isEmpty: isEmpty,
             showDaysInNextAndPreviousMonths: false,
+            isRangeStart: isRangeStart,
+            isRangeEnd: isRangeEnd,
+            isInRange: isInRange,
+            isRangePreview: isRangePreview,
           };
 
           // Add week number cell at the beginning of each row
@@ -537,15 +695,60 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
     return {
       view: ({ attrs }) => {
         const { options } = attrs;
-        const displayDate = isDate(state.date) ? state.date : new Date();
-        const day = options.i18n.weekdaysShort![displayDate.getDay()];
-        const month = options.i18n.monthsShort![displayDate.getMonth()];
-        const date = displayDate.getDate();
 
-        return m('.datepicker-date-display', [
-          m('span.year-text', displayDate.getFullYear()),
-          m('span.date-text', `${day}, ${month} ${date}`),
-        ]);
+        if (options.dateRange) {
+          // Range display
+          const startDate = state.startDate;
+          const endDate = state.endDate;
+
+          if (startDate && endDate) {
+            // Both dates selected
+            const startDay = options.i18n.weekdaysShort![startDate.getDay()];
+            const startMonth = options.i18n.monthsShort![startDate.getMonth()];
+            const endDay = options.i18n.weekdaysShort![endDate.getDay()];
+            const endMonth = options.i18n.monthsShort![endDate.getMonth()];
+
+            return m('.datepicker-date-display.range-display', [
+              m('span.year-text', startDate.getFullYear()),
+              m('span.date-text', [
+                m('span.start-date', `${startDay}, ${startMonth} ${startDate.getDate()}`),
+                m('span.range-separator', ' - '),
+                m('span.end-date', `${endDay}, ${endMonth} ${endDate.getDate()}`),
+              ]),
+            ]);
+          } else if (startDate) {
+            // Only start date selected
+            const startDay = options.i18n.weekdaysShort![startDate.getDay()];
+            const startMonth = options.i18n.monthsShort![startDate.getMonth()];
+
+            return m('.datepicker-date-display.range-display', [
+              m('span.year-text', startDate.getFullYear()),
+              m('span.date-text', [
+                m('span.start-date', `${startDay}, ${startMonth} ${startDate.getDate()}`),
+                m('span.range-separator', ' - '),
+                m('span.end-date.placeholder', 'Select end date'),
+              ]),
+            ]);
+          } else {
+            // No dates selected
+            const currentDate = new Date();
+            return m('.datepicker-date-display.range-display', [
+              m('span.year-text', currentDate.getFullYear()),
+              m('span.date-text.placeholder', 'Select date range'),
+            ]);
+          }
+        } else {
+          // Single date display (original behavior)
+          const displayDate = isDate(state.date) ? state.date : new Date();
+          const day = options.i18n.weekdaysShort![displayDate.getDay()];
+          const month = options.i18n.monthsShort![displayDate.getMonth()];
+          const date = displayDate.getDate();
+
+          return m('.datepicker-date-display', [
+            m('span.year-text', displayDate.getFullYear()),
+            m('span.date-text', `${day}, ${month} ${date}`),
+          ]);
+        }
       }
     };
   };
@@ -753,6 +956,10 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
         id: uniqueId(),
         isOpen: false,
         date: null,
+        startDate: null,
+        endDate: null,
+        selectionMode: null,
+        isSelectingRange: false,
         calendars: [{ month: 0, year: 0 }],
         monthDropdownOpen: false,
         yearDropdownOpen: false,
@@ -776,17 +983,36 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
         },
       };
 
-      // Initialize date
-      let defaultDate = attrs.defaultDate;
-      if (!defaultDate && attrs.initialValue) {
-        defaultDate = new Date(attrs.initialValue);
-      }
-
-      if (isDate(defaultDate)) {
-        // Always set the date if we have initialValue or defaultDate
-        setDate(defaultDate, true, options);
+      // Initialize date or date range
+      if (options.dateRange) {
+        // Initialize range dates
+        if (attrs.initialStartDate && isDate(attrs.initialStartDate)) {
+          state.startDate = new Date(attrs.initialStartDate.getTime());
+          setToStartOfDay(state.startDate);
+          gotoDate(state.startDate);
+        }
+        
+        if (attrs.initialEndDate && isDate(attrs.initialEndDate)) {
+          state.endDate = new Date(attrs.initialEndDate.getTime());
+          setToStartOfDay(state.endDate);
+        }
+        
+        if (!state.startDate && !state.endDate) {
+          gotoDate(new Date());
+        }
       } else {
-        gotoDate(new Date());
+        // Single date initialization (original behavior)
+        let defaultDate = attrs.defaultDate;
+        if (!defaultDate && attrs.initialValue) {
+          defaultDate = new Date(attrs.initialValue);
+        }
+
+        if (isDate(defaultDate)) {
+          // Always set the date if we have initialValue or defaultDate
+          setDate(defaultDate, true, options);
+        } else {
+          gotoDate(new Date());
+        }
       }
 
       // Add document click listener to close dropdowns
@@ -820,20 +1046,64 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
 
       // Calculate display value for the input
       let displayValue = '';
-      if (state.date) {
-        displayValue = toString(state.date, options.format);
-      }
-
-      // Custom date format handling
-      if (attrs.displayFormat) {
-        // const formatRegex = /(yyyy|mm|dd)/gi;
-        let customDisplayValue = attrs.displayFormat;
+      
+      if (options.dateRange) {
+        // Handle date range display
+        const formatToUse = attrs.displayFormat || options.format;
+        
+        if (state.startDate && state.endDate) {
+          let startStr: string, endStr: string;
+          
+          if (attrs.displayFormat) {
+            // Custom display format for date range
+            startStr = attrs.displayFormat
+              .replace(/yyyy/gi, state.startDate.getFullYear().toString())
+              .replace(/mm/gi, (state.startDate.getMonth() + 1).toString().padStart(2, '0'))
+              .replace(/dd/gi, state.startDate.getDate().toString().padStart(2, '0'));
+            endStr = attrs.displayFormat
+              .replace(/yyyy/gi, state.endDate.getFullYear().toString())
+              .replace(/mm/gi, (state.endDate.getMonth() + 1).toString().padStart(2, '0'))
+              .replace(/dd/gi, state.endDate.getDate().toString().padStart(2, '0'));
+          } else {
+            // Standard format
+            startStr = formatDate(state.startDate, formatToUse, options);
+            endStr = formatDate(state.endDate, formatToUse, options);
+          }
+          
+          displayValue = `${startStr} - ${endStr}`;
+        } else if (state.startDate) {
+          let startStr: string;
+          
+          if (attrs.displayFormat) {
+            // Custom display format for single date
+            startStr = attrs.displayFormat
+              .replace(/yyyy/gi, state.startDate.getFullYear().toString())
+              .replace(/mm/gi, (state.startDate.getMonth() + 1).toString().padStart(2, '0'))
+              .replace(/dd/gi, state.startDate.getDate().toString().padStart(2, '0'));
+          } else {
+            // Standard format
+            startStr = formatDate(state.startDate, formatToUse, options);
+          }
+          
+          displayValue = `${startStr} - `;
+        }
+      } else {
+        // Single date display (original behavior)
         if (state.date) {
-          customDisplayValue = customDisplayValue
-            .replace(/yyyy/gi, state.date.getFullYear().toString())
-            .replace(/mm/gi, (state.date.getMonth() + 1).toString().padStart(2, '0'))
-            .replace(/dd/gi, state.date.getDate().toString().padStart(2, '0'));
-          displayValue = customDisplayValue;
+          displayValue = toString(state.date, options.format);
+        }
+
+        // Custom date format handling
+        if (attrs.displayFormat) {
+          // const formatRegex = /(yyyy|mm|dd)/gi;
+          let customDisplayValue = attrs.displayFormat;
+          if (state.date) {
+            customDisplayValue = customDisplayValue
+              .replace(/yyyy/gi, state.date.getFullYear().toString())
+              .replace(/mm/gi, (state.date.getMonth() + 1).toString().padStart(2, '0'))
+              .replace(/dd/gi, state.date.getDate().toString().padStart(2, '0'));
+            displayValue = customDisplayValue;
+          }
         }
       }
 
@@ -960,9 +1230,21 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                             type: 'button',
                             onclick: () => {
                               state.isOpen = false;
-                              if (state.date && onchange) {
-                                onchange(toString(state.date, 'yyyy-mm-dd')); // Always return ISO format
+                              
+                              if (options.dateRange) {
+                                // Range mode
+                                if (state.startDate && state.endDate && onchange) {
+                                  const startStr = toString(state.startDate, 'yyyy-mm-dd');
+                                  const endStr = toString(state.endDate, 'yyyy-mm-dd');
+                                  onchange(`${startStr} - ${endStr}`);
+                                }
+                              } else {
+                                // Single date mode
+                                if (state.date && onchange) {
+                                  onchange(toString(state.date, 'yyyy-mm-dd')); // Always return ISO format
+                                }
                               }
+                              
                               if (options.onClose) options.onClose();
                             },
                           },
