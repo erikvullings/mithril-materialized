@@ -13,6 +13,9 @@ import { CollectionsPage } from '../components/collections/collections-page';
 import { ThemePage } from '../components/theme/theme-page';
 import { NavigationPage } from '../components/navigation/navigation-page';
 import { DataTablePage } from '../components/datatable/datatable-page';
+import { TimelinePage } from '../components/timeline-page';
+import { MasonryPage } from '../components/masonry-page';
+import { ImageListPage } from '../components/image-list-page';
 
 export enum Dashboards {
   HOME = 'HOME',
@@ -23,11 +26,12 @@ export enum Dashboards {
   COLLECTIONS = 'COLLECTIONS',
   MAP_EDITOR = 'MAP_EDITOR',
   MODALS = 'MODALS',
-  TIMELINE = 'TIMELINE',
-  KANBAN = 'KANBAN',
   THEME = 'THEME',
   NAVIGATION = 'NAVIGATION',
   DATATABLE = 'DATATABLE',
+  TIMELINE = 'TIMELINE',
+  MASONRY = 'MASONRY',
+  IMAGE_LIST = 'IMAGE_LIST',
   MISC = 'MISC',
   ABOUT = 'ABOUT',
 }
@@ -148,6 +152,30 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
     route: '/navigation',
     visible: true,
     component: NavigationPage,
+  },
+  {
+    id: Dashboards.TIMELINE,
+    title: 'TIMELINE',
+    icon: 'timeline',
+    route: '/timeline',
+    visible: true,
+    component: TimelinePage,
+  },
+  {
+    id: Dashboards.MASONRY,
+    title: 'MASONRY',
+    icon: 'view_comfy',
+    route: '/masonry',
+    visible: true,
+    component: MasonryPage,
+  },
+  {
+    id: Dashboards.IMAGE_LIST,
+    title: 'IMAGE LIST',
+    icon: 'photo_library',
+    route: '/image-list',
+    visible: true,
+    component: ImageListPage,
   },
   {
     id: Dashboards.MISC,

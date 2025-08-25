@@ -1,0 +1,421 @@
+// ImageList Component Styles
+// Material Design inspired image grid layouts
+
+@use 'variables' as *;
+@use 'theme-variables' as *;
+
+// Base image list styles
+.image-list {
+  width: 100%;
+  overflow: hidden;
+  
+  // Standard grid layout
+  &.image-list-standard {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  
+  // Quilted layout (varied item sizes)  
+  &.image-list-quilted {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-auto-rows: 200px;
+  }
+  
+  // Masonry layout (Pinterest-style) - using CSS columns
+  &.image-list-masonry {
+    display: block !important;
+    column-fill: auto;
+    // CSS columns properties are set dynamically via JS (column-count, column-gap)
+  }
+  
+  // Woven layout (alternating patterns)
+  &.image-list-woven {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-auto-rows: minmax(100px, auto);
+  }
+}
+
+// Image list item
+.image-list-item {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--mm-surface-color, #f5f5f5);
+  border-radius: 4px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  // Masonry layout specific
+  .image-list-masonry & {
+    display: inline-block !important;
+    width: 100% !important;
+    margin-bottom: 8px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    vertical-align: top;
+  }
+  
+  // Clickable items
+  &.image-list-item-clickable {
+    cursor: pointer;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 2;
+      
+      [data-theme="dark"] & {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+      
+      .image-list-item-img img {
+        transform: scale(1.05);
+      }
+      
+      .image-list-item-bar {
+        opacity: 1;
+      }
+    }
+    
+    &:focus-visible {
+      outline: 2px solid var(--mm-primary-color, #{$primary-color});
+      outline-offset: 2px;
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
+  // Featured items (larger/highlighted)
+  &.image-list-item-featured {
+    grid-column-end: span 2;
+    grid-row-end: span 2;
+    
+    .image-list-item-title {
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+  }
+}
+
+// Image container
+.image-list-item-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--mm-surface-variant-color, #e0e0e0);
+  
+  [data-theme="dark"] & {
+    background: var(--mm-surface-variant-color, #424242);
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    
+    // Loaded state
+    &.loaded {
+      opacity: 1;
+    }
+    
+    // Error state
+    &.error {
+      opacity: 0.5;
+      filter: grayscale(1);
+    }
+  }
+}
+
+// Loading placeholder
+.image-list-item-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    var(--mm-surface-variant-color, #e0e0e0) 25%,
+    var(--mm-surface-color, #f5f5f5) 50%,
+    var(--mm-surface-variant-color, #e0e0e0) 75%
+  );
+  background-size: 200% 100%;
+  animation: image-list-loading 1.5s infinite;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  
+  [data-theme="dark"] & {
+    background: linear-gradient(
+      90deg,
+      var(--mm-surface-variant-color, #424242) 25%,
+      var(--mm-surface-color, #303030) 50%,
+      var(--mm-surface-variant-color, #424242) 75%
+    );
+  }
+  
+  // Hide when image loads
+  .loaded + & {
+    opacity: 0;
+  }
+}
+
+// Title/subtitle bar overlay
+.image-list-item-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.3) 70%,
+    transparent 100%
+  );
+  color: white;
+  transform: translateY(0);
+  transition: all 0.2s ease;
+  opacity: 0.9;
+  
+  .image-list-with-titles & {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  // Always visible on touch devices
+  @media (hover: none) {
+    opacity: 1;
+  }
+}
+
+.image-list-item-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.image-list-item-title {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0 0 4px 0;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.image-list-item-subtitle {
+  font-size: 0.875rem;
+  line-height: 1.2;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+// Action buttons
+.image-list-item-action {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  
+  [data-theme="dark"] & {
+    background: rgba(0, 0, 0, 0.7);
+    color: var(--mm-text-primary, rgba(255, 255, 255, 0.87));
+  }
+  
+  &:hover {
+    background: white;
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    
+    [data-theme="dark"] & {
+      background: rgba(0, 0, 0, 0.9);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+  }
+  
+  &:focus-visible {
+    outline: 2px solid var(--mm-primary-color, #{$primary-color});
+    outline-offset: 2px;
+  }
+  
+  .material-icons {
+    font-size: 20px;
+  }
+  
+  // Positioning variants
+  &.image-list-action-top-left {
+    top: 8px;
+    left: 8px;
+  }
+  
+  &.image-list-action-top-right {
+    top: 8px;
+    right: 8px;
+  }
+  
+  &.image-list-action-bottom-left {
+    bottom: 8px;
+    left: 8px;
+  }
+  
+  &.image-list-action-bottom-right {
+    bottom: 8px;
+    right: 8px;
+  }
+  
+  // Hidden by default, shown on hover or when always visible
+  opacity: 0;
+  transform: scale(0.8);
+  
+  .image-list-with-actions & {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  .image-list-item:hover & {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  // Always visible on touch devices
+  @media (hover: none) {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Responsive behavior
+@media screen and (max-width: 768px) {
+  .image-list {
+    &.image-list-standard,
+    &.image-list-quilted,
+    &.image-list-woven {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  .image-list-item-featured {
+    grid-column-end: span 1;
+    grid-row-end: span 1;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .image-list {
+    &.image-list-standard,
+    &.image-list-quilted,
+    &.image-list-woven {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .image-list-item-bar {
+    padding: 8px 12px;
+  }
+  
+  .image-list-item-title {
+    font-size: 0.875rem;
+  }
+  
+  .image-list-item-subtitle {
+    font-size: 0.75rem;
+  }
+}
+
+// Loading animation
+@keyframes image-list-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .image-list-item {
+    transition: none;
+    
+    &:hover {
+      transform: none;
+    }
+    
+    .image-list-item-img img {
+      transition: none;
+      
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+  
+  .image-list-item-placeholder {
+    animation: none;
+  }
+  
+  .image-list-item-action {
+    transition: none;
+    
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .image-list-item {
+    border: 1px solid;
+  }
+  
+  .image-list-item-action {
+    border: 2px solid;
+  }
+  
+  .image-list-item-bar {
+    background: black;
+  }
+}
+
+// Print styles
+@media print {
+  .image-list {
+    display: block;
+    
+    .image-list-item {
+      display: inline-block;
+      width: 48%;
+      margin: 1%;
+      vertical-align: top;
+      break-inside: avoid;
+      page-break-inside: avoid;
+      
+      .image-list-item-action {
+        display: none;
+      }
+      
+      .image-list-item-bar {
+        position: relative;
+        background: #f5f5f5;
+        color: black;
+      }
+    }
+  }
+}

@@ -70,8 +70,6 @@ const handleKeyboardNavigation = (
   }
 };
 
-// Removed unused createDragHandler utility - keeping individual implementations for better control
-
 const initRangeState = (state: any, attrs: any) => {
   const { min = 0, max = 100, initialValue, minValue, maxValue } = attrs;
 
@@ -143,458 +141,471 @@ const updateRangeValues = <T>(
   }
 };
 
-// Single Range Slider with Tooltip
-export const renderSingleRangeWithTooltip = <T>(
-  attrs: InputAttrs<T>,
-  state: any,
-  cn: string | undefined,
-  style: any,
-  iconName: string | undefined,
-  id: string,
-  label: string | undefined,
-  isMandatory: boolean | undefined,
-  helperText: string | undefined
-) => {
-  const {
-    min = 0,
-    max = 100,
-    step = 1,
-    vertical = false,
-    showValue = false,
-    valueDisplay,
-    height = '200px',
-    disabled = false,
-    tooltipPos = 'top',
-    oninput,
-    onchange,
-  } = attrs;
-
-  // Apply fallback logic for valueDisplay if not explicitly set
-  const finalValueDisplay = valueDisplay || (showValue ? 'always' : 'none');
-
-  // Initialize state
-  initRangeState(state, attrs);
-
-  const percentage = getPercentage(state.singleValue as number, min, max);
-
-  // Only keep dynamic styles as inline, use CSS classes for static styles
-  const containerStyle = vertical ? { height } : {};
-
-  const progressStyle = vertical
-    ? {
-        height: `${percentage}%`,
-      }
-    : {
-        width: `${percentage}%`,
-      };
-
-  const thumbStyle = vertical
-    ? {
-        bottom: `${percentage}%`,
-      }
-    : {
-        left: `${percentage}%`,
-      };
-
-  const updateSingleValue = (newValue: number, immediate = false) => {
-    state.singleValue = newValue;
-    state.hasUserInteracted = true;
-    if (immediate && oninput) {
-      oninput(newValue as T);
-    } else if (!immediate && onchange) {
-      onchange(newValue as T);
+// Single Range Slider Component
+export const SingleRangeSlider = {
+  oninit({ state }: { state: any }) {
+    if (!state.componentInitialized) {
+      state.componentInitialized = true;
     }
-  };
+  },
 
-  const handleMouseDown = (e: MouseEvent) => {
-    if (disabled) return;
-    e.preventDefault();
-    state.isDragging = true;
-
-    // Redraw immediately to show tooltip for 'auto' mode
-    if (finalValueDisplay === 'auto') {
-      m.redraw();
+  onremove({ state }: { state: any }) {
+    if (state.cleanupMouseEvents) {
+      state.cleanupMouseEvents();
+      state.cleanupMouseEvents = null;
     }
+  },
 
-    // Get container reference from the current target's parent
-    const thumbElement = e.currentTarget as HTMLElement;
-    const container = thumbElement.parentElement;
-    if (!container) return;
+  view({
+    attrs,
+    state,
+  }: {
+    attrs: InputAttrs<any> & {
+      cn?: string;
+      style?: any;
+      iconName?: string;
+      id: string;
+      label?: string;
+      isMandatory?: boolean;
+      helperText?: string;
+    };
+    state: any;
+  }) {
+    const {
+      cn,
+      style,
+      iconName,
+      id,
+      label,
+      isMandatory,
+      helperText,
+      min = 0,
+      max = 100,
+      step = 1,
+      vertical = false,
+      showValue = false,
+      valueDisplay,
+      height = '200px',
+      disabled = false,
+      tooltipPos = 'top',
+      oninput,
+      onchange,
+    } = attrs;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!state.isDragging || !container) return;
+    // Apply fallback logic for valueDisplay if not explicitly set
+    const finalValueDisplay = valueDisplay || (showValue ? 'always' : 'none');
 
-      const rect = container.getBoundingClientRect();
-      const value = positionToValue(e, rect, min, max, step, vertical);
-      updateSingleValue(value, true);
-      m.redraw();
+    // Initialize state
+    initRangeState(state, attrs);
+
+    const percentage = getPercentage(state.singleValue as number, min, max);
+    const containerStyle = vertical ? { height } : {};
+    const orientation = vertical ? 'vertical' : 'horizontal';
+
+    const progressStyle = vertical ? { height: `${percentage}%` } : { width: `${percentage}%` };
+
+    const thumbStyle = vertical ? { bottom: `${percentage}%` } : { left: `${percentage}%` };
+
+    // Determine tooltip position for vertical sliders
+    const tooltipPosition = vertical
+      ? tooltipPos === 'top' || tooltipPos === 'bottom'
+        ? 'right'
+        : tooltipPos
+      : tooltipPos;
+
+    const updateSingleValue = (newValue: number, immediate = false) => {
+      state.singleValue = newValue;
+      state.hasUserInteracted = true;
+      if (immediate && oninput) {
+        oninput(newValue as any);
+      } else if (!immediate && onchange) {
+        onchange(newValue as any);
+      }
     };
 
-    const handleMouseUp = () => {
-      state.isDragging = false;
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+    const handleMouseDown = (e: MouseEvent) => {
+      if (disabled) return;
+      e.preventDefault();
+      state.isDragging = true;
 
-      // Fire onchange when dragging ends
-      updateSingleValue(state.singleValue as number, false);
-
-      // Redraw to hide tooltip for 'auto' mode
       if (finalValueDisplay === 'auto') {
         m.redraw();
       }
+
+      const thumbElement = e.currentTarget as HTMLElement;
+      const container = thumbElement.parentElement;
+      if (!container) return;
+
+      const handleMouseMove = (e: MouseEvent) => {
+        if (!state.isDragging || !container) return;
+        const rect = container.getBoundingClientRect();
+        const value = positionToValue(e, rect, min, max, step, vertical);
+        updateSingleValue(value, true);
+        m.redraw();
+      };
+
+      const handleMouseUp = () => {
+        state.isDragging = false;
+        if (state.cleanupMouseEvents) {
+          state.cleanupMouseEvents();
+          state.cleanupMouseEvents = null;
+        }
+        updateSingleValue(state.singleValue as number, false);
+        if (finalValueDisplay === 'auto') {
+          m.redraw();
+        }
+      };
+
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+
+      state.cleanupMouseEvents = () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  };
+    const fieldClass = vertical ? 'range-field vertical' : 'range-field';
 
-  const fieldClass = vertical ? 'range-field vertical' : 'range-field';
-  const orientation = vertical ? 'vertical' : 'horizontal';
-
-  // Determine tooltip position for vertical sliders
-  const tooltipPosition = vertical
-    ? tooltipPos === 'top' || tooltipPos === 'bottom'
-      ? 'right'
-      : tooltipPos
-    : tooltipPos;
-
-  return m('.input-field', { className: cn, style }, [
-    iconName ? m('i.material-icons.prefix', iconName) : undefined,
-    // Hidden input for label association and accessibility
-    m('input[type=range]', {
-      id,
-      value: state.singleValue,
-      min,
-      max,
-      step,
-      style: { display: 'none' },
-      disabled,
-      tabindex: -1,
-    }),
-    m('div', { class: fieldClass, style: containerStyle }, [
-      m(
-        `.single-range-slider.${orientation}`,
-        {
-          tabindex: disabled ? -1 : 0,
-          role: 'slider',
-          'aria-valuemin': min,
-          'aria-valuemax': max,
-          'aria-valuenow': state.singleValue,
-          'aria-label': label || 'Range slider',
-          onclick: (e: MouseEvent) => {
-            if (disabled) return;
-            const container = e.currentTarget as HTMLElement;
-            const rect = container.getBoundingClientRect();
-            const value = positionToValue(e, rect, min, max, step, vertical);
-            updateSingleValue(value, false);
-            (e.currentTarget as HTMLElement).focus();
-          },
-          onkeydown: (e: KeyboardEvent) => {
-            if (disabled) return;
-            const currentValue = state.singleValue as number;
-            const newValue = handleKeyboardNavigation(e.key, currentValue, min, max, step);
-
-            if (newValue !== null) {
-              e.preventDefault();
-              updateSingleValue(newValue, false);
-            }
-          },
-        },
-        [
-          // Track
-          m(`.track.${orientation}`),
-          // Progress
-          m(`.range-progress.${orientation}`, { style: progressStyle }),
-          // Thumb
-          m(
-            `.thumb.${orientation}`,
-            {
-              style: thumbStyle,
-              onmousedown: handleMouseDown,
+    return m('.input-field', { className: cn, style }, [
+      iconName ? m('i.material-icons.prefix', iconName) : undefined,
+      m('input[type=range]', {
+        id,
+        value: state.singleValue,
+        min,
+        max,
+        step,
+        style: { display: 'none' },
+        disabled,
+        tabindex: -1,
+      }),
+      m('div', { class: fieldClass, style: containerStyle }, [
+        m(
+          `.single-range-slider.${orientation}`,
+          {
+            tabindex: disabled ? -1 : 0,
+            role: 'slider',
+            'aria-valuemin': min,
+            'aria-valuemax': max,
+            'aria-valuenow': state.singleValue,
+            'aria-label': label || 'Range slider',
+            onclick: (e: MouseEvent) => {
+              if (disabled) return;
+              const container = e.currentTarget as HTMLElement;
+              const rect = container.getBoundingClientRect();
+              const value = positionToValue(e, rect, min, max, step, vertical);
+              updateSingleValue(value, false);
+              (e.currentTarget as HTMLElement).focus();
             },
-            m(RangeTooltip, {
-              value: state.singleValue as number,
-              position: tooltipPosition,
-              show: finalValueDisplay === 'always' || (finalValueDisplay === 'auto' && state.isDragging),
-            })
-          ),
-        ]
-      ),
-    ]),
-    label
-      ? m(Label, {
-          label,
-          id,
-          isMandatory,
-          isActive: true, // Range sliders always have active labels
-        })
-      : null,
-    helperText ? m(HelperText, { helperText }) : null,
-  ]);
+            onkeydown: (e: KeyboardEvent) => {
+              if (disabled) return;
+              const currentValue = state.singleValue as number;
+              const newValue = handleKeyboardNavigation(e.key, currentValue, min, max, step);
+              if (newValue !== null) {
+                e.preventDefault();
+                updateSingleValue(newValue, false);
+              }
+            },
+          },
+          [
+            m(`.track.${orientation}`),
+            m(`.range-progress.${orientation}`, { style: progressStyle }),
+            m(
+              `.thumb.${orientation}`,
+              { style: thumbStyle, onmousedown: handleMouseDown },
+              m(RangeTooltip, {
+                value: state.singleValue as number,
+                position: tooltipPosition,
+                show: finalValueDisplay === 'always' || (finalValueDisplay === 'auto' && state.isDragging),
+              })
+            ),
+          ]
+        ),
+      ]),
+      label ? m(Label, { label, id, isMandatory, isActive: true }) : null,
+      helperText ? m(HelperText, { helperText }) : null,
+    ]);
+  },
 };
 
-// Double Range Slider (Min/Max)
-export const renderMinMaxRange = <T>(
-  attrs: InputAttrs<T>,
-  state: any,
-  cn: string | undefined,
-  style: any,
-  iconName: string | undefined,
-  id: string,
-  label: string | undefined,
-  isMandatory: boolean | undefined,
-  helperText: string | undefined
-) => {
-  const {
-    min = 0,
-    max = 100,
-    step = 1,
-    vertical = false,
-    showValue = false,
-    valueDisplay,
-    height = '200px',
-    disabled = false,
-  } = attrs;
+// Double Range Slider Component
+export const DoubleRangeSlider = {
+  oninit({ state }: { state: any }) {
+    if (!state.componentInitialized) {
+      state.componentInitialized = true;
+    }
+  },
 
-  // Apply fallback logic for valueDisplay if not explicitly set
-  const finalValueDisplay = valueDisplay || (showValue ? 'always' : 'none');
+  onremove({ state }: { state: any }) {
+    if (state.cleanupMouseEvents) {
+      state.cleanupMouseEvents();
+      state.cleanupMouseEvents = null;
+    }
+  },
 
-  // Initialize state
-  initRangeState(state, attrs);
+  view({
+    attrs,
+    state,
+  }: {
+    attrs: InputAttrs<any> & {
+      cn?: string;
+      style?: any;
+      iconName?: string;
+      id: string;
+      label?: string;
+      isMandatory?: boolean;
+      helperText?: string;
+    };
+    state: any;
+  }) {
+    const {
+      cn,
+      style,
+      iconName,
+      id,
+      label,
+      isMandatory,
+      helperText,
+      min = 0,
+      max = 100,
+      step = 1,
+      vertical = false,
+      showValue = false,
+      valueDisplay,
+      height = '200px',
+      disabled = false,
+    } = attrs;
 
-  const minPercentage = getPercentage(state.rangeMinValue, min, max);
-  const maxPercentage = getPercentage(state.rangeMaxValue, min, max);
+    const finalValueDisplay = valueDisplay || (showValue ? 'always' : 'none');
 
-  // Only keep dynamic styles as inline, use CSS classes for static styles
-  const containerStyle = vertical ? { height } : {};
+    initRangeState(state, attrs);
 
-  const rangeStyle = vertical
-    ? {
-        bottom: `${minPercentage}%`,
-        height: `${maxPercentage - minPercentage}%`,
-      }
-    : {
-        left: `${minPercentage}%`,
-        width: `${maxPercentage - minPercentage}%`,
-      };
+    const minPercentage = getPercentage(state.rangeMinValue, min, max);
+    const maxPercentage = getPercentage(state.rangeMaxValue, min, max);
+    const containerStyle = vertical ? { height } : {};
+    const orientation = vertical ? 'vertical' : 'horizontal';
 
-  // Only keep dynamic positioning and z-index as inline styles
-  const createThumbStyle = (percentage: number, isActive: boolean) =>
-    vertical
+    const rangeStyle = vertical
       ? {
-          bottom: `${percentage}%`,
-          zIndex: isActive ? 10 : 5,
+          bottom: `${minPercentage}%`,
+          height: `${maxPercentage - minPercentage}%`,
         }
       : {
-          left: `${percentage}%`,
-          zIndex: isActive ? 10 : 5,
+          left: `${minPercentage}%`,
+          width: `${maxPercentage - minPercentage}%`,
         };
 
-  const handleMouseDown = (thumb: 'min' | 'max') => (e: MouseEvent) => {
-    if (disabled) return;
-    e.preventDefault();
-    state.isDragging = true;
-    state.activeThumb = thumb;
+    const createThumbStyle = (percentage: number, isActive: boolean) =>
+      vertical
+        ? {
+            bottom: `${percentage}%`,
+            zIndex: isActive ? 10 : 5,
+          }
+        : {
+            left: `${percentage}%`,
+            zIndex: isActive ? 10 : 5,
+          };
 
-    // Redraw immediately to show tooltip for 'auto' mode
-    if (finalValueDisplay === 'auto') {
-      m.redraw();
-    }
+    const handleMouseDown = (thumb: 'min' | 'max') => (e: MouseEvent) => {
+      if (disabled) return;
+      e.preventDefault();
+      state.isDragging = true;
+      state.activeThumb = thumb;
 
-    // Get container reference from the current target's parent
-    const thumbElement = e.currentTarget as HTMLElement;
-    const container = thumbElement.parentElement;
-    if (!container) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!state.isDragging || !container) return;
-
-      const rect = container.getBoundingClientRect();
-      const steppedValue = positionToValue(e, rect, min, max, step, vertical);
-
-      if (thumb === 'min') {
-        updateRangeValues(Math.min(steppedValue, state.rangeMaxValue), state.rangeMaxValue, attrs, state, true);
-      } else {
-        updateRangeValues(state.rangeMinValue, Math.max(steppedValue, state.rangeMinValue), attrs, state, true);
-      }
-
-      // Redraw to update the UI during drag
-      m.redraw();
-    };
-
-    const handleMouseUp = () => {
-      state.isDragging = false;
-      state.activeThumb = null;
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-
-      // Fire onchange when dragging ends
-      updateRangeValues(state.rangeMinValue, state.rangeMaxValue, attrs, state, false);
-
-      // Redraw to hide tooltip for 'auto' mode
       if (finalValueDisplay === 'auto') {
         m.redraw();
       }
+
+      const thumbElement = e.currentTarget as HTMLElement;
+      const container = thumbElement.parentElement;
+      if (!container) return;
+
+      const handleMouseMove = (e: MouseEvent) => {
+        if (!state.isDragging || !container) return;
+        const rect = container.getBoundingClientRect();
+        const steppedValue = positionToValue(e, rect, min, max, step, vertical);
+
+        if (thumb === 'min') {
+          updateRangeValues(Math.min(steppedValue, state.rangeMaxValue), state.rangeMaxValue, attrs, state, true);
+        } else {
+          updateRangeValues(state.rangeMinValue, Math.max(steppedValue, state.rangeMinValue), attrs, state, true);
+        }
+        m.redraw();
+      };
+
+      const handleMouseUp = () => {
+        state.isDragging = false;
+        state.activeThumb = null;
+        if (state.cleanupMouseEvents) {
+          state.cleanupMouseEvents();
+          state.cleanupMouseEvents = null;
+        }
+        updateRangeValues(state.rangeMinValue, state.rangeMaxValue, attrs, state, false);
+        if (finalValueDisplay === 'auto') {
+          m.redraw();
+        }
+      };
+
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+
+      state.cleanupMouseEvents = () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  };
+    const fieldClass = vertical ? 'range-field vertical' : 'range-field';
 
-  const fieldClass = vertical ? 'range-field vertical' : 'range-field';
-  const orientation = vertical ? 'vertical' : 'horizontal';
+    return m('.input-field', { className: cn, style }, [
+      iconName ? m('i.material-icons.prefix', iconName) : undefined,
+      m('input[type=range]', {
+        id,
+        value: state.rangeMinValue,
+        min,
+        max,
+        step,
+        style: { display: 'none' },
+        disabled,
+        tabindex: -1,
+      }),
+      m('input[type=range]', {
+        id: `${id}_max`,
+        value: state.rangeMaxValue,
+        min,
+        max,
+        step,
+        style: { display: 'none' },
+        disabled,
+        tabindex: -1,
+      }),
+      m(`div`, { className: fieldClass }, [
+        m(
+          `.double-range-slider.${orientation}`,
+          {
+            style: containerStyle,
+            onclick: (e: MouseEvent) => {
+              if (disabled) return;
+              const container = e.currentTarget as HTMLElement;
+              const rect = container.getBoundingClientRect();
+              const steppedValue = positionToValue(e, rect, min, max, step, vertical);
 
-  return m('.input-field', { className: cn, style }, [
-    iconName ? m('i.material-icons.prefix', iconName) : undefined,
-    // Hidden inputs for label association and accessibility
-    m('input[type=range]', {
-      id,
-      value: state.rangeMinValue,
-      min,
-      max,
-      step,
-      style: { display: 'none' },
-      disabled,
-      tabindex: -1,
-    }),
-    m('input[type=range]', {
-      id: `${id}_max`,
-      value: state.rangeMaxValue,
-      min,
-      max,
-      step,
-      style: { display: 'none' },
-      disabled,
-      tabindex: -1,
-    }),
-    m(`div`, { className: fieldClass }, [
-      m(
-        `.double-range-slider.${orientation}`,
-        {
-          style: containerStyle,
-          onclick: (e: MouseEvent) => {
-            if (disabled) return;
-            const container = e.currentTarget as HTMLElement;
-            const rect = container.getBoundingClientRect();
-            const steppedValue = positionToValue(e, rect, min, max, step, vertical);
+              const distToMin = Math.abs(steppedValue - state.rangeMinValue);
+              const distToMax = Math.abs(steppedValue - state.rangeMaxValue);
 
-            // Decide which thumb is closer
-            const distToMin = Math.abs(steppedValue - state.rangeMinValue);
-            const distToMax = Math.abs(steppedValue - state.rangeMaxValue);
-
-            if (distToMin <= distToMax) {
-              updateRangeValues(Math.min(steppedValue, state.rangeMaxValue), state.rangeMaxValue, attrs, state, false);
-              state.activeThumb = 'min';
-              // Focus the min thumb
-              const minThumb = container.querySelector('.thumb.min-thumb') as HTMLElement;
-              if (minThumb) minThumb.focus();
-            } else {
-              updateRangeValues(state.rangeMinValue, Math.max(steppedValue, state.rangeMinValue), attrs, state, false);
-              state.activeThumb = 'max';
-              // Focus the max thumb
-              const maxThumb = container.querySelector('.thumb.max-thumb') as HTMLElement;
-              if (maxThumb) maxThumb.focus();
-            }
+              if (distToMin <= distToMax) {
+                updateRangeValues(
+                  Math.min(steppedValue, state.rangeMaxValue),
+                  state.rangeMaxValue,
+                  attrs,
+                  state,
+                  false
+                );
+                state.activeThumb = 'min';
+                const minThumb = container.querySelector('.thumb.min-thumb') as HTMLElement;
+                if (minThumb) minThumb.focus();
+              } else {
+                updateRangeValues(
+                  state.rangeMinValue,
+                  Math.max(steppedValue, state.rangeMinValue),
+                  attrs,
+                  state,
+                  false
+                );
+                state.activeThumb = 'max';
+                const maxThumb = container.querySelector('.thumb.max-thumb') as HTMLElement;
+                if (maxThumb) maxThumb.focus();
+              }
+            },
           },
-        },
-        [
-          // Track
-          m(`.track.${orientation}`),
-          // Range
-          m(`.range.${orientation}`, { style: rangeStyle }),
-          // Min thumb - separate slider element for accessibility
-          m(
-            `.thumb.${orientation}.min-thumb${state.activeThumb === 'min' ? '.active' : ''}`,
-            {
-              style: createThumbStyle(minPercentage, state.activeThumb === 'min'),
-              tabindex: disabled ? -1 : 0,
-              role: 'slider',
-              'aria-valuemin': min,
-              'aria-valuemax': state.rangeMaxValue,
-              'aria-valuenow': state.rangeMinValue,
-              'aria-label': `Minimum value: ${state.rangeMinValue}`,
-              'aria-orientation': vertical ? 'vertical' : 'horizontal',
-              onmousedown: handleMouseDown('min'),
-              onclick: (e: MouseEvent) => {
-                e.stopPropagation();
-                state.activeThumb = 'min';
-                (e.currentTarget as HTMLElement).focus();
+          [
+            m(`.track.${orientation}`),
+            m(`.range.${orientation}`, { style: rangeStyle }),
+            // Min thumb
+            m(
+              `.thumb.${orientation}.min-thumb${state.activeThumb === 'min' ? '.active' : ''}`,
+              {
+                style: createThumbStyle(minPercentage, state.activeThumb === 'min'),
+                tabindex: disabled ? -1 : 0,
+                role: 'slider',
+                'aria-valuemin': min,
+                'aria-valuemax': state.rangeMaxValue,
+                'aria-valuenow': state.rangeMinValue,
+                'aria-label': `Minimum value: ${state.rangeMinValue}`,
+                'aria-orientation': vertical ? 'vertical' : 'horizontal',
+                onmousedown: handleMouseDown('min'),
+                onclick: (e: MouseEvent) => {
+                  e.stopPropagation();
+                  state.activeThumb = 'min';
+                  (e.currentTarget as HTMLElement).focus();
+                },
+                onfocus: () => {
+                  state.activeThumb = 'min';
+                },
+                onkeydown: (e: KeyboardEvent) => {
+                  if (disabled) return;
+                  const currentValue = state.rangeMinValue;
+                  const newValue = handleKeyboardNavigation(e.key, currentValue, min, max, step);
+                  if (newValue !== null) {
+                    e.preventDefault();
+                    const constrainedValue = Math.min(newValue, state.rangeMaxValue);
+                    updateRangeValues(constrainedValue, state.rangeMaxValue, attrs, state, false);
+                  }
+                },
               },
-              onfocus: () => {
-                state.activeThumb = 'min';
+              m(DoubleRangeTooltip, {
+                value: state.rangeMinValue,
+                orientation,
+                show:
+                  finalValueDisplay === 'always' ||
+                  (finalValueDisplay === 'auto' && state.isDragging && state.activeThumb === 'min'),
+              })
+            ),
+            // Max thumb
+            m(
+              `.thumb.${orientation}.max-thumb${state.activeThumb === 'max' ? '.active' : ''}`,
+              {
+                style: createThumbStyle(maxPercentage, state.activeThumb === 'max'),
+                tabindex: disabled ? -1 : 0,
+                role: 'slider',
+                'aria-valuemin': state.rangeMinValue,
+                'aria-valuemax': max,
+                'aria-valuenow': state.rangeMaxValue,
+                'aria-label': `Maximum value: ${state.rangeMaxValue}`,
+                'aria-orientation': vertical ? 'vertical' : 'horizontal',
+                onmousedown: handleMouseDown('max'),
+                onclick: (e: MouseEvent) => {
+                  e.stopPropagation();
+                  state.activeThumb = 'max';
+                  (e.currentTarget as HTMLElement).focus();
+                },
+                onfocus: () => {
+                  state.activeThumb = 'max';
+                },
+                onkeydown: (e: KeyboardEvent) => {
+                  if (disabled) return;
+                  const currentValue = state.rangeMaxValue;
+                  const newValue = handleKeyboardNavigation(e.key, currentValue, min, max, step);
+                  if (newValue !== null) {
+                    e.preventDefault();
+                    const constrainedValue = Math.max(newValue, state.rangeMinValue);
+                    updateRangeValues(state.rangeMinValue, constrainedValue, attrs, state, false);
+                  }
+                },
               },
-              onkeydown: (e: KeyboardEvent) => {
-                if (disabled) return;
-                const currentValue = state.rangeMinValue;
-                const newValue = handleKeyboardNavigation(e.key, currentValue, min, max, step);
-
-                if (newValue !== null) {
-                  e.preventDefault();
-                  const constrainedValue = Math.min(newValue, state.rangeMaxValue);
-                  updateRangeValues(constrainedValue, state.rangeMaxValue, attrs, state, false);
-                }
-              },
-            },
-            m(DoubleRangeTooltip, {
-              value: state.rangeMinValue,
-              orientation,
-              show:
-                finalValueDisplay === 'always' ||
-                (finalValueDisplay === 'auto' && state.isDragging && state.activeThumb === 'min'),
-            })
-          ),
-          // Max thumb - separate slider element for accessibility
-          m(
-            `.thumb.${orientation}.max-thumb${state.activeThumb === 'max' ? '.active' : ''}`,
-            {
-              style: createThumbStyle(maxPercentage, state.activeThumb === 'max'),
-              tabindex: disabled ? -1 : 0,
-              role: 'slider',
-              'aria-valuemin': state.rangeMinValue,
-              'aria-valuemax': max,
-              'aria-valuenow': state.rangeMaxValue,
-              'aria-label': `Maximum value: ${state.rangeMaxValue}`,
-              'aria-orientation': vertical ? 'vertical' : 'horizontal',
-              onmousedown: handleMouseDown('max'),
-              onclick: (e: MouseEvent) => {
-                e.stopPropagation();
-                state.activeThumb = 'max';
-                (e.currentTarget as HTMLElement).focus();
-              },
-              onfocus: () => {
-                state.activeThumb = 'max';
-              },
-              onkeydown: (e: KeyboardEvent) => {
-                if (disabled) return;
-                const currentValue = state.rangeMaxValue;
-                const newValue = handleKeyboardNavigation(e.key, currentValue, min, max, step);
-
-                if (newValue !== null) {
-                  e.preventDefault();
-                  const constrainedValue = Math.max(newValue, state.rangeMinValue);
-                  updateRangeValues(state.rangeMinValue, constrainedValue, attrs, state, false);
-                }
-              },
-            },
-            m(DoubleRangeTooltip, {
-              value: state.rangeMaxValue,
-              orientation,
-              show:
-                finalValueDisplay === 'always' ||
-                (finalValueDisplay === 'auto' && state.isDragging && state.activeThumb === 'max'),
-            })
-          ),
-        ]
-      ),
-    ]),
-    label
-      ? m(Label, {
-          label,
-          id,
-          isMandatory,
-          isActive: true, // Range sliders always have active labels
-        })
-      : null,
-    helperText ? m(HelperText, { helperText }) : null,
-  ]);
+              m(DoubleRangeTooltip, {
+                value: state.rangeMaxValue,
+                orientation,
+                show:
+                  finalValueDisplay === 'always' ||
+                  (finalValueDisplay === 'auto' && state.isDragging && state.activeThumb === 'max'),
+              })
+            ),
+          ]
+        ),
+      ]),
+      label ? m(Label, { label, id, isMandatory, isActive: true }) : null,
+      helperText ? m(HelperText, { helperText }) : null,
+    ]);
+  },
 };

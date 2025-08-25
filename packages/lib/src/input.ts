@@ -4,7 +4,7 @@ import { InputAttrs } from './input-options';
 import { Label, HelperText } from './label';
 import { MaterialIcon } from './material-icon';
 import { InputType } from './types';
-import { renderSingleRangeWithTooltip, renderMinMaxRange } from './range-slider';
+import { DoubleRangeSlider, SingleRangeSlider } from './range-slider';
 
 /** Character counter component that tracks text length against maxLength */
 export const CharacterCounter: FactoryComponent<{ currentLength: number; maxLength: number; show: boolean }> = () => {
@@ -265,13 +265,18 @@ const InputField =
             ? true
             : false;
         // Special rendering for minmax range sliders
-        if (type === 'range' && attrs.minmax) {
-          return renderMinMaxRange(attrs, state, cn, style, iconName, id, label, isMandatory, helperText);
-        }
-
-        // Special rendering for single range sliders with tooltips
-        if (type === 'range' && attrs.showValue) {
-          return renderSingleRangeWithTooltip(attrs, state, cn, style, iconName, id, label, isMandatory, helperText);
+        if (type === 'range' && (attrs.minmax || attrs.valueDisplay)) {
+          return m(attrs.minmax ? DoubleRangeSlider : SingleRangeSlider, {
+            ...attrs,
+            state,
+            cn,
+            style,
+            iconName,
+            id,
+            label,
+            isMandatory,
+            helperText,
+          });
         }
 
         return m('.input-field', { className: cn, style }, [

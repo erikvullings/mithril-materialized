@@ -41,4 +41,7 @@ export * from './sidenav';
 export * from './breadcrumb';
 export * from './wizard';
 export * from './treeview';
+export * from './timeline';
+export * from './masonry';
+export * from './image-list';
 export * from './types';

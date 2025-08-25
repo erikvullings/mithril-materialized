@@ -91,10 +91,10 @@ export interface InputAttrs<T = string> extends Attributes {
   minValue?: number;
   /** For range inputs with minmax: initial maximum value */
   maxValue?: number;
-  /** For range inputs: show value labels on thumbs */
-  showValue?: boolean;
+  /** For range inputs: control value display behavior. 'auto' shows on drag, 'always' shows always, 'none' never shows */
+  valueDisplay?: 'auto' | 'always' | 'none';
   /** For vertical range inputs: height of the slider */
   height?: string;
-  /** For range inputs with showValue: position of value tooltips */
+  /** For range inputs with valueDisplay: position of value tooltips */
   tooltipPos?: 'top' | 'bottom' | 'left' | 'right';
 }

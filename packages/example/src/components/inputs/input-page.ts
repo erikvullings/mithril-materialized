@@ -331,6 +331,7 @@ export const InputPage = () => {
           m(RangeInput, {
             min: 0,
             max: 100,
+            showValue: true,
             label: 'What is your favorite number between 0 and 100?',
             onchange,
           })
@@ -344,31 +345,59 @@ export const InputPage = () => {
           })`,
         }),
 
-        m('h4.header', 'RangeInput with Tooltip'),
-        m(
-          '.row',
-          m(RangeInput, {
-            min: 0,
-            max: 100,
-            initialValue: 75,
-            label: 'Range with tooltip',
-            showValue: true,
-            tooltipPos: 'top',
-            oninput: (value: number) => console.log('Range input:', value),
-            onchange: (value: number) => console.log('Range change:', value),
-          } as InputAttrs<number>)
-        ),
+        m('h4.header', 'RangeInput with valueDisplay options'),
+        m('.row', [
+          m('.col.s12', m('h6', 'Always show value')),
+          m(
+            '.col.s12',
+            m(RangeInput, {
+              min: 0,
+              max: 100,
+              initialValue: 75,
+              label: 'Always visible tooltip',
+              valueDisplay: 'always',
+              tooltipPos: 'top',
+              oninput: (value: number) => console.log('Range input:', value),
+              onchange: (value: number) => console.log('Range change:', value),
+            } as InputAttrs<number>)
+          ),
+          m('.col.s12', { style: 'margin-top: 20px;' }, m('h6', 'Show value only during drag')),
+          m(
+            '.col.s12',
+            m(RangeInput, {
+              min: 0,
+              max: 100,
+              initialValue: 50,
+              label: 'Tooltip on drag',
+              valueDisplay: 'auto',
+              tooltipPos: 'bottom',
+              oninput: (value: number) => console.log('Range input:', value),
+              onchange: (value: number) => console.log('Range change:', value),
+            } as InputAttrs<number>)
+          ),
+        ]),
         m(CodeBlock, {
-          code: `          m(RangeInput, {
-            min: 0,
-            max: 100,
-            initialValue: 75,
-            label: 'Range with tooltip',
-            showValue: true,
-            tooltipPos: 'top',
-            oninput: (value: number) => console.log('Range input:', value),
-            onchange: (value: number) => console.log('Range change:', value),
-          } as InputAttrs<number>)`,
+          code: `// Always show tooltip
+m(RangeInput, {
+  min: 0,
+  max: 100,
+  initialValue: 75,
+  label: 'Always visible tooltip',
+  valueDisplay: 'always', // 'auto' | 'always' | 'none'
+  tooltipPos: 'top',
+  onchange: (value: number) => console.log('Range change:', value),
+})
+
+// Show tooltip only during drag (recommended)
+m(RangeInput, {
+  min: 0,
+  max: 100,
+  initialValue: 50,
+  label: 'Tooltip on drag',
+  valueDisplay: 'auto', // Show during interaction only
+  tooltipPos: 'bottom',
+  onchange: (value: number) => console.log('Range change:', value),
+})`,
         }),
 
         m('h3.header', 'Enhanced Range Sliders'),
@@ -385,8 +414,8 @@ export const InputPage = () => {
               label: 'Vertical Slider',
               height: '150px',
               vertical: true,
-              showValue: true,
-              tooltipPos: 'top',
+              valueDisplay: 'auto',
+              tooltipPos: 'right',
               oninput: (value: number) => console.log('Vertical slider input:', value),
               onchange: (value: number) => console.log('Vertical slider change:', value),
             } as InputAttrs<number>)
@@ -398,9 +427,10 @@ export const InputPage = () => {
             max: 67,
             initialValue: 50,
             label: 'Vertical Slider',
-            height: '200px',
+            height: '150px',
             vertical: true,
-            showValue: true,
+            valueDisplay: 'auto', // Show tooltip on drag
+            tooltipPos: 'right', // Better for vertical sliders
             onchange: (value: number) => console.log('Vertical slider:', value),
           } as InputAttrs<number>)`,
         }),
@@ -414,7 +444,7 @@ export const InputPage = () => {
             minValue: 20,
             maxValue: 80,
             label: 'Select Range',
-            showValue: true,
+            valueDisplay: 'always',
             minmax: true,
             onchange: (minVal: number, maxVal: number) => console.log('Range:', minVal, '-', maxVal),
           } as InputAttrs<number>)
@@ -426,7 +456,7 @@ export const InputPage = () => {
             minValue: 20,
             maxValue: 80,
             label: 'Select Range',
-            showValue: true,
+            valueDisplay: 'always', // Always show values
             minmax: true,
             onchange: (minVal: number, maxVal: number) => console.log('Range:', minVal, '-', maxVal),
           } as InputAttrs<number>)`,
@@ -446,7 +476,7 @@ export const InputPage = () => {
               height: '250px',
               vertical: true,
               minmax: true,
-              showValue: true,
+              valueDisplay: 'auto',
               tooltipPos: 'right',
               oninput: (minVal: number, maxVal: number) => console.log('Vertical range input:', minVal, '-', maxVal),
               onchange: (minVal: number, maxVal: number) => console.log('Vertical range change:', minVal, '-', maxVal),
@@ -463,7 +493,8 @@ export const InputPage = () => {
             height: '250px',
             vertical: true,
             minmax: true,
-            showValue: true,
+            valueDisplay: 'auto', // Show tooltips during drag
+            tooltipPos: 'right', // Position for vertical sliders
             onchange: (minVal: number, maxVal: number) => console.log('Vertical range:', minVal, '-', maxVal),
           } as InputAttrs<number>)`,
         }),

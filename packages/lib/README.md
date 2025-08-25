@@ -54,7 +54,7 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
   - EmailInput
   - NumberInput
   - ColorInput
-  - RangeInput (with vertical and double-thumb support)
+  - RangeInput (with vertical, double-thumb support, and smart tooltip display)
   - Chips
 - [Pickers](https://erikvullings.github.io/mithril-materialized/#!/pickers)
   - DatePicker (with optional week numbers and date range selection)
@@ -83,6 +83,10 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
   - Pagination
   - PaginationControls
   - Parallax
+- [Layout & Display](https://erikvullings.github.io/mithril-materialized/#!/layout)
+  - Masonry (Pinterest-style responsive grid layout)
+  - ImageList (responsive image galleries with various layouts)
+  - Timeline (vertical timeline with events and milestones)
 - Data & Tables
   - DataTable (sorting, filtering, pagination, selection)
   - TreeView (hierarchical data with expand/collapse, selection, and customizable icons)
@@ -125,7 +129,10 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
      FileUpload,
      Sidenav,
      Breadcrumb,
-     Wizard
+     Wizard,
+     Masonry,
+     Timeline,
+     ImageList
    } from 'mithril-materialized';
 
    const MyComponent = () => ({
@@ -152,12 +159,12 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
          onchange: (value) => console.log(value)
        }),
        
-       // Enhanced range sliders
+       // Enhanced range sliders with smart tooltips
        m(RangeInput, {
          label: 'Volume',
          min: 0,
          max: 100,
-         showValue: true,
+         valueDisplay: 'auto', // Show tooltip on drag
          onchange: (value) => console.log('Volume:', value)
        }),
        
@@ -168,7 +175,7 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
          minmax: true,
          minValue: 100,
          maxValue: 500,
-         showValue: true,
+         valueDisplay: 'always', // Always show values
          onchange: (min, max) => console.log('Range:', min, '-', max)
        }),
        
@@ -178,7 +185,7 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
          max: 100,
          vertical: true,
          height: '200px',
-         showValue: true,
+         valueDisplay: 'auto',
          tooltipPos: 'right',
          onchange: (value) => console.log('Vertical:', value)
        }),
@@ -230,6 +237,52 @@ Your CSS imports can remain the same, but you no longer need the materialize-css
          iconType: 'caret',
          showConnectors: true,
          onselection: (selectedIds) => console.log('Selected:', selectedIds)
+       }),
+       
+       // Layout components
+       m(Masonry, {
+         items: [
+           { id: 1, title: 'Card 1', content: 'Short content' },
+           { id: 2, title: 'Card 2', content: 'Much longer content...' },
+           { id: 3, title: 'Card 3', content: 'Medium content' }
+         ],
+         columnWidth: 250,
+         gap: 16,
+         renderItem: (item) => m('.card', [
+           m('.card-content', [
+             m('span.card-title', item.title),
+             m('p', item.content)
+           ])
+         ])
+       }),
+       
+       m(Timeline, {
+         events: [
+           {
+             id: 1,
+             title: 'Project Started',
+             date: '2024-01-15',
+             description: 'Initial project kickoff',
+             type: 'milestone'
+           },
+           {
+             id: 2,
+             title: 'First Release',
+             date: '2024-03-20',
+             description: 'Released version 1.0',
+             type: 'release'
+           }
+         ]
+       }),
+       
+       m(ImageList, {
+         images: [
+           { src: '/image1.jpg', alt: 'Image 1' },
+           { src: '/image2.jpg', alt: 'Image 2' },
+           { src: '/image3.jpg', alt: 'Image 3' }
+         ],
+         layout: 'masonry', // 'grid' | 'masonry' | 'quilted'
+         cols: 3
        })
      ])
    });
@@ -267,8 +320,11 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 - ✅ TreeView component for hierarchical data with expand/collapse, selection, and VSCode-style connectors
 - ✅ Enhanced TypeScript definitions with better JSDoc comments
 - ✅ Performance optimizations and bundle size improvements
-- ✅ Enhanced RangeInput with vertical orientation and double-thumb range selection
+- ✅ Enhanced RangeInput with vertical orientation, double-thumb range selection, and smart tooltip display
 - ✅ Advanced DatePicker with date range selection, constraints, and format support
+- ✅ Layout components: Masonry (Pinterest-style grid), Timeline (vertical event display), ImageList (responsive galleries)
+- ✅ Improved RangeInput components converted to proper Mithril components with better lifecycle management
+- ✅ Enhanced accessibility with individual thumb slider elements and PageUp/PageDown keyboard support
 
 ### 🎯 Phase 2: Advanced Components & Features
 
@@ -305,13 +361,6 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 - Bundle analyzer and optimization tools
 - CSS-in-JS runtime support option
 
-**Ecosystem Integration:**
-
-- React compatibility layer
-- Vue.js compatibility layer
-- Web Components export option
-- PWA-friendly components
-
 ### 📊 Bundle Size Targets
 
 **Current Status (v2.0.0-beta.15):**
@@ -335,10 +384,9 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 
 We welcome contributions! Priority areas for community involvement:
 
-1. **High Impact**: New components (DataTable, Sidenav, Breadcrumb)
-2. **Medium Impact**: Accessibility improvements, performance optimizations
-3. **Documentation**: Examples, guides, API documentation
-4. **Testing**: Unit tests, visual regression tests, browser compatibility
+1. **Usage**: Accessibility improvements, performance optimizations
+2. **Documentation**: Examples, guides, API documentation
+3. **Testing**: Unit tests, visual regression tests, browser compatibility
 
 See our [contributing guide](CONTRIBUTING.md) for detailed information.
 

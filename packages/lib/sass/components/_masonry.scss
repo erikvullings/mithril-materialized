@@ -1,0 +1,241 @@
+// Masonry Component Styles
+// Pinterest-style layout with optimal item positioning
+
+@use 'variables' as *;
+@use 'theme-variables' as *;
+
+// Base masonry container
+.masonry {
+  width: 100%;
+  
+  // CSS-only fallback masonry
+  &.masonry-css {
+    display: grid;
+    grid-auto-rows: max-content;
+    
+    // Fallback for browsers without masonry support
+    @supports not (grid-template-rows: masonry) {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      
+      .masonry-item {
+        flex: 0 0 auto;
+      }
+    }
+    
+    // Future CSS Masonry support
+    @supports (grid-template-rows: masonry) {
+      grid-template-rows: masonry;
+    }
+  }
+  
+  // JavaScript-driven masonry
+  &.masonry-js {
+    position: relative;
+    
+    .masonry-item {
+      position: absolute;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  // Animated masonry
+  &.masonry-animated {
+    .masonry-item {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      animation: masonry-item-enter 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+  }
+}
+
+// Masonry items
+.masonry-item {
+  box-sizing: border-box;
+  break-inside: avoid;
+  overflow: hidden;
+  
+  // Ensure items don't exceed container width
+  max-width: 100%;
+  
+  // Base styling for interactive items
+  &[onclick] {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 2;
+      
+      [data-theme="dark"] & {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    &:focus-visible {
+      outline: 2px solid var(--mm-primary-color, #{$primary-color});
+      outline-offset: 2px;
+    }
+  }
+
+  // Animation class
+  &.masonry-item-animated {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  
+  // Common content styling
+  img, video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+  }
+  
+  // Card-like content
+  .card {
+    width: 100%;
+    margin: 0;
+    
+    .card-content {
+      padding: 12px;
+    }
+  }
+}
+
+// Responsive column layouts (CSS-only mode)
+.masonry-css {
+  // Mobile first
+  grid-template-columns: 1fr;
+  
+  // Small screens and up (576px+)
+  @media screen and (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  // Medium screens and up (768px+)
+  @media screen and (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  // Large screens and up (992px+)
+  @media screen and (min-width: 992px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  // Extra large screens and up (1200px+)
+  @media screen and (min-width: 1200px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+// Loading states
+.masonry-loading {
+  .masonry-item {
+    opacity: 0.6;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+      );
+      animation: masonry-shimmer 1.5s infinite;
+    }
+    
+    [data-theme="dark"] &::after {
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+    }
+  }
+}
+
+// Animations
+@keyframes masonry-item-enter {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes masonry-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .masonry {
+    &.masonry-animated .masonry-item {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+    
+    .masonry-item {
+      transition: none;
+      
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .masonry {
+    display: block;
+    
+    .masonry-item {
+      position: relative !important;
+      left: auto !important;
+      top: auto !important;
+      transform: none !important;
+      width: auto !important;
+      margin-bottom: 16px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+  }
+}
+
+// Accessibility improvements
+@media (prefers-reduced-motion: reduce) {
+  .masonry-item {
+    transition: none;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .masonry-item {
+    border: 1px solid;
+    
+    &[onclick]:hover {
+      box-shadow: 0 0 0 2px;
+    }
+  }
+}

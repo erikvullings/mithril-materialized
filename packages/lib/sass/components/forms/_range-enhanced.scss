@@ -364,7 +364,20 @@
     }
   }
   
-  // Focus styling for active thumb
+  // Focus styling for individual thumbs (improved accessibility)
+  .thumb {
+    &:focus,
+    &:focus-visible {
+      box-shadow: 0 0 0 3px var(--mm-primary-color-alpha-30, rgba(38, 166, 154, 0.3)), 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    &:focus:hover,
+    &:focus-visible:hover {
+      box-shadow: 0 0 0 3px var(--mm-primary-color-alpha-30, rgba(38, 166, 154, 0.3)), 0 4px 8px rgba(0,0,0,0.3);
+    }
+  }
+  
+  // Legacy focus styling for active thumb (fallback)
   &:focus .thumb.min-thumb.active,
   &:focus .thumb.max-thumb.active,
   &:focus-visible .thumb.min-thumb.active,
