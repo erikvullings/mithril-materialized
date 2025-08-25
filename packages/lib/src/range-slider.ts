@@ -7,13 +7,20 @@ const getPercentage = (value: number, min: number, max: number) => {
   return ((value - min) / (max - min)) * 100;
 };
 
-const updateRangeValues = <T>(minValue: number, maxValue: number, attrs: InputAttrs<T>, state: any, immediate: boolean) => {
+const updateRangeValues = <T>(
+  minValue: number,
+  maxValue: number,
+  attrs: InputAttrs<T>,
+  state: any,
+  immediate: boolean
+) => {
   // Ensure min doesn't exceed max and vice versa
   if (minValue > maxValue) minValue = maxValue;
   if (maxValue < minValue) maxValue = minValue;
 
   state.rangeMinValue = minValue;
   state.rangeMaxValue = maxValue;
+  state.hasUserInteracted = true;
 
   // Call oninput for immediate feedback or onchange for final changes
   if (immediate && attrs.oninput) {
@@ -54,6 +61,11 @@ export const renderSingleRangeWithTooltip = <T>(
   if (state.singleValue === undefined) {
     state.singleValue = currentValue as number;
   }
+  // Only update from initialValue if we haven't interacted yet and initialValue is different
+  if (initialValue !== undefined && state.lastInitialValue !== initialValue && !state.hasUserInteracted) {
+    state.singleValue = initialValue as number;
+    state.lastInitialValue = initialValue;
+  }
 
   const percentage = getPercentage(state.singleValue as number, min, max);
 
@@ -79,6 +91,7 @@ export const renderSingleRangeWithTooltip = <T>(
 
   const updateSingleValue = (newValue: number, immediate = false) => {
     state.singleValue = newValue;
+    state.hasUserInteracted = true;
     if (immediate && oninput) {
       oninput(newValue as T);
     } else if (!immediate && onchange) {
@@ -135,7 +148,11 @@ export const renderSingleRangeWithTooltip = <T>(
   const orientation = vertical ? 'vertical' : 'horizontal';
 
   // Determine tooltip position for vertical sliders
-  const tooltipPosition = vertical ? (tooltipPos === 'top' || tooltipPos === 'bottom' ? 'right' : tooltipPos) : tooltipPos;
+  const tooltipPosition = vertical
+    ? tooltipPos === 'top' || tooltipPos === 'bottom'
+      ? 'right'
+      : tooltipPos
+    : tooltipPos;
 
   return m('.input-field', { className: cn, style }, [
     iconName ? m('i.material-icons.prefix', iconName) : undefined,
@@ -161,7 +178,22 @@ export const renderSingleRangeWithTooltip = <T>(
           'aria-valuenow': state.singleValue,
           'aria-label': label || 'Range slider',
           onclick: (e: MouseEvent) => {
-            // Focus the slider when clicked
+            if (disabled) return;
+            const container = e.currentTarget as HTMLElement;
+            const rect = container.getBoundingClientRect();
+            let percentage;
+
+            if (vertical) {
+              percentage = ((rect.bottom - e.clientY) / rect.height) * 100;
+            } else {
+              percentage = ((e.clientX - rect.left) / rect.width) * 100;
+            }
+
+            percentage = Math.max(0, Math.min(100, percentage));
+            const value = min + (percentage / 100) * (max - min);
+            const steppedValue = Math.round(value / step) * step;
+
+            updateSingleValue(steppedValue, false);
             (e.currentTarget as HTMLElement).focus();
           },
           onkeydown: (e: KeyboardEvent) => {
@@ -207,9 +239,7 @@ export const renderSingleRangeWithTooltip = <T>(
               style: thumbStyle,
               onmousedown: handleMouseDown,
             },
-            showValue
-              ? m(`.value-tooltip.${tooltipPosition}`, (state.singleValue as number).toFixed(0))
-              : null
+            showValue ? m(`.value-tooltip.${tooltipPosition}`, (state.singleValue as number).toFixed(0)) : null
           ),
         ]
       ),
@@ -257,6 +287,17 @@ export const renderMinMaxRange = <T>(
   if (state.rangeMinValue === undefined || state.rangeMaxValue === undefined) {
     state.rangeMinValue = currentMinValue;
     state.rangeMaxValue = currentMaxValue;
+  }
+  // Only update from props if we haven't interacted yet and values are different
+  if (
+    !state.hasUserInteracted &&
+    ((minValue !== undefined && state.lastMinValue !== minValue) ||
+      (maxValue !== undefined && state.lastMaxValue !== maxValue))
+  ) {
+    state.rangeMinValue = currentMinValue;
+    state.rangeMaxValue = currentMaxValue;
+    state.lastMinValue = minValue;
+    state.lastMaxValue = maxValue;
   }
 
   // Initialize active thumb if not set
@@ -383,9 +424,36 @@ export const renderMinMaxRange = <T>(
           'aria-valuetext': `${state.rangeMinValue} to ${state.rangeMaxValue}`,
           'aria-label': label || 'Range slider',
           onclick: (e: MouseEvent) => {
-            // Focus the slider when clicked
+            if (disabled) return;
+            const container = e.currentTarget as HTMLElement;
+            const rect = container.getBoundingClientRect();
+            let percentage;
+
+            if (vertical) {
+              percentage = ((rect.bottom - e.clientY) / rect.height) * 100;
+            } else {
+              percentage = ((e.clientX - rect.left) / rect.width) * 100;
+            }
+
+            percentage = Math.max(0, Math.min(100, percentage));
+            const value = min + (percentage / 100) * (max - min);
+            const steppedValue = Math.round(value / step) * step;
+
+            // Decide which thumb is closer
+            const distToMin = Math.abs(steppedValue - state.rangeMinValue);
+            const distToMax = Math.abs(steppedValue - state.rangeMaxValue);
+
+            if (distToMin <= distToMax) {
+              updateRangeValues(Math.min(steppedValue, state.rangeMaxValue), state.rangeMaxValue, attrs, state, false);
+              state.activeThumb = 'min';
+            } else {
+              updateRangeValues(state.rangeMinValue, Math.max(steppedValue, state.rangeMinValue), attrs, state, false);
+              state.activeThumb = 'max';
+            }
+
             (e.currentTarget as HTMLElement).focus();
           },
+
           onkeydown: (e: KeyboardEvent) => {
             if (disabled) return;
             let newMinValue = state.rangeMinValue;
@@ -428,7 +496,8 @@ export const renderMinMaxRange = <T>(
                     e.preventDefault();
                     state.activeThumb = 'max';
                   }
-                } else { // activeThumb === 'max'
+                } else {
+                  // activeThumb === 'max'
                   if (e.shiftKey) {
                     // Shift+Tab from max thumb: go to min thumb
                     e.preventDefault();
