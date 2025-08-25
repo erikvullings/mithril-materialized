@@ -2,9 +2,122 @@ import m from 'mithril';
 import { InputAttrs } from './input-options';
 import { Label, HelperText } from './label';
 
+// Tooltip component for range sliders
+const RangeTooltip = {
+  view: ({ attrs: { show, position, value } }: { attrs: { value: number; position: string; show: boolean } }) => {
+    return show ? m(`.value-tooltip.${position}`, value.toFixed(0)) : null;
+  },
+};
+
+const DoubleRangeTooltip = {
+  view: ({ attrs: { show, orientation, value } }: { attrs: { value: number; orientation: string; show: boolean } }) => {
+    return show ? m(`.value.${orientation}`, value.toFixed(0)) : null;
+  },
+};
+
 // Utility functions
 const getPercentage = (value: number, min: number, max: number) => {
   return ((value - min) / (max - min)) * 100;
+};
+
+const positionToValue = (
+  e: MouseEvent,
+  rect: DOMRect,
+  min: number,
+  max: number,
+  step: number,
+  vertical: boolean
+): number => {
+  let percentage;
+
+  if (vertical) {
+    percentage = ((rect.bottom - e.clientY) / rect.height) * 100;
+  } else {
+    percentage = ((e.clientX - rect.left) / rect.width) * 100;
+  }
+
+  percentage = Math.max(0, Math.min(100, percentage));
+  const value = min + (percentage / 100) * (max - min);
+  return Math.round(value / step) * step;
+};
+
+const handleKeyboardNavigation = (
+  key: string,
+  currentValue: number,
+  min: number,
+  max: number,
+  step: number
+): number | null => {
+  const largeStep = step * 10;
+
+  switch (key) {
+    case 'ArrowLeft':
+    case 'ArrowDown':
+      return Math.max(min, currentValue - step);
+    case 'ArrowRight':
+    case 'ArrowUp':
+      return Math.min(max, currentValue + step);
+    case 'PageDown':
+      return Math.max(min, currentValue - largeStep);
+    case 'PageUp':
+      return Math.min(max, currentValue + largeStep);
+    case 'Home':
+      return min;
+    case 'End':
+      return max;
+    default:
+      return null;
+  }
+};
+
+// Removed unused createDragHandler utility - keeping individual implementations for better control
+
+const initRangeState = (state: any, attrs: any) => {
+  const { min = 0, max = 100, initialValue, minValue, maxValue } = attrs;
+
+  // Initialize single range value
+  if (initialValue !== undefined) {
+    const currentValue = initialValue;
+    if (state.singleValue === undefined) {
+      state.singleValue = currentValue;
+    }
+    if (state.lastInitialValue !== initialValue && !state.hasUserInteracted) {
+      state.singleValue = initialValue;
+      state.lastInitialValue = initialValue;
+    }
+  } else if (state.singleValue === undefined) {
+    state.singleValue = min;
+  }
+
+  // Initialize range values
+  const currentMinValue = minValue !== undefined ? minValue : min;
+  const currentMaxValue = maxValue !== undefined ? maxValue : max;
+
+  if (state.rangeMinValue === undefined || state.rangeMaxValue === undefined) {
+    state.rangeMinValue = currentMinValue;
+    state.rangeMaxValue = currentMaxValue;
+  }
+
+  if (
+    !state.hasUserInteracted &&
+    ((minValue !== undefined && state.lastMinValue !== minValue) ||
+      (maxValue !== undefined && state.lastMaxValue !== maxValue))
+  ) {
+    state.rangeMinValue = currentMinValue;
+    state.rangeMaxValue = currentMaxValue;
+    state.lastMinValue = minValue;
+    state.lastMaxValue = maxValue;
+  }
+
+  // Initialize active thumb if not set
+  if (state.activeThumb === null) {
+    state.activeThumb = 'min';
+  }
+
+  // Initialize dragging state
+  if (state.isDragging === undefined) {
+    state.isDragging = false;
+  }
 };
 
 const updateRangeValues = <T>(
@@ -46,9 +159,9 @@ export const renderSingleRangeWithTooltip = <T>(
     min = 0,
     max = 100,
     step = 1,
-    initialValue,
     vertical = false,
     showValue = false,
+    valueDisplay,
     height = '200px',
     disabled = false,
     tooltipPos = 'top',
@@ -56,16 +169,11 @@ export const renderSingleRangeWithTooltip = <T>(
     onchange,
   } = attrs;
 
-  // Initialize single range value
-  const currentValue = initialValue !== undefined ? initialValue : state.singleValue || min;
-  if (state.singleValue === undefined) {
-    state.singleValue = currentValue as number;
-  }
-  // Only update from initialValue if we haven't interacted yet and initialValue is different
-  if (initialValue !== undefined && state.lastInitialValue !== initialValue && !state.hasUserInteracted) {
-    state.singleValue = initialValue as number;
-    state.lastInitialValue = initialValue;
-  }
+  // Apply fallback logic for valueDisplay if not explicitly set
+  const finalValueDisplay = valueDisplay || (showValue ? 'always' : 'none');
+
+  // Initialize state
+  initRangeState(state, attrs);
 
   const percentage = getPercentage(state.singleValue as number, min, max);
 
@@ -86,7 +194,6 @@ export const renderSingleRangeWithTooltip = <T>(
       }
     : {
         left: `${percentage}%`,
-        marginLeft: '-10px', // Half of thumb size (20px)
       };
 
   const updateSingleValue = (newValue: number, immediate = false) => {
@@ -104,6 +211,11 @@ export const renderSingleRangeWithTooltip = <T>(
     e.preventDefault();
     state.isDragging = true;
 
+    // Redraw immediately to show tooltip for 'auto' mode
+    if (finalValueDisplay === 'auto') {
+      m.redraw();
+    }
+
     // Get container reference from the current target's parent
     const thumbElement = e.currentTarget as HTMLElement;
     const container = thumbElement.parentElement;
@@ -113,21 +225,8 @@ export const renderSingleRangeWithTooltip = <T>(
       if (!state.isDragging || !container) return;
 
       const rect = container.getBoundingClientRect();
-      let percentage;
-
-      if (vertical) {
-        percentage = ((rect.bottom - e.clientY) / rect.height) * 100;
-      } else {
-        percentage = ((e.clientX - rect.left) / rect.width) * 100;
-      }
-
-      percentage = Math.max(0, Math.min(100, percentage));
-      const value = min + (percentage / 100) * (max - min);
-      const steppedValue = Math.round(value / step) * step;
-
-      updateSingleValue(steppedValue, true);
-
-      // Redraw to update the UI during drag
+      const value = positionToValue(e, rect, min, max, step, vertical);
+      updateSingleValue(value, true);
       m.redraw();
     };
 
@@ -138,6 +237,11 @@ export const renderSingleRangeWithTooltip = <T>(
 
       // Fire onchange when dragging ends
       updateSingleValue(state.singleValue as number, false);
+
+      // Redraw to hide tooltip for 'auto' mode
+      if (finalValueDisplay === 'auto') {
+        m.redraw();
+      }
     };
 
     document.addEventListener('mousemove', handleMouseMove);
@@ -181,49 +285,18 @@ export const renderSingleRangeWithTooltip = <T>(
             if (disabled) return;
             const container = e.currentTarget as HTMLElement;
             const rect = container.getBoundingClientRect();
-            let percentage;
-
-            if (vertical) {
-              percentage = ((rect.bottom - e.clientY) / rect.height) * 100;
-            } else {
-              percentage = ((e.clientX - rect.left) / rect.width) * 100;
-            }
-
-            percentage = Math.max(0, Math.min(100, percentage));
-            const value = min + (percentage / 100) * (max - min);
-            const steppedValue = Math.round(value / step) * step;
-
-            updateSingleValue(steppedValue, false);
+            const value = positionToValue(e, rect, min, max, step, vertical);
+            updateSingleValue(value, false);
             (e.currentTarget as HTMLElement).focus();
           },
           onkeydown: (e: KeyboardEvent) => {
             if (disabled) return;
-            let newValue = state.singleValue as number;
-            switch (e.key) {
-              case 'ArrowLeft':
-              case 'ArrowDown':
-                e.preventDefault();
-                newValue = Math.max(min, newValue - step);
-                updateSingleValue(newValue, false);
-                // m.redraw();
-                break;
-              case 'ArrowRight':
-              case 'ArrowUp':
-                e.preventDefault();
-                newValue = Math.min(max, newValue + step);
-                updateSingleValue(newValue, false);
-                // m.redraw();
-                break;
-              case 'Home':
-                e.preventDefault();
-                updateSingleValue(min, false);
-                // m.redraw();
-                break;
-              case 'End':
-                e.preventDefault();
-                updateSingleValue(max, false);
-                // m.redraw();
-                break;
+            const currentValue = state.singleValue as number;
+            const newValue = handleKeyboardNavigation(e.key, currentValue, min, max, step);
+
+            if (newValue !== null) {
+              e.preventDefault();
+              updateSingleValue(newValue, false);
             }
           },
         },
@@ -239,7 +312,11 @@ export const renderSingleRangeWithTooltip = <T>(
               style: thumbStyle,
               onmousedown: handleMouseDown,
             },
-            showValue ? m(`.value-tooltip.${tooltipPosition}`, (state.singleValue as number).toFixed(0)) : null
+            m(RangeTooltip, {
+              value: state.singleValue as number,
+              position: tooltipPosition,
+              show: finalValueDisplay === 'always' || (finalValueDisplay === 'auto' && state.isDragging),
+            })
           ),
         ]
       ),
@@ -272,38 +349,18 @@ export const renderMinMaxRange = <T>(
     min = 0,
     max = 100,
     step = 1,
-    minValue,
-    maxValue,
     vertical = false,
     showValue = false,
+    valueDisplay,
     height = '200px',
     disabled = false,
   } = attrs;
 
-  // Initialize range values
-  const currentMinValue = minValue !== undefined ? minValue : attrs.minValue || min;
-  const currentMaxValue = maxValue !== undefined ? maxValue : attrs.maxValue || max;
+  // Apply fallback logic for valueDisplay if not explicitly set
+  const finalValueDisplay = valueDisplay || (showValue ? 'always' : 'none');
 
-  if (state.rangeMinValue === undefined || state.rangeMaxValue === undefined) {
-    state.rangeMinValue = currentMinValue;
-    state.rangeMaxValue = currentMaxValue;
-  }
-  // Only update from props if we haven't interacted yet and values are different
-  if (
-    !state.hasUserInteracted &&
-    ((minValue !== undefined && state.lastMinValue !== minValue) ||
-      (maxValue !== undefined && state.lastMaxValue !== maxValue))
-  ) {
-    state.rangeMinValue = currentMinValue;
-    state.rangeMaxValue = currentMaxValue;
-    state.lastMinValue = minValue;
-    state.lastMaxValue = maxValue;
-  }
-
-  // Initialize active thumb if not set
-  if (state.activeThumb === null) {
-    state.activeThumb = 'min';
-  }
+  // Initialize state
+  initRangeState(state, attrs);
 
   const minPercentage = getPercentage(state.rangeMinValue, min, max);
   const maxPercentage = getPercentage(state.rangeMaxValue, min, max);
@@ -330,7 +387,6 @@ export const renderMinMaxRange = <T>(
         }
       : {
           left: `${percentage}%`,
-          marginLeft: '-10px', // Half of thumb size (20px)
           zIndex: isActive ? 10 : 5,
         };
 
@@ -339,6 +395,11 @@ export const renderMinMaxRange = <T>(
     e.preventDefault();
     state.isDragging = true;
     state.activeThumb = thumb;
+
+    // Redraw immediately to show tooltip for 'auto' mode
+    if (finalValueDisplay === 'auto') {
+      m.redraw();
+    }
 
     // Get container reference from the current target's parent
     const thumbElement = e.currentTarget as HTMLElement;
@@ -349,17 +410,7 @@ export const renderMinMaxRange = <T>(
       if (!state.isDragging || !container) return;
 
       const rect = container.getBoundingClientRect();
-      let percentage;
-
-      if (vertical) {
-        percentage = ((rect.bottom - e.clientY) / rect.height) * 100;
-      } else {
-        percentage = ((e.clientX - rect.left) / rect.width) * 100;
-      }
-
-      percentage = Math.max(0, Math.min(100, percentage));
-      const value = min + (percentage / 100) * (max - min);
-      const steppedValue = Math.round(value / step) * step;
+      const steppedValue = positionToValue(e, rect, min, max, step, vertical);
 
       if (thumb === 'min') {
         updateRangeValues(Math.min(steppedValue, state.rangeMaxValue), state.rangeMaxValue, attrs, state, true);
@@ -379,6 +430,11 @@ export const renderMinMaxRange = <T>(
 
       // Fire onchange when dragging ends
       updateRangeValues(state.rangeMinValue, state.rangeMaxValue, attrs, state, false);
+
+      // Redraw to hide tooltip for 'auto' mode
+      if (finalValueDisplay === 'auto') {
+        m.redraw();
+      }
     };
 
     document.addEventListener('mousemove', handleMouseMove);
@@ -416,28 +472,11 @@ export const renderMinMaxRange = <T>(
         `.double-range-slider.${orientation}`,
         {
           style: containerStyle,
-          tabindex: disabled ? -1 : 0,
-          role: 'slider',
-          'aria-valuemin': min,
-          'aria-valuemax': max,
-          'aria-valuenow': state.rangeMinValue,
-          'aria-valuetext': `${state.rangeMinValue} to ${state.rangeMaxValue}`,
-          'aria-label': label || 'Range slider',
           onclick: (e: MouseEvent) => {
             if (disabled) return;
             const container = e.currentTarget as HTMLElement;
             const rect = container.getBoundingClientRect();
-            let percentage;
-
-            if (vertical) {
-              percentage = ((rect.bottom - e.clientY) / rect.height) * 100;
-            } else {
-              percentage = ((e.clientX - rect.left) / rect.width) * 100;
-            }
-
-            percentage = Math.max(0, Math.min(100, percentage));
-            const value = min + (percentage / 100) * (max - min);
-            const steppedValue = Math.round(value / step) * step;
+            const steppedValue = positionToValue(e, rect, min, max, step, vertical);
 
             // Decide which thumb is closer
             const distToMin = Math.abs(steppedValue - state.rangeMinValue);
@@ -446,86 +485,15 @@ export const renderMinMaxRange = <T>(
             if (distToMin <= distToMax) {
               updateRangeValues(Math.min(steppedValue, state.rangeMaxValue), state.rangeMaxValue, attrs, state, false);
               state.activeThumb = 'min';
+              // Focus the min thumb
+              const minThumb = container.querySelector('.thumb.min-thumb') as HTMLElement;
+              if (minThumb) minThumb.focus();
             } else {
               updateRangeValues(state.rangeMinValue, Math.max(steppedValue, state.rangeMinValue), attrs, state, false);
               state.activeThumb = 'max';
-            }
-
-            (e.currentTarget as HTMLElement).focus();
-          },
-
-          onkeydown: (e: KeyboardEvent) => {
-            if (disabled) return;
-            let newMinValue = state.rangeMinValue;
-            let newMaxValue = state.rangeMaxValue;
-            const activeThumb = state.activeThumb || 'min';
-
-            switch (e.key) {
-              case 'ArrowLeft':
-              case 'ArrowDown':
-                e.preventDefault();
-                if (activeThumb === 'min') {
-                  newMinValue = Math.max(min, newMinValue - step);
-                  updateRangeValues(newMinValue, newMaxValue, attrs, state, false);
-                } else {
-                  newMaxValue = Math.max(newMinValue, newMaxValue - step);
-                  updateRangeValues(newMinValue, newMaxValue, attrs, state, false);
-                }
-                // m.redraw();
-                break;
-              case 'ArrowRight':
-              case 'ArrowUp':
-                e.preventDefault();
-                if (activeThumb === 'min') {
-                  newMinValue = Math.min(newMaxValue, newMinValue + step);
-                  updateRangeValues(newMinValue, newMaxValue, attrs, state, false);
-                } else {
-                  newMaxValue = Math.min(max, newMaxValue + step);
-                  updateRangeValues(newMinValue, newMaxValue, attrs, state, false);
-                }
-                // m.redraw();
-                break;
-              case 'Tab':
-                // Handle Tab navigation properly
-                if (activeThumb === 'min') {
-                  if (e.shiftKey) {
-                    // Shift+Tab from min thumb: go to previous element (let browser handle)
-                    return; // Don't prevent default
-                  } else {
-                    // Tab from min thumb: go to max thumb
-                    e.preventDefault();
-                    state.activeThumb = 'max';
-                  }
-                } else {
-                  // activeThumb === 'max'
-                  if (e.shiftKey) {
-                    // Shift+Tab from max thumb: go to min thumb
-                    e.preventDefault();
-                    state.activeThumb = 'min';
-                  } else {
-                    // Tab from max thumb: go to next element (let browser handle)
-                    return; // Don't prevent default
-                  }
-                }
-                break;
-              case 'Home':
-                e.preventDefault();
-                if (activeThumb === 'min') {
-                  updateRangeValues(min, newMaxValue, attrs, state, false);
-                } else {
-                  updateRangeValues(newMinValue, newMinValue, attrs, state, false);
-                }
-                // m.redraw();
-                break;
-              case 'End':
-                e.preventDefault();
-                if (activeThumb === 'min') {
-                  updateRangeValues(newMaxValue, newMaxValue, attrs, state, false);
-                } else {
-                  updateRangeValues(newMinValue, max, attrs, state, false);
-                }
-                // m.redraw();
-                break;
+              // Focus the max thumb
+              const maxThumb = container.querySelector('.thumb.max-thumb') as HTMLElement;
+              if (maxThumb) maxThumb.focus();
             }
           },
         },
@@ -534,31 +502,87 @@ export const renderMinMaxRange = <T>(
           m(`.track.${orientation}`),
           // Range
           m(`.range.${orientation}`, { style: rangeStyle }),
-          // Min thumb
+          // Min thumb - separate slider element for accessibility
           m(
             `.thumb.${orientation}.min-thumb${state.activeThumb === 'min' ? '.active' : ''}`,
             {
               style: createThumbStyle(minPercentage, state.activeThumb === 'min'),
+              tabindex: disabled ? -1 : 0,
+              role: 'slider',
+              'aria-valuemin': min,
+              'aria-valuemax': state.rangeMaxValue,
+              'aria-valuenow': state.rangeMinValue,
+              'aria-label': `Minimum value: ${state.rangeMinValue}`,
+              'aria-orientation': vertical ? 'vertical' : 'horizontal',
               onmousedown: handleMouseDown('min'),
-              onclick: () => {
+              onclick: (e: MouseEvent) => {
+                e.stopPropagation();
                 state.activeThumb = 'min';
-                // m.redraw();
+                (e.currentTarget as HTMLElement).focus();
+              },
+              onfocus: () => {
+                state.activeThumb = 'min';
+              },
+              onkeydown: (e: KeyboardEvent) => {
+                if (disabled) return;
+                const currentValue = state.rangeMinValue;
+                const newValue = handleKeyboardNavigation(e.key, currentValue, min, max, step);
+
+                if (newValue !== null) {
+                  e.preventDefault();
+                  const constrainedValue = Math.min(newValue, state.rangeMaxValue);
+                  updateRangeValues(constrainedValue, state.rangeMaxValue, attrs, state, false);
+                }
               },
             },
-            showValue ? m(`.value.${orientation}`, state.rangeMinValue.toFixed(0)) : null
+            m(DoubleRangeTooltip, {
+              value: state.rangeMinValue,
+              orientation,
+              show:
+                finalValueDisplay === 'always' ||
+                (finalValueDisplay === 'auto' && state.isDragging && state.activeThumb === 'min'),
+            })
           ),
-          // Max thumb
+          // Max thumb - separate slider element for accessibility
           m(
             `.thumb.${orientation}.max-thumb${state.activeThumb === 'max' ? '.active' : ''}`,
             {
               style: createThumbStyle(maxPercentage, state.activeThumb === 'max'),
+              tabindex: disabled ? -1 : 0,
+              role: 'slider',
+              'aria-valuemin': state.rangeMinValue,
+              'aria-valuemax': max,
+              'aria-valuenow': state.rangeMaxValue,
+              'aria-label': `Maximum value: ${state.rangeMaxValue}`,
+              'aria-orientation': vertical ? 'vertical' : 'horizontal',
               onmousedown: handleMouseDown('max'),
-              onclick: () => {
+              onclick: (e: MouseEvent) => {
+                e.stopPropagation();
                 state.activeThumb = 'max';
-                // m.redraw();
+                (e.currentTarget as HTMLElement).focus();
+              },
+              onfocus: () => {
+                state.activeThumb = 'max';
+              },
+              onkeydown: (e: KeyboardEvent) => {
+                if (disabled) return;
+                const currentValue = state.rangeMaxValue;
+                const newValue = handleKeyboardNavigation(e.key, currentValue, min, max, step);
+
+                if (newValue !== null) {
+                  e.preventDefault();
+                  const constrainedValue = Math.max(newValue, state.rangeMinValue);
+                  updateRangeValues(state.rangeMinValue, constrainedValue, attrs, state, false);
+                }
               },
             },
-            showValue ? m(`.value.${orientation}`, state.rangeMaxValue.toFixed(0)) : null
+            m(DoubleRangeTooltip, {
+              value: state.rangeMaxValue,
+              orientation,
+              show:
+                finalValueDisplay === 'always' ||
+                (finalValueDisplay === 'auto' && state.isDragging && state.activeThumb === 'max'),
+            })
           ),
         ]
       ),
