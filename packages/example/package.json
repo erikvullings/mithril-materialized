@@ -22,7 +22,7 @@
   "target": "web",
   "dependencies": {
     "material-icons": "^1.13.14",
-    "mithril": "^2.3.3",
+    "mithril": "^2.3.5",
     "mithril-materialized": "workspace:*"
   },
   "devDependencies": {
@@ -30,15 +30,15 @@
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^7.0.2",
     "dotenv-webpack": "^8.1.1",
-    "html-webpack-plugin": "^5.6.3",
+    "html-webpack-plugin": "^5.6.4",
     "html-webpack-tags-plugin": "^3.0.2",
-    "mini-css-extract-plugin": "^2.9.3",
+    "mini-css-extract-plugin": "^2.9.4",
     "rimraf": "^6.0.1",
     "style-loader": "^4.0.0",
-    "ts-loader": "^9.5.2",
+    "ts-loader": "^9.5.4",
     "tslib": "^2.8.1",
     "typescript": "^5.9.2",
-    "webpack": "^5.101.0",
+    "webpack": "^5.101.3",
     "webpack-cli": "6.0.1",
     "webpack-dev-server": "^5.2.2"
   }

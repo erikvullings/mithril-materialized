@@ -1,6 +1,6 @@
 {
-  "name": "mithril-materialized",
-  "version": "2.0.0-beta.15",
+  "name": "mithril-materialized-monorepo",
+  "version": "2.0.0-beta.14",
   "private": true,
   "description": "A materialize library for mithril.",
   "scripts": {
@@ -23,14 +23,14 @@
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
   "devDependencies": {
-    "pnpm": "10.11.0",
+    "pnpm": "10.15.0",
     "rimraf": "^6.0.1",
     "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/commit-analyzer": "^11.1.0",
+    "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^9.2.6",
-    "@semantic-release/npm": "^11.0.2",
-    "@semantic-release/release-notes-generator": "^12.1.0",
-    "semantic-release": "^22.0.12"
+    "@semantic-release/github": "^11.0.4",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.0.3",
+    "semantic-release": "^24.2.7"
   }
 }
