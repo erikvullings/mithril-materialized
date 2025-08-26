@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/erikvullings/mithril-materialized/compare/v2.0.0...v2.0.1) (2025-08-26)
+
+
+### Bug Fixes
+
+* resolve Mithril attrs reuse warnings ([79c8446](https://github.com/erikvullings/mithril-materialized/commit/79c8446723d89ce1317c88d0d6af2c4d3f20091f))
+
 # [2.0.0](https://github.com/erikvullings/mithril-materialized/compare/v1.4.2...v2.0.0) (2025-08-26)
 
 
