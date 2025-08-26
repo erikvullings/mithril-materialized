@@ -119,11 +119,11 @@ export const isValidationError = (result: ValidationResult): result is Validatio
  * ```typescript
  * // Standard clickable button (default)
  * variant: 'button'
- * 
+ *
  * // Form submission button
  * variant: 'submit'
- * 
- * // Form reset button  
+ *
+ * // Form reset button
  * variant: 'reset'
  * ```
  */
@@ -165,7 +165,7 @@ export type InputValue<T extends InputType> = T extends 'number' | 'range'
 /**
  * Icon class using template literal types for better IntelliSense
  */
-export type IconClass = ComponentSize | MaterialPosition | `${ComponentSize} ${MaterialPosition}`;
+export type IconClass = ComponentSize | MaterialPosition | `${ComponentSize} ${MaterialPosition}` | string;
 
 /**
  * Modal type discriminated union
