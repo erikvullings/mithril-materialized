@@ -1,3 +1,5 @@
+# [3.1.0](https://github.com/erikvullings/mithril-materialized/compare/v3.0.0...v3.1.0) (2025-08-26)
+
 # [3.0.0](https://github.com/erikvullings/mithril-materialized/compare/v2.0.1...v3.0.0) (2025-08-26)
 
 
