@@ -1,6 +1,43 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
 
+export interface FileUploadI18n {
+  /** Default label text for upload area */
+  label?: string;
+  /** Text for selected files section */
+  selectedFiles?: string;
+  /** Text for accepted file types */
+  acceptedTypes?: string;
+  /** Remove file button title */
+  removeFile?: string;
+  /** File size limit error message template (use {maxSize} placeholder) */
+  fileSizeExceeds?: string;
+  /** File type not accepted error message template (use {accept} placeholder) */
+  fileTypeNotAccepted?: string;
+  /** File size units */
+  fileSizeUnits?: {
+    bytes?: string;
+    kb?: string;
+    mb?: string;
+    gb?: string;
+  };
+}
+
+const defaultI18n: Required<FileUploadI18n> = {
+  label: 'Choose files or drag them here',
+  selectedFiles: 'Selected Files:',
+  acceptedTypes: 'Accepted:',
+  removeFile: 'Remove file',
+  fileSizeExceeds: 'File size exceeds {maxSize}MB limit',
+  fileTypeNotAccepted: 'File type not accepted. Accepted: {accept}',
+  fileSizeUnits: {
+    bytes: 'B',
+    kb: 'KB',
+    mb: 'MB',
+    gb: 'GB',
+  },
+};
+
 export interface FileUploadAttrs extends Attributes {
   /** Accept specific file types (e.g., "image/*", ".pdf,.doc") */
   accept?: string;
@@ -28,6 +65,8 @@ export interface FileUploadAttrs extends Attributes {
   className?: string;
   /** Validation error message */
   error?: string;
+  /** Internationalization */
+  i18n?: FileUploadI18n;
 }
 
 interface FileWithPreview extends File {
@@ -50,11 +89,11 @@ interface FileUploadState {
 export const FileUpload: FactoryComponent<FileUploadAttrs> = () => {
   let state: FileUploadState;
 
-  const validateFile = (file: File, attrs: FileUploadAttrs): string | null => {
+  const validateFile = (file: File, attrs: FileUploadAttrs, labels: Required<FileUploadI18n>): string | null => {
     // Check file size
     if (attrs.maxSize && file.size > attrs.maxSize) {
       const maxSizeMB = (attrs.maxSize / (1024 * 1024)).toFixed(1);
-      return `File size exceeds ${maxSizeMB}MB limit`;
+      return labels.fileSizeExceeds.replace('{maxSize}', maxSizeMB);
     }
 
     // Check file type
@@ -71,7 +110,7 @@ export const FileUpload: FactoryComponent<FileUploadAttrs> = () => {
       });
 
       if (!isAccepted) {
-        return `File type not accepted. Accepted: ${attrs.accept}`;
+        return labels.fileTypeNotAccepted.replace('{accept}', attrs.accept);
       }
     }
 
@@ -89,13 +128,13 @@ export const FileUpload: FactoryComponent<FileUploadAttrs> = () => {
     }
   };
 
-  const handleFiles = (fileList: FileList, attrs: FileUploadAttrs): void => {
+  const handleFiles = (fileList: FileList, attrs: FileUploadAttrs, labels: Required<FileUploadI18n>): void => {
     const newFiles: FileWithPreview[] = Array.from(fileList);
     const validFiles: FileWithPreview[] = [];
 
     // Validate each file
     for (const file of newFiles) {
-      const error = validateFile(file, attrs);
+      const error = validateFile(file, attrs, labels);
       if (error) {
         file.uploadError = error;
       } else {
@@ -136,10 +175,10 @@ export const FileUpload: FactoryComponent<FileUploadAttrs> = () => {
     }
   };
 
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 B';
+  const formatFileSize = (bytes: number, labels: Required<FileUploadI18n>): string => {
+    if (bytes === 0) return `0 ${labels.fileSizeUnits.bytes}`;
     const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const sizes = [labels.fileSizeUnits.bytes, labels.fileSizeUnits.kb, labels.fileSizeUnits.mb, labels.fileSizeUnits.gb];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
   };
@@ -159,12 +198,16 @@ export const FileUpload: FactoryComponent<FileUploadAttrs> = () => {
         accept,
         multiple = false,
         disabled = false,
-        label = 'Choose files or drag them here',
+        label,
         helperText,
         showPreview = true,
         className = '',
         error,
+        i18n,
       } = attrs;
+
+      const labels = { ...defaultI18n, ...i18n };
+      const displayLabel = label || labels.label;
 
       return m('.file-upload-container', { class: className }, [
         // Upload area
@@ -199,7 +242,7 @@ export const FileUpload: FactoryComponent<FileUploadAttrs> = () => {
               state.isDragOver = false;
 
               if (e.dataTransfer?.files) {
-                handleFiles(e.dataTransfer.files, attrs);
+                handleFiles(e.dataTransfer.files, attrs, labels);
               }
             },
             onclick: () => {
@@ -218,16 +261,16 @@ export const FileUpload: FactoryComponent<FileUploadAttrs> = () => {
               onchange: (e: Event) => {
                 const target = e.target as HTMLInputElement;
                 if (target.files) {
-                  handleFiles(target.files, attrs);
+                  handleFiles(target.files, attrs, labels);
                 }
               },
             }),
 
             m('.file-upload-content', [
               m('i.material-icons.file-upload-icon', 'cloud_upload'),
-              m('p.file-upload-label', label),
+              m('p.file-upload-label', displayLabel),
               helperText && m('p.file-upload-helper', helperText),
-              accept && m('p.file-upload-types', `Accepted: ${accept}`),
+              accept && m('p.file-upload-types', `${labels.acceptedTypes} ${accept}`),
             ]),
           ]
         ),
@@ -238,7 +281,7 @@ export const FileUpload: FactoryComponent<FileUploadAttrs> = () => {
         // File list
         state.files.length > 0 &&
           m('.file-upload-list', [
-            m('h6', 'Selected Files:'),
+            m('h6', labels.selectedFiles),
             state.files.map((file) =>
               m('.file-upload-item', { key: file.name + file.size }, [
                 // Preview thumbnail
@@ -248,7 +291,7 @@ export const FileUpload: FactoryComponent<FileUploadAttrs> = () => {
                 m('.file-info', [
                   m('.file-name', file.name),
                   m('.file-details', [
-                    m('span.file-size', formatFileSize(file.size)),
+                    m('span.file-size', formatFileSize(file.size, labels)),
                     file.type && m('span.file-type', file.type),
                   ]),
 
@@ -274,7 +317,7 @@ export const FileUpload: FactoryComponent<FileUploadAttrs> = () => {
                       e.stopPropagation();
                       removeFile(file, attrs);
                     },
-                    title: 'Remove file',
+                    title: labels.removeFile,
                   },
                   [m('i.material-icons', 'close')]
                 ),
