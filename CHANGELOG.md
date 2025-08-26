@@ -1,3 +1,30 @@
+# [3.0.0](https://github.com/erikvullings/mithril-materialized/compare/v2.0.1...v3.0.0) (2025-08-26)
+
+
+### Bug Fixes
+
+* correct modal examples to show proper usage ([7bae1ee](https://github.com/erikvullings/mithril-materialized/commit/7bae1eecd512c8932fc434634d51afb0997f7bfa))
+* simplify Button variant API and remove broken modalId functionality ([297640d](https://github.com/erikvullings/mithril-materialized/commit/297640d1e293c08e8e8c0ed4abb311e259a95d4b))
+
+
+### BREAKING CHANGES
+
+* Button variant prop changed from complex object to simple string
+
+- Changed ButtonVariant from complex discriminated union to simple string type
+- Removed broken modalId functionality that was incompatible with CSS-only modals
+- Simplified variant API: 'button' | 'submit' | 'reset' instead of objects
+- Updated JSDoc examples to show cleaner, simpler usage
+- Fixed button tests to match new simplified API
+- All existing functionality preserved except modal triggers
+
+Migration:
+Before: variant: { type: 'submit' }
+After:  variant: 'submit'
+
+Before: modalId: 'my-modal' (broken)
+After:  Use modal state management with isOpen/onToggle
+
 ## [2.0.1](https://github.com/erikvullings/mithril-materialized/compare/v2.0.0...v2.0.1) (2025-08-26)
 
 
