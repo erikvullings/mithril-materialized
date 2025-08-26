@@ -18,14 +18,14 @@ export interface ThemeSwitcherAttrs {
  */
 export class ThemeManager {
   private static currentTheme: Theme = 'auto';
-  
+
   /**
    * Set the theme for the entire application
    */
   static setTheme(theme: Theme): void {
     this.currentTheme = theme;
     const root = document.documentElement;
-    
+
     if (theme === 'auto') {
       // Remove explicit theme, let CSS media query handle it
       root.removeAttribute('data-theme');
@@ -33,7 +33,7 @@ export class ThemeManager {
       // Set explicit theme
       root.setAttribute('data-theme', theme);
     }
-    
+
     // Store preference in localStorage
     try {
       localStorage.setItem('mm-theme', theme);
@@ -41,14 +41,14 @@ export class ThemeManager {
       // localStorage might not be available
     }
   }
-  
+
   /**
    * Get the current theme
    */
   static getTheme(): Theme {
     return this.currentTheme;
   }
-  
+
   /**
    * Get the effective theme (resolves 'auto' to actual theme)
    */
@@ -56,21 +56,21 @@ export class ThemeManager {
     if (this.currentTheme !== 'auto') {
       return this.currentTheme;
     }
-    
+
     // Check CSS media query for auto mode
     if (typeof window !== 'undefined' && window.matchMedia) {
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-    
+
     return 'light';
   }
-  
+
   /**
    * Initialize theme from localStorage or system preference
    */
   static initialize(): void {
     let savedTheme: Theme = 'auto';
-    
+
     try {
       const stored = localStorage.getItem('mm-theme') as Theme;
       if (stored && ['light', 'dark', 'auto'].includes(stored)) {
@@ -79,10 +79,10 @@ export class ThemeManager {
     } catch (e) {
       // localStorage might not be available
     }
-    
+
     this.setTheme(savedTheme);
   }
-  
+
   /**
    * Toggle between light and dark themes
    */
@@ -104,55 +104,53 @@ export const ThemeSwitcher: FactoryComponent<ThemeSwitcherAttrs> = () => {
         ThemeManager.initialize();
       }
     },
-    
-    view: ({ attrs }) => {
-      const { 
-        theme = ThemeManager.getTheme(), 
-        onThemeChange,
-        showLabels = true,
-        className = ''
-      } = attrs;
-      
+
+    view: ({ attrs = {} }) => {
+      const { theme = ThemeManager.getTheme(), onThemeChange, showLabels = true, className } = attrs;
+
       const handleThemeChange = (newTheme: Theme) => {
         ThemeManager.setTheme(newTheme);
         if (onThemeChange) {
           onThemeChange(newTheme);
         }
       };
-      
-      return m('.theme-switcher', { class: className }, [
+
+      return m('.theme-switcher', { className }, [
         showLabels && m('span.theme-switcher-label', 'Theme:'),
-        
+
         m('.theme-switcher-buttons', [
-          m('button.btn-flat', {
-            class: theme === 'light' ? 'active' : '',
-            onclick: () => handleThemeChange('light'),
-            title: 'Light theme'
-          }, [
-            m('i.material-icons', 'light_mode'),
-            showLabels && m('span', 'Light')
-          ]),
-          
-          m('button.btn-flat', {
-            class: theme === 'auto' ? 'active' : '',
-            onclick: () => handleThemeChange('auto'),
-            title: 'Auto theme (system preference)'
-          }, [
-            m('i.material-icons', 'brightness_auto'),
-            showLabels && m('span', 'Auto')
-          ]),
-          
-          m('button.btn-flat', {
-            class: theme === 'dark' ? 'active' : '',
-            onclick: () => handleThemeChange('dark'),
-            title: 'Dark theme'
-          }, [
-            m('i.material-icons', 'dark_mode'),
-            showLabels && m('span', 'Dark')
-          ])
-        ])
+          m(
+            'button.btn-flat',
+            {
+              class: theme === 'light' ? 'active' : '',
+              onclick: () => handleThemeChange('light'),
+              title: 'Light theme',
+            },
+            [m('i.material-icons', 'light_mode'), showLabels && m('span', 'Light')]
+          ),
+
+          m(
+            'button.btn-flat',
+            {
+              class: theme === 'auto' ? 'active' : '',
+              onclick: () => handleThemeChange('auto'),
+              title: 'Auto theme (system preference)',
+            },
+            [m('i.material-icons', 'brightness_auto'), showLabels && m('span', 'Auto')]
+          ),
+
+          m(
+            'button.btn-flat',
+            {
+              class: theme === 'dark' ? 'active' : '',
+              onclick: () => handleThemeChange('dark'),
+              title: 'Dark theme',
+            },
+            [m('i.material-icons', 'dark_mode'), showLabels && m('span', 'Dark')]
+          ),
+        ]),
       ]);
-    }
+    },
   };
 };
 
@@ -167,23 +165,30 @@ export const ThemeToggle: FactoryComponent<{ className?: string }> = () => {
         ThemeManager.initialize();
       }
     },
-    
-    view: ({ attrs }) => {
+
+    view: ({ attrs = {} }) => {
       const currentTheme = ThemeManager.getEffectiveTheme();
-      
-      return m('button.btn-flat.theme-toggle', {
-        class: attrs.className || '',
-        onclick: () => {
-          ThemeManager.toggle();
-          m.redraw();
+
+      return m(
+        'button.btn-flat.theme-toggle',
+        {
+          class: attrs.className || '',
+          onclick: () => {
+            ThemeManager.toggle();
+          },
+          title: `Switch to ${currentTheme === 'light' ? 'dark' : 'light'} theme`,
+          style: 'margin: 0; height: 64px; line-height: 64px; border-radius: 0; min-width: 64px; padding: 0;',
         },
-        title: `Switch to ${currentTheme === 'light' ? 'dark' : 'light'} theme`,
-        style: 'margin: 0; height: 64px; line-height: 64px; border-radius: 0; min-width: 64px; padding: 0;'
-      }, [
-        m('i.material-icons', {
-          style: 'color: inherit; font-size: 24px;'
-        }, currentTheme === 'light' ? 'dark_mode' : 'light_mode')
-      ]);
-    }
+        [
+          m(
+            'i.material-icons',
+            {
+              style: 'color: inherit; font-size: 24px;',
+            },
+            currentTheme === 'light' ? 'dark_mode' : 'light_mode'
+          ),
+        ]
+      );
+    },
   };
 };
