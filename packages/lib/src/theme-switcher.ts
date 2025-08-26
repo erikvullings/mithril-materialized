@@ -2,6 +2,39 @@ import m, { FactoryComponent } from 'mithril';
 
 export type Theme = 'light' | 'dark' | 'auto';
 
+export interface ThemeSwitcherI18n {
+  /** Label for the theme switcher */
+  theme?: string;
+  /** Light theme label */
+  light?: string;
+  /** Dark theme label */
+  dark?: string;
+  /** Auto theme label */
+  auto?: string;
+  /** Light theme title/tooltip */
+  lightTitle?: string;
+  /** Dark theme title/tooltip */
+  darkTitle?: string;
+  /** Auto theme title/tooltip */
+  autoTitle?: string;
+  /** Toggle button title when switching to dark */
+  switchToDark?: string;
+  /** Toggle button title when switching to light */
+  switchToLight?: string;
+}
+
+const defaultI18n: Required<ThemeSwitcherI18n> = {
+  theme: 'Theme:',
+  light: 'Light',
+  dark: 'Dark',
+  auto: 'Auto',
+  lightTitle: 'Light theme',
+  darkTitle: 'Dark theme',
+  autoTitle: 'Auto theme (system preference)',
+  switchToDark: 'Switch to dark theme',
+  switchToLight: 'Switch to light theme',
+};
+
 export interface ThemeSwitcherAttrs {
   /** Current theme selection */
   theme?: Theme;
@@ -11,6 +44,8 @@ export interface ThemeSwitcherAttrs {
   showLabels?: boolean;
   /** Custom class for the container */
   className?: string;
+  /** Internationalization */
+  i18n?: ThemeSwitcherI18n;
 }
 
 /**
@@ -106,7 +141,8 @@ export const ThemeSwitcher: FactoryComponent<ThemeSwitcherAttrs> = () => {
     },
 
     view: ({ attrs = {} }) => {
-      const { theme = ThemeManager.getTheme(), onThemeChange, showLabels = true, className } = attrs;
+      const { theme = ThemeManager.getTheme(), onThemeChange, showLabels = true, className, i18n } = attrs;
+      const labels = { ...defaultI18n, ...i18n };
 
       const handleThemeChange = (newTheme: Theme) => {
         ThemeManager.setTheme(newTheme);
@@ -116,7 +152,7 @@ export const ThemeSwitcher: FactoryComponent<ThemeSwitcherAttrs> = () => {
       };
 
       return m('.theme-switcher', { className }, [
-        showLabels && m('span.theme-switcher-label', 'Theme:'),
+        showLabels && m('span.theme-switcher-label', labels.theme),
 
         m('.theme-switcher-buttons', [
           m(
@@ -124,9 +160,9 @@ export const ThemeSwitcher: FactoryComponent<ThemeSwitcherAttrs> = () => {
             {
               class: theme === 'light' ? 'active' : '',
               onclick: () => handleThemeChange('light'),
-              title: 'Light theme',
+              title: labels.lightTitle,
             },
-            [m('i.material-icons', 'light_mode'), showLabels && m('span', 'Light')]
+            [m('i.material-icons', 'light_mode'), showLabels && m('span', labels.light)]
           ),
 
           m(
@@ -134,9 +170,9 @@ export const ThemeSwitcher: FactoryComponent<ThemeSwitcherAttrs> = () => {
             {
               class: theme === 'auto' ? 'active' : '',
               onclick: () => handleThemeChange('auto'),
-              title: 'Auto theme (system preference)',
+              title: labels.autoTitle,
             },
-            [m('i.material-icons', 'brightness_auto'), showLabels && m('span', 'Auto')]
+            [m('i.material-icons', 'brightness_auto'), showLabels && m('span', labels.auto)]
           ),
 
           m(
@@ -144,9 +180,9 @@ export const ThemeSwitcher: FactoryComponent<ThemeSwitcherAttrs> = () => {
             {
               class: theme === 'dark' ? 'active' : '',
               onclick: () => handleThemeChange('dark'),
-              title: 'Dark theme',
+              title: labels.darkTitle,
             },
-            [m('i.material-icons', 'dark_mode'), showLabels && m('span', 'Dark')]
+            [m('i.material-icons', 'dark_mode'), showLabels && m('span', labels.dark)]
           ),
         ]),
       ]);
@@ -157,7 +193,7 @@ export const ThemeSwitcher: FactoryComponent<ThemeSwitcherAttrs> = () => {
 /**
  * Simple theme toggle button (just switches between light/dark)
  */
-export const ThemeToggle: FactoryComponent<{ className?: string }> = () => {
+export const ThemeToggle: FactoryComponent<{ className?: string; i18n?: ThemeSwitcherI18n }> = () => {
   return {
     oninit: () => {
       // Initialize theme manager if not already done
@@ -168,6 +204,7 @@ export const ThemeToggle: FactoryComponent<{ className?: string }> = () => {
 
     view: ({ attrs = {} }) => {
       const currentTheme = ThemeManager.getEffectiveTheme();
+      const labels = { ...defaultI18n, ...attrs.i18n };
 
       return m(
         'button.btn-flat.theme-toggle',
@@ -176,7 +213,7 @@ export const ThemeToggle: FactoryComponent<{ className?: string }> = () => {
           onclick: () => {
             ThemeManager.toggle();
           },
-          title: `Switch to ${currentTheme === 'light' ? 'dark' : 'light'} theme`,
+          title: currentTheme === 'light' ? labels.switchToDark : labels.switchToLight,
           style: 'margin: 0; height: 64px; line-height: 64px; border-radius: 0; min-width: 64px; padding: 0;',
         },
         [
