@@ -114,13 +114,20 @@ export const isValidationError = (result: ValidationResult): result is Validatio
 // ============================================================================
 
 /**
- * Button variant discriminated union for type-safe button configurations
+ * Button type - determines the HTML button behavior
+ * @example
+ * ```typescript
+ * // Standard clickable button (default)
+ * variant: 'button'
+ * 
+ * // Form submission button
+ * variant: 'submit'
+ * 
+ * // Form reset button  
+ * variant: 'reset'
+ * ```
  */
-export type ButtonVariant =
-  | { type: 'button'; submit?: never; modalId?: never }
-  | { type: 'submit'; modalId?: never }
-  | { type: 'modal'; modalId: string; submit?: never }
-  | { type: 'reset'; modalId?: never; submit?: never };
+export type ButtonVariant = 'button' | 'submit' | 'reset';
 
 /**
  * Input type union with proper HTML input types

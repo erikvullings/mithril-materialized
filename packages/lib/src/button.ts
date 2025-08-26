@@ -24,16 +24,16 @@ export interface HtmlAttrs {
  *
  * // Submit button with icon
  * m(Button, {
- *   variant: { type: 'submit' },
+ *   variant: 'submit',
  *   label: 'Save',
  *   iconName: 'save',
  *   iconClass: 'small left'
  * })
  *
- * // Modal trigger button
+ * // Reset button
  * m(Button, {
- *   variant: { type: 'modal', modalId: 'my-modal' },
- *   label: 'Open Modal'
+ *   variant: 'reset',
+ *   label: 'Clear Form'
  * })
  * ```
  */
@@ -51,20 +51,21 @@ export interface ButtonAttrs extends Attributes {
   iconClass?: IconClass;
 
   /**
-   * Button behavior variant - determines button type and behavior
+   * Button type - determines the HTML button behavior
+   * @default 'button'
    * @example
-   * { type: 'button' } - Standard button
-   * { type: 'submit' } - Form submit button
-   * { type: 'modal', modalId: 'my-modal' } - Modal trigger
-   * { type: 'reset' } - Form reset button
+   * ```typescript
+   * // Standard clickable button (default)
+   * variant: 'button'
+   * 
+   * // Form submission button
+   * variant: 'submit'
+   * 
+   * // Form reset button  
+   * variant: 'reset'
+   * ```
    */
   variant?: ButtonVariant;
-
-  /**
-   * @deprecated Use variant instead
-   * If the button is intended to open a modal, specify its modal id so we can trigger it
-   */
-  modalId?: string;
 
   /**
    * @deprecated Use native HTML attributes directly instead
@@ -96,7 +97,6 @@ export const ButtonFactory = (
     return {
       view: ({ attrs }) => {
         const {
-          modalId,
           tooltip,
           tooltipPosition,
           tooltipPostion, // Keep for backwards compatibility
@@ -108,11 +108,10 @@ export const ButtonFactory = (
           ...params
         } = attrs;
 
-        // Handle both new variant prop and legacy modalId/type
-        const buttonType = variant?.type || (modalId ? 'modal' : type || 'button');
-        const modalTarget = variant?.type === 'modal' ? variant.modalId : modalId;
+        // Use variant or fallback to factory type
+        const buttonType = variant || type || 'button';
 
-        const cn = [modalTarget ? 'modal-trigger' : '', tooltip ? 'tooltipped' : '', defaultClassNames, className]
+        const cn = [tooltip ? 'tooltipped' : '', defaultClassNames, className]
           .filter(Boolean)
           .join(' ')
           .trim();
@@ -125,14 +124,10 @@ export const ButtonFactory = (
           {
             ...params,
             className: cn,
-            href: modalTarget ? `#${modalTarget}` : undefined,
             'data-position': tooltip ? position : undefined,
             'data-tooltip': tooltip || undefined,
-            type: buttonType === 'modal' ? 'button' : buttonType,
+            type: buttonType,
           },
-          // `${dca}${modalId ? `.modal-trigger[href=#${modalId}]` : ''}${
-          //   tooltip ? `.tooltipped[data-position=${tooltipPostion || 'top'}][data-tooltip=${tooltip}]` : ''
-          // }${toAttributeString(attr)}`, {}
           iconName ? m(Icon, { iconName, className: iconClass || 'left' }) : undefined,
           label ? label : undefined
         );

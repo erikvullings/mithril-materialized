@@ -34,15 +34,14 @@ describe('Button Components', () => {
       expect(mockClick).toHaveBeenCalledTimes(1);
     });
 
-    it('renders with modal trigger', () => {
+    it('renders with variant type', () => {
       const { getByText } = render(Button, { 
-        label: 'Modal Button',
-        modalId: 'test-modal'
+        label: 'Submit Button',
+        variant: 'submit'
       });
       
-      const button = getByText('Modal Button');
-      expect(button).toHaveClass('modal-trigger');
-      expect(button).toHaveAttribute('href', '#test-modal');
+      const button = getByText('Submit Button');
+      expect(button).toHaveAttribute('type', 'submit');
     });
 
     it('renders with tooltip', () => {
