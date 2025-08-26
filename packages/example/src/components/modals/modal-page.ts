@@ -65,12 +65,30 @@ export const ModalPage = () => {
           })
         ),
         m(CodeBlock, {
-          code: `          m(Button, { label: 'Open modal', modalId: 'modal1' }),
+          code: `          // State to control modal visibility
+                  const state = {
+                    modal1Open: false,
+                  };
+
+                  // Button with onclick handler to control modal
+                  m(Button, {
+                    label: 'Open modal',
+                    onclick: () => {
+                      state.modal1Open = true;
+                      m.redraw();
+                    },
+                  }),
+                  
+                  // Modal with isOpen and onToggle for state management
                   m(ModalPanel, {
                     id: 'modal1',
                     title: 'Do you like this library?',
                     description: 'This is some content.',
-                    options: { opacity: 0.7 },
+                    isOpen: state.modal1Open,
+                    onToggle: (open: boolean) => {
+                      state.modal1Open = open;
+                      m.redraw();
+                    },
                     buttons: [
                       {
                         label: 'Disagree',
@@ -150,10 +168,29 @@ export const ModalPage = () => {
           })
         ),
         m(CodeBlock, {
-          code: `          m(Button, { label: 'Open modal', modalId: 'modal1b' }),
+          code: `          // State to control modal visibility
+                  const state = {
+                    modal1bOpen: false,
+                  };
+
+                  // Button to open modal
+                  m(Button, {
+                    label: 'Open modal',
+                    onclick: () => {
+                      state.modal1bOpen = true;
+                      m.redraw();
+                    },
+                  }),
+
+                  // Modal with form components
                   m(ModalPanel, {
                     id: 'modal1b',
                     title: 'Tell me about yourself',
+                    isOpen: state.modal1bOpen,
+                    onToggle: (open: boolean) => {
+                      state.modal1bOpen = open;
+                      m.redraw();
+                    },
                     description: m(
                       '.row', // So the content has enough vertical space
                       [
@@ -171,8 +208,8 @@ export const ModalPage = () => {
                             { id: 'fitness', label: 'Fitness' },
                             { id: 'sleep', label: 'Sleeping' },
                           ],
-                          onchange: v => console.log(v),
-                        } as SelectAttrs),
+                          onchange: (v) => console.log(v),
+                        } as SelectAttrs<string>),
                         m(Dropdown, {
                           container: document.body, // So the dropdown is not hidden
                           id: 'hobby',
@@ -187,11 +224,10 @@ export const ModalPage = () => {
                             { label: '', divider: true },
                             { label: 'Sex', id: 'sex', iconName: 'group' },
                           ],
-                          onchange: v => console.log(v),
-                        } as DropdownAttrs),
+                          onchange: (v) => console.log(v),
+                        } as DropdownAttrs<string>),
                       ]
                     ),
-                    options: { opacity: 0.7 },
                     buttons: [
                       {
                         label: 'Disagree',
@@ -268,13 +304,32 @@ export const ModalPage = () => {
           })
         ),
         m(CodeBlock, {
-          code: `          m(Button, { label: 'Bottom modal', modalId: 'modal3' }),
+          code: `          // State to control modal visibility
+                  const state = {
+                    modal2Open: false,
+                  };
+
+                  // Button to open fixed footer modal
+                  m(Button, {
+                    label: 'Fixed footer modal',
+                    onclick: () => {
+                      state.modal2Open = true;
+                      m.redraw();
+                    },
+                  }),
+
+                  // Fixed footer modal with scrollable content
                   m(ModalPanel, {
-                    id: 'modal3',
+                    id: 'modal2',
                     title: 'Do you like this library?',
-                    description: 'This is some content. ... and much more',
+                    isOpen: state.modal2Open,
+                    onToggle: (open: boolean) => {
+                      state.modal2Open = open;
+                      m.redraw();
+                    },
                     fixedFooter: true,
                     richContent: true, // If richContent is true, it means that the description may contain HTML.
+                    description: 'This is some long content that will scroll...',
                     buttons: [
                       {
                         label: 'Disagree',
@@ -321,11 +376,30 @@ export const ModalPage = () => {
           })
         ),
         m(CodeBlock, {
-          code: `          m(Button, { label: 'Open modal', modalId: 'modal1' }),
+          code: `          // State to control modal visibility
+                  const state = {
+                    modal3Open: false,
+                  };
+
+                  // Button to open bottom modal
+                  m(Button, {
+                    label: 'Open bottom modal',
+                    onclick: () => {
+                      state.modal3Open = true;
+                      m.redraw();
+                    },
+                  }),
+
+                  // Bottom sheet modal
                   m(ModalPanel, {
-                    id: 'modal1',
+                    id: 'modal3',
                     title: 'Do you like this library?',
                     description: 'This is some content.',
+                    isOpen: state.modal3Open,
+                    onToggle: (open: boolean) => {
+                      state.modal3Open = open;
+                      m.redraw();
+                    },
                     bottomSheet: true,
                     buttons: [
                       {
@@ -363,11 +437,30 @@ export const ModalPage = () => {
           })
         ),
         m(CodeBlock, {
-          code: `          m(Button, { label: 'Open bottom content modal', modalId: 'modal4' }),
+          code: `          // State to control modal visibility
+                  const state = {
+                    modal4Open: false,
+                  };
+
+                  // Button to open content modal
+                  m(Button, {
+                    label: 'Open bottom content modal',
+                    onclick: () => {
+                      state.modal4Open = true;
+                      m.redraw();
+                    },
+                  }),
+
+                  // Modal with vnode content (image)
                   m(ModalPanel, {
                     id: 'modal4',
                     title: 'Content modal',
                     description: m(MaterialBox, { src: gogh, width: 400 }),
+                    isOpen: state.modal4Open,
+                    onToggle: (open: boolean) => {
+                      state.modal4Open = open;
+                      m.redraw();
+                    },
                     bottomSheet: true,
                   })`,
         }),

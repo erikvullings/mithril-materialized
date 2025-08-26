@@ -104,7 +104,6 @@ export const ButtonFactory = (
           iconClass,
           label,
           className,
-          attr,
           variant,
           ...params
         } = attrs;
@@ -125,7 +124,6 @@ export const ButtonFactory = (
           element,
           {
             ...params,
-            ...attr,
             className: cn,
             href: modalTarget ? `#${modalTarget}` : undefined,
             'data-position': tooltip ? position : undefined,
