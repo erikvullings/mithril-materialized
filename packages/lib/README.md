@@ -2,9 +2,9 @@
 
 A Mithril.js component library inspired by [materialize-css](https://materializecss.com) design principles, [available on npm](https://www.npmjs.com/package/mithril-materialized). This library provides you with ready-to-use Mithril components that follow Material Design guidelines, with **no external JavaScript dependencies**.
 
-## 🚀 v2.0.0 Beta - Major Release
+## 🚀 v3.0.0 - Latest Release
 
-This is a **major breaking release** that removes all external JavaScript dependencies, making the library completely self-contained and significantly reducing bundle sizes.
+The current stable release that provides a complete Mithril.js Material Design component library with no external JavaScript dependencies.
 
 ### ✨ What's New
 
@@ -16,28 +16,22 @@ This is a **major breaking release** that removes all external JavaScript depend
 - **📱 Modern Architecture**: Factory components with proper TypeScript support
 - **🎯 CSS-Only Styling**: Uses only CSS for styling - no JavaScript initialization needed
 
-### 💥 Breaking Changes from v1.x
+### ✨ Key Features
 
-- **Removed dependencies**: No longer requires `materialize-css` or `material-icons` packages
-- **Component updates**: DatePicker and TimePicker now have custom implementations
-- **Icon changes**: Library uses custom SVG icons. Material Icons font is supported too, but not required.
-- **Installation**: Simpler installation process with fewer dependencies
+- **🔥 Zero External JS Dependencies**: No longer requires `materialize-css` JavaScript or `material-icons` fonts
+- **📦 Smaller Bundle Size**: Reduced package size by eliminating external dependencies  
+- **🎨 Custom SVG Icons**: Built-in MaterialIcon component with custom SVG icons
+- **⚡ Better Performance**: Direct implementations without jQuery or other heavy dependencies
+- **🛠️ Enhanced Components**: Comprehensive component library with modern features
+- **📱 Modern Architecture**: Factory components with proper TypeScript support
+- **🎯 CSS-Only Styling**: Uses only CSS for styling - no JavaScript initialization needed
+- **🌗 Dark Theme Support**: Built-in light/dark theme system with CSS custom properties
 
-### 📈 Migration from v1.x
-
-**Old installation (v1.x):**
-
-```bash
-npm install materialize-css material-icons mithril mithril-materialized
-```
-
-**New installation (v2.x):**
+### 📦 Installation
 
 ```bash
 npm install mithril mithril-materialized
 ```
-
-Your CSS imports can remain the same, but you no longer need the materialize-css JavaScript.
 
 ## Supported Components
 
@@ -363,7 +357,7 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 
 ### 📊 Bundle Size Targets
 
-**Current Status (v2.0.0-beta.15):**
+**Current Status (v3.0.0):**
 
 - Total: 70KB gzipped (44KB JS + 26KB CSS)
 - Modular CSS can reduce bundle by 30-50%
@@ -394,7 +388,7 @@ See our [contributing guide](CONTRIBUTING.md) for detailed information.
 
 **Bundle Size Comparison:**
 
-- mithril-materialized v2.0: 64KB gzipped
+- mithril-materialized v3.0: 64KB gzipped
 - Material-UI: ~350KB gzipped
 - Materialize CSS + jQuery: ~180KB gzipped
 - Vuetify: ~250KB gzipped
