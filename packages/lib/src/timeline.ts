@@ -4,7 +4,7 @@ export interface TimelineItemAttrs {
   /** Unique identifier for the timeline item */
   id?: string;
   /** Main label/title for the timeline item */
-  label: string;
+  label?: string;
   /** Optional description text */
   description?: string;
   /** Timestamp for the item (string or Date object) */
@@ -16,7 +16,7 @@ export interface TimelineItemAttrs {
   /** Color theme for the timeline item */
   color?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
   /** Click handler for the timeline item */
-  onClick?: (item: TimelineItemAttrs, event: Event) => void;
+  onclick?: (item: TimelineItemAttrs, event: Event) => void;
   /** Whether the item is disabled */
   disabled?: boolean;
   /** Custom CSS class for the item */
@@ -111,9 +111,9 @@ export const Timeline: FactoryComponent<TimelineAttrs> = () => {
 
           const handleItemClick = (e: Event) => {
             if (item.disabled) return;
-            if (item.onClick) {
+            if (item.onclick) {
               e.preventDefault();
-              item.onClick(item, e);
+              item.onclick(item, e);
             }
           };
 
@@ -124,9 +124,9 @@ export const Timeline: FactoryComponent<TimelineAttrs> = () => {
             {
               key: item.id || index,
               className: itemClasses,
-              onclick: item.onClick ? handleItemClick : undefined,
-              role: item.onClick ? 'button' : undefined,
-              tabindex: item.onClick && !item.disabled ? 0 : undefined,
+              onclick: item.onclick ? handleItemClick : undefined,
+              role: item.onclick ? 'button' : undefined,
+              tabindex: item.onclick && !item.disabled ? 0 : undefined,
               'aria-disabled': item.disabled ? 'true' : undefined,
             },
             [

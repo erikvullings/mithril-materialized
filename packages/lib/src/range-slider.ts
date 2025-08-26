@@ -217,9 +217,9 @@ export const SingleRangeSlider = {
       state.singleValue = newValue;
       state.hasUserInteracted = true;
       if (immediate && oninput) {
-        oninput(newValue as any);
+        oninput(newValue);
       } else if (!immediate && onchange) {
-        onchange(newValue as any);
+        onchange(newValue);
       }
     };
 

@@ -63,7 +63,7 @@ export const ImageListPage = () => {
         // Controls
         m('.row', [
           m('.col.s12.m6', [
-            m(Select as any, {
+            m(Select, {
               label: 'Layout Variant',
               options: [
                 { id: 'standard', label: 'Standard Grid' },
@@ -72,13 +72,13 @@ export const ImageListPage = () => {
                 { id: 'woven', label: 'Woven Pattern' },
               ],
               initialValue: state.variant,
-              onchange: (value: string) => {
-                state.variant = value as 'standard' | 'quilted' | 'masonry' | 'woven';
+              onchange: (value) => {
+                state.variant = value[0] as 'standard' | 'quilted' | 'masonry' | 'woven';
               },
             }),
           ]),
           m('.col.s12.m6', [
-            m(RangeInput as any, {
+            m(RangeInput, {
               label: 'Columns',
               min: 1,
               max: 6,
@@ -93,7 +93,7 @@ export const ImageListPage = () => {
 
         m('.row', [
           m('.col.s12.m4', [
-            m(RangeInput as any, {
+            m(RangeInput, {
               label: 'Gap (px)',
               min: 0,
               max: 20,
@@ -125,7 +125,7 @@ export const ImageListPage = () => {
         m('p', 'Regular grid layout with equal-sized items.'),
         m('.row', [
           m('.col.s12', [
-            m(ImageList as any, {
+            m(ImageList, {
               items: standardImages.slice(0, 12),
               variant: state.variant,
               cols: state.columns,
@@ -133,7 +133,7 @@ export const ImageListPage = () => {
               showTitles: state.showTitles,
               showActions: state.showActions,
               loading: state.loading,
-              rowHeight: 200,
+              // rowHeight: 200,
             }),
           ]),
         ]),
@@ -143,7 +143,7 @@ export const ImageListPage = () => {
         m('p', 'Grid with varied item sizes for featured content.'),
         m('.row', [
           m('.col.s12', [
-            m(ImageList as any, {
+            m(ImageList, {
               items: quiltedImages,
               variant: 'quilted',
               cols: 4,
@@ -160,7 +160,7 @@ export const ImageListPage = () => {
         m('p', 'Pinterest-style layout with optimal positioning.'),
         m('.row', [
           m('.col.s12', [
-            m(ImageList as any, {
+            m(ImageList, {
               items: masonryImages,
               variant: 'masonry',
               cols: state.columns,
@@ -177,7 +177,7 @@ export const ImageListPage = () => {
         m('p', 'Alternating pattern layout with dynamic heights.'),
         m('.row', [
           m('.col.s12', [
-            m(ImageList as any, {
+            m(ImageList, {
               items: standardImages.slice(0, 16).map((item, i) => ({
                 ...item,
                 rows: i % 3 === 0 ? 2 : 1,
@@ -197,7 +197,7 @@ export const ImageListPage = () => {
         m('p', 'Automatically adjusts columns based on screen size.'),
         m('.row', [
           m('.col.s12', [
-            m(ImageList as any, {
+            m(ImageList, {
               items: standardImages.slice(0, 20),
               variant: 'standard',
               cols: {
@@ -220,7 +220,7 @@ export const ImageListPage = () => {
         m('p', 'Demonstration of different action button positions.'),
         m('.row', [
           m('.col.s12', [
-            m(ImageList as any, {
+            m(ImageList, {
               items: [
                 {
                   ...standardImages[0],

@@ -27,7 +27,7 @@ export interface FloatingActionButtonAttrs {
     /** Classes of the icon */
     iconClass?: string;
     /** On click function */
-    onClick?: (e: UIEvent) => void;
+    onclick?: (e: UIEvent) => void;
   }>;
   /** Direction to open the buttons */
   direction?: 'top' | 'bottom' | 'left' | 'right';
@@ -140,7 +140,7 @@ export const FloatingActionButton: FactoryComponent<FloatingActionButtonAttrs> =
                         },
                         onclick: (e: UIEvent) => {
                           e.stopPropagation();
-                          if (button.onClick) button.onClick(e);
+                          if (button.onclick) button.onclick(e);
                         },
                       },
                       m('i.material-icons', { className: button.iconClass }, button.iconName)

@@ -1,10 +1,10 @@
 import m from 'mithril';
-import { ThemeSwitcher, ThemeToggle, FileUpload, CodeBlock, Button } from 'mithril-materialized';
+import { ThemeSwitcher, ThemeToggle, FileUpload, CodeBlock, Button, Theme } from 'mithril-materialized';
 
 export const ThemePage = () => {
   const state = {
     uploadedFiles: [] as File[],
-    currentTheme: 'auto',
+    currentTheme: 'auto' as Theme,
   };
 
   return {
@@ -21,7 +21,7 @@ export const ThemePage = () => {
         m('.row', [
           m('.col.s12.m6', [
             m(ThemeSwitcher, {
-              theme: state.currentTheme as any,
+              theme: state.currentTheme,
               showLabels: true,
               onThemeChange: (theme) => {
                 state.currentTheme = theme;
@@ -83,24 +83,28 @@ m(ThemeToggle, {
             }),
           ]),
         ]),
-        
-        state.uploadedFiles.length > 0 && m('.row', [
-          m('.col.s12', [
-            m('h5', 'Uploaded Files:'),
-            m('ul.collection', 
-              state.uploadedFiles.map(file => 
-                m('li.collection-item', [
-                  m('span.title', file.name),
-                  m('p', [
-                    'Size: ', (file.size / 1024).toFixed(1), ' KB',
-                    file.type && m('br'),
-                    file.type && ['Type: ', file.type],
-                  ]),
-                ])
-              )
-            ),
+
+        state.uploadedFiles.length > 0 &&
+          m('.row', [
+            m('.col.s12', [
+              m('h5', 'Uploaded Files:'),
+              m(
+                'ul.collection',
+                state.uploadedFiles.map((file) =>
+                  m('li.collection-item', [
+                    m('span.title', file.name),
+                    m('p', [
+                      'Size: ',
+                      (file.size / 1024).toFixed(1),
+                      ' KB',
+                      file.type && m('br'),
+                      file.type && ['Type: ', file.type],
+                    ]),
+                  ])
+                )
+              ),
+            ]),
           ]),
-        ]),
 
         m(CodeBlock, {
           code: `import { FileUpload } from 'mithril-materialized';

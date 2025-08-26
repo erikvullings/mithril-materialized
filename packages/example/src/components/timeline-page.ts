@@ -52,6 +52,44 @@ export const TimelinePage = () => {
     },
   ];
 
+  const customContentItems = [
+    {
+      id: 'custom-1',
+      timestamp: '10:00 AM',
+      content: m('.card', [
+        m('.card-content', [
+          m('span.card-title', 'Meeting with Client'),
+          m('p', 'Discussed project requirements and timeline adjustments.'),
+        ]),
+      ]),
+      color: 'primary' as const,
+    },
+    {
+      id: 'custom-2',
+      timestamp: '2:30 PM',
+      content: m('.card', [
+        m('.card-content', [
+          m('span.card-title', 'Code Review'),
+          m('p', 'Reviewed pull requests and provided feedback to team members.'),
+          m('.chip', 'High Priority'),
+        ]),
+      ]),
+      color: 'warning' as const,
+    },
+    {
+      id: 'custom-3',
+      timestamp: '4:45 PM',
+      content: m('.card', [
+        m('.card-content', [
+          m('span.card-title', 'Deploy to Production'),
+          m('p', 'Successfully deployed version 2.1.0 with new features.'),
+          m('.chip.green', 'Completed'),
+        ]),
+      ]),
+      color: 'success' as const,
+    },
+  ];
+
   const handleTimelineClick = (item: any, event: Event) => {
     console.log('Timeline item clicked:', item);
     // Could show a modal or navigate to detail page
@@ -59,44 +97,6 @@ export const TimelinePage = () => {
 
   return {
     view: () => {
-      const customContentItems = [
-        {
-          id: 'custom-1',
-          timestamp: '10:00 AM',
-          content: m('.card', [
-            m('.card-content', [
-              m('span.card-title', 'Meeting with Client'),
-              m('p', 'Discussed project requirements and timeline adjustments.'),
-            ]),
-          ]),
-          color: 'primary' as const,
-        },
-        {
-          id: 'custom-2',
-          timestamp: '2:30 PM',
-          content: m('.card', [
-            m('.card-content', [
-              m('span.card-title', 'Code Review'),
-              m('p', 'Reviewed pull requests and provided feedback to team members.'),
-              m('.chip', 'High Priority'),
-            ]),
-          ]),
-          color: 'warning' as const,
-        },
-        {
-          id: 'custom-3',
-          timestamp: '4:45 PM',
-          content: m('.card', [
-            m('.card-content', [
-              m('span.card-title', 'Deploy to Production'),
-              m('p', 'Successfully deployed version 2.1.0 with new features.'),
-              m('.chip.green', 'Completed'),
-            ]),
-          ]),
-          color: 'success' as const,
-        },
-      ];
-
       return m('.col.s12', [
         m('h2.header', 'Timeline'),
         m('p', 'Display sequences of events in chronological order with Material Design styling.'),
@@ -201,7 +201,7 @@ export const TimelinePage = () => {
             m(Timeline, {
               items: basicTimelineItems.map((item) => ({
                 ...item,
-                onClick: handleTimelineClick,
+                onclick: handleTimelineClick,
               })),
               position: state.position,
               showConnector: state.showConnector,
@@ -216,7 +216,7 @@ export const TimelinePage = () => {
         m('.row', [
           m('.col.s12', [
             m(Timeline, {
-              items: customContentItems as any,
+              items: customContentItems,
               position: 'right',
               showConnector: true,
               showTimestamps: true,
@@ -326,7 +326,7 @@ m(Timeline, {
 m(Timeline, {
   items: timelineItems.map(item => ({
     ...item,
-    onClick: (item, event) => {
+    onclick: (item, event) => {
       console.log('Clicked:', item);
     }
   })),

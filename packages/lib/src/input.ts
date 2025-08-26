@@ -208,7 +208,7 @@ const InputField =
     // let inputElement: HTMLInputElement | null = null;
 
     const getValue = (target: HTMLInputElement) => {
-      const val = target.value as any as T;
+      const val = target.value as unknown as T;
       return (val ? (type === 'number' || type === 'range' ? +val : val) : val) as T;
     };
 

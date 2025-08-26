@@ -22,10 +22,10 @@ export const ButtonPage = () => {
           direction: 'left',
           position: 'inline-right',
           buttons: [
-            { iconName: 'insert_chart', className: 'red', onClick: () => console.log('Insert chart') },
-            { iconName: 'format_quote', className: 'yellow darken-1', onClick: () => console.log('Format quote') },
-            { iconName: 'publish', className: 'green', onClick: () => console.log('Publish') },
-            { iconName: 'attach_file', className: 'blue', onClick: () => console.log('Attach file') },
+            { iconName: 'insert_chart', className: 'red', onclick: () => console.log('Insert chart') },
+            { iconName: 'format_quote', className: 'yellow darken-1', onclick: () => console.log('Format quote') },
+            { iconName: 'publish', className: 'green', onclick: () => console.log('Publish') },
+            { iconName: 'attach_file', className: 'blue', onclick: () => console.log('Attach file') },
           ],
         }),
         m(FloatingActionButton, {
@@ -33,10 +33,10 @@ export const ButtonPage = () => {
           iconName: 'mode_edit',
           direction: 'left',
           buttons: [
-            { iconName: 'insert_chart', className: 'red', onClick: () => console.log('Insert chart') },
-            { iconName: 'format_quote', className: 'yellow darken-1', onClick: () => console.log('Format quote') },
-            { iconName: 'publish', className: 'green', onClick: () => console.log('Publish') },
-            { iconName: 'attach_file', className: 'blue', onClick: () => console.log('Attach file') },
+            { iconName: 'insert_chart', className: 'red', onclick: () => console.log('Insert chart') },
+            { iconName: 'format_quote', className: 'yellow darken-1', onclick: () => console.log('Format quote') },
+            { iconName: 'publish', className: 'green', onclick: () => console.log('Publish') },
+            { iconName: 'attach_file', className: 'blue', onclick: () => console.log('Attach file') },
           ],
         }),
         m(CodeBlock, {
@@ -47,10 +47,10 @@ export const ButtonPage = () => {
   direction: 'left',
   position: 'inline-right', // Comment this out to get a FAB in the bottom-left of the page.
   buttons: [
-    { iconName: 'insert_chart', className: 'red', onClick: () => console.log('Insert chart') },
-    { iconName: 'format_quote', className: 'yellow darken-1', onClick: () => console.log('Format quote') },
-    { iconName: 'publish', className: 'green', onClick: () => console.log('Publish') },
-    { iconName: 'attach_file', className: 'blue', onClick: () => console.log('Attach file') },
+    { iconName: 'insert_chart', className: 'red', onclick: () => console.log('Insert chart') },
+    { iconName: 'format_quote', className: 'yellow darken-1', onclick: () => console.log('Format quote') },
+    { iconName: 'publish', className: 'green', onclick: () => console.log('Publish') },
+    { iconName: 'attach_file', className: 'blue', onclick: () => console.log('Attach file') },
   ],
 }),`,
           ],

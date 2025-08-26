@@ -86,7 +86,7 @@ export const MasonryPage = () => {
         // Controls
         m('.row', [
           m('.col.s12.m6', [
-            m(RangeInput as any, {
+            m(RangeInput, {
               label: 'Columns',
               min: 1,
               max: 6,
@@ -98,7 +98,7 @@ export const MasonryPage = () => {
             }),
           ]),
           m('.col.s12.m6', [
-            m(RangeInput as any, {
+            m(RangeInput, {
               label: 'Spacing (px)',
               min: 4,
               max: 32,
