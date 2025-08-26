@@ -64,6 +64,7 @@
     "type": "git",
     "url": "git://github.com/erikvullings/mithril-materialized.git"
   },
+  "homepage": "https://erikvullings.github.io/mithril-materialized/index.html#!/home",
   "keywords": [
     "mithril",
     "materialize-css"
