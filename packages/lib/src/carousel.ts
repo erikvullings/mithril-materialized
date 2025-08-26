@@ -83,6 +83,9 @@ export const Carousel: FactoryComponent<CarouselAttrs> = () => {
 
     // Callbacks
     oneTimeCallback: null as ((item: HTMLElement, dragged: boolean) => void) | null,
+    
+    // Instance options (properly typed with defaults)
+    options: { ...defaults } as Required<CarouselOptions>,
   };
 
   // Utility functions
@@ -122,7 +125,7 @@ export const Carousel: FactoryComponent<CarouselAttrs> = () => {
   const autoScroll = () => {
     if (state.amplitude) {
       const elapsed = Date.now() - state.timestamp;
-      const delta = state.amplitude * Math.exp(-elapsed / defaults.duration);
+      const delta = state.amplitude * Math.exp(-elapsed / state.options.duration);
       if (delta > 2 || delta < -2) {
         scroll(state.target - delta);
         requestAnimationFrame(autoScroll);
@@ -152,7 +155,7 @@ export const Carousel: FactoryComponent<CarouselAttrs> = () => {
     }
     state.scrollingTimeout = window.setTimeout(() => {
       carouselEl.classList.remove('scrolling');
-    }, defaults.duration);
+    }, state.options.duration);
 
     // Start actual scroll
     const items = Array.from(carouselEl.querySelectorAll('.carousel-item')) as HTMLElement[];
@@ -160,7 +163,7 @@ export const Carousel: FactoryComponent<CarouselAttrs> = () => {
     if (count === 0) return;
 
     const lastCenter = state.center;
-    const numVisibleOffset = 1 / defaults.numVisible;
+    const numVisibleOffset = 1 / state.options.numVisible;
 
     state.offset = typeof x === 'number' ? x : state.offset;
     state.center = Math.floor((state.offset + state.dim / 2) / state.dim);
@@ -172,7 +175,7 @@ export const Carousel: FactoryComponent<CarouselAttrs> = () => {
     let alignment: string;
     let centerTweenedOpacity: number;
 
-    if (defaults.fullWidth) {
+    if (state.options.fullWidth) {
       alignment = 'translateX(0)';
       centerTweenedOpacity = 1;
     } else {
@@ -199,8 +202,8 @@ export const Carousel: FactoryComponent<CarouselAttrs> = () => {
       el.classList.add('active');
 
       const transformString = `${alignment} translateX(${-delta / 2}px) translateX(${
-        dir * defaults.shift * tween
-      }px) translateZ(${defaults.dist * tween}px)`;
+        dir * state.options.shift * tween
+      }px) translateZ(${state.options.dist * tween}px)`;
       updateItemStyle(el, centerTweenedOpacity, 0, transformString);
     }
 
@@ -210,35 +213,35 @@ export const Carousel: FactoryComponent<CarouselAttrs> = () => {
       let tweenedOpacity: number;
 
       // Right side
-      if (defaults.fullWidth) {
-        zTranslation = defaults.dist;
+      if (state.options.fullWidth) {
+        zTranslation = state.options.dist;
         tweenedOpacity = i === half && delta < 0 ? 1 - tween : 1;
       } else {
-        zTranslation = defaults.dist * (i * 2 + tween * dir);
+        zTranslation = state.options.dist * (i * 2 + tween * dir);
         tweenedOpacity = 1 - numVisibleOffset * (i * 2 + tween * dir);
       }
 
       if (!state.noWrap || state.center + i < count) {
         const el = items[wrap(state.center + i, count)];
         const transformString = `${alignment} translateX(${
-          defaults.shift + (state.dim * i - delta) / 2
+          state.options.shift + (state.dim * i - delta) / 2
         }px) translateZ(${zTranslation}px)`;
         updateItemStyle(el, tweenedOpacity, -i, transformString);
       }
 
       // Left side
-      if (defaults.fullWidth) {
-        zTranslation = defaults.dist;
+      if (state.options.fullWidth) {
+        zTranslation = state.options.dist;
         tweenedOpacity = i === half && delta > 0 ? 1 - tween : 1;
       } else {
-        zTranslation = defaults.dist * (i * 2 - tween * dir);
+        zTranslation = state.options.dist * (i * 2 - tween * dir);
         tweenedOpacity = 1 - numVisibleOffset * (i * 2 - tween * dir);
       }
 
       if (!state.noWrap || state.center - i >= 0) {
         const el = items[wrap(state.center - i, count)];
         const transformString = `${alignment} translateX(${
-          -defaults.shift + (-state.dim * i - delta) / 2
+          -state.options.shift + (-state.dim * i - delta) / 2
         }px) translateZ(${zTranslation}px)`;
         updateItemStyle(el, tweenedOpacity, -i, transformString);
       }
@@ -395,7 +398,7 @@ export const Carousel: FactoryComponent<CarouselAttrs> = () => {
       e.preventDefault();
       e.stopPropagation();
       return false;
-    } else if (!defaults.fullWidth) {
+    } else if (!state.options.fullWidth) {
       const target = (e.target as HTMLElement).closest('.carousel-item') as HTMLElement;
       if (target) {
         const items = Array.from(document.querySelectorAll('.carousel-item'));
@@ -428,8 +431,10 @@ export const Carousel: FactoryComponent<CarouselAttrs> = () => {
 
       if (!items || items.length === 0) return undefined;
 
-      // Merge options
-      Object.assign(defaults, attrs);
+      // Create instance-specific options without mutating globals
+      const instanceOptions = { ...defaults, ...attrs };
+      // Update state options for this render
+      state.options = instanceOptions;
 
       const supportTouch = typeof window.ontouchstart !== 'undefined';
 
@@ -441,18 +446,19 @@ export const Carousel: FactoryComponent<CarouselAttrs> = () => {
             const items = carouselEl.querySelectorAll('.carousel-item');
 
             state.hasMultipleSlides = items.length > 1;
-            state.showIndicators = defaults.indicators && state.hasMultipleSlides;
-            state.noWrap = defaults.noWrap || !state.hasMultipleSlides;
+            state.showIndicators = instanceOptions.indicators && state.hasMultipleSlides;
+            state.noWrap = instanceOptions.noWrap || !state.hasMultipleSlides;
 
             if (items.length > 0) {
               const firstItem = items[0] as HTMLElement;
               state.itemWidth = firstItem.offsetWidth;
               state.itemHeight = firstItem.offsetHeight;
-              state.dim = state.itemWidth * 2 + defaults.padding || 1;
+              state.dim = state.itemWidth * 2 + instanceOptions.padding || 1;
             }
 
             // Cap numVisible at count
-            defaults.numVisible = Math.min(items.length, defaults.numVisible);
+            instanceOptions.numVisible = Math.min(items.length, instanceOptions.numVisible);
+            state.options = instanceOptions;
 
             // Initial scroll
             scroll(state.offset, attrs);

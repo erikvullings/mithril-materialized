@@ -1,7 +1,7 @@
 import m, { FactoryComponent, Component, Attributes } from 'mithril';
 // import './styles/input.css';
 
-export const Mandatory: Component = { view: ({ attrs }) => m('span.mandatory', attrs, '*') };
+export const Mandatory: Component = { view: ({ attrs }) => m('span.mandatory', { ...attrs }, '*') };
 
 export interface LabelAttrs extends Attributes {
   /** Optional title/label */
