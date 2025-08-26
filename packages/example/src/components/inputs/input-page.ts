@@ -48,6 +48,7 @@ export const InputPage = () => {
             onkeyup: (ev, value) => console.log(value),
             autofocus: true,
             maxLength: 50,
+            canClear: true,
           } as InputAttrs)
         ),
         m(CodeBlock, {

@@ -231,6 +231,30 @@ const InputField =
       }
     };
 
+    const clearInput = (oninput?: (value: any, maxValue?: any) => void, onchange?: (value: any, maxValue?: any) => void) => {
+      if (state.inputElement) {
+        state.inputElement.value = '';
+        state.inputElement.focus();
+        state.active = false;
+        state.currentLength = 0;
+        state.hasInteracted = false;
+        
+        // Trigger oninput and onchange callbacks
+        const value = getValue(state.inputElement);
+        if (oninput) {
+          oninput(value);
+        }
+        if (onchange) {
+          onchange(value);
+        }
+        
+        // Update validation state
+        state.inputElement.classList.remove('valid', 'invalid');
+        state.isValid = true;
+        m.redraw();
+      }
+    };
+
     // Range slider helper functions
     // Range slider rendering functions are now in separate module
 
@@ -256,6 +280,7 @@ const InputField =
           onkeyup,
           style,
           validate,
+          canClear,
           ...params
         } = attrs;
         // const attributes = toAttrs(params);
@@ -423,6 +448,18 @@ const InputField =
               }
             },
           }),
+          // Clear button - only for text inputs with canClear enabled and has content
+          canClear && type === 'text' && state.inputElement?.value
+            ? m(MaterialIcon, {
+                name: 'close',
+                className: 'input-clear-btn',
+                onclick: (e: MouseEvent) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  clearInput(oninput, onchange);
+                },
+              })
+            : undefined,
           m(Label, {
             label,
             id,

@@ -46,6 +46,8 @@ export interface InputAttrs<T = string> extends Attributes {
   placeholder?: string;
   /** Add a description underneath the input field. */
   helperText?: string;
+  /** Show a clear button (small 'x') to clear the input value. Only valid for TextInput. */
+  canClear?: boolean;
   /**
    * When returning true or an empty string, clear the custom validity (= valid).
    * When returning false, set the custom validity message to a default string string.

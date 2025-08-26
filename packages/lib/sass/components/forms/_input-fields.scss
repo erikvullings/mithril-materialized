@@ -381,3 +381,23 @@ textarea {
 .character-counter {
   min-height: 18px;
 }
+
+/* Input Clear Button */
+.input-clear-btn {
+  position: absolute;
+  right: 8px;
+  top: 1rem;
+  cursor: pointer;
+  z-index: 1;
+  color: var(--mm-text-hint, #{variables.$placeholder-text-color});
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--mm-text-secondary, rgba(0,0,0,.7));
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
