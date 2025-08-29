@@ -7,18 +7,3 @@
 @use "file-input";
 @use "range"; // Standard HTML5 range input styles
 @use "form-groups";
-
-// Remove Focus Boxes
-select:focus {
-  outline: variables.$select-focus;
-}
-
-button:focus {
-  outline: none;
-  background-color: variables.$button-background-focus;
-}
-
-label {
-  font-size: variables.$label-font-size;
-  color: variables.$input-border-color;
-}

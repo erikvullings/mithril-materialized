@@ -11,9 +11,7 @@ export interface RadioButtonsAttrs<T extends string | number> extends Attributes
   options: InputOption<T>[];
   /** Event handler that is called when an option is changed */
   onchange: (id: T) => void;
-  /** Selected id (in oninit lifecycle) */
-  initialValue?: T;
-  /** Selected id (in oninit and onupdate lifecycle) */
+  /** Currently selected id. This property controls the component state and should be updated externally to change selection programmatically. */
   checkedId?: T;
   /** Optional description */
   description?: string;
@@ -63,22 +61,17 @@ export const RadioButton = <T extends string | number>(): Component<RadioButtonA
 /** Component to show a list of radio buttons, from which you can choose one. */
 // export const RadioButtons: FactoryComponent<IRadioButtons<T>> = () => {
 export const RadioButtons = <T extends string | number>(): Component<RadioButtonsAttrs<T>> => {
-  const state = { groupId: uniqueId() } as {
-    groupId: string;
-    oldCheckedId?: T;
-    checkedId?: T;
-    onchange: (id: T) => void;
-    componentId: string;
+  const state = {
+    groupId: uniqueId(),
+    componentId: '',
   };
   return {
-    oninit: ({ attrs: { checkedId, initialValue, id } }) => {
-      state.oldCheckedId = checkedId;
-      state.checkedId = checkedId || initialValue;
-      state.componentId = id || uniqueId();
+    oninit: ({ attrs }) => {
+      state.componentId = attrs.id || uniqueId();
     },
     view: ({
       attrs: {
-        checkedId: cid,
+        checkedId,
         newRow,
         className = 'col s12',
         label = '',
@@ -88,19 +81,10 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
         isMandatory,
         checkboxClass,
         layout = 'vertical',
-        onchange: callback,
+        onchange,
       },
     }) => {
-      if (state.oldCheckedId !== cid) {
-        state.oldCheckedId = state.checkedId = cid;
-      }
-      const { groupId, checkedId, componentId } = state;
-      const onchange = (propId: T) => {
-        state.checkedId = propId;
-        if (callback) {
-          callback(propId);
-        }
-      };
+      const { groupId, componentId } = state;
 
       const cn = [newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim() || undefined;
 

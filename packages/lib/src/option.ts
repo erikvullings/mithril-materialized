@@ -17,14 +17,17 @@ export interface InputCheckboxAttrs extends Attributes {
 
 /** Component to show a check box */
 export const InputCheckbox: FactoryComponent<InputCheckboxAttrs> = () => {
+  let checkboxId: string | undefined;
+
   return {
     view: ({ attrs: { className = 'col s12', onchange, label, checked, disabled, description, style, inputId } }) => {
-      const checkboxId = inputId || uniqueId();
+      if (!checkboxId) checkboxId = inputId || uniqueId();
       return m(
         `p`,
         { className, style },
         m('label', { for: checkboxId }, [
           m('input[type=checkbox][tabindex=0]', {
+            className: disabled ? 'disabled' : undefined,
             id: checkboxId,
             checked,
             disabled,
@@ -71,9 +74,9 @@ export interface OptionsAttrs<T extends string | number> extends Attributes {
   /** The options that you have */
   options: InputOption<T>[];
   /** Event handler that is called when an option is changed */
-  onchange?: (checkedId: T[]) => void;
-  /** Selected id or ids (in case of multiple options) */
-  initialValue?: T | T[];
+  onchange?: (checkedIds: T[]) => void;
+  /** Currently selected ids. This property controls the component state and should be updated externally to change selection programmatically. */
+  checkedId?: T | T[];
   /** Optional description */
   description?: string;
   /** Optional CSS that is added to the input checkbox, e.g. if you add col s4, the items will be put inline */
@@ -88,38 +91,42 @@ export interface OptionsAttrs<T extends string | number> extends Attributes {
   layout?: 'vertical' | 'horizontal';
   /** If true, show select all/none buttons */
   showSelectAll?: boolean;
+  /** Text for select all button */
+  selectAllText?: string;
+  /** Text for select none button */
+  selectNoneText?: string;
 }
 
 /** A list of checkboxes */
 export const Options = <T extends string | number>(): Component<OptionsAttrs<T>> => {
-  const state = {} as {
-    checkedId?: T | T[];
-    checkedIds: T[];
-    componentId: string;
+  const state = {
+    componentId: '',
   };
 
-  const isChecked = (id: T) => state.checkedIds.indexOf(id) >= 0;
-
-  const selectAll = (options: InputOption<T>[], callback?: (checkedId: T[]) => void) => {
+  const selectAll = (options: InputOption<T>[], onchange?: (checkedIds: T[]) => void) => {
     const allIds = options.map((option) => option.id);
-    state.checkedIds = [...allIds];
-    if (callback) callback(allIds);
+    onchange && onchange(allIds);
   };
 
-  const selectNone = (callback?: (checkedId: T[]) => void) => {
-    state.checkedIds = [];
-    if (callback) callback([]);
+  const selectNone = (onchange?: (checkedIds: T[]) => void) => {
+    onchange && onchange([]);
+  };
+
+  const handleChange = (propId: T, checked: boolean, checkedIds: T[], onchange?: (checkedIds: T[]) => void) => {
+    const newCheckedIds = checkedIds.filter((i) => i !== propId);
+    if (checked) {
+      newCheckedIds.push(propId);
+    }
+    onchange && onchange(newCheckedIds);
   };
 
   return {
-    oninit: ({ attrs: { initialValue, checkedId, id } }) => {
-      const iv = checkedId || initialValue;
-      state.checkedId = checkedId;
-      state.checkedIds = iv ? (iv instanceof Array ? [...iv] : [iv]) : [];
-      state.componentId = id || uniqueId();
+    oninit: ({ attrs }) => {
+      state.componentId = attrs.id || uniqueId();
     },
     view: ({
       attrs: {
+        checkedId,
         label,
         options,
         description,
@@ -131,19 +138,16 @@ export const Options = <T extends string | number>(): Component<OptionsAttrs<T>>
         isMandatory,
         layout = 'vertical',
         showSelectAll = false,
-        onchange: callback,
+        selectAllText = 'Select All',
+        selectNoneText = 'Select None',
+        onchange,
       },
     }) => {
-      const onchange = callback
-        ? (propId: T, checked: boolean) => {
-            const checkedIds = state.checkedIds.filter((i) => i !== propId);
-            if (checked) {
-              checkedIds.push(propId);
-            }
-            state.checkedIds = checkedIds;
-            callback(checkedIds);
-          }
-        : undefined;
+      // Derive checked IDs from props
+      const checkedIds = checkedId !== undefined ? (Array.isArray(checkedId) ? checkedId : [checkedId]) : [];
+
+      const isChecked = (id: T) => checkedIds.includes(id);
+
       const cn = [newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim() || undefined;
 
       const optionsContent =
@@ -154,7 +158,7 @@ export const Options = <T extends string | number>(): Component<OptionsAttrs<T>>
                 m(InputCheckbox, {
                   disabled: disabled || option.disabled,
                   label: option.label,
-                  onchange: onchange ? (v: boolean) => onchange(option.id, v) : undefined,
+                  onchange: onchange ? (v: boolean) => handleChange(option.id, v, checkedIds, onchange) : undefined,
                   className: option.className || checkboxClass,
                   checked: isChecked(option.id),
                   description: option.description,
@@ -166,7 +170,7 @@ export const Options = <T extends string | number>(): Component<OptionsAttrs<T>>
               m(InputCheckbox, {
                 disabled: disabled || option.disabled,
                 label: option.label,
-                onchange: onchange ? (v: boolean) => onchange(option.id, v) : undefined,
+                onchange: onchange ? (v: boolean) => handleChange(option.id, v, checkedIds, onchange) : undefined,
                 className: option.className || checkboxClass,
                 checked: isChecked(option.id),
                 description: option.description,
@@ -184,11 +188,11 @@ export const Options = <T extends string | number>(): Component<OptionsAttrs<T>>
                 href: '#',
                 onclick: (e: Event) => {
                   e.preventDefault();
-                  selectAll(options, callback);
+                  selectAll(options, onchange);
                 },
                 style: 'margin-right: 15px;',
               },
-              'Select All'
+              selectAllText
             ),
             m(
               'a',
@@ -196,10 +200,10 @@ export const Options = <T extends string | number>(): Component<OptionsAttrs<T>>
                 href: '#',
                 onclick: (e: Event) => {
                   e.preventDefault();
-                  selectNone(callback);
+                  selectNone(onchange);
                 },
               },
-              'Select None'
+              selectNoneText
             ),
           ]),
         description && m(HelperText, { helperText: description }),

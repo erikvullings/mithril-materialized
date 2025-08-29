@@ -60,6 +60,9 @@
       width: 24px;
     }
 
+    &.disabled {
+      cursor: not-allowed; 
+    }
 
     clear: both;
     color: var(--mm-text-primary, variables.$off-black);

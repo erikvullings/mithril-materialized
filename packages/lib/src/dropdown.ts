@@ -32,13 +32,8 @@ export interface DropdownAttrs<T extends string | number> extends Attributes {
   disabled?: boolean;
   /** Item array to show in the dropdown. If the value is not supplied, uses he name. */
   items: DropdownItem<T>[];
-  /**
-   * Selected value or name
-   * @deprecated Use initialValue instead
-   */
+  /** Currently selected item id. This property controls the component state and should be updated externally to change selection programmatically. */
   checkedId?: T;
-  /** Selected value or name */
-  initialValue?: T;
   /** When a value or name is selected */
   onchange?: (value: T) => void;
   /** Uses Materialize icons as a prefix or postfix. */
@@ -47,10 +42,9 @@ export interface DropdownAttrs<T extends string | number> extends Attributes {
   helperText?: string;
 }
 
-interface DropdownState<T extends string | number> {
+interface DropdownState {
   isOpen: boolean;
-  initialValue?: T;
-  id: T;
+  id: string;
   focusedIndex: number;
   inputRef?: HTMLElement | null;
   dropdownRef?: HTMLElement | null;
@@ -58,13 +52,20 @@ interface DropdownState<T extends string | number> {
 
 /** Pure TypeScript Dropdown component - no Materialize dependencies */
 export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T>> => {
-  const state: DropdownState<T> = {
+  const state: DropdownState = {
     isOpen: false,
-    initialValue: undefined,
-    id: '' as T,
+    id: '',
     focusedIndex: -1,
     inputRef: null,
     dropdownRef: null,
+  };
+
+  const closeDropdown = (e: MouseEvent) => {
+    const target = e.target as Element;
+    if (!target.closest('.dropdown-wrapper.input-field')) {
+      state.isOpen = false;
+      m.redraw();
+    }
   };
 
   const handleKeyDown = (e: KeyboardEvent, items: DropdownItem<T>[], onchange?: (value: T) => void) => {
@@ -75,7 +76,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
         e.preventDefault();
         if (!state.isOpen) {
           state.isOpen = true;
-          state.focusedIndex = 0;
+          state.focusedIndex = availableItems.length > 0 ? 0 : -1;
         } else {
           state.focusedIndex = Math.min(state.focusedIndex + 1, availableItems.length - 1);
         }
@@ -92,13 +93,12 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
         if (state.isOpen && state.focusedIndex >= 0 && state.focusedIndex < availableItems.length) {
           const selectedItem = availableItems[state.focusedIndex];
           const value = (selectedItem.id || selectedItem.label) as T;
-          state.initialValue = value;
           state.isOpen = false;
           state.focusedIndex = -1;
           if (onchange) onchange(value);
         } else if (!state.isOpen) {
           state.isOpen = true;
-          state.focusedIndex = 0;
+          state.focusedIndex = availableItems.length > 0 ? 0 : -1;
         }
         break;
       case 'Escape':
@@ -110,20 +110,36 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
   };
 
   return {
-    oninit: ({ attrs: { id = uniqueId(), initialValue, checkedId } }) => {
-      state.id = id as T;
-      state.initialValue = initialValue || checkedId;
-      // Mithril will handle click events through the component structure
+    oninit: ({ attrs }) => {
+      state.id = attrs.id?.toString() || uniqueId();
+      // Add global click listener to close dropdown
+      document.addEventListener('click', closeDropdown);
+    },
+
+    onremove: () => {
+      // Cleanup global listener
+      document.removeEventListener('click', closeDropdown);
     },
 
     view: ({
-      attrs: { key, label, onchange, disabled = false, items, iconName, helperText, style, className = 'col s12' },
+      attrs: {
+        checkedId,
+        key,
+        label,
+        onchange,
+        disabled = false,
+        items,
+        iconName,
+        helperText,
+        style,
+        className = 'col s12',
+      },
     }) => {
-      const { initialValue } = state;
-      const selectedItem = initialValue
-        ? items.filter((i: DropdownItem<T>) => (i.id ? i.id === initialValue : i.label === initialValue)).shift()
+      const selectedItem = checkedId
+        ? items.filter((i: DropdownItem<T>) => (i.id ? i.id === checkedId : i.label === checkedId)).shift()
         : undefined;
       const title = selectedItem ? selectedItem.label : label || 'Select';
+      console.log({ title });
       const availableItems = items.filter((item) => !item.divider && !item.disabled);
 
       return m('.dropdown-wrapper.input-field', { className, key, style }, [
@@ -132,12 +148,6 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
         m(
           '.select-wrapper',
           {
-            onclick: disabled
-              ? undefined
-              : () => {
-                  state.isOpen = !state.isOpen;
-                  state.focusedIndex = state.isOpen ? 0 : -1;
-                },
             onkeydown: disabled ? undefined : (e: KeyboardEvent) => handleKeyDown(e, items, onchange),
             tabindex: disabled ? -1 : 0,
             'aria-expanded': state.isOpen ? 'true' : 'false',
@@ -156,7 +166,8 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
                 e.stopPropagation();
                 if (!disabled) {
                   state.isOpen = !state.isOpen;
-                  state.focusedIndex = state.isOpen ? 0 : -1;
+                  // Reset focus index when opening/closing
+                  state.focusedIndex = -1;
                 }
               },
             }),
@@ -174,50 +185,36 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
                   onremove: () => {
                     state.dropdownRef = null;
                   },
-                  style: getDropdownStyles(
-                    state.inputRef,
-                    true,
-                    items.map((item) => ({
-                      ...item,
-                      // Convert dropdown items to format expected by getDropdownStyles
-                      group: undefined, // Dropdown doesn't use groups
-                    })),
-                    true
-                  ),
+                  style: getDropdownStyles(state.inputRef, true, items, true),
                 },
-                items.map((item, index) => {
+                items.map((item) => {
                   if (item.divider) {
-                    return m('li.divider', {
-                      key: `divider-${index}`,
-                    });
+                    return m('li.divider');
                   }
 
                   const itemIndex = availableItems.indexOf(item);
                   const isFocused = itemIndex === state.focusedIndex;
 
+                  const className =
+                    [
+                      item.disabled ? 'disabled' : '',
+                      isFocused ? 'focused' : '',
+                      selectedItem?.id === item.id || selectedItem?.label === item.label ? 'selected' : '',
+                    ]
+                      .filter(Boolean)
+                      .join(' ') || undefined;
                   return m(
                     'li',
                     {
-                      key: item.id || `item-${index}`,
-                      class: [
-                        item.disabled ? 'disabled' : '',
-                        isFocused ? 'focused' : '',
-                        selectedItem?.id === item.id || selectedItem?.label === item.label ? 'selected' : '',
-                      ]
-                        .filter(Boolean)
-                        .join(' '),
-                      ...(item.disabled
-                        ? {}
-                        : {
-                            onclick: (e: MouseEvent) => {
-                              e.stopPropagation();
-                              const value = (item.id || item.label) as T;
-                              state.initialValue = value;
-                              state.isOpen = false;
-                              state.focusedIndex = -1;
-                              if (onchange) onchange(value);
-                            },
-                          }),
+                      className,
+                      onclick: item.disabled
+                        ? undefined
+                        : () => {
+                            const value = (item.id || item.label) as T;
+                            state.isOpen = false;
+                            state.focusedIndex = -1;
+                            if (onchange) onchange(value);
+                          },
                     },
                     m(
                       'span',

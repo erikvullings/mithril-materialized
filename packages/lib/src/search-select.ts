@@ -1,28 +1,13 @@
-import m, { Attributes, Component } from 'mithril';
+import m, { Component } from 'mithril';
 import { getDropdownStyles, uniqueId } from './utils';
 import { MaterialIcon } from './material-icon';
+import { SelectAttrs } from './select';
+import { InputOption } from './option';
 
-// Option interface for type safety
-export interface Option<T extends string | number> {
-  id: T;
-  label?: string;
-  disabled?: boolean;
-}
-
-// Component attributes interface
-export interface SearchSelectAttrs<T extends string | number> extends Attributes {
-  /** Options to display in the select */
-  options?: Option<T>[];
-  /** Initial value */
-  initialValue?: T[];
-  /** Callback when user selects or deselects an option */
-  onchange?: (selectedOptions: T[]) => void | Promise<void>;
+// Extended SearchSelect attributes that inherit from SelectAttrs
+export interface SearchSelectAttrs<T extends string | number> extends SelectAttrs<T> {
   /** Callback when user creates a new option: should return new ID */
-  oncreateNewOption?: (term: string) => Option<T> | Promise<Option<T>>;
-  /** Label for the search select, no default */
-  label?: string;
-  /** Placeholder text for the search input, no default */
-  placeholder?: string;
+  oncreateNewOption?: (term: string) => InputOption<T> | Promise<InputOption<T>>;
   /** Placeholder text for the search input, default 'Search options...' */
   searchPlaceholder?: string;
   /** When no options are left, displays this text, default 'No options found' */
@@ -32,32 +17,27 @@ export interface SearchSelectAttrs<T extends string | number> extends Attributes
 }
 
 // Component state interface
-interface SearchSelectState<T extends string | number> {
+interface SearchSelectState {
+  id: string;
   isOpen: boolean;
-  selectedOptions: Option<T>[];
   searchTerm: string;
-  options: Option<T>[];
   inputRef: HTMLElement | null;
   dropdownRef: HTMLElement | null;
   focusedIndex: number;
-  onchange: any;
 }
 
 /**
  * Mithril Factory Component for Multi-Select Dropdown with search
  */
-export const SearchSelect = <T extends string | number>(): Component<SearchSelectAttrs<T>, SearchSelectState<T>> => {
-  //  (): <T extends string | number>(): Component<SearchSelectAttrs<T>, SearchSelectState<T>> => {
+export const SearchSelect = <T extends string | number>(): Component<SearchSelectAttrs<T>, SearchSelectState> => {
   // State initialization
-  const state: SearchSelectState<string | number> = {
+  const state: SearchSelectState = {
+    id: '',
     isOpen: false,
-    selectedOptions: [], //options.filter((o) => iv.includes(o.id)),
     searchTerm: '',
-    options: [],
     inputRef: null,
     dropdownRef: null,
     focusedIndex: -1,
-    onchange: null,
   };
 
   const componentId = uniqueId();
@@ -81,7 +61,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
   };
 
   // Handle keyboard navigation
-  const handleKeyDown = (e: KeyboardEvent, filteredOptions: Option<string | number>[], showAddNew: boolean) => {
+  const handleKeyDown = (e: KeyboardEvent, filteredOptions: InputOption<T>[], showAddNew: boolean) => {
     if (!state.isOpen) return;
 
     const totalOptions = filteredOptions.length + (showAddNew ? 1 : 0);
@@ -102,7 +82,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
             // Handle add new option
             return 'addNew';
           } else if (state.focusedIndex < filteredOptions.length) {
-            toggleOption(filteredOptions[state.focusedIndex]);
+            // This will be handled in the view method where attrs are available
           }
         }
         break;
@@ -116,28 +96,35 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
   };
 
   // Toggle option selection
-  const toggleOption = (option: Option<string | number>) => {
+  const toggleOption = (option: InputOption<T>, attrs: SearchSelectAttrs<T>) => {
     if (option.disabled) return;
 
-    state.selectedOptions = state.selectedOptions.some((item) => item.id === option.id)
-      ? state.selectedOptions.filter((item) => item.id !== option.id)
-      : [...state.selectedOptions, option];
+    // Get current selected IDs from props
+    const currentSelectedIds =
+      attrs.checkedId !== undefined ? (Array.isArray(attrs.checkedId) ? attrs.checkedId : [attrs.checkedId]) : [];
+
+    const newIds = currentSelectedIds.includes(option.id)
+      ? currentSelectedIds.filter((id) => id !== option.id)
+      : [...currentSelectedIds, option.id];
+
     state.searchTerm = '';
     state.focusedIndex = -1;
-    state.onchange && state.onchange(state.selectedOptions.map((o) => o.id));
+    attrs.onchange(newIds);
   };
 
   // Remove a selected option
-  const removeOption = (option: Option<string | number>) => {
-    state.selectedOptions = state.selectedOptions.filter((item) => item.id !== option.id);
-    state.onchange && state.onchange(state.selectedOptions.map((o) => o.id));
+  const removeOption = (optionId: T, attrs: SearchSelectAttrs<T>) => {
+    // Get current selected IDs from props
+    const currentSelectedIds =
+      attrs.checkedId !== undefined ? (Array.isArray(attrs.checkedId) ? attrs.checkedId : [attrs.checkedId]) : [];
+
+    const newIds = currentSelectedIds.filter((id) => id !== optionId);
+    attrs.onchange(newIds);
   };
 
   return {
-    oninit: ({ attrs: { options = [], initialValue = [], onchange } }) => {
-      state.options = options;
-      state.selectedOptions = options.filter((o) => initialValue.includes(o.id));
-      state.onchange = onchange;
+    oninit: ({ attrs }) => {
+      state.id = attrs.id || uniqueId();
     },
     oncreate() {
       document.addEventListener('click', handleClickOutside);
@@ -145,23 +132,29 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
     onremove() {
       document.removeEventListener('click', handleClickOutside);
     },
-    view({
-      attrs: {
-        // onchange,
+    view({ attrs }) {
+      // Derive selected IDs from props - no internal state needed
+      const selectedIds =
+        attrs.checkedId !== undefined ? (Array.isArray(attrs.checkedId) ? attrs.checkedId : [attrs.checkedId]) : [];
+
+      const {
+        options = [],
         oncreateNewOption,
         className,
         placeholder,
         searchPlaceholder = 'Search options...',
         noOptionsFound = 'No options found',
         label,
-        // maxHeight = '25rem',
-      },
-    }) {
+      } = attrs;
+
+      // Get selected options for display
+      const selectedOptions = options.filter((opt) => selectedIds.includes(opt.id));
+
       // Safely filter options
-      const filteredOptions = state.options.filter(
+      const filteredOptions = options.filter(
         (option) =>
           (option.label || option.id.toString()).toLowerCase().includes((state.searchTerm || '').toLowerCase()) &&
-          !state.selectedOptions.some((selected) => selected.id === option.id)
+          !selectedIds.includes(option.id)
       );
 
       // Check if we should show the "add new option" element
@@ -198,14 +191,14 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
             // Hidden input for label association and accessibility
             m('input', {
               type: 'text',
-              id: componentId,
-              value: state.selectedOptions.map((o) => o.label || o.id.toString()).join(', '),
+              id: state.id,
+              value: selectedOptions.map((o) => o.label || o.id.toString()).join(', '),
               readonly: true,
               style: { position: 'absolute', left: '-9999px', opacity: 0 },
             }),
 
             // Selected Options (chips)
-            ...state.selectedOptions.map((option) =>
+            ...selectedOptions.map((option) =>
               m('.chip', [
                 option.label || option.id.toString(),
                 m(MaterialIcon, {
@@ -213,14 +206,14 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                   className: 'close',
                   onclick: (e: Event) => {
                     e.stopPropagation();
-                    removeOption(option);
+                    removeOption(option.id, attrs);
                   },
                 }),
               ])
             ),
 
             // Placeholder when no options selected
-            state.selectedOptions.length === 0 &&
+            selectedOptions.length === 0 &&
               placeholder &&
               m(
                 'span.placeholder',
@@ -250,8 +243,8 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
           m(
             'label',
             {
-              for: componentId,
-              class: placeholder || state.selectedOptions.length > 0 ? 'active' : '',
+              for: state.id,
+              class: placeholder || selectedOptions.length > 0 ? 'active' : '',
             },
             label
           ),
@@ -293,7 +286,13 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                       const result = handleKeyDown(e, filteredOptions, !!showAddNew);
                       if (result === 'addNew' && oncreateNewOption) {
                         const option = await oncreateNewOption(state.searchTerm);
-                        toggleOption(option);
+                        toggleOption(option, attrs);
+                      } else if (
+                        e.key === 'Enter' &&
+                        state.focusedIndex >= 0 &&
+                        state.focusedIndex < filteredOptions.length
+                      ) {
+                        toggleOption(filteredOptions[state.focusedIndex], attrs);
                       }
                     },
                     style: {
@@ -331,7 +330,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                       {
                         onclick: async () => {
                           const option = await oncreateNewOption(state.searchTerm);
-                          toggleOption(option);
+                          toggleOption(option, attrs);
                         },
                         class: state.focusedIndex === filteredOptions.length ? 'active' : '',
                         onmouseover: () => {
@@ -351,7 +350,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                     onclick: (e: Event) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      toggleOption(option);
+                      toggleOption(option, attrs);
                     },
                     class: `${option.disabled ? 'disabled' : ''} ${
                       state.focusedIndex === index ? 'active' : ''
@@ -365,7 +364,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                   m('span', [
                     m('input', {
                       type: 'checkbox',
-                      checked: state.selectedOptions.some((selected) => selected.id === option.id),
+                      checked: selectedIds.includes(option.id),
                     }),
                     option.label || option.id.toString(),
                   ])

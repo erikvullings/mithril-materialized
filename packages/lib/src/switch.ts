@@ -9,7 +9,7 @@ export interface SwitchOptions extends Partial<InputAttrs<boolean>> {
   left?: string;
   /** Right text label */
   right?: string;
-  /** If checked is true, the switch is set in the right position. Only processed in oninit. */
+  /** If checked is true, the switch is set in the right position. */
   checked?: boolean;
 }
 
@@ -22,15 +22,25 @@ export const Switch: FactoryComponent<SwitchOptions> = () => {
     },
     view: ({ attrs }) => {
       const id = attrs.id || state.id;
-      const { label, left, right, disabled, newRow, onchange, isMandatory, className = 'col s12', ...params } = attrs;
+      const {
+        checked,
+        label,
+        left,
+        right,
+        disabled,
+        newRow,
+        onchange,
+        isMandatory,
+        className = 'col s12',
+        ...params
+      } = attrs;
       const cn = ['input-field', newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim() || undefined;
       return m(
         'div',
         {
           className: cn,
           onclick: (e: MouseEvent) => {
-            state.checked = !state.checked;
-            onchange && onchange(state.checked);
+            onchange && onchange(!checked);
             e.preventDefault();
           },
         },
@@ -39,22 +49,16 @@ export const Switch: FactoryComponent<SwitchOptions> = () => {
           m(
             '.switch',
             params,
-            m(
-              'label',
-              {
-                style: { cursor: 'pointer' },
-              },
-              [
-                m('span', left || 'Off'),
-                m('input[type=checkbox]', {
-                  id,
-                  disabled,
-                  checked: state.checked,
-                }),
-                m('span.lever'),
-                m('span', right || 'On'),
-              ]
-            )
+            m('label', [
+              m('span', left || 'Off'),
+              m('input[type=checkbox]', {
+                id,
+                disabled,
+                checked,
+              }),
+              m('span.lever'),
+              m('span', right || 'On'),
+            ])
           ),
         ]
       );

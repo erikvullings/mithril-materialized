@@ -4,15 +4,19 @@
    ========================================================================== */
 
 /* Remove default checkbox */
-[type="checkbox"]:not(:checked),
-[type="checkbox"]:checked {
+[type=checkbox]:not(:checked),
+[type=checkbox]:checked {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
+[type=checkbox]:disabled + span {
+    color: var(--mm-text-disabled, rgba(0, 0, 0, 0.42));
+}
+
 // Checkbox Styles
-[type="checkbox"] {
+[type=checkbox] {
   // Text Label Style
   + span:not(.lever) {
     position: relative;
@@ -61,7 +65,7 @@
   }
 }
 
-[type="checkbox"]:checked {
+[type=checkbox]:checked {
   + span:not(.lever):before {
     top: -4px;
     left: -5px;
@@ -83,7 +87,7 @@
 }
 
 /* Indeterminate checkbox */
-[type="checkbox"]:indeterminate {
+[type=checkbox]:indeterminate {
   + span:not(.lever):before {
     top: -11px;
     left: -12px;
@@ -106,7 +110,7 @@
 }
 
 // Filled in Style
-[type="checkbox"].filled-in {
+[type=checkbox].filled-in {
   // General
   + span:not(.lever):after {
     border-radius: 2px;
