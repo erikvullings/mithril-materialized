@@ -1,3 +1,15 @@
+# [3.2.0](https://github.com/erikvullings/mithril-materialized/compare/v3.1.0...v3.2.0) (2025-08-30)
+
+
+### Bug Fixes
+
+* Make iconClass less restrictive. ([39b8aa9](https://github.com/erikvullings/mithril-materialized/commit/39b8aa9bab43f149760228b1bbf98a94c6be7b93))
+
+
+### Features
+
+* most components can now operate in controlled or uncontrolled mode. ([8c44672](https://github.com/erikvullings/mithril-materialized/commit/8c4467248f8f1a217a1d9302d730e099e9743e56))
+
 # [3.1.0](https://github.com/erikvullings/mithril-materialized/compare/v3.0.0...v3.1.0) (2025-08-26)
 
 # [3.0.0](https://github.com/erikvullings/mithril-materialized/compare/v2.0.1...v3.0.0) (2025-08-26)
