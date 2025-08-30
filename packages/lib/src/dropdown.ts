@@ -81,7 +81,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
     }
   };
 
-  const handleKeyDown = (e: KeyboardEvent, items: DropdownItem<T>[], onchange?: (value: T) => void) => {
+  const handleKeyDown = (e: KeyboardEvent, items: DropdownItem<T>[]): T | undefined => {
     const availableItems = items.filter((item) => !item.divider && !item.disabled);
 
     switch (e.key) {
@@ -91,15 +91,15 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
           state.isOpen = true;
           state.focusedIndex = availableItems.length > 0 ? 0 : -1;
         } else {
-          state.focusedIndex = Math.min(state.focusedIndex + 1, availableItems.length - 1);
+          state.focusedIndex = (state.focusedIndex + 1) % availableItems.length;
         }
-        break;
+        return undefined;
       case 'ArrowUp':
         e.preventDefault();
         if (state.isOpen) {
-          state.focusedIndex = Math.max(state.focusedIndex - 1, 0);
+          state.focusedIndex = state.focusedIndex <= 0 ? availableItems.length - 1 : state.focusedIndex - 1;
         }
-        break;
+        return undefined;
       case 'Enter':
       case ' ':
         e.preventDefault();
@@ -108,29 +108,31 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
           const value = (selectedItem.id || selectedItem.label) as T;
           state.isOpen = false;
           state.focusedIndex = -1;
-          return value; // Return value to be handled in view
+          return value;
         } else if (!state.isOpen) {
           state.isOpen = true;
           state.focusedIndex = availableItems.length > 0 ? 0 : -1;
         }
-        break;
+        return undefined;
       case 'Escape':
         e.preventDefault();
         state.isOpen = false;
         state.focusedIndex = -1;
-        break;
+        return undefined;
+      default:
+        return undefined;
     }
   };
 
   return {
     oninit: ({ attrs }) => {
       state.id = attrs.id?.toString() || uniqueId();
-      
+
       // Initialize internal state for uncontrolled mode
       if (!isControlled(attrs)) {
         state.internalCheckedId = attrs.defaultCheckedId;
       }
-      
+
       // Add global click listener to close dropdown
       document.addEventListener('click', closeDropdown);
     },
@@ -170,7 +172,9 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       };
 
       const selectedItem = currentCheckedId
-        ? items.filter((i: DropdownItem<T>) => (i.id ? i.id === currentCheckedId : i.label === currentCheckedId)).shift()
+        ? items
+            .filter((i: DropdownItem<T>) => (i.id ? i.id === currentCheckedId : i.label === currentCheckedId))
+            .shift()
         : undefined;
       const title = selectedItem ? selectedItem.label : label || 'Select';
       const availableItems = items.filter((item) => !item.divider && !item.disabled);
@@ -181,12 +185,14 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
         m(
           '.select-wrapper',
           {
-            onkeydown: disabled ? undefined : (e: KeyboardEvent) => {
-              const selectedValue = handleKeyDown(e, items, onchange);
-              if (selectedValue) {
-                handleSelection(selectedValue);
-              }
-            },
+            onkeydown: disabled
+              ? undefined
+              : (e: KeyboardEvent) => {
+                  const selectedValue = handleKeyDown(e, items);
+                  if (selectedValue) {
+                    handleSelection(selectedValue);
+                  }
+                },
             tabindex: disabled ? -1 : 0,
             'aria-expanded': state.isOpen ? 'true' : 'false',
             'aria-haspopup': 'listbox',
