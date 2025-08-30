@@ -1,3 +1,10 @@
+## [3.2.1](https://github.com/erikvullings/mithril-materialized/compare/v3.2.0...v3.2.1) (2025-08-30)
+
+
+### Bug Fixes
+
+* keyboard interaction in dropdown. ([cafe32a](https://github.com/erikvullings/mithril-materialized/commit/cafe32ab8936edf6c672a8adbb52f975d6bba2f5))
+
 # [3.2.0](https://github.com/erikvullings/mithril-materialized/compare/v3.1.0...v3.2.0) (2025-08-30)
 
 
