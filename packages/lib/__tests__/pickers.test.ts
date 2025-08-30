@@ -24,12 +24,12 @@ describe('DatePicker Component', () => {
     expect(label?.textContent).toBe('Select Date');
   });
 
-  test('renders with initial date value', () => {
+  test('renders with default date value (uncontrolled)', () => {
     const initialDate = new Date('2023-06-15');
     const DatePickerInstance = DatePicker;
     const { container } = render(DatePickerInstance, {
       ...defaultDatePickerAttrs,
-      initialValue: initialDate,
+      defaultValue: initialDate.toISOString().split('T')[0], // DatePicker expects string value
     });
 
     const input = container.querySelector('input') as HTMLInputElement;
@@ -138,11 +138,11 @@ describe('TimePicker Component', () => {
     expect(label?.textContent).toBe('Select Time');
   });
 
-  test('renders with initial time value', () => {
+  test('renders with default time value (uncontrolled)', () => {
     const TimePickerInstance = TimePicker;
     const { container } = render(TimePickerInstance, {
       ...defaultTimePickerAttrs,
-      initialValue: '14:30',
+      defaultValue: '14:30',
     });
 
     const input = container.querySelector('input') as HTMLInputElement;
@@ -153,7 +153,7 @@ describe('TimePicker Component', () => {
     const TimePickerInstance = TimePicker;
     const { container } = render(TimePickerInstance, {
       ...defaultTimePickerAttrs,
-      initialValue: '14:30',
+      defaultValue: '14:30',
       twelveHour: true,
     });
 

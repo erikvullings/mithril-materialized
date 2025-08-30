@@ -97,6 +97,22 @@ export interface OptionsAttrs<T extends string | number> extends Attributes {
   selectNoneText?: string;
 }
 
+/** Reusable layout component for rendering options horizontally or vertically */
+export const OptionsList: Component<{
+  options: Array<{ component: any; props: any; key: string | number }>;
+  layout: 'vertical' | 'horizontal';
+}> = {
+  view: ({ attrs: { options, layout } }) => {
+    const optionElements = options.map(({ component, props, key }) => 
+      m(component, { ...props, key })
+    );
+    
+    return layout === 'horizontal'
+      ? m('div.grid-container', optionElements)
+      : optionElements;
+  },
+};
+
 /** A list of checkboxes */
 export const Options = <T extends string | number>(): Component<OptionsAttrs<T>> => {
   const state = {
@@ -150,38 +166,29 @@ export const Options = <T extends string | number>(): Component<OptionsAttrs<T>>
 
       const cn = [newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim() || undefined;
 
-      const optionsContent =
-        layout === 'horizontal'
-          ? m(
-              'div.grid-container',
-              options.map((option) =>
-                m(InputCheckbox, {
-                  disabled: disabled || option.disabled,
-                  label: option.label,
-                  onchange: onchange ? (v: boolean) => handleChange(option.id, v, checkedIds, onchange) : undefined,
-                  className: option.className || checkboxClass,
-                  checked: isChecked(option.id),
-                  description: option.description,
-                  inputId: `${state.componentId}-${option.id}`,
-                })
-              )
-            )
-          : options.map((option) =>
-              m(InputCheckbox, {
-                disabled: disabled || option.disabled,
-                label: option.label,
-                onchange: onchange ? (v: boolean) => handleChange(option.id, v, checkedIds, onchange) : undefined,
-                className: option.className || checkboxClass,
-                checked: isChecked(option.id),
-                description: option.description,
-                inputId: `${state.componentId}-${option.id}`,
-              })
-            );
+      const optionItems = options.map((option) => ({
+        component: InputCheckbox,
+        props: {
+          disabled: disabled || option.disabled,
+          label: option.label,
+          onchange: onchange ? (v: boolean) => handleChange(option.id, v, checkedIds, onchange) : undefined,
+          className: option.className || checkboxClass,
+          checked: isChecked(option.id),
+          description: option.description,
+          inputId: `${state.componentId}-${option.id}`,
+        },
+        key: option.id,
+      }));
+
+      const optionsContent = m(OptionsList, {
+        options: optionItems,
+        layout,
+      });
 
       return m('div', { id: state.componentId, className: cn, style }, [
         label && m('h5.form-group-label', label + (isMandatory ? ' *' : '')),
         showSelectAll &&
-          m('div.select-all-controls', { style: 'margin-bottom: 10px;' }, [
+          m('div.select-all-controls', { style: { marginBottom: '10px' } }, [
             m(
               'a',
               {
@@ -190,7 +197,7 @@ export const Options = <T extends string | number>(): Component<OptionsAttrs<T>>
                   e.preventDefault();
                   selectAll(options, onchange);
                 },
-                style: 'margin-right: 15px;',
+                style: { marginRight: '15px' },
               },
               selectAllText
             ),

@@ -128,17 +128,18 @@ export const SelectionPage = () => {
           m(Select<number>, {
             placeholder: 'Make a choice...',
             label: 'What are your favorite hobbies?',
+            multiple: true,
             checkedId: state.checkedIds,
             onchange: (v) => {
               state.checkedIds = v;
               console.log(v);
             },
             options: [
-              { id: 1, group: 'Indoors', label: 'Watching movies' },
+              { id: 0, group: 'Indoors', label: 'Watching movies' },
               { id: 2, group: 'Indoors', label: 'Reading' },
               { id: 3, group: 'Indoors', label: 'Sex', disabled: true },
-              { id: 4, group: 'Outdoors', label: 'Going out' },
-              { id: 5, group: 'Outdoors', label: 'Horse riding' },
+              { id: 1, group: 'Outdoors', label: 'Going out' },
+              { id: 4, group: 'Outdoors', label: 'Horse riding' },
             ],
           })
         ),
@@ -156,11 +157,11 @@ export const SelectionPage = () => {
                 console.log(v);
               },
               options: [
-                { id: 1, group: 'Indoors', label: 'Watching movies' },
+                { id: 0, group: 'Indoors', label: 'Watching movies' },
                 { id: 2, group: 'Indoors', label: 'Reading' },
                 { id: 3, group: 'Indoors', label: 'Sex', disabled: true },
-                { id: 4, group: 'Outdoors', label: 'Going out' },
-                { id: 5, group: 'Outdoors', label: 'Horse riding' },
+                { id: 1, group: 'Outdoors', label: 'Going out' },
+                { id: 4, group: 'Outdoors', label: 'Horse riding' },
               ],
             })
           )`,
@@ -371,7 +372,7 @@ export const SelectionPage = () => {
             helperText: 'Help me',
             className: 'col s6',
             // disabled: true,
-            initialValue: 'movies',
+            value: 'movies',
             items: [
               { label: 'Movies', id: 'movies', iconName: 'local_movies' },
               { label: 'Reading', id: 'reading', iconName: 'import_contacts' },

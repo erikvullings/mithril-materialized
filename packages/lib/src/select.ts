@@ -8,13 +8,18 @@ export interface SelectAttrs<T extends string | number> extends Attributes {
   /** Options to select from */
   options: InputOption<T>[];
   /** Called when the selection changes, contains all selected (checked) ids as an array */
-  onchange: (checkedIds: T[]) => void;
+  onchange?: (checkedIds: T[]) => void;
   /**
-   * Currently selected id or ids. For single select, pass a single value or array with one item.
-   * For multiple select, pass an array of selected ids. This property controls the component state
-   * and should be updated externally to change selections programmatically.
+   * Currently selected id or ids. For controlled mode, pass the current selection and provide onchange.
+   * For single select, pass a single value or array with one item.
+   * For multiple select, pass an array of selected ids.
    */
   checkedId?: T | T[];
+  /**
+   * Default selected id or ids for uncontrolled mode. Only used when checkedId and onchange are not provided.
+   * The component will manage its own internal state in uncontrolled mode.
+   */
+  defaultCheckedId?: T | T[];
   /** Select a single option or multiple options */
   multiple?: boolean;
   /** Optional label. */
@@ -46,43 +51,62 @@ export interface SelectAttrs<T extends string | number> extends Attributes {
   showClearButton?: boolean;
 }
 
-interface SelectState {
+interface SelectState<T extends string | number> {
   id: string;
   isOpen: boolean;
   focusedIndex: number;
   inputRef?: HTMLElement | null;
   dropdownRef?: HTMLElement | null;
+  internalSelectedIds: T[];
 }
 
 /** Select component */
 export const Select = <T extends string | number>(): Component<SelectAttrs<T>> => {
-  const state: SelectState = {
+  const state: SelectState<T> = {
     id: '',
     isOpen: false,
     focusedIndex: -1,
     inputRef: null,
     dropdownRef: null,
+    internalSelectedIds: [],
   };
+
+  const isControlled = (attrs: SelectAttrs<T>) => attrs.checkedId !== undefined && attrs.onchange !== undefined;
 
   const isSelected = (id: T, selectedIds: T[]) => {
     return selectedIds.some((selectedId) => selectedId === id);
   };
 
   const toggleOption = (id: T, multiple: boolean, attrs: SelectAttrs<T>) => {
-    // Get current selected IDs from props
-    const currentSelectedIds =
-      attrs.checkedId !== undefined ? (Array.isArray(attrs.checkedId) ? attrs.checkedId : [attrs.checkedId]) : [];
+    const controlled = isControlled(attrs);
 
+    // Get current selected IDs from props or internal state
+    const currentSelectedIds = controlled
+      ? attrs.checkedId !== undefined
+        ? Array.isArray(attrs.checkedId)
+          ? attrs.checkedId
+          : [attrs.checkedId]
+        : []
+      : state.internalSelectedIds;
+
+    let newIds: T[];
     if (multiple) {
-      const newIds = currentSelectedIds.includes(id)
+      newIds = currentSelectedIds.includes(id)
         ? currentSelectedIds.filter((selectedId) => selectedId !== id)
         : [...currentSelectedIds, id];
-      attrs.onchange(newIds);
-      // Keep dropdown open for multiple select
     } else {
-      attrs.onchange([id]);
-      // Close dropdown for single select
-      state.isOpen = false;
+      newIds = [id];
+      state.isOpen = false; // Close dropdown for single select
+    }
+
+    // Update internal state for uncontrolled mode
+    if (!controlled) {
+      state.internalSelectedIds = newIds;
+    }
+
+    // Call onchange if provided
+    if (attrs.onchange) {
+      attrs.onchange(newIds);
     }
   };
 
@@ -145,6 +169,17 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
     oninit: ({ attrs }) => {
       state.id = attrs.id || uniqueId();
 
+      // Initialize internal state for uncontrolled mode
+      if (!isControlled(attrs)) {
+        const defaultIds =
+          attrs.defaultCheckedId !== undefined
+            ? Array.isArray(attrs.defaultCheckedId)
+              ? attrs.defaultCheckedId
+              : [attrs.defaultCheckedId]
+            : [];
+        state.internalSelectedIds = defaultIds;
+      }
+
       // Add global click listener to close dropdown
       document.addEventListener('click', closeDropdown);
     },
@@ -155,9 +190,16 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
     },
 
     view: ({ attrs }) => {
-      // Derive selected IDs from props - no internal state needed
-      const selectedIds =
-        attrs.checkedId !== undefined ? (Array.isArray(attrs.checkedId) ? attrs.checkedId : [attrs.checkedId]) : [];
+      const controlled = isControlled(attrs);
+
+      // Get selected IDs from props or internal state
+      const selectedIds = controlled
+        ? attrs.checkedId !== undefined
+          ? Array.isArray(attrs.checkedId)
+            ? attrs.checkedId
+            : [attrs.checkedId]
+          : []
+        : state.internalSelectedIds;
       const {
         newRow,
         className = 'col s12',
@@ -229,8 +271,8 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                     placeholder && m('li.disabled', { tabindex: 0 }, m('span', placeholder)),
                     // Render ungrouped options first
                     options
-                      .filter(option => !option.group)
-                      .map(option =>
+                      .filter((option) => !option.group)
+                      .map((option) =>
                         m(
                           'li',
                           {
@@ -273,54 +315,56 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                     // Render grouped options
                     Object.entries(
                       options
-                        .filter(option => option.group)
+                        .filter((option) => option.group)
                         .reduce((groups, option) => {
                           const group = option.group!;
                           if (!groups[group]) groups[group] = [];
                           groups[group].push(option);
                           return groups;
                         }, {} as { [key: string]: InputOption<T>[] })
-                    ).map(([groupName, groupOptions]) => [
-                      m('li.optgroup', { key: `group-${groupName}`, tabindex: 0 }, m('span', groupName)),
-                      ...groupOptions.map(option =>
-                        m(
-                          'li',
-                          {
-                            key: option.id,
-                            class: `optgroup-option${option.disabled ? ' disabled' : ''}${
-                              isSelected(option.id, selectedIds) ? ' selected' : ''
-                            }${state.focusedIndex === options.indexOf(option) ? ' focused' : ''}`,
-                            ...(option.disabled
-                              ? {}
-                              : {
-                                  onclick: (e: MouseEvent) => {
-                                    e.stopPropagation();
-                                    toggleOption(option.id, multiple, attrs);
-                                  },
-                                }),
-                          },
+                    )
+                      .map(([groupName, groupOptions]) => [
+                        m('li.optgroup', { key: `group-${groupName}`, tabindex: 0 }, m('span', groupName)),
+                        ...groupOptions.map((option) =>
                           m(
-                            'span',
-                            multiple
-                              ? m(
-                                  'label',
-                                  { for: option.id },
-                                  m('input', {
-                                    id: option.id,
-                                    type: 'checkbox',
-                                    checked: selectedIds.includes(option.id),
-                                    disabled: option.disabled ? true : undefined,
+                            'li',
+                            {
+                              key: option.id,
+                              class: `optgroup-option${option.disabled ? ' disabled' : ''}${
+                                isSelected(option.id, selectedIds) ? ' selected' : ''
+                              }${state.focusedIndex === options.indexOf(option) ? ' focused' : ''}`,
+                              ...(option.disabled
+                                ? {}
+                                : {
                                     onclick: (e: MouseEvent) => {
                                       e.stopPropagation();
+                                      toggleOption(option.id, multiple, attrs);
                                     },
                                   }),
-                                  m('span', option.label)
-                                )
-                              : option.label
+                            },
+                            m(
+                              'span',
+                              multiple
+                                ? m(
+                                    'label',
+                                    { for: option.id },
+                                    m('input', {
+                                      id: option.id,
+                                      type: 'checkbox',
+                                      checked: selectedIds.includes(option.id),
+                                      disabled: option.disabled ? true : undefined,
+                                      onclick: (e: MouseEvent) => {
+                                        e.stopPropagation();
+                                      },
+                                    }),
+                                    m('span', option.label)
+                                  )
+                                : option.label
+                            )
                           )
-                        )
-                      )
-                    ]).reduce((acc, val) => acc.concat(val), []),
+                        ),
+                      ])
+                      .reduce((acc, val) => acc.concat(val), []),
                   ]
                 ),
               m(MaterialIcon, {

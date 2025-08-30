@@ -41,6 +41,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
     height: undefined as undefined | string,
     active: false,
     textarea: undefined as undefined | HTMLTextAreaElement,
+    internalValue: '',
   };
 
   let labelManager: { updateLabelState: () => void; cleanup: () => void } | null = null;
@@ -51,7 +52,15 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
     state.height = textarea.value.length === 0 ? undefined : newHeight;
   };
 
+  const isControlled = (attrs: InputAttrs<string>) => attrs.value !== undefined && attrs.oninput !== undefined;
+
   return {
+    oninit: ({ attrs }) => {
+      // Initialize internal value for uncontrolled mode
+      if (!isControlled(attrs)) {
+        state.internalValue = attrs.defaultValue || '';
+      }
+    },
     onremove: () => {
       if (labelManager) {
         labelManager.cleanup();
@@ -64,7 +73,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
         helperText,
         iconName,
         id = state.id,
-        initialValue,
+        value,
         placeholder,
         isMandatory,
         label,
@@ -78,36 +87,41 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
         style,
         ...params
       } = attrs;
-      // const attributes = toAttrs(params);
+
+      const controlled = isControlled(attrs);
+      const currentValue = controlled ? value || '' : state.internalValue;
+
       return m('.input-field', { className, style }, [
         iconName ? m('i.material-icons.prefix', iconName) : '',
         m('textarea.materialize-textarea', {
           ...params,
           id,
           tabindex: 0,
+          value: controlled ? currentValue : undefined,
           style: {
             height: state.height,
           },
           oncreate: ({ dom }) => {
             const textarea = (state.textarea = dom as HTMLTextAreaElement);
 
-            // Set initial value and height if provided
-            if (initialValue) {
-              textarea.value = String(initialValue);
-              updateHeight(textarea);
-              // } else {
-              // updateHeight(textarea);
+            // For uncontrolled mode, set initial value only
+            if (!controlled && attrs.defaultValue !== undefined) {
+              textarea.value = String(attrs.defaultValue);
             }
+
+            updateHeight(textarea);
 
             // Update character count state for counter component
             if (maxLength) {
-              state.currentLength = textarea.value.length; // Initial count
+              state.currentLength = textarea.value.length;
               m.redraw();
             }
           },
           onupdate: ({ dom }) => {
             const textarea = dom as HTMLTextAreaElement;
             if (state.height) textarea.style.height = state.height;
+
+            // No need to manually sync in onupdate since value attribute handles it
           },
           onfocus: () => {
             state.active = true;
@@ -126,7 +140,12 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
               state.hasInteracted = target.value.length > 0;
             }
 
-            // Call onchange handler
+            // Update internal state for uncontrolled mode
+            if (!controlled) {
+              state.internalValue = target.value;
+            }
+
+            // Call oninput handler
             if (oninput) {
               oninput(target.value);
             }
@@ -165,8 +184,8 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
           label,
           id,
           isMandatory,
-          isActive: state.textarea?.value || placeholder || state.active,
-          initialValue: initialValue !== undefined,
+          isActive: currentValue || placeholder || state.active,
+          initialValue: currentValue !== '',
         }),
         m(HelperText, {
           helperText,
@@ -191,7 +210,7 @@ const InputField =
   () => {
     const state = {
       id: uniqueId(),
-      currentLength: 0,
+      internalValue: undefined as undefined | T,
       hasInteracted: false,
       isValid: true,
       active: false,
@@ -203,9 +222,9 @@ const InputField =
       isDragging: false,
       activeThumb: null as 'min' | 'max' | null,
     };
-    // let labelManager: { updateLabelState: () => void; cleanup: () => void } | null = null;
-    // let lengthUpdateHandler: (() => void) | null = null;
-    // let inputElement: HTMLInputElement | null = null;
+
+    const isControlled = (attrs: InputAttrs<T>) =>
+      'value' in attrs && typeof attrs.value !== 'undefined' && typeof attrs.oninput === 'function';
 
     const getValue = (target: HTMLInputElement) => {
       const val = target.value as unknown as T;
@@ -223,22 +242,25 @@ const InputField =
     const focus = ({ autofocus }: InputAttrs<T>) =>
       autofocus ? (typeof autofocus === 'boolean' ? autofocus : autofocus()) : false;
 
-    const lengthUpdateHandler = () => {
-      const length = state.inputElement?.value.length;
-      if (length) {
-        state.currentLength = length;
-        state.hasInteracted = length > 0;
-      }
-    };
+    // const lengthUpdateHandler = () => {
+    //   const length = state.inputElement?.value.length;
+    //   if (length) {
+    //     state.currentLength = length;
+    //     state.hasInteracted = length > 0;
+    //   }
+    // };
 
-    const clearInput = (oninput?: (value: any, maxValue?: any) => void, onchange?: (value: any, maxValue?: any) => void) => {
+    const clearInput = (
+      oninput?: (value: any, maxValue?: any) => void,
+      onchange?: (value: any, maxValue?: any) => void
+    ) => {
       if (state.inputElement) {
         state.inputElement.value = '';
         state.inputElement.focus();
         state.active = false;
-        state.currentLength = 0;
-        state.hasInteracted = false;
-        
+        // state.currentLength = 0;
+        // state.hasInteracted = false;
+
         // Trigger oninput and onchange callbacks
         const value = getValue(state.inputElement);
         if (oninput) {
@@ -247,7 +269,7 @@ const InputField =
         if (onchange) {
           onchange(value);
         }
-        
+
         // Update validation state
         state.inputElement.classList.remove('valid', 'invalid');
         state.isValid = true;
@@ -259,6 +281,21 @@ const InputField =
     // Range slider rendering functions are now in separate module
 
     return {
+      oninit: ({ attrs }) => {
+        // Initialize internal value if not in controlled mode
+        if (!isControlled(attrs)) {
+          const isNumeric = ['number', 'range'].includes(type);
+          if (attrs.defaultValue !== undefined) {
+            if (isNumeric) {
+              state.internalValue = attrs.defaultValue as T;
+            } else {
+              state.internalValue = String(attrs.defaultValue) as T;
+            }
+          } else {
+            state.internalValue = (type === 'color' ? '#ff0000' : isNumeric ? undefined : '') as T;
+          }
+        }
+      },
       view: ({ attrs }) => {
         const {
           className = 'col s12',
@@ -267,7 +304,6 @@ const InputField =
           helperText,
           iconName,
           id = state.id,
-          initialValue,
           placeholder,
           isMandatory,
           label,
@@ -283,6 +319,7 @@ const InputField =
           canClear,
           ...params
         } = attrs;
+
         // const attributes = toAttrs(params);
         const cn = [newRow ? 'clear' : '', defaultClass, className].filter(Boolean).join(' ').trim() || undefined;
         const isActive =
@@ -303,6 +340,10 @@ const InputField =
             helperText,
           });
         }
+        const isNumeric = ['number', 'range'].includes(type);
+        const controlled = isControlled(attrs);
+        const value = (controlled ? attrs.value : state.internalValue) as T;
+        const rangeType = type === 'range' && !attrs.minmax;
 
         return m('.input-field', { className: cn, style }, [
           iconName ? m('i.material-icons.prefix', iconName) : undefined,
@@ -312,6 +353,7 @@ const InputField =
             tabindex: 0,
             id,
             placeholder,
+            value: controlled ? value : undefined,
             class: type === 'range' && attrs.vertical ? 'range-slider vertical' : undefined,
             style:
               type === 'range' && attrs.vertical
@@ -329,28 +371,9 @@ const InputField =
                 input.focus();
               }
 
-              // Set initial value if provided
-              if (initialValue) {
-                input.value = String(initialValue);
-              }
-
-              // Update character count state for counter component
-              if (maxLength) {
-                state.currentLength = input.value.length; // Initial count
-              }
-
-              // Range input functionality
-              if (type === 'range' && !attrs.minmax) {
-                const updateThumb = () => {
-                  const value = input.value;
-                  const min = input.min || '0';
-                  const max = input.max || '100';
-                  const percentage =
-                    ((parseFloat(value) - parseFloat(min)) / (parseFloat(max) - parseFloat(min))) * 100;
-                  input.style.setProperty('--range-progress', `${percentage}%`);
-                };
-                input.addEventListener('input', updateThumb);
-                updateThumb(); // Initial position
+              // For uncontrolled mode, set initial value only
+              if (!controlled && attrs.defaultValue !== undefined) {
+                input.value = String(attrs.defaultValue);
               }
             },
             onkeyup: onkeyup
@@ -368,24 +391,29 @@ const InputField =
                   onkeypress(ev, getValue(ev.target as HTMLInputElement));
                 }
               : undefined,
-            onupdate: validate
-              ? ({ dom }) => {
-                  const target = dom as HTMLInputElement;
-                  setValidity(target, validate(getValue(target), target));
-                }
-              : undefined,
             oninput: (e: Event) => {
               state.active = true;
+              state.hasInteracted = false;
               const target = e.target as HTMLInputElement;
 
               // Handle original oninput logic
-              const value = getValue(target);
-              if (oninput) {
-                oninput(value);
+              const inputValue = getValue(target);
+
+              // Update internal state for uncontrolled mode
+              if (!controlled) {
+                state.internalValue = inputValue;
               }
 
-              if (maxLength) {
-                lengthUpdateHandler();
+              if (oninput) {
+                oninput(inputValue);
+              }
+
+              if (rangeType) {
+                const value = target.value;
+                const min = parseFloat(target.min || '0');
+                const max = parseFloat(target.max || '100');
+                const percentage = Math.round((100 * (parseFloat(value) - min)) / (max - min));
+                target.style.setProperty('--range-progress', `${percentage}%`);
               }
 
               // Don't validate on input, only clear error states if user is typing
@@ -396,6 +424,13 @@ const InputField =
                   target.classList.add('valid');
                   state.isValid = true;
                 } else if (typeof validationResult === 'string' && validationResult === '') {
+                  target.classList.remove('invalid');
+                  target.classList.add('valid');
+                  state.isValid = true;
+                }
+              } else if ((type === 'email' || type === 'url') && target.classList.contains('invalid') && target.value.length > 0) {
+                // Clear native validation errors if user is typing and input becomes valid
+                if (target.validity.valid) {
                   target.classList.remove('invalid');
                   target.classList.add('valid');
                   state.isValid = true;
@@ -437,6 +472,44 @@ const InputField =
                   target.classList.remove('valid', 'invalid');
                   state.isValid = true;
                 }
+              } else if (type === 'email' || type === 'url') {
+                // Use browser's native HTML5 validation for email and url types
+                const value = getValue(target);
+                if (value && String(value).length > 0) {
+                  state.isValid = target.validity.valid;
+                  target.setCustomValidity(''); // Clear any custom validation message
+                  
+                  if (state.isValid) {
+                    target.classList.remove('invalid');
+                    target.classList.add('valid');
+                  } else {
+                    target.classList.remove('valid');
+                    target.classList.add('invalid');
+                  }
+                } else {
+                  // Clear validation state if no text
+                  target.classList.remove('valid', 'invalid');
+                  state.isValid = true;
+                }
+              } else if (isNumeric) {
+                // Use browser's native HTML5 validation for numeric inputs (handles min, max, step, etc.)
+                const value = getValue(target);
+                if (value !== undefined && value !== null && !isNaN(Number(value))) {
+                  state.isValid = target.validity.valid;
+                  target.setCustomValidity(''); // Clear any custom validation message
+                  
+                  if (state.isValid) {
+                    target.classList.remove('invalid');
+                    target.classList.add('valid');
+                  } else {
+                    target.classList.remove('valid');
+                    target.classList.add('invalid');
+                  }
+                } else {
+                  // Clear validation state if no valid number
+                  target.classList.remove('valid', 'invalid');
+                  state.isValid = true;
+                }
               }
 
               // Also call the original onblur handler if provided
@@ -465,18 +538,18 @@ const InputField =
             id,
             isMandatory,
             isActive,
-            initialValue: initialValue !== undefined,
+            initialValue: value !== undefined && value !== '',
           }),
           m(HelperText, {
             helperText,
             dataError: state.hasInteracted && !state.isValid ? dataError : undefined,
             dataSuccess: state.hasInteracted && state.isValid ? dataSuccess : undefined,
           }),
-          maxLength
+          maxLength && typeof value === 'string'
             ? m(CharacterCounter, {
-                currentLength: state.currentLength,
+                currentLength: value.length,
                 maxLength,
-                show: state.currentLength > 0,
+                show: value.length > 0,
               })
             : undefined,
         ]);
@@ -503,7 +576,7 @@ export interface FileInputAttrs extends Attributes {
   /** Displayed on the button, @default File */
   label?: string;
   /** Current value of the file input, write only */
-  initialValue?: string;
+  value?: string;
   /** Adds a placeholder message */
   placeholder?: string;
   /** If true, upload multiple files */
@@ -529,7 +602,7 @@ export const FileInput: FactoryComponent<FileInputAttrs> = () => {
       const {
         multiple,
         disabled,
-        initialValue,
+        value,
         placeholder,
         onchange,
         className = 'col s12',
@@ -571,7 +644,7 @@ export const FileInput: FactoryComponent<FileInputAttrs> = () => {
               placeholder,
               oncreate: ({ dom }) => {
                 i = dom as HTMLInputElement;
-                if (initialValue) i.value = initialValue;
+                if (value) i.value = value;
               },
             })
           ),

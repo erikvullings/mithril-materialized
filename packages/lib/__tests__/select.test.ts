@@ -129,13 +129,12 @@ describe('Select Component', () => {
     expect(true).toBe(true);
   });
 
-  it('respects initialValue prop', () => {
+  it('respects defaultCheckedId prop (uncontrolled)', () => {
     const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
-      initialValue: ['option2'],
-      onchange: jest.fn()
+      defaultCheckedId: 'option2'
     });
 
     // Check that the selected option appears in the input value
@@ -269,8 +268,7 @@ describe('Select Component', () => {
       label: 'Test Select',
       options: mockOptions,
       multiple: true,
-      initialValue: ['option1', 'option2'],
-      onchange: jest.fn()
+      defaultCheckedId: ['option1', 'option2']
     });
 
     // Multiple selections are displayed as comma-separated values in the input
@@ -285,8 +283,7 @@ describe('Select Component', () => {
       label: 'Test Select',
       options: mockOptions,
       multiple: true,
-      initialValue: ['option1', 'option2'],
-      onchange: mockOnChange
+      defaultCheckedId: ['option1', 'option2']
     });
 
     // Tag removal functionality is not currently implemented

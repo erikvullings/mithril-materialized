@@ -19,12 +19,15 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
   const state = {
     id: uniqueId(),
     isActive: false,
-    inputValue: '',
+    internalValue: '',
     isOpen: false,
     suggestions: [] as Array<{ key: string; value: string | null }>,
     selectedIndex: -1,
     inputElement: null as HTMLInputElement | null,
   };
+
+  const isControlled = (attrs: AutoCompleteAttrs) =>
+    'value' in attrs && typeof attrs.value !== 'undefined' && typeof attrs.oninput === 'function';
 
   const filterSuggestions = (input: string, data: Record<string, string | null>, limit: number, minLength: number) => {
     if (!input || input.length < minLength) {
@@ -40,10 +43,19 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
   };
 
   const selectSuggestion = (suggestion: { key: string; value: string | null }, attrs: AutoCompleteAttrs) => {
-    state.inputValue = suggestion.key;
+    const controlled = isControlled(attrs);
+    
+    // Update internal state for uncontrolled mode
+    if (!controlled) {
+      state.internalValue = suggestion.key;
+    }
+    
     state.isOpen = false;
     state.selectedIndex = -1;
 
+    if (attrs.oninput) {
+      attrs.oninput(suggestion.key);
+    }
     if (attrs.onchange) {
       attrs.onchange(suggestion.key);
     }
@@ -125,7 +137,10 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
 
   return {
     oninit: ({ attrs }) => {
-      state.inputValue = attrs.initialValue || '';
+      // Initialize internal value for uncontrolled mode
+      if (!isControlled(attrs)) {
+        state.internalValue = attrs.defaultValue || '';
+      }
       document.addEventListener('click', closeDropdown);
     },
 
@@ -150,20 +165,22 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
         ...params
       } = attrs;
 
+      const controlled = isControlled(attrs);
+      const currentValue = controlled ? (attrs.value || '') : state.internalValue;
       const cn = newRow ? className + ' clear' : className;
 
       // Update suggestions when input changes
-      state.suggestions = filterSuggestions(state.inputValue, data, limit, minLength);
+      state.suggestions = filterSuggestions(currentValue, data, limit, minLength);
 
       // Check if there's a perfect match (exact key match, case-insensitive)
       const hasExactMatch =
-        state.inputValue.length >= minLength &&
-        Object.keys(data).some((key) => key.toLowerCase() === state.inputValue.toLowerCase());
+        currentValue.length >= minLength &&
+        Object.keys(data).some((key) => key.toLowerCase() === currentValue.toLowerCase());
 
       // Only open dropdown if there are suggestions and no perfect match
-      state.isOpen = state.suggestions.length > 0 && state.inputValue.length >= minLength && !hasExactMatch;
+      state.isOpen = state.suggestions.length > 0 && currentValue.length >= minLength && !hasExactMatch;
 
-      const replacer = new RegExp(`(${state.inputValue})`, 'i');
+      const replacer = new RegExp(`(${currentValue})`, 'i');
 
       return m(
         '.input-field.autocomplete-wrapper',
@@ -179,17 +196,31 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
             type: 'text',
             tabindex: 0,
             id,
-            value: state.inputValue,
+            value: controlled ? currentValue : undefined,
             oncreate: (vnode) => {
               state.inputElement = vnode.dom as HTMLInputElement;
+              
+              // Set initial value for uncontrolled mode
+              if (!controlled && attrs.defaultValue) {
+                (vnode.dom as HTMLInputElement).value = attrs.defaultValue;
+              }
             },
             oninput: (e: Event) => {
               const target = e.target as HTMLInputElement;
-              state.inputValue = target.value;
+              const inputValue = target.value;
               state.selectedIndex = -1;
 
+              // Update internal state for uncontrolled mode
+              if (!controlled) {
+                state.internalValue = inputValue;
+              }
+
+              // Call oninput and onchange if provided
+              if (attrs.oninput) {
+                attrs.oninput(inputValue);
+              }
               if (onchange) {
-                onchange(target.value);
+                onchange(inputValue);
               }
             },
             onkeydown: (e: KeyboardEvent) => {
@@ -197,15 +228,15 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
 
               // Call original onkeydown if provided
               if (attrs.onkeydown) {
-                attrs.onkeydown(e, state.inputValue);
+                attrs.onkeydown(e, currentValue);
               }
             },
             onfocus: () => {
               state.isActive = true;
-              if (state.inputValue.length >= minLength) {
+              if (currentValue.length >= minLength) {
                 // Check for perfect match on focus too
                 const hasExactMatch = Object.keys(data).some(
-                  (key) => key.toLowerCase() === state.inputValue.toLowerCase()
+                  (key) => key.toLowerCase() === currentValue.toLowerCase()
                 );
                 state.isOpen = state.suggestions.length > 0 && !hasExactMatch;
               }
@@ -283,7 +314,7 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
             label,
             id,
             isMandatory,
-            isActive: state.isActive || state.inputValue.length > 0 || !!attrs.placeholder || !!attrs.initialValue,
+            isActive: state.isActive || currentValue.length > 0 || !!attrs.placeholder || !!attrs.value,
           }),
           m(HelperText, { helperText }),
         ]

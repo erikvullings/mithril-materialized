@@ -71,17 +71,17 @@ const handleKeyboardNavigation = (
 };
 
 const initRangeState = (state: any, attrs: any) => {
-  const { min = 0, max = 100, initialValue, minValue, maxValue } = attrs;
+  const { min = 0, max = 100, value, minValue, maxValue } = attrs;
 
   // Initialize single range value
-  if (initialValue !== undefined) {
-    const currentValue = initialValue;
+  if (value !== undefined) {
+    const currentValue = value;
     if (state.singleValue === undefined) {
       state.singleValue = currentValue;
     }
-    if (state.lastInitialValue !== initialValue && !state.hasUserInteracted) {
-      state.singleValue = initialValue;
-      state.lastInitialValue = initialValue;
+    if (state.lastValue !== value && !state.hasUserInteracted) {
+      state.singleValue = value;
+      state.lastValue = value;
     }
   } else if (state.singleValue === undefined) {
     state.singleValue = min;

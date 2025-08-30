@@ -18,8 +18,16 @@ import {
 import m from 'mithril';
 
 export const InputPage = () => {
+  let textInputValue = '';
+  let textAreaValue = '';
+  let autocompleteValue = '';
+  let emailValue = '';
+  let urlValue = '';
+  let pwdValue = '';
+  let colorValue = '#00ff00';
+  let numberValue: undefined | number;
+  let selectedOptions = [] as string[];
   const oninput = (v: unknown) => console.log(`Input changed. New value: ${v}`);
-  const onchange = (v: unknown) => console.log(`Final value: ${v}`);
   let value = 'click_clear_to_remove.me';
 
   const searchSelectOptions = [
@@ -34,50 +42,74 @@ export const InputPage = () => {
         m('h2.header', 'Inputs'),
 
         m('h3.header', 'TextInput'),
-        m('h4.header', 'Normal text input'),
+        m('h4.header', 'Controlled text input'),
         m(
           '.row',
           m(TextInput, {
             label: 'What is your name?',
             // placeholder: 'Erik was here',
             required: true,
-            helperText: 'Please, be honest!',
-            oninput,
-            onchange,
+            helperText: 'Controlled component!',
             autocomplete: 'off',
             onkeyup: (ev, value) => console.log(value),
             autofocus: true,
             maxLength: 50,
             canClear: true,
+            value: textInputValue,
+            oninput: (v) => (console.log(`Oninput TextInput: ${v}`), (textInputValue = v)),
           } as InputAttrs)
         ),
         m(CodeBlock, {
           code: `        m(TextInput, {
           label: 'What is your name?',
           required: true,
-          helperText: 'Please, be honest!',
+          helperText: 'Controlled component!',
           onchange,
           onkeyup: (ev, value) => console.log(value),
           autofocus: true // This may also be a function that resolves to a boolean
           maxLength: 50,
+          value: textInputValue,
+          oninput: (v) => (textInputValue = v),
         } as InputAttrs)`,
         }),
+
+        m('h4.header', 'Uncontrolled text input'),
+        m(
+          '.row',
+          m(TextInput, {
+            label: 'What is your favorite hobby?',
+            helperText: 'Uncontrolled component with defaultValue!',
+            defaultValue: 'Reading books',
+            maxLength: 50,
+            onchange: (v) => console.log('Uncontrolled TextInput change:', v),
+          } as InputAttrs)
+        ),
+        m(CodeBlock, {
+          code: `        m(TextInput, {
+          label: 'What is your favorite hobby?',
+          helperText: 'Uncontrolled component with defaultValue!',
+          defaultValue: 'Reading books',
+          maxLength: 50,
+          onchange: (v) => console.log('Uncontrolled TextInput change:', v),
+        } as InputAttrs)`,
+        }),
+
         m('h4.header', 'TextInput with icon'),
         m(
           '.row',
           m(TextInput, {
             label: 'What is your name?',
             iconName: 'account_circle',
-            onchange,
             maxLength: 50,
+            onchange: (v) => console.log(v),
           } as InputAttrs)
         ),
         m(CodeBlock, {
           code: `        m(TextInput, {
           label: 'What is your name?',
           iconName: 'account_circle',
-          onchange,
           maxLength: 50,
+          onchange: (v) => console.log(v),
         } as InputAttrs)`,
         }),
 
@@ -88,6 +120,8 @@ export const InputPage = () => {
             label: 'What is the most popular search engine?',
             dataSuccess: 'Great minds think alike',
             dataError: 'Seriously?',
+            value: textInputValue,
+            onchange: (v) => (textInputValue = v),
             validate: (v) => v && v.toLowerCase() === 'google',
           } as InputAttrs)
         ),
@@ -96,6 +130,8 @@ export const InputPage = () => {
             label: 'What is the most popular search engine?',
             dataSuccess: 'Great minds think alike',
             dataError: 'Seriously?',
+            value: textInputValue,
+            onchange: (v) => (textInputValue = v),
             validate: v => v && v.toLowerCase() === 'google',
           } as InputAttrs)`,
         }),
@@ -113,7 +149,8 @@ export const InputPage = () => {
                 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Philips_logo.svg/800px-Philips_logo.svg.png',
               TNO: 'https://tno.github.io/crime_scripts/f418cfa539199976.svg',
             },
-            onchange,
+            value: autocompleteValue,
+            onchange: (v) => (autocompleteValue = v),
           })
         ),
         m('span', m('a[target=_blank][href=https://materializecss.com/autocomplete.html]', 'Documentation')),
@@ -127,16 +164,21 @@ export const InputPage = () => {
               PHILIPS: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Philips_logo.svg/800px-Philips_logo.svg.png',
               TNO: 'https://tno.github.io/crime_scripts/f418cfa539199976.svg',
             },
-            onchange,
+            value: autocompleteValue,
+            onchange: (v) => (autocompleteValue = v),
         } as InputAttrs)`,
         }),
 
         m('h3.header', 'Search and select, optionally add'),
-        m(SearchSelect, {
+        m(SearchSelect<string>, {
           options: searchSelectOptions,
-          onchange: (selectedOptions) => console.log('Selected:', selectedOptions),
           label: 'Select search options',
           searchPlaceholder: 'Find an option...', // Custom search placeholder
+          checkedId: selectedOptions,
+          onchange: (v) => {
+            selectedOptions = v;
+            console.log('Selected:', selectedOptions);
+          },
         }),
         m(CodeBlock, {
           code: `        const searchSelectOptions = [
@@ -147,15 +189,21 @@ export const InputPage = () => {
         ...
         m(SearchSelect, {
           options: searchSelectOptions,
-          onchange: (selectedOptions) => console.log('Selected:', selectedOptions),
           label: 'Select search options',
           searchPlaceholder: 'Find an option...',
+          checkedId: selectedOptions,
+          onchange: (v) => {
+            selectedOptions = v;
+            console.log('Selected:', selectedOptions)},
         })`,
         }),
-        m(SearchSelect, {
+        m(SearchSelect<string>, {
           options: searchSelectOptions,
-          initialValue: ['option1'],
-          onchange: (selectedOptions) => console.log('Selected:', selectedOptions),
+          checkedId: selectedOptions,
+          onchange: (v) => {
+            selectedOptions = v;
+            console.log('Selected:', selectedOptions);
+          },
           oncreateNewOption: (searchTerm) => {
             console.log('Creating new option:', searchTerm);
             const newOption = { id: uniqueId(), label: searchTerm };
@@ -169,15 +217,17 @@ export const InputPage = () => {
         m(CodeBlock, {
           code: `        m(SearchSelect, {
           options: searchSelectOptions,
-          initialValue: ['option1'],
-          onchange: (selectedOptions) => console.log('Selected:', selectedOptions),
-          oncreateNewOption: (searchTerm) => {
-            console.log('Creating new option:', searchTerm);
-            const newOption = { id: uniqueId(), label: searchTerm };
-            // Add the new option to your options array
-            searchSelectOptions.push(newOption);
-            return newOption;
-          },
+          checkedId: selectedOptions,
+          onchange: (v) => {
+            selectedOptions = v;
+            console.log('Selected:', selectedOptions)},
+            oncreateNewOption: (searchTerm) => {
+              console.log('Creating new option:', searchTerm);
+              const newOption = { id: uniqueId(), label: searchTerm };
+              // Add the new option to your options array
+              searchSelectOptions.push(newOption);
+              return newOption;
+            },
           label: 'Select option or add new option',
           placeholder: 'No options selected',
         })`,
@@ -190,7 +240,11 @@ export const InputPage = () => {
             label: 'Please, describe yourself',
             helperText: `Don't be shy`,
             maxLength: 100,
-            onchange,
+            value: textAreaValue,
+            onchange: (v) => {
+              textAreaValue = v;
+              console.log('TextArea:', textAreaValue);
+            },
           })
         ),
         m(CodeBlock, {
@@ -198,7 +252,11 @@ export const InputPage = () => {
             label: 'Please, describe yourself',
             helperText: 'Don\'t be shy',
             maxLength: 100,
-            onchange })`,
+            value: textAreaValue,
+            onchange: (v) => {
+              textAreaValue = v;
+              console.log('TextArea:', textAreaValue)},
+            })`,
         }),
 
         m('h3.header', 'NumberInput'),
@@ -208,10 +266,11 @@ export const InputPage = () => {
             min: 1,
             max: 120,
             step: 1,
+            value: numberValue,
             label: 'What is your age?',
             dataSuccess: 'You look much younger ;-)',
             dataError: 'Error: Age must be between 1 and 120.',
-            onchange,
+            onchange: (v) => (numberValue = v),
           })
         ),
         m(CodeBlock, {
@@ -252,7 +311,8 @@ export const InputPage = () => {
             label: 'What is your email?',
             dataError: 'Please use username@org.com',
             dataSuccess: 'OK',
-            onchange,
+            value: emailValue,
+            onchange: (v) => (emailValue = v),
           })
         ),
         m(CodeBlock, {
@@ -260,7 +320,8 @@ export const InputPage = () => {
             label: 'What is your email?',
             dataError: 'Wrong, use username@org.com',
             dataSuccess: 'OK',
-            onchange,
+            value: emailValue,
+            onchange: v => emailValue = v,
           })`,
         }),
 
@@ -272,7 +333,7 @@ export const InputPage = () => {
             placeholder: 'http(s)://',
             dataError: 'Wrong, use http(s)://org.com',
             dataSuccess: 'OK',
-            onchange,
+            onchange: (v) => (urlValue = v),
           })
         ),
         m(CodeBlock, {
@@ -281,7 +342,8 @@ export const InputPage = () => {
             placeholder: 'http(s)://',
             dataError: 'Wrong, use http(s)://org.com',
             dataSuccess: 'OK',
-            onchange,
+            value: urlValue,
+            onchange: v => urlValue = v,
           })`,
         }),
 
@@ -291,14 +353,16 @@ export const InputPage = () => {
           m(PasswordInput, {
             label: 'What is your password?',
             iconName: 'lock',
-            onchange,
+            value: pwdValue,
+            onchange: (v) => (pwdValue = v),
           })
         ),
         m(CodeBlock, {
           code: `          m(PasswordInput, {
             label: 'What is your password?',
             iconName: 'lock',
-            onchange,
+            value: pwdValue,
+            onchange: v => pwdValue = v,
           })`,
         }),
 
@@ -308,7 +372,7 @@ export const InputPage = () => {
           m(FileInput, {
             placeholder: 'Upload one or more files',
             multiple: true,
-            initialValue: value,
+            value: value,
             accept: ['image/*', '.pdf'],
             onchange: (files: FileList) => {
               value = '';
@@ -320,7 +384,7 @@ export const InputPage = () => {
           code: `        m(FileInput, {
             placeholder: 'Upload one or more files',
             multiple: true,
-            initialValue: value,
+            value: value,
             accept: ['image/*', '.pdf'],
             onchange: (files: FileList) => console.table(files),
           })`,
@@ -334,7 +398,8 @@ export const InputPage = () => {
             max: 100,
             showValue: true,
             label: 'What is your favorite number between 0 and 100?',
-            onchange,
+            value: numberValue,
+            onchange: (v) => (numberValue = v),
           })
         ),
         m(CodeBlock, {
@@ -342,7 +407,8 @@ export const InputPage = () => {
             min: 0,
             max: 100,
             label: 'What is your favorite number between 0 and 100?',
-            onchange,
+            value: numberValue,
+            onchange: v => numberValue = v,
           })`,
         }),
 
@@ -354,12 +420,13 @@ export const InputPage = () => {
             m(RangeInput, {
               min: 0,
               max: 100,
-              initialValue: 75,
+              value: 75,
               label: 'Always visible tooltip',
               valueDisplay: 'always',
               tooltipPos: 'top',
               oninput: (value: number) => console.log('Range input:', value),
-              onchange: (value: number) => console.log('Range change:', value),
+              // value: numberValue,
+              // onchange: v => numberValue = v,
             } as InputAttrs<number>)
           ),
           m('.col.s12', { style: 'margin-top: 20px;' }, m('h6', 'Show value only during drag')),
@@ -368,12 +435,13 @@ export const InputPage = () => {
             m(RangeInput, {
               min: 0,
               max: 100,
-              initialValue: 50,
+              value: 50,
               label: 'Tooltip on drag',
               valueDisplay: 'auto',
               tooltipPos: 'bottom',
               oninput: (value: number) => console.log('Range input:', value),
-              onchange: (value: number) => console.log('Range change:', value),
+              //    value: numberValue,
+              // onchange: v => numberValue = v,
             } as InputAttrs<number>)
           ),
         ]),
@@ -382,7 +450,7 @@ export const InputPage = () => {
 m(RangeInput, {
   min: 0,
   max: 100,
-  initialValue: 75,
+  value: 75,
   label: 'Always visible tooltip',
   valueDisplay: 'always', // 'auto' | 'always' | 'none'
   tooltipPos: 'top',
@@ -393,7 +461,7 @@ m(RangeInput, {
 m(RangeInput, {
   min: 0,
   max: 100,
-  initialValue: 50,
+  value: 50,
   label: 'Tooltip on drag',
   valueDisplay: 'auto', // Show during interaction only
   tooltipPos: 'bottom',
@@ -411,7 +479,7 @@ m(RangeInput, {
             m(RangeInput, {
               min: 18,
               max: 67,
-              initialValue: 50,
+              value: 50,
               label: 'Vertical Slider',
               height: '150px',
               vertical: true,
@@ -426,7 +494,7 @@ m(RangeInput, {
           code: `          m(RangeInput, {
             min: 18,
             max: 67,
-            initialValue: 50,
+            value: 50,
             label: 'Vertical Slider',
             height: '150px',
             vertical: true,
@@ -504,7 +572,7 @@ m(RangeInput, {
         m(
           '.row',
           m(Chips, {
-            onchange: (chips: any[]) => onchange(JSON.stringify(chips)),
+            onchange: (chips) => console.log(JSON.stringify(chips)),
             label: 'An optional label',
             helperText: 'Optional help instructions',
             placeholder: 'Add a tag',
@@ -571,13 +639,15 @@ m(RangeInput, {
           '.row',
           m(ColorInput, {
             label: 'What is your favorite color?',
-            onchange,
+            defaultValue: colorValue,
+            onchange: (v) => (colorValue = v),
           })
         ),
         m(CodeBlock, {
           code: `          m(ColorInput, {
             label: 'What is your favorite color?',
-            onchange,
+            defaultValue: colorValue,
+            onchange: (v) => (colorValue = v),
           })`,
         }),
       ]),

@@ -16874,7 +16874,7 @@ const SelectionPage = () => {
                 placeholder: 'Make a choice...',
                 label: 'What are your favorite hobbies?',
                 classes: 'my-select-wrapper-classes',
-                initialValue: state.initialValue,
+                checkedId: state.initialValue,
                 onchange: (v) => {
                     // state.initialValue = v as number[];
                     console.log(v);
@@ -22947,15 +22947,14 @@ const Select = () => {
     };
     return {
         oninit: ({ attrs }) => {
-            const { checkedId, initialValue, id } = attrs;
+            const { checkedId, id } = attrs;
             state.id = id || uniqueId();
-            const iv = checkedId || initialValue;
-            if (iv !== null && typeof iv !== 'undefined') {
-                if (iv instanceof Array) {
-                    state.selectedIds = [...iv];
+            if (checkedId !== null && typeof checkedId !== 'undefined') {
+                if (checkedId instanceof Array) {
+                    state.selectedIds = [...checkedId];
                 }
                 else {
-                    state.selectedIds = [iv];
+                    state.selectedIds = [checkedId];
                 }
             }
             // Add global click listener to close dropdown

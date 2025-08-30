@@ -71,7 +71,7 @@ export const ImageListPage = () => {
                 { id: 'masonry', label: 'Masonry (Pinterest-style)' },
                 { id: 'woven', label: 'Woven Pattern' },
               ],
-              initialValue: state.variant,
+              value: state.variant,
               onchange: (value) => {
                 state.variant = value[0] as 'standard' | 'quilted' | 'masonry' | 'woven';
               },
@@ -82,7 +82,7 @@ export const ImageListPage = () => {
               label: 'Columns',
               min: 1,
               max: 6,
-              initialValue: state.columns,
+              value: state.columns,
               showValue: true,
               onchange: (value: number) => {
                 state.columns = value;
@@ -97,7 +97,7 @@ export const ImageListPage = () => {
               label: 'Gap (px)',
               min: 0,
               max: 20,
-              initialValue: state.gap,
+              value: state.gap,
               showValue: true,
               onchange: (value: number) => {
                 state.gap = value;

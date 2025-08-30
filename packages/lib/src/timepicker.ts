@@ -696,9 +696,9 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
         dy: 0,
       };
 
-      // Handle initial value after options are set
-      if (attrs.initialValue) {
-        updateTimeFromInput(attrs.initialValue);
+      // Handle value after options are set
+      if (attrs.defaultValue) {
+        updateTimeFromInput(attrs.defaultValue);
       }
     },
 

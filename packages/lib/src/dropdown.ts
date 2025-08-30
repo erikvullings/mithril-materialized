@@ -32,9 +32,17 @@ export interface DropdownAttrs<T extends string | number> extends Attributes {
   disabled?: boolean;
   /** Item array to show in the dropdown. If the value is not supplied, uses he name. */
   items: DropdownItem<T>[];
-  /** Currently selected item id. This property controls the component state and should be updated externally to change selection programmatically. */
+  /**
+   * Currently selected item id for controlled mode. If provided along with `onchange`, the component operates in controlled mode
+   * where the parent manages the state. The parent must update this value in response to `onchange` callbacks.
+   */
   checkedId?: T;
-  /** When a value or name is selected */
+  /**
+   * Default selected item id for uncontrolled mode. Only used when `checkedId` and `onchange` are not provided.
+   * The component will manage its own internal state in uncontrolled mode.
+   */
+  defaultCheckedId?: T;
+  /** When a value or name is selected. Optional for uncontrolled mode. */
   onchange?: (value: T) => void;
   /** Uses Materialize icons as a prefix or postfix. */
   iconName?: string;
@@ -42,23 +50,28 @@ export interface DropdownAttrs<T extends string | number> extends Attributes {
   helperText?: string;
 }
 
-interface DropdownState {
+interface DropdownState<T extends string | number> {
   isOpen: boolean;
   id: string;
   focusedIndex: number;
   inputRef?: HTMLElement | null;
   dropdownRef?: HTMLElement | null;
+  internalCheckedId?: T;
 }
 
 /** Pure TypeScript Dropdown component - no Materialize dependencies */
 export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T>> => {
-  const state: DropdownState = {
+  const state: DropdownState<T> = {
     isOpen: false,
     id: '',
     focusedIndex: -1,
     inputRef: null,
     dropdownRef: null,
+    internalCheckedId: undefined,
   };
+
+  const isControlled = (attrs: DropdownAttrs<T>) =>
+    attrs.checkedId !== undefined && typeof attrs.onchange === 'function';
 
   const closeDropdown = (e: MouseEvent) => {
     const target = e.target as Element;
@@ -95,7 +108,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
           const value = (selectedItem.id || selectedItem.label) as T;
           state.isOpen = false;
           state.focusedIndex = -1;
-          if (onchange) onchange(value);
+          return value; // Return value to be handled in view
         } else if (!state.isOpen) {
           state.isOpen = true;
           state.focusedIndex = availableItems.length > 0 ? 0 : -1;
@@ -112,6 +125,12 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
   return {
     oninit: ({ attrs }) => {
       state.id = attrs.id?.toString() || uniqueId();
+      
+      // Initialize internal state for uncontrolled mode
+      if (!isControlled(attrs)) {
+        state.internalCheckedId = attrs.defaultCheckedId;
+      }
+      
       // Add global click listener to close dropdown
       document.addEventListener('click', closeDropdown);
     },
@@ -121,8 +140,8 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       document.removeEventListener('click', closeDropdown);
     },
 
-    view: ({
-      attrs: {
+    view: ({ attrs }) => {
+      const {
         checkedId,
         key,
         label,
@@ -133,13 +152,27 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
         helperText,
         style,
         className = 'col s12',
-      },
-    }) => {
-      const selectedItem = checkedId
-        ? items.filter((i: DropdownItem<T>) => (i.id ? i.id === checkedId : i.label === checkedId)).shift()
+      } = attrs;
+
+      const controlled = isControlled(attrs);
+      const currentCheckedId = controlled ? checkedId : state.internalCheckedId;
+
+      const handleSelection = (value: T) => {
+        // Update internal state for uncontrolled mode
+        if (!controlled) {
+          state.internalCheckedId = value;
+        }
+
+        // Call onchange if provided
+        if (onchange) {
+          onchange(value);
+        }
+      };
+
+      const selectedItem = currentCheckedId
+        ? items.filter((i: DropdownItem<T>) => (i.id ? i.id === currentCheckedId : i.label === currentCheckedId)).shift()
         : undefined;
       const title = selectedItem ? selectedItem.label : label || 'Select';
-      console.log({ title });
       const availableItems = items.filter((item) => !item.divider && !item.disabled);
 
       return m('.dropdown-wrapper.input-field', { className, key, style }, [
@@ -148,7 +181,12 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
         m(
           '.select-wrapper',
           {
-            onkeydown: disabled ? undefined : (e: KeyboardEvent) => handleKeyDown(e, items, onchange),
+            onkeydown: disabled ? undefined : (e: KeyboardEvent) => {
+              const selectedValue = handleKeyDown(e, items, onchange);
+              if (selectedValue) {
+                handleSelection(selectedValue);
+              }
+            },
             tabindex: disabled ? -1 : 0,
             'aria-expanded': state.isOpen ? 'true' : 'false',
             'aria-haspopup': 'listbox',
@@ -213,7 +251,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
                             const value = (item.id || item.label) as T;
                             state.isOpen = false;
                             state.focusedIndex = -1;
-                            if (onchange) onchange(value);
+                            handleSelection(value);
                           },
                     },
                     m(

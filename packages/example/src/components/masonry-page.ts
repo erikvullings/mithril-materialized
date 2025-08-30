@@ -90,7 +90,7 @@ export const MasonryPage = () => {
               label: 'Columns',
               min: 1,
               max: 6,
-              initialValue: state.columns,
+              value: state.columns,
               showValue: true,
               onchange: (value: number) => {
                 state.columns = value;
@@ -103,7 +103,7 @@ export const MasonryPage = () => {
               min: 4,
               max: 32,
               step: 4,
-              initialValue: state.spacing,
+              value: state.spacing,
               showValue: true,
               onchange: (value: number) => {
                 state.spacing = value;

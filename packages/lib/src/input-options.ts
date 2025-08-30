@@ -7,8 +7,16 @@ export interface InputAttrs<T = string> extends Attributes {
   id?: string;
   /** Unique key for use of the element in an array. */
   key?: string | number;
-  /** Initial value of the input field. */
-  initialValue?: T;
+  /**
+   * Current value of the input field. If provided along with `oninput`, the component operates in controlled mode
+   * where the parent manages the state. The parent must update this value in response to `oninput` callbacks.
+   */
+  value?: T;
+  /**
+   * Initial value for uncontrolled mode. Only used when `value` and `oninput` are not provided.
+   * In uncontrolled mode, the component manages its own internal state.
+   */
+  defaultValue?: T;
   /**
    * The autocomplete property sets or returns the value of the autocomplete
    * attribute in a text field. When autocomplete is on, the browser automatically

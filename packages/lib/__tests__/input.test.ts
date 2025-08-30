@@ -16,10 +16,10 @@ describe('Input Components', () => {
       expect(input).toHaveAttribute('type', 'text');
     });
 
-    it('renders with initial value', () => {
+    it('renders with default value (uncontrolled)', () => {
       const { getByDisplayValue } = render(TextInput, { 
         label: 'Name',
-        initialValue: 'John Doe'
+        defaultValue: 'John Doe'
       });
       
       const input = getByDisplayValue('John Doe');
@@ -169,10 +169,10 @@ describe('Input Components', () => {
       expect(mockChange).toHaveBeenCalledWith('New message content');
     });
 
-    it('renders with initial value', () => {
+    it('renders with default value (uncontrolled)', () => {
       const { getByDisplayValue } = render(TextArea, { 
         label: 'Bio',
-        initialValue: 'Initial bio content'
+        defaultValue: 'Initial bio content'
       });
       
       const textarea = getByDisplayValue('Initial bio content');

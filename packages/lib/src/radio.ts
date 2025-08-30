@@ -1,6 +1,6 @@
 import m, { Attributes, Component } from 'mithril';
 import { uniqueId } from './utils';
-import { InputOption } from './option';
+import { InputOption, OptionsList } from './option';
 
 export interface RadioButtonsAttrs<T extends string | number> extends Attributes {
   /** Element ID */
@@ -9,10 +9,18 @@ export interface RadioButtonsAttrs<T extends string | number> extends Attributes
   label?: string;
   /** The options that you have */
   options: InputOption<T>[];
-  /** Event handler that is called when an option is changed */
-  onchange: (id: T) => void;
-  /** Currently selected id. This property controls the component state and should be updated externally to change selection programmatically. */
+  /** Event handler that is called when an option is changed. Optional for uncontrolled mode. */
+  onchange?: (id: T) => void;
+  /**
+   * Currently selected id for controlled mode. If provided along with `onchange`, the component operates in controlled mode
+   * where the parent manages the state. The parent must update this value in response to `onchange` callbacks.
+   */
   checkedId?: T;
+  /**
+   * Default selected id for uncontrolled mode. Only used when `checkedId` and `onchange` are not provided.
+   * The component will manage its own internal state in uncontrolled mode.
+   */
+  defaultCheckedId?: T;
   /** Optional description */
   description?: string;
   /** If true, start on a new row */
@@ -59,18 +67,27 @@ export const RadioButton = <T extends string | number>(): Component<RadioButtonA
 });
 
 /** Component to show a list of radio buttons, from which you can choose one. */
-// export const RadioButtons: FactoryComponent<IRadioButtons<T>> = () => {
 export const RadioButtons = <T extends string | number>(): Component<RadioButtonsAttrs<T>> => {
   const state = {
     groupId: uniqueId(),
     componentId: '',
+    internalCheckedId: undefined as T | undefined,
   };
+
+  const isControlled = (attrs: RadioButtonsAttrs<T>) =>
+    attrs.checkedId !== undefined && typeof attrs.onchange === 'function';
+
   return {
     oninit: ({ attrs }) => {
       state.componentId = attrs.id || uniqueId();
+
+      // Initialize internal state for uncontrolled mode
+      if (!isControlled(attrs)) {
+        state.internalCheckedId = attrs.defaultCheckedId;
+      }
     },
-    view: ({
-      attrs: {
+    view: ({ attrs }) => {
+      const {
         checkedId,
         newRow,
         className = 'col s12',
@@ -82,39 +99,46 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
         checkboxClass,
         layout = 'vertical',
         onchange,
-      },
-    }) => {
+      } = attrs;
+      
       const { groupId, componentId } = state;
+      const controlled = isControlled(attrs);
+      
+      // Get current checked ID from props or internal state
+      const currentCheckedId = controlled ? checkedId : state.internalCheckedId;
+
+      const handleChange = (id: T) => {
+        // Update internal state for uncontrolled mode
+        if (!controlled) {
+          state.internalCheckedId = id;
+        }
+
+        // Call onchange if provided
+        if (onchange) {
+          onchange(id);
+        }
+      };
 
       const cn = [newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim() || undefined;
 
-      const optionsContent =
-        layout === 'horizontal'
-          ? m(
-              'div.grid-container',
-              options.map((r) =>
-                m(RadioButton, {
-                  ...r,
-                  onchange,
-                  groupId,
-                  disabled: disabled || r.disabled,
-                  className: checkboxClass,
-                  checked: r.id === checkedId,
-                  inputId: `${componentId}-${r.id}`,
-                } as RadioButtonAttrs<T>)
-              )
-            )
-          : options.map((r) =>
-              m(RadioButton, {
-                ...r,
-                onchange,
-                groupId,
-                disabled: disabled || r.disabled,
-                className: checkboxClass,
-                checked: r.id === checkedId,
-                inputId: `${componentId}-${r.id}`,
-              } as RadioButtonAttrs<T>)
-            );
+      const radioItems = options.map((r) => ({
+        component: RadioButton<T>,
+        props: {
+          ...r,
+          onchange: handleChange,
+          groupId,
+          disabled: disabled || r.disabled,
+          className: checkboxClass,
+          checked: r.id === currentCheckedId,
+          inputId: `${componentId}-${r.id}`,
+        } as RadioButtonAttrs<T>,
+        key: r.id,
+      }));
+
+      const optionsContent = m(OptionsList, {
+        options: radioItems,
+        layout,
+      });
 
       return m('div', { id: componentId, className: cn }, [
         label && m('h5.form-group-label', label + (isMandatory ? ' *' : '')),

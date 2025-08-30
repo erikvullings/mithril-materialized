@@ -33,7 +33,7 @@ export const PickerPage = () => {
             helperText: 'Enter date in YYYY-MM-DD format or click to select',
             iconName: 'cake',
             displayFormat: 'yyyy-mm-dd',
-            initialValue: '1990-01-15',
+            defaultValue: '1990-01-15',
             oninput,
             onchange,
             showWeekNumbers: true,
@@ -52,7 +52,7 @@ export const PickerPage = () => {
             iconName: 'cake',
             format: 'mmmm d, yyyy',
             yearrange: '1970,2045',
-            initialValue: '1990-01-15', // Add initial value so date displays
+            defaultValue: '1990-01-15', // Add initial value so date displays
             showClearBtn: true,
             autoClose: true,
             i18n: {
@@ -77,7 +77,7 @@ export const PickerPage = () => {
             helperText: `Type in DD/MM/YYYY format (e.g., 25/12/${year})`,
             displayFormat: 'dd/mm/yyyy',
             iconName: 'event',
-            initialValue: `${year}-03-15`,
+            defaultValue: `${year}-03-15`,
             oninput,
             onchange,
           })
@@ -93,7 +93,7 @@ export const PickerPage = () => {
             helperText: `Type in MM/DD/YYYY format (e.g., 12/25/${year})`,
             displayFormat: 'mm/dd/yyyy',
             iconName: 'schedule',
-            initialValue: `${year}-07-04`,
+            defaultValue: `${year}-07-04`,
             oninput,
             onchange,
           })
@@ -109,7 +109,7 @@ export const PickerPage = () => {
             helperText: `Format: TT.MM.JJJJ (z.B., 25.12.${year})`,
             displayFormat: 'dd.mm.yyyy',
             iconName: 'person',
-            initialValue: '1985-11-09',
+            defaultValue: '1985-11-09',
             showClearBtn: true,
             i18n: {
               cancel: 'Abbrechen',
@@ -151,7 +151,7 @@ export const PickerPage = () => {
             showTodayBtn: false,
             showClearBtn: true,
             clearLabel: 'Remove',
-            initialValue: `${year}-01-01`,
+            defaultValue: `${year}-01-01`,
             onchange,
           })
         ),
@@ -164,7 +164,7 @@ export const PickerPage = () => {
             disabled: true,
             dateLabel: 'Disabled Date',
             helperText: 'Cannot interact',
-            initialValue: `${year}-01-15`,
+            defaultValue: `${year}-01-15`,
             iconName: 'block',
             onchange,
           }),
@@ -173,7 +173,7 @@ export const PickerPage = () => {
             readonly: true,
             dateLabel: 'Readonly Date',
             helperText: 'View only',
-            initialValue: `${year}-12-25`,
+            defaultValue: `${year}-12-25`,
             iconName: 'visibility',
             onchange,
           }),
@@ -278,7 +278,7 @@ m(DatePicker, {
   helperText: 'Enter date in YYYY-MM-DD format',
   iconName: 'cake',
   displayFormat: 'yyyy-mm-dd', // Supports various formats
-  initialValue: '1990-01-15',
+  defaultValue: '1990-01-15',
   oninput: (v) => console.log('Input:', v), // Fires on typing
   onchange: (v) => console.log('Change:', v), // Fires on blur
 })
@@ -320,7 +320,7 @@ m(DatePicker, {
             label: 'When do you normally get up?',
             helperText: 'Select your wake-up time',
             iconName: 'alarm',
-            initialValue: '09:00',
+            defaultValue: '09:00',
             onchange,
           })
         ),
@@ -335,7 +335,7 @@ m(DatePicker, {
             helperText: 'HH:MM AM/PM format',
             twelveHour: true,
             iconName: 'schedule',
-            initialValue: '13:30',
+            defaultValue: '13:30',
             onchange,
           })
         ),
@@ -416,7 +416,7 @@ m(DatePicker, {
             disabled: true,
             label: 'Disabled Time',
             helperText: 'Cannot interact',
-            initialValue: '15:30',
+            defaultValue: '15:30',
             iconName: 'block',
             onchange,
           }),
@@ -425,7 +425,7 @@ m(DatePicker, {
             readonly: true,
             label: 'Readonly Time',
             helperText: 'View only',
-            initialValue: '09:15',
+            defaultValue: '09:15',
             iconName: 'visibility',
             useModal: false,
             onchange,
@@ -455,7 +455,7 @@ m(TimePicker, {
 m(TimePicker, {
   disabled: true, // or readonly: true
   label: 'Disabled Time',
-  initialValue: '14:30',
+  defaultValue: '14:30',
   onchange,
 })`,
         }),

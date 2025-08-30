@@ -1003,12 +1003,12 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
       } else {
         // Single date initialization (original behavior)
         let defaultDate = attrs.defaultDate;
-        if (!defaultDate && attrs.initialValue) {
-          defaultDate = new Date(attrs.initialValue);
+        if (!defaultDate && attrs.defaultValue) {
+          defaultDate = new Date(attrs.defaultValue);
         }
 
         if (isDate(defaultDate)) {
-          // Always set the date if we have initialValue or defaultDate
+          // Always set the date if we have value or defaultDate
           setDate(defaultDate, true, options);
         } else {
           gotoDate(new Date());
