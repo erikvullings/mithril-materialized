@@ -1,3 +1,11 @@
+## [3.2.2](https://github.com/erikvullings/mithril-materialized/compare/v3.2.1...v3.2.2) (2025-09-01)
+
+
+### Bug Fixes
+
+* Character counter inline style to css, removed margin-top to match helper text position. ([456447b](https://github.com/erikvullings/mithril-materialized/commit/456447b73e7ecdaa22270861f1633508b993c70e))
+* TextArea height calculation ([31ec0d3](https://github.com/erikvullings/mithril-materialized/commit/31ec0d3e11b1c4b6bd9f2edc814bf4a8d47386ef))
+
 ## [3.2.1](https://github.com/erikvullings/mithril-materialized/compare/v3.2.0...v3.2.1) (2025-08-30)
 
 
