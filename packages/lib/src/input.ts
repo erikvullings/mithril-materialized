@@ -19,10 +19,6 @@ export const CharacterCounter: FactoryComponent<{ currentLength: number; maxLeng
         {
           style: {
             color: isOverLimit ? '#F44336' : '#9e9e9e',
-            fontSize: '12px',
-            display: 'block',
-            textAlign: 'right',
-            marginTop: '8px',
           },
         },
         `${currentLength}/${maxLength}`
@@ -46,10 +42,54 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
 
   let labelManager: { updateLabelState: () => void; cleanup: () => void } | null = null;
 
-  const updateHeight = (textarea: HTMLTextAreaElement) => {
-    textarea.style.height = 'auto';
-    const newHeight = textarea.scrollHeight + 'px';
-    state.height = textarea.value.length === 0 ? undefined : newHeight;
+  const updateHeight = (textarea: HTMLTextAreaElement, hiddenDiv?: HTMLDivElement) => {
+    if (!textarea || !hiddenDiv) return;
+
+    // Copy font properties from textarea to hidden div
+    const computedStyle = window.getComputedStyle(textarea);
+    hiddenDiv.style.fontFamily = computedStyle.fontFamily;
+    hiddenDiv.style.fontSize = computedStyle.fontSize;
+    hiddenDiv.style.lineHeight = computedStyle.lineHeight;
+    
+    // Copy padding from textarea (important for accurate measurement)
+    hiddenDiv.style.paddingTop = computedStyle.paddingTop;
+    hiddenDiv.style.paddingRight = computedStyle.paddingRight;
+    hiddenDiv.style.paddingBottom = computedStyle.paddingBottom;
+    hiddenDiv.style.paddingLeft = computedStyle.paddingLeft;
+
+    // Handle text wrapping
+    if (textarea.getAttribute('wrap') === 'off') {
+      hiddenDiv.style.overflowWrap = 'normal';
+      hiddenDiv.style.whiteSpace = 'pre';
+    } else {
+      hiddenDiv.style.overflowWrap = 'break-word';
+      hiddenDiv.style.whiteSpace = 'pre-wrap';
+    }
+
+    // Set content with extra newline for measurement
+    hiddenDiv.textContent = textarea.value + '\n';
+    const content = hiddenDiv.innerHTML.replace(/\n/g, '<br>');
+    hiddenDiv.innerHTML = content;
+
+    // Set width to match textarea
+    if (textarea.offsetWidth > 0) {
+      hiddenDiv.style.width = textarea.offsetWidth + 'px';
+    } else {
+      hiddenDiv.style.width = window.innerWidth / 2 + 'px';
+    }
+
+    // Get the original/natural height of the textarea
+    const originalHeight = textarea.offsetHeight;
+    const measuredHeight = hiddenDiv.offsetHeight;
+    
+    // Key logic: Only set custom height when content requires MORE space than original height
+    // This matches the Materialize CSS reference behavior
+    if (originalHeight <= measuredHeight) {
+      state.height = measuredHeight + 'px';
+    } else {
+      // Single line content or content that fits in original height - let CSS handle it
+      state.height = undefined;
+    }
   };
 
   const isControlled = (attrs: InputAttrs<string>) => attrs.value !== undefined && attrs.oninput !== undefined;
@@ -91,9 +131,35 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
       const controlled = isControlled(attrs);
       const currentValue = controlled ? value || '' : state.internalValue;
 
-      return m('.input-field', { className, style }, [
-        iconName ? m('i.material-icons.prefix', iconName) : '',
-        m('textarea.materialize-textarea', {
+      return [
+        // Hidden div for height measurement - positioned outside the input-field
+        m('.hiddendiv', {
+          style: {
+            visibility: 'hidden',
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            zIndex: '-1',
+            whiteSpace: 'pre-wrap',
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word',
+          },
+          oncreate: ({ dom }) => {
+            const hiddenDiv = dom as HTMLDivElement;
+            if (state.textarea) {
+              updateHeight(state.textarea, hiddenDiv);
+            }
+          },
+          onupdate: ({ dom }) => {
+            const hiddenDiv = dom as HTMLDivElement;
+            if (state.textarea) {
+              updateHeight(state.textarea, hiddenDiv);
+            }
+          },
+        }),
+        m('.input-field', { className, style }, [
+          iconName ? m('i.material-icons.prefix', iconName) : '',
+          m('textarea.materialize-textarea', {
           ...params,
           id,
           tabindex: 0,
@@ -109,12 +175,11 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
               textarea.value = String(attrs.defaultValue);
             }
 
-            updateHeight(textarea);
+            // Height will be calculated by hidden div
 
             // Update character count state for counter component
             if (maxLength) {
               state.currentLength = textarea.value.length;
-              m.redraw();
             }
           },
           onupdate: ({ dom }) => {
@@ -131,8 +196,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
             state.hasInteracted = false;
             const target = e.target as HTMLTextAreaElement;
 
-            // Update height for auto-resize
-            updateHeight(target);
+            // Height will be recalculated by hidden div on next update
 
             // Update character count
             if (maxLength) {
@@ -199,7 +263,8 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
               show: state.currentLength > 0,
             })
           : undefined,
-      ]);
+        ]),
+      ];
     },
   };
 };
@@ -428,7 +493,11 @@ const InputField =
                   target.classList.add('valid');
                   state.isValid = true;
                 }
-              } else if ((type === 'email' || type === 'url') && target.classList.contains('invalid') && target.value.length > 0) {
+              } else if (
+                (type === 'email' || type === 'url') &&
+                target.classList.contains('invalid') &&
+                target.value.length > 0
+              ) {
                 // Clear native validation errors if user is typing and input becomes valid
                 if (target.validity.valid) {
                   target.classList.remove('invalid');
@@ -478,7 +547,7 @@ const InputField =
                 if (value && String(value).length > 0) {
                   state.isValid = target.validity.valid;
                   target.setCustomValidity(''); // Clear any custom validation message
-                  
+
                   if (state.isValid) {
                     target.classList.remove('invalid');
                     target.classList.add('valid');
@@ -497,7 +566,7 @@ const InputField =
                 if (value !== undefined && value !== null && !isNaN(Number(value))) {
                   state.isValid = target.validity.valid;
                   target.setCustomValidity(''); // Clear any custom validation message
-                  
+
                   if (state.isValid) {
                     target.classList.remove('invalid');
                     target.classList.add('valid');

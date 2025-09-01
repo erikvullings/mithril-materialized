@@ -259,6 +259,44 @@ export const InputPage = () => {
             })`,
         }),
 
+        m('h4.header', 'Height Comparison: TextInput vs TextArea'),
+        m('p', 'When both have the same single-line content, they should have the same height:'),
+        m('.row', [
+          m('.col.s6',
+            m(TextInput, {
+              label: 'TextInput (single line)',
+              value: 'Short text',
+              onchange: (v) => console.log('TextInput:', v),
+            })
+          ),
+          m('.col.s6',
+            m(TextArea, {
+              label: 'TextArea (single line)',
+              value: 'Short text',
+              onchange: (v) => console.log('TextArea:', v),
+            })
+          ),
+        ]),
+        m(CodeBlock, {
+          code: `        // Both components with same content should have same height
+        m('.row', [
+          m('.col.s6',
+            m(TextInput, {
+              label: 'TextInput (single line)',
+              value: 'Short text',
+              onchange: (v) => console.log('TextInput:', v),
+            })
+          ),
+          m('.col.s6',
+            m(TextArea, {
+              label: 'TextArea (single line)',
+              value: 'Short text', 
+              onchange: (v) => console.log('TextArea:', v),
+            })
+          ),
+        ])`,
+        }),
+
         m('h3.header', 'NumberInput'),
         m(
           '.row',
