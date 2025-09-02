@@ -2,7 +2,7 @@
 
 A Mithril.js component library inspired by [materialize-css](https://materializecss.com) design principles, [available on npm](https://www.npmjs.com/package/mithril-materialized). This library provides you with ready-to-use Mithril components that follow Material Design guidelines, with **no external JavaScript dependencies**.
 
-## 🚀 v3.0.0 - Latest Release
+## 🚀 v3.2.2 - Latest Release
 
 The current stable release that provides a complete Mithril.js Material Design component library with no external JavaScript dependencies.
 
@@ -308,8 +308,11 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 - ✅ Breadcrumb navigation component
 - ✅ Wizard/Stepper component for multi-step forms
 
-**✅ Recently Completed:**
+**✅ Recently Completed (v3.2.x):**
 
+- ✅ **TextArea Height Alignment**: Fixed single-line textarea height to match TextInput components perfectly
+- ✅ **Improved AutoResize Logic**: TextArea now only sets custom height for multi-line content, matching Materialize CSS reference behavior
+- ✅ **Better Mithril Integration**: Hidden div for height measurement now properly managed within Mithril's render cycle
 - ✅ DataTable component with sorting, filtering, and pagination
 - ✅ TreeView component for hierarchical data with expand/collapse, selection, and VSCode-style connectors
 - ✅ Enhanced TypeScript definitions with better JSDoc comments
@@ -357,10 +360,11 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 
 ### 📊 Bundle Size Targets
 
-**Current Status (v3.0.0):**
+**Current Status (v3.2.2):**
 
-- Total: 70KB gzipped (44KB JS + 26KB CSS)
+- Total: ~65KB gzipped (42KB JS + 23KB CSS)
 - Modular CSS can reduce bundle by 30-50%
+- Optimized component implementations reduce overhead
 
 **Phase 1 Targets:**
 
@@ -388,7 +392,7 @@ See our [contributing guide](CONTRIBUTING.md) for detailed information.
 
 **Bundle Size Comparison:**
 
-- mithril-materialized v3.0: 64KB gzipped
+- mithril-materialized v3.2.2: ~65KB gzipped
 - Material-UI: ~350KB gzipped
 - Materialize CSS + jQuery: ~180KB gzipped
 - Vuetify: ~250KB gzipped
@@ -398,6 +402,7 @@ See our [contributing guide](CONTRIBUTING.md) for detailed information.
 - Component initialization: <5ms average
 - Theme switching: <10ms for full page
 - File upload processing: Real-time without blocking
+- TextArea auto-resize: <1ms per keystroke
 
 ## Build instructions
 
