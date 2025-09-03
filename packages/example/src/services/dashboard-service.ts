@@ -16,6 +16,7 @@ import { DataTablePage } from '../components/datatable/datatable-page';
 import { TimelinePage } from '../components/timeline-page';
 import { MasonryPage } from '../components/masonry-page';
 import { ImageListPage } from '../components/image-list-page';
+import { RatingPage } from '../components/rating-page';
 
 export enum Dashboards {
   HOME = 'HOME',
@@ -32,6 +33,7 @@ export enum Dashboards {
   TIMELINE = 'TIMELINE',
   MASONRY = 'MASONRY',
   IMAGE_LIST = 'IMAGE_LIST',
+  RATING = 'RATING',
   MISC = 'MISC',
   ABOUT = 'ABOUT',
 }
@@ -176,6 +178,14 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
     route: '/image-list',
     visible: true,
     component: ImageListPage,
+  },
+  {
+    id: Dashboards.RATING,
+    title: 'RATING',
+    icon: 'star',
+    route: '/rating',
+    visible: true,
+    component: RatingPage,
   },
   {
     id: Dashboards.MISC,

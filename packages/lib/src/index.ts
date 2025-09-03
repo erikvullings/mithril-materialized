@@ -44,4 +44,5 @@ export * from './treeview';
 export * from './timeline';
 export * from './masonry';
 export * from './image-list';
+export * from './rating';
 export * from './types';

@@ -1,0 +1,341 @@
+@use 'sass:color';
+@use "variables";
+
+/* Rating Component
+   ========================================================================== */
+
+// Rating component variables
+$rating-color-filled: var(--mm-primary-color, variables.$primary-color) !default;
+$rating-color-empty: var(--mm-text-hint, #9e9e9e) !default;
+$rating-color-hover: var(--mm-primary-color-light, color.adjust(variables.$primary-color, $lightness: 10%)) !default;
+$rating-color-disabled: var(--mm-text-disabled, rgba(0, 0, 0, 0.38)) !default;
+$rating-color-preview: var(--mm-secondary-color, variables.$secondary-color) !default;
+
+// Size variants
+$rating-size-small: 16px !default;
+$rating-size-medium: 24px !default;
+$rating-size-large: 32px !default;
+
+// Density spacing
+$rating-gap-compact: 2px !default;
+$rating-gap-standard: 4px !default;
+$rating-gap-comfortable: 8px !default;
+
+// Tooltip
+$rating-tooltip-bg: rgba(0, 0, 0, 0.8) !default;
+$rating-tooltip-text: white !default;
+
+.rating {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  // Focus state
+  &:focus-visible {
+    outline: 2px solid var(--mm-primary-color, #{variables.$primary-color});
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  // Read-only state
+  &--read-only {
+    cursor: default;
+    
+    .rating__item {
+      cursor: default;
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+
+    .rating__item {
+      cursor: not-allowed;
+    }
+  }
+
+  // Focused state for enhanced visual feedback
+  &--focused:not(&--read-only):not(&--disabled) {
+    .rating__items {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.rating__items {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  transition: transform 0.15s ease;
+}
+
+.rating__item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  > .rating__item {
+    display: flex;     // force flex child
+  }
+
+  // Hover effect
+  &:hover:not(.rating__item--disabled) {
+    transform: scale(1.1);
+  }
+
+  // Filled state
+  &--filled {
+    .rating__icon--filled {
+      color: $rating-color-filled;
+    }
+  }
+
+  // Active state
+  &--active {
+    .rating__icon--filled {
+      color: $rating-color-filled;
+    }
+  }
+
+  // Preview state (on hover)
+  &--preview {
+    .rating__icon--filled {
+      color: $rating-color-preview;
+    }
+  }
+
+  // Half-filled state
+  &--half {
+    .rating__icon--filled {
+      color: $rating-color-filled;
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    
+    .rating__icon--empty {
+      color: $rating-color-disabled;
+    }
+    
+    // Keep filled icons visible but muted
+    &.rating__item--filled .rating__icon--filled,
+    &.rating__item--active .rating__icon--filled {
+      color: $rating-color-filled;
+      opacity: 0.7;
+    }
+  }
+}
+
+.rating__icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+  line-height: 1;
+  width: $rating-size-medium;
+  height: $rating-size-medium;
+  font-size: $rating-size-medium;
+  
+  // Empty icon (background layer)
+  &--empty {
+    color: $rating-color-empty;
+  }
+
+  // Filled icon (foreground layer)
+  &--filled {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    overflow: hidden;
+    transition: color 0.15s ease;
+  }
+}
+
+// Size variants
+.rating--small {
+  .rating__icon {
+    width: $rating-size-small;
+    height: $rating-size-small;
+    font-size: $rating-size-small;
+  }
+}
+
+.rating--medium {
+  .rating__icon {
+    width: $rating-size-medium;
+    height: $rating-size-medium;
+    font-size: $rating-size-medium;
+  }
+}
+
+.rating--large {
+  .rating__icon {
+    width: $rating-size-large;
+    height: $rating-size-large;
+    font-size: $rating-size-large;
+  }
+}
+
+// Density variants
+.rating--compact {
+  .rating__items {
+    gap: $rating-gap-compact;
+  }
+}
+
+.rating--standard {
+  .rating__items {
+    gap: $rating-gap-standard;
+  }
+}
+
+.rating--comfortable {
+  .rating__items {
+    gap: $rating-gap-comfortable;
+  }
+}
+
+// Tooltip
+.rating__tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background: $rating-tooltip-bg;
+  color: $rating-tooltip-text;
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+
+  // Arrow
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: $rating-tooltip-bg;
+  }
+}
+
+.rating__item:hover .rating__tooltip {
+  opacity: 1;
+}
+
+// Screen reader only content
+.rating__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Material Design touch target (minimum 48x48dp)
+@media (pointer: coarse) {
+  .rating__item {
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
+
+// RTL support
+[dir="rtl"] {
+  .rating__tooltip {
+    &::after {
+      transform: translateX(50%);
+    }
+  }
+
+  .rating__item--half {
+    .rating__icon--filled {
+      clip-path: inset(0 0 0 50%) !important;
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .rating__icon--empty {
+    color: currentColor;
+  }
+
+  .rating__item--active .rating__icon--filled {
+    color: currentColor;
+  }
+}
+
+// Dark theme adjustments
+[data-theme="dark"] {
+  .rating__tooltip {
+    background: rgba(255, 255, 255, 0.9);
+    color: rgba(0, 0, 0, 0.87);
+
+    &::after {
+      border-top-color: rgba(255, 255, 255, 0.9);
+    }
+  }
+}
+
+// Animation for rating changes
+@keyframes rating-fill {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.rating__item--filled .rating__icon--filled {
+  animation: rating-fill 0.2s ease-out;
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .rating,
+  .rating__item,
+  .rating__icon,
+  .rating__tooltip,
+  .rating__items {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .rating__item:hover:not(.rating__item--disabled) {
+    transform: none;
+  }
+
+  .rating--focused:not(.rating--read-only):not(.rating--disabled) .rating__items {
+    transform: none;
+  }
+}
