@@ -10,11 +10,12 @@ The current stable release that provides a complete Mithril.js Material Design c
 
 - **🔥 Zero External JS Dependencies**: No longer requires `materialize-css` JavaScript or `material-icons` fonts
 - **📦 Smaller Bundle Size**: Reduced package size by eliminating external dependencies
-- **🎨 Custom SVG Icons**: Built-in MaterialIcon component with custom SVG icons (caret, close)
 - **⚡ Better Performance**: Direct implementations without jQuery or other heavy dependencies
-- **🛠️ Enhanced Components**: Improved DatePicker and TimePicker with custom implementations
+- **🛠️ Enhanced Components**: Improved DatePicker with date ranges, week numbers, and TimePicker with configurable AM/PM/24h or inline style
+- **🛠️ New Components**: DataTable, TreeView, Timeline, Masonry, RatingControl, ImageList, Wizard/Stepper, Breadcrumb
 - **📱 Modern Architecture**: Factory components with proper TypeScript support
 - **🎯 CSS-Only Styling**: Uses only CSS for styling - no JavaScript initialization needed
+- **🎨 Custom SVG Icons**: Built-in MaterialIcon component with custom SVG icons (caret, close)
 
 ### ✨ Key Features
 
@@ -23,9 +24,9 @@ The current stable release that provides a complete Mithril.js Material Design c
 - **🎨 Custom SVG Icons**: Built-in MaterialIcon component with custom SVG icons
 - **⚡ Better Performance**: Direct implementations without jQuery or other heavy dependencies
 - **🛠️ Enhanced Components**: Comprehensive component library with modern features
-- **📱 Modern Architecture**: Factory components with proper TypeScript support
-- **🎯 CSS-Only Styling**: Uses only CSS for styling - no JavaScript initialization needed
 - **🌗 Dark Theme Support**: Built-in light/dark theme system with CSS custom properties
+- **📱 Modern Architecture**: Factory components with proper TypeScript support, and clear separation between [controlled and uncontrolled](CONTROLLED_COMPONENTS.md) component state
+- **🎯 CSS-Only Styling**: Uses only CSS for styling - no JavaScript initialization needed
 
 ### 📦 Installation
 
@@ -34,6 +35,8 @@ npm install mithril mithril-materialized
 ```
 
 ## Supported Components
+
+Components marked with an * are not included in the original materialize-css library.
 
 - [Buttons](https://erikvullings.github.io/mithril-materialized/#!/buttons)
   - Button
@@ -48,13 +51,14 @@ npm install mithril mithril-materialized
   - EmailInput
   - NumberInput
   - ColorInput
-  - RangeInput (with vertical, double-thumb support, and smart tooltip display)
+  - RangeInput* (with vertical, double-thumb support, and smart tooltip display)
   - Chips
 - [Pickers](https://erikvullings.github.io/mithril-materialized/#!/pickers)
-  - DatePicker (with optional week numbers and date range selection)
-  - TimePicker
+  - DatePicker (with optional week numbers and date range selection)*
+  - TimePicker (with inline mode and switchable AM/PM/24h)*
 - [Selections](https://erikvullings.github.io/mithril-materialized/#!/selections)
   - Select
+  - SearchSelect*, a searchable select dropdown
   - Options
   - RadioButtons
   - Switch
@@ -63,32 +67,33 @@ npm install mithril mithril-materialized
   - Basic, Link and Avatar Collections
   - Collapsible or accordion
 - [Theme & Upload](https://erikvullings.github.io/mithril-materialized/#!/theme)
-  - ThemeSwitcher (light/dark/auto theme switching)
-  - ThemeToggle (simple light/dark toggle)
-  - FileUpload (drag-and-drop with validation and preview)
+  - ThemeSwitcher* (light/dark/auto theme switching)
+  - ThemeToggle* (simple light/dark toggle)
+  - FileUpload* (drag-and-drop with validation and preview)
 - [Navigation](https://erikvullings.github.io/mithril-materialized/#!/navigation)
   - Sidenav (responsive navigation drawer)
-  - Breadcrumb (navigation path indicator)
-  - Wizard/Stepper (multi-step process guidance)
+  - Breadcrumb* (navigation path indicator)
+  - Wizard/Stepper* (multi-step process guidance)
 - [Others](https://erikvullings.github.io/mithril-materialized/#!/modals)
   - ModalPanel
   - MaterialBox
   - Carousel
   - Pagination
-  - PaginationControls
+  - PaginationControls*
   - Parallax
-- [Layout & Display](https://erikvullings.github.io/mithril-materialized/#!/layout)
-  - Masonry (Pinterest-style responsive grid layout)
-  - ImageList (responsive image galleries with various layouts)
-  - Timeline (vertical timeline with events and milestones)
-- Data & Tables
-  - DataTable (sorting, filtering, pagination, selection)
-  - TreeView (hierarchical data with expand/collapse, selection, and customizable icons)
+- Layout & Display
+  - [Masonry](https://erikvullings.github.io/mithril-materialized/#!/masonry)* (Pinterest-style responsive grid layout)
+  - [ImageList](https://erikvullings.github.io/mithril-materialized/#!/image-list)* (responsive image galleries with various layouts)
+  - [Timeline](https://erikvullings.github.io/mithril-materialized/#!/timeline)* (vertical timeline with events and milestones)
+- [Rating](https://erikvullings.github.io/mithril-materialized/#!/rating)*
+  - RatingControl (Horizontal control, configurable range and step size, optionally with custom icons)
+- [Data & Tables](https://erikvullings.github.io/mithril-materialized/#!/datatable)
+  - DataTable* (sorting, filtering, pagination, selection)
+  - TreeView* (hierarchical data with expand/collapse, selection, and customizable icons)
 - Additional
   - Label
   - HelperText
   - CodeBlock
-  - SearchSelect, a searchable select dropdown
   - Icon, a simple wrapper for creating icons using material-icons font
   - MaterialIcon, for creating the close/clear and caret as SVG
 
@@ -310,7 +315,7 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 
 **✅ Recently Completed (v3.2.x):**
 
-- ✅ **TextArea Height Alignment**: Fixed single-line textarea height to match TextInput components perfectly
+- ✅ **TextArea Height Alignment**: Fixed single-line `textarea` height to match TextInput components perfectly
 - ✅ **Improved AutoResize Logic**: TextArea now only sets custom height for multi-line content, matching Materialize CSS reference behavior
 - ✅ **Better Mithril Integration**: Hidden div for height measurement now properly managed within Mithril's render cycle
 - ✅ DataTable component with sorting, filtering, and pagination
@@ -320,6 +325,7 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 - ✅ Enhanced RangeInput with vertical orientation, double-thumb range selection, and smart tooltip display
 - ✅ Advanced DatePicker with date range selection, constraints, and format support
 - ✅ Layout components: Masonry (Pinterest-style grid), Timeline (vertical event display), ImageList (responsive galleries)
+- ✅ RatingControl with configurable icons, min/max, tooltip/helpers, readonly and disabled mode
 - ✅ Improved RangeInput components converted to proper Mithril components with better lifecycle management
 - ✅ Enhanced accessibility with individual thumb slider elements and PageUp/PageDown keyboard support
 
@@ -588,5 +594,4 @@ input[type='color']:not(.browser-default) {
 .codeblock > label {
   display: inline-block;
 }
-
 ```
