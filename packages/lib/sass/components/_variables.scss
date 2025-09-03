@@ -291,7 +291,8 @@ $tabs-bg-color: #fff !default;
 // ==========================================================================
 
 $table-border-color: rgba(0,0,0,.12) !default;
-$table-striped-color: rgba(242, 242, 242, 0.5) !default;
+// Use CSS custom property for table striped color to enable better theming
+$table-striped-color: var(--mm-table-striped-color, rgba(55, 55, 55, 0.5)) !default;
 
 
 // 19. Toasts

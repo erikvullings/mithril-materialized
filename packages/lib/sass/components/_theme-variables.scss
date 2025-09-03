@@ -68,6 +68,9 @@
   --mm-switch-unchecked-thumb: #f5f5f5;
   --mm-switch-disabled-track: rgba(0, 0, 0, 0.12);
   --mm-switch-disabled-thumb: #bdbdbd;
+  
+  // Table colors
+  --mm-table-striped-color: rgba(0, 0, 0, 0.05);
 }
 
 // Apply theme variables to body and main containers
@@ -148,6 +151,9 @@ body {
   --mm-switch-unchecked-thumb: #616161;
   --mm-switch-disabled-track: rgba(255, 255, 255, 0.12);
   --mm-switch-disabled-thumb: #424242;
+  
+  // Table colors (dark theme)
+  --mm-table-striped-color: rgba(255, 255, 255, 0.05);
 }
 
 // Auto dark mode based on user preference
@@ -201,5 +207,8 @@ body {
     --mm-switch-unchecked-thumb: #616161;
     --mm-switch-disabled-track: rgba(255, 255, 255, 0.12);
     --mm-switch-disabled-thumb: #424242;
+    
+    // Table colors (auto dark theme)
+    --mm-table-striped-color: rgba(255, 255, 255, 0.05);
   }
 }

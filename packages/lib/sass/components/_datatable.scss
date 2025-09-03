@@ -373,7 +373,7 @@
     }
 
     .datatable.striped tbody tr:nth-child(odd) {
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: variables.$table-striped-color;
     }
 
     .datatable.fixed-header thead th {
