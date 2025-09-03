@@ -1,3 +1,16 @@
+# [3.3.0](https://github.com/erikvullings/mithril-materialized/compare/v3.2.2...v3.3.0) (2025-09-03)
+
+
+### Bug Fixes
+
+* Add warnings when controlled mode is incomplete (e.g. no event handlers) ([4507560](https://github.com/erikvullings/mithril-materialized/commit/4507560799e235450336eadad2b099485f049150))
+* Improved theming support for data tables ([8f26a73](https://github.com/erikvullings/mithril-materialized/commit/8f26a730b288bf0402a720cfb8c9308430ccae30))
+
+
+### Features
+
+* RatingControl component added ([8e4ec2b](https://github.com/erikvullings/mithril-materialized/commit/8e4ec2b26edcd077988c2831c15a53badcfee761))
+
 ## [3.2.2](https://github.com/erikvullings/mithril-materialized/compare/v3.2.1...v3.2.2) (2025-09-01)
 
 
