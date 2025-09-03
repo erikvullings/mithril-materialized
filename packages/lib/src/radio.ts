@@ -80,9 +80,19 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
   return {
     oninit: ({ attrs }) => {
       state.componentId = attrs.id || uniqueId();
+      
+      const controlled = isControlled(attrs);
+      
+      // Warn developer for improper controlled usage
+      if (attrs.checkedId !== undefined && !controlled && !attrs.disabled) {
+        console.warn(
+          `RadioButtons component received 'checkedId' prop without 'onchange' handler. ` +
+          `Use 'defaultCheckedId' for uncontrolled components or add 'onchange' for controlled components.`
+        );
+      }
 
       // Initialize internal state for uncontrolled mode
-      if (!isControlled(attrs)) {
+      if (!controlled) {
         state.internalCheckedId = attrs.defaultCheckedId;
       }
     },
@@ -105,7 +115,16 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
       const controlled = isControlled(attrs);
       
       // Get current checked ID from props or internal state
-      const currentCheckedId = controlled ? checkedId : state.internalCheckedId;
+      let currentCheckedId: T | undefined;
+      if (controlled) {
+        currentCheckedId = checkedId;
+      } else if (disabled) {
+        // Non-interactive components: prefer defaultCheckedId, fallback to checkedId
+        currentCheckedId = attrs.defaultCheckedId ?? checkedId;
+      } else {
+        // Interactive uncontrolled: use internal state
+        currentCheckedId = state.internalCheckedId ?? attrs.defaultCheckedId;
+      }
 
       const handleChange = (id: T) => {
         // Update internal state for uncontrolled mode

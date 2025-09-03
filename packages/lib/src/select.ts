@@ -168,9 +168,19 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
   return {
     oninit: ({ attrs }) => {
       state.id = attrs.id || uniqueId();
+      
+      const controlled = isControlled(attrs);
+      
+      // Warn developer for improper controlled usage
+      if (attrs.checkedId !== undefined && !controlled && !attrs.disabled) {
+        console.warn(
+          `Select component received 'checkedId' prop without 'onchange' handler. ` +
+          `Use 'defaultCheckedId' for uncontrolled components or add 'onchange' for controlled components.`
+        );
+      }
 
       // Initialize internal state for uncontrolled mode
-      if (!isControlled(attrs)) {
+      if (!controlled) {
         const defaultIds =
           attrs.defaultCheckedId !== undefined
             ? Array.isArray(attrs.defaultCheckedId)
@@ -191,15 +201,28 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
 
     view: ({ attrs }) => {
       const controlled = isControlled(attrs);
+      const { disabled } = attrs;
 
       // Get selected IDs from props or internal state
-      const selectedIds = controlled
-        ? attrs.checkedId !== undefined
+      let selectedIds: T[];
+      if (controlled) {
+        selectedIds = attrs.checkedId !== undefined
           ? Array.isArray(attrs.checkedId)
             ? attrs.checkedId
             : [attrs.checkedId]
-          : []
-        : state.internalSelectedIds;
+          : [];
+      } else if (disabled) {
+        // Non-interactive components: prefer defaultCheckedId, fallback to checkedId
+        const fallbackId = attrs.defaultCheckedId ?? attrs.checkedId;
+        selectedIds = fallbackId !== undefined
+          ? Array.isArray(fallbackId)
+            ? fallbackId
+            : [fallbackId]
+          : [];
+      } else {
+        // Interactive uncontrolled: use internal state
+        selectedIds = state.internalSelectedIds;
+      }
       const {
         newRow,
         className = 'col s12',
@@ -211,7 +234,6 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
         placeholder = '',
         isMandatory,
         iconName,
-        disabled,
         style,
       } = attrs;
 

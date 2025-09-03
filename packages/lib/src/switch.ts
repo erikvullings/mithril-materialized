@@ -4,7 +4,7 @@ import { InputAttrs } from './input-options';
 import { Label } from './label';
 // Styles are imported via the main index or individual component imports
 
-export interface SwitchOptions extends Partial<InputAttrs<boolean>> {
+export interface SwitchAttrs extends Pick<InputAttrs<boolean>, 'label' | 'disabled' | 'id' | 'className' | 'onchange' | 'newRow' | 'isMandatory'> {
   /** Left text label */
   left?: string;
   /** Right text label */
@@ -14,7 +14,7 @@ export interface SwitchOptions extends Partial<InputAttrs<boolean>> {
 }
 
 /** Component to display a switch with two values. */
-export const Switch: FactoryComponent<SwitchOptions> = () => {
+export const Switch: FactoryComponent<SwitchAttrs> = () => {
   const state = { id: uniqueId(), checked: false };
   return {
     oninit: ({ attrs: { checked } }) => {

@@ -92,12 +92,24 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
     }
   };
 
-  const isControlled = (attrs: InputAttrs<string>) => attrs.value !== undefined && attrs.oninput !== undefined;
+  const isControlled = (attrs: InputAttrs<string>) => 
+    attrs.value !== undefined && (attrs.oninput !== undefined || attrs.onchange !== undefined);
 
   return {
     oninit: ({ attrs }) => {
+      const controlled = isControlled(attrs);
+      const isNonInteractive = attrs.readonly || attrs.disabled;
+      
+      // Warn developer for improper controlled usage
+      if (attrs.value !== undefined && !controlled && !isNonInteractive) {
+        console.warn(
+          `TextArea received 'value' prop without 'oninput' or 'onchange' handler. ` +
+          `Use 'defaultValue' for uncontrolled components or add an event handler for controlled components.`
+        );
+      }
+      
       // Initialize internal value for uncontrolled mode
-      if (!isControlled(attrs)) {
+      if (!controlled) {
         state.internalValue = attrs.defaultValue || '';
       }
     },
@@ -129,7 +141,18 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
       } = attrs;
 
       const controlled = isControlled(attrs);
-      const currentValue = controlled ? value || '' : state.internalValue;
+      const isNonInteractive = attrs.readonly || attrs.disabled;
+      
+      let currentValue: string;
+      if (controlled) {
+        currentValue = value || '';
+      } else if (isNonInteractive) {
+        // Non-interactive components: prefer defaultValue, fallback to value
+        currentValue = attrs.defaultValue ?? value ?? '';
+      } else {
+        // Interactive uncontrolled: use internal state
+        currentValue = state.internalValue ?? attrs.defaultValue ?? '';
+      }
 
       return [
         // Hidden div for height measurement - positioned outside the input-field
@@ -289,7 +312,8 @@ const InputField =
     };
 
     const isControlled = (attrs: InputAttrs<T>) =>
-      'value' in attrs && typeof attrs.value !== 'undefined' && typeof attrs.oninput === 'function';
+      'value' in attrs && typeof attrs.value !== 'undefined' && 
+      (typeof attrs.oninput === 'function' || typeof attrs.onchange === 'function');
 
     const getValue = (target: HTMLInputElement) => {
       const val = target.value as unknown as T;
@@ -347,8 +371,19 @@ const InputField =
 
     return {
       oninit: ({ attrs }) => {
+        const controlled = isControlled(attrs);
+        const isNonInteractive = attrs.readonly || attrs.disabled;
+        
+        // Warn developer for improper controlled usage
+        if (attrs.value !== undefined && !controlled && !isNonInteractive) {
+          console.warn(
+            `${type} input received 'value' prop without 'oninput' or 'onchange' handler. ` +
+            `Use 'defaultValue' for uncontrolled components or add an event handler for controlled components.`
+          );
+        }
+        
         // Initialize internal value if not in controlled mode
-        if (!isControlled(attrs)) {
+        if (!controlled) {
           const isNumeric = ['number', 'range'].includes(type);
           if (attrs.defaultValue !== undefined) {
             if (isNumeric) {
@@ -407,7 +442,18 @@ const InputField =
         }
         const isNumeric = ['number', 'range'].includes(type);
         const controlled = isControlled(attrs);
-        const value = (controlled ? attrs.value : state.internalValue) as T;
+        const isNonInteractive = attrs.readonly || attrs.disabled;
+        
+        let value: T;
+        if (controlled) {
+          value = attrs.value as T;
+        } else if (isNonInteractive) {
+          // Non-interactive components: prefer defaultValue, fallback to value
+          value = (attrs.defaultValue ?? attrs.value ?? (isNumeric ? 0 : '')) as T;
+        } else {
+          // Interactive uncontrolled: use internal state
+          value = (state.internalValue ?? attrs.defaultValue ?? (isNumeric ? 0 : '')) as T;
+        }
         const rangeType = type === 'range' && !attrs.minmax;
 
         return m('.input-field', { className: cn, style }, [
