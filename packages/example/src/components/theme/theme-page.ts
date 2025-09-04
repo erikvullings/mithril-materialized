@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { ThemeSwitcher, ThemeToggle, FileUpload, CodeBlock, Button, Theme } from 'mithril-materialized';
+import { ThemeSwitcher, ThemeToggle, FileUpload, CodeBlock, Theme } from 'mithril-materialized';
 
 export const ThemePage = () => {
   const state = {
