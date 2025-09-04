@@ -1,3 +1,10 @@
+## [3.3.1](https://github.com/erikvullings/mithril-materialized/compare/v3.3.0...v3.3.1) (2025-09-04)
+
+
+### Bug Fixes
+
+* textarea line height, example ([014f5a0](https://github.com/erikvullings/mithril-materialized/commit/014f5a06e712bad219a940a6becebb301edf5b14))
+
 # [3.3.0](https://github.com/erikvullings/mithril-materialized/compare/v3.2.2...v3.3.0) (2025-09-03)
 
 
