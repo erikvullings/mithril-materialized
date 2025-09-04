@@ -240,36 +240,63 @@ export const InputPage = () => {
             label: 'Please, describe yourself',
             helperText: `Don't be shy`,
             maxLength: 100,
-            value: textAreaValue,
+            defaultValue: textAreaValue,
             onchange: (v) => {
               textAreaValue = v;
               console.log('TextArea:', textAreaValue);
             },
           })
         ),
-        m(CodeBlock, {
-          code: `        m(TextArea, {
+        m(
+          '.row',
+          m(
+            '.col.s6',
+            m(CodeBlock, {
+              code: `
+          // Uncontrolled example
+          m(TextArea, { 
             label: 'Please, describe yourself',
             helperText: 'Don\'t be shy',
             maxLength: 100,
-            value: textAreaValue,
+            defaultValue: textAreaValue,
             onchange: (v) => {
               textAreaValue = v;
-              console.log('TextArea:', textAreaValue)},
-            })`,
-        }),
-
+              console.log('TextArea:', textAreaValue);
+            },
+          })`,
+            })
+          ),
+          m(
+            '.col.s6',
+            m(CodeBlock, {
+              code: `
+              // Controlled example
+              m(TextArea, {
+                label: 'Please, describe yourself',
+                helperText: 'Don\'t be shy',
+                maxLength: 100,
+                value: textAreaValue,
+                oninput: (v) => {
+                  textAreaValue = v;
+                  console.log('TextArea:', textAreaValue);
+                },
+              })`,
+            })
+          )
+        ),
         m('h4.header', 'Height Comparison: TextInput vs TextArea'),
         m('p', 'When both have the same single-line content, they should have the same height:'),
         m('.row', [
-          m('.col.s6',
+          m(
+            '.col.s6',
             m(TextInput, {
               label: 'TextInput (single line)',
               value: 'Short text',
               onchange: (v) => console.log('TextInput:', v),
             })
           ),
-          m('.col.s6',
+          m(
+            '.col.s6',
             m(TextArea, {
               label: 'TextArea (single line)',
               value: 'Short text',

@@ -340,7 +340,7 @@ textarea {
   background-color: transparent;
 
   &.materialize-textarea {
-    line-height: normal;
+    line-height: 1.5;
     overflow-y: hidden; /* prevents scroll bar flash */
     padding: .8rem 0 .8rem 0; /* prevents text jump on Enter keypress */
     resize: none;
