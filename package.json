@@ -7,7 +7,7 @@
     "clean:local": "rimraf -rf ./docs",
     "build": "cd packages/lib && pnpm run build",
     "build:example": "cd packages/example && pnpm run build",
-    "build:domain": "pnpm run -r --parallel clean:docs && pnpm run -r --parallel build:domain",
+    "build:domain": "pnpm -r run build:domain",
     "start": "pnpm -r --parallel run dev",
     "clean": "npm run clean:local && pnpm clean",
     "dry-run": "pnpm dry-run",
