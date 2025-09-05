@@ -1,3 +1,10 @@
+## [3.3.2](https://github.com/erikvullings/mithril-materialized/compare/v3.3.1...v3.3.2) (2025-09-05)
+
+
+### Bug Fixes
+
+* disabled checkbox style ([6bcc7d9](https://github.com/erikvullings/mithril-materialized/commit/6bcc7d957816ea461e8ef61ef0b5b9a214b5af3d))
+
 ## [3.3.1](https://github.com/erikvullings/mithril-materialized/compare/v3.3.0...v3.3.1) (2025-09-04)
 
 
