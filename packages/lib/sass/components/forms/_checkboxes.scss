@@ -51,7 +51,7 @@
   }
 
   &:not(:checked):disabled + span:not(.lever):before {
-    border: none;
+    border-color: var(--mm-switch-disabled-track, variables.$input-disabled-color);
     background-color: variables.$input-disabled-color;
   }
 
