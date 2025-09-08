@@ -81,8 +81,8 @@
   }
 
   &:disabled + span:before {
-    border-right: 2px solid variables.$input-disabled-color;
-    border-bottom: 2px solid variables.$input-disabled-color;
+    border-right: 3px solid var(--mm-switch-disabled-track, variables.$input-disabled-color);
+    border-bottom: 3px solid var(--mm-switch-disabled-track, variables.$input-disabled-color);
   }
 }
 
