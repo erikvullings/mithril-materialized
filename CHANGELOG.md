@@ -1,3 +1,10 @@
+## [3.3.5](https://github.com/erikvullings/mithril-materialized/compare/v3.3.4...v3.3.5) (2025-09-10)
+
+
+### Bug Fixes
+
+* ThemeSwitcher relied on material-icons. Removed dependency and included svg. ([f970961](https://github.com/erikvullings/mithril-materialized/commit/f970961abfe5193cea951769dbb7446ad4d60312))
+
 ## [3.3.4](https://github.com/erikvullings/mithril-materialized/compare/v3.3.3...v3.3.4) (2025-09-10)
 
 
