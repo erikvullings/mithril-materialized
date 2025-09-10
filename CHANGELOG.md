@@ -1,3 +1,10 @@
+## [3.3.4](https://github.com/erikvullings/mithril-materialized/compare/v3.3.3...v3.3.4) (2025-09-10)
+
+
+### Bug Fixes
+
+* wizard example not working ([1db99b2](https://github.com/erikvullings/mithril-materialized/commit/1db99b2a58cac615090074942e98c088dc8aa35b))
+
 ## [3.3.3](https://github.com/erikvullings/mithril-materialized/compare/v3.3.2...v3.3.3) (2025-09-08)
 
 
