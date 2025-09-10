@@ -28,7 +28,10 @@ export const HomePage = () => ({
           ),
           m('h3', '✨ Key Features'),
           m('ul.collection', [
-            m('li.collection-item', [m('i.material-icons.tiny', '🔥'), ' Zero external JavaScript dependencies']),
+            m('li.collection-item', [
+              m('i.material-icons.tiny', '🔥'),
+              ' Zero external JavaScript dependencies, complete ESM module size 75kb zipped',
+            ]),
             m('li.collection-item', [m('i.material-icons.tiny', '📦'), ' Significantly smaller bundle size']),
             m('li.collection-item', [m('i.material-icons.tiny', '🎨'), ' Custom SVG icons (no font dependencies)']),
             m('li.collection-item', [m('i.material-icons.tiny', '⚡'), ' Better performance without jQuery']),
@@ -67,7 +70,7 @@ export const HomePage = () => ({
           m('ul.collection', [
             m('li.collection-item', [
               m('span.green-text', 'index.css: '),
-              'Complete CSS bundle (64KB) with all components',
+              'Complete CSS bundle (33KB zipped) with all components',
             ]),
             m('li.collection-item', [
               m('span.green-text', 'Modular CSS: '),
