@@ -22,7 +22,7 @@
   "target": "web",
   "dependencies": {
     "material-icons": "^1.13.14",
-    "mithril": "^2.3.5",
+    "mithril": "^2.3.7",
     "mithril-materialized": "workspace:*"
   },
   "devDependencies": {
