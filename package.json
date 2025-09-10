@@ -1,6 +1,6 @@
 {
   "name": "mithril-materialized-monorepo",
-  "version": "2.0.0-beta.14",
+  "version": "3.3.4",
   "private": true,
   "description": "A materialize library for mithril.",
   "scripts": {
