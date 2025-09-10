@@ -2,7 +2,7 @@
 
 A Mithril.js component library inspired by [materialize-css](https://materializecss.com) design principles, [available on npm](https://www.npmjs.com/package/mithril-materialized). This library provides you with ready-to-use Mithril components that follow Material Design guidelines, with **no external JavaScript dependencies**.
 
-## 🚀 v3.3.0 - Latest Release
+## 🚀 v3.3 - Latest Release
 
 The current stable release that provides a complete Mithril.js Material Design component library with no external JavaScript dependencies.
 
@@ -98,6 +98,8 @@ Components marked with an * are not included in the original materialize-css lib
   - MaterialIcon, for creating the close/clear and caret as SVG
 
 ## 📖 Usage Instructions
+
+Online [flems](flems.io) examples: [FlatButton](https://flems.io/#0=N4IgtglgJlA2CmIBcBWFA6AnAJgDQgGd4EBjAF3imRHTIJHwDMIF6kBtUAOwEMxEkNABZkwsBiBIB7LhVnUAPLAhcA1gAIATsQC8AHUJkAnqyHx4ZA+qHbG+kCLIAHAkgD0bgK5cnqgObo0mBukGQ2LAC0YDwUmhA8ygBelG5QEARkbipQ8AAegQQEBgB8elwSRKRkEDJsIACMSAAMIAC+uNx8AjR0EtKy8PKC-RnqwOoAYrAxAEKeZGQy6q3qOuoA7tlS6+wA5KHhsFEx8HEJEMlQuwC6ANxlZSNk6jIkyiQaawAUAJSrxeoEqcyF9dqoAFZCCG7H4PLhgdDaLg5TRfKBSEiefiydAAIykUCMuHUYC+U1m80WXGJ42muOISHUBgAskZJtNnrjKTIDMTXu8NK0fj97lwyhViPByDUuHUAGzNNodEC8fjUAr0fD9ORkahta74ZRqNicFVdagHOLifCeTTiQSOFzuLw+fyBKTBS0sAAC2HQAGZ0AB2EIQMJW9CQLjocGakDGJzdAgkOJOXXtTpqwReo7RWLxJKUCS2+0OBZOjzeXwBIKh8ORPOnAsXSjewOBgAsqXSmWyeXQWKgMbjCaTKYgaf1rSAA) and [Select](https://flems.io/#0=N4IgtglgJlA2CmIBcBWFA6AnAJgDQgGd4EBjAF3imRHTIJHwDMIF6kBtUAOwEMxEkNABZkwsBiBIB7LhVnUAPLAhcA1gAIATsQC8AHUJkAnqyHx4ZA+qHbG+kCLIAHAkgD0bgK5cnqgObo0mBukGQ2LAC0YDwUmhA8ygBelG5QEARkbipQ8AAegQQEBgB8elwSRKRkEDJsIACMSAAMIAC+uNx8AjR0EtKy8PKC-RnqwOoAysTw5Oqt6jrqAO7ZUkvsAOSh4bBRMfBxCRDJUBsAugDcZWUjZOokZiSqlACSUAvqG9gbV1xlYOhtFwcpoABRQKQkTz8WToABGUigRlw6jK6nUYFBG0Baw2KPGGRM8CQYwxPE0fhUABUpE4SRt6k0nLkNnM5ii0eiMaCplV8epYDw4cR6byZnd+HjUVwuVynIKSPAhFJYCD6QBhZRPdQyeB4zmyh4zZ5QN64A1c2nVWok9gW2XjaD0+pSwXC2D0gDyTmtMpd7PtXMdUHp3xRbpFn29vvU3wDMtlQfUTs+AGZXULIxtozUZen44n1GdzQnZTIHjwuH5iepQQA3ACUC2K6gSBzI9YbJdlrQbnL7XAbvzKFWm5FzdXqAA5mm0OiBePxqAV6Ph+nIyNQ2sWQMo1GxOAuutRtnFxPhPJpxIJHC53F4fP5AlJgqeWAABbDoVPoADsIQgMIz3QSAuHQAArVcQGMJxugIEg4h9OdOiXQQ312aJYniJJKAkS9rwcMhnFcDxvF8AIggAoDIkwg5sOOSh3x-H8ABZUnSTJsjydBoSgCCoJguCEIgJDWjOVogA).
 
 ### Quick Start
 

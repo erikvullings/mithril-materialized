@@ -8,7 +8,7 @@ export const HomePage = () => ({
       m(
         '.col.s12.m7.l8',
         m('.introduction', [
-          m('h2', 'Mithril-Materialized v3.0.0'),
+          m('h2', 'Mithril-Materialized v3.3'),
           m('.card.green.lighten-4', [
             m('.card-content', [
               m('span.card-title', '🚀 Latest Stable Release'),
@@ -32,9 +32,15 @@ export const HomePage = () => ({
             m('li.collection-item', [m('i.material-icons.tiny', '📦'), ' Significantly smaller bundle size']),
             m('li.collection-item', [m('i.material-icons.tiny', '🎨'), ' Custom SVG icons (no font dependencies)']),
             m('li.collection-item', [m('i.material-icons.tiny', '⚡'), ' Better performance without jQuery']),
-            m('li.collection-item', [m('i.material-icons.tiny', '🛠️'), ' Enhanced DatePicker and TimePicker components']),
+            m('li.collection-item', [
+              m('i.material-icons.tiny', '🛠️'),
+              ' Enhanced DatePicker and TimePicker components',
+            ]),
             m('li.collection-item', [m('i.material-icons.tiny', '🌗'), ' Built-in dark/light theme system']),
-            m('li.collection-item', [m('i.material-icons.tiny', '🎯'), ' Comprehensive component library']),
+            m('li.collection-item', [
+              m('i.material-icons.tiny', '🎯'),
+              ' Extensive component library with timeline, masonry, wizard, rating, image lists, and data tables',
+            ]),
           ]),
           m('h3', '🌓 Theme System'),
           m('p', 'Built-in light and dark theme support with automatic system theme detection:'),
@@ -53,7 +59,7 @@ export const HomePage = () => ({
             ]),
             m('li.collection-item', [
               m('span.blue-text', 'Auto Detection: '),
-              'Automatically respects user\'s system theme preference',
+              "Automatically respects user's system theme preference",
             ]),
           ]),
           m('h3', '🎨 CSS Options'),
