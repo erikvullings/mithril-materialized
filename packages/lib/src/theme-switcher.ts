@@ -1,4 +1,5 @@
 import m, { FactoryComponent } from 'mithril';
+import { MaterialIcon } from './material-icon';
 
 export type Theme = 'light' | 'dark' | 'auto';
 
@@ -158,16 +159,18 @@ export const ThemeSwitcher: FactoryComponent<ThemeSwitcherAttrs> = () => {
           m(
             'button.btn-flat',
             {
+              type: 'button',
               class: theme === 'light' ? 'active' : '',
               onclick: () => handleThemeChange('light'),
               title: labels.lightTitle,
             },
-            [m('i.material-icons', 'light_mode'), showLabels && m('span', labels.light)]
+            [m(MaterialIcon, { name: 'light_mode' }), showLabels && m('span', labels.light)]
           ),
 
           m(
             'button.btn-flat',
             {
+              type: 'button',
               class: theme === 'auto' ? 'active' : '',
               onclick: () => handleThemeChange('auto'),
               title: labels.autoTitle,
@@ -178,11 +181,12 @@ export const ThemeSwitcher: FactoryComponent<ThemeSwitcherAttrs> = () => {
           m(
             'button.btn-flat',
             {
+              type: 'button',
               class: theme === 'dark' ? 'active' : '',
               onclick: () => handleThemeChange('dark'),
               title: labels.darkTitle,
             },
-            [m('i.material-icons', 'dark_mode'), showLabels && m('span', labels.dark)]
+            [m(MaterialIcon, { name: 'dark_mode' }), showLabels && m('span', labels.dark)]
           ),
         ]),
       ]);
@@ -209,21 +213,17 @@ export const ThemeToggle: FactoryComponent<{ className?: string; i18n?: ThemeSwi
       return m(
         'button.btn-flat.theme-toggle',
         {
+          type: 'button',
           class: attrs.className || '',
           onclick: () => {
             ThemeManager.toggle();
           },
           title: currentTheme === 'light' ? labels.switchToDark : labels.switchToLight,
-          style: 'margin: 0; height: 64px; line-height: 64px; border-radius: 0; min-width: 64px; padding: 0;',
         },
         [
-          m(
-            'i.material-icons',
-            {
-              style: 'color: inherit; font-size: 24px;',
-            },
-            currentTheme === 'light' ? 'dark_mode' : 'light_mode'
-          ),
+          m(MaterialIcon, {
+            name: currentTheme === 'light' ? 'dark_mode' : 'light_mode',
+          }),
         ]
       );
     },
