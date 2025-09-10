@@ -87,7 +87,6 @@ export const Wizard: FactoryComponent<WizardAttrs> = () => {
       return false;
     } finally {
       state.isValidating = false;
-      m.redraw();
     }
   };
   
@@ -124,9 +123,6 @@ export const Wizard: FactoryComponent<WizardAttrs> = () => {
     if (onStepChange && oldStep !== stepIndex) {
       onStepChange(stepIndex, steps[stepIndex].id || `step-${stepIndex}`);
     }
-    
-    // Force redraw to update UI
-    m.redraw();
     
     return true;
   };

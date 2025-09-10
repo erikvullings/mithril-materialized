@@ -39,13 +39,13 @@ export const NavigationPage = () => {
         m(TextInput, {
           label: 'Full Name',
           value: state.wizardData.name,
-          onchange: (value: string) => { state.wizardData.name = value; }
+          oninput: (value: string) => { state.wizardData.name = value; }
         }),
         m(TextInput, {
           label: 'Email Address',
           type: 'email',
           value: state.wizardData.email,
-          onchange: (value: string) => { state.wizardData.email = value; }
+          oninput: (value: string) => { state.wizardData.email = value; }
         })
       ]),
       validate: () => {
@@ -64,7 +64,7 @@ export const NavigationPage = () => {
         m(TextArea, {
           label: 'Your Message',
           value: state.wizardData.message,
-          onchange: (value: string) => { state.wizardData.message = value; }
+          oninput: (value: string) => { state.wizardData.message = value; }
         })
       ])
     },
