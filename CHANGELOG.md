@@ -1,3 +1,11 @@
+## [3.3.6](https://github.com/erikvullings/mithril-materialized/compare/v3.3.5...v3.3.6) (2025-09-12)
+
+
+### Bug Fixes
+
+* modal does not require id ([86edf50](https://github.com/erikvullings/mithril-materialized/commit/86edf503e8e07276bfa3496e01e29a851705b7fa))
+* simplified wizard style ([148d63c](https://github.com/erikvullings/mithril-materialized/commit/148d63c20005b6c1ec671ca00bd6f9bde3b801bb))
+
 ## [3.3.5](https://github.com/erikvullings/mithril-materialized/compare/v3.3.4...v3.3.5) (2025-09-10)
 
 
