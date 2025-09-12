@@ -181,42 +181,6 @@
 .wizard-body {
   flex: 1;
   margin-bottom: 2rem;
-  
-  // Ensure form elements have proper responsive layout
-  .input-field {
-    margin-bottom: 1.5rem;
-    
-    input, textarea {
-      width: 100%;
-      box-sizing: border-box;
-    }
-    
-    label {
-      color: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
-      transition: all 0.3s ease;
-      
-      &.active {
-        color: var(--mm-primary-color, #26a69a);
-        transform: translateY(-14px) scale(0.8);
-      }
-    }
-  }
-  
-  .row {
-    margin-bottom: 0;
-    
-    .col {
-      padding: 0 0.75rem;
-      
-      &:first-child {
-        padding-left: 0;
-      }
-      
-      &:last-child {
-        padding-right: 0;
-      }
-    }
-  }
 }
 
 .wizard-step-panel {

@@ -1,14 +1,14 @@
 import m from 'mithril';
-import { 
-  Sidenav, 
-  SidenavItem, 
-  Breadcrumb, 
+import {
+  Sidenav,
+  SidenavItem,
+  Breadcrumb,
   createBreadcrumb,
-  Wizard, 
-  CodeBlock, 
+  Wizard,
+  CodeBlock,
   Button,
   TextInput,
-  TextArea
+  TextArea,
 } from 'mithril-materialized';
 
 export const NavigationPage = () => {
@@ -18,79 +18,78 @@ export const NavigationPage = () => {
     wizardData: {
       name: '',
       email: '',
-      message: ''
-    }
+      message: '',
+    },
   };
 
   const breadcrumbItems = [
     { text: 'Home', href: '/home', icon: 'home' },
     { text: 'Navigation', href: '/navigation' },
-    { text: 'Components', active: true }
+    { text: 'Components', active: true },
   ];
-  
+
   const wizardSteps = [
     {
       title: 'Personal Information',
       subtitle: 'Enter your basic details',
       icon: 'person',
-      vnode: () => m('div', [
-        m('h4', 'Step 1: Personal Information'),
-        m('p', 'Please provide your name and email address.'),
-        m(TextInput, {
-          label: 'Full Name',
-          value: state.wizardData.name,
-          oninput: (value: string) => { state.wizardData.name = value; }
-        }),
-        m(TextInput, {
-          label: 'Email Address',
-          type: 'email',
-          value: state.wizardData.email,
-          oninput: (value: string) => { state.wizardData.email = value; }
-        })
-      ]),
+      vnode: () =>
+        m('.row', [
+          m('h4', 'Step 1: Personal Information'),
+          m('p', 'Please provide your name and email address.'),
+          m(TextInput, {
+            label: 'Full Name',
+            value: state.wizardData.name,
+            oninput: (value: string) => {
+              state.wizardData.name = value;
+            },
+          }),
+          m(TextInput, {
+            label: 'Email Address',
+            type: 'email',
+            value: state.wizardData.email,
+            oninput: (value: string) => {
+              state.wizardData.email = value;
+            },
+          }),
+        ]),
       validate: () => {
-        return state.wizardData.name.length > 0 && 
-               state.wizardData.email.includes('@');
-      }
+        return state.wizardData.name.length > 0 && state.wizardData.email.includes('@');
+      },
     },
     {
       title: 'Message',
       subtitle: 'Tell us about yourself',
       icon: 'message',
       optional: true,
-      vnode: () => m('div', [
-        m('h4', 'Step 2: Message (Optional)'),
-        m('p', 'You can optionally provide additional information.'),
-        m(TextArea, {
-          label: 'Your Message',
-          value: state.wizardData.message,
-          oninput: (value: string) => { state.wizardData.message = value; }
-        })
-      ])
+      vnode: () =>
+        m('.row', [
+          m('h4', 'Step 2: Message (Optional)'),
+          m('p', 'You can optionally provide additional information.'),
+          m(TextArea, {
+            label: 'Your Message',
+            value: state.wizardData.message,
+            oninput: (value: string) => {
+              state.wizardData.message = value;
+            },
+          }),
+        ]),
     },
     {
       title: 'Review',
       subtitle: 'Confirm your information',
       icon: 'preview',
-      vnode: () => m('div', [
-        m('h4', 'Step 3: Review'),
-        m('p', 'Please review your information before submitting.'),
-        m('.collection', [
-          m('.collection-item', [
-            m('strong', 'Name: '),
-            state.wizardData.name || 'Not provided'
+      vnode: () =>
+        m('.row', [
+          m('h4', 'Step 3: Review'),
+          m('p', 'Please review your information before submitting.'),
+          m('.collection', [
+            m('.collection-item', [m('strong', 'Name: '), state.wizardData.name || 'Not provided']),
+            m('.collection-item', [m('strong', 'Email: '), state.wizardData.email || 'Not provided']),
+            state.wizardData.message && m('.collection-item', [m('strong', 'Message: '), state.wizardData.message]),
           ]),
-          m('.collection-item', [
-            m('strong', 'Email: '),
-            state.wizardData.email || 'Not provided'
-          ]),
-          state.wizardData.message && m('.collection-item', [
-            m('strong', 'Message: '),
-            state.wizardData.message
-          ])
-        ])
-      ])
-    }
+        ]),
+    },
   ];
 
   return {
@@ -99,20 +98,20 @@ export const NavigationPage = () => {
         m('h2.header', 'Navigation Components'),
         m('p', [
           'New navigation components including Sidenav, Breadcrumb, and Wizard/Stepper. ',
-          'These components help users navigate through your application and complete multi-step processes.'
+          'These components help users navigate through your application and complete multi-step processes.',
         ]),
 
         // Breadcrumb Example
         m('h3.header', 'Breadcrumb Navigation'),
-        m('p', 'Shows the user\'s current location within the site hierarchy:'),
+        m('p', "Shows the user's current location within the site hierarchy:"),
         m('.row', [
           m('.col.s12', [
             m(Breadcrumb, {
               items: breadcrumbItems,
               showHome: true,
-              showIcons: true
-            })
-          ])
+              showIcons: true,
+            }),
+          ]),
         ]),
         m(CodeBlock, {
           code: `import { Breadcrumb, createBreadcrumb } from 'mithril-materialized';
@@ -126,7 +125,7 @@ m(Breadcrumb, {
   showIcons: true,     // Show icons for items that have them
   maxItems: 5,         // Collapse long paths with ellipsis
   separator: 'chevron_right' // Custom separator icon
-})`
+})`,
         }),
 
         // Sidenav Example
@@ -136,28 +135,36 @@ m(Breadcrumb, {
           m('.col.s12', [
             m(Button, {
               label: 'Toggle Sidenav',
-              onclick: () => { state.sidenavOpen = !state.sidenavOpen; }
+              onclick: () => {
+                state.sidenavOpen = !state.sidenavOpen;
+              },
             }),
-            
-            m(Sidenav, {
-              isOpen: state.sidenavOpen,
-              onToggle: (isOpen) => { state.sidenavOpen = isOpen; },
-              position: 'left',
-              mode: 'overlay',
-              width: 300,
-              showBackdrop: true,
-              closeOnBackdropClick: true,
-              closeOnEscape: true
-            }, [
-              m(SidenavItem, { text: 'Dashboard', icon: 'dashboard', active: true }),
-              m(SidenavItem, { text: 'Profile', icon: 'person' }),
-              m(SidenavItem, { text: 'Settings', icon: 'settings' }),
-              m(SidenavItem, { divider: true }),
-              m(SidenavItem, { subheader: true, text: 'Actions' }),
-              m(SidenavItem, { text: 'Help', icon: 'help' }),
-              m(SidenavItem, { text: 'Logout', icon: 'exit_to_app' })
-            ])
-          ])
+
+            m(
+              Sidenav,
+              {
+                isOpen: state.sidenavOpen,
+                onToggle: (isOpen) => {
+                  state.sidenavOpen = isOpen;
+                },
+                position: 'left',
+                mode: 'overlay',
+                width: 300,
+                showBackdrop: true,
+                closeOnBackdropClick: true,
+                closeOnEscape: true,
+              },
+              [
+                m(SidenavItem, { text: 'Dashboard', icon: 'dashboard', active: true }),
+                m(SidenavItem, { text: 'Profile', icon: 'person' }),
+                m(SidenavItem, { text: 'Settings', icon: 'settings' }),
+                m(SidenavItem, { divider: true }),
+                m(SidenavItem, { subheader: true, text: 'Actions' }),
+                m(SidenavItem, { text: 'Help', icon: 'help' }),
+                m(SidenavItem, { text: 'Logout', icon: 'exit_to_app' }),
+              ]
+            ),
+          ]),
         ]),
         m(CodeBlock, {
           code: `import { Sidenav, SidenavItem } from 'mithril-materialized';
@@ -177,7 +184,7 @@ m(Sidenav, {
   m(SidenavItem, { divider: true }),
   m(SidenavItem, { subheader: true, text: 'Actions' }),
   m(SidenavItem, { text: 'Help', icon: 'help' })
-])`
+])`,
         }),
 
         // Wizard Example
@@ -188,9 +195,11 @@ m(Sidenav, {
             m(Wizard, {
               steps: wizardSteps,
               currentStep: state.currentWizardStep,
-              onStepChange: (stepIndex) => { state.currentWizardStep = stepIndex; },
-              onComplete: () => { 
-                alert('Wizard completed!'); 
+              onStepChange: (stepIndex) => {
+                state.currentWizardStep = stepIndex;
+              },
+              onComplete: () => {
+                alert('Wizard completed!');
                 console.log('Final data:', state.wizardData);
               },
               showStepNumbers: true,
@@ -202,10 +211,10 @@ m(Sidenav, {
                 next: 'Continue',
                 previous: 'Back',
                 complete: 'Submit',
-                skip: 'Skip this step'
-              }
-            })
-          ])
+                skip: 'Skip this step',
+              },
+            }),
+          ]),
         ]),
         m(CodeBlock, {
           code: `import { Wizard } from 'mithril-materialized';
@@ -250,7 +259,7 @@ m(Wizard, {
     complete: 'Submit',
     skip: 'Skip this step'
   }
-})`
+})`,
         }),
 
         m('h3.header', 'Features'),
