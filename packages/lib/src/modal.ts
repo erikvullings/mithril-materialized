@@ -1,5 +1,6 @@
 import m, { FactoryComponent, Vnode, Attributes } from 'mithril';
 import { FlatButton } from './button';
+import { uniqueId } from './utils';
 // Styles are imported via the main index or individual component imports
 
 export interface ModalState {
@@ -8,7 +9,7 @@ export interface ModalState {
 }
 
 export interface ModalAttrs extends Attributes {
-  id: string;
+  id?: string;
   title: string;
   description?: string | Vnode<any, any>;
   /** Set to true when the description contains HTML */
@@ -84,7 +85,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
 
   return {
     oninit: ({ attrs }) => {
-      state.id = attrs.id;
+      state.id = attrs.id ?? uniqueId();
       if (attrs.isOpen) {
         openModal(attrs);
       }
