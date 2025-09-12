@@ -168,14 +168,14 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
   return {
     oninit: ({ attrs }) => {
       state.id = attrs.id || uniqueId();
-      
+
       const controlled = isControlled(attrs);
-      
+
       // Warn developer for improper controlled usage
       if (attrs.checkedId !== undefined && !controlled && !attrs.disabled) {
         console.warn(
           `Select component received 'checkedId' prop without 'onchange' handler. ` +
-          `Use 'defaultCheckedId' for uncontrolled components or add 'onchange' for controlled components.`
+            `Use 'defaultCheckedId' for uncontrolled components or add 'onchange' for controlled components.`
         );
       }
 
@@ -206,19 +206,12 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       // Get selected IDs from props or internal state
       let selectedIds: T[];
       if (controlled) {
-        selectedIds = attrs.checkedId !== undefined
-          ? Array.isArray(attrs.checkedId)
-            ? attrs.checkedId
-            : [attrs.checkedId]
-          : [];
+        selectedIds =
+          attrs.checkedId !== undefined ? (Array.isArray(attrs.checkedId) ? attrs.checkedId : [attrs.checkedId]) : [];
       } else if (disabled) {
         // Non-interactive components: prefer defaultCheckedId, fallback to checkedId
         const fallbackId = attrs.defaultCheckedId ?? attrs.checkedId;
-        selectedIds = fallbackId !== undefined
-          ? Array.isArray(fallbackId)
-            ? fallbackId
-            : [fallbackId]
-          : [];
+        selectedIds = fallbackId !== undefined ? (Array.isArray(fallbackId) ? fallbackId : [fallbackId]) : [];
       } else {
         // Interactive uncontrolled: use internal state
         selectedIds = state.internalSelectedIds;
@@ -313,25 +306,30 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                                   },
                                 }),
                           },
-                          m(
-                            'span',
-                            multiple
-                              ? m(
-                                  'label',
-                                  { for: option.id },
-                                  m('input', {
-                                    id: option.id,
-                                    type: 'checkbox',
-                                    checked: selectedIds.includes(option.id),
-                                    disabled: option.disabled ? true : undefined,
-                                    onclick: (e: MouseEvent) => {
-                                      e.stopPropagation();
-                                    },
-                                  }),
-                                  m('span', option.label)
-                                )
-                              : option.label
-                          )
+                          [
+                            option.img && m('img', { src: option.img, alt: option.label }),
+                            m(
+                              'span',
+                              [
+                                multiple
+                                  ? m(
+                                      'label',
+                                      { for: option.id },
+                                      m('input', {
+                                        id: option.id,
+                                        type: 'checkbox',
+                                        checked: selectedIds.includes(option.id),
+                                        disabled: option.disabled ? true : undefined,
+                                        onclick: (e: MouseEvent) => {
+                                          e.stopPropagation();
+                                        },
+                                      }),
+                                      m('span', option.label)
+                                    )
+                                  : m('span', option.label),
+                              ].filter(Boolean)
+                            ),
+                          ]
                         )
                       ),
                     // Render grouped options
@@ -364,25 +362,30 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                                     },
                                   }),
                             },
-                            m(
-                              'span',
-                              multiple
-                                ? m(
-                                    'label',
-                                    { for: option.id },
-                                    m('input', {
-                                      id: option.id,
-                                      type: 'checkbox',
-                                      checked: selectedIds.includes(option.id),
-                                      disabled: option.disabled ? true : undefined,
-                                      onclick: (e: MouseEvent) => {
-                                        e.stopPropagation();
-                                      },
-                                    }),
-                                    m('span', option.label)
-                                  )
-                                : option.label
-                            )
+                            [
+                              option.img && m('img', { src: option.img, alt: option.label }),
+                              m(
+                                'span',
+                                [
+                                  multiple
+                                    ? m(
+                                        'label',
+                                        { for: option.id },
+                                        m('input', {
+                                          id: option.id,
+                                          type: 'checkbox',
+                                          checked: selectedIds.includes(option.id),
+                                          disabled: option.disabled ? true : undefined,
+                                          onclick: (e: MouseEvent) => {
+                                            e.stopPropagation();
+                                          },
+                                        }),
+                                        m('span', option.label)
+                                      )
+                                    : m('span', option.label),
+                                ].filter(Boolean)
+                              ),
+                            ]
                           )
                         ),
                       ])

@@ -42,13 +42,13 @@ export const SelectionPage = () => {
               // { id: 0, label: 'Option 0' },
               {
                 id: 'movies',
-                // img: 'https://loremflickr.com/320/240?random=1',
+                img: 'https://picsum.photos/320/240?random=1',
                 label: 'Watching movies',
                 title: 'Sitting for the TV, doing nothing',
               },
               {
                 id: 'out',
-                // img: 'https://loremflickr.com/320/240?random=2',
+                img: 'https://picsum.photos/320/240?random=2',
                 label: 'Going out',
                 title: 'Scanning the environment, talking to strangers',
               },
@@ -67,8 +67,8 @@ export const SelectionPage = () => {
             checkedId: state.checkedId,
             options: [ // img property is optional
               { label: 'Pick one', disabled: true }, // IDs are optional: ID = label when missing
-              { id: 'movies', img: "https://loremflickr.com/320/240?random=1", label: 'Watching movies' },
-              { id: 'out', img: "https://loremflickr.com/320/240?random=2", label: 'Going out' },
+              { id: 'movies', img: "https://picsum.photos/320/240?random=1", label: 'Watching movies' },
+              { id: 'out', img: "https://picsum.photos/320/240?random=2", label: 'Going out' },
             ],
             onchange: (ids) => (state.checkedId = ids),
           })`,
@@ -135,11 +135,11 @@ export const SelectionPage = () => {
               console.log(v);
             },
             options: [
-              { id: 0, group: 'Indoors', label: 'Watching movies' },
-              { id: 2, group: 'Indoors', label: 'Reading' },
-              { id: 3, group: 'Indoors', label: 'Sex', disabled: true },
-              { id: 1, group: 'Outdoors', label: 'Going out' },
-              { id: 4, group: 'Outdoors', label: 'Horse riding' },
+              { id: 0, group: 'Indoors', label: 'Watching movies', img: 'https://picsum.photos/320/240?random=1' },
+              { id: 2, group: 'Indoors', label: 'Reading', img: 'https://picsum.photos/320/240?random=2' },
+              { id: 3, group: 'Indoors', label: 'Sex', disabled: true, img: 'https://picsum.photos/320/240?random=3' },
+              { id: 1, group: 'Outdoors', label: 'Going out', img: 'https://picsum.photos/320/240?random=4' },
+              { id: 4, group: 'Outdoors', label: 'Horse riding', img: 'https://picsum.photos/320/240?random=5' },
             ],
           })
         ),
