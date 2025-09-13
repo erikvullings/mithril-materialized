@@ -1,3 +1,10 @@
+## [3.3.7](https://github.com/erikvullings/mithril-materialized/compare/v3.3.6...v3.3.7) (2025-09-12)
+
+
+### Bug Fixes
+
+* support for images (img) in select options. ([cc6e3eb](https://github.com/erikvullings/mithril-materialized/commit/cc6e3eb364c4ee4eff4c3145c9ff6b534c6824fa))
+
 ## [3.3.6](https://github.com/erikvullings/mithril-materialized/compare/v3.3.5...v3.3.6) (2025-09-12)
 
 
