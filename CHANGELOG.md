@@ -1,3 +1,10 @@
+## [3.3.8](https://github.com/erikvullings/mithril-materialized/compare/v3.3.7...v3.3.8) (2025-09-13)
+
+
+### Bug Fixes
+
+* On programmatic setting a value, label activity status for TextInput, TextArea height calc. ([8e1466e](https://github.com/erikvullings/mithril-materialized/commit/8e1466eccfa65545eb1663164944e03eae0088d7))
+
 ## [3.3.7](https://github.com/erikvullings/mithril-materialized/compare/v3.3.6...v3.3.7) (2025-09-12)
 
 
