@@ -53,22 +53,26 @@ export interface SelectAttrs<T extends string | number> extends Attributes {
 
 interface SelectState<T extends string | number> {
   id: string;
+  dropdownId: string;
   isOpen: boolean;
   focusedIndex: number;
   inputRef?: HTMLElement | null;
   dropdownRef?: HTMLElement | null;
   internalSelectedIds: T[];
+  isInsideModal: boolean;
 }
 
 /** Select component */
 export const Select = <T extends string | number>(): Component<SelectAttrs<T>> => {
   const state: SelectState<T> = {
     id: '',
+    dropdownId: '',
     isOpen: false,
     focusedIndex: -1,
     inputRef: null,
     dropdownRef: null,
     internalSelectedIds: [],
+    isInsideModal: false,
   };
 
   const isControlled = (attrs: SelectAttrs<T>) => attrs.checkedId !== undefined && attrs.onchange !== undefined;
@@ -165,9 +169,174 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
     }
   };
 
+  const getPortalStyles = (inputRef: HTMLElement | null | undefined) => {
+    if (!inputRef) return {};
+    
+    const rect = inputRef.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    
+    return {
+      position: 'fixed',
+      top: `${rect.bottom}px`,
+      left: `${rect.left}px`,
+      width: `${rect.width}px`,
+      zIndex: 10000, // Higher than modal z-index
+      maxHeight: `${viewportHeight - rect.bottom - 20}px`, // Leave 20px margin from bottom
+    };
+  };
+
+  const renderDropdownContent = (attrs: SelectAttrs<T>, selectedIds: T[], multiple: boolean, placeholder: string) => [
+    placeholder && m('li.disabled', { tabindex: 0 }, m('span', placeholder)),
+    // Render ungrouped options first
+    attrs.options
+      .filter((option) => !option.group)
+      .map((option) =>
+        m(
+          'li',
+          {
+            key: option.id,
+            class: option.disabled
+              ? 'disabled'
+              : state.focusedIndex === attrs.options.indexOf(option)
+              ? 'focused'
+              : '',
+            ...(option.disabled
+              ? {}
+              : {
+                  onclick: (e: MouseEvent) => {
+                    e.stopPropagation();
+                    toggleOption(option.id, multiple, attrs);
+                  },
+                }),
+          },
+          [
+            option.img && m('img', { src: option.img, alt: option.label }),
+            m(
+              'span',
+              [
+                multiple
+                  ? m(
+                      'label',
+                      { for: option.id },
+                      m('input', {
+                        id: option.id,
+                        type: 'checkbox',
+                        checked: selectedIds.includes(option.id),
+                        disabled: option.disabled ? true : undefined,
+                        onclick: (e: MouseEvent) => {
+                          e.stopPropagation();
+                        },
+                      }),
+                      m('span', option.label)
+                    )
+                  : m('span', option.label),
+              ].filter(Boolean)
+            ),
+          ]
+        )
+      ),
+    // Render grouped options
+    Object.entries(
+      attrs.options
+        .filter((option) => option.group)
+        .reduce((groups, option) => {
+          const group = option.group!;
+          if (!groups[group]) groups[group] = [];
+          groups[group].push(option);
+          return groups;
+        }, {} as { [key: string]: typeof attrs.options[0][] })
+    )
+      .map(([groupName, groupOptions]) => [
+        m('li.optgroup', { key: `group-${groupName}`, tabindex: 0 }, m('span', groupName)),
+        ...groupOptions.map((option) =>
+          m(
+            'li',
+            {
+              key: option.id,
+              class: `optgroup-option${option.disabled ? ' disabled' : ''}${
+                isSelected(option.id, selectedIds) ? ' selected' : ''
+              }${state.focusedIndex === attrs.options.indexOf(option) ? ' focused' : ''}`,
+              ...(option.disabled
+                ? {}
+                : {
+                    onclick: (e: MouseEvent) => {
+                      e.stopPropagation();
+                      toggleOption(option.id, multiple, attrs);
+                    },
+                  }),
+            },
+            [
+              option.img && m('img', { src: option.img, alt: option.label }),
+              m(
+                'span',
+                [
+                  multiple
+                    ? m(
+                        'label',
+                        { for: option.id },
+                        m('input', {
+                          id: option.id,
+                          type: 'checkbox',
+                          checked: selectedIds.includes(option.id),
+                          disabled: option.disabled ? true : undefined,
+                          onclick: (e: MouseEvent) => {
+                            e.stopPropagation();
+                          },
+                        }),
+                        m('span', option.label)
+                      )
+                    : m('span', option.label),
+                ].filter(Boolean)
+              ),
+            ]
+          )
+        ),
+      ])
+      .reduce((acc, val) => acc.concat(val), []),
+  ];
+
+  const updatePortalDropdown = (attrs: SelectAttrs<T>, selectedIds: T[], multiple: boolean, placeholder: string) => {
+    if (!state.isInsideModal) return;
+
+    let portalElement = document.getElementById(state.dropdownId);
+    
+    if (!state.isOpen) {
+      // Clean up portal when dropdown is closed
+      if (portalElement) {
+        m.render(portalElement, []);
+        portalElement.parentNode?.removeChild(portalElement);
+      }
+      return;
+    }
+
+    if (!portalElement) {
+      portalElement = document.createElement('div');
+      portalElement.id = state.dropdownId;
+      document.body.appendChild(portalElement);
+    }
+
+    const dropdownVnode = m(
+      'ul.dropdown-content.select-dropdown',
+      {
+        tabindex: 0,
+        style: getPortalStyles(state.inputRef),
+        oncreate: ({ dom }) => {
+          state.dropdownRef = dom as HTMLElement;
+        },
+        onremove: () => {
+          state.dropdownRef = null;
+        },
+      },
+      renderDropdownContent(attrs, selectedIds, multiple, placeholder)
+    );
+
+    m.render(portalElement, dropdownVnode);
+  };
+
   return {
     oninit: ({ attrs }) => {
       state.id = attrs.id || uniqueId();
+      state.dropdownId = `${state.id}-dropdown`;
 
       const controlled = isControlled(attrs);
 
@@ -194,9 +363,22 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       document.addEventListener('click', closeDropdown);
     },
 
+    oncreate: ({ dom }) => {
+      // Detect if component is inside a modal
+      state.isInsideModal = !!dom.closest('.modal');
+    },
+
     onremove: () => {
       // Cleanup global listener
       document.removeEventListener('click', closeDropdown);
+      
+      // Cleanup portaled dropdown if it exists
+      if (state.isInsideModal && state.dropdownRef) {
+        const portalElement = document.getElementById(state.dropdownId);
+        if (portalElement && portalElement.parentNode) {
+          portalElement.parentNode.removeChild(portalElement);
+        }
+      }
     },
 
     view: ({ attrs }) => {
@@ -232,6 +414,11 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
 
       const finalClassName = newRow ? `${className} clear` : className;
       const selectedOptions = options.filter((opt) => isSelected(opt.id, selectedIds));
+      
+      // Update portal dropdown when inside modal
+      if (state.isInsideModal) {
+        updatePortalDropdown(attrs, selectedIds, multiple, placeholder);
+      }
 
       return m(
         '.input-field.select-space',
@@ -250,6 +437,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
               tabindex: disabled ? -1 : 0,
               'aria-expanded': state.isOpen ? 'true' : 'false',
               'aria-haspopup': 'listbox',
+              'aria-controls': state.dropdownId,
               role: 'combobox',
             },
             [
@@ -268,8 +456,8 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                   }
                 },
               }),
-              // Dropdown Menu
-              state.isOpen &&
+              // Dropdown Menu - render inline only when NOT inside modal
+              state.isOpen && !state.isInsideModal &&
                 m(
                   'ul.dropdown-content.select-dropdown',
                   {
@@ -282,115 +470,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                     },
                     style: getDropdownStyles(state.inputRef, true, options),
                   },
-                  [
-                    placeholder && m('li.disabled', { tabindex: 0 }, m('span', placeholder)),
-                    // Render ungrouped options first
-                    options
-                      .filter((option) => !option.group)
-                      .map((option) =>
-                        m(
-                          'li',
-                          {
-                            key: option.id,
-                            class: option.disabled
-                              ? 'disabled'
-                              : state.focusedIndex === options.indexOf(option)
-                              ? 'focused'
-                              : '',
-                            ...(option.disabled
-                              ? {}
-                              : {
-                                  onclick: (e: MouseEvent) => {
-                                    e.stopPropagation();
-                                    toggleOption(option.id, multiple, attrs);
-                                  },
-                                }),
-                          },
-                          [
-                            option.img && m('img', { src: option.img, alt: option.label }),
-                            m(
-                              'span',
-                              [
-                                multiple
-                                  ? m(
-                                      'label',
-                                      { for: option.id },
-                                      m('input', {
-                                        id: option.id,
-                                        type: 'checkbox',
-                                        checked: selectedIds.includes(option.id),
-                                        disabled: option.disabled ? true : undefined,
-                                        onclick: (e: MouseEvent) => {
-                                          e.stopPropagation();
-                                        },
-                                      }),
-                                      m('span', option.label)
-                                    )
-                                  : m('span', option.label),
-                              ].filter(Boolean)
-                            ),
-                          ]
-                        )
-                      ),
-                    // Render grouped options
-                    Object.entries(
-                      options
-                        .filter((option) => option.group)
-                        .reduce((groups, option) => {
-                          const group = option.group!;
-                          if (!groups[group]) groups[group] = [];
-                          groups[group].push(option);
-                          return groups;
-                        }, {} as { [key: string]: InputOption<T>[] })
-                    )
-                      .map(([groupName, groupOptions]) => [
-                        m('li.optgroup', { key: `group-${groupName}`, tabindex: 0 }, m('span', groupName)),
-                        ...groupOptions.map((option) =>
-                          m(
-                            'li',
-                            {
-                              key: option.id,
-                              class: `optgroup-option${option.disabled ? ' disabled' : ''}${
-                                isSelected(option.id, selectedIds) ? ' selected' : ''
-                              }${state.focusedIndex === options.indexOf(option) ? ' focused' : ''}`,
-                              ...(option.disabled
-                                ? {}
-                                : {
-                                    onclick: (e: MouseEvent) => {
-                                      e.stopPropagation();
-                                      toggleOption(option.id, multiple, attrs);
-                                    },
-                                  }),
-                            },
-                            [
-                              option.img && m('img', { src: option.img, alt: option.label }),
-                              m(
-                                'span',
-                                [
-                                  multiple
-                                    ? m(
-                                        'label',
-                                        { for: option.id },
-                                        m('input', {
-                                          id: option.id,
-                                          type: 'checkbox',
-                                          checked: selectedIds.includes(option.id),
-                                          disabled: option.disabled ? true : undefined,
-                                          onclick: (e: MouseEvent) => {
-                                            e.stopPropagation();
-                                          },
-                                        }),
-                                        m('span', option.label)
-                                      )
-                                    : m('span', option.label),
-                                ].filter(Boolean)
-                              ),
-                            ]
-                          )
-                        ),
-                      ])
-                      .reduce((acc, val) => acc.concat(val), []),
-                  ]
+                  renderDropdownContent(attrs, selectedIds, multiple, placeholder)
                 ),
               m(MaterialIcon, {
                 name: 'caret',

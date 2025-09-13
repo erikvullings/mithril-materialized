@@ -121,7 +121,7 @@ export const InputPage = () => {
             dataSuccess: 'Great minds think alike',
             dataError: 'Seriously?',
             value: textInputValue,
-            onchange: (v) => (textInputValue = v),
+            oninput: (v) => (textInputValue = v),
             validate: (v) => v && v.toLowerCase() === 'google',
           } as InputAttrs)
         ),
@@ -131,7 +131,7 @@ export const InputPage = () => {
             dataSuccess: 'Great minds think alike',
             dataError: 'Seriously?',
             value: textInputValue,
-            onchange: (v) => (textInputValue = v),
+            oninput: (v) => (textInputValue = v),
             validate: v => v && v.toLowerCase() === 'google',
           } as InputAttrs)`,
         }),

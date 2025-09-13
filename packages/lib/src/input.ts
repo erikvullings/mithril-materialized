@@ -37,6 +37,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
     height: undefined as undefined | string,
     active: false,
     textarea: undefined as undefined | HTMLTextAreaElement,
+    hiddenDiv: undefined as undefined | HTMLDivElement,
     internalValue: '',
   };
 
@@ -168,13 +169,13 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
             overflowWrap: 'break-word',
           },
           oncreate: ({ dom }) => {
-            const hiddenDiv = dom as HTMLDivElement;
+            const hiddenDiv = state.hiddenDiv = dom as HTMLDivElement;
             if (state.textarea) {
               updateHeight(state.textarea, hiddenDiv);
             }
           },
           onupdate: ({ dom }) => {
-            const hiddenDiv = dom as HTMLDivElement;
+            const hiddenDiv = state.hiddenDiv = dom as HTMLDivElement;
             if (state.textarea) {
               updateHeight(state.textarea, hiddenDiv);
             }
@@ -209,7 +210,10 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
             const textarea = dom as HTMLTextAreaElement;
             if (state.height) textarea.style.height = state.height;
 
-            // No need to manually sync in onupdate since value attribute handles it
+            // Trigger height recalculation when value changes programmatically
+            if (state.hiddenDiv) {
+              updateHeight(textarea, state.hiddenDiv);
+            }
           },
           onfocus: () => {
             state.active = true;
@@ -422,10 +426,7 @@ const InputField =
 
         // const attributes = toAttrs(params);
         const cn = [newRow ? 'clear' : '', defaultClass, className].filter(Boolean).join(' ').trim() || undefined;
-        const isActive =
-          state.active || state.inputElement?.value || placeholder || type === 'color' || type === 'range'
-            ? true
-            : false;
+        
         // Special rendering for minmax range sliders
         if (type === 'range' && (attrs.minmax || attrs.valueDisplay)) {
           return m(attrs.minmax ? DoubleRangeSlider : SingleRangeSlider, {
@@ -454,6 +455,11 @@ const InputField =
           // Interactive uncontrolled: use internal state
           value = (state.internalValue ?? attrs.defaultValue ?? (isNumeric ? 0 : '')) as T;
         }
+        
+        const isActive =
+          state.active || state.inputElement?.value || value || placeholder || type === 'color' || type === 'range'
+            ? true
+            : false;
         const rangeType = type === 'range' && !attrs.minmax;
 
         return m('.input-field', { className: cn, style }, [
