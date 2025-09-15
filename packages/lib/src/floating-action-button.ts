@@ -1,4 +1,5 @@
 import m, { FactoryComponent } from 'mithril';
+import { WavesEffect } from './waves';
 
 interface FloatingActionButtonState {
   isOpen: boolean;
@@ -117,9 +118,14 @@ export const FloatingActionButton: FactoryComponent<FloatingActionButtonAttrs> =
           },
           [
             m(
-              'a.btn-floating.btn-large',
+              'a.btn-floating.btn-large.waves-effect.waves-light',
               {
                 className,
+                onmousedown: WavesEffect.onMouseDown,
+                onmouseup: WavesEffect.onMouseUp,
+                onmouseleave: WavesEffect.onMouseLeave,
+                ontouchstart: WavesEffect.onTouchStart,
+                ontouchend: WavesEffect.onTouchEnd,
               },
               m('i.material-icons', { className: iconClass }, iconName)
             ),
@@ -131,7 +137,7 @@ export const FloatingActionButton: FactoryComponent<FloatingActionButtonAttrs> =
                   m(
                     'li',
                     m(
-                      `a.btn-floating.${button.className || 'red'}`,
+                      `a.btn-floating.waves-effect.waves-light.${button.className || 'red'}`,
                       {
                         style: {
                           opacity: state.isOpen ? '1' : '0',
@@ -142,6 +148,11 @@ export const FloatingActionButton: FactoryComponent<FloatingActionButtonAttrs> =
                           e.stopPropagation();
                           if (button.onclick) button.onclick(e);
                         },
+                        onmousedown: WavesEffect.onMouseDown,
+                        onmouseup: WavesEffect.onMouseUp,
+                        onmouseleave: WavesEffect.onMouseLeave,
+                        ontouchstart: WavesEffect.onTouchStart,
+                        ontouchend: WavesEffect.onTouchEnd,
                       },
                       m('i.material-icons', { className: button.iconClass }, button.iconName)
                     )
