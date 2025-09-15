@@ -1,3 +1,16 @@
+# [3.4.0](https://github.com/erikvullings/mithril-materialized/compare/v3.3.8...v3.4.0) (2025-09-15)
+
+
+### Bug Fixes
+
+* Added waves effect to FAB ([bf3e9f7](https://github.com/erikvullings/mithril-materialized/commit/bf3e9f77d61b03fc7f8c0bbbb86c0058700fb39e))
+* MaterialIcon svg size and theme toggle icon size. ([3cad6df](https://github.com/erikvullings/mithril-materialized/commit/3cad6df9873bd1870c589e734a1d686e18210897))
+
+
+### Features
+
+* Added waves effect to button clicks ([c1c5e78](https://github.com/erikvullings/mithril-materialized/commit/c1c5e78d0c20f547f55cf5389087bb0170b3f3f8))
+
 ## [3.3.8](https://github.com/erikvullings/mithril-materialized/compare/v3.3.7...v3.3.8) (2025-09-13)
 
 
