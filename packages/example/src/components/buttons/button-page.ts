@@ -1,5 +1,6 @@
 import {
   RoundIconButton,
+  IconButton,
   SubmitButton,
   Button,
   FlatButton,
@@ -9,7 +10,7 @@ import {
 import m, { Component } from 'mithril';
 
 export const ButtonPage = () => {
-  const onclick = () => alert('Button clicked');
+  const onclick = () => console.log('Button clicked');
   return {
     view: () =>
       m('.col.s12', [
@@ -87,6 +88,9 @@ m('div', [
         m('h3.header[id=flatbutton]', 'FlatButton'),
         m('div', m(FlatButton, { label: 'My Flat button', onclick })),
         m(CodeBlock, { code: 'm(FlatButton, { label: "My Flat button", onclick })' }),
+        m('h3.header[id=iconbutton]', 'IconButton'),
+        m('div', m(IconButton, { iconName: 'favorite', onclick })),
+        m(CodeBlock, { code: 'm(IconButton, { iconName: "favorite", onclick })' }),
         m('h3.header[id=roundiconbutton]', 'RoundIconButton'),
         m('div', m(RoundIconButton, { iconName: 'create', onclick })),
         m(CodeBlock, { code: 'm(RoundIconButton, { iconName: "create", onclick })' }),

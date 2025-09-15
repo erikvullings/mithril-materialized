@@ -325,3 +325,24 @@ button.btn-floating {
 .btn-block {
   display: block;
 }
+
+// Icon button - compact flat button for icons only
+.btn-flat.btn-icon {
+  min-width: auto;
+  padding: 0 8px;
+  width: auto;
+  line-height: variables.$button-height;
+  background-color: transparent !important;
+
+  i {
+    margin: 0;
+  }
+
+  // Ensure background stays transparent in all states
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
+    background-color: transparent !important;
+  }
+}

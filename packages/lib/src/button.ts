@@ -1,6 +1,7 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { Icon } from './icon';
 import { MaterialPosition, IconClass, ButtonVariant } from './types';
+import { WavesEffect } from './waves';
 
 /**
  * HTML attributes that can be passed to button elements
@@ -57,11 +58,11 @@ export interface ButtonAttrs extends Attributes {
    * ```typescript
    * // Standard clickable button (default)
    * variant: 'button'
-   * 
+   *
    * // Form submission button
    * variant: 'submit'
-   * 
-   * // Form reset button  
+   *
+   * // Form reset button
    * variant: 'reset'
    * ```
    */
@@ -111,18 +112,25 @@ export const ButtonFactory = (
         // Use variant or fallback to factory type
         const buttonType = variant || type || 'button';
 
-        const cn = [tooltip ? 'tooltipped' : '', defaultClassNames, className]
-          .filter(Boolean)
-          .join(' ')
-          .trim();
+        const cn = [tooltip ? 'tooltipped' : '', defaultClassNames, className].filter(Boolean).join(' ').trim();
 
         // Use tooltipPosition if available, fallback to legacy tooltipPostion
         const position = tooltipPosition || tooltipPostion || 'top';
+
+        // Add waves effect event handlers if waves-effect class is present
+        const wavesHandlers = cn.includes('waves-effect') ? {
+          onmousedown: WavesEffect.onMouseDown,
+          onmouseup: WavesEffect.onMouseUp,
+          onmouseleave: WavesEffect.onMouseLeave,
+          ontouchstart: WavesEffect.onTouchStart,
+          ontouchend: WavesEffect.onTouchEnd
+        } : {};
 
         return m(
           element,
           {
             ...params,
+            ...wavesHandlers,
             className: cn,
             'data-position': tooltip ? position : undefined,
             'data-tooltip': tooltip || undefined,
@@ -140,5 +148,6 @@ export const Button = ButtonFactory('a', 'waves-effect waves-light btn', 'button
 export const LargeButton = ButtonFactory('a', 'waves-effect waves-light btn-large', 'button');
 export const SmallButton = ButtonFactory('a', 'waves-effect waves-light btn-small', 'button');
 export const FlatButton = ButtonFactory('a', 'waves-effect waves-teal btn-flat', 'button');
+export const IconButton = ButtonFactory('button', 'btn-flat btn-icon waves-effect waves-teal', 'button');
 export const RoundIconButton = ButtonFactory('button', 'btn-floating btn-large waves-effect waves-light', 'button');
 export const SubmitButton = ButtonFactory('button', 'btn waves-effect waves-light', 'submit');
