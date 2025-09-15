@@ -53,6 +53,12 @@
       .material-icons {
         font-size: 1rem;
       }
+
+      svg {
+        width: 1rem !important;
+        height: 1rem !important;
+        flex-shrink: 0;
+      }
       
       span {
         font-size: 0.75rem;
@@ -83,6 +89,10 @@
   
   .material-icons {
     font-size: 1.25rem;
+  }
+
+  svg {
+    flex-shrink: 0;
   }
 }
 

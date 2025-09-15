@@ -60,8 +60,8 @@ export const MaterialIcon: FactoryComponent<MaterialIconAttrs> = () => {
         {
           ...props,
           style: { transform, ...style },
-          height: '1lh',
-          width: '24',
+          height: '24px',
+          width: '24px',
           viewBox: '0 0 24 24',
           xmlns: 'http://www.w3.org/2000/svg',
         },
