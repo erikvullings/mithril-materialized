@@ -34,7 +34,7 @@ const DropdownOption: Component<{
   view: ({ attrs: { option, index, selectedIds, isFocused, onToggle, onMouseOver } }) => {
     const checkboxId = `search-select-option-${option.id}`;
     const optionLabel = option.label || option.id.toString();
-    
+
     return m(
       'li',
       {
@@ -130,7 +130,6 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
     } else {
       // Click outside, close dropdown
       state.isOpen = false;
-      m.redraw();
     }
   };
 
@@ -428,12 +427,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
 
               // No options found message or list of options
               ...(filteredOptions.length === 0 && !showAddNew
-                ? [
-                    m(
-                      'li.search-select-no-options',
-                      texts.noOptionsFound
-                    ),
-                  ]
+                ? [m('li.search-select-no-options', texts.noOptionsFound)]
                 : []),
 
               // Add new option item

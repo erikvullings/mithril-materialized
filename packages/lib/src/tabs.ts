@@ -165,7 +165,6 @@ export const Tabs: FactoryComponent<TabsAttrs> = () => {
 
     state.isDragging = false;
     state.translateX = 0;
-    // m.redraw();
   };
 
   /** Initialize active tab - selectedTabId takes precedence, next active property or first available tab */
@@ -196,7 +195,6 @@ export const Tabs: FactoryComponent<TabsAttrs> = () => {
 
     oncreate: () => {
       updateIndicator();
-      m.redraw();
     },
 
     view: ({ attrs }) => {

@@ -40,7 +40,6 @@ export const ModalPage = () => {
             label: 'Open modal',
             onclick: () => {
               state.modal1Open = true;
-              m.redraw();
             },
           }),
           m(ModalPanel, {
@@ -50,7 +49,6 @@ export const ModalPage = () => {
             isOpen: state.modal1Open,
             onToggle: (open: boolean) => {
               state.modal1Open = open;
-              m.redraw();
             },
             buttons: [
               {
@@ -75,7 +73,6 @@ export const ModalPage = () => {
                     label: 'Open modal',
                     onclick: () => {
                       state.modal1Open = true;
-                      m.redraw();
                     },
                   }),
                   
@@ -87,7 +84,6 @@ export const ModalPage = () => {
                     isOpen: state.modal1Open,
                     onToggle: (open: boolean) => {
                       state.modal1Open = open;
-                      m.redraw();
                     },
                     buttons: [
                       {
@@ -102,35 +98,35 @@ export const ModalPage = () => {
                   })`,
         }),
 
-        m('h3.header', 'Normal Modal with Select and Dropdown'),
+        m('h3.header', 'Modal with Select Component'),
         m(
           '.row',
           m(Button, {
             label: 'Open modal',
             onclick: () => {
               state.modal1bOpen = true;
-              m.redraw();
             },
           }),
           m(ModalPanel, {
             id: 'modal1b',
-            title: 'Tell me about yourself',
+            title: 'Select Component Test',
             isOpen: state.modal1bOpen,
             onToggle: (open: boolean) => {
               state.modal1bOpen = open;
-              m.redraw();
             },
             description: m(
               '.row', // So the content has enough vertical space
               [
+                m(
+                  'p',
+                  'The Select and Dropdown components now automatically render their dropdowns outside the modal using a portal system. This ensures the dropdown appears above the modal with its own scrolling when needed. No additional configuration required!'
+                ),
                 m(Select, {
-                  dropdownAttributes: { container: document.body }, // So the select is not hidden
                   iconName: 'person',
                   label: 'What is your favorite hobby?',
                   placeholder: 'Pick one',
                   isMandatory: true,
                   options: [
-                    { label: 'Pick one', disabled: true },
                     { id: 'movies', label: 'Watching movies' },
                     { id: 'out', label: 'Going out' },
                     { id: 'sex', label: 'Having sex' },
@@ -139,8 +135,23 @@ export const ModalPage = () => {
                   ],
                   onchange: (v) => console.log(v),
                 } as SelectAttrs<string>),
+                m(Select, {
+                  iconName: 'work',
+                  label: 'Pick multiple skills (multi-select)',
+                  placeholder: 'Select skills',
+                  multiple: true,
+                  className: 'col s12',
+                  options: [
+                    { id: 'js', label: 'JavaScript' },
+                    { id: 'ts', label: 'TypeScript' },
+                    { id: 'react', label: 'React' },
+                    { id: 'mithril', label: 'Mithril.js' },
+                    { id: 'vue', label: 'Vue.js' },
+                    { id: 'node', label: 'Node.js' },
+                  ],
+                  onchange: (v) => console.log('Selected skills:', v),
+                } as SelectAttrs<string>),
                 m(Dropdown, {
-                  container: document.body, // So the dropdown is not hidden
                   id: 'hobby',
                   iconName: 'my_location',
                   label: 'Pick a hobby',
@@ -178,7 +189,6 @@ export const ModalPage = () => {
                     label: 'Open modal',
                     onclick: () => {
                       state.modal1bOpen = true;
-                      m.redraw();
                     },
                   }),
 
@@ -189,13 +199,12 @@ export const ModalPage = () => {
                     isOpen: state.modal1bOpen,
                     onToggle: (open: boolean) => {
                       state.modal1bOpen = open;
-                      m.redraw();
                     },
                     description: m(
                       '.row', // So the content has enough vertical space
                       [
+                        m('p', 'The Select and Dropdown components now automatically render their dropdowns outside the modal using a portal system. This ensures the dropdown appears above the modal with its own scrolling when needed. No additional configuration required!'),
                         m(Select, {
-                          dropdownAttributes: { container: document.body }, // So the select is not hidden
                           iconName: 'person',
                           label: 'What is your favorite hobby?',
                           placeholder: 'Pick one',
@@ -210,8 +219,23 @@ export const ModalPage = () => {
                           ],
                           onchange: (v) => console.log(v),
                         } as SelectAttrs<string>),
+                        m(Select, {
+                          iconName: 'work',
+                          label: 'Pick multiple skills (multi-select)',
+                          placeholder: 'Select skills',
+                          multiple: true,
+                          className: 'col s12',
+                          options: [
+                            { id: 'js', label: 'JavaScript' },
+                            { id: 'ts', label: 'TypeScript' },
+                            { id: 'react', label: 'React' },
+                            { id: 'mithril', label: 'Mithril.js' },
+                            { id: 'vue', label: 'Vue.js' },
+                            { id: 'node', label: 'Node.js' },
+                          ],
+                          onchange: (v) => console.log('Selected skills:', v),
+                        } as SelectAttrs<string>),
                         m(Dropdown, {
-                          container: document.body, // So the dropdown is not hidden
                           id: 'hobby',
                           iconName: 'my_location',
                           label: 'Pick a hobby',
@@ -246,7 +270,6 @@ export const ModalPage = () => {
             label: 'Fixed footer modal',
             onclick: () => {
               state.modal2Open = true;
-              m.redraw();
             },
           }),
           m(ModalPanel, {
@@ -255,7 +278,6 @@ export const ModalPage = () => {
             isOpen: state.modal2Open,
             onToggle: (open: boolean) => {
               state.modal2Open = open;
-              m.redraw();
             },
             fixedFooter: true,
             richContent: true,
@@ -314,7 +336,6 @@ export const ModalPage = () => {
                     label: 'Fixed footer modal',
                     onclick: () => {
                       state.modal2Open = true;
-                      m.redraw();
                     },
                   }),
 
@@ -325,7 +346,6 @@ export const ModalPage = () => {
                     isOpen: state.modal2Open,
                     onToggle: (open: boolean) => {
                       state.modal2Open = open;
-                      m.redraw();
                     },
                     fixedFooter: true,
                     richContent: true, // If richContent is true, it means that the description may contain HTML.
@@ -350,7 +370,6 @@ export const ModalPage = () => {
             label: 'Open bottom modal',
             onclick: () => {
               state.modal3Open = true;
-              m.redraw();
             },
           }),
           m(ModalPanel, {
@@ -360,7 +379,6 @@ export const ModalPage = () => {
             isOpen: state.modal3Open,
             onToggle: (open: boolean) => {
               state.modal3Open = open;
-              m.redraw();
             },
             bottomSheet: true,
             buttons: [
@@ -386,7 +404,6 @@ export const ModalPage = () => {
                     label: 'Open bottom modal',
                     onclick: () => {
                       state.modal3Open = true;
-                      m.redraw();
                     },
                   }),
 
@@ -398,7 +415,6 @@ export const ModalPage = () => {
                     isOpen: state.modal3Open,
                     onToggle: (open: boolean) => {
                       state.modal3Open = open;
-                      m.redraw();
                     },
                     bottomSheet: true,
                     buttons: [
@@ -421,7 +437,6 @@ export const ModalPage = () => {
             label: 'Open bottom content modal',
             onclick: () => {
               state.modal4Open = true;
-              m.redraw();
             },
           }),
           m(ModalPanel, {
@@ -431,7 +446,6 @@ export const ModalPage = () => {
             isOpen: state.modal4Open,
             onToggle: (open: boolean) => {
               state.modal4Open = open;
-              m.redraw();
             },
             bottomSheet: true,
           })
@@ -447,7 +461,6 @@ export const ModalPage = () => {
                     label: 'Open bottom content modal',
                     onclick: () => {
                       state.modal4Open = true;
-                      m.redraw();
                     },
                   }),
 
@@ -459,7 +472,6 @@ export const ModalPage = () => {
                     isOpen: state.modal4Open,
                     onToggle: (open: boolean) => {
                       state.modal4Open = open;
-                      m.redraw();
                     },
                     bottomSheet: true,
                   })`,

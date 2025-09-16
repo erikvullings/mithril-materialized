@@ -230,7 +230,6 @@ export const DataTablePage: FactoryComponent = () => {
         onSelectionChange: (keys, users) => {
           state.userSelection.selectedKeys = keys;
           console.log('Selected users:', users);
-          m.redraw();
         },
       };
 
@@ -522,10 +521,7 @@ export const DataTablePage: FactoryComponent = () => {
         m('.row', [
           m('.col.s12', [
             m('h3', { style: 'margin-top: 3rem;' }, 'TreeView Component'),
-            m(
-              'p.grey-text',
-              'Hierarchical tree component with expand/collapse, selection, and customizable icons.'
-            ),
+            m('p.grey-text', 'Hierarchical tree component with expand/collapse, selection, and customizable icons.'),
           ]),
         ]),
 
@@ -534,13 +530,15 @@ export const DataTablePage: FactoryComponent = () => {
           m('.col.s12.m6', [
             m('h5', 'Organization Structure'),
             m('p', 'TreeView with multiple selection and caret icons.'),
-            
+
             m('.card', [
               m('.card-content', [
                 m('div', { style: 'margin-bottom: 1rem;' }, [
                   m('strong', `Selected: ${selectedTreeNodes.length} node(s)`),
-                  selectedTreeNodes.length > 0 && 
-                    m('div', { style: 'margin-top: 0.5rem; font-size: 0.9em; color: #666;' }, 
+                  selectedTreeNodes.length > 0 &&
+                    m(
+                      'div',
+                      { style: 'margin-top: 0.5rem; font-size: 0.9em; color: #666;' },
                       selectedTreeNodes.join(', ')
                     ),
                 ]),
@@ -635,8 +633,8 @@ export const DataTablePage: FactoryComponent = () => {
                       expanded: true,
                       children: [
                         { id: 'home', label: 'Home' },
-                        { 
-                          id: 'products', 
+                        {
+                          id: 'products',
                           label: 'Products',
                           expanded: false,
                           children: [
