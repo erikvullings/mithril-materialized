@@ -111,6 +111,8 @@ export const ModalPage = () => {
             id: 'modal1b',
             title: 'Select Component Test',
             isOpen: state.modal1bOpen,
+            fixedFooter: true,
+            bottomSheet: true,
             onToggle: (open: boolean) => {
               state.modal1bOpen = open;
             },

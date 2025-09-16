@@ -164,7 +164,6 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
   };
 
   const closeDropdown = (e: MouseEvent) => {
-    console.log('select closeDropdown called');
     if (!state.isMultiple) {
       state.isOpen = false;
       return;
@@ -176,7 +175,6 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       state.isInsideModal && state.dropdownRef && (state.dropdownRef.contains(target) || target === state.dropdownRef);
 
     if (!isClickInsideSelect && !isClickInsidePortalDropdown) {
-      console.log('select closeDropdown called: set state');
       state.isOpen = false;
     }
   };
