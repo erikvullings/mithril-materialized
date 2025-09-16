@@ -70,41 +70,58 @@ const handleKeyboardNavigation = (
   }
 };
 
+const isControlled = (attrs: any) => {
+  return attrs.value !== undefined && typeof attrs.oninput === 'function';
+};
+
+const isRangeControlled = (attrs: any) => {
+  return (attrs.minValue !== undefined || attrs.maxValue !== undefined) && typeof attrs.oninput === 'function';
+};
+
 const initRangeState = (state: any, attrs: any) => {
-  const { min = 0, max = 100, value, minValue, maxValue } = attrs;
+  const { min = 0, max = 100, value, minValue, maxValue, defaultValue } = attrs;
 
   // Initialize single range value
-  if (value !== undefined) {
-    const currentValue = value;
+  if (isControlled(attrs)) {
+    // Always use value from props in controlled mode
+    state.singleValue = value !== undefined ? value : min;
+  } else {
+    // Use internal state for uncontrolled mode
     if (state.singleValue === undefined) {
-      state.singleValue = currentValue;
+      state.singleValue = defaultValue !== undefined ? defaultValue : (value !== undefined ? value : min);
     }
-    if (state.lastValue !== value && !state.hasUserInteracted) {
+    // Only update internal state if props changed and user hasn't interacted
+    if (state.lastValue !== value && !state.hasUserInteracted && value !== undefined) {
       state.singleValue = value;
       state.lastValue = value;
     }
-  } else if (state.singleValue === undefined) {
-    state.singleValue = min;
   }
 
   // Initialize range values
-  const currentMinValue = minValue !== undefined ? minValue : min;
-  const currentMaxValue = maxValue !== undefined ? maxValue : max;
+  if (isRangeControlled(attrs)) {
+    // Always use values from props in controlled mode
+    state.rangeMinValue = minValue !== undefined ? minValue : min;
+    state.rangeMaxValue = maxValue !== undefined ? maxValue : max;
+  } else {
+    // Use internal state for uncontrolled mode
+    const currentMinValue = minValue !== undefined ? minValue : min;
+    const currentMaxValue = maxValue !== undefined ? maxValue : max;
 
-  if (state.rangeMinValue === undefined || state.rangeMaxValue === undefined) {
-    state.rangeMinValue = currentMinValue;
-    state.rangeMaxValue = currentMaxValue;
-  }
+    if (state.rangeMinValue === undefined || state.rangeMaxValue === undefined) {
+      state.rangeMinValue = currentMinValue;
+      state.rangeMaxValue = currentMaxValue;
+    }
 
-  if (
-    !state.hasUserInteracted &&
-    ((minValue !== undefined && state.lastMinValue !== minValue) ||
-      (maxValue !== undefined && state.lastMaxValue !== maxValue))
-  ) {
-    state.rangeMinValue = currentMinValue;
-    state.rangeMaxValue = currentMaxValue;
-    state.lastMinValue = minValue;
-    state.lastMaxValue = maxValue;
+    if (
+      !state.hasUserInteracted &&
+      ((minValue !== undefined && state.lastMinValue !== minValue) ||
+        (maxValue !== undefined && state.lastMaxValue !== maxValue))
+    ) {
+      state.rangeMinValue = currentMinValue;
+      state.rangeMaxValue = currentMaxValue;
+      state.lastMinValue = minValue;
+      state.lastMaxValue = maxValue;
+    }
   }
 
   // Initialize active thumb if not set
@@ -129,15 +146,21 @@ const updateRangeValues = <T>(
   if (minValue > maxValue) minValue = maxValue;
   if (maxValue < minValue) maxValue = minValue;
 
-  state.rangeMinValue = minValue;
-  state.rangeMaxValue = maxValue;
+  // Only update internal state for uncontrolled mode
+  if (!isRangeControlled(attrs)) {
+    state.rangeMinValue = minValue;
+    state.rangeMaxValue = maxValue;
+  }
+
   state.hasUserInteracted = true;
 
-  // Call oninput for immediate feedback or onchange for final changes
+  // Call appropriate handler based on interaction type, not control mode
   if (immediate && attrs.oninput) {
-    attrs.oninput(minValue as T, maxValue as T);
-  } else if (!immediate && attrs.onchange) {
-    attrs.onchange(minValue as T, maxValue as T);
+    attrs.oninput(minValue as T, maxValue as T);  // Immediate feedback during drag
+  }
+
+  if (!immediate && attrs.onchange) {
+    attrs.onchange(minValue as T, maxValue as T);  // Final value on interaction end (blur/mouseup)
   }
 };
 
@@ -214,18 +237,27 @@ export const SingleRangeSlider = {
       : tooltipPos;
 
     const updateSingleValue = (newValue: number, immediate = false) => {
-      state.singleValue = newValue;
+      // Only update internal state for uncontrolled mode
+      if (!isControlled(attrs)) {
+        state.singleValue = newValue;
+      }
+
       state.hasUserInteracted = true;
+
+      // Call appropriate handler based on interaction type, not control mode
       if (immediate && oninput) {
-        oninput(newValue);
-      } else if (!immediate && onchange) {
-        onchange(newValue);
+        oninput(newValue);  // Immediate feedback during drag
+      }
+
+      if (!immediate && onchange) {
+        onchange(newValue);  // Final value on interaction end (blur/mouseup)
       }
     };
 
     const handleMouseDown = (e: MouseEvent) => {
       if (disabled) return;
       e.preventDefault();
+      e.stopPropagation();
       state.isDragging = true;
 
       if (finalValueDisplay === 'auto') {
@@ -305,6 +337,10 @@ export const SingleRangeSlider = {
                 e.preventDefault();
                 updateSingleValue(newValue, false);
               }
+            },
+            onblur: () => {
+              if (disabled || !onchange) return;
+              onchange(state.singleValue as number);
             },
           },
           [
@@ -409,6 +445,7 @@ export const DoubleRangeSlider = {
     const handleMouseDown = (thumb: 'min' | 'max') => (e: MouseEvent) => {
       if (disabled) return;
       e.preventDefault();
+      e.stopPropagation();
       state.isDragging = true;
       state.activeThumb = thumb;
 
@@ -516,6 +553,10 @@ export const DoubleRangeSlider = {
                 const maxThumb = container.querySelector('.thumb.max-thumb') as HTMLElement;
                 if (maxThumb) maxThumb.focus();
               }
+            },
+            onblur: () => {
+              if (disabled || !attrs.onchange) return;
+              attrs.onchange(state.rangeMinValue, state.rangeMaxValue);
             },
           },
           [
