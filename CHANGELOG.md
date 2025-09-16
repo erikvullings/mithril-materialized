@@ -1,3 +1,10 @@
+## [3.4.2](https://github.com/erikvullings/mithril-materialized/compare/v3.4.1...v3.4.2) (2025-09-16)
+
+
+### Bug Fixes
+
+* removed console.log in select ([45ae3a3](https://github.com/erikvullings/mithril-materialized/commit/45ae3a30845287905d706adfa777b5ba0b34d1f4))
+
 ## [3.4.1](https://github.com/erikvullings/mithril-materialized/compare/v3.4.0...v3.4.1) (2025-09-16)
 
 
