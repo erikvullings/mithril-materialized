@@ -60,6 +60,7 @@ interface SelectState<T extends string | number> {
   dropdownRef?: HTMLElement | null;
   internalSelectedIds: T[];
   isInsideModal: boolean;
+  isMultiple: boolean;
 }
 
 /** Select component */
@@ -73,6 +74,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
     dropdownRef: null,
     internalSelectedIds: [],
     isInsideModal: false,
+    isMultiple: false,
   };
 
   const isControlled = (attrs: SelectAttrs<T>) => attrs.checkedId !== undefined && attrs.onchange !== undefined;
@@ -162,26 +164,45 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
   };
 
   const closeDropdown = (e: MouseEvent) => {
-    const target = e.target as Element;
-    if (!target.closest('.input-field.select-space')) {
+    console.log('select closeDropdown called');
+    if (!state.isMultiple) {
       state.isOpen = false;
-      m.redraw();
+      return;
+    }
+    const target = e.target as Element;
+    // When inside modal, check both the select component AND the portaled dropdown
+    const isClickInsideSelect = target.closest('.input-field.select-space');
+    const isClickInsidePortalDropdown =
+      state.isInsideModal && state.dropdownRef && (state.dropdownRef.contains(target) || target === state.dropdownRef);
+
+    if (!isClickInsideSelect && !isClickInsidePortalDropdown) {
+      console.log('select closeDropdown called: set state');
+      state.isOpen = false;
     }
   };
 
   const getPortalStyles = (inputRef: HTMLElement | null | undefined) => {
     if (!inputRef) return {};
-    
+
     const rect = inputRef.getBoundingClientRect();
     const viewportHeight = window.innerHeight;
-    
+    const spaceBelow = viewportHeight - rect.bottom;
+    const spaceAbove = rect.top;
+
+    // Choose whether to show above or below based on available space
+    const showAbove = spaceBelow < 200 && spaceAbove > spaceBelow;
+
     return {
       position: 'fixed',
-      top: `${rect.bottom}px`,
+      top: showAbove ? 'auto' : `${rect.bottom}px`,
+      bottom: showAbove ? `${viewportHeight - rect.top}px` : 'auto',
       left: `${rect.left}px`,
       width: `${rect.width}px`,
       zIndex: 10000, // Higher than modal z-index
-      maxHeight: `${viewportHeight - rect.bottom - 20}px`, // Leave 20px margin from bottom
+      maxHeight: showAbove ? `${spaceAbove - 20}px` : `${spaceBelow - 20}px`, // Leave 20px margin
+      overflow: 'auto',
+      display: 'block',
+      opacity: 1,
     };
   };
 
@@ -194,17 +215,11 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
         m(
           'li',
           {
-            key: option.id,
-            class: option.disabled
-              ? 'disabled'
-              : state.focusedIndex === attrs.options.indexOf(option)
-              ? 'focused'
-              : '',
+            class: option.disabled ? 'disabled' : state.focusedIndex === attrs.options.indexOf(option) ? 'focused' : '',
             ...(option.disabled
               ? {}
               : {
-                  onclick: (e: MouseEvent) => {
-                    e.stopPropagation();
+                  onclick: () => {
                     toggleOption(option.id, multiple, attrs);
                   },
                 }),
@@ -244,15 +259,14 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
           if (!groups[group]) groups[group] = [];
           groups[group].push(option);
           return groups;
-        }, {} as { [key: string]: typeof attrs.options[0][] })
+        }, {} as { [key: string]: (typeof attrs.options)[0][] })
     )
       .map(([groupName, groupOptions]) => [
-        m('li.optgroup', { key: `group-${groupName}`, tabindex: 0 }, m('span', groupName)),
+        m('li.optgroup', { tabindex: 0 }, m('span', groupName)),
         ...groupOptions.map((option) =>
           m(
             'li',
             {
-              key: option.id,
               class: `optgroup-option${option.disabled ? ' disabled' : ''}${
                 isSelected(option.id, selectedIds) ? ' selected' : ''
               }${state.focusedIndex === attrs.options.indexOf(option) ? ' focused' : ''}`,
@@ -298,23 +312,20 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
   const updatePortalDropdown = (attrs: SelectAttrs<T>, selectedIds: T[], multiple: boolean, placeholder: string) => {
     if (!state.isInsideModal) return;
 
-    let portalElement = document.getElementById(state.dropdownId);
-    
-    if (!state.isOpen) {
-      // Clean up portal when dropdown is closed
-      if (portalElement) {
-        m.render(portalElement, []);
-        portalElement.parentNode?.removeChild(portalElement);
-      }
-      return;
+    // Clean up existing portal
+    const existingPortal = document.getElementById(state.dropdownId);
+    if (existingPortal) {
+      existingPortal.remove();
     }
 
-    if (!portalElement) {
-      portalElement = document.createElement('div');
-      portalElement.id = state.dropdownId;
-      document.body.appendChild(portalElement);
-    }
+    if (!state.isOpen || !state.inputRef) return;
 
+    // Create portal element
+    const portalElement = document.createElement('div');
+    portalElement.id = state.dropdownId;
+    document.body.appendChild(portalElement);
+
+    // Create dropdown with proper positioning
     const dropdownVnode = m(
       'ul.dropdown-content.select-dropdown',
       {
@@ -330,6 +341,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       renderDropdownContent(attrs, selectedIds, multiple, placeholder)
     );
 
+    // Render to portal
     m.render(portalElement, dropdownVnode);
   };
 
@@ -371,7 +383,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
     onremove: () => {
       // Cleanup global listener
       document.removeEventListener('click', closeDropdown);
-      
+
       // Cleanup portaled dropdown if it exists
       if (state.isInsideModal && state.dropdownRef) {
         const portalElement = document.getElementById(state.dropdownId);
@@ -383,8 +395,21 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
 
     view: ({ attrs }) => {
       const controlled = isControlled(attrs);
-      const { disabled } = attrs;
-
+      const {
+        newRow,
+        className = 'col s12',
+        key,
+        options,
+        multiple = false,
+        label,
+        helperText,
+        placeholder = '',
+        isMandatory,
+        iconName,
+        style,
+        disabled,
+      } = attrs;
+      state.isMultiple = multiple;
       // Get selected IDs from props or internal state
       let selectedIds: T[];
       if (controlled) {
@@ -398,23 +423,10 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
         // Interactive uncontrolled: use internal state
         selectedIds = state.internalSelectedIds;
       }
-      const {
-        newRow,
-        className = 'col s12',
-        key,
-        options,
-        multiple = false,
-        label,
-        helperText,
-        placeholder = '',
-        isMandatory,
-        iconName,
-        style,
-      } = attrs;
 
       const finalClassName = newRow ? `${className} clear` : className;
       const selectedOptions = options.filter((opt) => isSelected(opt.id, selectedIds));
-      
+
       // Update portal dropdown when inside modal
       if (state.isInsideModal) {
         updatePortalDropdown(attrs, selectedIds, multiple, placeholder);
@@ -457,7 +469,8 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                 },
               }),
               // Dropdown Menu - render inline only when NOT inside modal
-              state.isOpen && !state.isInsideModal &&
+              state.isOpen &&
+                !state.isInsideModal &&
                 m(
                   'ul.dropdown-content.select-dropdown',
                   {

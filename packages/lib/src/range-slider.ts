@@ -88,7 +88,7 @@ const initRangeState = (state: any, attrs: any) => {
   } else {
     // Use internal state for uncontrolled mode
     if (state.singleValue === undefined) {
-      state.singleValue = defaultValue !== undefined ? defaultValue : (value !== undefined ? value : min);
+      state.singleValue = defaultValue !== undefined ? defaultValue : value !== undefined ? value : min;
     }
     // Only update internal state if props changed and user hasn't interacted
     if (state.lastValue !== value && !state.hasUserInteracted && value !== undefined) {
@@ -156,11 +156,11 @@ const updateRangeValues = <T>(
 
   // Call appropriate handler based on interaction type, not control mode
   if (immediate && attrs.oninput) {
-    attrs.oninput(minValue as T, maxValue as T);  // Immediate feedback during drag
+    attrs.oninput(minValue as T, maxValue as T); // Immediate feedback during drag
   }
 
   if (!immediate && attrs.onchange) {
-    attrs.onchange(minValue as T, maxValue as T);  // Final value on interaction end (blur/mouseup)
+    attrs.onchange(minValue as T, maxValue as T); // Final value on interaction end (blur/mouseup)
   }
 };
 
@@ -246,11 +246,11 @@ export const SingleRangeSlider = {
 
       // Call appropriate handler based on interaction type, not control mode
       if (immediate && oninput) {
-        oninput(newValue);  // Immediate feedback during drag
+        oninput(newValue); // Immediate feedback during drag
       }
 
       if (!immediate && onchange) {
-        onchange(newValue);  // Final value on interaction end (blur/mouseup)
+        onchange(newValue); // Final value on interaction end (blur/mouseup)
       }
     };
 

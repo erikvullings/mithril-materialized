@@ -57,6 +57,7 @@ interface DropdownState<T extends string | number> {
   inputRef?: HTMLElement | null;
   dropdownRef?: HTMLElement | null;
   internalCheckedId?: T;
+  isInsideModal: boolean;
 }
 
 /** Pure TypeScript Dropdown component - no Materialize dependencies */
@@ -68,17 +69,15 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
     inputRef: null,
     dropdownRef: null,
     internalCheckedId: undefined,
+    isInsideModal: false,
   };
 
   const isControlled = (attrs: DropdownAttrs<T>) =>
     attrs.checkedId !== undefined && typeof attrs.onchange === 'function';
 
-  const closeDropdown = (e: MouseEvent) => {
-    const target = e.target as Element;
-    if (!target.closest('.dropdown-wrapper.input-field')) {
-      state.isOpen = false;
-      m.redraw();
-    }
+  const closeDropdown = () => {
+    state.isOpen = false;
+    m.redraw(); // Needed to remove the dropdown options list (potentially added to document root)
   };
 
   const handleKeyDown = (e: KeyboardEvent, items: DropdownItem<T>[]): T | undefined => {
@@ -124,6 +123,113 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
     }
   };
 
+  const getPortalStyles = (inputRef: HTMLElement | null | undefined) => {
+    if (!inputRef) return {};
+
+    const rect = inputRef.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const spaceBelow = viewportHeight - rect.bottom;
+    const spaceAbove = rect.top;
+
+    // Choose whether to show above or below based on available space
+    const showAbove = spaceBelow < 200 && spaceAbove > spaceBelow;
+
+    return {
+      position: 'fixed',
+      top: showAbove ? 'auto' : `${rect.bottom}px`,
+      bottom: showAbove ? `${viewportHeight - rect.top}px` : 'auto',
+      left: `${rect.left}px`,
+      width: `${rect.width}px`,
+      zIndex: 10000,
+      maxHeight: showAbove ? `${spaceAbove - 20}px` : `${spaceBelow - 20}px`,
+      overflow: 'auto',
+      display: 'block',
+      opacity: 1,
+    };
+  };
+
+  const updatePortalDropdown = (
+    items: DropdownItem<T>[],
+    selectedLabel: string,
+    onSelectItem: (item: DropdownItem<T>) => void
+  ) => {
+    if (!state.isInsideModal) return;
+
+    // Clean up existing portal
+    const existingPortal = document.getElementById(`${state.id}-dropdown`);
+    if (existingPortal) {
+      existingPortal.remove();
+    }
+
+    if (!state.isOpen || !state.inputRef) return;
+
+    // Create portal element
+    const portalElement = document.createElement('div');
+    portalElement.id = `${state.id}-dropdown`;
+    document.body.appendChild(portalElement);
+
+    // Create dropdown content
+    const availableItems = items.filter((item) => !item.divider && !item.disabled);
+    const dropdownContent = items.map((item) => {
+      if (item.divider) {
+        return m('li.divider');
+      }
+
+      const itemIndex = availableItems.indexOf(item);
+      const isSelected = selectedLabel === item.label;
+      const isFocused = state.focusedIndex === itemIndex;
+
+      return m(
+        'li',
+        {
+          class: `${isSelected ? 'selected' : ''} ${isFocused ? 'focused' : ''}${item.disabled ? ' disabled' : ''}`,
+          onclick: item.disabled ? undefined : () => onSelectItem(item),
+        },
+        m(
+          'span',
+          {
+            style: {
+              display: 'flex',
+              alignItems: 'center',
+              padding: '14px 16px',
+            },
+          },
+          [
+            item.iconName
+              ? m(
+                  'i.material-icons',
+                  {
+                    style: { marginRight: '32px' },
+                  },
+                  item.iconName
+                )
+              : undefined,
+            item.label,
+          ]
+        )
+      );
+    });
+
+    // Create dropdown with proper positioning
+    const dropdownVnode = m(
+      'ul.dropdown-content.select-dropdown',
+      {
+        tabindex: 0,
+        style: getPortalStyles(state.inputRef),
+        oncreate: ({ dom }) => {
+          state.dropdownRef = dom as HTMLElement;
+        },
+        onremove: () => {
+          state.dropdownRef = null;
+        },
+      },
+      dropdownContent
+    );
+
+    // Render to portal
+    m.render(portalElement, dropdownVnode);
+  };
+
   return {
     oninit: ({ attrs }) => {
       state.id = attrs.id?.toString() || uniqueId();
@@ -137,9 +243,20 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       document.addEventListener('click', closeDropdown);
     },
 
+    oncreate: ({ dom }) => {
+      // Detect if component is inside a modal
+      state.isInsideModal = !!dom.closest('.modal');
+    },
+
     onremove: () => {
       // Cleanup global listener
       document.removeEventListener('click', closeDropdown);
+
+      // Cleanup portal
+      const portalElement = document.getElementById(`${state.id}-dropdown`);
+      if (portalElement) {
+        portalElement.remove();
+      }
     },
 
     view: ({ attrs }) => {
@@ -179,6 +296,17 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       const title = selectedItem ? selectedItem.label : label || 'Select';
       const availableItems = items.filter((item) => !item.divider && !item.disabled);
 
+      // Update portal dropdown when inside modal
+      if (state.isInsideModal) {
+        updatePortalDropdown(items, title, (item) => {
+          if (item.id) {
+            state.isOpen = false;
+            state.focusedIndex = -1;
+            handleSelection(item.id);
+          }
+        });
+      }
+
       return m('.dropdown-wrapper.input-field', { className, key, style }, [
         iconName ? m('i.material-icons.prefix', iconName) : undefined,
         m(HelperText, { helperText }),
@@ -215,8 +343,9 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
                 }
               },
             }),
-            // Dropdown Menu using Select component's positioning logic
+            // Dropdown Menu - render inline only when NOT inside modal
             state.isOpen &&
+              !state.isInsideModal &&
               m(
                 'ul.dropdown-content.select-dropdown',
                 {
