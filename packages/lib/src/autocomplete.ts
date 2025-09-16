@@ -44,12 +44,12 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
 
   const selectSuggestion = (suggestion: { key: string; value: string | null }, attrs: AutoCompleteAttrs) => {
     const controlled = isControlled(attrs);
-    
+
     // Update internal state for uncontrolled mode
     if (!controlled) {
       state.internalValue = suggestion.key;
     }
-    
+
     state.isOpen = false;
     state.selectedIndex = -1;
 
@@ -62,9 +62,6 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
     if (attrs.onAutocomplete) {
       attrs.onAutocomplete(suggestion.key);
     }
-
-    // Force redraw to update label state
-    m.redraw();
   };
 
   const handleKeydown = (e: KeyboardEvent, attrs: AutoCompleteAttrs) => {
@@ -166,7 +163,7 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
       } = attrs;
 
       const controlled = isControlled(attrs);
-      const currentValue = controlled ? (attrs.value || '') : state.internalValue;
+      const currentValue = controlled ? attrs.value || '' : state.internalValue;
       const cn = newRow ? className + ' clear' : className;
 
       // Update suggestions when input changes
@@ -196,10 +193,10 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
             type: 'text',
             tabindex: 0,
             id,
-            value: controlled ? currentValue : undefined,
+            value: currentValue,
             oncreate: (vnode) => {
               state.inputElement = vnode.dom as HTMLInputElement;
-              
+
               // Set initial value for uncontrolled mode
               if (!controlled && attrs.defaultValue) {
                 (vnode.dom as HTMLInputElement).value = attrs.defaultValue;
@@ -235,22 +232,16 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
               state.isActive = true;
               if (currentValue.length >= minLength) {
                 // Check for perfect match on focus too
-                const hasExactMatch = Object.keys(data).some(
-                  (key) => key.toLowerCase() === currentValue.toLowerCase()
-                );
+                const hasExactMatch = Object.keys(data).some((key) => key.toLowerCase() === currentValue.toLowerCase());
                 state.isOpen = state.suggestions.length > 0 && !hasExactMatch;
               }
             },
             onblur: (e: FocusEvent) => {
               state.isActive = false;
-              // Delay closing to allow clicks on suggestions
-              setTimeout(() => {
-                if (!e.relatedTarget || !(e.relatedTarget as Element).closest('.autocomplete-content')) {
-                  state.isOpen = false;
-                  state.selectedIndex = -1;
-                  m.redraw();
-                }
-              }, 150);
+              if (!e.relatedTarget || !(e.relatedTarget as Element).closest('.autocomplete-content')) {
+                state.isOpen = false;
+                state.selectedIndex = -1;
+              }
             },
           }),
 
@@ -274,7 +265,6 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
                     },
                     onmouseover: () => {
                       state.selectedIndex = index;
-                      m.redraw();
                     },
                   },
                   [
