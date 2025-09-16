@@ -51,7 +51,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
     hiddenDiv.style.fontFamily = computedStyle.fontFamily;
     hiddenDiv.style.fontSize = computedStyle.fontSize;
     hiddenDiv.style.lineHeight = computedStyle.lineHeight;
-    
+
     // Copy padding from textarea (important for accurate measurement)
     hiddenDiv.style.paddingTop = computedStyle.paddingTop;
     hiddenDiv.style.paddingRight = computedStyle.paddingRight;
@@ -82,7 +82,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
     // Get the original/natural height of the textarea
     const originalHeight = textarea.offsetHeight;
     const measuredHeight = hiddenDiv.offsetHeight;
-    
+
     // Key logic: Only set custom height when content requires MORE space than original height
     // This matches the Materialize CSS reference behavior
     if (originalHeight <= measuredHeight) {
@@ -93,22 +93,22 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
     }
   };
 
-  const isControlled = (attrs: InputAttrs<string>) => 
+  const isControlled = (attrs: InputAttrs<string>) =>
     attrs.value !== undefined && (attrs.oninput !== undefined || attrs.onchange !== undefined);
 
   return {
     oninit: ({ attrs }) => {
       const controlled = isControlled(attrs);
       const isNonInteractive = attrs.readonly || attrs.disabled;
-      
+
       // Warn developer for improper controlled usage
       if (attrs.value !== undefined && !controlled && !isNonInteractive) {
         console.warn(
           `TextArea received 'value' prop without 'oninput' or 'onchange' handler. ` +
-          `Use 'defaultValue' for uncontrolled components or add an event handler for controlled components.`
+            `Use 'defaultValue' for uncontrolled components or add an event handler for controlled components.`
         );
       }
-      
+
       // Initialize internal value for uncontrolled mode
       if (!controlled) {
         state.internalValue = attrs.defaultValue || '';
@@ -143,7 +143,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
 
       const controlled = isControlled(attrs);
       const isNonInteractive = attrs.readonly || attrs.disabled;
-      
+
       let currentValue: string;
       if (controlled) {
         currentValue = value || '';
@@ -169,13 +169,13 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
             overflowWrap: 'break-word',
           },
           oncreate: ({ dom }) => {
-            const hiddenDiv = state.hiddenDiv = dom as HTMLDivElement;
+            const hiddenDiv = (state.hiddenDiv = dom as HTMLDivElement);
             if (state.textarea) {
               updateHeight(state.textarea, hiddenDiv);
             }
           },
           onupdate: ({ dom }) => {
-            const hiddenDiv = state.hiddenDiv = dom as HTMLDivElement;
+            const hiddenDiv = (state.hiddenDiv = dom as HTMLDivElement);
             if (state.textarea) {
               updateHeight(state.textarea, hiddenDiv);
             }
@@ -184,112 +184,112 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
         m('.input-field', { className, style }, [
           iconName ? m('i.material-icons.prefix', iconName) : '',
           m('textarea.materialize-textarea', {
-          ...params,
-          id,
-          tabindex: 0,
-          value: controlled ? currentValue : undefined,
-          style: {
-            height: state.height,
-          },
-          oncreate: ({ dom }) => {
-            const textarea = (state.textarea = dom as HTMLTextAreaElement);
+            ...params,
+            id,
+            tabindex: 0,
+            value: controlled ? currentValue : undefined,
+            style: {
+              height: state.height,
+            },
+            oncreate: ({ dom }) => {
+              const textarea = (state.textarea = dom as HTMLTextAreaElement);
 
-            // For uncontrolled mode, set initial value only
-            if (!controlled && attrs.defaultValue !== undefined) {
-              textarea.value = String(attrs.defaultValue);
-            }
-
-            // Height will be calculated by hidden div
-
-            // Update character count state for counter component
-            if (maxLength) {
-              state.currentLength = textarea.value.length;
-            }
-          },
-          onupdate: ({ dom }) => {
-            const textarea = dom as HTMLTextAreaElement;
-            if (state.height) textarea.style.height = state.height;
-
-            // Trigger height recalculation when value changes programmatically
-            if (state.hiddenDiv) {
-              updateHeight(textarea, state.hiddenDiv);
-            }
-          },
-          onfocus: () => {
-            state.active = true;
-          },
-          oninput: (e: Event) => {
-            state.active = true;
-            state.hasInteracted = false;
-            const target = e.target as HTMLTextAreaElement;
-
-            // Height will be recalculated by hidden div on next update
-
-            // Update character count
-            if (maxLength) {
-              state.currentLength = target.value.length;
-              state.hasInteracted = target.value.length > 0;
-            }
-
-            // Update internal state for uncontrolled mode
-            if (!controlled) {
-              state.internalValue = target.value;
-            }
-
-            // Call oninput handler
-            if (oninput) {
-              oninput(target.value);
-            }
-          },
-          onblur: (e: FocusEvent) => {
-            state.active = false;
-            // const target = e.target as HTMLTextAreaElement;
-            state.hasInteracted = true;
-
-            // Call original onblur if provided
-            if (onblur) {
-              onblur(e);
-            }
-
-            if (onchange && state.textarea) {
-              onchange(state.textarea.value);
-            }
-          },
-          onkeyup: onkeyup
-            ? (ev: KeyboardEvent) => {
-                onkeyup(ev, (ev.target as HTMLTextAreaElement).value);
+              // For uncontrolled mode, set initial value only
+              if (!controlled && attrs.defaultValue !== undefined) {
+                textarea.value = String(attrs.defaultValue);
               }
-            : undefined,
-          onkeydown: onkeydown
-            ? (ev: KeyboardEvent) => {
-                onkeydown(ev, (ev.target as HTMLTextAreaElement).value);
+
+              // Height will be calculated by hidden div
+
+              // Update character count state for counter component
+              if (maxLength) {
+                state.currentLength = textarea.value.length;
               }
-            : undefined,
-          onkeypress: onkeypress
-            ? (ev: KeyboardEvent) => {
-                onkeypress(ev, (ev.target as HTMLTextAreaElement).value);
+            },
+            onupdate: ({ dom }) => {
+              const textarea = dom as HTMLTextAreaElement;
+              if (state.height) textarea.style.height = state.height;
+
+              // Trigger height recalculation when value changes programmatically
+              if (state.hiddenDiv) {
+                updateHeight(textarea, state.hiddenDiv);
               }
+            },
+            onfocus: () => {
+              state.active = true;
+            },
+            oninput: (e: Event) => {
+              state.active = true;
+              state.hasInteracted = false;
+              const target = e.target as HTMLTextAreaElement;
+
+              // Height will be recalculated by hidden div on next update
+
+              // Update character count
+              if (maxLength) {
+                state.currentLength = target.value.length;
+                state.hasInteracted = target.value.length > 0;
+              }
+
+              // Update internal state for uncontrolled mode
+              if (!controlled) {
+                state.internalValue = target.value;
+              }
+
+              // Call oninput handler
+              if (oninput) {
+                oninput(target.value);
+              }
+            },
+            onblur: (e: FocusEvent) => {
+              state.active = false;
+              // const target = e.target as HTMLTextAreaElement;
+              state.hasInteracted = true;
+
+              // Call original onblur if provided
+              if (onblur) {
+                onblur(e);
+              }
+
+              if (onchange && state.textarea) {
+                onchange(state.textarea.value);
+              }
+            },
+            onkeyup: onkeyup
+              ? (ev: KeyboardEvent) => {
+                  onkeyup(ev, (ev.target as HTMLTextAreaElement).value);
+                }
+              : undefined,
+            onkeydown: onkeydown
+              ? (ev: KeyboardEvent) => {
+                  onkeydown(ev, (ev.target as HTMLTextAreaElement).value);
+                }
+              : undefined,
+            onkeypress: onkeypress
+              ? (ev: KeyboardEvent) => {
+                  onkeypress(ev, (ev.target as HTMLTextAreaElement).value);
+                }
+              : undefined,
+          }),
+          m(Label, {
+            label,
+            id,
+            isMandatory,
+            isActive: currentValue || placeholder || state.active,
+            initialValue: currentValue !== '',
+          }),
+          m(HelperText, {
+            helperText,
+            dataError: state.hasInteracted && attrs.dataError ? attrs.dataError : undefined,
+            dataSuccess: state.hasInteracted && attrs.dataSuccess ? attrs.dataSuccess : undefined,
+          }),
+          maxLength
+            ? m(CharacterCounter, {
+                currentLength: state.currentLength,
+                maxLength,
+                show: state.currentLength > 0,
+              })
             : undefined,
-        }),
-        m(Label, {
-          label,
-          id,
-          isMandatory,
-          isActive: currentValue || placeholder || state.active,
-          initialValue: currentValue !== '',
-        }),
-        m(HelperText, {
-          helperText,
-          dataError: state.hasInteracted && attrs.dataError ? attrs.dataError : undefined,
-          dataSuccess: state.hasInteracted && attrs.dataSuccess ? attrs.dataSuccess : undefined,
-        }),
-        maxLength
-          ? m(CharacterCounter, {
-              currentLength: state.currentLength,
-              maxLength,
-              show: state.currentLength > 0,
-            })
-          : undefined,
         ]),
       ];
     },
@@ -316,8 +316,7 @@ const InputField =
     };
 
     const isControlled = (attrs: InputAttrs<T>) =>
-      'value' in attrs && typeof attrs.value !== 'undefined' && 
-      (typeof attrs.oninput === 'function' || typeof attrs.onchange === 'function');
+      'value' in attrs && typeof attrs.value !== 'undefined' && typeof attrs.oninput === 'function';
 
     const getValue = (target: HTMLInputElement) => {
       const val = target.value as unknown as T;
@@ -377,15 +376,15 @@ const InputField =
       oninit: ({ attrs }) => {
         const controlled = isControlled(attrs);
         const isNonInteractive = attrs.readonly || attrs.disabled;
-        
+
         // Warn developer for improper controlled usage
         if (attrs.value !== undefined && !controlled && !isNonInteractive) {
           console.warn(
-            `${type} input received 'value' prop without 'oninput' or 'onchange' handler. ` +
-            `Use 'defaultValue' for uncontrolled components or add an event handler for controlled components.`
+            `${type} input with label '${attrs.label}' received 'value' prop without 'oninput' handler. ` +
+              `Use 'defaultValue' for uncontrolled components or add an event handler for controlled components.`
           );
         }
-        
+
         // Initialize internal value if not in controlled mode
         if (!controlled) {
           const isNumeric = ['number', 'range'].includes(type);
@@ -426,7 +425,7 @@ const InputField =
 
         // const attributes = toAttrs(params);
         const cn = [newRow ? 'clear' : '', defaultClass, className].filter(Boolean).join(' ').trim() || undefined;
-        
+
         // Special rendering for minmax range sliders
         if (type === 'range' && (attrs.minmax || attrs.valueDisplay)) {
           return m(attrs.minmax ? DoubleRangeSlider : SingleRangeSlider, {
@@ -444,7 +443,7 @@ const InputField =
         const isNumeric = ['number', 'range'].includes(type);
         const controlled = isControlled(attrs);
         const isNonInteractive = attrs.readonly || attrs.disabled;
-        
+
         let value: T;
         if (controlled) {
           value = attrs.value as T;
@@ -455,7 +454,7 @@ const InputField =
           // Interactive uncontrolled: use internal state
           value = (state.internalValue ?? attrs.defaultValue ?? (isNumeric ? 0 : '')) as T;
         }
-        
+
         const isActive =
           state.active || state.inputElement?.value || value || placeholder || type === 'color' || type === 'range'
             ? true
