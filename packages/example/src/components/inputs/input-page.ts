@@ -291,7 +291,7 @@ export const InputPage = () => {
             '.col.s6',
             m(TextInput, {
               label: 'TextInput (single line)',
-              value: 'Short text',
+              defaultValue: 'Short text',
               onchange: (v) => console.log('TextInput:', v),
             })
           ),
@@ -310,7 +310,7 @@ export const InputPage = () => {
           m('.col.s6',
             m(TextInput, {
               label: 'TextInput (single line)',
-              value: 'Short text',
+              defaultValue: 'Short text',
               onchange: (v) => console.log('TextInput:', v),
             })
           ),
@@ -376,7 +376,7 @@ export const InputPage = () => {
             label: 'What is your email?',
             dataError: 'Please use username@org.com',
             dataSuccess: 'OK',
-            value: emailValue,
+            defaultValue: emailValue,
             onchange: (v) => (emailValue = v),
           })
         ),
@@ -385,7 +385,7 @@ export const InputPage = () => {
             label: 'What is your email?',
             dataError: 'Wrong, use username@org.com',
             dataSuccess: 'OK',
-            value: emailValue,
+            defaultValue: emailValue,
             onchange: v => emailValue = v,
           })`,
         }),
@@ -418,7 +418,7 @@ export const InputPage = () => {
           m(PasswordInput, {
             label: 'What is your password?',
             iconName: 'lock',
-            value: pwdValue,
+            defaultValue: pwdValue,
             onchange: (v) => (pwdValue = v),
           })
         ),
@@ -463,8 +463,9 @@ export const InputPage = () => {
             max: 100,
             showValue: true,
             label: 'What is your favorite number between 0 and 100?',
-            value: numberValue,
-            onchange: (v) => (numberValue = v),
+            defaultValue: numberValue,
+            // oninput: (v) => (numberValue = v),
+            onchange: (v) => console.log(`RangeInput final value: ${v}`),
           })
         ),
         m(CodeBlock, {
@@ -472,65 +473,61 @@ export const InputPage = () => {
             min: 0,
             max: 100,
             label: 'What is your favorite number between 0 and 100?',
-            value: numberValue,
+            defaultValue: numberValue,
             onchange: v => numberValue = v,
           })`,
         }),
 
         m('h4.header', 'RangeInput with valueDisplay options'),
         m('.row', [
-          m('.col.s12', m('h6', 'Always show value')),
+          m('.col.s12', m('h6', 'Always show value (uncontrolled)')),
           m(
             '.col.s12',
             m(RangeInput, {
               min: 0,
               max: 100,
-              value: 75,
+              defaultValue: 75,
               label: 'Always visible tooltip',
               valueDisplay: 'always',
               tooltipPos: 'top',
-              oninput: (value: number) => console.log('Range input:', value),
-              // value: numberValue,
-              // onchange: v => numberValue = v,
+              onchange: (value: number) => console.log('Range final value:', value),
             } as InputAttrs<number>)
           ),
-          m('.col.s12', { style: 'margin-top: 20px;' }, m('h6', 'Show value only during drag')),
+          m('.col.s12', { style: 'margin-top: 20px;' }, m('h6', 'Show value only during drag (uncontrolled)')),
           m(
             '.col.s12',
             m(RangeInput, {
               min: 0,
               max: 100,
-              value: 50,
+              defaultValue: 50,
               label: 'Tooltip on drag',
               valueDisplay: 'auto',
               tooltipPos: 'bottom',
-              oninput: (value: number) => console.log('Range input:', value),
-              //    value: numberValue,
-              // onchange: v => numberValue = v,
+              onchange: (value: number) => console.log('Range final value:', value),
             } as InputAttrs<number>)
           ),
         ]),
         m(CodeBlock, {
-          code: `// Always show tooltip
+          code: `// Always show tooltip (uncontrolled)
 m(RangeInput, {
   min: 0,
   max: 100,
-  value: 75,
+  defaultValue: 75,
   label: 'Always visible tooltip',
   valueDisplay: 'always', // 'auto' | 'always' | 'none'
   tooltipPos: 'top',
-  onchange: (value: number) => console.log('Range change:', value),
+  onchange: (value: number) => console.log('Range final value:', value),
 })
 
-// Show tooltip only during drag (recommended)
+// Show tooltip only during drag (uncontrolled, recommended)
 m(RangeInput, {
   min: 0,
   max: 100,
-  value: 50,
+  defaultValue: 50,
   label: 'Tooltip on drag',
   valueDisplay: 'auto', // Show during interaction only
   tooltipPos: 'bottom',
-  onchange: (value: number) => console.log('Range change:', value),
+  onchange: (value: number) => console.log('Range final value:', value),
 })`,
         }),
 
@@ -544,7 +541,7 @@ m(RangeInput, {
             m(RangeInput, {
               min: 18,
               max: 67,
-              value: 50,
+              defaultValue: 50,
               label: 'Vertical Slider',
               height: '150px',
               vertical: true,
@@ -559,7 +556,7 @@ m(RangeInput, {
           code: `          m(RangeInput, {
             min: 18,
             max: 67,
-            value: 50,
+            defaultValue: 50,
             label: 'Vertical Slider',
             height: '150px',
             vertical: true,
@@ -612,7 +609,6 @@ m(RangeInput, {
               minmax: true,
               valueDisplay: 'auto',
               tooltipPos: 'right',
-              oninput: (minVal: number, maxVal: number) => console.log('Vertical range input:', minVal, '-', maxVal),
               onchange: (minVal: number, maxVal: number) => console.log('Vertical range change:', minVal, '-', maxVal),
             } as InputAttrs<number>)
           )

@@ -10,7 +10,7 @@ All interactive input components (Rating, TextInput, NumberInput, Select, RadioB
 
 ### Controlled Components
 
-**Pattern**: Provide both `value`/`checkedId` AND an event handler (`onchange`, `oninput`)
+**Pattern**: Provide both `value`/`checkedId` AND an event handler (normally `oninput`, sometimes `onchange`). `onchange` is typically called when the component looses focus or a final value has been set, and `oninput` is called immediately after changing the value. For a text or range input component, `oninput` should be used, since the state is changed on every keydown. For a number input, a select or dropdown, `onchange` can be used, since `oninput` does not make sense.
 
 ```typescript
 // Controlled Rating
