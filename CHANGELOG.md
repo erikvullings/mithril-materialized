@@ -1,3 +1,15 @@
+## [3.4.1](https://github.com/erikvullings/mithril-materialized/compare/v3.4.0...v3.4.1) (2025-09-16)
+
+
+### Bug Fixes
+
+* autocomplete ignored selected value ([c9a9eab](https://github.com/erikvullings/mithril-materialized/commit/c9a9eab90cc944c1e5465af1d64e2476fe2824f7))
+* chip close icon alignment ([c8b473d](https://github.com/erikvullings/mithril-materialized/commit/c8b473dbd2fdcfbc570c291f2dfaa201caa253eb))
+* dropdown and select inside modal did not show options list correctly ([13b612f](https://github.com/erikvullings/mithril-materialized/commit/13b612f0eb134d2655a25093ce9904893626bdbd))
+* modal should not block event handlers for children ([e59f426](https://github.com/erikvullings/mithril-materialized/commit/e59f42629e9cd6f1663272e974d9d3584b687475))
+* rangeinput should respect controlled state, and invoke onchange when loosing focus ([2dcc99c](https://github.com/erikvullings/mithril-materialized/commit/2dcc99c74b899a4d5c881f29a0b14bca00e204eb))
+* remove superfluous m.redraw calls ([0ff4302](https://github.com/erikvullings/mithril-materialized/commit/0ff43026aa38b6ced213ed0d59003ea5c93afe5e))
+
 # [3.4.0](https://github.com/erikvullings/mithril-materialized/compare/v3.3.8...v3.4.0) (2025-09-15)
 
 
