@@ -18637,10 +18637,8 @@ const Autocomplete = () => {
                 state.selectedIndex = Math.max(state.selectedIndex - 1, -1);
                 break;
             case 'Enter':
-                console.log('Enter');
                 e.preventDefault();
                 if (state.selectedIndex >= 0 && state.suggestions[state.selectedIndex]) {
-                    console.log('Enter accepted');
                     state.isOpen = false;
                     selectSuggestion(state.suggestions[state.selectedIndex], attrs);
                 }
@@ -20889,7 +20887,7 @@ const initRangeState = (state, attrs) => {
     else {
         // Use internal state for uncontrolled mode
         if (state.singleValue === undefined) {
-            state.singleValue = defaultValue !== undefined ? defaultValue : (value !== undefined ? value : min);
+            state.singleValue = defaultValue !== undefined ? defaultValue : value !== undefined ? value : min;
         }
         // Only update internal state if props changed and user hasn't interacted
         if (state.lastValue !== value && !state.hasUserInteracted && value !== undefined) {
@@ -24478,7 +24476,6 @@ const Select = () => {
         }
     };
     const closeDropdown = (e) => {
-        console.log('select closeDropdown called');
         if (!state.isMultiple) {
             state.isOpen = false;
             return;
@@ -24488,9 +24485,7 @@ const Select = () => {
         const isClickInsideSelect = target.closest('.input-field.select-space');
         const isClickInsidePortalDropdown = state.isInsideModal && state.dropdownRef && (state.dropdownRef.contains(target) || target === state.dropdownRef);
         if (!isClickInsideSelect && !isClickInsidePortalDropdown) {
-            console.log('select closeDropdown called: set state');
             state.isOpen = false;
-            // m.redraw();
         }
     };
     const getPortalStyles = (inputRef) => {
@@ -24741,14 +24736,13 @@ const Switch = () => {
             state.checked = checked || false;
         },
         view: ({ attrs }) => {
-            const id = attrs.id || state.id;
-            const { checked, label, left, right, disabled, newRow, onchange, isMandatory, className = 'col s12' } = attrs, params = __rest(attrs, ["checked", "label", "left", "right", "disabled", "newRow", "onchange", "isMandatory", "className"]);
-            const cn = ['input-field', newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim() || undefined;
+            const { checked, label, left, right, disabled, newRow, onchange, isMandatory, className = 'col s12', id = state.id } = attrs, params = __rest(attrs, ["checked", "label", "left", "right", "disabled", "newRow", "onchange", "isMandatory", "className", "id"]);
+            const cn = ['input-field', newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim();
             return m('div', {
                 className: cn,
                 onclick: (e) => {
-                    onchange && onchange(!checked);
                     e.preventDefault();
+                    onchange && onchange(!checked);
                 },
             }, [
                 label && m(Label, { label: label || '', id, isMandatory, className: 'active' }),
@@ -28782,6 +28776,8 @@ const ModalPage = () => {
                 id: 'modal1b',
                 title: 'Select Component Test',
                 isOpen: state.modal1bOpen,
+                fixedFooter: true,
+                bottomSheet: true,
                 onToggle: (open) => {
                     state.modal1bOpen = open;
                 },
