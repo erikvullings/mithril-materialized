@@ -1,3 +1,10 @@
+## [3.4.3](https://github.com/erikvullings/mithril-materialized/compare/v3.4.2...v3.4.3) (2025-09-17)
+
+
+### Bug Fixes
+
+* switch aria warning due to using the same id twice. ([cfd9966](https://github.com/erikvullings/mithril-materialized/commit/cfd9966bbc8bedfa58cbed33210248df9efda725))
+
 ## [3.4.2](https://github.com/erikvullings/mithril-materialized/compare/v3.4.1...v3.4.2) (2025-09-16)
 
 
