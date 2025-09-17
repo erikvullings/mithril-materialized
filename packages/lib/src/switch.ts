@@ -4,7 +4,8 @@ import { InputAttrs } from './input-options';
 import { Label } from './label';
 // Styles are imported via the main index or individual component imports
 
-export interface SwitchAttrs extends Pick<InputAttrs<boolean>, 'label' | 'disabled' | 'id' | 'className' | 'onchange' | 'newRow' | 'isMandatory'> {
+export interface SwitchAttrs
+  extends Pick<InputAttrs<boolean>, 'label' | 'disabled' | 'id' | 'className' | 'onchange' | 'newRow' | 'isMandatory'> {
   /** Left text label */
   left?: string;
   /** Right text label */
@@ -21,7 +22,6 @@ export const Switch: FactoryComponent<SwitchAttrs> = () => {
       state.checked = checked || false;
     },
     view: ({ attrs }) => {
-      const id = attrs.id || state.id;
       const {
         checked,
         label,
@@ -32,16 +32,17 @@ export const Switch: FactoryComponent<SwitchAttrs> = () => {
         onchange,
         isMandatory,
         className = 'col s12',
+        id = state.id,
         ...params
       } = attrs;
-      const cn = ['input-field', newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim() || undefined;
+      const cn = ['input-field', newRow ? 'clear' : '', className].filter(Boolean).join(' ').trim();
       return m(
         'div',
         {
           className: cn,
           onclick: (e: MouseEvent) => {
-            onchange && onchange(!checked);
             e.preventDefault();
+            onchange && onchange(!checked);
           },
         },
         [
