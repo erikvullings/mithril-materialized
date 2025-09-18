@@ -283,9 +283,7 @@ export const SingleRangeSlider = {
           state.cleanupMouseEvents = null;
         }
         updateSingleValue(state.singleValue as number, false);
-        if (finalValueDisplay === 'auto') {
-          m.redraw();
-        }
+        m.redraw();
       };
 
       document.addEventListener('mousemove', handleMouseMove);
@@ -478,9 +476,7 @@ export const DoubleRangeSlider = {
           state.cleanupMouseEvents = null;
         }
         updateRangeValues(state.rangeMinValue, state.rangeMaxValue, attrs, state, false);
-        if (finalValueDisplay === 'auto') {
-          m.redraw();
-        }
+        m.redraw();
       };
 
       document.addEventListener('mousemove', handleMouseMove);

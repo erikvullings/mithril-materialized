@@ -166,6 +166,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
   const closeDropdown = (e: MouseEvent) => {
     if (!state.isMultiple) {
       state.isOpen = false;
+      m.redraw();
       return;
     }
     const target = e.target as Element;
@@ -177,6 +178,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
     if (!isClickInsideSelect && !isClickInsidePortalDropdown) {
       state.isOpen = false;
     }
+    m.redraw();
   };
 
   const getPortalStyles = (inputRef: HTMLElement | null | undefined) => {

@@ -131,6 +131,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
       // Click outside, close dropdown
       state.isOpen = false;
     }
+    m.redraw();
   };
 
   // Handle keyboard navigation

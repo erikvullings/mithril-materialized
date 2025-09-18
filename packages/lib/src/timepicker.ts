@@ -168,6 +168,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     const y = clickPos.y - state.y0;
     state.moved = true;
     setHand(x, y, false, true);
+    m.redraw();
   };
 
   const handleDocumentClickEnd = (e: Event) => {
@@ -198,6 +199,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     if (options.onSelect) {
       options.onSelect(state.hours, state.minutes);
     }
+    m.redraw();
   };
 
   const updateTimeFromInput = (inputValue: string) => {
@@ -507,6 +509,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     }
 
     close();
+    m.redraw();
     return value;
   };
 

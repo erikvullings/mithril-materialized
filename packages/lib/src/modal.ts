@@ -65,6 +65,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
 
     // Restore body scroll
     document.body.style.overflow = '';
+    m.redraw();
   };
 
   const openModal = (attrs: ModalAttrs) => {

@@ -151,21 +151,21 @@ const getLocalWeekNumber = (date: Date, firstDay: number): number => {
   // Local week numbering based on firstDay setting
   const tempDate = new Date(date.getFullYear(), 0, 1);
   const firstDayOfYear = tempDate.getDay();
-  
+
   // Calculate days from first day of year to the start of first week
   let daysToFirstWeek = (firstDay - firstDayOfYear + 7) % 7;
   if (daysToFirstWeek === 0 && firstDayOfYear !== firstDay) {
     daysToFirstWeek = 7;
   }
-  
+
   const firstWeekStart = new Date(tempDate.getTime());
   firstWeekStart.setDate(1 + daysToFirstWeek);
-  
+
   if (date < firstWeekStart) {
     // Date is in the last week of previous year
     return getLocalWeekNumber(new Date(date.getFullYear() - 1, 11, 31), firstDay);
   }
-  
+
   const daysDiff = Math.floor((date.getTime() - firstWeekStart.getTime()) / (24 * 60 * 60 * 1000));
   return Math.floor(daysDiff / 7) + 1;
 };
@@ -359,7 +359,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
       // Validate range constraints
       if (options.minDateRange || options.maxDateRange) {
         const daysDiff = Math.ceil((state.endDate.getTime() - state.startDate.getTime()) / (1000 * 60 * 60 * 24));
-        
+
         if (options.minDateRange && daysDiff < options.minDateRange) {
           // Range too short, reset
           state.startDate = new Date(date.getTime());
@@ -367,7 +367,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
           state.selectionMode = 'end';
           return;
         }
-        
+
         if (options.maxDateRange && daysDiff > options.maxDateRange) {
           // Range too long, reset
           state.startDate = new Date(date.getTime());
@@ -510,7 +510,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                     const month = parseInt(target.getAttribute('data-month') || '0', 10);
                     const day = parseInt(target.getAttribute('data-day') || '0', 10);
                     const selectedDate = new Date(year, month, day);
-                    
+
                     if (options.dateRange) {
                       handleRangeSelection(selectedDate, options);
                     } else {
@@ -526,7 +526,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
             ),
           ]
         );
-      }
+      },
     };
   };
 
@@ -635,9 +635,15 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
           if (r === 0 && options.showWeekNumbers) {
             const weekDate = new Date(yearNumber, monthNumber, dayNumber);
             const weekNum = getWeekNumber(weekDate, options.weekNumbering, options.firstDay);
-            row.push(m('td.datepicker-week-number', {
-              title: `Week ${weekNum}`
-            }, weekNum));
+            row.push(
+              m(
+                'td.datepicker-week-number',
+                {
+                  title: `Week ${weekNum}`,
+                },
+                weekNum
+              )
+            );
           }
 
           row.push(m(Day, { opts: dayConfig, options }));
@@ -650,14 +656,12 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
         }
 
         const weekdayHeaders = [];
-        
+
         // Add week number header if enabled
         if (options.showWeekNumbers) {
-          weekdayHeaders.push(
-            m('th.datepicker-week-header', { scope: 'col', title: 'Week' }, 'Wk')
-          );
+          weekdayHeaders.push(m('th.datepicker-week-header', { scope: 'col', title: 'Week' }, 'Wk'));
         }
-        
+
         for (let i = 0; i < 7; i++) {
           let day = i + options.firstDay;
           while (day >= 7) {
@@ -683,7 +687,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
             [m('thead', [m('tr', weekdayHeaders)]), m('tbody', data)]
           ),
         ]);
-      }
+      },
     };
   };
 
@@ -749,7 +753,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
             m('span.date-text', `${day}, ${month} ${date}`),
           ]);
         }
-      }
+      },
     };
   };
 
@@ -795,7 +799,13 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
               },
               m(
                 'svg',
-                { fill: '#000000', height: '24', viewBox: '0 0 24 24', width: '24', xmlns: 'http://www.w3.org/2000/svg' },
+                {
+                  fill: '#000000',
+                  height: '24',
+                  viewBox: '0 0 24 24',
+                  width: '24',
+                  xmlns: 'http://www.w3.org/2000/svg',
+                },
                 [
                   m('path', { d: 'M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z' }),
                   m('path', { d: 'M0-.5h24v24H0z', fill: 'none' }),
@@ -884,7 +894,13 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
               },
               m(
                 'svg',
-                { fill: '#000000', height: '24', viewBox: '0 0 24 24', width: '24', xmlns: 'http://www.w3.org/2000/svg' },
+                {
+                  fill: '#000000',
+                  height: '24',
+                  viewBox: '0 0 24 24',
+                  width: '24',
+                  xmlns: 'http://www.w3.org/2000/svg',
+                },
                 [
                   m('path', { d: 'M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z' }),
                   m('path', { d: 'M0-.25h24v24H0z', fill: 'none' }),
@@ -893,7 +909,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
             ),
           ]
         );
-      }
+      },
     };
   };
 
@@ -901,17 +917,17 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
     if (!isNaN(month)) {
       state.calendars[0].month = month;
       adjustCalendars();
-      
+
       // Update selected date if one exists
       if (state.date && isDate(state.date)) {
         const currentDay = state.date.getDate();
         const newYear = state.calendars[0].year;
         const daysInNewMonth = getDaysInMonth(newYear, month);
-        
+
         // Adjust day if it doesn't exist in the new month (e.g., Jan 31 -> Feb 28)
         const adjustedDay = Math.min(currentDay, daysInNewMonth);
         const newDate = new Date(newYear, month, adjustedDay);
-        
+
         state.date = newDate;
         setToStartOfDay(state.date);
       }
@@ -922,17 +938,17 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
     if (!isNaN(year)) {
       state.calendars[0].year = year;
       adjustCalendars();
-      
+
       // Update selected date if one exists
       if (state.date && isDate(state.date)) {
         const currentMonth = state.date.getMonth();
         const currentDay = state.date.getDate();
         const daysInNewMonth = getDaysInMonth(year, currentMonth);
-        
+
         // Adjust day if it doesn't exist in the new year/month (e.g., leap year changes)
         const adjustedDay = Math.min(currentDay, daysInNewMonth);
         const newDate = new Date(year, currentMonth, adjustedDay);
-        
+
         state.date = newDate;
         setToStartOfDay(state.date);
       }
@@ -945,6 +961,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
       state.monthDropdownOpen = false;
       state.yearDropdownOpen = false;
     }
+    m.redraw();
   };
 
   return {
@@ -991,12 +1008,12 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
           setToStartOfDay(state.startDate);
           gotoDate(state.startDate);
         }
-        
+
         if (attrs.initialEndDate && isDate(attrs.initialEndDate)) {
           state.endDate = new Date(attrs.initialEndDate.getTime());
           setToStartOfDay(state.endDate);
         }
-        
+
         if (!state.startDate && !state.endDate) {
           gotoDate(new Date());
         }
@@ -1046,14 +1063,14 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
 
       // Calculate display value for the input
       let displayValue = '';
-      
+
       if (options.dateRange) {
         // Handle date range display
         const formatToUse = attrs.displayFormat || options.format;
-        
+
         if (state.startDate && state.endDate) {
           let startStr: string, endStr: string;
-          
+
           if (attrs.displayFormat) {
             // Custom display format for date range
             startStr = attrs.displayFormat
@@ -1069,11 +1086,11 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
             startStr = formatDate(state.startDate, formatToUse, options);
             endStr = formatDate(state.endDate, formatToUse, options);
           }
-          
+
           displayValue = `${startStr} - ${endStr}`;
         } else if (state.startDate) {
           let startStr: string;
-          
+
           if (attrs.displayFormat) {
             // Custom display format for single date
             startStr = attrs.displayFormat
@@ -1084,7 +1101,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
             // Standard format
             startStr = formatDate(state.startDate, formatToUse, options);
           }
-          
+
           displayValue = `${startStr} - `;
         }
       } else {
@@ -1230,7 +1247,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                             type: 'button',
                             onclick: () => {
                               state.isOpen = false;
-                              
+
                               if (options.dateRange) {
                                 // Range mode
                                 if (state.startDate && state.endDate && onchange) {
@@ -1244,7 +1261,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                                   onchange(toString(state.date, 'yyyy-mm-dd')); // Always return ISO format
                                 }
                               }
-                              
+
                               if (options.onClose) options.onClose();
                             },
                           },

@@ -208,6 +208,7 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
       state.originalImage = null;
 
       if (attrs.onCloseEnd) attrs.onCloseEnd();
+      m.redraw();
     }, attrs.outDuration || 200);
   };
 

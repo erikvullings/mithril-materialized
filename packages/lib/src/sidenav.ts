@@ -73,6 +73,7 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
   const handleEscapeKey = (e: KeyboardEvent, attrs: SidenavAttrs) => {
     if (e.key === 'Escape' && attrs.closeOnEscape !== false && attrs.onToggle) {
       attrs.onToggle(false);
+      m.redraw();
     }
   };
 
