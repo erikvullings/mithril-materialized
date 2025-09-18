@@ -1,3 +1,10 @@
+## [3.4.4](https://github.com/erikvullings/mithril-materialized/compare/v3.4.3...v3.4.4) (2025-09-18)
+
+
+### Bug Fixes
+
+* Add m.redraw to event handlers ([fb20901](https://github.com/erikvullings/mithril-materialized/commit/fb2090189b21e4ee60f5420aa825afe80c99b33d))
+
 ## [3.4.3](https://github.com/erikvullings/mithril-materialized/compare/v3.4.2...v3.4.3) (2025-09-17)
 
 
