@@ -101,6 +101,7 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
       state.isOpen = false;
       state.selectedIndex = -1;
     }
+    m.redraw();
   };
 
   const getDropdownStyles = () => {
