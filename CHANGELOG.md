@@ -1,3 +1,10 @@
+# [3.5.0](https://github.com/erikvullings/mithril-materialized/compare/v3.4.5...v3.5.0) (2025-10-18)
+
+
+### Features
+
+* Enhanced sidenav - can be collapsed or expanded, left or right, and can have submenu items ([19cac8e](https://github.com/erikvullings/mithril-materialized/commit/19cac8e0d5a6741b1f93a609f969d967850aacea))
+
 ## [3.4.5](https://github.com/erikvullings/mithril-materialized/compare/v3.4.4...v3.4.5) (2025-09-24)
 
 
