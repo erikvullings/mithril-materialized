@@ -1,3 +1,10 @@
+## [3.5.1](https://github.com/erikvullings/mithril-materialized/compare/v3.5.0...v3.5.1) (2025-10-18)
+
+
+### Bug Fixes
+
+* Prevent validation styling on readonly/disabled inputs ([9418d53](https://github.com/erikvullings/mithril-materialized/commit/9418d53468b79678ea3bfc5e1718f7d87f3ac7af)), closes [#22](https://github.com/erikvullings/mithril-materialized/issues/22)
+
 # [3.5.0](https://github.com/erikvullings/mithril-materialized/compare/v3.4.5...v3.5.0) (2025-10-18)
 
 
