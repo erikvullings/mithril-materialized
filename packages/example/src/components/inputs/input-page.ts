@@ -136,6 +136,30 @@ export const InputPage = () => {
           } as InputAttrs)`,
         }),
 
+        m('h4.header', 'Readonly TextInput (no validation)'),
+        m('p', 'Readonly inputs should not show validation styling when clicked or blurred:'),
+        m(
+          '.row',
+          m('.col.s12', [
+            m(TextInput, {
+              iconName: 'category',
+              label: 'Category',
+              oninput: () => {},
+              readonly: true,
+              value: 'Read Only Value',
+            } as InputAttrs),
+          ])
+        ),
+        m(CodeBlock, {
+          code: `          m(TextInput, {
+            iconName: 'category',
+            label: 'Category',
+            oninput: () => {},
+            readonly: true,
+            value: 'Read Only Value',
+          } as InputAttrs)`,
+        }),
+
         m('h3.header', 'Autocomplete'),
         m(
           '.row',

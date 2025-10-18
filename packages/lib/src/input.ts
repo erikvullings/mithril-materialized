@@ -461,9 +461,13 @@ const InputField =
             : false;
         const rangeType = type === 'range' && !attrs.minmax;
 
+        // Only add validate class if input is interactive and validation is needed
+        const shouldValidate = !isNonInteractive && (validate || type === 'email' || type === 'url' || isNumeric);
+
         return m('.input-field', { className: cn, style }, [
           iconName ? m('i.material-icons.prefix', iconName) : undefined,
-          m('input.validate', {
+          m('input', {
+            class: shouldValidate ? 'validate' : undefined,
             ...params,
             type,
             tabindex: 0,
@@ -564,6 +568,18 @@ const InputField =
               state.active = false;
               const target = e.target as HTMLInputElement;
               state.hasInteracted = true;
+
+              // Skip validation for readonly/disabled inputs
+              if (attrs.readonly || attrs.disabled) {
+                // Call original onblur if provided
+                if (attrs.onblur) {
+                  attrs.onblur(e);
+                }
+                if (onchange && state.inputElement) {
+                  onchange(getValue(state.inputElement));
+                }
+                return;
+              }
 
               if (target && validate) {
                 const value = getValue(target);

@@ -76,32 +76,32 @@ textarea.materialize-textarea {
   }
 
   // Valid Input Style
-  &.valid,
-  &:focus.valid {
+  &.valid:not([readonly]):not([disabled]),
+  &:focus.valid:not([readonly]):not([disabled]) {
     @extend %valid-input-style !optional;
   }
 
   // Custom Success Message
-  &.valid ~ .helper-text:after,
-  &:focus.valid ~ .helper-text:after {
+  &.valid:not([readonly]):not([disabled]) ~ .helper-text:after,
+  &:focus.valid:not([readonly]):not([disabled]) ~ .helper-text:after {
     @extend %custom-success-message !optional;
   }
-  &:focus.valid ~ label {
+  &:focus.valid:not([readonly]):not([disabled]) ~ label {
     color: variables.$input-success-color;
   }
 
   // Invalid Input Style
-  &.invalid,
-  &:focus.invalid {
+  &.invalid:not([readonly]):not([disabled]),
+  &:focus.invalid:not([readonly]):not([disabled]) {
     @extend %invalid-input-style !optional;
   }
 
   // Custom Error message
-  &.invalid ~ .helper-text:after,
-  &:focus.invalid ~ .helper-text:after {
+  &.invalid:not([readonly]):not([disabled]) ~ .helper-text:after,
+  &:focus.invalid:not([readonly]):not([disabled]) ~ .helper-text:after {
     @extend %custom-error-message !optional;
   }
-  &:focus.invalid ~ label {
+  &:focus.invalid:not([readonly]):not([disabled]) ~ label {
     color: variables.$input-error-color;
   }
 
