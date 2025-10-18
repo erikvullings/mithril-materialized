@@ -14,6 +14,11 @@ import {
 export const NavigationPage = () => {
   const state = {
     sidenavOpen: false,
+    enhancedSidenavOpen: true, // Start open
+    enhancedSidenavExpanded: true, // Start expanded
+    activeMenuItem: 1, // Start with Filters active to show checkbox submenu
+    selectedFilters: new Set<string>(['filter1']),
+    selectedView: 'grid',
     currentWizardStep: 0,
     wizardData: {
       name: '',
@@ -187,6 +192,224 @@ m(Sidenav, {
 ])`,
         }),
 
+        // Enhanced Sidenav with Hamburger and Collapse/Expand
+        m('h3.header', 'Enhanced Sidenav with Hamburger & Collapse/Expand'),
+        m(
+          'p',
+          'Feature-rich persistent navigation with hamburger toggle inside, collapse/expand functionality, and submenu support. Use the buttons below to control the sidenav. Click on "Filters" to see checkbox submenu items (multiple selections), or "View Mode" to see radio submenu items (single selection).'
+        ),
+        m('.row', [
+          m('.col.s12', [
+            // External control buttons
+            m('.control-buttons', { style: { 'margin-bottom': '1rem', display: 'flex', gap: '8px' } }, [
+              m(Button, {
+                label: state.enhancedSidenavOpen ? 'Hide Sidenav' : 'Show Sidenav',
+                onclick: () => {
+                  state.enhancedSidenavOpen = !state.enhancedSidenavOpen;
+                },
+              }),
+              m(Button, {
+                label: state.enhancedSidenavExpanded ? 'Collapse' : 'Expand',
+                onclick: () => {
+                  state.enhancedSidenavExpanded = !state.enhancedSidenavExpanded;
+                },
+                disabled: !state.enhancedSidenavOpen,
+              }),
+            ]),
+            m(
+              Sidenav,
+              {
+                id: 'enhanced-sidenav',
+                isOpen: state.enhancedSidenavOpen,
+                onToggle: (isOpen) => {
+                  state.enhancedSidenavOpen = isOpen;
+                },
+                isExpanded: state.enhancedSidenavExpanded,
+                onExpandChange: (expanded) => {
+                  state.enhancedSidenavExpanded = expanded;
+                },
+                position: 'right',
+                mode: 'push',
+                width: 280,
+                showBackdrop: false, // No backdrop for persistent mode
+                closeOnBackdropClick: false,
+                closeOnEscape: false,
+                showHamburger: true, // Hamburger is inside the sidenav
+                expandable: true,
+              },
+              [
+                m(SidenavItem, {
+                  text: 'Dashboard',
+                  icon: 'dashboard',
+                  active: state.activeMenuItem === 0,
+                  onclick: () => {
+                    state.activeMenuItem = 0;
+                  },
+                }),
+                m(SidenavItem, {
+                  text: 'Filters',
+                  icon: 'filter_list',
+                  active: state.activeMenuItem === 1,
+                  onclick: () => {
+                    state.activeMenuItem = 1;
+                  },
+                  submenu: [
+                    {
+                      text: 'Show Active',
+                      selected: state.selectedFilters.has('filter1'),
+                      value: 'filter1',
+                      onSelect: (value, selected) => {
+                        if (selected) {
+                          state.selectedFilters.add(value);
+                        } else {
+                          state.selectedFilters.delete(value);
+                        }
+                      },
+                    },
+                    {
+                      text: 'Show Archived',
+                      selected: state.selectedFilters.has('filter2'),
+                      value: 'filter2',
+                      onSelect: (value, selected) => {
+                        if (selected) {
+                          state.selectedFilters.add(value);
+                        } else {
+                          state.selectedFilters.delete(value);
+                        }
+                      },
+                    },
+                    {
+                      text: 'Show Favorites',
+                      selected: state.selectedFilters.has('filter3'),
+                      value: 'filter3',
+                      onSelect: (value, selected) => {
+                        if (selected) {
+                          state.selectedFilters.add(value);
+                        } else {
+                          state.selectedFilters.delete(value);
+                        }
+                      },
+                    },
+                  ],
+                  submenuMode: 'checkbox',
+                }),
+                m(SidenavItem, {
+                  text: 'View Mode',
+                  icon: 'view_module',
+                  active: state.activeMenuItem === 2,
+                  onclick: () => {
+                    state.activeMenuItem = 2;
+                  },
+                  submenu: [
+                    {
+                      text: 'Grid View',
+                      selected: state.selectedView === 'grid',
+                      value: 'grid',
+                      onSelect: (value) => {
+                        state.selectedView = value;
+                      },
+                    },
+                    {
+                      text: 'List View',
+                      selected: state.selectedView === 'list',
+                      value: 'list',
+                      onSelect: (value) => {
+                        state.selectedView = value;
+                      },
+                    },
+                    {
+                      text: 'Compact View',
+                      selected: state.selectedView === 'compact',
+                      value: 'compact',
+                      onSelect: (value) => {
+                        state.selectedView = value;
+                      },
+                    },
+                  ],
+                  submenuMode: 'radio',
+                }),
+                m(SidenavItem, { divider: true }),
+                m(SidenavItem, { subheader: true, text: 'Navigation' }),
+                m(SidenavItem, {
+                  text: 'Settings',
+                  icon: 'settings',
+                  active: state.activeMenuItem === 3,
+                  onclick: () => {
+                    state.activeMenuItem = 3;
+                  },
+                }),
+                m(SidenavItem, {
+                  text: 'Help',
+                  icon: 'help',
+                  active: state.activeMenuItem === 4,
+                  onclick: () => {
+                    state.activeMenuItem = 4;
+                  },
+                }),
+              ]
+            ),
+          ]),
+        ]),
+        m(CodeBlock, {
+          code: `import { Sidenav, SidenavItem } from 'mithril-materialized';
+
+m(Sidenav, {
+  id: 'enhanced-sidenav',
+  isOpen: state.sidenavOpen,
+  onToggle: (isOpen) => { state.sidenavOpen = isOpen; },
+  position: 'left',
+  mode: 'overlay',
+  width: 280,
+  showHamburger: true,         // Show hamburger toggle button
+  expandable: true,            // Enable collapse/expand
+  defaultExpanded: true,       // Start expanded (default)
+  persistState: true,          // Remember state in localStorage
+  hamburgerPosition: { top: '16px', left: '16px' },
+  onExpandChange: (expanded) => {
+    console.log('Sidenav expanded:', expanded);
+  }
+}, [
+  m(SidenavItem, {
+    text: 'Projects',
+    icon: 'folder',
+    active: state.activeMenuItem === 1,
+    onclick: () => { state.activeMenuItem = 1; },
+    // Checkbox submenu - multiple selections
+    submenu: [
+      {
+        text: 'Show Active',
+        selected: state.filters.has('active'),
+        value: 'active',
+        onSelect: (value, selected) => {
+          if (selected) state.filters.add(value);
+          else state.filters.delete(value);
+        }
+      },
+      // ... more checkbox items
+    ],
+    submenuMode: 'checkbox'
+  }),
+  m(SidenavItem, {
+    text: 'View Mode',
+    icon: 'view_module',
+    active: state.activeMenuItem === 2,
+    onclick: () => { state.activeMenuItem = 2; },
+    // Radio submenu - single selection
+    submenu: [
+      {
+        text: 'Grid View',
+        icon: 'grid_view',
+        selected: state.viewMode === 'grid',
+        value: 'grid',
+        onSelect: (value) => { state.viewMode = value; }
+      },
+      // ... more radio options
+    ],
+    submenuMode: 'radio'
+  })
+])`,
+        }),
+
         // Wizard Example
         m('h3.header', 'Wizard/Stepper'),
         m('p', 'Multi-step interface for guiding users through complex processes:'),
@@ -272,6 +495,12 @@ m(Wizard, {
               m('li', 'Backdrop overlay with customizable behavior'),
               m('li', 'Keyboard navigation (ESC to close)'),
               m('li', 'Flexible content with dividers and subheaders'),
+              m('li', 'Hamburger toggle button with customizable position'),
+              m('li', 'Collapse/expand functionality (icons only vs icons + text)'),
+              m('li', 'State persistence via localStorage'),
+              m('li', 'Submenu support with checkbox and radio modes'),
+              m('li', 'Dark and light theme support'),
+              m('li', 'Smooth animations for all state transitions'),
             ]),
           ]),
           m('li.collection-item', [

@@ -109,7 +109,9 @@
 }
 
 // Legacy Sidenav Styles (maintain backward compatibility)
-
+ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.btn-floating) i.material-icons {
+  margin: 0;
+}
 .sidenav {
   position: fixed;
   width: variables.$sidenav-width;
@@ -191,7 +193,8 @@
   li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.btn-floating) {
     &:hover { background-color: var(--mm-border-color, rgba(0,0,0,.05));}
 
-    color: var(--mm-text-primary, variables.$sidenav-font-color);
+    // color: var(--mm-text-primary, variables.$sidenav-font-color);
+    color: var(--mm-nav-active-text, #fff);
     display: block;
     font-size: variables.$sidenav-font-size;
     font-weight: 500;
@@ -208,6 +211,7 @@
       margin: 0 (variables.$sidenav-padding * 2) 0 0;
       width: math.div(variables.$sidenav-item-height, 2);
       color: var(--mm-text-secondary, rgba(0,0,0,.54));
+      user-select: none;
     }
   }
 
@@ -341,7 +345,7 @@
 .sidenav.sidenav-fixed .collapsible-body > ul:not(.collapsible) > li.active {
   background-color: variables.$primary-color;
   a {
-    color: variables.$sidenav-bg-color;
+    color: var(--mm-nav-active-text, #fff);
   }
 }
 .sidenav .collapsible-body {
@@ -367,4 +371,191 @@
 // Ensure overlay sidenav doesn't affect main content layout
 .sidenav-overlay {
   pointer-events: auto;
+}
+
+// Hamburger button styles (legacy - external button)
+.sidenav-hamburger {
+  background: var(--mm-surface-color, #fff);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    background: var(--mm-border-color, rgba(0, 0, 0, 0.05));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  svg {
+    fill: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+  }
+}
+
+// Hamburger item inside sidenav
+.sidenav-hamburger-item {
+  list-style: none;
+
+  &:hover {
+    background: var(--mm-border-color, rgba(0, 0, 0, 0.05));
+  }
+
+  svg {
+    fill: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
+  }
+}
+
+// Collapsed sidenav state
+.sidenav.sidenav-collapsed {
+  width: 60px !important;
+
+  .sidenav-item-text {
+    display: none;
+  }
+
+  li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.btn-floating) {
+    padding: 0 18px;
+    justify-content: center;
+
+    & > i,
+    & > i.material-icons {
+      margin: 0;
+      float: none;
+    }
+  }
+
+  .subheader {
+    display: none;
+  }
+
+  .sidenav-subitem {
+    padding: 8px 16px !important;
+    justify-content: center;
+
+    span {
+      display: none;
+    }
+  }
+}
+
+// Expand/collapse toggle button
+.sidenav-expand-toggle {
+  &:hover {
+    background: var(--mm-border-color, rgba(0, 0, 0, 0.05));
+  }
+
+  svg {
+    fill: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
+    transition: transform 0.2s ease;
+  }
+}
+
+// Submenu item styles
+.sidenav-subitem {
+  list-style: none;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: var(--mm-border-color, rgba(0, 0, 0, 0.05));
+  }
+
+  // Don't show selected background - only the check/radio icon indicates selection
+  // to avoid confusion with multiple active menu items
+  &.selected {
+    svg {
+      fill: var(--mm-primary-color, #26a69a);
+    }
+  }
+
+  svg {
+    fill: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
+    transition: fill 0.2s ease;
+  }
+
+  i.material-icons {
+    color: var(--mm-text-secondary, rgba(0, 0, 0, 0.6));
+  }
+}
+
+// Menu item with submenu indicator
+.sidenav li.has-submenu {
+  &.active > a {
+    background: var(--mm-primary-color-light, rgba(38, 166, 154, 0.1));
+    color: var(--mm-primary-color, #26a69a);
+  }
+}
+
+// Dark theme support
+[data-theme="dark"] {
+  .sidenav-hamburger {
+    background: var(--mm-surface-color, #1e1e1e);
+
+    svg {
+      fill: var(--mm-text-primary, rgba(255, 255, 255, 0.87));
+    }
+  }
+
+  .sidenav {
+    background-color: var(--mm-surface-color, #1e1e1e);
+
+    li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.btn-floating) {
+      color: var(--mm-text-primary, rgba(255, 255, 255, 0.87));
+
+      &:hover {
+        background-color: var(--mm-border-color, rgba(255, 255, 255, 0.05));
+      }
+
+      & > i,
+      & > i.material-icons {
+        color: var(--mm-text-secondary, rgba(255, 255, 255, 0.6));
+      }
+    }
+
+    li.active {
+      background-color: rgba(255, 255, 255, 0.05);
+
+      & > a:not(.btn):not(.btn-large):not(.btn-flat):not(.btn-floating) {
+        color: var(--mm-nav-active-text, #fff);
+
+        & > i,
+        & > i.material-icons {
+          color: var(--mm-nav-active-text, #fff);
+        }
+      }
+    }
+
+    .collapsible-body > ul:not(.collapsible) > li.active a {
+      color: var(--mm-nav-active-text, #fff);
+
+      i,
+      i.material-icons {
+        color: var(--mm-nav-active-text, #fff);
+      }
+    }
+
+    .subheader {
+      color: var(--mm-text-secondary, rgba(255, 255, 255, 0.6));
+    }
+  }
+
+  .sidenav-expand-toggle svg {
+    fill: var(--mm-text-secondary, rgba(255, 255, 255, 0.6));
+  }
+
+  .sidenav-subitem {
+    &:hover {
+      background: var(--mm-border-color, rgba(255, 255, 255, 0.05));
+    }
+
+    svg {
+      fill: var(--mm-text-secondary, rgba(255, 255, 255, 0.6));
+    }
+
+    i.material-icons {
+      color: var(--mm-text-secondary, rgba(255, 255, 255, 0.6));
+    }
+  }
+}
+
+// Animation for smooth width transitions
+.sidenav {
+  transition: transform 0.3s ease, width 0.3s ease;
 }

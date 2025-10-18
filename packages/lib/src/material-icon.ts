@@ -13,12 +13,36 @@ const iconPaths = {
     'M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z', // chevron down
     'M0 0h24v24H0z', // background
   ],
+  chevron_left: [
+    'M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z', // chevron left
+    'M0 0h24v24H0z', // background
+  ],
+  chevron_right: [
+    'M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z', // chevron right
+    'M0 0h24v24H0z', // background
+  ],
+  menu: [
+    'M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z', // hamburger menu
+    'M0 0h24v24H0z', // background
+  ],
   expand: [
     'M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z', // plus
     'M0 0h24v24H0z', // background
   ],
   collapse: [
     'M19 13H5v-2h14v2z', // minus
+    'M0 0h24v24H0z', // background
+  ],
+  check: [
+    'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z', // checkmark
+    'M0 0h24v24H0z', // background
+  ],
+  radio_checked: [
+    'M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z', // radio button checked
+    'M0 0h24v24H0z', // background
+  ],
+  radio_unchecked: [
+    'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z', // radio button unchecked
     'M0 0h24v24H0z', // background
   ],
   light_mode: [
