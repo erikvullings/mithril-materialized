@@ -1,3 +1,10 @@
+## [3.4.5](https://github.com/erikvullings/mithril-materialized/compare/v3.4.4...v3.4.5) (2025-09-24)
+
+
+### Bug Fixes
+
+* Added m.redraw to update autocomplete ([4ea64bd](https://github.com/erikvullings/mithril-materialized/commit/4ea64bdc3b6e12eda277147caa9de4897dfd3ea1))
+
 ## [3.4.4](https://github.com/erikvullings/mithril-materialized/compare/v3.4.3...v3.4.4) (2025-09-18)
 
 
