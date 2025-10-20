@@ -1,3 +1,10 @@
+## [3.5.2](https://github.com/erikvullings/mithril-materialized/compare/v3.5.1...v3.5.2) (2025-10-20)
+
+
+### Bug Fixes
+
+* When Select options were undefined, the Select component would crash. ([a17af97](https://github.com/erikvullings/mithril-materialized/commit/a17af97895126cda92d874d7a450f40d66fbf778))
+
 ## [3.5.1](https://github.com/erikvullings/mithril-materialized/compare/v3.5.0...v3.5.1) (2025-10-18)
 
 
