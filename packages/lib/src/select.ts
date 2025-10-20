@@ -399,7 +399,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
         newRow,
         className = 'col s12',
         key,
-        options,
+        options = [],
         multiple = false,
         label,
         helperText,
