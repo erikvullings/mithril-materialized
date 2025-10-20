@@ -1,3 +1,10 @@
+## [3.5.3](https://github.com/erikvullings/mithril-materialized/compare/v3.5.2...v3.5.3) (2025-10-20)
+
+
+### Bug Fixes
+
+* When Option options were undefined, the Option component would crash. ([1aa9115](https://github.com/erikvullings/mithril-materialized/commit/1aa9115f95acfd9568f461465a6701d4c7772a73))
+
 ## [3.5.2](https://github.com/erikvullings/mithril-materialized/compare/v3.5.1...v3.5.2) (2025-10-20)
 
 
