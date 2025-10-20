@@ -103,13 +103,9 @@ export const OptionsList: Component<{
   layout: 'vertical' | 'horizontal';
 }> = {
   view: ({ attrs: { options, layout } }) => {
-    const optionElements = options.map(({ component, props, key }) => 
-      m(component, { ...props, key })
-    );
-    
-    return layout === 'horizontal'
-      ? m('div.grid-container', optionElements)
-      : optionElements;
+    const optionElements = options.map(({ component, props, key }) => m(component, { ...props, key }));
+
+    return layout === 'horizontal' ? m('div.grid-container', optionElements) : optionElements;
   },
 };
 
@@ -144,7 +140,7 @@ export const Options = <T extends string | number>(): Component<OptionsAttrs<T>>
       attrs: {
         checkedId,
         label,
-        options,
+        options = [],
         description,
         className = 'col s12',
         style,
