@@ -1,3 +1,10 @@
+## [3.5.4](https://github.com/erikvullings/mithril-materialized/compare/v3.5.3...v3.5.4) (2025-10-30)
+
+
+### Bug Fixes
+
+* sidenav theme, added support for custom icons, header and footer. ([a8f12e4](https://github.com/erikvullings/mithril-materialized/commit/a8f12e46950aea697f650f2813b48c0e8fcc10b4))
+
 ## [3.5.3](https://github.com/erikvullings/mithril-materialized/compare/v3.5.2...v3.5.3) (2025-10-20)
 
 
