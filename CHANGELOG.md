@@ -1,3 +1,10 @@
+## [3.5.5](https://github.com/erikvullings/mithril-materialized/compare/v3.5.4...v3.5.5) (2025-10-30)
+
+
+### Bug Fixes
+
+* Sidebar footer to bottom, sidebar menu items with onclick ignore default link following behaviour. ([ae19938](https://github.com/erikvullings/mithril-materialized/commit/ae199381d90b4a55e45197a3efff9322c78bfd8b))
+
 ## [3.5.4](https://github.com/erikvullings/mithril-materialized/compare/v3.5.3...v3.5.4) (2025-10-30)
 
 
