@@ -495,8 +495,8 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
         .join(' ') || undefined;
 
       const handleMainClick = (e: Event) => {
-        e.preventDefault();
         if (hasSubmenu) {
+          e.preventDefault();
           isSubmenuOpen = active ? !isSubmenuOpen : true;
         }
         if (onclick && !disabled) {
