@@ -236,6 +236,22 @@ m(Sidenav, {
                 closeOnEscape: false,
                 showHamburger: true, // Hamburger is inside the sidenav
                 expandable: true,
+                // Header with app logo/title
+                header: {
+                  text: 'My App',
+                  icon: 'apps',
+                  onclick: () => {
+                    console.log('Header clicked - navigate to home');
+                  },
+                },
+                // Footer with settings
+                footer: {
+                  text: 'Settings',
+                  icon: 'settings',
+                  onclick: () => {
+                    console.log('Footer clicked - open settings');
+                  },
+                },
               },
               [
                 m(SidenavItem, {
@@ -362,11 +378,23 @@ m(Sidenav, {
   width: 280,
   showHamburger: true,         // Show hamburger toggle button
   expandable: true,            // Enable collapse/expand
-  defaultExpanded: true,       // Start expanded (default)
-  persistState: true,          // Remember state in localStorage
-  hamburgerPosition: { top: '16px', left: '16px' },
+  isExpanded: true,            // Control expanded state
   onExpandChange: (expanded) => {
     console.log('Sidenav expanded:', expanded);
+  },
+  // Header item (displays before expand/collapse toggle)
+  header: {
+    text: 'My App',
+    icon: 'apps',              // Material Icons font name
+    // Or use custom SVG: icon: { type: 'svg', content: '<svg>...</svg>' }
+    // Or use image: icon: { type: 'image', content: '/logo.png' }
+    onclick: () => { console.log('Header clicked'); }
+  },
+  // Footer item (displays at bottom)
+  footer: {
+    text: 'Settings',
+    icon: 'settings',
+    onclick: () => { console.log('Footer clicked'); }
   }
 }, [
   m(SidenavItem, {
@@ -406,6 +434,26 @@ m(Sidenav, {
       // ... more radio options
     ],
     submenuMode: 'radio'
+  }),
+  m(SidenavItem, {
+    text: 'Quick Actions',
+    icon: 'bolt',
+    active: state.activeMenuItem === 3,
+    onclick: () => { state.activeMenuItem = 3; },
+    // No indicators - just clickable items
+    submenu: [
+      {
+        text: 'Export Data',
+        icon: 'download',
+        onSelect: () => { console.log('Export'); }
+      },
+      {
+        text: 'Import Data',
+        icon: 'upload',
+        onSelect: () => { console.log('Import'); }
+      }
+    ],
+    submenuMode: 'none'  // No checkbox/radio indicators
   })
 ])`,
         }),
@@ -495,11 +543,12 @@ m(Wizard, {
               m('li', 'Backdrop overlay with customizable behavior'),
               m('li', 'Keyboard navigation (ESC to close)'),
               m('li', 'Flexible content with dividers and subheaders'),
+              m('li', 'Header and footer items for branding/navigation'),
               m('li', 'Hamburger toggle button with customizable position'),
               m('li', 'Collapse/expand functionality (icons only vs icons + text)'),
-              m('li', 'State persistence via localStorage'),
-              m('li', 'Submenu support with checkbox and radio modes'),
-              m('li', 'Dark and light theme support'),
+              m('li', 'Submenu support with checkbox, radio, and none modes'),
+              m('li', 'Custom icons support: Material Icons font, inline SVG, or images'),
+              m('li', 'Dark and light theme support with proper contrast'),
               m('li', 'Smooth animations for all state transitions'),
             ]),
           ]),

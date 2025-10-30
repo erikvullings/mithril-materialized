@@ -193,14 +193,17 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
   li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.btn-floating) {
     &:hover { background-color: var(--mm-border-color, rgba(0,0,0,.05));}
 
-    // color: var(--mm-text-primary, variables.$sidenav-font-color);
-    color: var(--mm-nav-active-text, #fff);
+    color: var(--mm-text-primary, variables.$sidenav-font-color);
     display: block;
     font-size: variables.$sidenav-font-size;
     font-weight: 500;
     height: variables.$sidenav-item-height;
     line-height: variables.$sidenav-line-height;
     padding: 0 (variables.$sidenav-padding * 2);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 
     & > i,
     & > [class^="mdi-"], li > a > [class*="mdi-"],
@@ -212,6 +215,17 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
       width: math.div(variables.$sidenav-item-height, 2);
       color: var(--mm-text-secondary, rgba(0,0,0,.54));
       user-select: none;
+    }
+  }
+
+  // Active menu item styling
+  li.active > a:not(.btn):not(.btn-large):not(.btn-flat):not(.btn-floating) {
+    color: var(--mm-nav-active-text, #fff);
+    background-color: var(--mm-primary-color, #26a69a);
+
+    & > i,
+    & > i.material-icons {
+      color: var(--mm-nav-active-text, #fff);
     }
   }
 
@@ -452,16 +466,24 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
 .sidenav-subitem {
   list-style: none;
   transition: background-color 0.2s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 
   &:hover {
     background: var(--mm-border-color, rgba(0, 0, 0, 0.05));
   }
 
-  // Don't show selected background - only the check/radio icon indicates selection
-  // to avoid confusion with multiple active menu items
   &.selected {
+    background-color: var(--mm-primary-color-light, rgba(38, 166, 154, 0.15));
+
     svg {
       fill: var(--mm-primary-color, #26a69a);
+    }
+
+    i.material-icons {
+      color: var(--mm-primary-color, #26a69a);
     }
   }
 
@@ -510,24 +532,24 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
     }
 
     li.active {
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: var(--mm-primary-color, #26a69a);
 
       & > a:not(.btn):not(.btn-large):not(.btn-flat):not(.btn-floating) {
-        color: var(--mm-nav-active-text, #fff);
+        color: #000;
 
         & > i,
         & > i.material-icons {
-          color: var(--mm-nav-active-text, #fff);
+          color: #000;
         }
       }
     }
 
     .collapsible-body > ul:not(.collapsible) > li.active a {
-      color: var(--mm-nav-active-text, #fff);
+      color: #000;
 
       i,
       i.material-icons {
-        color: var(--mm-nav-active-text, #fff);
+        color: #000;
       }
     }
 
@@ -551,6 +573,19 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
 
     i.material-icons {
       color: var(--mm-text-secondary, rgba(255, 255, 255, 0.6));
+    }
+
+    &.selected {
+      background-color: rgba(38, 166, 154, 0.2);
+      color: var(--mm-text-primary, rgba(255, 255, 255, 0.87));
+
+      svg {
+        fill: var(--mm-primary-color, #26a69a);
+      }
+
+      i.material-icons {
+        color: var(--mm-primary-color, #26a69a);
+      }
     }
   }
 }

@@ -217,3 +217,26 @@ nav {
     height: variables.$navbar-height;
   }
 }
+
+// Dark theme support
+[data-theme="dark"] {
+  nav ul li.active {
+    background-color: rgba(38, 166, 154, 0.2);
+
+    a {
+      color: var(--mm-text-primary, rgba(255, 255, 255, 0.87));
+    }
+
+    i, .material-icons {
+      color: var(--mm-text-primary, rgba(255, 255, 255, 0.87));
+    }
+  }
+}
+
+// Make menu items non-selectable by default
+nav ul li {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}

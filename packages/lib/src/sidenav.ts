@@ -2,11 +2,14 @@ import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
 import { MaterialIcon } from './material-icon';
 
+/** Icon definition - supports material icon name, inline SVG, or image URL */
+export type IconDefinition = string | { type: 'svg' | 'image'; content: string };
+
 export interface NavbarSubItemAttrs {
   /** Text content of the submenu item */
   text: string;
-  /** Optional icon name */
-  icon?: string;
+  /** Optional icon - material icon name, SVG object, or image object */
+  icon?: IconDefinition;
   /** Whether this submenu item is selected */
   selected?: boolean;
   /** Value for the submenu item */
@@ -50,13 +53,17 @@ export interface SidenavAttrs extends Attributes {
   isExpanded?: boolean;
   /** Callback when expand state changes */
   onExpandChange?: (expanded: boolean) => void;
+  /** Header item displayed before expand/collapse toggle */
+  header?: SidenavItemAttrs;
+  /** Footer item displayed at the bottom of the sidenav */
+  footer?: SidenavItemAttrs;
 }
 
 export interface SidenavItemAttrs {
   /** Text content of the item */
   text?: string;
-  /** Icon name (material icons) */
-  icon?: string;
+  /** Icon - material icon name, SVG object, or image object */
+  icon?: IconDefinition;
   /** Whether this item is active */
   active?: boolean;
   /** Whether this item is disabled */
@@ -73,8 +80,8 @@ export interface SidenavItemAttrs {
   subheader?: boolean;
   /** Submenu items */
   submenu?: NavbarSubItemAttrs[];
-  /** Submenu selection mode */
-  submenuMode?: 'checkbox' | 'radio';
+  /** Submenu selection mode - 'checkbox' for multi-select, 'radio' for single-select, 'none' for no indicators */
+  submenuMode?: 'checkbox' | 'radio' | 'none';
   /** @internal - Whether the sidenav is expanded (passed from parent) */
   _isExpanded?: boolean;
   /** @internal - Position of the sidenav (passed from parent) */
@@ -89,6 +96,83 @@ interface SidenavState {
   activeItemIndex: number | null;
   selectedSubmenuItems: Map<number, Set<any>>;
 }
+
+// List of MaterialIcon SVG icons that are available
+const materialIconSvgNames = [
+  'caret', 'close', 'chevron', 'chevron_left', 'chevron_right', 'menu',
+  'expand', 'collapse', 'check', 'radio_checked', 'radio_unchecked',
+  'light_mode', 'dark_mode'
+] as const;
+
+/**
+ * Helper function to render icons based on IconDefinition type
+ */
+const renderIcon = (icon: IconDefinition | undefined, style?: any): m.Children => {
+  if (!icon) return null;
+
+  if (typeof icon === 'string') {
+    // Check if this is a MaterialIcon SVG name
+    if (materialIconSvgNames.includes(icon as any)) {
+      return m(MaterialIcon as any, { name: icon, style });
+    }
+    // Fall back to Material Icons font for other icon names
+    return m('i.material-icons', { style }, icon);
+  }
+
+  if (icon.type === 'svg') {
+    // Inline SVG
+    return m.trust(icon.content);
+  }
+
+  if (icon.type === 'image') {
+    // Image URL
+    return m('img', {
+      src: icon.content,
+      style: { ...style, width: '24px', height: '24px', objectFit: 'contain' },
+    });
+  }
+
+  return null;
+};
+
+/**
+ * Helper function to render a single sidenav item (for header/footer items)
+ */
+const renderSidenavItem = (item: SidenavItemAttrs, isExpanded: boolean, position: 'left' | 'right'): m.Children => {
+  const { text, icon, onclick, href, className = '' } = item;
+  const isRightAligned = position === 'right';
+
+  const content = isRightAligned
+    ? [
+        isExpanded && m('span.sidenav-item-text', { style: { 'flex': '1', 'text-align': 'left', 'margin-right': '8px' } }, text),
+        renderIcon(icon, { 'min-width': '24px', 'width': '24px' }),
+      ]
+    : [
+        renderIcon(icon, { 'min-width': '24px', 'width': '24px' }),
+        isExpanded && m('span.sidenav-item-text', { style: { 'margin-left': '8px', 'flex': '1' } }, text),
+      ];
+
+  const linkStyle = {
+    display: 'flex',
+    'align-items': 'center',
+    padding: isExpanded ? '12px 16px' : '12px 18px',
+    'justify-content': isExpanded ? (isRightAligned ? 'flex-end' : 'flex-start') : 'center',
+  };
+
+  return m(
+    'li',
+    { class: className },
+    m(
+      'a',
+      {
+        href: href || '#!',
+        onclick: onclick,
+        style: linkStyle,
+      },
+      content
+    )
+  );
+};
 
 /**
  * Sidenav Component
@@ -245,6 +329,9 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
                 })
               ),
 
+            // Header item (if provided, appears before expand/collapse toggle)
+            attrs.header && renderSidenavItem(attrs.header, isExpanded, position),
+
             // Expand/collapse toggle button (if expandable, right below hamburger)
             expandable &&
               m(
@@ -285,6 +372,9 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
                   return child;
                 })
               : children,
+
+            // Footer item (if provided, appears at the bottom)
+            attrs.footer && renderSidenavItem(attrs.footer, isExpanded, position),
           ]
         ),
       ];
@@ -297,7 +387,7 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
  */
 const NavbarSubItem: FactoryComponent<
   NavbarSubItemAttrs & {
-    mode: 'checkbox' | 'radio';
+    mode: 'checkbox' | 'radio' | 'none';
     isExpanded: boolean;
     position: 'left' | 'right';
   }
@@ -314,32 +404,30 @@ const NavbarSubItem: FactoryComponent<
 
       const isRightAligned = position === 'right';
 
+      // Render indicator icon for checkbox/radio modes
+      const indicatorIcon = mode !== 'none'
+        ? m(MaterialIcon, {
+            name: mode === 'checkbox' ? (selected ? 'check' : 'close') : selected ? 'radio_checked' : 'radio_unchecked',
+            style: {
+              width: '18px',
+              height: '18px',
+              opacity: mode === 'checkbox' && !selected ? '0.3' : '1',
+            },
+          })
+        : null;
+
       const submenuContent = isRightAligned
         ? [
             // Right-aligned: text on left, icons on right
             isExpanded && m('span', { style: { 'flex': '1', 'text-align': 'left' } }, text),
-            icon && isExpanded && m('i.material-icons', { style: { 'font-size': '18px' } }, icon),
-            m(MaterialIcon, {
-              name: mode === 'checkbox' ? (selected ? 'check' : 'close') : selected ? 'radio_checked' : 'radio_unchecked',
-              style: {
-                width: '18px',
-                height: '18px',
-                opacity: mode === 'checkbox' && !selected ? '0.3' : '1',
-              },
-            }),
+            icon && isExpanded && renderIcon(icon, { 'font-size': '18px' }),
+            indicatorIcon,
           ]
         : [
             // Left-aligned: indicator on left, text and icon on right
-            m(MaterialIcon, {
-              name: mode === 'checkbox' ? (selected ? 'check' : 'close') : selected ? 'radio_checked' : 'radio_unchecked',
-              style: {
-                width: '18px',
-                height: '18px',
-                opacity: mode === 'checkbox' && !selected ? '0.3' : '1',
-              },
-            }),
-            icon && isExpanded && m('i.material-icons', { style: { 'font-size': '18px', 'margin-left': '8px' } }, icon),
-            isExpanded && m('span', { style: { 'margin-left': icon ? '8px' : '8px' } }, text),
+            indicatorIcon,
+            icon && isExpanded && renderIcon(icon, { 'font-size': '18px', 'margin-left': indicatorIcon ? '8px' : '0' }),
+            isExpanded && m('span', { style: { 'margin-left': icon || indicatorIcon ? '8px' : '0' } }, text),
           ];
 
       return m(
@@ -347,13 +435,15 @@ const NavbarSubItem: FactoryComponent<
         {
           class: selected ? 'selected' : '',
           style: {
-            padding: isExpanded ? '8px 16px 8px 48px' : '8px 16px',
+            padding: isExpanded ? '0 16px 0 48px' : '0 16px',
             cursor: 'pointer',
             display: 'flex',
             'align-items': 'center',
             gap: '8px',
             'font-size': '0.9em',
             'justify-content': isRightAligned ? 'space-between' : 'flex-start',
+            height: '48px',
+            'min-height': '48px',
           },
           onclick: handleClick,
         },
@@ -425,11 +515,11 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
         ? [
             // Right-aligned: text on left, icon on right
             isExpanded && m('span.sidenav-item-text', { style: { 'flex': '1', 'text-align': 'left', 'margin-right': '8px' } }, text || children),
-            m('i.material-icons', { style: { 'min-width': '24px', 'width': '24px' } }, icon || ''),
+            renderIcon(icon, { 'min-width': '24px', 'width': '24px' }),
           ]
         : [
             // Left-aligned: icon on left, text on right
-            m('i.material-icons', { style: { 'min-width': '24px', 'width': '24px' } }, icon || ''),
+            renderIcon(icon, { 'min-width': '24px', 'width': '24px' }),
             isExpanded && m('span.sidenav-item-text', { style: { 'margin-left': '8px', 'flex': '1' } }, text || children),
           ];
 
