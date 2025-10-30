@@ -24,7 +24,7 @@
   "license": "MIT",
   "devDependencies": {
     "pnpm": "10.20.0",
-    "rimraf": "^6.0.1",
+    "rimraf": "^6.1.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
