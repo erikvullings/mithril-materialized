@@ -346,14 +346,7 @@ m(Sidenav, {
                 }),
                 m(SidenavItem, { divider: true }),
                 m(SidenavItem, { subheader: true, text: 'Navigation' }),
-                m(SidenavItem, {
-                  text: 'Settings',
-                  icon: 'settings',
-                  active: state.activeMenuItem === 3,
-                  onclick: () => {
-                    state.activeMenuItem = 3;
-                  },
-                }),
+
                 m(SidenavItem, {
                   text: 'Help',
                   icon: 'help',

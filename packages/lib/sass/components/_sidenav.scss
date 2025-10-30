@@ -130,6 +130,8 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
   backface-visibility: hidden;
   transform: translateX(-105%);
   transition: transform 0.3s ease, left 0.3s ease, right 0.3s ease;
+  display: flex;
+  flex-direction: column;
 
   @extend .z-depth-1 !optional;
   
@@ -588,6 +590,11 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
       }
     }
   }
+}
+
+// Footer item positioning
+.sidenav-footer-item {
+  margin-top: auto;
 }
 
 // Animation for smooth width transitions
