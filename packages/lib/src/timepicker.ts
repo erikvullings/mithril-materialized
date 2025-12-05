@@ -22,6 +22,7 @@ export interface TimepickerOptions {
   autoClose?: boolean; // auto close when minute is selected
   twelveHour?: boolean; // change to 12 hour AM/PM clock from 24 hour
   vibrate?: boolean; // vibrate the device when dragging clock hand
+  roundBy5?: boolean;
 
   // Callbacks
   onOpen?: () => void;
@@ -93,6 +94,7 @@ const defaultOptions: Required<TimepickerOptions> = {
   autoClose: false,
   twelveHour: true,
   vibrate: true,
+  roundBy5: false,
   onOpen: () => {},
   onOpenStart: () => {},
   onOpenEnd: () => {},
@@ -153,7 +155,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     state.dx = clickPos.x - state.x0;
     state.dy = clickPos.y - state.y0;
 
-    setHand(state.dx, state.dy, false);
+    setHand(state.dx, state.dy, options.roundBy5);
 
     document.addEventListener('mousemove', handleDocumentClickMove);
     document.addEventListener('touchmove', handleDocumentClickMove);
@@ -167,7 +169,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     const x = clickPos.x - state.x0;
     const y = clickPos.y - state.y0;
     state.moved = true;
-    setHand(x, y, false, true);
+    setHand(x, y, options.roundBy5, true);
     m.redraw();
   };
 
