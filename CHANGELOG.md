@@ -1,3 +1,10 @@
+## [3.5.6](https://github.com/erikvullings/mithril-materialized/compare/v3.5.5...v3.5.6) (2025-12-21)
+
+
+### Bug Fixes
+
+* Added feature to optionally NOT close on button click by setting ([7a55a63](https://github.com/erikvullings/mithril-materialized/commit/7a55a63cc4b561b8921cb207340f1e96fada868b))
+
 ## [3.5.5](https://github.com/erikvullings/mithril-materialized/compare/v3.5.4...v3.5.5) (2025-10-30)
 
 
