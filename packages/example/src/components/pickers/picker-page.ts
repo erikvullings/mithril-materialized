@@ -322,6 +322,7 @@ m(ModalPanel, {
             initialStartDate: new Date(`${year}-03-01`),
             initialEndDate: new Date(`${year}-03-15`),
             showClearBtn: true,
+            onSelect: (start, end) => console.table({ start, end }),
             onchange: (value) => {
               console.log('Date range selected:', value);
               onchange(value);
@@ -375,6 +376,7 @@ m(DatePicker, {
   helperText: 'Click to select start and end dates',
   initialStartDate: new Date('${year}-03-01'),
   initialEndDate: new Date('${year}-03-15'),
+  onSelect: (start, end) => console.table({ start, end }),
   onchange: (value) => console.log('Range:', value), // Returns "YYYY-MM-DD - YYYY-MM-DD"
 })
 

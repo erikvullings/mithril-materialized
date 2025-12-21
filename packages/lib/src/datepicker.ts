@@ -1087,8 +1087,8 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
 
                           if (options.dateRange) {
                             if (state.startDate && state.endDate && attrs.onchange) {
-                              const startStr = toString(state.startDate, 'yyyy-mm-dd');
-                              const endStr = toString(state.endDate, 'yyyy-mm-dd');
+                              const startStr = formatDate(state.startDate, 'yyyy-mm-dd', options);
+                              const endStr = formatDate(state.endDate, 'yyyy-mm-dd', options);
                               attrs.onchange(`${startStr} - ${endStr}`);
                             }
                           } else {
