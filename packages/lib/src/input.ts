@@ -467,14 +467,14 @@ const InputField =
         return m('.input-field', { className: cn, style }, [
           iconName ? m('i.material-icons.prefix', iconName) : undefined,
           m('input', {
-            class: shouldValidate ? 'validate' : undefined,
+            class:
+              type === 'range' && attrs.vertical ? 'range-slider vertical' : shouldValidate ? 'validate' : undefined,
             ...params,
             type,
             tabindex: 0,
             id,
             placeholder,
             value: controlled ? value : undefined,
-            class: type === 'range' && attrs.vertical ? 'range-slider vertical' : undefined,
             style:
               type === 'range' && attrs.vertical
                 ? {
