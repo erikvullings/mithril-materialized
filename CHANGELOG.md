@@ -1,3 +1,10 @@
+## [3.5.7](https://github.com/erikvullings/mithril-materialized/compare/v3.5.6...v3.5.7) (2025-12-21)
+
+
+### Bug Fixes
+
+* Close [#26](https://github.com/erikvullings/mithril-materialized/issues/26), DatePicker range bug. ([8d1ddc8](https://github.com/erikvullings/mithril-materialized/commit/8d1ddc8a73d7fad73dbfcb41f5b664362b58e6a2))
+
 ## [3.5.6](https://github.com/erikvullings/mithril-materialized/compare/v3.5.5...v3.5.6) (2025-12-21)
 
 
