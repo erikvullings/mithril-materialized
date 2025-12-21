@@ -266,6 +266,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
                     className: `modal-close ${buttonProps.className || ''}`,
                     onclick: (e: UIEvent) => {
                       if (buttonProps.onclick) buttonProps.onclick(e);
+                      closeOnButtonClick && closeModal(attrs);
                     },
                   })
                 )
