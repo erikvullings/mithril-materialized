@@ -32,10 +32,12 @@ export interface ModalAttrs extends Attributes {
   onToggle?: (open: boolean) => void;
   /** Called when modal is closed */
   onClose?: () => void;
-  /** Show close button in top right */
+  /** Show close button in top right (default true) */
   showCloseButton?: boolean;
-  /** Close modal when clicking backdrop */
+  /** Close modal when clicking backdrop (default true) */
   closeOnBackdropClick?: boolean;
+  /** Close modal when clicking a button (default true) */
+  closeOnButtonClick?: boolean;
   /** Close modal when pressing escape key */
   closeOnEsc?: boolean;
 }
@@ -122,6 +124,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
         className,
         showCloseButton = true,
         closeOnBackdropClick = true,
+        closeOnButtonClick = true,
       } = attrs;
 
       const modalClasses = [
@@ -263,7 +266,6 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
                     className: `modal-close ${buttonProps.className || ''}`,
                     onclick: (e: UIEvent) => {
                       if (buttonProps.onclick) buttonProps.onclick(e);
-                      closeModal(attrs);
                     },
                   })
                 )
