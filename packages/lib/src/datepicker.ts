@@ -1,6 +1,6 @@
 import m, { FactoryComponent } from 'mithril';
 import { InputAttrs } from './input-options';
-import { range, uniqueId } from './utils';
+import { range, uniqueId, renderToPortal, clearPortal } from './utils';
 
 export interface DatePickerI18n {
   cancel?: string;
@@ -187,6 +187,7 @@ interface DatePickerState {
   formats: { [key: string]: () => string | number };
   monthDropdownOpen: boolean;
   yearDropdownOpen: boolean;
+  portalContainerId: string;
 }
 
 /**
@@ -964,6 +965,155 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
     m.redraw();
   };
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && state.isOpen) {
+      state.isOpen = false;
+      const options = mergeOptions({} as DatePickerAttrs);
+      if (options.onClose) options.onClose();
+      clearPortal(state.portalContainerId);
+      m.redraw();
+    }
+  };
+
+  const renderPickerToPortal = (attrs: DatePickerAttrs) => {
+    const options = mergeOptions(attrs);
+
+    const pickerModal = m(
+      '.datepicker-modal-wrapper',
+      {
+        style: {
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+      },
+      [
+        // Modal overlay
+        m('.modal-overlay', {
+          style: {
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: '1002',
+          },
+          onclick: () => {
+            state.isOpen = false;
+            if (options.onClose) options.onClose();
+            m.redraw();
+          },
+        }),
+
+        // Modal content
+        m(
+          '.modal.datepicker-modal.open',
+          {
+            id: `modal-${state.id}`,
+            tabindex: 0,
+            style: {
+              position: 'relative',
+              zIndex: '1003',
+              display: 'block',
+              opacity: 1,
+              top: 'auto',
+              transform: 'scaleX(1) scaleY(1)',
+              margin: '0 auto',
+            },
+          },
+          [
+            m(
+              '.modal-content.datepicker-container',
+              {
+                onclick: (e: Event) => {
+                  const target = e.target as HTMLElement;
+                  if (!target.closest('.select-wrapper') && !target.closest('.dropdown-content')) {
+                    state.monthDropdownOpen = false;
+                    state.yearDropdownOpen = false;
+                  }
+                },
+              },
+              [
+                m(DateDisplay, { options }),
+                m('.datepicker-calendar-container', [
+                  m('.datepicker-calendar', [
+                    m(DateControls, {
+                      options,
+                      randId: `datepicker-title-${Math.random().toString(36).slice(2)}`,
+                    }),
+                    m(Calendar, {
+                      year: state.calendars[0].year,
+                      month: state.calendars[0].month,
+                      options,
+                    }),
+                  ]),
+                  m('.datepicker-footer', [
+                    options.showClearBtn &&
+                      m(
+                        'button.btn-flat.datepicker-clear.waves-effect',
+                        {
+                          type: 'button',
+                          onclick: () => {
+                            setDate(null, false, options);
+                            state.isOpen = false;
+                          },
+                        },
+                        options.i18n.clear
+                      ),
+                    m(
+                      'button.btn-flat.datepicker-cancel.waves-effect',
+                      {
+                        type: 'button',
+                        onclick: () => {
+                          state.isOpen = false;
+                          if (options.onClose) options.onClose();
+                        },
+                      },
+                      options.i18n.cancel
+                    ),
+                    m(
+                      'button.btn-flat.datepicker-done.waves-effect',
+                      {
+                        type: 'button',
+                        onclick: () => {
+                          state.isOpen = false;
+
+                          if (options.dateRange) {
+                            if (state.startDate && state.endDate && attrs.onchange) {
+                              const startStr = toString(state.startDate, 'yyyy-mm-dd');
+                              const endStr = toString(state.endDate, 'yyyy-mm-dd');
+                              attrs.onchange(`${startStr} - ${endStr}`);
+                            }
+                          } else {
+                            if (state.date && attrs.onchange) {
+                              attrs.onchange(toString(state.date, 'yyyy-mm-dd'));
+                            }
+                          }
+
+                          if (options.onClose) options.onClose();
+                        },
+                      },
+                      options.i18n.done
+                    ),
+                  ]),
+                ]),
+              ]
+            ),
+          ]
+        ),
+      ]
+    );
+
+    renderToPortal(state.portalContainerId, pickerModal, 1004);
+  };
+
   return {
     oninit: (vnode) => {
       const attrs = vnode.attrs;
@@ -980,6 +1130,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
         calendars: [{ month: 0, year: 0 }],
         monthDropdownOpen: false,
         yearDropdownOpen: false,
+        portalContainerId: `datepicker-portal-${uniqueId()}`,
         formats: {
           d: () => state.date?.getDate() || 0,
           dd: () => {
@@ -1034,11 +1185,28 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
 
       // Add document click listener to close dropdowns
       document.addEventListener('click', handleDocumentClick);
+      // Add ESC key listener
+      document.addEventListener('keydown', handleKeyDown);
     },
 
     onremove: () => {
-      // Clean up event listener
+      // Clean up event listeners
       document.removeEventListener('click', handleDocumentClick);
+      document.removeEventListener('keydown', handleKeyDown);
+
+      // Clean up portal if picker was open
+      if (state.isOpen) {
+        clearPortal(state.portalContainerId);
+      }
+    },
+
+    onupdate: (vnode) => {
+      // Render to portal when picker is open, clear when closed
+      if (state.isOpen) {
+        renderPickerToPortal(vnode.attrs);
+      } else {
+        clearPortal(state.portalContainerId);
+      }
     },
 
     view: (vnode) => {
@@ -1181,111 +1349,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
             ),
           // Helper text
           helperText && m('span.helper-text', helperText),
-          // Modal datepicker
-          state.isOpen && [
-            m(
-              '.modal.datepicker-modal.open',
-              {
-                id: `modal-${state.id}`,
-                tabindex: 0,
-                style: {
-                  zIndex: 1003,
-                  display: 'block',
-                  opacity: 1,
-                  top: '10%',
-                  transform: 'scaleX(1) scaleY(1)',
-                },
-              },
-              [
-                m(
-                  '.modal-content.datepicker-container',
-                  {
-                    onclick: (e: Event) => {
-                      // Close dropdowns when clicking anywhere in the modal content
-                      const target = e.target as HTMLElement;
-                      if (!target.closest('.select-wrapper') && !target.closest('.dropdown-content')) {
-                        state.monthDropdownOpen = false;
-                        state.yearDropdownOpen = false;
-                      }
-                    },
-                  },
-                  [
-                    m(DateDisplay, { options }),
-                    m('.datepicker-calendar-container', [
-                      m('.datepicker-calendar', [
-                        m(DateControls, { options, randId: `datepicker-title-${Math.random().toString(36).slice(2)}` }),
-                        m(Calendar, { year: state.calendars[0].year, month: state.calendars[0].month, options }),
-                      ]),
-                      m('.datepicker-footer', [
-                        options.showClearBtn &&
-                          m(
-                            'button.btn-flat.datepicker-clear.waves-effect',
-                            {
-                              type: 'button',
-                              style: '',
-                              onclick: () => {
-                                setDate(null, false, options);
-                                state.isOpen = false;
-                              },
-                            },
-                            options.i18n.clear
-                          ),
-                        m(
-                          'button.btn-flat.datepicker-cancel.waves-effect',
-                          {
-                            type: 'button',
-                            onclick: () => {
-                              state.isOpen = false;
-                              if (options.onClose) options.onClose();
-                            },
-                          },
-                          options.i18n.cancel
-                        ),
-                        m(
-                          'button.btn-flat.datepicker-done.waves-effect',
-                          {
-                            type: 'button',
-                            onclick: () => {
-                              state.isOpen = false;
-
-                              if (options.dateRange) {
-                                // Range mode
-                                if (state.startDate && state.endDate && onchange) {
-                                  const startStr = toString(state.startDate, 'yyyy-mm-dd');
-                                  const endStr = toString(state.endDate, 'yyyy-mm-dd');
-                                  onchange(`${startStr} - ${endStr}`);
-                                }
-                              } else {
-                                // Single date mode
-                                if (state.date && onchange) {
-                                  onchange(toString(state.date, 'yyyy-mm-dd')); // Always return ISO format
-                                }
-                              }
-
-                              if (options.onClose) options.onClose();
-                            },
-                          },
-                          options.i18n.done
-                        ),
-                      ]),
-                    ]),
-                  ]
-                ),
-              ]
-            ),
-            // Modal overlay
-            m('.modal-overlay', {
-              style: {
-                zIndex: 1002,
-                display: 'block',
-                opacity: 0.5,
-              },
-              onclick: () => {
-                state.isOpen = false;
-                if (options.onClose) options.onClose();
-              },
-            }),
-          ],
+          // Modal is now rendered via portal in onupdate hook
         ]
       );
     },

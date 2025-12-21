@@ -1,4 +1,5 @@
 // Utility functions for the library
+import m from 'mithril';
 
 /**
  * Create a unique ID
@@ -158,3 +159,90 @@ export const getDropdownStyles = (
  * @example: console.log(range(5, 10)); // [5, 6, 7, 8, 9, 10]
  */
 export const range = (a: number, b: number): number[] => Array.from({ length: b - a + 1 }, (_, i) => a + i);
+
+// Portal container management for rendering modals outside parent stacking contexts
+interface PortalContainer {
+  element: HTMLElement;
+  refCount: number;
+}
+
+// Global registry for portal containers
+const portalContainers = new Map<string, PortalContainer>();
+
+/**
+ * Creates or retrieves a portal container appended to document.body.
+ * Uses reference counting to manage container lifecycle.
+ *
+ * @param id - Unique identifier for the portal container
+ * @param zIndex - Z-index for the portal container (default: 1004, above modals at 1003)
+ * @returns The portal container element
+ */
+export const getPortalContainer = (id: string, zIndex: number = 1004): HTMLElement => {
+  let container = portalContainers.get(id);
+
+  if (!container) {
+    const element = document.createElement('div');
+    element.id = id;
+    element.style.position = 'fixed';
+    element.style.top = '0';
+    element.style.left = '0';
+    element.style.width = '100%';
+    element.style.height = '100%';
+    element.style.pointerEvents = 'none'; // Allow clicks through to underlying elements
+    element.style.zIndex = zIndex.toString();
+
+    document.body.appendChild(element);
+
+    container = { element, refCount: 0 };
+    portalContainers.set(id, container);
+  }
+
+  container.refCount++;
+  return container.element;
+};
+
+/**
+ * Decrements reference count and removes portal container if no longer needed.
+ *
+ * @param id - Portal container identifier
+ */
+export const releasePortalContainer = (id: string): void => {
+  const container = portalContainers.get(id);
+
+  if (container) {
+    container.refCount--;
+
+    if (container.refCount <= 0) {
+      container.element.remove();
+      portalContainers.delete(id);
+    }
+  }
+};
+
+/**
+ * Renders a Mithril vnode into a portal container using m.render().
+ * This allows components to render outside their parent DOM hierarchy,
+ * useful for modals and pickers that need to escape stacking contexts.
+ *
+ * @param containerId - Portal container identifier
+ * @param vnode - Mithril vnode to render
+ * @param zIndex - Z-index for portal container (default: 1004)
+ */
+export const renderToPortal = (containerId: string, vnode: any, zIndex: number = 1004): void => {
+  const container = getPortalContainer(containerId, zIndex);
+  m.render(container, vnode);
+};
+
+/**
+ * Clears portal content and releases container reference.
+ * If this is the last reference, the container will be removed from the DOM.
+ *
+ * @param containerId - Portal container identifier
+ */
+export const clearPortal = (containerId: string): void => {
+  const container = portalContainers.get(containerId);
+  if (container) {
+    m.render(container.element, null);
+    releasePortalContainer(containerId);
+  }
+};

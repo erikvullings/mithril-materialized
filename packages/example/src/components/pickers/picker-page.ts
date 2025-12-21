@@ -1,8 +1,14 @@
-import { DatePicker, TimePicker, CodeBlock, Switch } from 'mithril-materialized';
+import { DatePicker, TimePicker, CodeBlock, Switch, ModalPanel } from 'mithril-materialized';
 import m from 'mithril';
 
 export const PickerPage = () => {
-  const state = { disabled: false };
+  const state = {
+    disabled: false,
+    modalOpen: false,
+    modalDate: '',
+    modalTime: '',
+    modalDateRange: '',
+  };
 
   const onchange = (v: unknown) => console.log(`onchange fired. New value: ${v}`);
   const oninput = (v: unknown) => console.log(`oninput fired. New value: ${v}`);
@@ -178,6 +184,128 @@ export const PickerPage = () => {
             onchange,
           }),
         ]),
+
+        // Pickers in Modal Examples
+        m('h3.header', 'Pickers in Modal'),
+        m(
+          'p',
+          'DatePicker and TimePicker now work correctly inside modals - they float above the modal instead of being constrained by it.'
+        ),
+
+        m('.row', [
+          m(
+            'button.btn.waves-effect.waves-light',
+            {
+              onclick: () => {
+                state.modalOpen = true;
+              },
+            },
+            ['Open Modal with Pickers', m('i.material-icons.right', 'calendar_today')]
+          ),
+        ]),
+
+        m(ModalPanel, {
+          id: 'picker-modal',
+          title: 'Select Date and Time',
+          description: m('div', [
+            m('p', 'The pickers below will float above this modal thanks to portal rendering:'),
+            m('.row', [
+              m(DatePicker, {
+                class: 'col s12',
+                label: 'Select a Date',
+                helperText: 'This picker floats above the modal',
+                iconName: 'event',
+                defaultValue: state.modalDate || `${year}-01-15`,
+                showClearBtn: true,
+                onchange: (v) => {
+                  state.modalDate = v;
+                  console.log('Modal date selected:', v);
+                },
+              }),
+            ]),
+            m('.row', [
+              m(TimePicker, {
+                class: 'col s12',
+                label: 'Select a Time',
+                helperText: 'This picker also floats above the modal',
+                iconName: 'access_time',
+                useModal: true,
+                twelveHour: true,
+                defaultValue: state.modalTime || '09:00',
+                showClearBtn: true,
+                onchange: (v) => {
+                  state.modalTime = v;
+                  console.log('Modal time selected:', v);
+                },
+              }),
+            ]),
+            m('.row', [
+              m(DatePicker, {
+                class: 'col s12',
+                dateRange: true,
+                label: 'Select Date Range',
+                helperText: 'Range picker also works in modals',
+                iconName: 'date_range',
+                initialStartDate: new Date(`${year}-03-01`),
+                initialEndDate: new Date(`${year}-03-15`),
+                showClearBtn: true,
+                onchange: (v) => {
+                  state.modalDateRange = v;
+                  console.log('Modal date range selected:', v);
+                },
+              }),
+            ]),
+            m('p.grey-text', [
+              'Selected date: ',
+              m('strong', state.modalDate || 'none'),
+              m('br'),
+              'Selected time: ',
+              m('strong', state.modalTime || 'none'),
+              m('br'),
+              'Selected range: ',
+              m('strong', state.modalDateRange || 'none'),
+            ]),
+          ]),
+          isOpen: state.modalOpen,
+          onToggle: (open) => {
+            state.modalOpen = open;
+          },
+          buttons: [
+            {
+              label: 'Close',
+              onclick: () => {
+                state.modalOpen = false;
+              },
+            },
+          ],
+        }),
+
+        m(CodeBlock, {
+          code: `// Pickers now work correctly inside modals!
+m(ModalPanel, {
+  title: 'Select Date and Time',
+  description: m('div', [
+    m(DatePicker, {
+      label: 'Select a Date',
+      helperText: 'This picker floats above the modal',
+      iconName: 'event',
+      onchange: (v) => console.log('Date:', v),
+    }),
+    m(TimePicker, {
+      label: 'Select a Time',
+      useModal: true,
+      onchange: (v) => console.log('Time:', v),
+    }),
+    m(DatePicker, {
+      dateRange: true,
+      label: 'Select Date Range',
+      onchange: (v) => console.log('Range:', v),
+    }),
+  ]),
+  isOpen: state.modalOpen,
+  onToggle: (open) => state.modalOpen = open,
+})`,
+        }),
 
         // Date Range Picker Examples
         m('h3.header', 'Date Range Picker'),

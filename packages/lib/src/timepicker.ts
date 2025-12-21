@@ -1,6 +1,6 @@
 import m, { FactoryComponent } from 'mithril';
 import { InputAttrs } from './input-options';
-import { uniqueId } from './utils';
+import { uniqueId, renderToPortal, clearPortal } from './utils';
 
 export interface TimepickerI18n {
   cancel?: string;
@@ -56,6 +56,7 @@ interface TimepickerState {
   y0: number;
   dx: number;
   dy: number;
+  portalContainerId: string;
   // SVG elements
   hand?: SVGLineElement;
   bg?: SVGCircleElement;
@@ -682,6 +683,79 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     };
   };
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && state.isOpen) {
+      close();
+      clearPortal(state.portalContainerId);
+      m.redraw();
+    }
+  };
+
+  const renderPickerToPortal = (attrs: TimePickerAttrs) => {
+    const { showClearBtn = false, clearLabel = 'Clear', closeLabel = 'Cancel' } = attrs;
+
+    const pickerModal = m(
+      '.timepicker-modal-wrapper',
+      {
+        style: {
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+      },
+      [
+        // Modal overlay
+        m('.modal-overlay', {
+          style: {
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: '1002',
+          },
+          onclick: () => {
+            close();
+            m.redraw();
+          },
+        }),
+
+        // Modal content
+        m(
+          '.modal.timepicker-modal.open',
+          {
+            style: {
+              position: 'relative',
+              zIndex: '1003',
+              display: 'block',
+              opacity: 1,
+              top: 'auto',
+              transform: 'scaleX(1) scaleY(1)',
+              margin: '0 auto',
+            },
+          },
+          [
+            m(TimepickerModal, {
+              showClearBtn,
+              clearLabel,
+              closeLabel,
+              doneLabel: 'OK',
+            }),
+          ]
+        ),
+      ]
+    );
+
+    renderToPortal(state.portalContainerId, pickerModal, 1004);
+  };
+
   return {
     oninit: (vnode) => {
       const attrs = vnode.attrs;
@@ -699,12 +773,16 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
         y0: 0,
         dx: 0,
         dy: 0,
+        portalContainerId: `timepicker-portal-${uniqueId()}`,
       };
 
       // Handle value after options are set
       if (attrs.defaultValue) {
         updateTimeFromInput(attrs.defaultValue);
       }
+
+      // Add ESC key listener
+      document.addEventListener('keydown', handleKeyDown);
     },
 
     onremove: () => {
@@ -719,6 +797,23 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
       document.removeEventListener('touchmove', handleDocumentClickMove);
       document.removeEventListener('mouseup', handleDocumentClickEnd);
       document.removeEventListener('touchend', handleDocumentClickEnd);
+      document.removeEventListener('keydown', handleKeyDown);
+
+      // Clean up portal if picker was open
+      if (state.isOpen) {
+        clearPortal(state.portalContainerId);
+      }
+    },
+
+    onupdate: (vnode) => {
+      const { useModal = true } = vnode.attrs;
+
+      // Only render to portal when using modal mode
+      if (useModal && state.isOpen) {
+        renderPickerToPortal(vnode.attrs);
+      } else {
+        clearPortal(state.portalContainerId);
+      }
     },
 
     view: ({ attrs }) => {
@@ -800,8 +895,8 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
           value: useModal
             ? displayValue
             : state.hours !== undefined && state.minutes !== undefined
-            ? `${state.hours.toString().padStart(2, '0')}:${state.minutes.toString().padStart(2, '0')}`
-            : '',
+              ? `${state.hours.toString().padStart(2, '0')}:${state.minutes.toString().padStart(2, '0')}`
+              : '',
           placeholder: useModal ? placeholder : undefined,
           disabled,
           readonly,
@@ -844,33 +939,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
         // Helper text
         helperText && m('span.helper-text', helperText),
 
-        // Modal timepicker
-        useModal &&
-          state.isOpen && [
-            // Modal overlay
-            m('.modal-overlay', {
-              style: {
-                zIndex: 1002,
-                display: 'block',
-                opacity: 0.5,
-              },
-              onclick: () => close(),
-            }),
-            // Modal content
-            m(
-              '.modal.timepicker-modal.open',
-              {
-                style: {
-                  zIndex: 1003,
-                  display: 'block',
-                  opacity: 1,
-                  top: '10%',
-                  transform: 'scaleX(1) scaleY(1)',
-                },
-              },
-              m(TimepickerModal, { showClearBtn, clearLabel, closeLabel, doneLabel: 'OK' })
-            ),
-          ],
+        // Modal is now rendered via portal in onupdate hook
       ]);
     },
   };
