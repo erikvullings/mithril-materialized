@@ -23,7 +23,7 @@ export const InputCheckbox: FactoryComponent<InputCheckboxAttrs> = () => {
     view: ({ attrs: { className = 'col s12', onchange, label, checked, disabled, description, style, inputId } }) => {
       if (!checkboxId) checkboxId = inputId || uniqueId();
       return m(
-        `p`,
+        'div',
         { className, style },
         m('label', { for: checkboxId }, [
           m('input[type=checkbox][tabindex=0]', {
