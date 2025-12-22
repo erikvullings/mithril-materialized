@@ -517,7 +517,7 @@ m(DatePicker, {
             i18n: {
               cancel: 'Schließen',
               clear: 'Löschen',
-              done: 'OK',
+              done: 'Fertig',
             },
             onchange,
           })
