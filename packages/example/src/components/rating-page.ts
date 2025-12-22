@@ -219,7 +219,7 @@ m(Rating, {
   showTooltips: true,
   tooltipLabels: qualityLabels,
   onchange: (value: number) => { rating = value; },
-  getLabelText: (value: number, max: number) => 
+  getLabelText: (value: number, max: number) =>
     value === 0 ? 'No rating' : \`\${qualityLabels[value - 1]} (\${value}/\${max})\`,
 })`,
         }),
@@ -373,7 +373,7 @@ m(Rating, {
                     { id: 1, label: '1 (Integer)' },
                     { id: 0.5, label: '0.5 (Half steps)' },
                   ],
-                  onchange: (value) => {
+                  onchange: (value: Array<number>) => {
                     stepSize = value[0];
                   },
                 }),
@@ -389,7 +389,7 @@ m(Rating, {
                     { id: 'medium', label: 'Medium' },
                     { id: 'large', label: 'Large' },
                   ],
-                  onchange: (value) => {
+                  onchange: (value: Array<'small' | 'medium' | 'large'>) => {
                     selectedSize = value[0];
                   },
                 }),
@@ -403,7 +403,7 @@ m(Rating, {
                     { id: 'standard', label: 'Standard' },
                     { id: 'comfortable', label: 'Comfortable' },
                   ],
-                  onchange: (value) => {
+                  onchange: (value: Array<'compact' | 'standard' | 'comfortable'>) => {
                     selectedDensity = value[0];
                   },
                 }),
@@ -414,7 +414,7 @@ m(Rating, {
                 m(Switch, {
                   label: 'Read Only',
                   checked: isreadonly,
-                  onchange: (checked) => {
+                  onchange: (checked: boolean) => {
                     isreadonly = checked;
                   },
                 }),
@@ -423,7 +423,7 @@ m(Rating, {
                 m(Switch, {
                   label: 'Disabled',
                   checked: isDisabled,
-                  onchange: (checked) => {
+                  onchange: (checked: boolean) => {
                     isDisabled = checked;
                   },
                 }),

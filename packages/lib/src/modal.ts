@@ -36,7 +36,7 @@ export interface ModalAttrs extends Attributes {
   showCloseButton?: boolean;
   /** Close modal when clicking backdrop (default true) */
   closeOnBackdropClick?: boolean;
-  /** Close modal when clicking a button (default true) */
+  /** Close modal when clicking a button (default false) */
   closeOnButtonClick?: boolean;
   /** Close modal when pressing escape key */
   closeOnEsc?: boolean;
@@ -124,7 +124,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
         className,
         showCloseButton = true,
         closeOnBackdropClick = true,
-        closeOnButtonClick = true,
+        closeOnButtonClick = false,
       } = attrs;
 
       const modalClasses = [
