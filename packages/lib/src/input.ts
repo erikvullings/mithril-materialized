@@ -199,20 +199,32 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
                 textarea.value = String(attrs.defaultValue);
               }
 
-              // Height will be calculated by hidden div
-
               // Update character count state for counter component
               if (maxLength) {
                 state.currentLength = textarea.value.length;
               }
+
+              // Calculate initial height after DOM is fully ready
+              // Use requestAnimationFrame to ensure layout is complete
+              if (state.hiddenDiv) {
+                requestAnimationFrame(() => {
+                  if (state.hiddenDiv) {
+                    updateHeight(textarea, state.hiddenDiv);
+                    m.redraw();
+                  }
+                });
+              }
             },
             onupdate: ({ dom }) => {
               const textarea = dom as HTMLTextAreaElement;
-              if (state.height) textarea.style.height = state.height;
-
-              // Trigger height recalculation when value changes programmatically
+              
+              // Recalculate and apply height
               if (state.hiddenDiv) {
                 updateHeight(textarea, state.hiddenDiv);
+              }
+              
+              if (state.height) {
+                textarea.style.height = state.height;
               }
             },
             onfocus: () => {

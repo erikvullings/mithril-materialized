@@ -19,7 +19,17 @@ import m from 'mithril';
 
 export const InputPage = () => {
   let textInputValue = '';
-  let textAreaValue = '';
+  let textAreaValue = `Test De lucht is niet echt blauw, maar het lijkt wel zo. Het is een uitdrukking dat we gebruiken om te zeggen dat iemand verdrietig of bedruikt is.
+
+In de aardatmosfeer is de kleur van de lucht gemaakt door de reflectie van de zonneschijn en andere lichtbronnen. De blauwe kleur van de lucht is het resultaat van een fenomen dat wordt genoemd Rayleigh-scattering.
+
+Wanneer de zonneschijn door de luchtkolonnen in de aardatmosfeer passeert, wordt de lichtgolf gedeeltelijk doorgedrukt en ontwikkeld. De kleinere deeltjes van de lucht, zoals nitrogen- en oxygentypische moleculen, scatterschen het licht op kleine hoeken. Dit maakt de lichtgolf langwerpig en rood en geeft de lucht een blauwe tint.
+
+De reden waarom de blauwe kleur van de lucht zover reikt is dat de luchtkolonnen in de aardatmosfeer heel klein zijn. De kleinere deeltjes scatterschen het licht op kleine hoeken, waardoor de blauwe kleur verder kan reiken dan andere kleuren.
+
+In 1666 stelde de Engelse natuurkundige Isaac Newton dat de kleur van de lucht afhankelijk was van de lengte van de lichtgolf. Hij ontdekte dat de kleinere deeltjes in de luchtkolonnen de lichtgolven op kleine hoeken scatterschen, waardoor de blauwe kleur verder kan reiken dan andere kleuren.
+
+Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het resultaat is van Rayleigh-scattering en de eigenschappen van de aardatmosfeer.`;
   let autocompleteValue = '';
   let emailValue = '';
   let urlValue = '';
@@ -278,7 +288,7 @@ export const InputPage = () => {
             m(CodeBlock, {
               code: `
           // Uncontrolled example
-          m(TextArea, { 
+          m(TextArea, {
             label: 'Please, describe yourself',
             helperText: 'Don\'t be shy',
             maxLength: 100,
@@ -311,22 +321,18 @@ export const InputPage = () => {
         m('h4.header', 'Height Comparison: TextInput vs TextArea'),
         m('p', 'When both have the same single-line content, they should have the same height:'),
         m('.row', [
-          m(
-            '.col.s6',
-            m(TextInput, {
-              label: 'TextInput (single line)',
-              defaultValue: 'Short text',
-              onchange: (v) => console.log('TextInput:', v),
-            })
-          ),
-          m(
-            '.col.s6',
-            m(TextArea, {
-              label: 'TextArea (single line)',
-              value: 'Short text',
-              onchange: (v) => console.log('TextArea:', v),
-            })
-          ),
+          m(TextInput, {
+            label: 'TextInput (single line)',
+            defaultValue: 'Short text',
+            className: 'col s6',
+            onchange: (v) => console.log('TextInput:', v),
+          }),
+          m(TextArea, {
+            label: 'TextArea (single line)',
+            defaultValue: 'Short text',
+            className: 'col s6',
+            onchange: (v) => console.log('TextArea:', v),
+          }),
         ]),
         m(CodeBlock, {
           code: `        // Both components with same content should have same height
@@ -341,7 +347,7 @@ export const InputPage = () => {
           m('.col.s6',
             m(TextArea, {
               label: 'TextArea (single line)',
-              value: 'Short text', 
+              value: 'Short text',
               onchange: (v) => console.log('TextArea:', v),
             })
           ),
