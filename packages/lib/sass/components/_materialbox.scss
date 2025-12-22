@@ -16,28 +16,37 @@
   }
 }
 
-#materialbox-overlay {
-  position:fixed;
+.materialbox-overlay {
+  position: fixed;
   top: 0;
+  left: 0;
   right: 0;
   bottom: 0;
-  left: 0;
-  background-color: #292929;
+  background-color: rgba(0, 0, 0, 0.85);
   z-index: 1000;
+  opacity: 0;
+  cursor: zoom-out;
   will-change: opacity;
+}
+
+.materialbox-image {
+  position: fixed;
+  cursor: zoom-out;
+  max-width: none;
+  z-index: 1001;
+  will-change: top, left, width, height;
 }
 
 .materialbox-caption {
   position: fixed;
-  display: none;
-  color: #fff;
-  line-height: 50px;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 16px;
   text-align: center;
-  padding: 0% 15%;
-  height: 50px;
-  z-index: 1000;
+  opacity: 0;
+  z-index: 1002;
+  pointer-events: none;
   -webkit-font-smoothing: antialiased;
 }

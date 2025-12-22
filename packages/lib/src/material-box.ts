@@ -36,7 +36,7 @@ export interface MaterialBoxAttrs extends MaterialBoxOptions, Attributes {
 
 /**
  * Pure TypeScript MaterialBox - creates an image lightbox that fills the screen when clicked
- * No MaterializeCSS dependencies
+ * Uses CSS classes from _materialbox.scss
  */
 export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
   const state = {
@@ -54,21 +54,12 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
 
     if (attrs.onOpenStart) attrs.onOpenStart();
 
+    const inDuration = attrs.inDuration || 275;
+
     // Create overlay
     const overlay = document.createElement('div');
     overlay.className = 'materialbox-overlay';
-    overlay.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.85);
-      z-index: 1000;
-      opacity: 0;
-      transition: opacity ${attrs.inDuration || 275}ms ease;
-      cursor: zoom-out;
-    `;
+    overlay.style.transition = `opacity ${inDuration}ms ease`;
 
     // Create enlarged image
     const enlargedImg = document.createElement('img');
@@ -95,17 +86,11 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
     }
 
     // Set initial position and size (same as original image)
-    enlargedImg.style.cssText = `
-      position: fixed;
-      top: ${imgRect.top}px;
-      left: ${imgRect.left}px;
-      width: ${imgRect.width}px;
-      height: ${imgRect.height}px;
-      transition: all ${attrs.inDuration || 275}ms ease;
-      cursor: zoom-out;
-      max-width: none;
-      z-index: 1001;
-    `;
+    enlargedImg.style.top = `${imgRect.top}px`;
+    enlargedImg.style.left = `${imgRect.left}px`;
+    enlargedImg.style.width = `${imgRect.width}px`;
+    enlargedImg.style.height = `${imgRect.height}px`;
+    enlargedImg.style.transition = `all ${inDuration}ms ease`;
 
     // Add caption if provided
     let caption: HTMLElement | null = null;
@@ -113,19 +98,7 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
       caption = document.createElement('div');
       caption.className = 'materialbox-caption';
       caption.textContent = attrs.caption;
-      caption.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        color: white;
-        font-size: 16px;
-        text-align: center;
-        opacity: 0;
-        transition: opacity ${attrs.inDuration || 275}ms ease ${attrs.inDuration || 275}ms;
-        z-index: 1002;
-        pointer-events: none;
-      `;
+      caption.style.transition = `opacity ${inDuration}ms ease ${inDuration}ms`;
     }
 
     // Add to DOM
@@ -164,7 +137,7 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
     // Call onOpenEnd after animation
     setTimeout(() => {
       if (attrs.onOpenEnd) attrs.onOpenEnd();
-    }, attrs.inDuration || 275);
+    }, inDuration);
   };
 
   const closeBox = (attrs: MaterialBoxAttrs) => {
@@ -227,6 +200,18 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
     view: ({ attrs }) => {
       const { src, alt, width, height, caption, className, style, ...otherAttrs } = attrs;
 
+      // Build style attribute - handle both string and object styles
+      let imgStyle: string | Record<string, string> = style || {};
+
+      if (typeof style !== 'string') {
+        // If style is an object or undefined, add default styles as object
+        imgStyle = {
+          cursor: 'zoom-in',
+          transition: 'opacity 200ms ease',
+          ...(style || {}),
+        };
+      }
+
       return m('img.materialboxed', {
         ...otherAttrs,
         src,
@@ -234,11 +219,7 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
         width,
         height,
         className: ['materialboxed', className].filter(Boolean).join(' ') || undefined,
-        style: {
-          cursor: 'zoom-in',
-          transition: 'opacity 200ms ease',
-          ...style,
-        },
+        style: imgStyle,
         onclick: (e: Event) => {
           e.preventDefault();
           openBox(e.target as HTMLImageElement, attrs);
