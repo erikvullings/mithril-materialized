@@ -1,3 +1,10 @@
+## [3.5.8](https://github.com/erikvullings/mithril-materialized/compare/v3.5.7...v3.5.8) (2025-12-21)
+
+
+### Bug Fixes
+
+* An InputCheckbox should not use a p as main element, as often ([491defb](https://github.com/erikvullings/mithril-materialized/commit/491defbf97446c1019bf8ee858cc5b5fdf512ee5))
+
 ## [3.5.7](https://github.com/erikvullings/mithril-materialized/compare/v3.5.6...v3.5.7) (2025-12-21)
 
 
