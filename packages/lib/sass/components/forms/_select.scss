@@ -150,9 +150,9 @@ body.keyboard-focused {
       background-color: var(--mm-dropdown-hover, variables.$select-option-hover);
     }
 
-    // &.selected {
-    //   background-color: var(--mm-dropdown-selected, variables.$select-option-selected);
-    // }
+    &.selected {
+      background-color: var(--mm-row-hover, variables.$select-option-hover);
+    }
   }
 }
 

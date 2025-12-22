@@ -215,7 +215,9 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
         m(
           'li',
           {
-            class: option.disabled ? 'disabled' : state.focusedIndex === attrs.options.indexOf(option) ? 'focused' : '',
+            class: `${option.disabled ? 'disabled' : ''}${
+              isSelected(option.id, selectedIds) ? ' selected' : ''
+            }${state.focusedIndex === attrs.options.indexOf(option) ? ' focused' : ''}`,
             ...(option.disabled
               ? {}
               : {
