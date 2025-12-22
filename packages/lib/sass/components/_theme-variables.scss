@@ -57,6 +57,9 @@
   --mm-dropdown-hover: #eee;
   --mm-dropdown-focus: #ddd;
   --mm-dropdown-selected: #e3f2fd;
+  
+  // Collection/Table hover (light theme)
+  --mm-row-hover: rgba(0, 0, 0, 0.04);
   --mm-shadow-umbra: rgba(0, 0, 0, 0.2);
   --mm-shadow-penumbra: rgba(0, 0, 0, 0.14);
   --mm-shadow-ambient: rgba(0, 0, 0, 0.12);
@@ -143,6 +146,10 @@ body {
   --mm-dropdown-hover: #444;
   --mm-dropdown-focus: #555;
   --mm-dropdown-selected: #1e3a8a;
+  
+  // Collection/Table hover (dark theme) - more subtle
+  --mm-row-hover: rgba(255, 255, 255, 0.04);
+  --mm-row-stripe: rgba(255, 255, 255, 0.02);
   
   // Switch colors (dark theme)
   --mm-switch-checked-track: rgba(128, 203, 196, 0.3);

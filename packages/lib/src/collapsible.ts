@@ -12,6 +12,8 @@ export interface CollapsibleItem extends Attributes {
 }
 
 export interface CollapsibleAttrs extends Attributes {
+  /** Optional header for the entire collapsible, similar to Collection header */
+  header?: string | Vnode<any, any>;
   /** The list of accordeon/collabsible items */
   items: CollapsibleItem[];
   /** If true, only one item can be expanded at a time (accordion mode) */
@@ -35,7 +37,11 @@ export const CollapsibleItem: FactoryComponent<
               },
               [
                 iconName ? m('i.material-icons', iconName) : undefined,
-                header ? (typeof header === 'string' ? m('span', header) : header) : undefined,
+                header
+                  ? typeof header === 'string'
+                    ? m('span.collapsible-header-text', header)
+                    : m('.collapsible-header-content', header)
+                  : undefined,
               ]
             )
           : undefined,
@@ -44,18 +50,9 @@ export const CollapsibleItem: FactoryComponent<
           {
             style: {
               display: isActive ? 'block' : 'none',
-              transition: 'display 0.3s ease',
             },
           },
-          [
-            m(
-              '.collapsible-body-content',
-              {
-                style: { padding: '2rem' },
-              },
-              body ? (typeof body === 'string' ? m('div', { innerHTML: body }) : body) : undefined
-            ),
-          ]
+          body ? (typeof body === 'string' ? m('div', { innerHTML: body }) : body) : undefined
         ),
       ]);
     },
@@ -82,7 +79,7 @@ export const Collapsible: FactoryComponent<CollapsibleAttrs> = () => {
     },
 
     view: ({ attrs }) => {
-      const { items, accordion = true, class: c, className, style, id } = attrs;
+      const { items, header, accordion = true, class: c, className, style, id } = attrs;
 
       const toggleItem = (index: number) => {
         if (accordion) {
@@ -103,28 +100,38 @@ export const Collapsible: FactoryComponent<CollapsibleAttrs> = () => {
         }
       };
 
+      const collapsibleItems = items.map((item, index) =>
+        m(CollapsibleItem, {
+          ...item,
+          key: index,
+          isActive: state.activeItems.has(index),
+          onToggle: () => toggleItem(index),
+        })
+      );
+
       return items && items.length > 0
-        ? m(
-            'ul.collapsible',
-            {
-              class: c || className,
-              style: {
-                border: '1px solid #ddd',
-                borderRadius: '2px',
-                margin: '0.5rem 0 1rem 0',
-                ...style,
+        ? header
+          ? m(
+              'ul.collapsible.with-header',
+              {
+                class: c || className,
+                style,
+                id,
               },
-              id,
-            },
-            items.map((item, index) =>
-              m(CollapsibleItem, {
-                ...item,
-                key: index,
-                isActive: state.activeItems.has(index),
-                onToggle: () => toggleItem(index),
-              })
+              [
+                m('li.collapsible-main-header', m('h4', typeof header === 'string' ? header : header)),
+                collapsibleItems,
+              ]
             )
-          )
+          : m(
+              'ul.collapsible',
+              {
+                class: c || className,
+                style,
+                id,
+              },
+              collapsibleItems
+            )
         : undefined;
     },
   };

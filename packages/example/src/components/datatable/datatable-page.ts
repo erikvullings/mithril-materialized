@@ -8,6 +8,7 @@ import {
   DataTableFilter,
   TreeView,
   TreeNode,
+  ThemeManager,
 } from 'mithril-materialized';
 
 // Sample data types
@@ -445,7 +446,12 @@ export const DataTablePage: FactoryComponent = () => {
                   },
 
                   // Custom row styling
-                  getRowClassName: (user) => (user.active ? '' : 'grey lighten-4'),
+                  getRowClassName: (user) =>
+                    user.active
+                      ? ''
+                      : ThemeManager.getEffectiveTheme() === 'light'
+                        ? 'grey lighten-4'
+                        : 'grey darken-4',
                 }),
               ]),
             ]),

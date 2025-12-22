@@ -26,8 +26,7 @@
     "./pickers.css": "./dist/pickers.css",
     "./advanced.css": "./dist/advanced.css",
     "./utilities.css": "./dist/utilities.css",
-    "./sass/*": "./sass/*",
-    "./src/*": "./src/*"
+    "./sass/*": "./sass/*"
   },
   "sideEffects": false,
   "files": [

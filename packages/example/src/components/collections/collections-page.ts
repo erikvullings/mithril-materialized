@@ -140,6 +140,28 @@ export const CollectionsPage = () => {
           ] })`,
         }),
 
+        m('h3.header', 'Collapsible with header'),
+        m(
+          '.row',
+          m(Collapsible, {
+            header: 'Tasks',
+            items: [
+              { id: 1, header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama' },
+              { id: 2, header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },
+              { id: 3, header: 'Third', body: m('span', 'Third in a span.'), iconName: 'whatshot' },
+            ],
+          })
+        ),
+        m(CodeBlock, {
+          code: `          m(Collapsible, {
+          header: 'Tasks',
+          items: [
+            { header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama' },
+            { header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },
+            { header: 'Third', body: m('span', 'Third in a span.'), iconName: 'whatshot' },
+          ] })`,
+        }),
+
         m('h3.header', 'Collapsible (no accordion)'),
         m(
           '.row',

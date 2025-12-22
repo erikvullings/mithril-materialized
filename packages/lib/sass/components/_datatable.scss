@@ -93,7 +93,7 @@
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: var(--mm-dropdown-hover);
+      background-color: var(--mm-row-hover);
     }
 
     .sort-indicators {
@@ -147,27 +147,27 @@
     cursor: pointer;
 
     &:hover {
-      background-color: var(--mm-dropdown-hover);
+      background-color: var(--mm-row-hover);
       
       td {
-        background-color: var(--mm-dropdown-hover);
+        background-color: var(--mm-row-hover);
       }
     }
   }
 
   // Enhanced striped rows for dark theme
   &.striped tbody tr:nth-child(odd) {
-    background-color: var(--mm-dropdown-focus);
+    background-color: var(--mm-row-stripe, var(--mm-table-striped-color));
     
     td {
-      background-color: var(--mm-dropdown-focus);
+      background-color: var(--mm-row-stripe, var(--mm-table-striped-color));
     }
     
     &:hover {
-      background-color: var(--mm-dropdown-hover);
+      background-color: var(--mm-row-hover);
       
       td {
-        background-color: var(--mm-dropdown-hover);
+        background-color: var(--mm-row-hover);
       }
     }
   }
@@ -364,18 +364,6 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) .datatable-container,
   [data-theme="dark"] .datatable-container {
-    .datatable thead th.sortable:hover {
-      background-color: var(--mm-dropdown-hover);
-    }
-
-    .datatable tbody tr:hover {
-      background-color: var(--mm-dropdown-hover);
-    }
-
-    .datatable.striped tbody tr:nth-child(odd) {
-      background-color: variables.$table-striped-color;
-    }
-
     .datatable.fixed-header thead th {
       border-bottom: 1px solid var(--mm-border-color);
     }

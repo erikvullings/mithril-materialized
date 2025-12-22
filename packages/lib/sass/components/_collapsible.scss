@@ -2,42 +2,95 @@
 @use "global";
 
 .collapsible {
-  border-top: 1px solid var(--mm-border-color, variables.$collapsible-border-color);
-  border-right: 1px solid var(--mm-border-color, variables.$collapsible-border-color);
-  border-left: 1px solid var(--mm-border-color, variables.$collapsible-border-color);
+  border: 1px solid var(--mm-border-color, variables.$collection-border-color);
+  background-color: var(--mm-surface-color, variables.$collection-bg-color);
   margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
-  @extend .z-depth-1 !optional;
+  overflow: hidden;
+
+  li {
+    list-style-type: none;
+  }
 }
 
-.collapsible-header {
-  &:focus {
-    outline: 0
-  }
+// Main header (top-level header for the whole collapsible)
+.collapsible-main-header {
+  background-color: var(--mm-surface-color, variables.$collection-bg-color);
+  border-bottom: 1px solid var(--mm-border-color, variables.$collection-border-color);
+  padding: 10px 20px;
+  // Don't override h4 styling - let it use default typography
+  // This ensures consistent height with Collection headers
+}
 
+// Item header (collapsible item header)
+.collapsible-header {
   display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 3rem;
+  line-height: 1.5rem;
+  padding: 1rem;
+  background-color: var(--mm-surface-color, variables.$collection-bg-color);
+  border-bottom: 1px solid var(--mm-border-color, variables.$collection-border-color);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  line-height: 1.5;
-  padding: 1rem;
-  border-bottom: 1px solid var(--mm-border-color, variables.$collapsible-border-color);
+  transition: background-color .25s;
 
-  i {
+  &:hover {
+    background-color: var(--mm-row-hover, variables.$collection-hover-bg-color);
+  }
+
+  &:focus {
+    outline: 0;
+  }
+
+  i.material-icons {
     width: 2rem;
     font-size: 1.6rem;
-    display: inline-block;
-    text-align: center;
+    line-height: 1.5rem;
+    display: block;
+    flex-shrink: 0;
     margin-right: 1rem;
   }
+
+  // Wrapper for header content - takes remaining space
+  .collapsible-header-text,
+  .collapsible-header-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
 }
+
 .keyboard-focused .collapsible-header:focus {
-  background-color: var(--mm-border-color, rgba(0, 0, 0, 0.05));
+  background-color: var(--mm-row-hover, variables.$collection-hover-bg-color);
 }
 
 .collapsible-body {
   display: none;
-  border-bottom: 1px solid var(--mm-border-color, variables.$collapsible-border-color);
+  border-bottom: 1px solid var(--mm-border-color, variables.$collection-border-color);
+  background-color: var(--mm-surface-color, variables.$collection-bg-color);
   box-sizing: border-box;
   padding: 2rem;
+
+  // Remove bottom border from last item
+  li:last-child & {
+    border-bottom: none;
+  }
+}
+
+// Active state
+li.active {
+  .collapsible-body {
+    display: block;
+  }
+}
+
+// Collapsible with header
+.collapsible.with-header {
+  .collapsible-main-header:first-child {
+    border-top: none;
+  }
 }
 
 // Sidenav collapsible styling
@@ -65,7 +118,7 @@
   .collapsible-body {
     border: 0;
     background-color: var(--mm-surface-color, variables.$collapsible-header-color);
-  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+    color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
 
     li a {
       padding: 0 (7.5px + variables.$sidenav-padding)
