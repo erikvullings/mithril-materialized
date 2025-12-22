@@ -512,14 +512,13 @@ m(DatePicker, {
             disabled: state.disabled,
             label: 'Startzeit',
             helperText: 'Wählen Sie eine Zeit',
-            nowLabel: 'Jetzt',
-            clearLabel: 'Löschen',
-            closeLabel: 'Schließen',
-            amLabel: 'VM',
-            pmLabel: 'NM',
             iconName: 'schedule',
-            showNowBtn: true,
             showClearBtn: true,
+            i18n: {
+              cancel: 'Schließen',
+              clear: 'Löschen',
+              done: 'OK',
+            },
             onchange,
           })
         ),
@@ -531,9 +530,12 @@ m(DatePicker, {
           m(TimePicker, {
             disabled: state.disabled,
             label: 'Optional Time',
-            showNowBtn: false,
             showClearBtn: true,
-            clearLabel: 'Remove',
+            i18n: {
+              cancel: 'Cancel',
+              clear: 'Remove',
+              done: 'Ok',
+            },
             onchange,
           })
         ),

@@ -100,6 +100,8 @@
   background-color: variables.$secondary-color;
   padding: 10px;
   font-weight: 300;
+  min-width: 200px;
+  position: relative;
 }
 
 .timepicker-text-container {
@@ -110,6 +112,8 @@
   font-weight: 400;
 	position: relative;
   user-select: none;
+  min-width: 180px;
+  width: 100%;
 }
 
 .timepicker-span-hours,
@@ -120,10 +124,16 @@
 
 .timepicker-span-hours {
   margin-right: 3px;
+  display: inline-block;
+  min-width: 2ch;
+  text-align: right;
 }
 
 .timepicker-span-minutes {
   margin-left: 3px;
+  display: inline-block;
+  min-width: 2ch;
+  text-align: left;
 }
 
 .timepicker-display-am-pm {

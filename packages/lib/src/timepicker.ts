@@ -8,6 +8,12 @@ export interface TimepickerI18n {
   done?: string;
 }
 
+const defaultI18n: Required<TimepickerI18n> = {
+  cancel: 'Cancel',
+  clear: 'Clear',
+  done: 'Ok',
+};
+
 export interface TimepickerOptions {
   dialRadius?: number;
   outerRadius?: number;
@@ -38,10 +44,6 @@ export interface TimePickerAttrs extends InputAttrs<string>, TimepickerOptions {
   useModal?: boolean;
   /** Allow format toggle between 12h/24h (for inline mode) */
   allowFormatToggle?: boolean;
-  /** Clear button label */
-  clearLabel?: string;
-  /** Close button label */
-  closeLabel?: string;
 }
 
 interface TimepickerState {
@@ -87,11 +89,7 @@ const defaultOptions: Required<TimepickerOptions> = {
   defaultTime: 'now',
   fromNow: 0,
   showClearBtn: false,
-  i18n: {
-    cancel: 'Cancel',
-    clear: 'Clear',
-    done: 'Ok',
-  },
+  i18n: defaultI18n,
   autoClose: false,
   twelveHour: true,
   vibrate: true,
@@ -259,7 +257,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     state.minutes = minutes;
 
     if (state.spanHours) {
-      state.spanHours.innerHTML = state.hours.toString();
+      state.spanHours.innerHTML = addLeadingZero(state.hours);
     }
     if (state.spanMinutes) {
       state.spanMinutes.innerHTML = addLeadingZero(state.minutes);
@@ -375,7 +373,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     state[state.currentView] = value;
 
     if (isHours && state.spanHours) {
-      state.spanHours.innerHTML = value.toString();
+      state.spanHours.innerHTML = addLeadingZero(value);
     } else if (!isHours && state.spanMinutes) {
       state.spanMinutes.innerHTML = addLeadingZero(value);
     }
@@ -521,16 +519,14 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
   };
 
   interface TimepickerModalAttrs {
+    i18n: Required<TimepickerI18n>;
     showClearBtn: boolean;
-    clearLabel: string;
-    closeLabel: string;
-    doneLabel: string;
   }
 
   const TimepickerModal: FactoryComponent<TimepickerModalAttrs> = () => {
     return {
       view: ({ attrs }) => {
-        const { showClearBtn, clearLabel, closeLabel, doneLabel } = attrs;
+        const { i18n, showClearBtn } = attrs;
         return [
           m('.modal-content.timepicker-container', [
             m('.timepicker-digital-display', [
@@ -545,7 +541,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                         state.spanHours = vnode.dom as HTMLElement;
                       },
                     },
-                    state.hours.toString()
+                    addLeadingZero(state.hours)
                   ),
                   ':',
                   m(
@@ -652,7 +648,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                       style: showClearBtn ? '' : 'visibility: hidden;',
                       onclick: () => clear(),
                     },
-                    clearLabel
+                    i18n.clear
                   ),
                   m('.confirmation-btns', [
                     m(
@@ -662,7 +658,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                         tabindex: options.twelveHour ? '3' : '1',
                         onclick: () => close(),
                       },
-                      closeLabel
+                      i18n.cancel
                     ),
                     m(
                       'button.btn-flat.timepicker-close.waves-effect',
@@ -671,7 +667,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                         tabindex: options.twelveHour ? '3' : '1',
                         onclick: () => done(),
                       },
-                      doneLabel
+                      i18n.done
                     ),
                   ]),
                 ]
@@ -692,7 +688,6 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
   };
 
   const renderPickerToPortal = (attrs: TimePickerAttrs) => {
-    const { showClearBtn = false, clearLabel = 'Clear', closeLabel = 'Cancel' } = attrs;
 
     const pickerModal = m(
       '.timepicker-modal-wrapper',
@@ -743,10 +738,8 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
           },
           [
             m(TimepickerModal, {
-              showClearBtn,
-              clearLabel,
-              closeLabel,
-              doneLabel: 'OK',
+              i18n: options.i18n,
+              showClearBtn: options.showClearBtn,
             }),
           ]
         ),
@@ -829,9 +822,6 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
         onchange,
         oninput,
         useModal = true,
-        showClearBtn = false,
-        clearLabel = 'Clear',
-        closeLabel = 'Cancel',
         twelveHour,
         className: cn1,
         class: cn2,
