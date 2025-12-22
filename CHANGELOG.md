@@ -1,3 +1,10 @@
+## [3.5.9](https://github.com/erikvullings/mithril-materialized/compare/v3.5.8...v3.5.9) (2025-12-22)
+
+
+### Bug Fixes
+
+* Modal's new property closeOnButtonClick is by default false. This ([c32a25e](https://github.com/erikvullings/mithril-materialized/commit/c32a25e5688680f2cb9816616a01621d83defa73))
+
 ## [3.5.8](https://github.com/erikvullings/mithril-materialized/compare/v3.5.7...v3.5.8) (2025-12-21)
 
 
