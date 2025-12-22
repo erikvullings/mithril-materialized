@@ -1,3 +1,14 @@
+## [3.5.10](https://github.com/erikvullings/mithril-materialized/compare/v3.5.9...v3.5.10) (2025-12-22)
+
+
+### Bug Fixes
+
+* TextArea alignment and initial height calculations updated. ([cf1c837](https://github.com/erikvullings/mithril-materialized/commit/cf1c8377d32f87226f3a242cb56c29bfabeea433))
+* The Collabsible background and border colors, and shading, were ([90e288a](https://github.com/erikvullings/mithril-materialized/commit/90e288aa9c399abf04d53a2ddc6561674b801435))
+* The DatePicker prev and next months buttons were not theme aware. ([e5913ed](https://github.com/erikvullings/mithril-materialized/commit/e5913ed1dc83400c84d7bfff0fcb7a71e9745ab6))
+* The MaterialBox was using too many inline styles, and when a style ([21a8149](https://github.com/erikvullings/mithril-materialized/commit/21a8149a60bd3e1f5790aef32590b45dbc58c767))
+* TimePicker wasn't fully i18n aware, and the width of the left part ([c9ef28f](https://github.com/erikvullings/mithril-materialized/commit/c9ef28f80087b534f6f5f154121fc606d0c8d94f))
+
 ## [3.5.9](https://github.com/erikvullings/mithril-materialized/compare/v3.5.8...v3.5.9) (2025-12-22)
 
 
