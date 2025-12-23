@@ -1,3 +1,10 @@
+# [3.6.0](https://github.com/erikvullings/mithril-materialized/compare/v3.5.10...v3.6.0) (2025-12-23)
+
+
+### Features
+
+* The search-select implements a limit to the number of items to ([5b8bf92](https://github.com/erikvullings/mithril-materialized/commit/5b8bf92cbe728aee769f2a584eb1bf0b8d418634))
+
 ## [3.5.10](https://github.com/erikvullings/mithril-materialized/compare/v3.5.9...v3.5.10) (2025-12-22)
 
 
