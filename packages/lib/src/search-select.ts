@@ -1,5 +1,5 @@
 import m, { Component } from 'mithril';
-import { getDropdownStyles, uniqueId } from './utils';
+import { getDropdownStyles, uniqueId, sortOptions } from './utils';
 import { MaterialIcon } from './material-icon';
 import { SelectAttrs } from './select';
 import { InputOption } from './option';
@@ -30,8 +30,9 @@ const DropdownOption: Component<{
   isFocused: boolean;
   onToggle: (option: InputOption<any>) => void;
   onMouseOver: (index: number) => void;
+  showCheckbox: boolean;
 }> = {
-  view: ({ attrs: { option, index, selectedIds, isFocused, onToggle, onMouseOver } }) => {
+  view: ({ attrs: { option, index, selectedIds, isFocused, onToggle, onMouseOver, showCheckbox } }) => {
     const checkboxId = `search-select-option-${option.id}`;
     const optionLabel = option.label || option.id.toString();
 
@@ -52,11 +53,12 @@ const DropdownOption: Component<{
         },
       },
       m('label', { for: checkboxId, class: 'search-select-option-label' }, [
-        m('input', {
-          type: 'checkbox',
-          id: checkboxId,
-          checked: selectedIds.includes(option.id),
-        }),
+        showCheckbox &&
+          m('input', {
+            type: 'checkbox',
+            id: checkboxId,
+            checked: selectedIds.includes(option.id),
+          }),
         m('span', optionLabel),
       ])
     );
@@ -69,6 +71,10 @@ export interface SearchSelectI18n {
   noOptionsFound?: string;
   /** Prefix for adding new option */
   addNewPrefix?: string;
+  /** Message template for truncated results. Use {shown} and {total} placeholders */
+  showingXofY?: string;
+  /** Message shown when max selections reached. Use {max} placeholder */
+  maxSelectionsReached?: string;
 }
 
 // Extended SearchSelect attributes that inherit from SelectAttrs
@@ -79,10 +85,16 @@ export interface SearchSelectAttrs<T extends string | number> extends SelectAttr
   searchPlaceholder?: string;
   /** When no options are left, displays this text, default 'No options found' */
   noOptionsFound?: string;
-  /** Max height of the dropdown menu, default '25rem' */
+  /** Max height of the dropdown menu, default '400px', use 'none' to disable it */
   maxHeight?: string;
   /** Internationalization options */
   i18n?: SearchSelectI18n;
+  /** Maximum number of options to display. When set, limits displayed options to improve performance with large datasets */
+  maxDisplayedOptions?: number;
+  /** Maximum number of options that can be selected. When max=1, checkboxes are hidden and behaves like single select */
+  maxSelectedOptions?: number;
+  /** Sort selected items: 'asc' (alphabetically A-Z), 'desc' (Z-A), 'none' (insertion order), or custom sort function */
+  sortSelected?: 'asc' | 'desc' | 'none' | ((a: InputOption<T>, b: InputOption<T>) => number);
 }
 
 // Component state interface
@@ -94,6 +106,7 @@ interface SearchSelectState<T extends string | number> {
   dropdownRef: HTMLElement | null;
   focusedIndex: number;
   internalSelectedIds: T[];
+  createdOptions: InputOption<T>[];
 }
 
 /**
@@ -109,6 +122,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
     dropdownRef: null,
     focusedIndex: -1,
     internalSelectedIds: [],
+    createdOptions: [],
   };
 
   const isControlled = (attrs: SearchSelectAttrs<T>) =>
@@ -157,6 +171,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
             return 'addNew';
           } else if (state.focusedIndex < filteredOptions.length) {
             // This will be handled in the view method where attrs are available
+            return 'selectOption';
           }
         }
         break;
@@ -169,11 +184,25 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
     return null;
   };
 
+  // Create new option and add to state
+  const createAndSelectOption = async (attrs: SearchSelectAttrs<T>) => {
+    if (!attrs.oncreateNewOption || !state.searchTerm) return;
+
+    const newOption = await attrs.oncreateNewOption(state.searchTerm);
+
+    // Store the created option internally
+    state.createdOptions.push(newOption);
+
+    // Select the new option
+    toggleOption(newOption, attrs);
+  };
+
   // Toggle option selection
   const toggleOption = (option: InputOption<T>, attrs: SearchSelectAttrs<T>) => {
     if (option.disabled) return;
 
     const controlled = isControlled(attrs);
+    const { maxSelectedOptions } = attrs;
 
     // Get current selected IDs from props or internal state
     const currentSelectedIds = controlled
@@ -184,9 +213,27 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
         : []
       : state.internalSelectedIds;
 
-    const newIds = currentSelectedIds.includes(option.id)
-      ? currentSelectedIds.filter((id) => id !== option.id)
-      : [...currentSelectedIds, option.id];
+    const isSelected = currentSelectedIds.includes(option.id);
+
+    let newIds: T[];
+    if (isSelected) {
+      // Remove if already selected
+      newIds = currentSelectedIds.filter((id) => id !== option.id);
+    } else {
+      // Check if we've reached the max selection limit
+      if (maxSelectedOptions && currentSelectedIds.length >= maxSelectedOptions) {
+        // If max=1, replace the selection
+        if (maxSelectedOptions === 1) {
+          newIds = [option.id];
+        } else {
+          // Otherwise, don't add more
+          return;
+        }
+      } else {
+        // Add to selection
+        newIds = [...currentSelectedIds, option.id];
+      }
+    }
 
     // Update internal state for uncontrolled mode
     if (!controlled) {
@@ -270,29 +317,46 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
         noOptionsFound = 'No options found',
         label,
         i18n = {},
+        maxDisplayedOptions,
+        maxSelectedOptions,
+        maxHeight,
       } = attrs;
 
       // Use i18n values if provided, otherwise use defaults
       const texts = {
         noOptionsFound: i18n.noOptionsFound || noOptionsFound,
         addNewPrefix: i18n.addNewPrefix || '+',
+        showingXofY: i18n.showingXofY || 'Showing {shown} of {total} options',
+        maxSelectionsReached: i18n.maxSelectionsReached || 'Maximum {max} selections reached',
       };
 
+      // Check if max selections is reached
+      const isMaxSelectionsReached = maxSelectedOptions && selectedIds.length >= maxSelectedOptions;
+
+      // Merge provided options with internally created options
+      const allOptions = [...options, ...state.createdOptions];
+
       // Get selected options for display
-      const selectedOptions = options.filter((opt) => selectedIds.includes(opt.id));
+      const selectedOptionsUnsorted = allOptions.filter((opt) => selectedIds.includes(opt.id));
+      const selectedOptions = sortOptions(selectedOptionsUnsorted, attrs.sortSelected);
 
       // Safely filter options
-      const filteredOptions = options.filter(
+      const filteredOptions = allOptions.filter(
         (option) =>
           (option.label || option.id.toString()).toLowerCase().includes((state.searchTerm || '').toLowerCase()) &&
           !selectedIds.includes(option.id)
       );
 
+      // Apply display limit if configured
+      const totalFilteredCount = filteredOptions.length;
+      const displayedOptions = maxDisplayedOptions ? filteredOptions.slice(0, maxDisplayedOptions) : filteredOptions;
+      const isTruncated = maxDisplayedOptions && totalFilteredCount > maxDisplayedOptions;
+
       // Check if we should show the "add new option" element
       const showAddNew =
         oncreateNewOption &&
         state.searchTerm &&
-        !filteredOptions.some((o) => (o.label || o.id.toString()).toLowerCase() === state.searchTerm.toLowerCase());
+        !displayedOptions.some((o) => (o.label || o.id.toString()).toLowerCase() === state.searchTerm.toLowerCase());
 
       // Render the dropdown
       return m('.input-field.multi-select-dropdown', { className }, [
@@ -386,7 +450,10 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
               onremove: () => {
                 state.dropdownRef = null;
               },
-              style: getDropdownStyles(state.inputRef),
+              style: {
+                ...getDropdownStyles(state.inputRef),
+                ...(maxHeight ? { maxHeight } : {}),
+              },
             },
             [
               m(
@@ -409,16 +476,11 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                       state.focusedIndex = -1; // Reset focus when typing
                     },
                     onkeydown: async (e: KeyboardEvent) => {
-                      const result = handleKeyDown(e, filteredOptions, !!showAddNew);
+                      const result = handleKeyDown(e, displayedOptions, !!showAddNew);
                       if (result === 'addNew' && oncreateNewOption) {
-                        const option = await oncreateNewOption(state.searchTerm);
-                        toggleOption(option, attrs);
-                      } else if (
-                        e.key === 'Enter' &&
-                        state.focusedIndex >= 0 &&
-                        state.focusedIndex < filteredOptions.length
-                      ) {
-                        toggleOption(filteredOptions[state.focusedIndex], attrs);
+                        await createAndSelectOption(attrs);
+                      } else if (result === 'selectOption' && state.focusedIndex < displayedOptions.length) {
+                        toggleOption(displayedOptions[state.focusedIndex], attrs);
                       }
                     },
                     class: 'search-select-input',
@@ -427,8 +489,46 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
               ),
 
               // No options found message or list of options
-              ...(filteredOptions.length === 0 && !showAddNew
+              ...(displayedOptions.length === 0 && !showAddNew
                 ? [m('li.search-select-no-options', texts.noOptionsFound)]
+                : []),
+
+              // Truncation message
+              ...(isTruncated
+                ? [
+                    m(
+                      'li.search-select-truncation-info',
+                      {
+                        style: {
+                          fontStyle: 'italic',
+                          color: 'var(--mm-text-hint, #9e9e9e)',
+                          padding: '8px 16px',
+                          cursor: 'default',
+                        },
+                      },
+                      texts.showingXofY
+                        .replace('{shown}', displayedOptions.length.toString())
+                        .replace('{total}', totalFilteredCount.toString())
+                    ),
+                  ]
+                : []),
+
+              // Max selections reached message
+              ...(isMaxSelectionsReached
+                ? [
+                    m(
+                      'li.search-select-max-info',
+                      {
+                        style: {
+                          fontStyle: 'italic',
+                          color: 'var(--mm-text-hint, #9e9e9e)',
+                          padding: '8px 16px',
+                          cursor: 'default',
+                        },
+                      },
+                      texts.maxSelectionsReached.replace('{max}', maxSelectedOptions!.toString())
+                    ),
+                  ]
                 : []),
 
               // Add new option item
@@ -438,12 +538,11 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                       'li',
                       {
                         onclick: async () => {
-                          const option = await oncreateNewOption(state.searchTerm);
-                          toggleOption(option, attrs);
+                          await createAndSelectOption(attrs);
                         },
-                        class: state.focusedIndex === filteredOptions.length ? 'active' : '',
+                        class: state.focusedIndex === displayedOptions.length ? 'active' : '',
                         onmouseover: () => {
-                          state.focusedIndex = filteredOptions.length;
+                          state.focusedIndex = displayedOptions.length;
                         },
                       },
                       [m('span', `${texts.addNewPrefix} "${state.searchTerm}"`)]
@@ -452,7 +551,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                 : []),
 
               // List of filtered options
-              ...filteredOptions.map((option, index) =>
+              ...displayedOptions.map((option, index) =>
                 m(DropdownOption, {
                   // key: option.id,
                   option,
@@ -463,6 +562,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
                   onMouseOver: (idx) => {
                     state.focusedIndex = idx;
                   },
+                  showCheckbox: maxSelectedOptions !== 1,
                 })
               ),
             ]

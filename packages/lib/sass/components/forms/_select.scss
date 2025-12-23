@@ -145,6 +145,10 @@ body.keyboard-focused {
 }
 
 .select-dropdown.dropdown-content {
+  // Set a reasonable default max-height to prevent overly tall dropdowns
+  max-height: 400px;
+  overflow-y: auto;
+
   li {
     &:hover {
       background-color: var(--mm-dropdown-hover, variables.$select-option-hover);
@@ -199,7 +203,7 @@ body.keyboard-focused {
   .dropdown-content li.active {
     background-color: #444 !important;
   }
-  
+
   .chip {
     background-color: #424242 !important;
     color: var(--mm-text-secondary) !important;
@@ -214,7 +218,7 @@ body.keyboard-focused {
     .dropdown-content li.active {
       background-color: #444 !important;
     }
-    
+
     .chip {
       background-color: #424242 !important;
       color: var(--mm-text-secondary) !important;
@@ -242,11 +246,11 @@ body.keyboard-focused {
   border-bottom: 1px solid var(--mm-input-border, #9e9e9e);
   background-color: transparent;
   color: var(--mm-text-primary, inherit);
-  
+
   &:focus {
     border-bottom-color: var(--mm-primary-color, #2196F3);
   }
-  
+
   &::placeholder {
     color: var(--mm-text-hint, #9e9e9e);
   }
@@ -259,7 +263,7 @@ body.keyboard-focused {
   font-style: italic;
   text-align: center;
   border-bottom: none;
-  
+
   &:hover {
     background-color: transparent;
     cursor: default;
@@ -276,7 +280,7 @@ body.keyboard-focused {
   margin: 0;
   // Ensure it inherits the same padding as regular dropdown items
   min-height: var(--mm-dropdown-item-height, 50px);
-  
+
   input[type="checkbox"] {
     margin-right: 8px;
     position: relative;
@@ -287,11 +291,11 @@ body.keyboard-focused {
     border: 2px solid var(--mm-border-color, #9e9e9e);
     border-radius: 2px;
     background-color: transparent;
-    
+
     &:checked {
       background-color: var(--mm-primary-color, #2196F3);
       border-color: var(--mm-primary-color, #2196F3);
-      
+
       &:after {
         content: '✓';
         color: white;
@@ -301,13 +305,13 @@ body.keyboard-focused {
         left: 2px;
       }
     }
-    
+
     &:focus {
       outline: 2px solid var(--mm-primary-color, #2196F3);
       outline-offset: 2px;
     }
   }
-  
+
   span {
     flex: 1;
   }
@@ -323,32 +327,32 @@ body.keyboard-focused {
     position: relative;
     min-height: var(--mm-input-height, 3rem);
     padding: 4px 0;
-    
+
     .chip {
       margin: 2px 4px 2px 0;
       // Let existing chip system handle background colors for theme compatibility
-      
+
       .material-icons.close {
         cursor: pointer;
         font-size: 16px;
         margin-left: 4px;
-        
+
         &:hover {
           color: var(--mm-error-color, #f44336);
         }
       }
     }
-    
+
     .placeholder {
       color: var(--mm-text-hint, #9e9e9e);
       flex-grow: 1;
       padding: 8px 0;
     }
-    
+
     .spacer {
       flex-grow: 1;
     }
-    
+
     .caret {
       margin-left: auto;
       cursor: pointer;

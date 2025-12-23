@@ -32,6 +32,36 @@ export const uuid4 = () => {
 export const isNumeric = (n: string | number) => !isNaN(parseFloat(n as string)) && isFinite(n as number);
 
 /**
+ * Sort options array based on sorting configuration
+ * @param options - Array of options to sort
+ * @param sortConfig - Sort configuration: 'asc', 'desc', 'none', or custom comparator function
+ * @returns Sorted array (or original if 'none' or undefined)
+ */
+export const sortOptions = <T extends string | number>(
+  options: { id: T; label?: string }[],
+  sortConfig?: 'asc' | 'desc' | 'none' | ((a: { id: T; label?: string }, b: { id: T; label?: string }) => number)
+): { id: T; label?: string }[] => {
+  if (!sortConfig || sortConfig === 'none') {
+    return options;
+  }
+
+  const sorted = [...options]; // Create a copy to avoid mutating original
+
+  if (typeof sortConfig === 'function') {
+    return sorted.sort(sortConfig);
+  }
+
+  // Sort by label, fallback to id if no label
+  return sorted.sort((a, b) => {
+    const aLabel = (a.label || a.id.toString()).toLowerCase();
+    const bLabel = (b.label || b.id.toString()).toLowerCase();
+
+    const comparison = aLabel.localeCompare(bLabel);
+    return sortConfig === 'asc' ? comparison : -comparison;
+  });
+};
+
+/**
  * Pad left, default width 2 with a '0'
  *
  * @see http://stackoverflow.com/a/10073788/319711

@@ -37,6 +37,9 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
   let colorValue = '#00ff00';
   let numberValue: undefined | number;
   let selectedOptions = [] as string[];
+  let selectedCountry = [] as string[];
+  let selectedCategory = [] as string[];
+  let selectedFruits = [] as string[];
   const oninput = (v: unknown) => console.log(`Input changed. New value: ${v}`);
   let value = 'click_clear_to_remove.me';
 
@@ -44,6 +47,222 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
     { id: 'option1', label: 'Option 1' },
     { id: 'option2', label: 'Option 2' },
     { id: 'option3', label: 'Option 3' },
+  ];
+
+  // Large dataset for demonstrating maxDisplayedOptions
+  const countries = [
+    'Afghanistan',
+    'Albania',
+    'Algeria',
+    'Andorra',
+    'Angola',
+    'Antigua and Barbuda',
+    'Argentina',
+    'Armenia',
+    'Australia',
+    'Austria',
+    'Azerbaijan',
+    'Bahamas',
+    'Bahrain',
+    'Bangladesh',
+    'Barbados',
+    'Belarus',
+    'Belgium',
+    'Belize',
+    'Benin',
+    'Bhutan',
+    'Bolivia',
+    'Bosnia and Herzegovina',
+    'Botswana',
+    'Brazil',
+    'Brunei',
+    'Bulgaria',
+    'Burkina Faso',
+    'Burundi',
+    'Cambodia',
+    'Cameroon',
+    'Canada',
+    'Cape Verde',
+    'Central African Republic',
+    'Chad',
+    'Chile',
+    'China',
+    'Colombia',
+    'Comoros',
+    'Congo',
+    'Costa Rica',
+    'Croatia',
+    'Cuba',
+    'Cyprus',
+    'Czech Republic',
+    'Denmark',
+    'Djibouti',
+    'Dominica',
+    'Dominican Republic',
+    'East Timor',
+    'Ecuador',
+    'Egypt',
+    'El Salvador',
+    'Equatorial Guinea',
+    'Eritrea',
+    'Estonia',
+    'Ethiopia',
+    'Fiji',
+    'Finland',
+    'France',
+    'Gabon',
+    'Gambia',
+    'Georgia',
+    'Germany',
+    'Ghana',
+    'Greece',
+    'Grenada',
+    'Guatemala',
+    'Guinea',
+    'Guinea-Bissau',
+    'Guyana',
+    'Haiti',
+    'Honduras',
+    'Hungary',
+    'Iceland',
+    'India',
+    'Indonesia',
+    'Iran',
+    'Iraq',
+    'Ireland',
+    'Israel',
+    'Italy',
+    'Jamaica',
+    'Japan',
+    'Jordan',
+    'Kazakhstan',
+    'Kenya',
+    'Kiribati',
+    'North Korea',
+    'South Korea',
+    'Kuwait',
+    'Kyrgyzstan',
+    'Laos',
+    'Latvia',
+    'Lebanon',
+    'Lesotho',
+    'Liberia',
+    'Libya',
+    'Liechtenstein',
+    'Lithuania',
+    'Luxembourg',
+    'Macedonia',
+    'Madagascar',
+    'Malawi',
+    'Malaysia',
+    'Maldives',
+    'Mali',
+    'Malta',
+    'Marshall Islands',
+    'Mauritania',
+    'Mauritius',
+    'Mexico',
+    'Micronesia',
+    'Moldova',
+    'Monaco',
+    'Mongolia',
+    'Montenegro',
+    'Morocco',
+    'Mozambique',
+    'Myanmar',
+    'Namibia',
+    'Nauru',
+    'Nepal',
+    'Netherlands',
+    'New Zealand',
+    'Nicaragua',
+    'Niger',
+    'Nigeria',
+    'Norway',
+    'Oman',
+    'Pakistan',
+    'Palau',
+    'Panama',
+    'Papua New Guinea',
+    'Paraguay',
+    'Peru',
+    'Philippines',
+    'Poland',
+    'Portugal',
+    'Qatar',
+    'Romania',
+    'Russia',
+    'Rwanda',
+    'Saint Kitts and Nevis',
+    'Saint Lucia',
+    'Saint Vincent and the Grenadines',
+    'Samoa',
+    'San Marino',
+    'Sao Tome and Principe',
+    'Saudi Arabia',
+    'Senegal',
+    'Serbia',
+    'Seychelles',
+    'Sierra Leone',
+    'Singapore',
+    'Slovakia',
+    'Slovenia',
+    'Solomon Islands',
+    'Somalia',
+    'South Africa',
+    'South Sudan',
+    'Spain',
+    'Sri Lanka',
+    'Sudan',
+    'Suriname',
+    'Swaziland',
+    'Sweden',
+    'Switzerland',
+    'Syria',
+    'Taiwan',
+    'Tajikistan',
+    'Tanzania',
+    'Thailand',
+    'Togo',
+    'Tonga',
+    'Trinidad and Tobago',
+    'Tunisia',
+    'Turkey',
+    'Turkmenistan',
+    'Tuvalu',
+    'Uganda',
+    'Ukraine',
+    'United Arab Emirates',
+    'United Kingdom',
+    'United States',
+    'Uruguay',
+    'Uzbekistan',
+    'Vanuatu',
+    'Vatican City',
+    'Venezuela',
+    'Vietnam',
+    'Yemen',
+    'Zambia',
+    'Zimbabwe',
+  ].map((country, index) => ({ id: `country-${index}`, label: country }));
+
+  const categories = [
+    { id: 'tech', label: 'Technology' },
+    { id: 'science', label: 'Science' },
+    { id: 'art', label: 'Art' },
+    { id: 'music', label: 'Music' },
+    { id: 'sports', label: 'Sports' },
+  ];
+
+  const fruits = [
+    { id: 'banana', label: 'Banana' },
+    { id: 'apple', label: 'Apple' },
+    { id: 'orange', label: 'Orange' },
+    { id: 'grape', label: 'Grape' },
+    { id: 'mango', label: 'Mango' },
+    { id: 'pineapple', label: 'Pineapple' },
+    { id: 'strawberry', label: 'Strawberry' },
+    { id: 'watermelon', label: 'Watermelon' },
   ];
 
   return {
@@ -228,7 +447,8 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           checkedId: selectedOptions,
           onchange: (v) => {
             selectedOptions = v;
-            console.log('Selected:', selectedOptions)},
+            console.log('Selected:', selectedOptions);
+          },
         })`,
         }),
         m(SearchSelect<string>, {
@@ -241,8 +461,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           oncreateNewOption: (searchTerm) => {
             console.log('Creating new option:', searchTerm);
             const newOption = { id: uniqueId(), label: searchTerm };
-            // Add the new option to your options array
-            searchSelectOptions.push(newOption);
+            // Option is automatically stored internally by the component
             return newOption;
           },
           label: 'Select option or add new option',
@@ -254,16 +473,142 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           checkedId: selectedOptions,
           onchange: (v) => {
             selectedOptions = v;
-            console.log('Selected:', selectedOptions)},
-            oncreateNewOption: (searchTerm) => {
-              console.log('Creating new option:', searchTerm);
-              const newOption = { id: uniqueId(), label: searchTerm };
-              // Add the new option to your options array
-              searchSelectOptions.push(newOption);
-              return newOption;
-            },
+            console.log('Selected:', selectedOptions);
+          },
+          oncreateNewOption: (searchTerm) => {
+            console.log('Creating new option:', searchTerm);
+            const newOption = { id: uniqueId(), label: searchTerm };
+            // Option is automatically stored internally by the component
+            // Press ENTER or click to add the new option
+            return newOption;
+          },
           label: 'Select option or add new option',
           placeholder: 'No options selected',
+        })`,
+        }),
+
+        m('h3.header', 'Search and select with performance optimizations'),
+        m('p', [
+          'When dealing with large datasets, use ',
+          m('code', 'maxDisplayedOptions'),
+          ' to limit the number of rendered options for better performance. The component will show a message indicating how many results are available.',
+        ]),
+        m(SearchSelect<string>, {
+          options: countries,
+          label: 'Select countries (large dataset)',
+          searchPlaceholder: 'Search countries...',
+          checkedId: selectedCountry,
+          onchange: (v) => {
+            selectedCountry = v;
+            console.log('Selected countries:', selectedCountry);
+          },
+          maxDisplayedOptions: 50,
+          i18n: {
+            showingXofY: 'Showing {shown} of {total} countries - refine your search',
+            noOptionsFound: 'No countries found',
+          },
+        }),
+        m(CodeBlock, {
+          code: `        // Large dataset (195 countries)
+        const countries = [...].map((country, index) =>
+          ({ id: \`country-\${index}\`, label: country })
+        );
+
+        m(SearchSelect, {
+          options: countries,
+          label: 'Select countries (large dataset)',
+          searchPlaceholder: 'Search countries...',
+          checkedId: selectedCountry,
+          onchange: (v) => {
+            selectedCountry = v;
+            console.log('Selected countries:', selectedCountry);
+          },
+          maxDisplayedOptions: 50, // Only show 50 options at a time
+          i18n: {
+            showingXofY: 'Showing {shown} of {total} countries - refine your search',
+            noOptionsFound: 'No countries found',
+          },
+        })`,
+        }),
+
+        m('h3.header', 'Search and select with max selection limit'),
+        m('p', [
+          'Use ',
+          m('code', 'maxSelectedOptions'),
+          ' to limit how many items can be selected. When ',
+          m('code', 'maxSelectedOptions=1'),
+          ', checkboxes are hidden and it behaves like a single-select dropdown.',
+        ]),
+        m(SearchSelect<string>, {
+          options: categories,
+          label: 'Select category (single select)',
+          searchPlaceholder: 'Search categories...',
+          checkedId: selectedCategory,
+          onchange: (v) => {
+            selectedCategory = v;
+            console.log('Selected category:', selectedCategory);
+          },
+          maxSelectedOptions: 1, // Single select - checkboxes hidden
+          placeholder: 'No category selected',
+        }),
+        m(CodeBlock, {
+          code: `        m(SearchSelect, {
+          options: categories,
+          label: 'Select category (single select)',
+          searchPlaceholder: 'Search categories...',
+          checkedId: selectedCategory,
+          onchange: (v) => {
+            selectedCategory = v;
+            console.log('Selected category:', selectedCategory);
+          },
+          maxSelectedOptions: 1, // Checkboxes hidden, single select behavior
+          placeholder: 'No category selected',
+        })`,
+        }),
+
+        m('h3.header', 'Search and select with sorted selections'),
+        m('p', [
+          'Use ',
+          m('code', 'sortSelected'),
+          ' to sort selected items alphabetically. Options: ',
+          m('code', "'asc'"),
+          ' (A-Z), ',
+          m('code', "'desc'"),
+          ' (Z-A), ',
+          m('code', "'none'"),
+          ' (insertion order), or provide a custom sort function.',
+        ]),
+        m(SearchSelect<string>, {
+          options: fruits,
+          label: 'Select fruits (sorted alphabetically)',
+          searchPlaceholder: 'Search fruits...',
+          checkedId: selectedFruits,
+          onchange: (v) => {
+            selectedFruits = v;
+            console.log('Selected fruits:', selectedFruits);
+          },
+          sortSelected: 'asc', // Sort selected items A-Z
+          placeholder: 'No fruits selected',
+        }),
+        m(CodeBlock, {
+          code: `        const fruits = [
+          { id: 'banana', label: 'Banana' },
+          { id: 'apple', label: 'Apple' },
+          { id: 'orange', label: 'Orange' },
+          // ... more fruits
+        ];
+
+        m(SearchSelect, {
+          options: fruits,
+          label: 'Select fruits (sorted alphabetically)',
+          searchPlaceholder: 'Search fruits...',
+          checkedId: selectedFruits,
+          onchange: (v) => {
+            selectedFruits = v;
+            console.log('Selected fruits:', selectedFruits);
+          },
+          sortSelected: 'asc', // Sort chips alphabetically A-Z
+          placeholder: 'No fruits selected',
         })`,
         }),
 

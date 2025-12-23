@@ -48,6 +48,8 @@ export interface DropdownAttrs<T extends string | number> extends Attributes {
   iconName?: string;
   /** Add a description underneath the input field. */
   helperText?: string;
+  /** Max height of the dropdown menu, default '400px', use 'none' to disable it */
+  maxHeight?: string;
 }
 
 interface DropdownState<T extends string | number> {
@@ -215,7 +217,10 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       'ul.dropdown-content.select-dropdown',
       {
         tabindex: 0,
-        style: getPortalStyles(state.inputRef),
+        style: {
+          ...getPortalStyles(state.inputRef),
+          ...(attrs.maxHeight ? { maxHeight: attrs.maxHeight } : {}),
+        },
         oncreate: ({ dom }) => {
           state.dropdownRef = dom as HTMLElement;
         },
@@ -358,7 +363,10 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
                   onremove: () => {
                     state.dropdownRef = null;
                   },
-                  style: getDropdownStyles(state.inputRef, true, items, true),
+                  style: {
+                    ...getDropdownStyles(state.inputRef, true, items, true),
+                    ...(attrs.maxHeight ? { maxHeight: attrs.maxHeight } : {}),
+                  },
                 },
                 items.map((item) => {
                   if (item.divider) {

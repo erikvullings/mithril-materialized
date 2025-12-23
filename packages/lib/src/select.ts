@@ -1,7 +1,7 @@
 import m, { Attributes, Component } from 'mithril';
 import { Label, HelperText } from './label';
 import { InputOption } from './option';
-import { getDropdownStyles, uniqueId } from './utils';
+import { getDropdownStyles, uniqueId, sortOptions } from './utils';
 import { MaterialIcon } from './material-icon';
 
 export interface SelectAttrs<T extends string | number> extends Attributes {
@@ -49,6 +49,10 @@ export interface SelectAttrs<T extends string | number> extends Attributes {
   required?: boolean;
   /** Enable the clear icon */
   showClearButton?: boolean;
+  /** Max height of the dropdown menu, default '400px' */
+  maxHeight?: string;
+  /** Sort selected items: 'asc' (alphabetically A-Z), 'desc' (Z-A), 'none' (insertion order), or custom sort function */
+  sortSelected?: 'asc' | 'desc' | 'none' | ((a: InputOption<T>, b: InputOption<T>) => number);
 }
 
 interface SelectState<T extends string | number> {
@@ -256,12 +260,15 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
     Object.entries(
       attrs.options
         .filter((option) => option.group)
-        .reduce((groups, option) => {
-          const group = option.group!;
-          if (!groups[group]) groups[group] = [];
-          groups[group].push(option);
-          return groups;
-        }, {} as { [key: string]: (typeof attrs.options)[0][] })
+        .reduce(
+          (groups, option) => {
+            const group = option.group!;
+            if (!groups[group]) groups[group] = [];
+            groups[group].push(option);
+            return groups;
+          },
+          {} as { [key: string]: (typeof attrs.options)[0][] }
+        )
     )
       .map(([groupName, groupOptions]) => [
         m('li.optgroup', { tabindex: 0 }, m('span', groupName)),
@@ -332,7 +339,10 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       'ul.dropdown-content.select-dropdown',
       {
         tabindex: 0,
-        style: getPortalStyles(state.inputRef),
+        style: {
+          ...getPortalStyles(state.inputRef),
+          ...(attrs.maxHeight ? { maxHeight: attrs.maxHeight } : {}),
+        },
         oncreate: ({ dom }) => {
           state.dropdownRef = dom as HTMLElement;
         },
@@ -427,7 +437,8 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       }
 
       const finalClassName = newRow ? `${className} clear` : className;
-      const selectedOptions = options.filter((opt) => isSelected(opt.id, selectedIds));
+      const selectedOptionsUnsorted = options.filter((opt) => isSelected(opt.id, selectedIds));
+      const selectedOptions = sortOptions(selectedOptionsUnsorted, attrs.sortSelected);
 
       // Update portal dropdown when inside modal
       if (state.isInsideModal) {
@@ -483,7 +494,10 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                     onremove: () => {
                       state.dropdownRef = null;
                     },
-                    style: getDropdownStyles(state.inputRef, true, options),
+                    style: {
+                      ...getDropdownStyles(state.inputRef, true, options),
+                      ...(attrs.maxHeight ? { maxHeight: attrs.maxHeight } : {}),
+                    },
                   },
                   renderDropdownContent(attrs, selectedIds, multiple, placeholder)
                 ),
