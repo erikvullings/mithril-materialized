@@ -173,6 +173,10 @@
   top: 0;
   bottom: 0;
 }
+
+.timepicker-dial {
+  pointer-events: none;
+}
 .timepicker-minutes {
 	visibility: hidden;
 }
@@ -187,6 +191,7 @@
 	position: absolute;
 	cursor: pointer;
   font-size: 15px;
+  pointer-events: none;
 }
 
 .timepicker-tick.active,

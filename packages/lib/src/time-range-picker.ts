@@ -1,18 +1,9 @@
 import m, { FactoryComponent } from 'mithril';
 import { InputAttrs } from './input-options';
 import { uniqueId, renderToPortal, clearPortal } from './utils';
-import {
-  TimeValue,
-  addLeadingZero,
-  parseTime,
-  formatTime,
-  timeToMinutes,
-  generateHourOptions,
-  generateMinuteOptions,
-  isTimeDisabled,
-  scrollToValue,
-  snapToNearestItem,
-} from './time-utils';
+import { TimeValue, addLeadingZero, parseTime, formatTime, timeToMinutes } from './time-utils';
+import { DigitalClock } from './digital-clock';
+import { AnalogClock } from './analog-clock';
 
 interface TimeRangePickerState {
   id: string;
@@ -23,16 +14,7 @@ interface TimeRangePickerState {
   tempEndTime: TimeValue;
   isPickerOpen: boolean;
   portalContainerId: string;
-
-  // Digital mode scroll containers
-  hourScrollContainer?: HTMLElement;
-  minuteScrollContainer?: HTMLElement;
-  amPmScrollContainer?: HTMLElement;
-
-  // Scroll timeout IDs for snap-to-item behavior
-  hourScrollTimeout?: number;
-  minuteScrollTimeout?: number;
-  amPmScrollTimeout?: number;
+  currentView: 'hours' | 'minutes';
 
   // Display elements
   spanStartHours?: HTMLElement;
@@ -76,6 +58,9 @@ export interface TimeRangePickerAttrs extends Omit<InputAttrs<string>, 'defaultV
   /** Use 12-hour format with AM/PM */
   twelveHour?: boolean;
 
+  /** Display mode: 'analog' or 'digital' (default: 'digital') */
+  displayMode?: 'analog' | 'digital';
+
   /** Step for minute increments (default 5) */
   minuteStep?: number;
 
@@ -90,6 +75,24 @@ export interface TimeRangePickerAttrs extends Omit<InputAttrs<string>, 'defaultV
 
   /** Show clear button */
   showClearBtn?: boolean;
+
+  /** Dial radius for analog clock (default: 135) */
+  dialRadius?: number;
+
+  /** Outer radius for analog clock (default: 105) */
+  outerRadius?: number;
+
+  /** Inner radius for analog clock (default: 70) */
+  innerRadius?: number;
+
+  /** Tick radius for analog clock (default: 20) */
+  tickRadius?: number;
+
+  /** Round by 5 minutes for analog clock (default: false) */
+  roundBy5?: boolean;
+
+  /** Vibrate on value change for analog clock (default: true) */
+  vibrate?: boolean;
 }
 
 /**
@@ -98,36 +101,6 @@ export interface TimeRangePickerAttrs extends Omit<InputAttrs<string>, 'defaultV
  */
 export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
   let state: TimeRangePickerState;
-
-  const getCurrentTime = (): TimeValue => {
-    return state.currentSelection === 'start' ? state.tempStartTime : state.tempEndTime;
-  };
-
-  const setCurrentTime = (time: TimeValue): void => {
-    if (state.currentSelection === 'start') {
-      state.tempStartTime = time;
-      if (state.spanStartHours) {
-        state.spanStartHours.innerHTML = addLeadingZero(time.hours);
-      }
-      if (state.spanStartMinutes) {
-        state.spanStartMinutes.innerHTML = addLeadingZero(time.minutes);
-      }
-      if (state.spanStartAmPm) {
-        state.spanStartAmPm.innerHTML = ` ${time.amOrPm}`;
-      }
-    } else {
-      state.tempEndTime = time;
-      if (state.spanEndHours) {
-        state.spanEndHours.innerHTML = addLeadingZero(time.hours);
-      }
-      if (state.spanEndMinutes) {
-        state.spanEndMinutes.innerHTML = addLeadingZero(time.minutes);
-      }
-      if (state.spanEndAmPm) {
-        state.spanEndAmPm.innerHTML = ` ${time.amOrPm}`;
-      }
-    }
-  };
 
   const calculateMinTime = (startTime: TimeValue, twelveHour: boolean): string | undefined => {
     if (!startTime) return undefined;
@@ -155,305 +128,39 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
     return formatTime({ hours, minutes, amOrPm }, twelveHour);
   };
 
-  const DigitalClockPicker: FactoryComponent<{
-    twelveHour: boolean;
-    minuteStep: number;
-    hourStep: number;
-    minTime?: string;
-    maxTime?: string;
-  }> = () => {
-    const ITEM_HEIGHT = 48;
+  const handleNextOrDone = (
+    validateRange: boolean,
+    twelveHour: boolean,
+    onchange?: (startTime: string, endTime: string) => void
+  ) => {
+    if (state.currentSelection === 'start') {
+      // Move to end time selection
+      state.currentSelection = 'end';
+      state.currentView = 'hours'; // Reset to hours view for end time
 
-    return {
-      view: ({ attrs }) => {
-        const { twelveHour, minuteStep, hourStep, minTime, maxTime } = attrs;
-        const hourOptions = generateHourOptions(twelveHour, hourStep);
-        const minuteOptions = generateMinuteOptions(minuteStep);
-        const currentTime = getCurrentTime();
+      // If validation is enabled and end time is before or equal to start time, reset end time
+      if (validateRange) {
+        const startMins = timeToMinutes(state.tempStartTime, twelveHour);
+        const endMins = timeToMinutes(state.tempEndTime, twelveHour);
+        if (endMins <= startMins) {
+          // Reset end time to start time
+          state.tempEndTime = { ...state.tempStartTime };
+        }
+      }
+    } else {
+      // Finalize selection
+      state.startTime = { ...state.tempStartTime };
+      state.endTime = { ...state.tempEndTime };
+      state.isPickerOpen = false;
+      state.currentSelection = 'start';
 
-        return m('.timepicker-digital-clock', [
-          // Hours column
-          m(
-            '.digital-clock-column',
-            {
-              oncreate: (vnode) => {
-                state.hourScrollContainer = vnode.dom as HTMLElement;
-                const currentIndex = hourOptions.indexOf(currentTime.hours);
-                if (currentIndex >= 0) {
-                  scrollToValue(state.hourScrollContainer, currentIndex + 2, ITEM_HEIGHT, false);
-                }
-              },
-              onupdate: () => {
-                // Re-center scroll when time changes (e.g., switching from start to end selection)
-                if (state.hourScrollContainer) {
-                  const currentIndex = hourOptions.indexOf(currentTime.hours);
-                  if (currentIndex >= 0) {
-                    scrollToValue(state.hourScrollContainer, currentIndex + 2, ITEM_HEIGHT, false);
-                  }
-                }
-              },
-              onwheel: (e: WheelEvent) => {
-                e.preventDefault();
-                if (!state.hourScrollContainer) return;
-
-                const delta = Math.sign(e.deltaY);
-                const currentIndex = hourOptions.indexOf(currentTime.hours);
-                const newIndex = Math.max(0, Math.min(hourOptions.length - 1, currentIndex + delta));
-                const newHour = hourOptions[newIndex];
-
-                if (!isTimeDisabled(newHour, currentTime.minutes, currentTime.amOrPm, minTime, maxTime, twelveHour)) {
-                  setCurrentTime({ ...currentTime, hours: newHour });
-                  scrollToValue(state.hourScrollContainer, newIndex + 2, ITEM_HEIGHT, true);
-                  m.redraw();
-                }
-              },
-              onscroll: () => {
-                if (state.hourScrollTimeout) {
-                  clearTimeout(state.hourScrollTimeout);
-                }
-                state.hourScrollTimeout = window.setTimeout(() => {
-                  if (!state.hourScrollContainer) return;
-                  snapToNearestItem(state.hourScrollContainer, ITEM_HEIGHT, (index) => {
-                    const actualIndex = index - 2;
-                    if (actualIndex >= 0 && actualIndex < hourOptions.length) {
-                      const newHour = hourOptions[actualIndex];
-                      if (
-                        !isTimeDisabled(newHour, currentTime.minutes, currentTime.amOrPm, minTime, maxTime, twelveHour)
-                      ) {
-                        setCurrentTime({ ...currentTime, hours: newHour });
-                        m.redraw();
-                      }
-                    }
-                  });
-                }, 150);
-              },
-            },
-            [
-              m('.digital-clock-item.padding'),
-              m('.digital-clock-item.padding'),
-              ...hourOptions.map((hour) => {
-                const disabled = isTimeDisabled(
-                  hour,
-                  currentTime.minutes,
-                  currentTime.amOrPm,
-                  minTime,
-                  maxTime,
-                  twelveHour
-                );
-                return m(
-                  '.digital-clock-item',
-                  {
-                    class: `${hour === currentTime.hours ? 'selected' : ''} ${disabled ? 'disabled' : ''}`,
-                    onclick: () => {
-                      if (disabled) return;
-                      setCurrentTime({ ...currentTime, hours: hour });
-                      if (state.hourScrollContainer) {
-                        const index = hourOptions.indexOf(hour);
-                        scrollToValue(state.hourScrollContainer, index + 2, ITEM_HEIGHT, true);
-                      }
-                      m.redraw();
-                    },
-                  },
-                  addLeadingZero(hour)
-                );
-              }),
-              m('.digital-clock-item.padding'),
-              m('.digital-clock-item.padding'),
-            ]
-          ),
-
-          // Separator
-          m('.digital-clock-separator', ':'),
-
-          // Minutes column
-          m(
-            '.digital-clock-column',
-            {
-              oncreate: (vnode) => {
-                state.minuteScrollContainer = vnode.dom as HTMLElement;
-                const currentIndex = minuteOptions.indexOf(currentTime.minutes);
-                if (currentIndex >= 0) {
-                  scrollToValue(state.minuteScrollContainer, currentIndex + 2, ITEM_HEIGHT, false);
-                }
-              },
-              onupdate: () => {
-                // Re-center scroll when time changes (e.g., switching from start to end selection)
-                if (state.minuteScrollContainer) {
-                  const currentIndex = minuteOptions.indexOf(currentTime.minutes);
-                  if (currentIndex >= 0) {
-                    scrollToValue(state.minuteScrollContainer, currentIndex + 2, ITEM_HEIGHT, false);
-                  }
-                }
-              },
-              onwheel: (e: WheelEvent) => {
-                e.preventDefault();
-                if (!state.minuteScrollContainer) return;
-
-                const delta = Math.sign(e.deltaY);
-                const currentIndex = minuteOptions.indexOf(currentTime.minutes);
-                const newIndex = Math.max(0, Math.min(minuteOptions.length - 1, currentIndex + delta));
-                const newMinute = minuteOptions[newIndex];
-
-                if (!isTimeDisabled(currentTime.hours, newMinute, currentTime.amOrPm, minTime, maxTime, twelveHour)) {
-                  setCurrentTime({ ...currentTime, minutes: newMinute });
-                  scrollToValue(state.minuteScrollContainer, newIndex + 2, ITEM_HEIGHT, true);
-                  m.redraw();
-                }
-              },
-              onscroll: () => {
-                if (state.minuteScrollTimeout) {
-                  clearTimeout(state.minuteScrollTimeout);
-                }
-                state.minuteScrollTimeout = window.setTimeout(() => {
-                  if (!state.minuteScrollContainer) return;
-                  snapToNearestItem(state.minuteScrollContainer, ITEM_HEIGHT, (index) => {
-                    const actualIndex = index - 2;
-                    if (actualIndex >= 0 && actualIndex < minuteOptions.length) {
-                      const newMinute = minuteOptions[actualIndex];
-                      if (
-                        !isTimeDisabled(currentTime.hours, newMinute, currentTime.amOrPm, minTime, maxTime, twelveHour)
-                      ) {
-                        setCurrentTime({ ...currentTime, minutes: newMinute });
-                        m.redraw();
-                      }
-                    }
-                  });
-                }, 150);
-              },
-            },
-            [
-              m('.digital-clock-item.padding'),
-              m('.digital-clock-item.padding'),
-              ...minuteOptions.map((minute) => {
-                const disabled = isTimeDisabled(
-                  currentTime.hours,
-                  minute,
-                  currentTime.amOrPm,
-                  minTime,
-                  maxTime,
-                  twelveHour
-                );
-                return m(
-                  '.digital-clock-item',
-                  {
-                    class: `${minute === currentTime.minutes ? 'selected' : ''} ${disabled ? 'disabled' : ''}`,
-                    onclick: () => {
-                      if (disabled) return;
-                      setCurrentTime({ ...currentTime, minutes: minute });
-                      if (state.minuteScrollContainer) {
-                        const index = minuteOptions.indexOf(minute);
-                        scrollToValue(state.minuteScrollContainer, index + 2, ITEM_HEIGHT, true);
-                      }
-                      m.redraw();
-                    },
-                  },
-                  addLeadingZero(minute)
-                );
-              }),
-              m('.digital-clock-item.padding'),
-              m('.digital-clock-item.padding'),
-            ]
-          ),
-
-          // AM/PM column (if twelveHour)
-          twelveHour &&
-            m(
-              '.digital-clock-column.ampm-column',
-              {
-                oncreate: (vnode) => {
-                  state.amPmScrollContainer = vnode.dom as HTMLElement;
-                  const amPmOptions = ['AM', 'PM'];
-                  const currentIndex = amPmOptions.indexOf(currentTime.amOrPm);
-                  if (currentIndex >= 0) {
-                    scrollToValue(state.amPmScrollContainer, currentIndex + 2, ITEM_HEIGHT, false);
-                  }
-                },
-                onupdate: () => {
-                  // Re-center scroll when time changes (e.g., switching from start to end selection)
-                  if (state.amPmScrollContainer) {
-                    const amPmOptions = ['AM', 'PM'];
-                    const currentIndex = amPmOptions.indexOf(currentTime.amOrPm);
-                    if (currentIndex >= 0) {
-                      scrollToValue(state.amPmScrollContainer, currentIndex + 2, ITEM_HEIGHT, false);
-                    }
-                  }
-                },
-                onwheel: (e: WheelEvent) => {
-                  e.preventDefault();
-                  const delta = Math.sign(e.deltaY);
-                  const newAmPm = delta > 0 ? 'PM' : 'AM';
-                  if (
-                    newAmPm !== currentTime.amOrPm &&
-                    !isTimeDisabled(currentTime.hours, currentTime.minutes, newAmPm, minTime, maxTime, twelveHour)
-                  ) {
-                    setCurrentTime({ ...currentTime, amOrPm: newAmPm });
-                    const amPmOptions = ['AM', 'PM'];
-                    const newIndex = amPmOptions.indexOf(newAmPm);
-                    if (state.amPmScrollContainer) {
-                      scrollToValue(state.amPmScrollContainer, newIndex + 2, ITEM_HEIGHT, true);
-                    }
-                    m.redraw();
-                  }
-                },
-                onscroll: () => {
-                  if (state.amPmScrollTimeout) {
-                    clearTimeout(state.amPmScrollTimeout);
-                  }
-                  state.amPmScrollTimeout = window.setTimeout(() => {
-                    if (!state.amPmScrollContainer) return;
-                    snapToNearestItem(state.amPmScrollContainer, ITEM_HEIGHT, (index) => {
-                      const actualIndex = index - 2;
-                      const amPmOptions = ['AM', 'PM'];
-                      if (actualIndex >= 0 && actualIndex < amPmOptions.length) {
-                        const newAmPm = amPmOptions[actualIndex] as 'AM' | 'PM';
-                        if (
-                          !isTimeDisabled(currentTime.hours, currentTime.minutes, newAmPm, minTime, maxTime, twelveHour)
-                        ) {
-                          setCurrentTime({ ...currentTime, amOrPm: newAmPm });
-                          m.redraw();
-                        }
-                      }
-                    });
-                  }, 150);
-                },
-              },
-              [
-                m('.digital-clock-item.padding'),
-                m('.digital-clock-item.padding'),
-                ['AM', 'PM'].map((ampm) => {
-                  const disabled = isTimeDisabled(
-                    currentTime.hours,
-                    currentTime.minutes,
-                    ampm as 'AM' | 'PM',
-                    minTime,
-                    maxTime,
-                    twelveHour
-                  );
-                  return m(
-                    '.digital-clock-item',
-                    {
-                      class: `${ampm === currentTime.amOrPm ? 'selected' : ''} ${disabled ? 'disabled' : ''}`,
-                      onclick: () => {
-                        if (disabled) return;
-                        setCurrentTime({ ...currentTime, amOrPm: ampm as 'AM' | 'PM' });
-                        if (state.amPmScrollContainer) {
-                          const amPmOptions = ['AM', 'PM'];
-                          const index = amPmOptions.indexOf(ampm);
-                          scrollToValue(state.amPmScrollContainer, index + 2, ITEM_HEIGHT, true);
-                        }
-                        m.redraw();
-                      },
-                    },
-                    ampm
-                  );
-                }),
-                m('.digital-clock-item.padding'),
-                m('.digital-clock-item.padding'),
-              ]
-            ),
-        ]);
-      },
-    };
+      // Call onchange callback
+      if (onchange && state.startTime && state.endTime) {
+        const startTimeStr = formatTime(state.startTime, twelveHour);
+        const endTimeStr = formatTime(state.endTime, twelveHour);
+        onchange(startTimeStr, endTimeStr);
+      }
+    }
   };
 
   const TimeRangePickerModal: FactoryComponent<{
@@ -466,10 +173,35 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
     maxTime?: string;
     validateRange: boolean;
     onchange?: (startTime: string, endTime: string) => void;
+    displayMode?: 'analog' | 'digital';
+    dialRadius?: number;
+    outerRadius?: number;
+    innerRadius?: number;
+    tickRadius?: number;
+    roundBy5?: boolean;
+    vibrate?: boolean;
   }> = () => {
     return {
       view: ({ attrs }) => {
-        const { i18n, showClearBtn, twelveHour, minuteStep, hourStep, minTime, maxTime, validateRange } = attrs;
+        const {
+          i18n,
+          showClearBtn,
+          twelveHour,
+          minuteStep,
+          hourStep,
+          minTime,
+          maxTime,
+          validateRange,
+          displayMode = 'digital',
+          dialRadius = 135,
+          outerRadius = 105,
+          innerRadius = 70,
+          tickRadius = 20,
+          roundBy5 = false,
+          vibrate = true,
+        } = attrs;
+
+        const isAnalogMode = displayMode === 'analog';
 
         // Calculate effective minTime for end time selection
         const effectiveMinTime =
@@ -556,84 +288,149 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
             ]),
           ]),
 
-          // Digital clock picker
-          m('.timepicker-digital-mode', [
-            m(DigitalClockPicker, {
-              twelveHour,
-              minuteStep,
-              hourStep,
-              minTime: effectiveMinTime,
-              maxTime,
-            }),
-            m('.timepicker-footer', [
-              m(
-                'button.btn-flat.timepicker-clear.waves-effect',
-                {
-                  type: 'button',
-                  style: showClearBtn ? '' : 'visibility: hidden;',
-                  onclick: () => {
-                    state.isPickerOpen = false;
-                    m.redraw();
-                  },
-                },
-                i18n.clear
-              ),
-              m('.confirmation-btns', [
+          // Clock picker (analog or digital mode)
+          isAnalogMode
+            ? m('.timepicker-analog-display', [
                 m(
-                  'button.btn-flat.timepicker-close.waves-effect',
-                  {
-                    type: 'button',
-                    onclick: () => {
-                      state.isPickerOpen = false;
-                      state.currentSelection = 'start';
-                      m.redraw();
-                    },
-                  },
-                  i18n.cancel
-                ),
-                m(
-                  'button.btn-flat.timepicker-close.waves-effect',
-                  {
-                    type: 'button',
-                    onclick: () => {
+                  '.timepicker-plate',
+                  m(AnalogClock, {
+                    key: state.currentSelection, // Force component recreation when switching between start/end
+                    hours: state.currentSelection === 'start' ? state.tempStartTime.hours : state.tempEndTime.hours,
+                    minutes:
+                      state.currentSelection === 'start' ? state.tempStartTime.minutes : state.tempEndTime.minutes,
+                    amOrPm: state.currentSelection === 'start' ? state.tempStartTime.amOrPm : state.tempEndTime.amOrPm,
+                    currentView: state.currentView,
+                    twelveHour,
+                    dialRadius,
+                    outerRadius,
+                    innerRadius,
+                    tickRadius,
+                    roundBy5,
+                    vibrate,
+                    onTimeChange: (hours, minutes) => {
                       if (state.currentSelection === 'start') {
-                        // Move to end time selection
-                        state.currentSelection = 'end';
-
-                        // If validation is enabled and end time is before or equal to start time, reset end time
-                        if (validateRange) {
-                          const startMins = timeToMinutes(state.tempStartTime, twelveHour);
-                          const endMins = timeToMinutes(state.tempEndTime, twelveHour);
-                          if (endMins <= startMins) {
-                            // Reset end time to start time
-                            state.tempEndTime = { ...state.tempStartTime };
-                          }
-                        }
-
-                        m.redraw();
+                        state.tempStartTime = { ...state.tempStartTime, hours, minutes };
+                        if (state.spanStartHours) state.spanStartHours.innerHTML = addLeadingZero(hours);
+                        if (state.spanStartMinutes) state.spanStartMinutes.innerHTML = addLeadingZero(minutes);
                       } else {
-                        // Finalize selection
-                        state.startTime = { ...state.tempStartTime };
-                        state.endTime = { ...state.tempEndTime };
-                        state.isPickerOpen = false;
-                        state.currentSelection = 'start';
-
-                        // Call onchange callback
-                        if (attrs.onchange && state.startTime && state.endTime) {
-                          const startTimeStr = formatTime(state.startTime, attrs.twelveHour ?? true);
-                          const endTimeStr = formatTime(state.endTime, attrs.twelveHour ?? true);
-                          attrs.onchange(startTimeStr, endTimeStr);
-                        }
-
-                        m.redraw();
+                        state.tempEndTime = { ...state.tempEndTime, hours, minutes };
+                        if (state.spanEndHours) state.spanEndHours.innerHTML = addLeadingZero(hours);
+                        if (state.spanEndMinutes) state.spanEndMinutes.innerHTML = addLeadingZero(minutes);
                       }
                     },
-                  },
-                  state.currentSelection === 'start' ? i18n.next : i18n.done
+                    onViewChange: (view) => {
+                      state.currentView = view;
+                    },
+                    spanHours: state.currentSelection === 'start' ? state.spanStartHours : state.spanEndHours,
+                    spanMinutes: state.currentSelection === 'start' ? state.spanStartMinutes : state.spanEndMinutes,
+                  })
                 ),
+                // Footer (inside analog display)
+                m('.timepicker-footer', [
+                  m(
+                    'button.btn-flat.timepicker-clear.waves-effect',
+                    {
+                      type: 'button',
+                      style: showClearBtn ? '' : 'visibility: hidden;',
+                      onclick: () => {
+                        state.isPickerOpen = false;
+                      },
+                    },
+                    i18n.clear
+                  ),
+                  m('.confirmation-btns', [
+                    m(
+                      'button.btn-flat.timepicker-close.waves-effect',
+                      {
+                        type: 'button',
+                        onclick: () => {
+                          state.isPickerOpen = false;
+                          state.currentSelection = 'start';
+                          state.currentView = 'hours'; // Reset to hours view
+                        },
+                      },
+                      i18n.cancel
+                    ),
+                    m(
+                      'button.btn-flat.timepicker-close.waves-effect',
+                      {
+                        type: 'button',
+                        onclick: () => {
+                          handleNextOrDone(validateRange, twelveHour, attrs.onchange);
+                        },
+                      },
+                      state.currentSelection === 'start' ? i18n.next : i18n.done
+                    ),
+                  ]),
+                ]),
+              ])
+            : m('.timepicker-digital-mode', [
+                m(DigitalClock, {
+                  key: state.currentSelection, // Force component recreation when switching between start/end
+                  hours: state.currentSelection === 'start' ? state.tempStartTime.hours : state.tempEndTime.hours,
+                  minutes: state.currentSelection === 'start' ? state.tempStartTime.minutes : state.tempEndTime.minutes,
+                  amOrPm: state.currentSelection === 'start' ? state.tempStartTime.amOrPm : state.tempEndTime.amOrPm,
+                  twelveHour,
+                  minuteStep,
+                  hourStep,
+                  minTime: effectiveMinTime,
+                  maxTime,
+                  onTimeChange: (hours, minutes, amOrPm) => {
+                    if (state.currentSelection === 'start') {
+                      state.tempStartTime = { hours, minutes, amOrPm };
+                      if (state.spanStartHours) state.spanStartHours.innerHTML = addLeadingZero(hours);
+                      if (state.spanStartMinutes) state.spanStartMinutes.innerHTML = addLeadingZero(minutes);
+                      if (state.spanStartAmPm) state.spanStartAmPm.innerHTML = ` ${amOrPm}`;
+                    } else {
+                      state.tempEndTime = { hours, minutes, amOrPm };
+                      if (state.spanEndHours) state.spanEndHours.innerHTML = addLeadingZero(hours);
+                      if (state.spanEndMinutes) state.spanEndMinutes.innerHTML = addLeadingZero(minutes);
+                      if (state.spanEndAmPm) state.spanEndAmPm.innerHTML = ` ${amOrPm}`;
+                    }
+                  },
+                  spanHours: state.currentSelection === 'start' ? state.spanStartHours : state.spanEndHours,
+                  spanMinutes: state.currentSelection === 'start' ? state.spanStartMinutes : state.spanEndMinutes,
+                  spanAmPm: state.currentSelection === 'start' ? state.spanStartAmPm : state.spanEndAmPm,
+                }),
+                // Footer (inside digital mode)
+                m('.timepicker-footer', { key: 'timepicker-footer' }, [
+                  m(
+                    'button.btn-flat.timepicker-clear.waves-effect',
+                    {
+                      type: 'button',
+                      style: showClearBtn ? '' : 'visibility: hidden;',
+                      onclick: () => {
+                        state.isPickerOpen = false;
+                      },
+                    },
+                    i18n.clear
+                  ),
+                  m('.confirmation-btns', [
+                    m(
+                      'button.btn-flat.timepicker-close.waves-effect',
+                      {
+                        type: 'button',
+                        onclick: () => {
+                          state.isPickerOpen = false;
+                          state.currentSelection = 'start';
+                          state.currentView = 'hours'; // Reset to hours view
+                        },
+                      },
+                      i18n.cancel
+                    ),
+                    m(
+                      'button.btn-flat.timepicker-close.waves-effect',
+                      {
+                        type: 'button',
+                        onclick: () => {
+                          handleNextOrDone(validateRange, twelveHour, attrs.onchange);
+                        },
+                      },
+                      state.currentSelection === 'start' ? i18n.next : i18n.done
+                    ),
+                  ]),
+                ]),
               ]),
-            ]),
-          ]),
         ]);
       },
     };
@@ -643,7 +440,6 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
     if (e.key === 'Escape' && state.isPickerOpen) {
       state.isPickerOpen = false;
       clearPortal(state.portalContainerId);
-      m.redraw();
     }
   };
 
@@ -683,7 +479,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
           onclick: () => {
             state.isPickerOpen = false;
             state.currentSelection = 'start';
-            m.redraw();
+            state.currentView = 'hours'; // Reset to hours view
           },
         }),
 
@@ -712,6 +508,13 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
               maxTime: attrs.maxTime,
               validateRange: attrs.validateRange || false,
               onchange: attrs.onchange,
+              displayMode: attrs.displayMode,
+              dialRadius: attrs.dialRadius,
+              outerRadius: attrs.outerRadius,
+              innerRadius: attrs.innerRadius,
+              tickRadius: attrs.tickRadius,
+              roundBy5: attrs.roundBy5,
+              vibrate: attrs.vibrate,
             }),
           ]
         ),
@@ -738,6 +541,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
         tempEndTime: { ...endTime },
         isPickerOpen: false,
         portalContainerId: `timerange-portal-${uniqueId()}`,
+        currentView: 'hours',
       };
 
       document.addEventListener('keydown', handleKeyDown);
@@ -780,8 +584,8 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
         state.startTime && state.endTime
           ? `${formatTime(state.startTime, twelveHour)} - ${formatTime(state.endTime, twelveHour)}`
           : state.startTime
-            ? `${formatTime(state.startTime, twelveHour)} - ...`
-            : '';
+          ? `${formatTime(state.startTime, twelveHour)} - ...`
+          : '';
 
       return m('.input-field', { className }, [
         iconName && m('i.material-icons.prefix', iconName),
@@ -799,6 +603,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
             if (!disabled && !readonly) {
               state.isPickerOpen = true;
               state.currentSelection = 'start';
+              state.currentView = 'hours'; // Reset to hours view when opening
               state.tempStartTime = { ...state.startTime };
               state.tempEndTime = { ...state.endTime };
             }

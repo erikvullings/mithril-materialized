@@ -1,4 +1,4 @@
-import { DatePicker, TimePicker, TimeRangePicker, CodeBlock, Switch, ModalPanel } from 'mithril-materialized';
+import { DatePicker, TimePicker, TimeRangePicker, CodeBlock, Switch, ModalPanel, AnalogClock } from 'mithril-materialized';
 import m from 'mithril';
 
 export const PickerPage = () => {
@@ -8,6 +8,11 @@ export const PickerPage = () => {
     modalDate: '',
     modalTime: '',
     modalDateRange: '',
+    // AnalogClock state
+    clockHours: 10,
+    clockMinutes: 30,
+    clockAmOrPm: 'AM' as 'AM' | 'PM',
+    clockView: 'hours' as 'hours' | 'minutes',
   };
 
   const onchange = (v: unknown) => console.log(`onchange fired. New value: ${v}`);
@@ -757,7 +762,7 @@ m(TimePicker, {
             label: 'Select Time Range',
             helperText: 'Click to select start and end times',
             iconName: 'schedule',
-            displayMode: 'digital',
+            displayMode: 'analog',
             twelveHour: true,
             startValue: '10:00 AM',
             endValue: '11:30 AM',
@@ -812,24 +817,6 @@ m(TimePicker, {
           })
         ),
 
-        m('h4', 'Time Range - Analog Mode'),
-        m(
-          '.row',
-          m(TimeRangePicker, {
-            disabled: state.disabled,
-            label: 'Event Time Range',
-            helperText: 'Uses traditional clock face',
-            iconName: 'schedule',
-            displayMode: 'analog', // Also works with analog mode
-            twelveHour: true,
-            validateRange: true,
-            showClearBtn: true,
-            onchange: (start, end) => {
-              console.log('Event time:', start, '-', end);
-            },
-          })
-        ),
-
         m(CodeBlock, {
           code: `// Basic Time Range Picker
 m(TimeRangePicker, {
@@ -864,18 +851,115 @@ m(TimeRangePicker, {
   onchange: (start, end) => {
     console.log('Shift:', start, '-', end);
   },
-})
-
-// Time Range - Analog Mode
-m(TimeRangePicker, {
-  label: 'Event Time Range',
-  displayMode: 'analog', // Works with both analog and digital
-  twelveHour: true,
-  validateRange: true,
-  onchange: (start, end) => {
-    console.log('Event:', start, '-', end);
-  },
 })`,
+        }),
+
+        // AnalogClock Component Examples
+        m('h3.header', 'AnalogClock Component - Direct Usage'),
+        m(
+          'p',
+          'The AnalogClock is a low-level component used internally by TimePicker. It can be used standalone for custom time selection interfaces.'
+        ),
+
+        m('h4', 'Interactive Analog Clock (12-hour)'),
+        m('.row', [
+          m('.col.s12.m6', [
+            m(
+              '.card',
+              {
+                style: {
+                  padding: '20px',
+                },
+              },
+              [
+                m('h6', 'Click or drag to set time'),
+                m(
+                  'p',
+                  `Selected time: ${state.clockHours}:${state.clockMinutes.toString().padStart(2, '0')} ${state.clockAmOrPm}`
+                ),
+                m(
+                  'p',
+                  {
+                    style: {
+                      display: 'flex',
+                      gap: '10px',
+                      marginBottom: '10px',
+                    },
+                  },
+                  [
+                    m(
+                      'button.btn.btn-small',
+                      {
+                        onclick: () => {
+                          state.clockView = 'hours';
+                        },
+                        class: state.clockView === 'hours' ? 'blue' : 'grey',
+                      },
+                      'Hours'
+                    ),
+                    m(
+                      'button.btn.btn-small',
+                      {
+                        onclick: () => {
+                          state.clockView = 'minutes';
+                        },
+                        class: state.clockView === 'minutes' ? 'blue' : 'grey',
+                      },
+                      'Minutes'
+                    ),
+                  ]
+                ),
+                m('.timepicker-plate', [
+                  m(AnalogClock, {
+                    hours: state.clockHours,
+                    minutes: state.clockMinutes,
+                    amOrPm: state.clockAmOrPm,
+                    currentView: state.clockView,
+                    twelveHour: true,
+                    onTimeChange: (hours, minutes) => {
+                      state.clockHours = hours;
+                      state.clockMinutes = minutes;
+                      console.log('Time changed:', hours, minutes);
+                    },
+                    onViewChange: (view) => {
+                      state.clockView = view;
+                      console.log('View changed:', view);
+                    },
+                  }),
+                ]),
+              ]
+            ),
+          ]),
+        ]),
+
+        m(CodeBlock, {
+          code: `// Interactive AnalogClock Component
+const state = {
+  clockHours: 10,
+  clockMinutes: 30,
+  clockAmOrPm: 'AM',
+  clockView: 'hours',
+};
+
+// Wrap in a .timepicker-plate for proper styling
+m('.timepicker-plate', [
+  m(AnalogClock, {
+    hours: state.clockHours,
+    minutes: state.clockMinutes,
+    amOrPm: state.clockAmOrPm,
+    currentView: state.clockView,
+    twelveHour: true,
+    onTimeChange: (hours, minutes) => {
+      state.clockHours = hours;
+      state.clockMinutes = minutes;
+      console.log('Time changed:', hours, minutes);
+    },
+    onViewChange: (view) => {
+      state.clockView = view;
+      console.log('View changed:', view);
+    },
+  }),
+])`,
         }),
       ]),
   };
