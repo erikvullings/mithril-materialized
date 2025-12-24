@@ -153,7 +153,8 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
   const updatePortalDropdown = (
     items: DropdownItem<T>[],
     selectedLabel: string,
-    onSelectItem: (item: DropdownItem<T>) => void
+    onSelectItem: (item: DropdownItem<T>) => void,
+    maxHeight?: string
   ) => {
     if (!state.isInsideModal) return;
 
@@ -219,7 +220,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
         tabindex: 0,
         style: {
           ...getPortalStyles(state.inputRef),
-          ...(attrs.maxHeight ? { maxHeight: attrs.maxHeight } : {}),
+          ...(maxHeight ? { maxHeight } : {}),
         },
         oncreate: ({ dom }) => {
           state.dropdownRef = dom as HTMLElement;
@@ -303,13 +304,18 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
 
       // Update portal dropdown when inside modal
       if (state.isInsideModal) {
-        updatePortalDropdown(items, title, (item) => {
-          if (item.id) {
-            state.isOpen = false;
-            state.focusedIndex = -1;
-            handleSelection(item.id);
-          }
-        });
+        updatePortalDropdown(
+          items,
+          title,
+          (item) => {
+            if (item.id) {
+              state.isOpen = false;
+              state.focusedIndex = -1;
+              handleSelection(item.id);
+            }
+          },
+          attrs.maxHeight
+        );
       }
 
       return m('.dropdown-wrapper.input-field', { className, key, style }, [

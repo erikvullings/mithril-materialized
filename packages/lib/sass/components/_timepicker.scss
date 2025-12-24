@@ -81,12 +81,14 @@
 .timepicker-modal {
   max-width: 325px;
   max-height: none;
+  overflow: hidden;
 }
 
 .timepicker-container.modal-content {
   display: flex;
   flex-direction: column;
   padding: 0;
+  overflow: hidden;
 }
 
 .text-primary {
@@ -246,6 +248,194 @@
 .timepicker-clear,
 .timepicker-close {
   padding: 0 20px;
+}
+
+/* Digital Clock Mode */
+.timepicker-digital-mode {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 2.5 auto;
+  overflow: hidden;
+}
+
+.timepicker-digital-clock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  user-select: none;
+  overflow: hidden;
+}
+
+.digital-clock-column {
+  width: 80px;
+  height: 240px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  position: relative;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 3px;
+  }
+
+  // Show scrollbar on hover
+  &:hover {
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.3);
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+
+  // Gradient fade at edges - theme aware
+  background: linear-gradient(
+    to bottom,
+    var(--mm-background-color, #fafafa) 0%,
+    transparent 20%,
+    transparent 80%,
+    var(--mm-background-color, #fafafa) 100%
+  );
+
+  &.ampm-column {
+    width: 60px;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  // Selection indicator lines
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    pointer-events: none;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  &::before {
+    top: calc(50% - 24px);
+  }
+
+  &::after {
+    top: calc(50% + 24px);
+  }
+}
+
+.digital-clock-item {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 300;
+  scroll-snap-align: center;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+
+  &:hover:not(.padding):not(.disabled) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  &.selected {
+    color: var(--mm-primary-color, variables.$secondary-color);
+    font-weight: 500;
+    font-size: 2rem;
+  }
+
+  &.disabled {
+    color: rgba(0, 0, 0, 0.15);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &.padding {
+    pointer-events: none;
+    cursor: default;
+  }
+}
+
+.digital-clock-separator {
+  font-size: 2rem;
+  font-weight: 300;
+  margin: 0 4px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* Time Range Picker Styles */
+.timerange-display-vertical {
+  flex: 1 auto;
+  background-color: variables.$secondary-color;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 200px;
+}
+
+.timerange-time-section {
+  color: rgba(255, 255, 255, 0.6);
+
+  &.active {
+    color: rgba(255, 255, 255, 1);
+  }
+}
+
+.timerange-label {
+  font-size: 0.9rem;
+  font-weight: 300;
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+
+.timerange-time {
+  font-size: 3rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  min-width: 200px; // Prevent width changes when time updates
+  display: flex;
+  align-items: baseline;
+}
+
+.timerange-hours {
+  display: inline-block;
+  min-width: 2ch;
+  text-align: right;
+}
+
+.timerange-minutes {
+  display: inline-block;
+  min-width: 2ch;
+  text-align: left;
+}
+
+.timerange-ampm {
+  font-size: 1.5rem;
+  margin-left: 8px;
 }
 
 /* Media Queries */

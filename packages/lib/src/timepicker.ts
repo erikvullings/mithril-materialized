@@ -1,17 +1,27 @@
 import m, { FactoryComponent } from 'mithril';
 import { InputAttrs } from './input-options';
 import { uniqueId, renderToPortal, clearPortal } from './utils';
+import {
+  addLeadingZero as sharedAddLeadingZero,
+  generateHourOptions as sharedGenerateHourOptions,
+  generateMinuteOptions as sharedGenerateMinuteOptions,
+  isTimeDisabled as sharedIsTimeDisabled,
+  scrollToValue as sharedScrollToValue,
+  snapToNearestItem as sharedSnapToNearestItem,
+} from './time-utils';
 
 export interface TimepickerI18n {
   cancel?: string;
   clear?: string;
   done?: string;
+  next?: string;
 }
 
 const defaultI18n: Required<TimepickerI18n> = {
   cancel: 'Cancel',
   clear: 'Clear',
   done: 'Ok',
+  next: 'Next',
 };
 
 export interface TimepickerOptions {
@@ -29,6 +39,21 @@ export interface TimepickerOptions {
   twelveHour?: boolean; // change to 12 hour AM/PM clock from 24 hour
   vibrate?: boolean; // vibrate the device when dragging clock hand
   roundBy5?: boolean;
+
+  /** Display mode: 'analog' (default) or 'digital' */
+  displayMode?: 'analog' | 'digital';
+
+  /** Step for minute increments in digital mode (default 5) */
+  minuteStep?: number;
+
+  /** Step for hour increments (default 1) */
+  hourStep?: number;
+
+  /** Minimum selectable time in HH:MM or HH:MM AM/PM format */
+  minTime?: string;
+
+  /** Maximum selectable time in HH:MM or HH:MM AM/PM format */
+  maxTime?: string;
 
   // Callbacks
   onOpen?: () => void;
@@ -77,6 +102,16 @@ interface TimepickerState {
   pmBtn?: HTMLElement;
   vibrateTimer?: number;
   toggleViewTimer?: number;
+
+  // Digital mode scroll containers
+  hourScrollContainer?: HTMLElement;
+  minuteScrollContainer?: HTMLElement;
+  amPmScrollContainer?: HTMLElement;
+
+  // Scroll timeout IDs for snap-to-item behavior
+  hourScrollTimeout?: number;
+  minuteScrollTimeout?: number;
+  amPmScrollTimeout?: number;
 }
 
 const defaultOptions: Required<TimepickerOptions> = {
@@ -94,6 +129,11 @@ const defaultOptions: Required<TimepickerOptions> = {
   twelveHour: true,
   vibrate: true,
   roundBy5: false,
+  displayMode: 'analog',
+  minuteStep: 5,
+  hourStep: 1,
+  minTime: undefined as any,
+  maxTime: undefined as any,
   onOpen: () => {},
   onOpenStart: () => {},
   onOpenEnd: () => {},
@@ -109,13 +149,21 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
   let state: TimepickerState;
   let options: Required<TimepickerOptions>;
 
-  const addLeadingZero = (num: number): string => {
-    return (num < 10 ? '0' : '') + num;
-  };
+  // Use shared utilities from time-utils
+  const addLeadingZero = sharedAddLeadingZero;
+  const generateHourOptions = sharedGenerateHourOptions;
+  const generateMinuteOptions = sharedGenerateMinuteOptions;
+  const scrollToValue = sharedScrollToValue;
+  const snapToNearestItem = sharedSnapToNearestItem;
 
   const createSVGEl = (name: string): SVGElement => {
     const svgNS = 'http://www.w3.org/2000/svg';
     return document.createElementNS(svgNS, name);
+  };
+
+  // Wrapper for isTimeDisabled to use options closure
+  const isTimeDisabled = (hours: number, minutes: number, amOrPm: 'AM' | 'PM'): boolean => {
+    return sharedIsTimeDisabled(hours, minutes, amOrPm, options.minTime, options.maxTime, options.twelveHour);
   };
 
   const getPos = (e: Event): { x: number; y: number } => {
@@ -518,8 +566,279 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     return done(true);
   };
 
+  const DigitalClockPicker: FactoryComponent<{}> = () => {
+    const ITEM_HEIGHT = 48;
+
+    return {
+      view: () => {
+        const hourOptions = generateHourOptions(options.twelveHour, options.hourStep);
+        const minuteOptions = generateMinuteOptions(options.minuteStep);
+
+        return m('.timepicker-digital-clock', [
+          // Hours column
+          m(
+            '.digital-clock-column',
+            {
+              oncreate: (vnode) => {
+                state.hourScrollContainer = vnode.dom as HTMLElement;
+                const currentIndex = hourOptions.indexOf(state.hours);
+                if (currentIndex >= 0) {
+                  scrollToValue(state.hourScrollContainer, currentIndex + 2, ITEM_HEIGHT, false);
+                }
+              },
+              onwheel: (e: WheelEvent) => {
+                e.preventDefault();
+                if (!state.hourScrollContainer) return;
+
+                const delta = Math.sign(e.deltaY);
+                const currentIndex = hourOptions.indexOf(state.hours);
+                const newIndex = Math.max(0, Math.min(hourOptions.length - 1, currentIndex + delta));
+                const newHour = hourOptions[newIndex];
+
+                if (!isTimeDisabled(newHour, state.minutes, state.amOrPm)) {
+                  state.hours = newHour;
+                  if (state.spanHours) {
+                    state.spanHours.innerHTML = addLeadingZero(state.hours);
+                  }
+                  scrollToValue(state.hourScrollContainer, newIndex + 2, ITEM_HEIGHT, true);
+                  m.redraw();
+                }
+              },
+              onscroll: () => {
+                if (state.hourScrollTimeout) {
+                  clearTimeout(state.hourScrollTimeout);
+                }
+                state.hourScrollTimeout = window.setTimeout(() => {
+                  if (!state.hourScrollContainer) return;
+                  snapToNearestItem(state.hourScrollContainer, ITEM_HEIGHT, (index) => {
+                    const actualIndex = index - 2; // Account for padding
+                    if (actualIndex >= 0 && actualIndex < hourOptions.length) {
+                      const newHour = hourOptions[actualIndex];
+                      if (!isTimeDisabled(newHour, state.minutes, state.amOrPm)) {
+                        state.hours = newHour;
+                        if (state.spanHours) {
+                          state.spanHours.innerHTML = addLeadingZero(state.hours);
+                        }
+                        m.redraw();
+                      }
+                    }
+                  });
+                }, 150);
+              },
+            },
+            [
+              // Padding items for centering
+              m('.digital-clock-item.padding'),
+              m('.digital-clock-item.padding'),
+
+              // Hour items
+              ...hourOptions.map((hour) => {
+                const disabled = isTimeDisabled(hour, state.minutes, state.amOrPm);
+                return m(
+                  '.digital-clock-item',
+                  {
+                    class: `${hour === state.hours ? 'selected' : ''} ${disabled ? 'disabled' : ''}`,
+                    onclick: () => {
+                      if (disabled) return;
+                      state.hours = hour;
+                      if (state.spanHours) {
+                        state.spanHours.innerHTML = addLeadingZero(state.hours);
+                      }
+                      if (state.hourScrollContainer) {
+                        const index = hourOptions.indexOf(hour);
+                        scrollToValue(state.hourScrollContainer, index + 2, ITEM_HEIGHT, true);
+                      }
+                      m.redraw();
+                    },
+                  },
+                  addLeadingZero(hour)
+                );
+              }),
+
+              // Padding items for centering
+              m('.digital-clock-item.padding'),
+              m('.digital-clock-item.padding'),
+            ]
+          ),
+
+          // Separator
+          m('.digital-clock-separator', ':'),
+
+          // Minutes column
+          m(
+            '.digital-clock-column',
+            {
+              oncreate: (vnode) => {
+                state.minuteScrollContainer = vnode.dom as HTMLElement;
+                const currentIndex = minuteOptions.indexOf(state.minutes);
+                if (currentIndex >= 0) {
+                  scrollToValue(state.minuteScrollContainer, currentIndex + 2, ITEM_HEIGHT, false);
+                }
+              },
+              onwheel: (e: WheelEvent) => {
+                e.preventDefault();
+                if (!state.minuteScrollContainer) return;
+
+                const delta = Math.sign(e.deltaY);
+                const currentIndex = minuteOptions.indexOf(state.minutes);
+                const newIndex = Math.max(0, Math.min(minuteOptions.length - 1, currentIndex + delta));
+                const newMinute = minuteOptions[newIndex];
+
+                if (!isTimeDisabled(state.hours, newMinute, state.amOrPm)) {
+                  state.minutes = newMinute;
+                  if (state.spanMinutes) {
+                    state.spanMinutes.innerHTML = addLeadingZero(state.minutes);
+                  }
+                  scrollToValue(state.minuteScrollContainer, newIndex + 2, ITEM_HEIGHT, true);
+                  m.redraw();
+                }
+              },
+              onscroll: () => {
+                if (state.minuteScrollTimeout) {
+                  clearTimeout(state.minuteScrollTimeout);
+                }
+                state.minuteScrollTimeout = window.setTimeout(() => {
+                  if (!state.minuteScrollContainer) return;
+                  snapToNearestItem(state.minuteScrollContainer, ITEM_HEIGHT, (index) => {
+                    const actualIndex = index - 2; // Account for padding
+                    if (actualIndex >= 0 && actualIndex < minuteOptions.length) {
+                      const newMinute = minuteOptions[actualIndex];
+                      if (!isTimeDisabled(state.hours, newMinute, state.amOrPm)) {
+                        state.minutes = newMinute;
+                        if (state.spanMinutes) {
+                          state.spanMinutes.innerHTML = addLeadingZero(state.minutes);
+                        }
+                        m.redraw();
+                      }
+                    }
+                  });
+                }, 150);
+              },
+            },
+            [
+              // Padding items for centering
+              m('.digital-clock-item.padding'),
+              m('.digital-clock-item.padding'),
+
+              // Minute items
+              ...minuteOptions.map((minute) => {
+                const disabled = isTimeDisabled(state.hours, minute, state.amOrPm);
+                return m(
+                  '.digital-clock-item',
+                  {
+                    class: `${minute === state.minutes ? 'selected' : ''} ${disabled ? 'disabled' : ''}`,
+                    onclick: () => {
+                      if (disabled) return;
+                      state.minutes = minute;
+                      if (state.spanMinutes) {
+                        state.spanMinutes.innerHTML = addLeadingZero(state.minutes);
+                      }
+                      if (state.minuteScrollContainer) {
+                        const index = minuteOptions.indexOf(minute);
+                        scrollToValue(state.minuteScrollContainer, index + 2, ITEM_HEIGHT, true);
+                      }
+                      m.redraw();
+                    },
+                  },
+                  addLeadingZero(minute)
+                );
+              }),
+
+              // Padding items for centering
+              m('.digital-clock-item.padding'),
+              m('.digital-clock-item.padding'),
+            ]
+          ),
+
+          // AM/PM column (if twelveHour)
+          options.twelveHour &&
+            m(
+              '.digital-clock-column.ampm-column',
+              {
+                oncreate: (vnode) => {
+                  state.amPmScrollContainer = vnode.dom as HTMLElement;
+                  const amPmOptions = ['AM', 'PM'];
+                  const currentIndex = amPmOptions.indexOf(state.amOrPm);
+                  if (currentIndex >= 0) {
+                    scrollToValue(state.amPmScrollContainer, currentIndex + 2, ITEM_HEIGHT, false);
+                  }
+                },
+                onwheel: (e: WheelEvent) => {
+                  e.preventDefault();
+                  const delta = Math.sign(e.deltaY);
+                  const newAmPm = delta > 0 ? 'PM' : 'AM';
+                  if (newAmPm !== state.amOrPm && !isTimeDisabled(state.hours, state.minutes, newAmPm)) {
+                    state.amOrPm = newAmPm;
+                    updateAmPmView();
+                    const amPmOptions = ['AM', 'PM'];
+                    const newIndex = amPmOptions.indexOf(state.amOrPm);
+                    if (state.amPmScrollContainer) {
+                      scrollToValue(state.amPmScrollContainer, newIndex + 2, ITEM_HEIGHT, true);
+                    }
+                    m.redraw();
+                  }
+                },
+                onscroll: () => {
+                  if (state.amPmScrollTimeout) {
+                    clearTimeout(state.amPmScrollTimeout);
+                  }
+                  state.amPmScrollTimeout = window.setTimeout(() => {
+                    if (!state.amPmScrollContainer) return;
+                    snapToNearestItem(state.amPmScrollContainer, ITEM_HEIGHT, (index) => {
+                      const actualIndex = index - 2;
+                      const amPmOptions = ['AM', 'PM'];
+                      if (actualIndex >= 0 && actualIndex < amPmOptions.length) {
+                        const newAmPm = amPmOptions[actualIndex] as 'AM' | 'PM';
+                        if (!isTimeDisabled(state.hours, state.minutes, newAmPm)) {
+                          state.amOrPm = newAmPm;
+                          updateAmPmView();
+                          m.redraw();
+                        }
+                      }
+                    });
+                  }, 150);
+                },
+              },
+              [
+                // Padding items
+                m('.digital-clock-item.padding'),
+                m('.digital-clock-item.padding'),
+
+                // AM/PM items
+                ['AM', 'PM'].map((ampm) => {
+                  const disabled = isTimeDisabled(state.hours, state.minutes, ampm as 'AM' | 'PM');
+                  return m(
+                    '.digital-clock-item',
+                    {
+                      class: `${ampm === state.amOrPm ? 'selected' : ''} ${disabled ? 'disabled' : ''}`,
+                      onclick: () => {
+                        if (disabled) return;
+                        state.amOrPm = ampm as 'AM' | 'PM';
+                        updateAmPmView();
+                        if (state.amPmScrollContainer) {
+                          const amPmOptions = ['AM', 'PM'];
+                          const index = amPmOptions.indexOf(ampm);
+                          scrollToValue(state.amPmScrollContainer, index + 2, ITEM_HEIGHT, true);
+                        }
+                        m.redraw();
+                      },
+                    },
+                    ampm
+                  );
+                }),
+
+                // Padding items
+                m('.digital-clock-item.padding'),
+                m('.digital-clock-item.padding'),
+              ]
+            ),
+        ]);
+      },
+    };
+  };
+
   interface TimepickerModalAttrs {
-    i18n: Required<TimepickerI18n>;
+    i18n: TimepickerI18n;
     showClearBtn: boolean;
   }
 
@@ -527,6 +846,8 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     return {
       view: ({ attrs }) => {
         const { i18n, showClearBtn } = attrs;
+        const isDigitalMode = options.displayMode === 'digital';
+
         return [
           m('.modal-content.timepicker-container', [
             m('.timepicker-digital-display', [
@@ -536,7 +857,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                     'span.timepicker-span-hours',
                     {
                       class: state.currentView === 'hours' ? 'text-primary' : '',
-                      onclick: () => showView('hours'),
+                      onclick: () => !isDigitalMode && showView('hours'),
                       oncreate: (vnode) => {
                         state.spanHours = vnode.dom as HTMLElement;
                       },
@@ -548,7 +869,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                     'span.timepicker-span-minutes',
                     {
                       class: state.currentView === 'minutes' ? 'text-primary' : '',
-                      onclick: () => showView('minutes'),
+                      onclick: () => !isDigitalMode && showView('minutes'),
                       oncreate: (vnode) => {
                         state.spanMinutes = vnode.dom as HTMLElement;
                       },
@@ -593,86 +914,132 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                   ]),
               ]),
             ]),
-            m('.timepicker-analog-display', [
-              m(
-                '.timepicker-plate',
-                {
-                  oncreate: (vnode) => {
-                    state.plate = vnode.dom as HTMLElement;
-                    state.plate.addEventListener('mousedown', handleClockClickStart);
-                    state.plate.addEventListener('touchstart', handleClockClickStart);
-                  },
-                  onremove: () => {
-                    if (state.plate) {
-                      state.plate.removeEventListener('mousedown', handleClockClickStart);
-                      state.plate.removeEventListener('touchstart', handleClockClickStart);
-                    }
-                  },
-                },
-                [
-                  m('.timepicker-canvas', {
-                    oncreate: (vnode) => {
-                      state.canvas = vnode.dom as HTMLElement;
-                      buildSVGClock();
-                      // Position the hand after SVG is built
-                      setTimeout(() => resetClock(), 10);
-                    },
-                  }),
-                  m('.timepicker-dial.timepicker-hours', {
-                    oncreate: (vnode) => {
-                      state.hoursView = vnode.dom as HTMLElement;
-                      buildHoursView();
-                    },
-                  }),
-                  m('.timepicker-dial.timepicker-minutes.timepicker-dial-out', {
-                    oncreate: (vnode) => {
-                      state.minutesView = vnode.dom as HTMLElement;
-                      buildMinutesView();
-                    },
-                  }),
-                ]
-              ),
-              m(
-                '.timepicker-footer',
-                {
-                  oncreate: (vnode) => {
-                    state.footer = vnode.dom as HTMLElement;
-                  },
-                },
-                [
+
+            // Conditional rendering: digital or analog mode
+            isDigitalMode
+              ? m('.timepicker-digital-mode', [
+                  m(DigitalClockPicker),
                   m(
-                    'button.btn-flat.timepicker-clear.waves-effect',
+                    '.timepicker-footer',
                     {
-                      type: 'button',
-                      tabindex: options.twelveHour ? '3' : '1',
-                      style: showClearBtn ? '' : 'visibility: hidden;',
-                      onclick: () => clear(),
+                      oncreate: (vnode) => {
+                        state.footer = vnode.dom as HTMLElement;
+                      },
                     },
-                    i18n.clear
+                    [
+                      m(
+                        'button.btn-flat.timepicker-clear.waves-effect',
+                        {
+                          type: 'button',
+                          tabindex: options.twelveHour ? '3' : '1',
+                          style: showClearBtn ? '' : 'visibility: hidden;',
+                          onclick: () => clear(),
+                        },
+                        i18n.clear
+                      ),
+                      m('.confirmation-btns', [
+                        m(
+                          'button.btn-flat.timepicker-close.waves-effect',
+                          {
+                            type: 'button',
+                            tabindex: options.twelveHour ? '3' : '1',
+                            onclick: () => close(),
+                          },
+                          i18n.cancel
+                        ),
+                        m(
+                          'button.btn-flat.timepicker-close.waves-effect',
+                          {
+                            type: 'button',
+                            tabindex: options.twelveHour ? '3' : '1',
+                            onclick: () => done(),
+                          },
+                          i18n.done
+                        ),
+                      ]),
+                    ]
                   ),
-                  m('.confirmation-btns', [
-                    m(
-                      'button.btn-flat.timepicker-close.waves-effect',
-                      {
-                        type: 'button',
-                        tabindex: options.twelveHour ? '3' : '1',
-                        onclick: () => close(),
+                ])
+              : m('.timepicker-analog-display', [
+                  m(
+                    '.timepicker-plate',
+                    {
+                      oncreate: (vnode) => {
+                        state.plate = vnode.dom as HTMLElement;
+                        state.plate.addEventListener('mousedown', handleClockClickStart);
+                        state.plate.addEventListener('touchstart', handleClockClickStart);
                       },
-                      i18n.cancel
-                    ),
-                    m(
-                      'button.btn-flat.timepicker-close.waves-effect',
-                      {
-                        type: 'button',
-                        tabindex: options.twelveHour ? '3' : '1',
-                        onclick: () => done(),
+                      onremove: () => {
+                        if (state.plate) {
+                          state.plate.removeEventListener('mousedown', handleClockClickStart);
+                          state.plate.removeEventListener('touchstart', handleClockClickStart);
+                        }
                       },
-                      i18n.done
-                    ),
-                  ]),
-                ]
-              ),
-            ]),
+                    },
+                    [
+                      m('.timepicker-canvas', {
+                        oncreate: (vnode) => {
+                          state.canvas = vnode.dom as HTMLElement;
+                          buildSVGClock();
+                          // Position the hand after SVG is built
+                          setTimeout(() => resetClock(), 10);
+                        },
+                      }),
+                      m('.timepicker-dial.timepicker-hours', {
+                        oncreate: (vnode) => {
+                          state.hoursView = vnode.dom as HTMLElement;
+                          buildHoursView();
+                        },
+                      }),
+                      m('.timepicker-dial.timepicker-minutes.timepicker-dial-out', {
+                        oncreate: (vnode) => {
+                          state.minutesView = vnode.dom as HTMLElement;
+                          buildMinutesView();
+                        },
+                      }),
+                    ]
+                  ),
+                  m(
+                    '.timepicker-footer',
+                    {
+                      oncreate: (vnode) => {
+                        state.footer = vnode.dom as HTMLElement;
+                      },
+                    },
+                    [
+                      m(
+                        'button.btn-flat.timepicker-clear.waves-effect',
+                        {
+                          type: 'button',
+                          tabindex: options.twelveHour ? '3' : '1',
+                          style: showClearBtn ? '' : 'visibility: hidden;',
+                          onclick: () => clear(),
+                        },
+                        i18n.clear
+                      ),
+                      m('.confirmation-btns', [
+                        m(
+                          'button.btn-flat.timepicker-close.waves-effect',
+                          {
+                            type: 'button',
+                            tabindex: options.twelveHour ? '3' : '1',
+                            onclick: () => close(),
+                          },
+                          i18n.cancel
+                        ),
+                        m(
+                          'button.btn-flat.timepicker-close.waves-effect',
+                          {
+                            type: 'button',
+                            tabindex: options.twelveHour ? '3' : '1',
+                            onclick: () => done(),
+                          },
+                          i18n.done
+                        ),
+                      ]),
+                    ]
+                  ),
+                ]),
           ]),
         ];
       },
@@ -687,8 +1054,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     }
   };
 
-  const renderPickerToPortal = (attrs: TimePickerAttrs) => {
-
+  const renderPickerToPortal = () => {
     const pickerModal = m(
       '.timepicker-modal-wrapper',
       {
@@ -740,7 +1106,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
             m(TimepickerModal, {
               i18n: options.i18n,
               showClearBtn: options.showClearBtn,
-            }),
+            } as TimepickerModalAttrs),
           ]
         ),
       ]
@@ -798,12 +1164,12 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
       }
     },
 
-    onupdate: (vnode) => {
-      const { useModal = true } = vnode.attrs;
+    onupdate: ({ attrs }) => {
+      const { useModal = true } = attrs;
 
       // Only render to portal when using modal mode
       if (useModal && state.isOpen) {
-        renderPickerToPortal(vnode.attrs);
+        renderPickerToPortal();
       } else {
         clearPortal(state.portalContainerId);
       }

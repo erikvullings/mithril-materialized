@@ -4,6 +4,12 @@ import { InputOption } from './option';
 import { getDropdownStyles, uniqueId, sortOptions } from './utils';
 import { MaterialIcon } from './material-icon';
 
+export type SortSelected<T extends string | number> =
+  | 'asc'
+  | 'desc'
+  | 'none'
+  | ((a: InputOption<T>, b: InputOption<T>) => number);
+
 export interface SelectAttrs<T extends string | number> extends Attributes {
   /** Options to select from */
   options: InputOption<T>[];
@@ -52,7 +58,7 @@ export interface SelectAttrs<T extends string | number> extends Attributes {
   /** Max height of the dropdown menu, default '400px' */
   maxHeight?: string;
   /** Sort selected items: 'asc' (alphabetically A-Z), 'desc' (Z-A), 'none' (insertion order), or custom sort function */
-  sortSelected?: 'asc' | 'desc' | 'none' | ((a: InputOption<T>, b: InputOption<T>) => number);
+  sortSelected?: SortSelected<T>;
 }
 
 interface SelectState<T extends string | number> {

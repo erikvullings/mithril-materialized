@@ -1,4 +1,4 @@
-import { DatePicker, TimePicker, CodeBlock, Switch, ModalPanel } from 'mithril-materialized';
+import { DatePicker, TimePicker, TimeRangePicker, CodeBlock, Switch, ModalPanel } from 'mithril-materialized';
 import m from 'mithril';
 
 export const PickerPage = () => {
@@ -589,6 +589,292 @@ m(TimePicker, {
   label: 'Disabled Time',
   defaultValue: '14:30',
   onchange,
+})`,
+        }),
+
+        // Digital Clock Mode Examples
+        m('h3.header', 'Digital Clock Mode - New!'),
+        m(
+          'p',
+          'The TimePicker now supports a digital clock mode with scrollable columns, similar to mobile time pickers.'
+        ),
+
+        m('h4', 'Digital Clock - 12 Hour Format'),
+        m(
+          '.row',
+          m(TimePicker, {
+            disabled: state.disabled,
+            label: 'Select Time (Digital)',
+            helperText: 'Scroll or click to select time',
+            iconName: 'schedule',
+            displayMode: 'digital',
+            twelveHour: true,
+            defaultValue: '14:30',
+            showClearBtn: true,
+            onchange: (v) => {
+              console.log('Digital time selected:', v);
+              onchange(v);
+            },
+          })
+        ),
+
+        m('h4', 'Digital Clock - 24 Hour Format'),
+        m(
+          '.row',
+          m(TimePicker, {
+            disabled: state.disabled,
+            label: 'Select Time (24h Digital)',
+            helperText: 'Uses 24-hour format',
+            iconName: 'access_time',
+            displayMode: 'digital',
+            twelveHour: false,
+            defaultValue: '09:15',
+            showClearBtn: true,
+            onchange: (v) => {
+              console.log('Digital 24h time selected:', v);
+              onchange(v);
+            },
+          })
+        ),
+
+        m('h4', 'Digital Clock with Custom Steps'),
+        m(
+          '.row',
+          m(TimePicker, {
+            disabled: state.disabled,
+            label: 'Appointment Time (15-min intervals)',
+            helperText: '15-minute increments only',
+            iconName: 'event',
+            displayMode: 'digital',
+            twelveHour: true,
+            minuteStep: 15,
+            defaultValue: '10:00',
+            showClearBtn: true,
+            onchange: (v) => {
+              console.log('Time with 15-min steps:', v);
+              onchange(v);
+            },
+          })
+        ),
+
+        m('h4', 'Digital Clock with Time Constraints'),
+        m(
+          '.row',
+          m(TimePicker, {
+            disabled: state.disabled,
+            label: 'Business Hours Only',
+            helperText: 'Limited to 9 AM - 5 PM',
+            iconName: 'work',
+            displayMode: 'digital',
+            twelveHour: true,
+            minuteStep: 30,
+            minTime: '09:00 AM',
+            maxTime: '05:00 PM',
+            defaultValue: '09:00',
+            showClearBtn: true,
+            onchange: (v) => {
+              console.log('Business hours time:', v);
+              onchange(v);
+            },
+          })
+        ),
+
+        m('h4', 'Compare: Analog vs Digital'),
+        m('.row', [
+          m(TimePicker, {
+            class: 'col s6',
+            disabled: state.disabled,
+            label: 'Analog Clock (Default)',
+            helperText: 'Traditional clock face',
+            iconName: 'schedule',
+            displayMode: 'analog',
+            twelveHour: true,
+            defaultValue: '14:30',
+            onchange: (v) => console.log('Analog:', v),
+          }),
+          m(TimePicker, {
+            class: 'col s6',
+            disabled: state.disabled,
+            label: 'Digital Clock',
+            helperText: 'Scrollable columns',
+            iconName: 'access_time',
+            displayMode: 'digital',
+            twelveHour: true,
+            defaultValue: '14:30',
+            onchange: (v) => console.log('Digital:', v),
+          }),
+        ]),
+
+        m(CodeBlock, {
+          code: `// Digital Clock Mode - 12 Hour
+m(TimePicker, {
+  label: 'Select Time (Digital)',
+  displayMode: 'digital', // New! 'analog' (default) or 'digital'
+  twelveHour: true,
+  defaultValue: '14:30',
+  showClearBtn: true,
+  onchange: (v) => console.log('Time:', v),
+})
+
+// Digital Clock - 24 Hour
+m(TimePicker, {
+  label: 'Select Time (24h Digital)',
+  displayMode: 'digital',
+  twelveHour: false,
+  defaultValue: '09:15',
+  onchange,
+})
+
+// Digital Clock with Custom Steps
+m(TimePicker, {
+  label: 'Appointment Time',
+  displayMode: 'digital',
+  minuteStep: 15, // 15-minute increments (default: 5)
+  hourStep: 1,    // Hour increments (default: 1)
+  onchange,
+})
+
+// Digital Clock with Time Constraints
+m(TimePicker, {
+  label: 'Business Hours Only',
+  displayMode: 'digital',
+  minuteStep: 30,
+  minTime: '09:00 AM',  // Minimum selectable time
+  maxTime: '05:00 PM',  // Maximum selectable time
+  onchange,
+})`,
+        }),
+
+        // Time Range Picker Examples
+        m('h3.header', 'Time Range Picker - New!'),
+        m('p', 'Select a time range with start and end times. Supports both analog and digital modes.'),
+
+        m('h4', 'Basic Time Range Picker'),
+        m(
+          '.row',
+          m(TimeRangePicker, {
+            disabled: state.disabled,
+            label: 'Select Time Range',
+            helperText: 'Click to select start and end times',
+            iconName: 'schedule',
+            displayMode: 'digital',
+            twelveHour: true,
+            startValue: '10:00 AM',
+            endValue: '11:30 AM',
+            showClearBtn: true,
+            onchange: (start, end) => {
+              console.log('Time range selected:', start, '-', end);
+            },
+          })
+        ),
+
+        m('h4', 'Time Range with Validation'),
+        m(
+          '.row',
+          m(TimeRangePicker, {
+            disabled: state.disabled,
+            label: 'Meeting Duration',
+            helperText: 'End time must be after start time',
+            iconName: 'event',
+            displayMode: 'digital',
+            twelveHour: true,
+            validateRange: true, // Ensures end > start
+            minuteStep: 15,
+            startValue: '02:00 PM',
+            endValue: '03:30 PM',
+            showClearBtn: true,
+            onchange: (start, end) => {
+              console.log('Meeting time:', start, '-', end);
+            },
+          })
+        ),
+
+        m('h4', 'Time Range with Constraints'),
+        m(
+          '.row',
+          m(TimeRangePicker, {
+            disabled: state.disabled,
+            label: 'Work Shift',
+            helperText: 'Select shift hours (9 AM - 6 PM)',
+            iconName: 'work',
+            displayMode: 'digital',
+            twelveHour: true,
+            validateRange: true,
+            minuteStep: 30,
+            minTime: '09:00 AM',
+            maxTime: '06:00 PM',
+            startValue: '09:00 AM',
+            endValue: '05:00 PM',
+            showClearBtn: true,
+            onchange: (start, end) => {
+              console.log('Shift hours:', start, '-', end);
+            },
+          })
+        ),
+
+        m('h4', 'Time Range - Analog Mode'),
+        m(
+          '.row',
+          m(TimeRangePicker, {
+            disabled: state.disabled,
+            label: 'Event Time Range',
+            helperText: 'Uses traditional clock face',
+            iconName: 'schedule',
+            displayMode: 'analog', // Also works with analog mode
+            twelveHour: true,
+            validateRange: true,
+            showClearBtn: true,
+            onchange: (start, end) => {
+              console.log('Event time:', start, '-', end);
+            },
+          })
+        ),
+
+        m(CodeBlock, {
+          code: `// Basic Time Range Picker
+m(TimeRangePicker, {
+  label: 'Select Time Range',
+  displayMode: 'digital',
+  twelveHour: true,
+  showClearBtn: true,
+  onchange: (start, end) => {
+    console.log('Range:', start, '-', end);
+  },
+})
+
+// Time Range with Validation
+m(TimeRangePicker, {
+  label: 'Meeting Duration',
+  displayMode: 'digital',
+  validateRange: true, // End time must be after start time
+  minuteStep: 15,
+  onchange: (start, end) => {
+    console.log('Meeting:', start, '-', end);
+  },
+})
+
+// Time Range with Constraints
+m(TimeRangePicker, {
+  label: 'Work Shift',
+  displayMode: 'digital',
+  validateRange: true,
+  minuteStep: 30,
+  minTime: '09:00 AM',  // Earliest selectable time
+  maxTime: '06:00 PM',  // Latest selectable time
+  onchange: (start, end) => {
+    console.log('Shift:', start, '-', end);
+  },
+})
+
+// Time Range - Analog Mode
+m(TimeRangePicker, {
+  label: 'Event Time Range',
+  displayMode: 'analog', // Works with both analog and digital
+  twelveHour: true,
+  validateRange: true,
+  onchange: (start, end) => {
+    console.log('Event:', start, '-', end);
+  },
 })`,
         }),
       ]),

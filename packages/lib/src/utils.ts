@@ -1,5 +1,7 @@
 // Utility functions for the library
 import m from 'mithril';
+import { SortSelected } from './select';
+import { InputOption } from '.';
 
 /**
  * Create a unique ID
@@ -38,8 +40,8 @@ export const isNumeric = (n: string | number) => !isNaN(parseFloat(n as string))
  * @returns Sorted array (or original if 'none' or undefined)
  */
 export const sortOptions = <T extends string | number>(
-  options: { id: T; label?: string }[],
-  sortConfig?: 'asc' | 'desc' | 'none' | ((a: { id: T; label?: string }, b: { id: T; label?: string }) => number)
+  options: InputOption<T>[],
+  sortConfig?: SortSelected<T>
 ): { id: T; label?: string }[] => {
   if (!sortConfig || sortConfig === 'none') {
     return options;

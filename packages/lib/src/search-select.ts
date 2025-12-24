@@ -5,64 +5,68 @@ import { SelectAttrs } from './select';
 import { InputOption } from './option';
 
 // Proper components to avoid anonymous closures
-const SelectedChip: Component<{
-  option: InputOption<any>;
-  onRemove: (id: any) => void;
-}> = {
-  view: ({ attrs: { option, onRemove } }) =>
-    m('.chip', [
-      option.label || option.id.toString(),
-      m(MaterialIcon, {
-        name: 'close',
-        className: 'close',
-        onclick: (e: Event) => {
-          e.stopPropagation();
-          onRemove(option.id);
-        },
-      }),
-    ]),
+const SelectedChip = <T extends string | number>(): Component<{
+  option: InputOption<T>;
+  onRemove: (id: T) => void;
+}> => {
+  return {
+    view: ({ attrs: { option, onRemove } }) =>
+      m('.chip', [
+        option.label || option.id.toString(),
+        m(MaterialIcon, {
+          name: 'close',
+          className: 'close',
+          onclick: (e: Event) => {
+            e.stopPropagation();
+            onRemove(option.id);
+          },
+        }),
+      ]),
+  };
 };
 
-const DropdownOption: Component<{
-  option: InputOption<any>;
+const DropdownOption = <T extends string | number>(): Component<{
+  option: InputOption<T>;
   index: number;
-  selectedIds: any[];
+  selectedIds: T[];
   isFocused: boolean;
-  onToggle: (option: InputOption<any>) => void;
+  onToggle: (option: InputOption<T>) => void;
   onMouseOver: (index: number) => void;
   showCheckbox: boolean;
-}> = {
-  view: ({ attrs: { option, index, selectedIds, isFocused, onToggle, onMouseOver, showCheckbox } }) => {
-    const checkboxId = `search-select-option-${option.id}`;
-    const optionLabel = option.label || option.id.toString();
+}> => {
+  return {
+    view: ({ attrs: { option, index, selectedIds, isFocused, onToggle, onMouseOver, showCheckbox } }) => {
+      const checkboxId = `search-select-option-${option.id}`;
+      const optionLabel = option.label || option.id.toString();
 
-    return m(
-      'li',
-      {
-        key: option.id,
-        onclick: (e: Event) => {
-          e.preventDefault();
-          e.stopPropagation();
-          onToggle(option);
+      return m(
+        'li',
+        {
+          key: option.id,
+          onclick: (e: Event) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onToggle(option);
+          },
+          class: `${option.disabled ? 'disabled' : ''} ${isFocused ? 'active' : ''}`.trim(),
+          onmouseover: () => {
+            if (!option.disabled) {
+              onMouseOver(index);
+            }
+          },
         },
-        class: `${option.disabled ? 'disabled' : ''} ${isFocused ? 'active' : ''}`.trim(),
-        onmouseover: () => {
-          if (!option.disabled) {
-            onMouseOver(index);
-          }
-        },
-      },
-      m('label', { for: checkboxId, class: 'search-select-option-label' }, [
-        showCheckbox &&
-          m('input', {
-            type: 'checkbox',
-            id: checkboxId,
-            checked: selectedIds.includes(option.id),
-          }),
-        m('span', optionLabel),
-      ])
-    );
-  },
+        m('label', { for: checkboxId, class: 'search-select-option-label' }, [
+          showCheckbox &&
+            m('input', {
+              type: 'checkbox',
+              id: checkboxId,
+              checked: selectedIds.includes(option.id),
+            }),
+          m('span', optionLabel),
+        ])
+      );
+    },
+  };
 };
 
 // Internationalization interface for SearchSelect
@@ -396,11 +400,10 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
 
             // Selected Options (chips)
             ...selectedOptions.map((option) =>
-              m(SelectedChip, {
-                // key: option.id,
+              m(SelectedChip<T>(), {
                 option,
-                onRemove: (id) => removeOption(id, attrs),
-              })
+                onRemove: (id: T) => removeOption(id, attrs),
+              } as { option: InputOption<T>; onRemove: (id: T) => void })
             ),
 
             // Placeholder when no options selected
@@ -552,8 +555,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
 
               // List of filtered options
               ...displayedOptions.map((option, index) =>
-                m(DropdownOption, {
-                  // key: option.id,
+                m(DropdownOption<T>(), {
                   option,
                   index,
                   selectedIds,
