@@ -1,3 +1,15 @@
+# [3.7.0](https://github.com/erikvullings/mithril-materialized/compare/v3.6.0...v3.7.0) (2025-12-24)
+
+
+### Bug Fixes
+
+* TimeRangePicker supporting analog clocks too, and two new components, AnalogClock and DigitalClock. ([d84d257](https://github.com/erikvullings/mithril-materialized/commit/d84d2574d44c37a0f074c509d96c467fce060dae))
+
+
+### Features
+
+* Added new TimeRangePicker component, Timepicker now also supports ([6cf4379](https://github.com/erikvullings/mithril-materialized/commit/6cf437900ca298415e9394eb51c87455563bbf76))
+
 # [3.6.0](https://github.com/erikvullings/mithril-materialized/compare/v3.5.10...v3.6.0) (2025-12-23)
 
 
