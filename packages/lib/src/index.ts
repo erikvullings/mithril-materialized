@@ -51,4 +51,6 @@ export * from './masonry';
 export * from './image-list';
 export * from './rating';
 export * from './toggle-group';
+export * from './circular-progress';
+export * from './linear-progress';
 export * from './types';

@@ -1,0 +1,220 @@
+@use 'sass:color';
+@use "variables";
+@use "color-variables";
+
+/* CircularProgress Component
+   ========================================================================== */
+
+// CircularProgress component variables
+$circular-progress-size-small: 36px !default;
+$circular-progress-size-medium: 50px !default;
+$circular-progress-size-large: 64px !default;
+$circular-progress-stroke-width: 3px !default;
+$circular-progress-default-color: var(--mm-primary-color, variables.$primary-color) !default;
+$circular-progress-track-opacity: 0.2 !default;
+
+// Label font sizes
+$circular-progress-label-small: 10px !default;
+$circular-progress-label-medium: 12px !default;
+$circular-progress-label-large: 14px !default;
+
+.circular-progress {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: $circular-progress-default-color;
+
+  // Size variants
+  &--small {
+    width: $circular-progress-size-small;
+    height: $circular-progress-size-small;
+
+    .circular-progress__label {
+      font-size: $circular-progress-label-small;
+    }
+  }
+
+  &--medium {
+    width: $circular-progress-size-medium;
+    height: $circular-progress-size-medium;
+
+    .circular-progress__label {
+      font-size: $circular-progress-label-medium;
+    }
+  }
+
+  &--large {
+    width: $circular-progress-size-large;
+    height: $circular-progress-size-large;
+
+    .circular-progress__label {
+      font-size: $circular-progress-label-large;
+    }
+  }
+}
+
+.circular-progress__svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+
+.circular-progress__circle {
+  transition: stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &--track {
+    opacity: $circular-progress-track-opacity;
+  }
+
+  &--indicator {
+    opacity: 1;
+  }
+}
+
+.circular-progress__label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 500;
+  text-align: center;
+  line-height: 1;
+  color: currentColor;
+  user-select: none;
+}
+
+// Indeterminate mode animation
+.circular-progress--indeterminate {
+  .circular-progress__svg {
+    animation: circular-rotate 2s linear infinite;
+  }
+
+  .circular-progress__circle--indicator {
+    stroke-dasharray: 80, 200;
+    stroke-dashoffset: 0;
+    animation: circular-dash 1.5s ease-in-out infinite;
+  }
+}
+
+// Determinate mode
+.circular-progress--determinate {
+  .circular-progress__circle--indicator {
+    transition: stroke-dashoffset 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+// Color variants using Materialize colors
+.circular-progress--red { color: color-variables.color("red", "base"); }
+.circular-progress--pink { color: color-variables.color("pink", "base"); }
+.circular-progress--purple { color: color-variables.color("purple", "base"); }
+.circular-progress--deep-purple { color: color-variables.color("deep-purple", "base"); }
+.circular-progress--indigo { color: color-variables.color("indigo", "base"); }
+.circular-progress--blue { color: color-variables.color("blue", "base"); }
+.circular-progress--light-blue { color: color-variables.color("light-blue", "base"); }
+.circular-progress--cyan { color: color-variables.color("cyan", "base"); }
+.circular-progress--teal { color: color-variables.color("teal", "base"); }
+.circular-progress--green { color: color-variables.color("green", "base"); }
+.circular-progress--light-green { color: color-variables.color("light-green", "base"); }
+.circular-progress--lime { color: color-variables.color("lime", "base"); }
+.circular-progress--yellow { color: color-variables.color("yellow", "base"); }
+.circular-progress--amber { color: color-variables.color("amber", "base"); }
+.circular-progress--orange { color: color-variables.color("orange", "base"); }
+.circular-progress--deep-orange { color: color-variables.color("deep-orange", "base"); }
+.circular-progress--brown { color: color-variables.color("brown", "base"); }
+.circular-progress--grey { color: color-variables.color("grey", "base"); }
+.circular-progress--blue-grey { color: color-variables.color("blue-grey", "base"); }
+
+// Color intensity modifiers
+.circular-progress--lighten-5 { filter: brightness(1.4); }
+.circular-progress--lighten-4 { filter: brightness(1.3); }
+.circular-progress--lighten-3 { filter: brightness(1.2); }
+.circular-progress--lighten-2 { filter: brightness(1.1); }
+.circular-progress--lighten-1 { filter: brightness(1.05); }
+.circular-progress--darken-1 { filter: brightness(0.95); }
+.circular-progress--darken-2 { filter: brightness(0.9); }
+.circular-progress--darken-3 { filter: brightness(0.8); }
+.circular-progress--darken-4 { filter: brightness(0.7); }
+
+// Animations
+@keyframes circular-rotate {
+  0% {
+    transform: rotate(-90deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+
+@keyframes circular-dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 100, 200;
+    stroke-dashoffset: -15;
+  }
+  100% {
+    stroke-dasharray: 100, 200;
+    stroke-dashoffset: -125;
+  }
+}
+
+// Dark theme support
+[data-theme="dark"] {
+  .circular-progress {
+    .circular-progress__circle--track {
+      opacity: 0.15;
+    }
+  }
+}
+
+// RTL support
+[dir="rtl"] {
+  .circular-progress__svg {
+    transform: rotate(90deg);
+  }
+
+  .circular-progress--indeterminate .circular-progress__svg {
+    animation: circular-rotate-rtl 2s linear infinite;
+  }
+
+  @keyframes circular-rotate-rtl {
+    0% {
+      transform: rotate(90deg);
+    }
+    100% {
+      transform: rotate(-270deg);
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .circular-progress__circle,
+  .circular-progress__svg {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .circular-progress--indeterminate {
+    .circular-progress__svg {
+      animation: none;
+    }
+
+    .circular-progress__circle--indicator {
+      animation: none;
+      stroke-dasharray: 100, 200;
+      stroke-dashoffset: -50;
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .circular-progress__circle--track {
+    opacity: 0.4;
+  }
+}

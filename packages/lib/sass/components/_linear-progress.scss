@@ -1,0 +1,183 @@
+@use 'sass:color';
+@use "variables";
+@use "color-variables";
+
+/* LinearProgress Component
+   ========================================================================== */
+
+// LinearProgress component variables
+$linear-progress-height-small: 4px !default;
+$linear-progress-height-medium: 8px !default;
+$linear-progress-height-large: 12px !default;
+$linear-progress-default-color: var(--mm-primary-color, variables.$primary-color) !default;
+$linear-progress-track-bg: rgba(0, 0, 0, 0.1) !default;
+$linear-progress-track-bg-dark: rgba(255, 255, 255, 0.15) !default;
+$linear-progress-border-radius: 2px !default;
+$linear-progress-gap: 12px !default;
+
+// Label font size
+$linear-progress-label-font-size: 0.875rem !default;
+
+.linear-progress {
+  display: flex;
+  align-items: center;
+  gap: $linear-progress-gap;
+  width: 100%;
+  color: $linear-progress-default-color;
+}
+
+.linear-progress__track {
+  position: relative;
+  flex: 1;
+  background-color: $linear-progress-track-bg;
+  border-radius: $linear-progress-border-radius;
+  overflow: hidden;
+
+  // Size variants
+  &--small {
+    height: $linear-progress-height-small;
+  }
+
+  &--medium {
+    height: $linear-progress-height-medium;
+  }
+
+  &--large {
+    height: $linear-progress-height-large;
+  }
+}
+
+.linear-progress__bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: currentColor;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: $linear-progress-border-radius;
+
+  // Indeterminate mode animation
+  &--indeterminate {
+    width: 30%;
+    animation: linear-indeterminate 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+}
+
+.linear-progress__label {
+  flex-shrink: 0;
+  font-size: $linear-progress-label-font-size;
+  font-weight: 500;
+  white-space: nowrap;
+  color: currentColor;
+  user-select: none;
+  min-width: 40px;
+  text-align: right;
+}
+
+// Color variants using Materialize colors
+.linear-progress--red { color: color-variables.color("red", "base"); }
+.linear-progress--pink { color: color-variables.color("pink", "base"); }
+.linear-progress--purple { color: color-variables.color("purple", "base"); }
+.linear-progress--deep-purple { color: color-variables.color("deep-purple", "base"); }
+.linear-progress--indigo { color: color-variables.color("indigo", "base"); }
+.linear-progress--blue { color: color-variables.color("blue", "base"); }
+.linear-progress--light-blue { color: color-variables.color("light-blue", "base"); }
+.linear-progress--cyan { color: color-variables.color("cyan", "base"); }
+.linear-progress--teal { color: color-variables.color("teal", "base"); }
+.linear-progress--green { color: color-variables.color("green", "base"); }
+.linear-progress--light-green { color: color-variables.color("light-green", "base"); }
+.linear-progress--lime { color: color-variables.color("lime", "base"); }
+.linear-progress--yellow { color: color-variables.color("yellow", "base"); }
+.linear-progress--amber { color: color-variables.color("amber", "base"); }
+.linear-progress--orange { color: color-variables.color("orange", "base"); }
+.linear-progress--deep-orange { color: color-variables.color("deep-orange", "base"); }
+.linear-progress--brown { color: color-variables.color("brown", "base"); }
+.linear-progress--grey { color: color-variables.color("grey", "base"); }
+.linear-progress--blue-grey { color: color-variables.color("blue-grey", "base"); }
+
+// Color intensity modifiers
+.linear-progress--lighten-5 { filter: brightness(1.4); }
+.linear-progress--lighten-4 { filter: brightness(1.3); }
+.linear-progress--lighten-3 { filter: brightness(1.2); }
+.linear-progress--lighten-2 { filter: brightness(1.1); }
+.linear-progress--lighten-1 { filter: brightness(1.05); }
+.linear-progress--darken-1 { filter: brightness(0.95); }
+.linear-progress--darken-2 { filter: brightness(0.9); }
+.linear-progress--darken-3 { filter: brightness(0.8); }
+.linear-progress--darken-4 { filter: brightness(0.7); }
+
+// Indeterminate animation
+@keyframes linear-indeterminate {
+  0% {
+    left: -35%;
+    right: 100%;
+  }
+  60% {
+    left: 100%;
+    right: -90%;
+  }
+  100% {
+    left: 100%;
+    right: -90%;
+  }
+}
+
+// Dark theme support
+[data-theme="dark"] {
+  .linear-progress__track {
+    background-color: $linear-progress-track-bg-dark;
+  }
+}
+
+// RTL support
+[dir="rtl"] {
+  .linear-progress__label {
+    text-align: left;
+  }
+
+  .linear-progress__bar--indeterminate {
+    animation: linear-indeterminate-rtl 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes linear-indeterminate-rtl {
+    0% {
+      right: -35%;
+      left: 100%;
+    }
+    60% {
+      right: 100%;
+      left: -90%;
+    }
+    100% {
+      right: 100%;
+      left: -90%;
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .linear-progress__bar {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .linear-progress__bar--indeterminate {
+    animation: none;
+    width: 100%;
+    left: 0;
+    opacity: 0.5;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .linear-progress__track {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid currentColor;
+  }
+
+  [data-theme="dark"] .linear-progress__track {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+}
