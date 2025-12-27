@@ -1,3 +1,10 @@
+# [3.9.0](https://github.com/erikvullings/mithril-materialized/compare/v3.8.0...v3.9.0) (2025-12-27)
+
+
+### Features
+
+* New components, CircularProgress and LinearProgress. ([d3ca98d](https://github.com/erikvullings/mithril-materialized/commit/d3ca98da393435cf9ae59f35f2204aceae9fba98))
+
 # [3.8.0](https://github.com/erikvullings/mithril-materialized/compare/v3.7.0...v3.8.0) (2025-12-27)
 
 
