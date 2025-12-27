@@ -1,3 +1,10 @@
+# [3.8.0](https://github.com/erikvullings/mithril-materialized/compare/v3.7.0...v3.8.0) (2025-12-27)
+
+
+### Features
+
+* New components, ToggleGroup and ToggleButton. ([a0b8cf5](https://github.com/erikvullings/mithril-materialized/commit/a0b8cf5cf575c1a775ef448638baa7070c7d24a1))
+
 # [3.7.0](https://github.com/erikvullings/mithril-materialized/compare/v3.6.0...v3.7.0) (2025-12-24)
 
 
