@@ -50,4 +50,5 @@ export * from './timeline';
 export * from './masonry';
 export * from './image-list';
 export * from './rating';
+export * from './toggle-group';
 export * from './types';

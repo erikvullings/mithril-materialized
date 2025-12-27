@@ -6,11 +6,22 @@ import {
   FlatButton,
   FloatingActionButton,
   CodeBlock,
+  ToggleGroup,
 } from 'mithril-materialized';
 import m, { Component } from 'mithril';
 
 export const ButtonPage = () => {
   const onclick = () => console.log('Button clicked');
+  let singleValue: string | number = 'one';
+  let multipleValues: Array<string | number> = ['one', 'three'];
+
+  const starIcon = m(
+    'svg[width=24][height=24][viewBox=0 0 24 24]',
+    m('path', {
+      d: 'M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z',
+    })
+  );
+
   return {
     view: () =>
       m('.col.s12', [
@@ -94,6 +105,97 @@ m('div', [
         m('h3.header[id=roundiconbutton]', 'RoundIconButton'),
         m('div', m(RoundIconButton, { iconName: 'create', onclick })),
         m(CodeBlock, { code: 'm(RoundIconButton, { iconName: "create", onclick })' }),
+        m('h3.header[id=togglegroup]', 'ToggleGroup'),
+        m('h5', 'Controlled mode'),
+        m('.row', [
+          m(ToggleGroup, {
+            value: singleValue,
+            onchange: (v) => {
+              singleValue = v as string | number;
+              console.log('Single value changed:', v);
+            },
+            items: [
+              { value: 'one', icon: starIcon, tooltip: 'Star (custom SVG icon)' },
+              { value: 'two', iconName: 'format_align_center', tooltip: 'Align Center' },
+              { value: 'three', iconName: 'format_align_right', tooltip: 'Align Right' },
+              { value: 'four', iconName: 'format_align_justify', tooltip: 'Align Justify', disabled: true },
+            ],
+          }),
+        ]),
+        m('.row', [
+          m(ToggleGroup, {
+            multiple: true,
+            value: multipleValues,
+            onchange: (v) => {
+              multipleValues = v as Array<string | number>;
+              console.log('Multiple values changed:', v);
+            },
+            items: [
+              { value: 'one', iconName: 'format_bold', tooltip: 'Bold' },
+              { value: 'two', iconName: 'format_italic', tooltip: 'Italic' },
+              { value: 'three', iconName: 'format_underlined', tooltip: 'Underline' },
+              { value: 'four', iconName: 'format_color_fill', tooltip: 'Fill Color', disabled: true },
+            ],
+          }),
+        ]),
+        m('h5', 'Uncontrolled mode'),
+        m(
+          '.row',
+          m(ToggleGroup, {
+            multiple: true,
+            defaultValue: ['one'],
+            onchange: (v) => console.log('Uncontrolled mode value changed:', v),
+            items: [
+              { value: 'one', iconName: 'format_align_left', tooltip: 'Align Left' },
+              { value: 'two', iconName: 'format_align_center', tooltip: 'Align Center' },
+              { value: 'three', iconName: 'format_align_right', tooltip: 'Align Right' },
+              { value: 'four', iconName: 'format_align_justify', tooltip: 'Align Justify', disabled: true },
+            ],
+          })
+        ),
+        m(CodeBlock, {
+          code: `
+let singleValue: string | number = 'one';
+let multipleValues: Array<string | number> = ['one', 'three'];
+
+// Create a custom SVG icon
+const starIcon = m(
+  'svg[width=24][height=24][viewBox=0 0 24 24]',
+  m('path', {
+    d: 'M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z',
+  })
+);
+
+m(ToggleGroup, {
+  value: singleValue,
+  onchange: (v) => {
+    singleValue = v as string | number;
+    console.log('Single value changed:', v);
+  },
+  items: [
+    { value: 'one', icon: starIcon, tooltip: 'Star (custom SVG icon)' },
+    { value: 'two', iconName: 'format_align_center', tooltip: 'Align Center' },
+    { value: 'three', iconName: 'format_align_right', tooltip: 'Align Right' },
+    { value: 'four', iconName: 'format_align_justify', tooltip: 'Align Justify', disabled: true },
+  ],
+});
+
+m(ToggleGroup, {
+  multiple: true,
+  value: multipleValues,
+  onchange: (v) => {
+    multipleValues = v as Array<string | number>;
+    console.log('Multiple values changed:', v);
+  },
+  items: [
+    { value: 'one', iconName: 'format_bold', tooltip: 'Bold' },
+    { value: 'two', iconName: 'format_italic', tooltip: 'Italic' },
+    { value: 'three', iconName: 'format_underlined', tooltip: 'Underline' },
+    { value: 'four', iconName: 'format_color_fill', tooltip: 'Fill Color', disabled: true },
+  ],
+});
+`,
+        }),
         m('h3.header[id=submitbutton]', 'SubmitButton'),
         m(
           'div',

@@ -1,0 +1,36 @@
+.toggle-group {
+  display: inline-flex;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--mm-border-color, #e0e0e0);
+
+  .toggle-button {
+    margin: 0;
+    border-radius: 0;
+    border-right: 1px solid var(--mm-border-color, #e0e0e0);
+
+    &:last-child {
+      border-right: none;
+    }
+
+    &.checked {
+      background-color: var(--mm-primary-color, #26a69a);
+      color: var(--mm-button-text, #fff);
+    }
+  }
+}
+
+[data-theme='dark'] {
+  .toggle-group {
+    border-color: var(--mm-border-color, #555);
+
+    .toggle-button {
+      border-right-color: var(--mm-border-color, #555);
+
+      &.checked {
+        background-color: var(--mm-primary-color, #80cbc4);
+        color: var(--mm-button-text, #000);
+      }
+    }
+  }
+}
