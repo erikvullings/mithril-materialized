@@ -2,6 +2,7 @@
 import './index.scss';
 
 export * from './autocomplete';
+export * from './badge';
 export * from './button';
 export * from './carousel';
 export * from './chip';

@@ -7,6 +7,8 @@ import {
   PaginationControls,
   Tabs,
   Button,
+  Badge,
+  Icon,
   toast,
   initTooltips,
   initPushpins,
@@ -38,6 +40,8 @@ export const MiscPage = () => {
         m('p', [
           'Some miscellaneous components, like ',
           m('a[href=https://materializecss.com/toasts.html][target=_blank]', 'Toast'),
+          ', ',
+          m('a[href=https://mui.com/material-ui/react-badge/][target=_blank]', 'Badge'),
           ', ',
           m('a[href=https://materializecss.com/tooltips.html][target=_blank]', 'Tooltip'),
           ', ',
@@ -105,6 +109,252 @@ toast({
   displayLength: 10000,
   completeCallback: () => console.log('Toast dismissed'),
 });`,
+        }),
+
+        m('h3.header', 'Badge'),
+        m('p', 'Badges display notification counts, status indicators, or labels anchored to elements.'),
+        m('h4', 'Basic Badges'),
+        m('.row', { style: 'gap: 20px; display: flex; align-items: center; flex-wrap: wrap;' }, [
+          m(Badge, { badgeContent: 4 }, m(Button, { label: 'Notifications' })),
+          m(Badge, { badgeContent: 15, color: 'blue' }, m(Button, { label: 'Messages' })),
+          m(Badge, { badgeContent: 3, color: 'green' }, m(Button, { label: 'Updates' })),
+          m(Badge, { badgeContent: 0, showZero: true, color: 'grey' }, m(Button, { label: 'Inbox' })),
+        ]),
+        m(CodeBlock, {
+          code: `// Basic notification badge
+m(Badge, { badgeContent: 4 },
+  m(Button, { label: 'Notifications' })
+)
+
+// Colored badge
+m(Badge, { badgeContent: 15, color: 'blue' },
+  m(Button, { label: 'Messages' })
+)
+
+// Show zero value
+m(Badge, { badgeContent: 0, showZero: true, color: 'grey' },
+  m(Button, { label: 'Inbox' })
+)`,
+        }),
+
+        m('h4', 'Badges with Icons'),
+        m('p', 'Badges work great with icons for a more compact UI.'),
+        m('.row', { style: 'gap: 20px; display: flex; align-items: center; flex-wrap: wrap;' }, [
+          m(Badge, { badgeContent: 5 }, m(Icon, { iconName: 'notifications' })),
+          m(Badge, { badgeContent: 99, max: 99, color: 'blue' }, m(Icon, { iconName: 'mail' })),
+          m(Badge, { variant: 'dot', color: 'green' }, m(Icon, { iconName: 'person' })),
+          m(Badge, { badgeContent: 3, color: 'orange' }, m(Icon, { iconName: 'shopping_cart' })),
+          m(Badge, { badgeContent: 150, max: 99, color: 'red' }, m(Icon, { iconName: 'inbox' })),
+        ]),
+        m(CodeBlock, {
+          code: `// Icon with badge
+m(Badge, { badgeContent: 5 },
+  m(Icon, { iconName: 'notifications' })
+)
+
+// Max capping with icon
+m(Badge, { badgeContent: 99, max: 99, color: 'blue' },
+  m(Icon, { iconName: 'mail' })
+)
+
+// Dot variant with icon
+m(Badge, { variant: 'dot', color: 'green' },
+  m(Icon, { iconName: 'person' })
+)`,
+        }),
+
+        m('h4', 'Max Value Capping'),
+        m('.row', { style: 'gap: 20px; display: flex; align-items: center; flex-wrap: wrap;' }, [
+          m(Badge, { badgeContent: 99 }, m(Button, { label: 'At Max' })),
+          m(Badge, { badgeContent: 100, max: 99 }, m(Button, { label: 'Over Max' })),
+          m(Badge, { badgeContent: 1500, max: 999, color: 'orange' }, m(Button, { label: 'Way Over' })),
+        ]),
+        m(CodeBlock, {
+          code: `// Badge at max value
+m(Badge, { badgeContent: 99 },
+  m(Button, { label: 'At Max' })
+)
+
+// Badge exceeding max shows "99+"
+m(Badge, { badgeContent: 100, max: 99 },
+  m(Button, { label: 'Over Max' })
+)
+
+// Large numbers capped
+m(Badge, { badgeContent: 1500, max: 999, color: 'orange' },
+  m(Button, { label: 'Way Over' })
+)`,
+        }),
+
+        m('h4', 'Badge Positioning'),
+        m('.row', { style: 'gap: 20px; display: flex; align-items: center; flex-wrap: wrap;' }, [
+          m(
+            Badge,
+            { badgeContent: 1, anchorOrigin: { vertical: 'top', horizontal: 'right' }, color: 'red' },
+            m(Button, { label: 'Top-Right' })
+          ),
+          m(
+            Badge,
+            { badgeContent: 2, anchorOrigin: { vertical: 'top', horizontal: 'left' }, color: 'blue' },
+            m(Button, { label: 'Top-Left' })
+          ),
+          m(
+            Badge,
+            { badgeContent: 3, anchorOrigin: { vertical: 'bottom', horizontal: 'right' }, color: 'green' },
+            m(Button, { label: 'Bottom-Right' })
+          ),
+          m(
+            Badge,
+            { badgeContent: 4, anchorOrigin: { vertical: 'bottom', horizontal: 'left' }, color: 'purple' },
+            m(Button, { label: 'Bottom-Left' })
+          ),
+        ]),
+        m(CodeBlock, {
+          code: `// Position badge at different corners
+m(Badge, {
+  badgeContent: 1,
+  anchorOrigin: { vertical: 'top', horizontal: 'right' }
+}, m(Button, { label: 'Top-Right' }))
+
+m(Badge, {
+  badgeContent: 2,
+  anchorOrigin: { vertical: 'top', horizontal: 'left' }
+}, m(Button, { label: 'Top-Left' }))
+
+m(Badge, {
+  badgeContent: 3,
+  anchorOrigin: { vertical: 'bottom', horizontal: 'right' }
+}, m(Button, { label: 'Bottom-Right' }))`,
+        }),
+
+        m('h4', 'Dot Variant'),
+        m(
+          'p',
+          'Dot badges are minimal indicators without content, perfect for showing presence or status.'
+        ),
+        m('.row', { style: 'gap: 20px; display: flex; align-items: center; flex-wrap: wrap;' }, [
+          m(Badge, { variant: 'dot', color: 'green' }, m(Button, { label: 'Online' })),
+          m(Badge, { variant: 'dot', color: 'orange' }, m(Button, { label: 'Away' })),
+          m(Badge, { variant: 'dot', color: 'red' }, m(Button, { label: 'Busy' })),
+          m(
+            Badge,
+            {
+              variant: 'dot',
+              color: 'teal',
+              anchorOrigin: { vertical: 'bottom', horizontal: 'right' },
+            },
+            m(Button, { label: 'Active' })
+          ),
+        ]),
+        m(CodeBlock, {
+          code: `// Dot variant for status indicators
+m(Badge, { variant: 'dot', color: 'green' },
+  m(Button, { label: 'Online' })
+)
+
+m(Badge, { variant: 'dot', color: 'red' },
+  m(Button, { label: 'Busy' })
+)
+
+// Dot at custom position
+m(Badge, {
+  variant: 'dot',
+  color: 'teal',
+  anchorOrigin: { vertical: 'bottom', horizontal: 'right' }
+}, m(Button, { label: 'Active' }))`,
+        }),
+
+        m('h4', 'Color Variants'),
+        m('.row', { style: 'gap: 20px; display: flex; align-items: center; flex-wrap: wrap;' }, [
+          m(Badge, { badgeContent: 1, color: 'red' }, m(Button, { label: 'Red' })),
+          m(Badge, { badgeContent: 2, color: 'pink' }, m(Button, { label: 'Pink' })),
+          m(Badge, { badgeContent: 3, color: 'purple' }, m(Button, { label: 'Purple' })),
+          m(Badge, { badgeContent: 4, color: 'blue' }, m(Button, { label: 'Blue' })),
+          m(Badge, { badgeContent: 5, color: 'teal' }, m(Button, { label: 'Teal' })),
+          m(Badge, { badgeContent: 6, color: 'green' }, m(Button, { label: 'Green' })),
+          m(Badge, { badgeContent: 7, color: 'amber' }, m(Button, { label: 'Amber' })),
+          m(Badge, { badgeContent: 8, color: 'orange' }, m(Button, { label: 'Orange' })),
+        ]),
+        m(CodeBlock, {
+          code: `// All MaterialColor options available
+m(Badge, { badgeContent: 1, color: 'red' }, m(Button, { label: 'Red' }))
+m(Badge, { badgeContent: 2, color: 'blue' }, m(Button, { label: 'Blue' }))
+m(Badge, { badgeContent: 3, color: 'green' }, m(Button, { label: 'Green' }))
+// ... and 15 more colors (pink, purple, teal, amber, etc.)`,
+        }),
+
+        m('h4', 'Color Intensity'),
+        m('.row', { style: 'gap: 20px; display: flex; align-items: center; flex-wrap: wrap;' }, [
+          m(Badge, { badgeContent: 1, color: 'blue', colorIntensity: 'lighten-2' }, m(Button, { label: 'Light' })),
+          m(Badge, { badgeContent: 2, color: 'blue' }, m(Button, { label: 'Base' })),
+          m(Badge, { badgeContent: 3, color: 'blue', colorIntensity: 'darken-2' }, m(Button, { label: 'Dark' })),
+        ]),
+        m(CodeBlock, {
+          code: `// Adjust color intensity
+m(Badge, {
+  badgeContent: 1,
+  color: 'blue',
+  colorIntensity: 'lighten-2'
+}, m(Button, { label: 'Light' }))
+
+m(Badge, {
+  badgeContent: 3,
+  color: 'blue',
+  colorIntensity: 'darken-2'
+}, m(Button, { label: 'Dark' }))`,
+        }),
+
+        m('h4', 'Overlap Modes'),
+        m('p', 'Use circular overlap for badges on circular elements like avatars.'),
+        m('.row', { style: 'gap: 20px; display: flex; align-items: center; flex-wrap: wrap;' }, [
+          m(
+            Badge,
+            { badgeContent: 3, overlap: 'rectangular' },
+            m('span', {
+              style:
+                'width: 48px; height: 48px; background: #ddd; display: inline-block; border: 2px solid #999;',
+            })
+          ),
+          m(
+            Badge,
+            { badgeContent: 5, overlap: 'circular', color: 'green' },
+            m('span', {
+              style:
+                'width: 48px; height: 48px; background: #ddd; border-radius: 50%; display: inline-block; border: 2px solid #999;',
+            })
+          ),
+        ]),
+        m(CodeBlock, {
+          code: `// Rectangular overlap (default) for square elements
+m(Badge, { badgeContent: 3, overlap: 'rectangular' },
+  m('div.square-element')
+)
+
+// Circular overlap for round elements
+m(Badge, { badgeContent: 5, overlap: 'circular', color: 'green' },
+  m('img.circle', { src: 'avatar.jpg' })
+)`,
+        }),
+
+        m('h4', 'Visibility Control'),
+        m('.row', { style: 'gap: 20px; display: flex; align-items: center; flex-wrap: wrap;' }, [
+          m(Badge, { badgeContent: 5 }, m(Button, { label: 'Visible' })),
+          m(Badge, { badgeContent: 5, invisible: true }, m(Button, { label: 'Hidden' })),
+          m(Badge, { badgeContent: 0 }, m(Button, { label: 'Auto-hidden (0)' })),
+          m(Badge, { badgeContent: 0, showZero: true }, m(Button, { label: 'Show Zero' })),
+        ]),
+        m(CodeBlock, {
+          code: `// Normal badge
+m(Badge, { badgeContent: 5 }, m(Button, { label: 'Visible' }))
+
+// Force hide with invisible prop
+m(Badge, { badgeContent: 5, invisible: true }, m(Button, { label: 'Hidden' }))
+
+// Auto-hide when content is 0
+m(Badge, { badgeContent: 0 }, m(Button, { label: 'Auto-hidden' }))
+
+// Show zero explicitly
+m(Badge, { badgeContent: 0, showZero: true }, m(Button, { label: 'Show Zero' }))`,
         }),
 
         m('h3.header', 'Tooltip'),

@@ -1,0 +1,203 @@
+@use 'sass:color';
+@use "variables";
+@use "color-variables";
+
+/* Badge Component
+   ========================================================================== */
+
+// Badge component variables
+$badge-size-standard: 20px !default;
+$badge-size-dot: 8px !default;
+$badge-font-size: 12px !default;
+$badge-font-weight: 500 !default;
+$badge-default-color: color-variables.color("red", "base") !default;
+$badge-text-color: #fff !default;
+$badge-border-radius: 10px !default;
+$badge-dot-border-radius: 50% !default;
+
+// Wrapper - relative positioning container
+.badge-wrapper {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+// Badge element - using .m-badge to avoid conflicts with Materialize's span.badge
+.m-badge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  font-family: Roboto, sans-serif;
+  font-weight: $badge-font-weight;
+  line-height: 1;
+  white-space: nowrap;
+  text-align: center;
+  border-radius: $badge-border-radius;
+  background-color: $badge-default-color;
+  color: $badge-text-color;
+  z-index: 1;
+  transition: transform 225ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  // Standard variant (shows content)
+  &.m-badge--standard {
+    min-width: $badge-size-standard;
+    height: $badge-size-standard;
+    padding: 0 6px;
+    font-size: $badge-font-size;
+  }
+
+  // Dot variant (minimal indicator)
+  &.m-badge--dot {
+    width: $badge-size-dot;
+    height: $badge-size-dot;
+    min-width: $badge-size-dot;
+    padding: 0;
+    border-radius: $badge-dot-border-radius;
+  }
+
+  // Invisible state
+  &.m-badge--invisible {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  // === POSITIONING: Top-Right (default) ===
+  &.m-badge--top-right {
+    top: 0;
+    right: 0;
+    transform: scale(1) translate(50%, -50%);
+    transform-origin: 100% 0%;
+
+    &.m-badge--rectangular {
+      transform: scale(1) translate(50%, -50%);
+    }
+
+    &.m-badge--circular {
+      transform: scale(1) translate(30%, -30%);
+    }
+
+    &.m-badge--invisible {
+      transform: scale(0) translate(50%, -50%);
+    }
+  }
+
+  // === POSITIONING: Top-Left ===
+  &.m-badge--top-left {
+    top: 0;
+    left: 0;
+    transform: scale(1) translate(-50%, -50%);
+    transform-origin: 0% 0%;
+
+    &.m-badge--rectangular {
+      transform: scale(1) translate(-50%, -50%);
+    }
+
+    &.m-badge--circular {
+      transform: scale(1) translate(-30%, -30%);
+    }
+
+    &.m-badge--invisible {
+      transform: scale(0) translate(-50%, -50%);
+    }
+  }
+
+  // === POSITIONING: Bottom-Right ===
+  &.m-badge--bottom-right {
+    bottom: 0;
+    right: 0;
+    transform: scale(1) translate(50%, 50%);
+    transform-origin: 100% 100%;
+
+    &.m-badge--rectangular {
+      transform: scale(1) translate(50%, 50%);
+    }
+
+    &.m-badge--circular {
+      transform: scale(1) translate(30%, 30%);
+    }
+
+    &.m-badge--invisible {
+      transform: scale(0) translate(50%, 50%);
+    }
+  }
+
+  // === POSITIONING: Bottom-Left ===
+  &.m-badge--bottom-left {
+    bottom: 0;
+    left: 0;
+    transform: scale(1) translate(-50%, 50%);
+    transform-origin: 0% 100%;
+
+    &.m-badge--rectangular {
+      transform: scale(1) translate(-50%, 50%);
+    }
+
+    &.m-badge--circular {
+      transform: scale(1) translate(-30%, 30%);
+    }
+
+    &.m-badge--invisible {
+      transform: scale(0) translate(-50%, 50%);
+    }
+  }
+}
+
+// === COLOR VARIANTS ===
+// Generate color classes for all MaterialColor options
+.m-badge--red { background-color: color-variables.color("red", "base"); }
+.m-badge--pink { background-color: color-variables.color("pink", "base"); }
+.m-badge--purple { background-color: color-variables.color("purple", "base"); }
+.m-badge--deep-purple { background-color: color-variables.color("deep-purple", "base"); }
+.m-badge--indigo { background-color: color-variables.color("indigo", "base"); }
+.m-badge--blue { background-color: color-variables.color("blue", "base"); }
+.m-badge--light-blue { background-color: color-variables.color("light-blue", "base"); }
+.m-badge--cyan { background-color: color-variables.color("cyan", "base"); }
+.m-badge--teal { background-color: color-variables.color("teal", "base"); }
+.m-badge--green { background-color: color-variables.color("green", "base"); }
+.m-badge--light-green { background-color: color-variables.color("light-green", "base"); }
+.m-badge--lime { background-color: color-variables.color("lime", "base"); }
+.m-badge--yellow {
+  background-color: color-variables.color("yellow", "base");
+  color: #000; // Dark text for light background
+}
+.m-badge--amber { background-color: color-variables.color("amber", "base"); }
+.m-badge--orange { background-color: color-variables.color("orange", "base"); }
+.m-badge--deep-orange { background-color: color-variables.color("deep-orange", "base"); }
+.m-badge--brown { background-color: color-variables.color("brown", "base"); }
+.m-badge--grey { background-color: color-variables.color("grey", "base"); }
+.m-badge--blue-grey { background-color: color-variables.color("blue-grey", "base"); }
+
+// === COLOR INTENSITY MODIFIERS ===
+// Use CSS filters for intensity adjustments (matching CircularProgress pattern)
+.m-badge--lighten-5 { filter: brightness(1.4); }
+.m-badge--lighten-4 { filter: brightness(1.3); }
+.m-badge--lighten-3 { filter: brightness(1.2); }
+.m-badge--lighten-2 { filter: brightness(1.1); }
+.m-badge--lighten-1 { filter: brightness(1.05); }
+.m-badge--darken-1 { filter: brightness(0.95); }
+.m-badge--darken-2 { filter: brightness(0.9); }
+.m-badge--darken-3 { filter: brightness(0.8); }
+.m-badge--darken-4 { filter: brightness(0.7); }
+
+// === ACCESSIBILITY ===
+// Ensure badge is not announced multiple times by screen readers
+.m-badge[role="status"] {
+  // Screen reader will announce changes due to aria-live="polite"
+}
+
+// === REDUCED MOTION ===
+@media (prefers-reduced-motion: reduce) {
+  .m-badge {
+    transition: none;
+  }
+}
+
+// === HIGH CONTRAST MODE ===
+@media (prefers-contrast: high) {
+  .m-badge {
+    border: 2px solid currentColor;
+  }
+}
