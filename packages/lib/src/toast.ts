@@ -1,5 +1,16 @@
 import { FactoryComponent } from 'mithril';
 
+export interface ToastAction {
+  /** Icon name for the action button */
+  icon?: string;
+  /** Text label for the action button (if no icon provided) */
+  label?: string;
+  /** Callback function called when action is clicked */
+  onclick: () => void;
+  /** Whether to use flat button style (default) or icon button style */
+  variant?: 'flat' | 'icon';
+}
+
 export interface ToastOptions {
   /** HTML content for the toast */
   html?: string;
@@ -9,12 +20,19 @@ export interface ToastOptions {
   inDuration?: number;
   /** Animation out duration in milliseconds */
   outDuration?: number;
-  /** Additional CSS classes */
+  /**
+   * Additional CSS classes
+   * @deprecated Use className instead. This property will be removed in a future version.
+   */
   classes?: string;
+  /** Additional CSS classes (preferred over deprecated 'classes' property) */
+  className?: string;
   /** Callback function called when toast is dismissed */
   completeCallback?: () => void;
   /** Activation percentage for swipe dismissal */
   activationPercent?: number;
+  /** Optional action button (for simple confirmations or undo actions) */
+  action?: ToastAction;
 }
 
 interface ToastState {
@@ -44,8 +62,10 @@ export class Toast {
     inDuration: 300,
     outDuration: 375,
     classes: '',
+    className: '',
     completeCallback: undefined,
     activationPercent: 0.8,
+    action: undefined,
   };
 
   constructor(options: ToastOptions = {}) {
@@ -178,21 +198,74 @@ export class Toast {
     const toast = document.createElement('div');
     toast.classList.add('toast');
 
-    // Add custom classes
-    if (this.options.classes) {
-      toast.classList.add(...this.options.classes.split(' '));
+    // Add custom classes (prefer className over deprecated classes)
+    const customClasses = this.options.className || this.options.classes;
+    if (customClasses) {
+      toast.classList.add(...customClasses.split(' ').filter((c) => c));
     }
 
-    // Set content
+    // Create content wrapper
+    const contentWrapper = document.createElement('div');
+    contentWrapper.style.cssText = 'display: flex; align-items: center; gap: 12px;';
+
+    // Set message content
+    const messageEl = document.createElement('div');
+    messageEl.style.flex = '1';
     const message = this.options.html;
     if (typeof message === 'object' && message && 'nodeType' in message) {
-      toast.appendChild(message);
+      messageEl.appendChild(message);
     } else {
-      toast.innerHTML = message;
+      messageEl.innerHTML = message;
     }
+    contentWrapper.appendChild(messageEl);
+
+    // Add action button if provided
+    if (this.options.action) {
+      const action = this.options.action;
+      const actionBtn = document.createElement('button');
+      actionBtn.className = 'btn-flat toast-action';
+      actionBtn.style.cssText = 'margin: 0; padding: 0 8px; min-width: auto; height: 36px;';
+
+      if (action.variant === 'icon' && action.icon) {
+        // Icon button variant
+        actionBtn.innerHTML = `<i class="material-icons">${action.icon}</i>`;
+        actionBtn.setAttribute('aria-label', action.label || action.icon);
+      } else {
+        // Flat button variant (default)
+        if (action.icon) {
+          actionBtn.innerHTML = `<i class="material-icons left">${action.icon}</i>${action.label || ''}`;
+        } else {
+          actionBtn.textContent = action.label || '';
+        }
+      }
+
+      actionBtn.onclick = (e) => {
+        e.stopPropagation();
+        action.onclick();
+        this.dismiss();
+      };
+
+      contentWrapper.appendChild(actionBtn);
+    }
+
+    toast.appendChild(contentWrapper);
 
     // Store reference
     (toast as any).M_Toast = this;
+
+    // Measure natural width BEFORE appending to avoid interference from other toasts
+    // Temporarily append to body in an isolated position
+    toast.style.cssText = 'position: absolute; visibility: hidden; left: -9999px; display: flex;';
+    document.body.appendChild(toast);
+
+    // Force layout and measure
+    const naturalWidth = toast.offsetWidth;
+
+    // Remove from body
+    document.body.removeChild(toast);
+
+    // Lock the width to prevent changes based on other toasts
+    toast.style.cssText = `width: ${naturalWidth}px;`;
 
     // Append to container
     Toast._container!.appendChild(toast);
@@ -200,15 +273,12 @@ export class Toast {
   }
 
   _animateIn(): void {
-    // Simple CSS animation since we don't have anime.js
-    this.el.style.cssText = `
-      transform: translateY(35px);
-      opacity: 0;
-      transition: transform ${this.options.inDuration}ms cubic-bezier(0.215, 0.61, 0.355, 1),
-                  opacity ${this.options.inDuration}ms cubic-bezier(0.215, 0.61, 0.355, 1);
-    `;
+    // Width is already locked from _createToast
+    // Set initial animation state (transitions are defined in CSS)
+    this.el.style.transform = 'translateY(35px)';
+    this.el.style.opacity = '0';
 
-    // Trigger animation
+    // Trigger animation after a brief delay to ensure styles are applied
     setTimeout(() => {
       this.el.style.transform = 'translateY(0)';
       this.el.style.opacity = '1';
@@ -237,18 +307,35 @@ export class Toast {
     const activationDistance = this.el.offsetWidth * this.options.activationPercent;
 
     if (this.state.wasSwiped) {
+      // Override transition temporarily for swipe
       this.el.style.transition = 'transform .05s, opacity .05s';
       this.el.style.transform = `translateX(${activationDistance}px)`;
       this.el.style.opacity = '0';
+
+      // Reset transition after swipe animation
+      setTimeout(() => {
+        this.el.style.transition = `opacity ${this.options.outDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                                      max-height ${this.options.outDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                                      margin-top ${this.options.outDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                                      padding-top ${this.options.outDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                                      padding-bottom ${this.options.outDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1)`;
+      }, 50);
+    } else {
+      // Set collapse transition timing
+      this.el.style.transition = `opacity ${this.options.outDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                                    max-height ${this.options.outDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                                    margin-top ${this.options.outDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                                    padding-top ${this.options.outDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                                    padding-bottom ${this.options.outDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1)`;
     }
 
-    // Animate out
-    this.el.style.cssText += `
-      transition: opacity ${this.options.outDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                  margin-top ${this.options.outDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1);
-      opacity: 0;
-      margin-top: -40px;
-    `;
+    // Animate out - collapse height smoothly
+    this.el.style.opacity = '0';
+    this.el.style.maxHeight = '0';
+    this.el.style.marginTop = '0';
+    this.el.style.paddingTop = '0';
+    this.el.style.paddingBottom = '0';
+    this.el.style.overflow = 'hidden';
 
     setTimeout(() => {
       // Call completion callback

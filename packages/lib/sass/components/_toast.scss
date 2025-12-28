@@ -43,6 +43,14 @@
   justify-content: space-between;
   cursor: default;
 
+  // Smooth transitions for position changes when toasts are added/removed
+  transition: transform 300ms cubic-bezier(0.215, 0.61, 0.355, 1),
+              opacity 300ms cubic-bezier(0.215, 0.61, 0.355, 1),
+              margin-top 300ms cubic-bezier(0.215, 0.61, 0.355, 1),
+              max-height 300ms cubic-bezier(0.215, 0.61, 0.355, 1),
+              padding-top 300ms cubic-bezier(0.215, 0.61, 0.355, 1),
+              padding-bottom 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+
   .toast-action {
     color: variables.$toast-action-color;
     font-weight: 500;

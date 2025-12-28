@@ -1,3 +1,10 @@
+# [3.10.0](https://github.com/erikvullings/mithril-materialized/compare/v3.9.0...v3.10.0) (2025-12-28)
+
+
+### Features
+
+* New component, Badge (see https://erikvullings.github.io/mithril-materialized/index.html#!/misc). ([f966cd1](https://github.com/erikvullings/mithril-materialized/commit/f966cd181e4fec7e532f1a47ef401841a24760a7))
+
 # [3.9.0](https://github.com/erikvullings/mithril-materialized/compare/v3.8.0...v3.9.0) (2025-12-27)
 
 

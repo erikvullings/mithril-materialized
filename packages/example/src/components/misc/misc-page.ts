@@ -76,17 +76,62 @@ export const MiscPage = () => {
             onclick: () => {
               toast({
                 html: '<span>Custom toast with HTML content!</span>',
-                classes: 'rounded orange darken-1',
+                className: 'rounded orange darken-1',
                 displayLength: 6000,
               });
             },
           }),
           m(Button, {
-            label: 'Show Long Toast',
+            label: 'Toast with Undo',
             onclick: () => {
               toast({
-                html: 'This toast will stay visible for 10 seconds and can be swiped to dismiss!',
+                html: 'Item deleted',
+                className: 'red darken-1',
+                displayLength: 8000,
+                action: {
+                  label: 'UNDO',
+                  onclick: () => {
+                    console.log('Undo action triggered');
+                    toast({ html: 'Deletion cancelled', className: 'green' });
+                  },
+                },
+              });
+            },
+          }),
+          m(Button, {
+            label: 'Toast with Icon Action',
+            onclick: () => {
+              toast({
+                html: 'Do you want to confirm this action?',
+                className: 'blue darken-1',
                 displayLength: 10000,
+                action: {
+                  icon: 'check',
+                  label: 'Confirm',
+                  variant: 'icon',
+                  onclick: () => {
+                    console.log('Confirmed!');
+                    toast({ html: 'Action confirmed!', className: 'green' });
+                  },
+                },
+              });
+            },
+          }),
+          m(Button, {
+            label: 'Toast with Label & Icon',
+            onclick: () => {
+              toast({
+                html: 'Changes saved successfully',
+                className: 'teal',
+                displayLength: 6000,
+                action: {
+                  icon: 'refresh',
+                  label: 'Reload',
+                  onclick: () => {
+                    console.log('Reload triggered');
+                    toast({ html: 'Reloading...', className: 'blue' });
+                  },
+                },
                 completeCallback: () => console.log('Toast dismissed'),
               });
             },
@@ -96,17 +141,48 @@ export const MiscPage = () => {
           code: `// Basic toast
 toast({ html: 'Hello World! This is a basic toast message.' });
 
-// Styled toast with custom classes and duration
+// Styled toast with custom className and duration
 toast({
   html: '<span>Custom toast with HTML content!</span>',
-  classes: 'rounded orange darken-1',
+  className: 'rounded orange darken-1',
   displayLength: 6000,
 });
 
-// Toast with callback
+// Toast with undo action (flat button)
 toast({
-  html: 'This toast can be swiped to dismiss!',
+  html: 'Item deleted',
+  className: 'red darken-1',
+  displayLength: 8000,
+  action: {
+    label: 'UNDO',
+    onclick: () => {
+      console.log('Undo action triggered');
+    },
+  },
+});
+
+// Toast with icon action button
+toast({
+  html: 'Do you want to confirm this action?',
+  className: 'blue darken-1',
   displayLength: 10000,
+  action: {
+    icon: 'check',
+    label: 'Confirm',
+    variant: 'icon',  // Use 'icon' for icon-only button
+    onclick: () => console.log('Confirmed!'),
+  },
+});
+
+// Toast with action button (icon + label)
+toast({
+  html: 'Changes saved successfully',
+  className: 'teal',
+  action: {
+    icon: 'refresh',
+    label: 'Reload',
+    onclick: () => console.log('Reload triggered'),
+  },
   completeCallback: () => console.log('Toast dismissed'),
 });`,
         }),
@@ -228,10 +304,7 @@ m(Badge, {
         }),
 
         m('h4', 'Dot Variant'),
-        m(
-          'p',
-          'Dot badges are minimal indicators without content, perfect for showing presence or status.'
-        ),
+        m('p', 'Dot badges are minimal indicators without content, perfect for showing presence or status.'),
         m('.row', { style: 'gap: 20px; display: flex; align-items: center; flex-wrap: wrap;' }, [
           m(Badge, { variant: 'dot', color: 'green' }, m(Button, { label: 'Online' })),
           m(Badge, { variant: 'dot', color: 'orange' }, m(Button, { label: 'Away' })),
@@ -311,8 +384,7 @@ m(Badge, {
             Badge,
             { badgeContent: 3, overlap: 'rectangular' },
             m('span', {
-              style:
-                'width: 48px; height: 48px; background: #ddd; display: inline-block; border: 2px solid #999;',
+              style: 'width: 48px; height: 48px; background: #ddd; display: inline-block; border: 2px solid #999;',
             })
           ),
           m(
@@ -389,9 +461,9 @@ oncreate: () => {
 }
 
 // Or initialize specific elements
-initTooltips('.my-tooltips', { 
+initTooltips('.my-tooltips', {
   position: 'top',
-  enterDelay: 500 
+  enterDelay: 500
 });`,
         }),
 
@@ -721,7 +793,7 @@ oncreate: (vnode) => {
   i18n: {
     showing: 'Showing',
     to: 'to',
-    of: 'of', 
+    of: 'of',
     entries: 'items',
     page: 'Page',
   },
