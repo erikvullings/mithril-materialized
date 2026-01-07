@@ -1,3 +1,10 @@
+# [3.11.0](https://github.com/erikvullings/mithril-materialized/compare/v3.10.0...v3.11.0) (2026-01-07)
+
+
+### Features
+
+* Toasts with simple actions (undo, confirmation), classes ([c5d79f0](https://github.com/erikvullings/mithril-materialized/commit/c5d79f0b84d7744dacfe44783df9b59fbd057d86))
+
 # [3.10.0](https://github.com/erikvullings/mithril-materialized/compare/v3.9.0...v3.10.0) (2025-12-28)
 
 
