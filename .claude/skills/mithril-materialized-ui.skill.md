@@ -361,7 +361,7 @@ Located in: `theme-switcher.ts`, `file-upload.ts`, `code-block.ts`
 - FileUpload (drag-and-drop)
 - CodeBlock
 
-## TypeScript Types System
+## TypeScript Type System
 
 ### Core Types
 Located in: `packages/lib/src/types.ts`
