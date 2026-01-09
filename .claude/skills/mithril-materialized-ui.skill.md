@@ -116,30 +116,128 @@ export interface ValidatorFunction<T> {
 }
 
 export type ValidationResult = true | false | '' | string;
+```
 
-// In component:
-validate?: ValidatorFunction<T>;
+**Implementation in component:**
 
-// On blur:
-if (validate) {
-  const validationResult = validate(value, target);
-  state.isValid = typeof validationResult === 'boolean'
-    ? validationResult
-    : validationResult === '';
-
-  if (typeof validationResult === 'boolean') {
-    if (validationResult) {
-      target.classList.add('valid');
-      target.classList.remove('invalid');
-    } else {
-      target.classList.add('invalid');
-      target.classList.remove('valid');
-    }
-  } else if (typeof validationResult === 'string') {
-    target.setCustomValidity(validationResult);
-    target.classList.add('invalid');
-  }
+```typescript
+// In component attrs:
+export interface InputAttrs<T> extends Attributes {
+  value?: T;
+  validate?: ValidatorFunction<T>;
+  dataError?: string;
+  dataSuccess?: string;
+  // ... other props
 }
+
+// In component view - onblur handler:
+onblur: (e: FocusEvent) => {
+  const target = e.target as HTMLInputElement;
+  state.hasInteracted = true;
+
+  // Skip validation for readonly/disabled inputs
+  if (attrs.readonly || attrs.disabled) {
+    if (attrs.onblur) attrs.onblur(e);
+    if (onchange) onchange(getValue(target));
+    return;
+  }
+
+  // Custom validation
+  if (validate) {
+    const value = getValue(target);
+
+    // Only validate if user has entered something
+    if (value && String(value).length > 0) {
+      const validationResult = validate(value, target);
+      state.isValid = typeof validationResult === 'boolean'
+        ? validationResult
+        : validationResult === '';
+
+      // Set HTML5 validation message
+      if (typeof validationResult === 'boolean') {
+        target.setCustomValidity(validationResult ? '' : 'Validation failed');
+        if (validationResult) {
+          target.classList.add('valid');
+          target.classList.remove('invalid');
+        } else {
+          target.classList.add('invalid');
+          target.classList.remove('valid');
+        }
+      } else if (typeof validationResult === 'string') {
+        target.setCustomValidity(validationResult);
+        target.classList.add('invalid');
+        target.classList.remove('valid');
+        state.isValid = false;
+      }
+    } else {
+      // Clear validation state if no text
+      target.classList.remove('valid', 'invalid');
+      state.isValid = true;
+    }
+  }
+
+  // Call parent handlers
+  if (attrs.onblur) attrs.onblur(e);
+  if (onchange) onchange(getValue(target));
+}
+```
+
+**Validation Examples:**
+
+```typescript
+// Boolean validation (simple pass/fail)
+m(TextInput, {
+  label: 'Username',
+  validate: (value) => value.length >= 3,
+  dataError: 'Username must be at least 3 characters'
+})
+
+// String validation (custom error message)
+m(TextInput, {
+  label: 'Username',
+  validate: (value) => {
+    if (value.length < 3) return 'Too short (min 3 chars)';
+    if (value.length > 20) return 'Too long (max 20 chars)';
+    if (!/^[a-zA-Z0-9_]+$/.test(value)) return 'Only alphanumeric and underscore allowed';
+    return true; // or return '' for success
+  }
+})
+
+// Validation with HTML element access
+m(NumberInput, {
+  label: 'Age',
+  validate: (value, element) => {
+    const num = Number(value);
+    if (isNaN(num)) return 'Must be a number';
+    if (num < 0) return 'Must be positive';
+    if (num > 120) return 'Must be realistic';
+
+    // Can also access element properties
+    if (element && !element.validity.valid) {
+      return element.validationMessage;
+    }
+
+    return true;
+  }
+})
+
+// Async validation (using onchange instead)
+m(TextInput, {
+  label: 'Email',
+  value: email,
+  oninput: (v) => email = v,
+  onchange: async (value) => {
+    // Perform async validation on blur
+    const isAvailable = await checkEmailAvailability(value);
+    if (!isAvailable) {
+      // Handle error state
+    }
+  },
+  validate: (value) => {
+    // Synchronous email format check
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || 'Invalid email format';
+  }
+})
 ```
 
 ### 4. Icon Integration
@@ -333,29 +431,210 @@ The library uses modular CSS for tree-shaking:
 
 ### Theme System
 
-Dark/light theme support using CSS custom properties:
+Dark/light theme support using CSS custom properties. The library defines **50+ CSS variables** for complete theme customization.
+
+#### Complete CSS Variables Reference
+
+**Light Theme (`:root`):**
 
 ```css
 :root {
+  /* Primary & Secondary Colors */
   --mm-primary-color: #26a69a;
-  --mm-background-color: #ffffff;
-  --mm-text-primary: rgba(0, 0, 0, 0.87);
-}
+  --mm-primary-color-light: #80cbc4;
+  --mm-primary-color-dark: #00695c;
+  --mm-secondary-color: #ff6f00;
+  --mm-secondary-color-light: #ffa726;
+  --mm-secondary-color-dark: #ef6c00;
 
-[data-theme="dark"] {
-  --mm-primary-color: #80cbc4;
-  --mm-background-color: #121212;
-  --mm-text-primary: rgba(255, 255, 255, 0.87);
+  /* Background Colors */
+  --mm-background-color: #ffffff;
+  --mm-surface-color: #ffffff;
+  --mm-card-background: #ffffff;
+
+  /* Text Colors */
+  --mm-text-primary: rgba(0, 0, 0, 0.87);
+  --mm-text-secondary: rgba(0, 0, 0, 0.6);
+  --mm-text-disabled: rgba(0, 0, 0, 0.38);
+  --mm-text-hint: rgba(0, 0, 0, 0.38);
+
+  /* Border & Divider Colors */
+  --mm-border-color: rgba(0, 0, 0, 0.12);
+  --mm-divider-color: rgba(0, 0, 0, 0.12);
+
+  /* Input Colors */
+  --mm-input-background: #ffffff;
+  --mm-input-border: rgba(0, 0, 0, 0.42);
+  --mm-input-border-focus: var(--mm-primary-color);
+  --mm-input-text: var(--mm-text-primary);
+
+  /* Button Colors */
+  --mm-button-background: var(--mm-primary-color);
+  --mm-button-text: #ffffff;
+  --mm-button-flat-text: var(--mm-primary-color);
+
+  /* Navigation Colors */
+  --mm-nav-background: var(--mm-primary-color);
+  --mm-nav-text: #ffffff;
+  --mm-nav-active-text: #ffffff;
+
+  /* Modal & Overlay Colors */
+  --mm-modal-background: #ffffff;
+  --mm-overlay-background: rgba(0, 0, 0, 0.5);
+
+  /* Shadow Colors */
+  --mm-shadow-color: rgba(0, 0, 0, 0.16);
+  --mm-shadow-umbra: rgba(0, 0, 0, 0.2);
+  --mm-shadow-penumbra: rgba(0, 0, 0, 0.14);
+  --mm-shadow-ambient: rgba(0, 0, 0, 0.12);
+
+  /* Chip Colors */
+  --mm-chip-bg: #e4e4e4;
+  --mm-chip-text: var(--mm-text-secondary);
+
+  /* Dropdown Colors */
+  --mm-dropdown-hover: #eee;
+  --mm-dropdown-focus: #ddd;
+  --mm-dropdown-selected: #e3f2fd;
+
+  /* Table & Collection Colors */
+  --mm-row-hover: rgba(0, 0, 0, 0.04);
+  --mm-table-striped-color: rgba(0, 0, 0, 0.05);
+
+  /* Switch Colors */
+  --mm-switch-checked-track: rgba(38, 166, 154, 0.3);
+  --mm-switch-checked-thumb: #26a69a;
+  --mm-switch-unchecked-track: rgba(0, 0, 0, 0.6);
+  --mm-switch-unchecked-thumb: #f5f5f5;
+  --mm-switch-disabled-track: rgba(0, 0, 0, 0.12);
+  --mm-switch-disabled-thumb: #bdbdbd;
 }
 ```
 
-**Usage**:
+**Dark Theme (`[data-theme="dark"]`):**
+
+```css
+[data-theme="dark"] {
+  /* Primary & Secondary Colors */
+  --mm-primary-color: #80cbc4;
+  --mm-primary-color-light: #b2dfdb;
+  --mm-primary-color-dark: #4db6ac;
+  --mm-secondary-color: #ffa726;
+  --mm-secondary-color-light: #ffcc02;
+  --mm-secondary-color-dark: #ff8f00;
+
+  /* Background Colors */
+  --mm-background-color: #121212;
+  --mm-surface-color: #1e1e1e;
+  --mm-card-background: #2d2d2d;
+
+  /* Text Colors */
+  --mm-text-primary: rgba(255, 255, 255, 0.87);
+  --mm-text-secondary: rgba(255, 255, 255, 0.6);
+  --mm-text-disabled: rgba(255, 255, 255, 0.38);
+  --mm-text-hint: rgba(255, 255, 255, 0.38);
+
+  /* Border & Divider Colors */
+  --mm-border-color: rgba(255, 255, 255, 0.12);
+  --mm-divider-color: rgba(255, 255, 255, 0.12);
+
+  /* Input Colors */
+  --mm-input-background: #2d2d2d;
+  --mm-input-border: rgba(255, 255, 255, 0.42);
+  --mm-input-border-focus: var(--mm-primary-color);
+  --mm-input-text: var(--mm-text-primary);
+
+  /* Button Colors */
+  --mm-button-background: var(--mm-primary-color);
+  --mm-button-text: #000000;  /* Dark text on light primary */
+  --mm-button-flat-text: var(--mm-primary-color);
+
+  /* Navigation Colors */
+  --mm-nav-background: #1e1e1e;
+  --mm-nav-text: #ffffff;
+  --mm-nav-active-text: #ffffff;
+
+  /* Modal & Overlay Colors */
+  --mm-modal-background: #2d2d2d;
+  --mm-overlay-background: rgba(0, 0, 0, 0.8);
+
+  /* Shadow Colors */
+  --mm-shadow-color: rgba(0, 0, 0, 0.5);
+  --mm-shadow-umbra: rgba(0, 0, 0, 0.5);
+  --mm-shadow-penumbra: rgba(0, 0, 0, 0.36);
+  --mm-shadow-ambient: rgba(0, 0, 0, 0.3);
+
+  /* Chip Colors */
+  --mm-chip-bg: #424242;
+  --mm-chip-text: var(--mm-text-secondary);
+
+  /* Dropdown Colors */
+  --mm-dropdown-hover: #444;
+  --mm-dropdown-focus: #555;
+  --mm-dropdown-selected: #1e3a8a;
+
+  /* Table & Collection Colors */
+  --mm-row-hover: rgba(255, 255, 255, 0.04);
+  --mm-row-stripe: rgba(255, 255, 255, 0.02);
+  --mm-table-striped-color: rgba(255, 255, 255, 0.05);
+
+  /* Switch Colors */
+  --mm-switch-checked-track: rgba(128, 203, 196, 0.3);
+  --mm-switch-checked-thumb: #80cbc4;
+  --mm-switch-unchecked-track: rgba(255, 255, 255, 0.6);
+  --mm-switch-unchecked-thumb: #616161;
+  --mm-switch-disabled-track: rgba(255, 255, 255, 0.12);
+  --mm-switch-disabled-thumb: #424242;
+}
+```
+
+**Auto Dark Mode (prefers-color-scheme):**
+```css
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    /* Automatically applies dark theme variables */
+    /* when user's OS is in dark mode and no explicit theme is set */
+  }
+}
+```
+
+#### Programmatic Theme Control
+
+**TypeScript API**:
 ```typescript
 import { ThemeManager } from 'mithril-materialized';
 
-ThemeManager.setTheme('dark');  // 'light' | 'dark' | 'auto'
+// Set theme explicitly
+ThemeManager.setTheme('dark');   // 'light' | 'dark' | 'auto'
+ThemeManager.setTheme('light');
+ThemeManager.setTheme('auto');   // Respects OS preference
+
+// Toggle between light and dark
 ThemeManager.toggle();
-ThemeManager.getTheme();
+
+// Get current theme
+const currentTheme = ThemeManager.getTheme(); // Returns 'light' | 'dark' | 'auto'
+```
+
+#### Custom Theme Colors
+
+Override CSS variables to create custom themes:
+
+```css
+/* Custom brand theme */
+:root {
+  --mm-primary-color: #1976d2;        /* Blue primary */
+  --mm-primary-color-light: #63a4ff;
+  --mm-primary-color-dark: #004ba0;
+  --mm-secondary-color: #ff4081;      /* Pink accent */
+}
+
+/* Custom dark theme colors */
+[data-theme="dark"] {
+  --mm-primary-color: #90caf9;
+  --mm-background-color: #0a0a0a;     /* Deeper black */
+  --mm-surface-color: #1a1a1a;
+}
 ```
 
 ## Development Workflow
@@ -505,8 +784,10 @@ export const MyComponent: FactoryComponent<MyComponentAttrs> = () => {
 
 ### 4. Event Handling
 
+**Standard Event Handlers:**
+
 ```typescript
-// Input changes
+// Input changes (oninput fires on every keystroke)
 oninput: (e: Event) => {
   const target = e.target as HTMLInputElement;
   const value = getValue(target);
@@ -516,26 +797,199 @@ oninput: (e: Event) => {
     state.internalValue = value;
   }
 
-  // Call parent handler
+  // Call parent handler with clean value
   if (attrs.oninput) {
     attrs.oninput(value);
   }
+
+  // Don't validate on input - wait for blur
+  // Clear invalid state if user is actively fixing
+  if (validate && target.classList.contains('invalid')) {
+    const validationResult = validate(value, target);
+    if (typeof validationResult === 'boolean' && validationResult) {
+      target.classList.remove('invalid');
+      target.classList.add('valid');
+      state.isValid = true;
+    }
+  }
 }
 
-// Blur (validation)
+// Change (fires on blur after value changed)
 onblur: (e: FocusEvent) => {
+  const target = e.target as HTMLInputElement;
+  state.active = false;
   state.hasInteracted = true;
 
-  // Perform validation
-  if (attrs.validate) {
+  // Perform validation (see validation section)
+  if (attrs.validate && !attrs.readonly && !attrs.disabled) {
+    const value = getValue(target);
     const result = attrs.validate(value, target);
     // Update validity state
   }
 
   // Call parent handlers
   if (attrs.onblur) attrs.onblur(e);
-  if (attrs.onchange) attrs.onchange(value);
+  if (attrs.onchange) attrs.onchange(getValue(target));
 }
+
+// Focus
+onfocus: () => {
+  state.active = true;
+}
+
+// Keyboard events (with typed values)
+onkeyup: onkeyup
+  ? (ev: KeyboardEvent) => {
+      const value = getValue(ev.target as HTMLInputElement);
+      onkeyup(ev, value);
+    }
+  : undefined,
+
+onkeydown: onkeydown
+  ? (ev: KeyboardEvent) => {
+      const value = getValue(ev.target as HTMLInputElement);
+      onkeydown(ev, value);
+    }
+  : undefined,
+```
+
+**Event Handler Examples:**
+
+```typescript
+// Real-time input handling
+m(TextInput, {
+  label: 'Search',
+  oninput: (value) => {
+    console.log('User is typing:', value);
+    // Update search results in real-time
+    performSearch(value);
+  }
+})
+
+// Change on blur only
+m(TextInput, {
+  label: 'Name',
+  defaultValue: user.name,
+  onchange: (value) => {
+    console.log('Final value:', value);
+    // Save to backend on blur
+    updateUser({ name: value });
+  }
+})
+
+// Keyboard shortcuts
+m(TextInput, {
+  label: 'Command',
+  onkeydown: (event, value) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      executeCommand(value);
+    }
+    if (event.key === 'Escape') {
+      clearCommand();
+    }
+  }
+})
+
+// Combining multiple event handlers
+m(TextInput, {
+  label: 'Message',
+  value: message,
+  oninput: (v) => {
+    message = v;
+    updateCharacterCount(v);
+  },
+  onchange: (v) => {
+    saveMessageDraft(v);
+  },
+  onkeydown: (ev, v) => {
+    if (ev.key === 'Enter' && !ev.shiftKey) {
+      ev.preventDefault();
+      sendMessage(v);
+    }
+  }
+})
+
+// Focus and blur handling
+m(TextInput, {
+  label: 'Email',
+  onfocus: () => {
+    console.log('Input focused');
+    showEmailSuggestions();
+  },
+  onblur: (event) => {
+    console.log('Input blurred');
+    hideEmailSuggestions();
+  }
+})
+```
+
+**Range Input Event Handling:**
+
+```typescript
+// Single value range
+m(RangeInput, {
+  label: 'Volume',
+  min: 0,
+  max: 100,
+  value: volume,
+  oninput: (value) => {
+    // Called while dragging
+    volume = value;
+    updateVolumeDisplay(value);
+  },
+  onchange: (value) => {
+    // Called when drag ends
+    saveVolumePreference(value);
+  }
+})
+
+// Double-thumb range (min-max)
+m(RangeInput, {
+  label: 'Price Range',
+  min: 0,
+  max: 1000,
+  minmax: true,
+  minValue: priceMin,
+  maxValue: priceMax,
+  oninput: (min, max) => {
+    // Both values provided for minmax mode
+    priceMin = min;
+    priceMax = max;
+    updateProductFilter(min, max);
+  },
+  onchange: (min, max) => {
+    saveFilterPreferences({ priceMin: min, priceMax: max });
+  }
+})
+```
+
+**Select/Dropdown Event Handling:**
+
+```typescript
+// Simple select
+m(Select, {
+  label: 'Country',
+  options: countries,
+  value: selectedCountry,
+  onchange: (value) => {
+    selectedCountry = value;
+    loadStates(value);
+  }
+})
+
+// Multiple select
+m(Select, {
+  label: 'Tags',
+  options: availableTags,
+  multiple: true,
+  value: selectedTags,
+  onchange: (values) => {
+    // values is an array for multiple select
+    selectedTags = values;
+    filterItems(values);
+  }
+})
 ```
 
 ### 5. Accessibility
