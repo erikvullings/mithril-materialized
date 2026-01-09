@@ -1,6 +1,6 @@
 {
   "name": "mithril-materialized",
-  "version": "3.11.0",
+  "version": "3.12.0",
   "description": "A materialize library for mithril.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

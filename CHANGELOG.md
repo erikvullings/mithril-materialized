@@ -1,3 +1,11 @@
+# [3.12.0](https://github.com/erikvullings/mithril-materialized/compare/v3.11.0...v3.12.0) (2026-01-09)
+
+
+### Features
+
+* Add comprehensive mithril-materialized-ui Claude skill ([999f4e5](https://github.com/erikvullings/mithril-materialized/commit/999f4e557e5865af159d71009d0f65691dbe3c54))
+* Enhance skill with complete CSS variables and TypeScript examples ([7f5f233](https://github.com/erikvullings/mithril-materialized/commit/7f5f2332dec41004929460ffb8c3fa56004791fc))
+
 # [3.11.0](https://github.com/erikvullings/mithril-materialized/compare/v3.10.0...v3.11.0) (2026-01-07)
 
 
