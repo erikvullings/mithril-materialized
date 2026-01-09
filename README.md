@@ -2,17 +2,27 @@
 
 A Mithril.js component library inspired by [materialize-css](https://materializecss.com) design principles, [available on npm](https://www.npmjs.com/package/mithril-materialized). This library provides you with ready-to-use Mithril components that follow Material Design guidelines, with **no external JavaScript dependencies**.
 
-## 🚀 v3.4 - Latest Release
+## 🚀 v3.12 - Latest Release
 
 The current stable release that provides a complete Mithril.js Material Design component library with no external JavaScript dependencies.
 
-### ✨ What's New
+### ✨ What's New in v3.12
+
+- **🎯 Enhanced Toast Component**: Toasts with simple actions (undo, confirmation) and custom classes
+- **🏷️ Badge Component**: New badge component for labels and notifications
+- **⏱️ Progress Components**: CircularProgress and LinearProgress for loading states
+- **🔘 Toggle Components**: ToggleGroup and ToggleButton for grouped selections
+- **🕐 Advanced Time Components**: TimeRangePicker, AnalogClock, and DigitalClock
+- **🎨 Enhanced Sidenav**: Collapsible/expandable sidebar with submenu support
+- **⚡ Waves Effect**: Material Design ripple animations on buttons and FABs
+
+### ✨ Key Features Since v3.4
 
 - **🔥 Zero External JS Dependencies**: No longer requires `materialize-css` JavaScript or `material-icons` fonts
 - **📦 Smaller Bundle Size**: Reduced package size by eliminating external dependencies
 - **⚡ Better Performance**: Direct implementations without jQuery or other heavy dependencies
 - **🛠️ Enhanced Components**: Improved DatePicker with date ranges, week numbers, and TimePicker with configurable AM/PM/24h or inline style
-- **🛠️ New Components**: DataTable, TreeView, Timeline, Masonry, RatingControl, ImageList, Wizard/Stepper, Breadcrumb
+- **🛠️ Rich Component Library**: DataTable, TreeView, Timeline, Masonry, RatingControl, ImageList, Wizard/Stepper, Breadcrumb, Progress indicators, and more
 - **📱 Modern Architecture**: Factory components with proper TypeScript support
 - **🎯 CSS-Only Styling**: Uses only CSS for styling - no JavaScript initialization needed
 - **🎨 Custom SVG Icons**: Built-in MaterialIcon component with custom SVG icons (caret, close)
@@ -56,6 +66,9 @@ Components marked with an * are not included in the original materialize-css lib
 - [Pickers](https://erikvullings.github.io/mithril-materialized/#!/pickers)
   - DatePicker (with optional week numbers and date range selection)*
   - TimePicker (with inline mode and switchable AM/PM/24h)*
+  - TimeRangePicker* (select time ranges with analog or digital clock display)
+  - AnalogClock* (standalone analog clock component)
+  - DigitalClock* (standalone digital clock component)
 - [Selections](https://erikvullings.github.io/mithril-materialized/#!/selections)
   - Select
   - SearchSelect*, a searchable select dropdown
@@ -63,6 +76,8 @@ Components marked with an * are not included in the original materialize-css lib
   - RadioButtons
   - Switch
   - Dropdown
+  - ToggleGroup* (grouped toggle buttons for multiple selection)
+  - ToggleButton* (single toggle button component)
 - [Collections](https://erikvullings.github.io/mithril-materialized/#!/collections)
   - Basic, Link and Avatar Collections
   - Collapsible or accordion
@@ -81,10 +96,14 @@ Components marked with an * are not included in the original materialize-css lib
   - Pagination
   - PaginationControls*
   - Parallax
+  - Toast* (notifications with optional actions)
+  - Badge* (labels and notification indicators)
 - Layout & Display
   - [Masonry](https://erikvullings.github.io/mithril-materialized/#!/masonry)* (Pinterest-style responsive grid layout)
   - [ImageList](https://erikvullings.github.io/mithril-materialized/#!/image-list)* (responsive image galleries with various layouts)
   - [Timeline](https://erikvullings.github.io/mithril-materialized/#!/timeline)* (vertical timeline with events and milestones)
+  - CircularProgress* (circular loading indicator)
+  - LinearProgress* (linear loading indicator)
 - [Rating](https://erikvullings.github.io/mithril-materialized/#!/rating)*
   - RatingControl (Horizontal control, configurable range and step size, optionally with custom icons)
 - [Data & Tables](https://erikvullings.github.io/mithril-materialized/#!/datatable)
@@ -119,11 +138,15 @@ Online [flems](flems.io) examples: [FlatButton](https://flems.io/#0=N4IgtglgJlA2
 
    ```typescript
    import m from 'mithril';
-   import { 
-     TextInput, 
-     Button, 
+   import {
+     TextInput,
+     Button,
      RangeInput,
      DatePicker,
+     TimePicker,
+     TimeRangePicker,
+     AnalogClock,
+     DigitalClock,
      DataTable,
      TreeView,
      ThemeToggle,
@@ -133,7 +156,12 @@ Online [flems](flems.io) examples: [FlatButton](https://flems.io/#0=N4IgtglgJlA2
      Wizard,
      Masonry,
      Timeline,
-     ImageList
+     ImageList,
+     Badge,
+     CircularProgress,
+     LinearProgress,
+     ToggleGroup,
+     Toast
    } from 'mithril-materialized';
 
    const MyComponent = () => ({
@@ -209,11 +237,50 @@ Online [flems](flems.io) examples: [FlatButton](https://flems.io/#0=N4IgtglgJlA2
          onchange: (value) => console.log('Date range:', value)
        }),
        
-       m(Button, { 
+       m(Button, {
          label: 'Submit',
          onclick: () => alert('Hello!')
        }),
-       
+
+       // Progress indicators
+       m(CircularProgress, {
+         color: 'blue',
+         size: 'medium'
+       }),
+
+       m(LinearProgress, {
+         progress: 65,
+         color: 'green'
+       }),
+
+       // Badge component
+       m('.section', [
+         m('span', { style: 'position: relative' }, [
+           'Notifications',
+           m(Badge, { value: 3, color: 'red' })
+         ])
+       ]),
+
+       // Toggle Group for selections
+       m(ToggleGroup, {
+         items: [
+           { id: 'left', label: 'Left', icon: 'align_left' },
+           { id: 'center', label: 'Center', icon: 'align_center' },
+           { id: 'right', label: 'Right', icon: 'align_right' }
+         ],
+         selectedIds: ['center'],
+         onchange: (selectedIds) => console.log('Selected:', selectedIds)
+       }),
+
+       // Time Range Picker
+       m(TimeRangePicker, {
+         label: 'Select Time Range',
+         startTime: '09:00',
+         endTime: '17:00',
+         clockType: 'analog',
+         onchange: (start, end) => console.log('Time range:', start, '-', end)
+       }),
+
        // File upload
        m(FileUpload, {
          accept: 'image/*',
