@@ -1,3 +1,16 @@
+# [3.13.0](https://github.com/erikvullings/mithril-materialized/compare/v3.12.0...v3.13.0) (2026-01-15)
+
+
+### Bug Fixes
+
+* Rating didn't display tooltips. ([ddb90b4](https://github.com/erikvullings/mithril-materialized/commit/ddb90b41f1c191cb55eafbc4db872320ffbc517d))
+
+
+### Features
+
+* Collection items can contain rich content using the `content ([780aca0](https://github.com/erikvullings/mithril-materialized/commit/780aca0f66ab78d1f9a295a024e1dfd8eebe5028))
+* LikertScale component created ([dcd4d1c](https://github.com/erikvullings/mithril-materialized/commit/dcd4d1c91e2cdae3b3d4d2b37c4a899fbc4a28f7))
+
 # [3.12.0](https://github.com/erikvullings/mithril-materialized/compare/v3.11.0...v3.12.0) (2026-01-09)
 
 
