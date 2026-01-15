@@ -18,8 +18,8 @@ export interface CollectionItem {
   avatar?: string;
   /** Add a class to the avatar image or icon, e.g. a color 'red'. */
   className?: string;
-  /** For Avatar mode, may contain a two-line trusted HTML content */
-  content?: string;
+  /** For Avatar mode, may contain a two-line trusted HTML content, or a Vnode for rich content */
+  content?: string | Vnode<any, any>;
   /** If active, preselect the collection item. */
   active?: boolean;
   /** Add a material icon as secondary content. */
@@ -63,7 +63,7 @@ const avatarIsImage = (avatar = '') => /\./.test(avatar);
 export const ListItem: FactoryComponent<{ item: CollectionItem; mode: CollectionMode }> = () => {
   return {
     view: ({ attrs: { item, mode } }) => {
-      const { title, content = '', active, iconName, avatar, className, onclick } = item;
+      const { title, content, active, iconName, avatar, className, onclick } = item;
       return mode === CollectionMode.AVATAR
         ? m(
             'li.collection-item.avatar',
@@ -76,16 +76,28 @@ export const ListItem: FactoryComponent<{ item: CollectionItem; mode: Collection
                 ? m('img.circle', { src: avatar })
                 : m('i.material-icons.circle', { className }, avatar),
               m('span.title', title),
-              m('p', m.trust(content)),
-              m(SecondaryContent, item),
-            ]
+              content ? (typeof content === 'string' ? m('p', m.trust(content)) : m('p', content)) : undefined,
+              iconName ? m(SecondaryContent, item) : undefined,
+            ].filter(Boolean)
           )
         : m(
             'li.collection-item',
             {
               className: active ? 'active' : '',
+              onclick: onclick ? () => onclick(item) : undefined,
             },
-            iconName ? m('div', [title, m(SecondaryContent, item)]) : title
+            content
+              ? m(
+                  'div',
+                  [
+                    m('div', title),
+                    typeof content === 'string' ? m('p.secondary-text', content) : content,
+                    iconName ? m(SecondaryContent, item) : undefined,
+                  ].filter(Boolean)
+                )
+              : iconName
+                ? m('div', [title, m(SecondaryContent, item)])
+                : title
           );
     },
   };

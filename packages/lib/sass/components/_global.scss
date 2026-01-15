@@ -591,6 +591,13 @@ td, th{
         color: var(--mm-text-on-primary, #fff);
       }
     }
+
+    // Secondary text styling for BASIC mode with content
+    .secondary-text {
+      color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
   }
   a.collection-item{
     display: block;
