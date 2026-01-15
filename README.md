@@ -2,11 +2,23 @@
 
 A Mithril.js component library inspired by [materialize-css](https://materializecss.com) design principles, [available on npm](https://www.npmjs.com/package/mithril-materialized). This library provides you with ready-to-use Mithril components that follow Material Design guidelines, with **no external JavaScript dependencies**.
 
-## 🚀 v3.12 - Latest Release
+## 🚀 v3.13 - Latest Release
 
 The current stable release that provides a complete Mithril.js Material Design component library with no external JavaScript dependencies.
 
-### ✨ What's New in v3.12
+### ✨ What's New in v3.13
+
+- **📊 LikertScale Component**: Purpose-built component for survey questions and rating scales
+  - Horizontal/vertical/responsive layouts for desktop and mobile
+  - Scale anchor labels (start/middle/end) for semantic meaning
+  - Multi-question alignment for professional survey forms
+  - Optional tooltips and number display
+  - Size and density variants for different contexts
+  - Full keyboard navigation and accessibility support
+- **⭐ Enhanced Rating Component**: Tooltips now display correctly on hover
+- **📝 Rich Collection Content**: Collection items now support rich content via `content` property
+
+### ✨ Previous Major Features (v3.12)
 
 - **🎯 Enhanced Toast Component**: Toasts with simple actions (undo, confirmation) and custom classes
 - **🏷️ Badge Component**: New badge component for labels and notifications
@@ -74,6 +86,7 @@ Components marked with an * are not included in the original materialize-css lib
   - SearchSelect*, a searchable select dropdown
   - Options
   - RadioButtons
+  - LikertScale* (survey rating scales with anchor labels)
   - Switch
   - Dropdown
   - ToggleGroup* (grouped toggle buttons for multiple selection)
@@ -161,6 +174,8 @@ Online [flems](flems.io) examples: [FlatButton](https://flems.io/#0=N4IgtglgJlA2
      CircularProgress,
      LinearProgress,
      ToggleGroup,
+     LikertScale,
+     Rating,
      Toast
    } from 'mithril-materialized';
 
@@ -270,6 +285,54 @@ Online [flems](flems.io) examples: [FlatButton](https://flems.io/#0=N4IgtglgJlA2
          ],
          selectedIds: ['center'],
          onchange: (selectedIds) => console.log('Selected:', selectedIds)
+       }),
+
+       // LikertScale for survey questions
+       m(LikertScale, {
+         label: 'How satisfied are you with our service?',
+         min: 1,
+         max: 5,
+         value: 3,
+         onchange: (value) => console.log('Rating:', value),
+         startLabel: 'Very Dissatisfied',
+         middleLabel: 'Neutral',
+         endLabel: 'Very Satisfied',
+         showTooltips: true,
+         tooltipLabels: ['Very Dissatisfied', 'Dissatisfied', 'Neutral', 'Satisfied', 'Very Satisfied']
+       }),
+
+       // Multi-question survey with alignment
+       m('.survey-section', [
+         m('h5', 'Employee Satisfaction Survey'),
+         m(LikertScale, {
+           label: 'How happy are you at work?',
+           alignLabels: true,
+           min: 1,
+           max: 5,
+           value: 4,
+           onchange: (v) => console.log('Happiness:', v),
+           startLabel: 'Unhappy',
+           endLabel: 'Happy'
+         }),
+         m(LikertScale, {
+           label: 'How satisfied are you with your role?',
+           alignLabels: true,
+           min: 1,
+           max: 5,
+           value: 3,
+           onchange: (v) => console.log('Satisfaction:', v),
+           startLabel: 'Dissatisfied',
+           endLabel: 'Satisfied'
+         })
+       ]),
+
+       // Rating component with tooltips
+       m(Rating, {
+         value: 4,
+         max: 5,
+         showTooltips: true,
+         tooltipLabels: ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'],
+         onchange: (value) => console.log('Rating:', value)
        }),
 
        // Time Range Picker
