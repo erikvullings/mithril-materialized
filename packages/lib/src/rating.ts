@@ -230,6 +230,8 @@ export const Rating: FactoryComponent<RatingAttrs> = () => {
     icons: { filled: string | m.Component; empty: string | m.Component; half: string | m.Component };
     allowHalfSteps?: boolean;
     disabled?: boolean;
+    showTooltip?: boolean;
+    tooltipLabel?: string;
     onclick: () => void;
     onmouseover: () => void;
   }
@@ -237,7 +239,18 @@ export const Rating: FactoryComponent<RatingAttrs> = () => {
   const RatingItem: FactoryComponent<RatingItemAttrs> = () => {
     return {
       view: ({ attrs }) => {
-        const { index, displayValue, step, icons, allowHalfSteps, disabled, onclick, onmouseover } = attrs;
+        const {
+          index,
+          displayValue,
+          step,
+          icons,
+          allowHalfSteps,
+          disabled,
+          showTooltip,
+          tooltipLabel,
+          onclick,
+          onmouseover,
+        } = attrs;
         const itemValue = (index + 1) * step;
 
         // Calculate fill state based on displayValue vs itemValue
@@ -247,7 +260,7 @@ export const Rating: FactoryComponent<RatingAttrs> = () => {
           diff >= 0 ? 'full' : allowHalfSteps && diff >= -step / 2 ? 'half' : 'empty';
 
         return m(
-          '.rating__item',
+          '.rating__item.no-select',
           {
             className: [
               fillState === 'full' ? 'rating__item--filled' : '',
@@ -279,6 +292,9 @@ export const Rating: FactoryComponent<RatingAttrs> = () => {
               },
               typeof icons.filled === 'string' ? icons.filled : m(icons.filled as m.ComponentTypes)
             ),
+
+            // Tooltip
+            showTooltip && tooltipLabel && m('.rating__tooltip', tooltipLabel),
           ]
         );
       },
@@ -387,6 +403,8 @@ export const Rating: FactoryComponent<RatingAttrs> = () => {
                 icons: { ...DEFAULT_ICONS, ...attrs.icon },
                 allowHalfSteps: attrs.allowHalfSteps,
                 disabled: attrs.disabled,
+                showTooltip: attrs.showTooltips,
+                tooltipLabel: attrs.tooltipLabels?.[i],
                 onclick: () => handleItemClick(attrs, itemValue),
                 onmouseover: () => handleItemHover(attrs, itemValue),
               });

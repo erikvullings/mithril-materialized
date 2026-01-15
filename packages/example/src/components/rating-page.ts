@@ -151,7 +151,7 @@ m(Rating, {
             m(Rating, {
               defaultValue: 3,
               icon: customRadioIcon,
-              readonly: true,
+              // readonly: true,
               'aria-label': 'Radio Button Rating: 3 out of 5',
             } as RatingAttrs),
             m('p', 'Radio buttons: 3/5 (read-only)'),
