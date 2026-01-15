@@ -293,13 +293,201 @@ Located in: `packages/lib/src/input.ts`, `autocomplete.ts`, `chip.ts`
 - Chips
 
 ### Selection Components
-Located in: `select.ts`, `search-select.ts`, `radio.ts`, `switch.ts`, `dropdown.ts`
+Located in: `select.ts`, `search-select.ts`, `radio.ts`, `switch.ts`, `dropdown.ts`, `likert-scale.ts`
 
 - Select
 - SearchSelect (searchable dropdown)
 - RadioButtons
+- LikertScale (survey rating scales with semantic anchors)
 - Switch
 - Dropdown
+
+#### LikertScale Component (New in v3.13)
+
+The **LikertScale** component is a purpose-built solution for survey questions and rating scales that eliminates the need for RadioButtons workarounds.
+
+**Key Features:**
+- **Horizontal/Vertical/Responsive Layouts**: Automatically adapts to desktop (horizontal) and mobile (vertical)
+- **Scale Anchors**: Optional start, middle, and end labels for semantic meaning (e.g., "Very Unhappy" → "Neutral" → "Very Happy")
+- **Multi-Question Alignment**: Grid-based layout for vertically aligned survey forms
+- **Optional Tooltips**: Show descriptive text on hover (similar to Rating component)
+- **Optional Number Display**: Show/hide numeric values (default: false)
+- **Size Variants**: Small (36px), Medium (48px), Large (56px) touch targets
+- **Density Variants**: Compact (4px), Standard (12px), Comfortable (20px) spacing
+- **Full Accessibility**: Keyboard navigation, ARIA labels, screen reader support
+
+**Basic Usage:**
+```typescript
+import { LikertScale } from 'mithril-materialized';
+
+// Simple rating scale
+m(LikertScale, {
+  label: 'How happy are you?',
+  min: 1,
+  max: 5,
+  value: happiness,
+  onchange: (v) => { happiness = v; },
+  startLabel: 'Very Unhappy',
+  endLabel: 'Very Happy',
+})
+```
+
+**Multi-Question Survey Pattern:**
+```typescript
+// Aligned survey questions
+m('.survey-section', [
+  m('h5', 'Employee Satisfaction Survey'),
+
+  m(LikertScale, {
+    label: 'How happy are you?',
+    min: 1,
+    max: 5,
+    value: q1,
+    onchange: (v) => { q1 = v; },
+    startLabel: 'Unhappy',
+    endLabel: 'Happy',
+    alignLabels: true,  // Enables grid alignment
+  }),
+
+  m(LikertScale, {
+    label: 'How satisfied are you with your work?',
+    min: 1,
+    max: 5,
+    value: q2,
+    onchange: (v) => { q2 = v; },
+    startLabel: 'Dissatisfied',
+    endLabel: 'Satisfied',
+    alignLabels: true,
+  }),
+
+  m(LikertScale, {
+    label: 'How engaged do you feel?',
+    min: 1,
+    max: 5,
+    value: q3,
+    onchange: (v) => { q3 = v; },
+    startLabel: 'Disengaged',
+    endLabel: 'Engaged',
+    alignLabels: true,
+  }),
+])
+```
+
+**Advanced Features:**
+```typescript
+// With all features
+m(LikertScale, {
+  label: 'Rate your satisfaction',
+  description: 'Please rate from 1 (Very Dissatisfied) to 7 (Very Satisfied)',
+  min: 1,
+  max: 7,
+  value: satisfaction,
+  onchange: (v) => { satisfaction = v; },
+
+  // Scale anchors
+  startLabel: 'Very Dissatisfied',
+  middleLabel: 'Neutral',          // Optional middle anchor
+  endLabel: 'Very Satisfied',
+
+  // Tooltips (hover to see descriptive text)
+  showTooltips: true,
+  tooltipLabels: [
+    'Very Dissatisfied',
+    'Dissatisfied',
+    'Somewhat Dissatisfied',
+    'Neutral',
+    'Somewhat Satisfied',
+    'Satisfied',
+    'Very Satisfied',
+  ],
+
+  // Display options
+  showNumbers: false,               // Hide numbers (default)
+  density: 'comfortable',           // compact | standard | comfortable
+  size: 'medium',                   // small | medium | large
+  layout: 'horizontal',             // horizontal | vertical | responsive
+
+  // Form integration
+  name: 'satisfaction',
+  isMandatory: true,
+})
+```
+
+**Component Interface:**
+```typescript
+interface LikertScaleAttrs<T extends number = number> extends Attributes {
+  // Scale configuration
+  min?: number;                     // default: 1
+  max?: number;                     // default: 5
+  step?: number;                    // default: 1
+
+  // State management (consistent with Rating)
+  value?: T;                        // controlled mode
+  defaultValue?: T;                 // uncontrolled mode
+  onchange?: (value: T) => void;
+
+  // Labels
+  label?: string;                   // question/prompt
+  description?: string;             // helper text
+  startLabel?: string;              // anchor for min value
+  middleLabel?: string;             // anchor for middle value (optional)
+  endLabel?: string;                // anchor for max value
+
+  // Display options
+  showNumbers?: boolean;            // default: false
+  showTooltips?: boolean;           // default: false
+  tooltipLabels?: string[];         // custom tooltip per value
+
+  // Size and density
+  density?: 'compact' | 'standard' | 'comfortable';  // default: 'standard'
+  size?: 'small' | 'medium' | 'large';              // default: 'medium'
+
+  // Layout
+  layout?: 'horizontal' | 'vertical' | 'responsive'; // default: 'responsive'
+
+  // Form integration
+  id?: string;
+  name?: string;                    // for form submission
+  disabled?: boolean;
+  readonly?: boolean;
+  isMandatory?: boolean;
+
+  // Accessibility
+  'aria-label'?: string;
+  ariaLabel?: string;
+
+  // Styling
+  className?: string;
+  style?: any;
+
+  // Multi-question alignment
+  alignLabels?: boolean;            // use CSS grid for alignment (default: false)
+}
+```
+
+**When to Use LikertScale vs RadioButtons vs Rating:**
+
+| Component | Best For | Use Case |
+|-----------|----------|----------|
+| **LikertScale** | Survey questions with semantic scales | "How satisfied are you?" with 1-5 scale and anchors |
+| **RadioButtons** | Multiple-choice questions | "What is your favorite color?" with distinct options |
+| **Rating** | Star/icon ratings and reviews | Product ratings, skill levels, movie reviews |
+
+**Styling:**
+
+The LikertScale component uses the same radio button styling as RadioButtons (16x16px core circle) and supports all Material Design color theming via CSS custom properties.
+
+```scss
+// Size variants affect touch targets
+.likert-scale--small .likert-scale__label { min-width: 36px; min-height: 36px; }
+.likert-scale--medium .likert-scale__label { min-width: 48px; min-height: 48px; }
+.likert-scale--large .likert-scale__label { min-width: 56px; min-height: 56px; }
+
+// Density variants affect spacing
+.likert-scale--compact .likert-scale__scale { gap: 4px; }
+.likert-scale--standard .likert-scale__scale { gap: 12px; }
+.likert-scale--comfortable .likert-scale__scale { gap: 20px; }
+```
 
 ### Button Components
 Located in: `button.ts`, `floating-action-button.ts`
@@ -345,14 +533,30 @@ Located in: `datatable.ts`, `treeview.ts`, `rating.ts`, `wizard.ts`
 
 - DataTable (sorting, filtering, pagination)
 - TreeView (hierarchical data with expand/collapse)
-- Rating (configurable star/icon rating)
+- Rating (configurable star/icon rating with tooltip support)
 - Wizard (multi-step stepper)
 
 ### Collection Components
 Located in: `collection.ts`, `collapsible.ts`
 
-- Collection (basic, link, avatar)
+- Collection (basic, link, avatar with rich content support)
 - Collapsible (accordion)
+
+**New in v3.13**: Collection items now support rich content via the `content` property, allowing you to use Mithril vnodes instead of just plain text:
+
+```typescript
+m(Collection, {
+  items: [
+    {
+      title: 'User Profile',
+      content: m('.custom-content', [
+        m('p', 'Rich HTML content'),
+        m('span.badge', 'New'),
+      ]),
+    },
+  ],
+})
+```
 
 ### Utility Components
 Located in: `theme-switcher.ts`, `file-upload.ts`, `code-block.ts`
@@ -1202,6 +1406,9 @@ m(ThemeSwitcher, {
 - `packages/lib/src/input-options.ts` - Shared input attribute types
 - `packages/lib/src/label.ts` - Label and HelperText components
 - `packages/lib/src/index.ts` - Main export file
+- `packages/lib/src/likert-scale.ts` - LikertScale component (v3.13)
+- `packages/lib/src/rating.ts` - Rating component with tooltips (v3.13)
+- `packages/lib/src/collection.ts` - Collection with rich content (v3.13)
 
 ### Key Functions
 - `uniqueId()` - Generate unique component ID
@@ -1214,5 +1421,26 @@ m(ThemeSwitcher, {
 - Validation on blur, not input
 - Label integration with isActive tracking
 - Helper text with error/success states
+
+### What's New in v3.13
+
+**New Components:**
+- **LikertScale**: Purpose-built for survey questions with semantic scales
+  - Horizontal/vertical/responsive layouts
+  - Scale anchors (start/middle/end labels)
+  - Multi-question alignment for professional surveys
+  - Optional tooltips and number display
+  - Size and density variants
+
+**Enhanced Components:**
+- **Rating**: Tooltips now display correctly on hover when `showTooltips: true` and `tooltipLabels` are provided
+- **Collection**: Items support rich content via `content` property (Mithril vnodes)
+
+**Use Cases:**
+- Survey forms with aligned Likert-scale questions
+- Product/service satisfaction ratings with descriptive anchors
+- Employee engagement surveys
+- Customer feedback forms
+- Multi-question assessments
 
 This skill provides comprehensive guidance for developing, maintaining, and troubleshooting the mithril-materialized library. Use it as a reference when working with any aspect of the library.
