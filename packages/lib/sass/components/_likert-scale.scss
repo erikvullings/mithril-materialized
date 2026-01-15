@@ -1,0 +1,610 @@
+@use 'sass:color';
+@use "variables";
+
+/* Likert Scale Component
+   ========================================================================== */
+
+// Likert scale component variables
+$likert-color-primary: var(--mm-primary-color, variables.$primary-color) !default;
+$likert-color-radio-empty: var(--mm-text-hint, #9e9e9e) !default;
+$likert-color-radio-checked: var(--mm-primary-color, variables.$primary-color) !default;
+$likert-color-disabled: var(--mm-text-disabled, rgba(0, 0, 0, 0.38)) !default;
+$likert-color-text: var(--mm-text-primary, rgba(0, 0, 0, 0.87)) !default;
+$likert-color-text-secondary: var(--mm-text-secondary, rgba(0, 0, 0, 0.54)) !default;
+
+// Size variants for radio buttons
+$likert-radio-size-small: 16px !default;
+$likert-radio-size-medium: 20px !default;
+$likert-radio-size-large: 24px !default;
+
+// Text size variants
+$likert-text-size-small: 14px !default;
+$likert-text-size-medium: 16px !default;
+$likert-text-size-large: 18px !default;
+
+// Density spacing (gap between items)
+$likert-gap-compact: 4px !default;
+$likert-gap-standard: 10px !default;
+$likert-gap-comfortable: 16px !default;
+
+// Tooltip
+$likert-tooltip-bg: rgba(0, 0, 0, 0.8) !default;
+$likert-tooltip-text: white !default;
+
+// Container
+.likert-scale {
+  position: relative;
+  display: flex;
+  align-items: center;
+  outline: none;
+  gap: 16px;
+  transition: all 0.2s ease;
+  margin-bottom: 20px;
+
+  // Focus state
+  &:focus-visible {
+    outline: 2px solid var(--mm-primary-color, #{variables.$primary-color});
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  // Read-only state
+  &--readonly {
+    .likert-scale__item {
+      cursor: default;
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    opacity: 0.6;
+
+    .likert-scale__item {
+      cursor: not-allowed;
+    }
+  }
+
+  // Aligned layout for multi-question surveys
+  &--aligned {
+    .likert-scale__question-label {
+      min-width: 250px;
+      max-width: 50%;
+    }
+
+    .likert-scale__scale-container {
+      flex: 0 0 auto;
+      min-width: 300px;
+    }
+  }
+}
+
+// Question label (left side)
+.likert-scale__question-label {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; // Allow text wrapping
+
+  span {
+    font-size: 1rem;
+    font-weight: 400;
+    color: $likert-color-text;
+    line-height: 1.4;
+    word-wrap: break-word;
+  }
+}
+
+.likert-scale__description {
+  font-size: 0.875rem;
+  color: $likert-color-text-secondary;
+  margin-top: 4px;
+  line-height: 1.3;
+}
+
+// Scale container (right side with fixed width)
+.likert-scale__scale-container {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+// Scale items row
+.likert-scale__scale {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+}
+
+// Individual scale item
+.likert-scale__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  flex: 1 1 0;
+
+  &:hover:not(.likert-scale__item--disabled):not(.likert-scale__item--readonly) {
+    transform: scale(1.05);
+  }
+
+  // Checked state - radio button styling handled by label pseudo-elements
+  &--checked {
+    .likert-scale__label::before {
+      border-color: $likert-color-radio-checked;
+    }
+    .likert-scale__label::after {
+      background-color: $likert-color-radio-checked;
+      transform: scale(1);
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+
+    .likert-scale__label::before {
+      border-color: $likert-color-disabled;
+    }
+  }
+
+  // Readonly state
+  &--readonly {
+    cursor: default;
+  }
+}
+
+// Number label above radio button
+.likert-scale__number {
+  font-size: $likert-text-size-medium;
+  font-weight: 500;
+  color: $likert-color-text;
+  margin-bottom: 4px;
+  user-select: none;
+  text-align: center;
+}
+
+// Hidden radio input - same as RadioButtons
+.likert-scale__input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+// Custom radio button label - uses EXACT same style as RadioButtons
+.likert-scale__label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+  cursor: pointer;
+  user-select: none;
+
+  // Before and after pseudo-elements - EXACT RadioButtons styling
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    width: 16px;
+    height: 16px;
+    z-index: 0;
+    transition: .28s ease;
+    border-radius: 50%;
+  }
+
+  // Unchecked state - both before and after have border
+  &::before,
+  &::after {
+    border: 2px solid var(--mm-text-secondary, $likert-color-radio-empty);
+  }
+
+  // Unchecked - after element is scaled to 0
+  &::after {
+    transform: scale(0);
+  }
+}
+
+// Checked state - same as RadioButtons
+.likert-scale__input:checked + .likert-scale__label {
+  &::before {
+    border: 2px solid transparent;
+  }
+
+  &::after {
+    border: 2px solid var(--mm-primary-color, $likert-color-radio-checked);
+    background-color: var(--mm-primary-color, $likert-color-radio-checked);
+    transform: scale(1.02);
+  }
+}
+
+// Hover state
+.likert-scale__item:hover:not(.likert-scale__item--disabled):not(.likert-scale__item--readonly) .likert-scale__label {
+  &::before {
+    border-color: var(--mm-primary-color, $likert-color-radio-checked);
+  }
+}
+
+// Focus state
+.likert-scale__input:focus + .likert-scale__label::before {
+  box-shadow: 0 0 0 10px rgba(0,0,0,.1);
+}
+
+// Disabled state
+.likert-scale__input:disabled + .likert-scale__label {
+  &::before {
+    background-color: transparent;
+    border-color: var(--mm-text-disabled, $likert-color-disabled);
+  }
+}
+
+.likert-scale__input:disabled:checked + .likert-scale__label::after {
+  background-color: var(--mm-text-disabled, $likert-color-disabled);
+  border-color: var(--mm-text-disabled, $likert-color-disabled);
+}
+
+// Tooltip
+.likert-scale__tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background: $likert-tooltip-bg;
+  color: $likert-tooltip-text;
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 1000;
+
+  // Arrow
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: $likert-tooltip-bg;
+  }
+}
+
+.likert-scale__item:hover .likert-scale__tooltip {
+  opacity: 1;
+}
+
+// Scale anchors (below the radio buttons)
+.likert-scale__anchors {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 0.875rem;
+  color: $likert-color-text-secondary;
+  position: relative;
+}
+
+.likert-scale__anchor {
+  flex: 1 1 0;
+  text-align: center;
+  line-height: 1.2;
+  padding: 0 4px;
+
+  &--start {
+    text-align: left;
+  }
+
+  &--middle {
+    text-align: center;
+  }
+
+  &--end {
+    text-align: right;
+  }
+}
+
+// Layout variants
+.likert-scale--horizontal {
+  flex-direction: row;
+  align-items: center;
+
+  .likert-scale__scale {
+    flex-direction: row;
+  }
+}
+
+.likert-scale--vertical {
+  flex-direction: column;
+  align-items: stretch;
+
+  .likert-scale__question-label {
+    margin-bottom: 12px;
+  }
+
+  .likert-scale__scale-container {
+    width: 100%;
+  }
+
+  .likert-scale__scale {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .likert-scale__item {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 4px 0;
+    width: 100%;
+  }
+
+  .likert-scale__number {
+    margin-bottom: 0;
+    margin-right: 12px;
+    min-width: 24px;
+    text-align: left;
+  }
+
+  .likert-scale__anchors {
+    flex-direction: column;
+    margin-top: 0;
+    margin-left: 60px;
+  }
+
+  .likert-scale__anchor {
+    margin: 4px 0;
+    text-align: left;
+    flex: 0 0 auto;
+
+    &--start,
+    &--middle,
+    &--end {
+      text-align: left;
+    }
+  }
+}
+
+.likert-scale--responsive {
+  // Default: horizontal on desktop
+  flex-direction: row;
+  align-items: center;
+
+  .likert-scale__scale {
+    flex-direction: row;
+  }
+
+  // Vertical on mobile
+  @media #{variables.$small-and-down} {
+    flex-direction: column;
+    align-items: stretch;
+
+    .likert-scale__question-label {
+      margin-bottom: 12px;
+    }
+
+    .likert-scale__scale-container {
+      width: 100%;
+    }
+
+    .likert-scale__scale {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .likert-scale__item {
+      flex-direction: row;
+      justify-content: flex-start;
+      padding: 4px 0;
+      width: 100%;
+    }
+
+    .likert-scale__number {
+      margin-bottom: 0;
+      margin-right: 12px;
+      min-width: 24px;
+      text-align: left;
+    }
+
+    .likert-scale__anchors {
+      flex-direction: column;
+      margin-top: 0;
+      margin-left: 60px;
+    }
+
+    .likert-scale__anchor {
+      margin: 4px 0;
+      text-align: left;
+      flex: 0 0 auto;
+
+      &--start,
+      &--middle,
+      &--end {
+        text-align: left;
+      }
+    }
+  }
+}
+
+// Density variants (spacing between items and overall spacing)
+.likert-scale--compact {
+  margin-bottom: 12px;
+  gap: 12px;
+
+  .likert-scale__scale {
+    gap: $likert-gap-compact;
+  }
+
+  .likert-scale__anchors {
+    margin-top: 4px;
+  }
+}
+
+.likert-scale--standard {
+  margin-bottom: 20px;
+  gap: 16px;
+
+  .likert-scale__scale {
+    gap: $likert-gap-standard;
+  }
+}
+
+.likert-scale--comfortable {
+  margin-bottom: 28px;
+  gap: 20px;
+
+  .likert-scale__scale {
+    gap: $likert-gap-comfortable;
+  }
+
+  .likert-scale__anchors {
+    margin-top: 12px;
+  }
+}
+
+// Size variants (affect touch targets, spacing, and number text)
+.likert-scale--small {
+  .likert-scale__number {
+    font-size: $likert-text-size-small;
+    margin-bottom: 2px;
+  }
+
+  .likert-scale__label {
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .likert-scale__anchor {
+    font-size: 0.75rem;
+  }
+}
+
+.likert-scale--medium {
+  .likert-scale__number {
+    font-size: $likert-text-size-medium;
+    margin-bottom: 4px;
+  }
+
+  .likert-scale__label {
+    min-width: 48px;
+    min-height: 48px;
+  }
+
+  .likert-scale__anchor {
+    font-size: 0.875rem;
+  }
+}
+
+.likert-scale--large {
+  .likert-scale__number {
+    font-size: $likert-text-size-large;
+    margin-bottom: 6px;
+  }
+
+  .likert-scale__label {
+    min-width: 56px;
+    min-height: 56px;
+  }
+
+  .likert-scale__anchor {
+    font-size: 1rem;
+  }
+}
+
+// Screen reader only content
+.likert-scale__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Material Design touch target (minimum 48x48dp)
+@media (pointer: coarse) {
+  .likert-scale__label {
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
+
+// RTL support
+[dir="rtl"] {
+  .likert-scale__tooltip {
+    &::after {
+      transform: translateX(50%);
+    }
+  }
+
+  .likert-scale--vertical {
+    .likert-scale__number {
+      margin-right: 0;
+      margin-left: 12px;
+    }
+
+    .likert-scale__anchors {
+      margin-left: 0;
+      margin-right: 60px;
+    }
+
+    .likert-scale__item {
+      justify-content: flex-end;
+    }
+  }
+
+  .likert-scale--aligned {
+    .likert-scale__question-label {
+      text-align: right;
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .likert-scale__label {
+    &::before {
+      border-width: 3px;
+    }
+  }
+}
+
+// Dark theme adjustments
+[data-theme="dark"] {
+  .likert-scale__tooltip {
+    background: rgba(255, 255, 255, 0.9);
+    color: rgba(0, 0, 0, 0.87);
+
+    &::after {
+      border-top-color: rgba(255, 255, 255, 0.9);
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .likert-scale,
+  .likert-scale__item,
+  .likert-scale__label,
+  .likert-scale__tooltip {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .likert-scale__item:hover:not(.likert-scale__item--disabled):not(.likert-scale__item--readonly) {
+    transform: none;
+  }
+}

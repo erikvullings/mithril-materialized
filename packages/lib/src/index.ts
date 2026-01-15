@@ -51,6 +51,7 @@ export * from './timeline';
 export * from './masonry';
 export * from './image-list';
 export * from './rating';
+export * from './likert-scale';
 export * from './toggle-group';
 export * from './circular-progress';
 export * from './linear-progress';
