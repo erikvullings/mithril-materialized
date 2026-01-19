@@ -1,3 +1,10 @@
+# [3.14.0](https://github.com/erikvullings/mithril-materialized/compare/v3.13.0...v3.14.0) (2026-01-19)
+
+
+### Features
+
+* Added ConfirmButton. You have to press twice to actually confirm the action, e.g. deleting an item. ([42a734e](https://github.com/erikvullings/mithril-materialized/commit/42a734e03ff5e967925ba6994a7f69c279453017))
+
 # [3.13.0](https://github.com/erikvullings/mithril-materialized/compare/v3.12.0...v3.13.0) (2026-01-15)
 
 
