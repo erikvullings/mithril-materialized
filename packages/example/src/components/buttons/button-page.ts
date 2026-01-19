@@ -7,6 +7,7 @@ import {
   FloatingActionButton,
   CodeBlock,
   ToggleGroup,
+  ConfirmButton,
 } from 'mithril-materialized';
 import m, { Component } from 'mithril';
 
@@ -211,6 +212,23 @@ m(ToggleGroup, {
   iconName: 'send',
   iconClass: 'right',
   onclick,
+})`,
+        }),
+
+        m('h3.header[id=confirmbutton]', 'ConfirmButton'),
+        m(
+          'div',
+          m(ConfirmButton, {
+  timeout: 5000, // optional, default is 3000ms
+  onFirstClick: () => console.log('Delete clicked the first time'), // optional, can for example be used to display a toast
+            onclick: () => console.log('Delete clicked'),
+          })
+        ),
+        m(CodeBlock, {
+          code: `m(ConfirmButton, {
+  timeout: 5000, // optional, default is 3000ms
+  onFirstClick: () => console.log('Delete clicked the first time'), // optional, can for example be used to display a toast
+  onclick: () => console.log('Delete clicked'),
 })`,
         }),
       ]),

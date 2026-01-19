@@ -2,9 +2,17 @@
 
 A Mithril.js component library inspired by [materialize-css](https://materializecss.com) design principles, [available on npm](https://www.npmjs.com/package/mithril-materialized). This library provides you with ready-to-use Mithril components that follow Material Design guidelines, with **no external JavaScript dependencies**.
 
-## 🚀 v3.13 - Latest Release
+## 🚀 v3.14 - Latest Release
 
 The current stable release that provides a complete Mithril.js Material Design component library with no external JavaScript dependencies.
+
+### ✨ What's New in v3.14
+
+- ** ConfirmButton Component**: Purpose-built component for delete and submit actions
+  - Click once to initialize the action, click again to confirm
+  - Button icon is changed, e.g. from 'delete' to 'checkmark' to confirm the action
+  - Removes the need for yet another confirmation dialog "Are you sure?"
+  - Support for different icons and delays
 
 ### ✨ What's New in v3.13
 

@@ -1,5 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { Icon } from './icon';
+import { MaterialIcon, IconName } from './material-icon';
 import { MaterialPosition, IconClass, ButtonVariant } from './types';
 import { WavesEffect } from './waves';
 
@@ -96,7 +97,7 @@ export const ButtonFactory = (
 ): FactoryComponent<ButtonAttrs> => {
   return () => {
     return {
-      view: ({ attrs }) => {
+      view: ({ attrs, children }) => {
         const {
           tooltip,
           tooltipPosition,
@@ -137,7 +138,8 @@ export const ButtonFactory = (
             type: buttonType,
           },
           iconName ? m(Icon, { iconName, className: iconClass || 'left' }) : undefined,
-          label ? label : undefined
+          label ? label : undefined,
+          children
         );
       },
     };
@@ -151,3 +153,88 @@ export const FlatButton = ButtonFactory('a', 'waves-effect waves-teal btn-flat',
 export const IconButton = ButtonFactory('button', 'btn-flat btn-icon waves-effect waves-teal', 'button');
 export const RoundIconButton = ButtonFactory('button', 'btn-floating btn-large waves-effect waves-light', 'button');
 export const SubmitButton = ButtonFactory('button', 'btn waves-effect waves-light', 'submit');
+const RaisedIconButton = ButtonFactory('button', 'btn waves-effect waves-light', 'button');
+
+export interface ConfirmButtonAttrs extends ButtonAttrs {
+  confirmIconName?: IconName;
+  confirmColor?: string;
+  timeout?: number;
+  clickDelay?: number;
+  onFirstClick?: () => void;
+}
+
+export const ConfirmButton: FactoryComponent<ConfirmButtonAttrs> = () => {
+  let isConfirming = false;
+  let isBlocked = false;
+  let timeoutId: number;
+  let blockTimeoutId: number;
+
+  const reset = () => {
+    isConfirming = false;
+    isBlocked = false;
+    m.redraw();
+  };
+
+  const unblock = () => {
+    isBlocked = false;
+  };
+
+  return {
+    onremove: () => {
+        window.clearTimeout(timeoutId);
+        window.clearTimeout(blockTimeoutId);
+    },
+    view: ({ attrs }) => {
+      const {
+        iconName = 'delete',
+        confirmIconName = 'check',
+        confirmColor = 'red',
+        timeout = 3000,
+        clickDelay = 500,
+        onFirstClick,
+        onclick,
+        ...props
+      } = attrs;
+
+      const handleClick = (e: MouseEvent) => {
+        e.preventDefault();
+        if (isBlocked) return;
+
+        if (isConfirming) {
+          window.clearTimeout(timeoutId);
+          window.clearTimeout(blockTimeoutId); // Clean up safety
+          isConfirming = false;
+          onclick?.(e);
+        } else {
+          isConfirming = true;
+          isBlocked = true;
+          onFirstClick?.();
+          timeoutId = window.setTimeout(reset, timeout);
+          blockTimeoutId = window.setTimeout(unblock, clickDelay);
+        }
+      };
+
+      const cn = isConfirming ? confirmColor : 'red-text';
+      
+      const commonProps = {
+        ...props,
+        className: `${props.className || ''} ${cn}`,
+        style: {
+           ...props.style,
+           display: 'flex',
+           alignItems: 'center',
+           justifyContent: 'center',
+           // Mimic btn-icon style when confirming (RaisedIconButton doesn't have it)
+           ...(isConfirming ? { padding: '0 8px', width: 'auto', minWidth: 'auto' } : {})
+        },
+        onclick: handleClick,
+      };
+
+      if (isConfirming) {
+          return m(RaisedIconButton, commonProps, m(MaterialIcon, { name: confirmIconName as IconName }));
+      }
+
+      return m(IconButton, commonProps, m(MaterialIcon, { name: iconName as IconName }));
+    },
+  };
+};

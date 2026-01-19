@@ -492,7 +492,7 @@ The LikertScale component uses the same radio button styling as RadioButtons (16
 ### Button Components
 Located in: `button.ts`, `floating-action-button.ts`
 
-- Button, FlatButton, IconButton, RoundIconButton, SubmitButton, LargeButton, SmallButton
+- Button, FlatButton, IconButton, RoundIconButton, SubmitButton, LargeButton, SmallButton, ConfirmButton
 - FloatingActionButton
 
 ### Picker Components

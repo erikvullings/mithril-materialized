@@ -53,9 +53,13 @@ const iconPaths = {
     'M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z',
     'M0 0h24v24H0z', // background
   ],
+  delete: [ // trashbin
+    'M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z',
+    'M0 0h24v24H0z', // background
+  ],
 } as const;
 
-type IconName = keyof typeof iconPaths;
+export type IconName = keyof typeof iconPaths;
 
 export interface MaterialIconAttrs extends Attributes {
   name: IconName;
