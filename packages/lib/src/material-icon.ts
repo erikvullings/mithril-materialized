@@ -53,7 +53,8 @@ const iconPaths = {
     'M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 0 1-4.4 2.26 5.4 5.4 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z',
     'M0 0h24v24H0z', // background
   ],
-  delete: [ // trashbin
+  delete: [
+    // trashbin
     'M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z',
     'M0 0h24v24H0z', // background
   ],
@@ -83,6 +84,10 @@ export const MaterialIcon: FactoryComponent<MaterialIconAttrs> = () => {
       const rotation = rotationMap[direction] ?? 0;
       const transform = rotation ? `rotate(${rotation}deg)` : undefined;
 
+      const icon = iconPaths[name];
+      if (typeof icon === 'undefined') {
+        console.warn(`MaterialIcon with name ${name} not found!`);
+      }
       return m(
         'svg',
         {
@@ -93,7 +98,7 @@ export const MaterialIcon: FactoryComponent<MaterialIconAttrs> = () => {
           viewBox: '0 0 24 24',
           xmlns: 'http://www.w3.org/2000/svg',
         },
-        iconPaths[name].map((d) =>
+        icon?.map((d) =>
           m('path', {
             d,
             fill: d.includes('M0 0h24v24H0z') ? 'none' : 'currentColor',
