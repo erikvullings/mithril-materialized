@@ -119,13 +119,15 @@ export const ButtonFactory = (
         const position = tooltipPosition || tooltipPostion || 'top';
 
         // Add waves effect event handlers if waves-effect class is present
-        const wavesHandlers = cn.includes('waves-effect') ? {
-          onmousedown: WavesEffect.onMouseDown,
-          onmouseup: WavesEffect.onMouseUp,
-          onmouseleave: WavesEffect.onMouseLeave,
-          ontouchstart: WavesEffect.onTouchStart,
-          ontouchend: WavesEffect.onTouchEnd
-        } : {};
+        const wavesHandlers = cn.includes('waves-effect')
+          ? {
+              onmousedown: WavesEffect.onMouseDown,
+              onmouseup: WavesEffect.onMouseUp,
+              onmouseleave: WavesEffect.onMouseLeave,
+              ontouchstart: WavesEffect.onTouchStart,
+              ontouchend: WavesEffect.onTouchEnd,
+            }
+          : {};
 
         return m(
           element,
@@ -156,8 +158,10 @@ export const SubmitButton = ButtonFactory('button', 'btn waves-effect waves-ligh
 const RaisedIconButton = ButtonFactory('button', 'btn waves-effect waves-light', 'button');
 
 export interface ConfirmButtonAttrs extends ButtonAttrs {
-  confirmIconName?: IconName;
-  confirmColor?: string;
+  /** Use material-icon name, or internal MaterialIcon name */
+  confirmIconName?: IconName | string;
+  /** Use material-icon name, or internal MaterialIcon name */
+  confirmColor?: IconName | string;
   timeout?: number;
   clickDelay?: number;
   onFirstClick?: () => void;
@@ -181,8 +185,8 @@ export const ConfirmButton: FactoryComponent<ConfirmButtonAttrs> = () => {
 
   return {
     onremove: () => {
-        window.clearTimeout(timeoutId);
-        window.clearTimeout(blockTimeoutId);
+      window.clearTimeout(timeoutId);
+      window.clearTimeout(blockTimeoutId);
     },
     view: ({ attrs }) => {
       const {
@@ -215,23 +219,23 @@ export const ConfirmButton: FactoryComponent<ConfirmButtonAttrs> = () => {
       };
 
       const cn = isConfirming ? confirmColor : 'red-text';
-      
+
       const commonProps = {
         ...props,
         className: `${props.className || ''} ${cn}`,
         style: {
-           ...props.style,
-           display: 'flex',
-           alignItems: 'center',
-           justifyContent: 'center',
-           // Mimic btn-icon style when confirming (RaisedIconButton doesn't have it)
-           ...(isConfirming ? { padding: '0 8px', width: 'auto', minWidth: 'auto' } : {})
+          ...props.style,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          // Mimic btn-icon style when confirming (RaisedIconButton doesn't have it)
+          ...(isConfirming ? { padding: '0 8px', width: 'auto', minWidth: 'auto' } : {}),
         },
         onclick: handleClick,
       };
 
       if (isConfirming) {
-          return m(RaisedIconButton, commonProps, m(MaterialIcon, { name: confirmIconName as IconName }));
+        return m(RaisedIconButton, commonProps, m(MaterialIcon, { name: confirmIconName as IconName }));
       }
 
       return m(IconButton, commonProps, m(MaterialIcon, { name: iconName as IconName }));

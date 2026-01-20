@@ -1,4 +1,5 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
+import { Icon } from './icon';
 
 const iconPaths = {
   caret: [
@@ -85,8 +86,8 @@ export const MaterialIcon: FactoryComponent<MaterialIconAttrs> = () => {
       const transform = rotation ? `rotate(${rotation}deg)` : undefined;
 
       const icon = iconPaths[name];
-      if (typeof icon === 'undefined') {
-        console.warn(`MaterialIcon with name ${name} not found!`);
+      if (!icon || !Array.isArray(icon)) {
+        return m(Icon, { ...props, iconName: name });
       }
       return m(
         'svg',
