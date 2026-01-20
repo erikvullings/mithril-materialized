@@ -1,3 +1,10 @@
+## [3.14.2](https://github.com/erikvullings/mithril-materialized/compare/v3.14.1...v3.14.2) (2026-01-20)
+
+
+### Bug Fixes
+
+* MaterialIcon reverts to material-icon if string is unknown. ([d087272](https://github.com/erikvullings/mithril-materialized/commit/d087272307c5a7b77dfaf5902bd2596269d6ce62))
+
 ## [3.14.1](https://github.com/erikvullings/mithril-materialized/compare/v3.14.0...v3.14.1) (2026-01-20)
 
 

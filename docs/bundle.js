@@ -22224,8 +22224,8 @@ const MaterialIcon = () => {
             const rotation = (_a = rotationMap[direction]) !== null && _a !== void 0 ? _a : 0;
             const transform = rotation ? `rotate(${rotation}deg)` : undefined;
             const icon = iconPaths[name];
-            if (typeof icon === 'undefined') {
-                console.warn(`MaterialIcon with name ${name} not found!`);
+            if (!icon || !Array.isArray(icon)) {
+                return m(Icon, Object.assign(Object.assign({}, props), { iconName: name }));
             }
             return m('svg', Object.assign(Object.assign({}, props), { style: Object.assign({ transform }, style), height: '24px', width: '24px', viewBox: '0 0 24 24', xmlns: 'http://www.w3.org/2000/svg' }), icon === null || icon === void 0 ? void 0 : icon.map((d) => m('path', {
                 d,
@@ -22349,13 +22349,15 @@ const ButtonFactory = (element, defaultClassNames, type = '') => {
                 // Use tooltipPosition if available, fallback to legacy tooltipPostion
                 const position = tooltipPosition || tooltipPostion || 'top';
                 // Add waves effect event handlers if waves-effect class is present
-                const wavesHandlers = cn.includes('waves-effect') ? {
-                    onmousedown: WavesEffect.onMouseDown,
-                    onmouseup: WavesEffect.onMouseUp,
-                    onmouseleave: WavesEffect.onMouseLeave,
-                    ontouchstart: WavesEffect.onTouchStart,
-                    ontouchend: WavesEffect.onTouchEnd
-                } : {};
+                const wavesHandlers = cn.includes('waves-effect')
+                    ? {
+                        onmousedown: WavesEffect.onMouseDown,
+                        onmouseup: WavesEffect.onMouseUp,
+                        onmouseleave: WavesEffect.onMouseLeave,
+                        ontouchstart: WavesEffect.onTouchStart,
+                        ontouchend: WavesEffect.onTouchEnd,
+                    }
+                    : {};
                 return m(element, Object.assign(Object.assign(Object.assign({}, params), wavesHandlers), { className: cn, 'data-position': tooltip ? position : undefined, 'data-tooltip': tooltip || undefined, type: buttonType }), iconName ? m(Icon, { iconName, className: iconClass || 'left' }) : undefined, label ? label : undefined, children);
             },
         };
