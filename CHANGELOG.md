@@ -1,3 +1,10 @@
+## [3.14.1](https://github.com/erikvullings/mithril-materialized/compare/v3.14.0...v3.14.1) (2026-01-20)
+
+
+### Bug Fixes
+
+* Warn when MaterialIcon is not found. ([1fdcb0d](https://github.com/erikvullings/mithril-materialized/commit/1fdcb0d8abf4c201176856ac0814ef1f23e5f75b))
+
 # [3.14.0](https://github.com/erikvullings/mithril-materialized/compare/v3.13.0...v3.14.0) (2026-01-19)
 
 

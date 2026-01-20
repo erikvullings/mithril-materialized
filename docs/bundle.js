@@ -22205,6 +22205,7 @@ const iconPaths = {
         'M0 0h24v24H0z', // background
     ],
     delete: [
+        // trashbin
         'M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z',
         'M0 0h24v24H0z', // background
     ],
@@ -22222,7 +22223,11 @@ const MaterialIcon = () => {
             };
             const rotation = (_a = rotationMap[direction]) !== null && _a !== void 0 ? _a : 0;
             const transform = rotation ? `rotate(${rotation}deg)` : undefined;
-            return m('svg', Object.assign(Object.assign({}, props), { style: Object.assign({ transform }, style), height: '24px', width: '24px', viewBox: '0 0 24 24', xmlns: 'http://www.w3.org/2000/svg' }), iconPaths[name].map((d) => m('path', {
+            const icon = iconPaths[name];
+            if (typeof icon === 'undefined') {
+                console.warn(`MaterialIcon with name ${name} not found!`);
+            }
+            return m('svg', Object.assign(Object.assign({}, props), { style: Object.assign({ transform }, style), height: '24px', width: '24px', viewBox: '0 0 24 24', xmlns: 'http://www.w3.org/2000/svg' }), icon === null || icon === void 0 ? void 0 : icon.map((d) => m('path', {
                 d,
                 fill: d.includes('M0 0h24v24H0z') ? 'none' : 'currentColor',
             })));
