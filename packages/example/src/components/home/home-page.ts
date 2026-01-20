@@ -8,7 +8,7 @@ export const HomePage = () => ({
       m(
         '.col.s12.m7.l8',
         m('.introduction', [
-          m('h2', 'Mithril-Materialized v3.3'),
+          m('h2', 'Mithril-Materialized v3.14'),
           m('.card.green.lighten-4', [
             m('.card-content', [
               m('span.card-title', '🚀 Latest Stable Release'),
@@ -23,14 +23,40 @@ export const HomePage = () => ({
             'p',
             `I like Mithril, and I also like Material Design. However, depending on large external libraries
           like materialize-css can be problematic with bundle sizes and conflicting dependencies. For that reason,
-          mithril-materialized v3.0 provides you with self-contained Mithril components that implement Material Design
+          mithril-materialized provides you with self-contained Mithril components that implement Material Design
           principles without external JavaScript dependencies.`
           ),
+          m('h3', '✨ What\'s New in v3.14'),
+          m('ul.collection', [
+            m('li.collection-item', [
+              m('strong', 'ConfirmButton Component: '),
+              'Purpose-built component for delete and submit actions. Click once to initialize, again to confirm.',
+            ]),
+            m('li.collection-item', [
+              m('i.material-icons.tiny', 'check'),
+              ' Support for different icons and configurable delays',
+            ]),
+          ]),
+          m('h3', '✨ What\'s New in v3.13'),
+          m('ul.collection', [
+            m('li.collection-item', [
+              m('strong', '📊 LikertScale Component: '),
+              'Purpose-built component for survey questions and rating scales',
+            ]),
+            m('li.collection-item', [
+              m('i.material-icons.tiny', 'star'),
+              ' Enhanced Rating Component: Tooltips now display correctly on hover',
+            ]),
+            m('li.collection-item', [
+              m('i.material-icons.tiny', 'format_quote'),
+              ' Rich Collection Content: Collection items now support rich content via content property',
+            ]),
+          ]),
           m('h3', '✨ Key Features'),
           m('ul.collection', [
             m('li.collection-item', [
               m('i.material-icons.tiny', '🔥'),
-              ' Zero external JavaScript dependencies, complete ESM module size 75kb zipped',
+              ' Zero external JavaScript dependencies, complete ESM module size < 45kb gzipped',
             ]),
             m('li.collection-item', [m('i.material-icons.tiny', '📦'), ' Significantly smaller bundle size']),
             m('li.collection-item', [m('i.material-icons.tiny', '🎨'), ' Custom SVG icons (no font dependencies)']),
@@ -70,7 +96,7 @@ export const HomePage = () => ({
           m('ul.collection', [
             m('li.collection-item', [
               m('span.green-text', 'index.css: '),
-              'Complete CSS bundle (33KB zipped) with all components',
+              'Complete CSS bundle (23KB gzipped) with all components',
             ]),
             m('li.collection-item', [
               m('span.green-text', 'Modular CSS: '),

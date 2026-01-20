@@ -39,6 +39,9 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      - name: Build Example
+        run: pnpm run build:example
+
       - name: Run tests
         run: pnpm run test
         working-directory: packages/lib
