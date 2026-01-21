@@ -4919,9 +4919,9 @@ const ModalPage = () => {
                     state.modal1Open = true;
                 },
             }), (0, mithril_1.default)(mithril_materialized_1.ModalPanel, {
-                id: 'modal1',
                 title: 'Do you like this library?',
                 description: 'This is some content.',
+                closeOnButtonClick: true,
                 isOpen: state.modal1Open,
                 onToggle: (open) => {
                     state.modal1Open = open;
@@ -4953,10 +4953,10 @@ const ModalPage = () => {
                   
                   // Modal with isOpen and onToggle for state management
                   m(ModalPanel, {
-                    id: 'modal1',
                     title: 'Do you like this library?',
                     description: 'This is some content.',
                     isOpen: state.modal1Open,
+                    closeOnButtonClick: true,
                     onToggle: (open: boolean) => {
                       state.modal1Open = open;
                     },
@@ -4979,11 +4979,11 @@ const ModalPage = () => {
                     state.modal1bOpen = true;
                 },
             }), (0, mithril_1.default)(mithril_materialized_1.ModalPanel, {
-                id: 'modal1b',
                 title: 'Select Component Test',
                 isOpen: state.modal1bOpen,
                 fixedFooter: true,
                 bottomSheet: true,
+                closeOnButtonClick: true,
                 onToggle: (open) => {
                     state.modal1bOpen = open;
                 },
@@ -5064,6 +5064,7 @@ const ModalPage = () => {
                     id: 'modal1b',
                     title: 'Tell me about yourself',
                     isOpen: state.modal1bOpen,
+                    closeOnButtonClick: true,
                     onToggle: (open: boolean) => {
                       state.modal1bOpen = open;
                     },
@@ -5136,9 +5137,9 @@ const ModalPage = () => {
                     state.modal2Open = true;
                 },
             }), (0, mithril_1.default)(mithril_materialized_1.ModalPanel, {
-                id: 'modal2',
                 title: 'Do you like this library?',
                 isOpen: state.modal2Open,
+                closeOnButtonClick: true,
                 onToggle: (open) => {
                     state.modal2Open = open;
                 },
@@ -5203,9 +5204,9 @@ const ModalPage = () => {
 
                   // Fixed footer modal with scrollable content
                   m(ModalPanel, {
-                    id: 'modal2',
                     title: 'Do you like this library?',
                     isOpen: state.modal2Open,
+                    closeOnButtonClick: true,
                     onToggle: (open: boolean) => {
                       state.modal2Open = open;
                     },
@@ -22224,8 +22225,8 @@ const MaterialIcon = () => {
             const rotation = (_a = rotationMap[direction]) !== null && _a !== void 0 ? _a : 0;
             const transform = rotation ? `rotate(${rotation}deg)` : undefined;
             const icon = iconPaths[name];
-            if (typeof icon === 'undefined') {
-                console.warn(`MaterialIcon with name ${name} not found!`);
+            if (!icon || !Array.isArray(icon)) {
+                return m(Icon, Object.assign(Object.assign({}, props), { iconName: name }));
             }
             return m('svg', Object.assign(Object.assign({}, props), { style: Object.assign({ transform }, style), height: '24px', width: '24px', viewBox: '0 0 24 24', xmlns: 'http://www.w3.org/2000/svg' }), icon === null || icon === void 0 ? void 0 : icon.map((d) => m('path', {
                 d,
@@ -22349,13 +22350,15 @@ const ButtonFactory = (element, defaultClassNames, type = '') => {
                 // Use tooltipPosition if available, fallback to legacy tooltipPostion
                 const position = tooltipPosition || tooltipPostion || 'top';
                 // Add waves effect event handlers if waves-effect class is present
-                const wavesHandlers = cn.includes('waves-effect') ? {
-                    onmousedown: WavesEffect.onMouseDown,
-                    onmouseup: WavesEffect.onMouseUp,
-                    onmouseleave: WavesEffect.onMouseLeave,
-                    ontouchstart: WavesEffect.onTouchStart,
-                    ontouchend: WavesEffect.onTouchEnd
-                } : {};
+                const wavesHandlers = cn.includes('waves-effect')
+                    ? {
+                        onmousedown: WavesEffect.onMouseDown,
+                        onmouseup: WavesEffect.onMouseUp,
+                        onmouseleave: WavesEffect.onMouseLeave,
+                        ontouchstart: WavesEffect.onTouchStart,
+                        ontouchend: WavesEffect.onTouchEnd,
+                    }
+                    : {};
                 return m(element, Object.assign(Object.assign(Object.assign({}, params), wavesHandlers), { className: cn, 'data-position': tooltip ? position : undefined, 'data-tooltip': tooltip || undefined, type: buttonType }), iconName ? m(Icon, { iconName, className: iconClass || 'left' }) : undefined, label ? label : undefined, children);
             },
         };
