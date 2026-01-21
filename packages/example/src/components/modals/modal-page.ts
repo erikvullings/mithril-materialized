@@ -43,9 +43,9 @@ export const ModalPage = () => {
             },
           }),
           m(ModalPanel, {
-            id: 'modal1',
             title: 'Do you like this library?',
             description: 'This is some content.',
+            closeOnButtonClick: true,
             isOpen: state.modal1Open,
             onToggle: (open: boolean) => {
               state.modal1Open = open;
@@ -78,10 +78,10 @@ export const ModalPage = () => {
                   
                   // Modal with isOpen and onToggle for state management
                   m(ModalPanel, {
-                    id: 'modal1',
                     title: 'Do you like this library?',
                     description: 'This is some content.',
                     isOpen: state.modal1Open,
+                    closeOnButtonClick: true,
                     onToggle: (open: boolean) => {
                       state.modal1Open = open;
                     },
@@ -108,11 +108,11 @@ export const ModalPage = () => {
             },
           }),
           m(ModalPanel, {
-            id: 'modal1b',
             title: 'Select Component Test',
             isOpen: state.modal1bOpen,
             fixedFooter: true,
             bottomSheet: true,
+            closeOnButtonClick: true,
             onToggle: (open: boolean) => {
               state.modal1bOpen = open;
             },
@@ -199,6 +199,7 @@ export const ModalPage = () => {
                     id: 'modal1b',
                     title: 'Tell me about yourself',
                     isOpen: state.modal1bOpen,
+                    closeOnButtonClick: true,
                     onToggle: (open: boolean) => {
                       state.modal1bOpen = open;
                     },
@@ -275,9 +276,9 @@ export const ModalPage = () => {
             },
           }),
           m(ModalPanel, {
-            id: 'modal2',
             title: 'Do you like this library?',
             isOpen: state.modal2Open,
+            closeOnButtonClick: true,
             onToggle: (open: boolean) => {
               state.modal2Open = open;
             },
@@ -343,9 +344,9 @@ export const ModalPage = () => {
 
                   // Fixed footer modal with scrollable content
                   m(ModalPanel, {
-                    id: 'modal2',
                     title: 'Do you like this library?',
                     isOpen: state.modal2Open,
+                    closeOnButtonClick: true,
                     onToggle: (open: boolean) => {
                       state.modal2Open = open;
                     },
