@@ -1,3 +1,10 @@
+## [3.14.3](https://github.com/erikvullings/mithril-materialized/compare/v3.14.2...v3.14.3) (2026-01-21)
+
+
+### Bug Fixes
+
+* Modal examples need to close on action click. ([b71382a](https://github.com/erikvullings/mithril-materialized/commit/b71382a17e83bd4c1acd13585688ce4ab4342446))
+
 ## [3.14.2](https://github.com/erikvullings/mithril-materialized/compare/v3.14.1...v3.14.2) (2026-01-20)
 
 
