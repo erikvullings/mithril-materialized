@@ -1,6 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { Icon } from './icon';
-import { MaterialIcon, IconName } from './material-icon';
+import { IconName } from './material-icon';
 import { MaterialPosition, IconClass, ButtonVariant } from './types';
 import { WavesEffect } from './waves';
 
@@ -139,7 +139,7 @@ export const ButtonFactory = (
             'data-tooltip': tooltip || undefined,
             type: buttonType,
           },
-          iconName ? m(Icon, { iconName, className: iconClass || 'left' }) : undefined,
+          iconName ? m(Icon, { iconName, className: iconClass !== undefined ? iconClass : 'left' }) : undefined,
           label ? label : undefined,
           children
         );
@@ -155,7 +155,7 @@ export const FlatButton = ButtonFactory('a', 'waves-effect waves-teal btn-flat',
 export const IconButton = ButtonFactory('button', 'btn-flat btn-icon waves-effect waves-teal', 'button');
 export const RoundIconButton = ButtonFactory('button', 'btn-floating btn-large waves-effect waves-light', 'button');
 export const SubmitButton = ButtonFactory('button', 'btn waves-effect waves-light', 'submit');
-const RaisedIconButton = ButtonFactory('button', 'btn waves-effect waves-light', 'button');
+const SmallRaisedIconButton = ButtonFactory('button', 'btn-small btn-icon waves-effect waves-light', 'button');
 
 export interface ConfirmButtonAttrs extends ButtonAttrs {
   /** Use material-icon name, or internal MaterialIcon name */
@@ -197,6 +197,8 @@ export const ConfirmButton: FactoryComponent<ConfirmButtonAttrs> = () => {
         clickDelay = 500,
         onFirstClick,
         onclick,
+        iconClass,
+        label,
         ...props
       } = attrs;
 
@@ -218,27 +220,43 @@ export const ConfirmButton: FactoryComponent<ConfirmButtonAttrs> = () => {
         }
       };
 
+      const currentIconName = isConfirming ? confirmIconName : iconName;
       const cn = isConfirming ? confirmColor : 'red-text';
 
-      const commonProps = {
-        ...props,
-        className: `${props.className || ''} ${cn}`,
-        style: {
-          ...props.style,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          // Mimic btn-icon style when confirming (RaisedIconButton doesn't have it)
-          ...(isConfirming ? { padding: '0 8px', width: 'auto', minWidth: 'auto' } : {}),
-        },
-        onclick: handleClick,
-      };
-
-      if (isConfirming) {
-        return m(RaisedIconButton, commonProps, m(MaterialIcon, { name: confirmIconName as IconName }));
+      // Choose button component based on label and confirming state
+      let ButtonComponent: FactoryComponent<ButtonAttrs>;
+      if (label) {
+        ButtonComponent = FlatButton;
+      } else {
+        // Icon-only: use small raised button for square shape when confirming
+        ButtonComponent = isConfirming ? SmallRaisedIconButton : IconButton;
       }
 
-      return m(IconButton, commonProps, m(MaterialIcon, { name: iconName as IconName }));
+      // Add square styling for icon-only confirming state
+      const buttonStyle =
+        !label && isConfirming
+          ? {
+              ...props.style,
+              width: '36px',
+              height: '36px',
+              padding: '0',
+              minWidth: '28px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '2px',
+            }
+          : props.style;
+
+      return m(ButtonComponent, {
+        ...props,
+        style: buttonStyle,
+        className: `${props.className || ''} ${cn}`,
+        iconName: currentIconName as string,
+        iconClass: label ? (iconClass || 'left') : '',
+        label,
+        onclick: handleClick,
+      });
     },
   };
 };

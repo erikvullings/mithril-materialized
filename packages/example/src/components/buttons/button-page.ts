@@ -219,17 +219,47 @@ m(ToggleGroup, {
         m(
           'div',
           m(ConfirmButton, {
-  timeout: 5000, // optional, default is 3000ms
-  onFirstClick: () => console.log('Delete clicked the first time'), // optional, can for example be used to display a toast
+            timeout: 5000, // optional, default is 3000ms
+            onFirstClick: () => console.log('Delete clicked the first time'), // optional, can for example be used to display a toast
             onclick: () => console.log('Delete clicked'),
           })
         ),
+        m('h3.header[id=confirmbutton-row]', 'ConfirmButton with other buttons in a row'),
+        m('div', [
+          m(ConfirmButton, {
+            label: 'Delete',
+            timeout: 5000,
+            onFirstClick: () => console.log('Delete clicked the first time'),
+            onclick: () => console.log('Delete clicked'),
+          }),
+          m(FlatButton, { label: 'Flat Button', iconName: 'edit', onclick: () => console.log('Flat button clicked') }),
+          m(Button, { label: 'Normal Button', iconName: 'group', onclick: () => console.log('Normal button clicked') }),
+        ]),
+        m('h3.header[id=confirmbutton-test]', 'ConfirmButton with iconClass test'),
+        m('div', [
+          m(ConfirmButton, {
+            iconClass: 'right',
+            label: 'Delete Item',
+            timeout: 5000,
+            onFirstClick: () => console.log('Delete clicked the first time'),
+            onclick: () => console.log('Delete clicked'),
+          }),
+          m(Button, {
+            label: 'Normal Button',
+            iconName: 'group',
+            onclick: () => console.log('Normal button clicked'),
+          }),
+        ]),
         m(CodeBlock, {
           code: `m(ConfirmButton, {
+  iconClass: 'right',
   timeout: 5000, // optional, default is 3000ms
   onFirstClick: () => console.log('Delete clicked the first time'), // optional, can for example be used to display a toast
   onclick: () => console.log('Delete clicked'),
-})`,
+}),
+m(FlatButton, { label: 'Flat Button', onclick: () => console.log('Flat button clicked') }),
+m(Button, { label: 'Normal Button', onclick: () => console.log('Normal button clicked') }),
+`,
         }),
       ]),
   } as Component;

@@ -93,7 +93,12 @@ export const MaterialIcon: FactoryComponent<MaterialIconAttrs> = () => {
         'svg',
         {
           ...props,
-          style: { transform, ...style },
+          style: {
+            display: 'inline-block',
+            verticalAlign: 'middle',
+            transform,
+            ...style
+          },
           height: '24px',
           width: '24px',
           viewBox: '0 0 24 24',
