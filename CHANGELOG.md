@@ -1,3 +1,10 @@
+## [3.14.4](https://github.com/erikvullings/mithril-materialized/compare/v3.14.3...v3.14.4) (2026-01-22)
+
+
+### Bug Fixes
+
+* ConfirmButton should align with other buttons. ([34d6128](https://github.com/erikvullings/mithril-materialized/commit/34d61286f1acb382e326be80cd0ed20377873b53))
+
 ## [3.14.3](https://github.com/erikvullings/mithril-materialized/compare/v3.14.2...v3.14.3) (2026-01-21)
 
 
