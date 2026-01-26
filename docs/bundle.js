@@ -30434,9 +30434,25 @@ const defaultI18n$1 = {
  */
 class ThemeManager {
     /**
-     * Set the theme for the entire application
+     * Configure whether ThemeManager should use localStorage for persistence.
+     * When disabled, you can manage theme state externally and pass it via component attrs.
+     * @param enabled - Whether to use localStorage (default: true)
      */
-    static setTheme(theme) {
+    static setUseLocalStorage(enabled) {
+        this.useLocalStorage = enabled;
+    }
+    /**
+     * Check if localStorage persistence is enabled
+     */
+    static isUsingLocalStorage() {
+        return this.useLocalStorage;
+    }
+    /**
+     * Set the theme for the entire application
+     * @param theme - The theme to set
+     * @param persist - Override localStorage behavior for this call (optional)
+     */
+    static setTheme(theme, persist) {
         this.currentTheme = theme;
         const root = document.documentElement;
         if (theme === 'auto') {
@@ -30447,12 +30463,15 @@ class ThemeManager {
             // Set explicit theme
             root.setAttribute('data-theme', theme);
         }
-        // Store preference in localStorage
-        try {
-            localStorage.setItem('mm-theme', theme);
-        }
-        catch (e) {
-            // localStorage might not be available
+        // Store preference in localStorage if enabled
+        const shouldPersist = persist !== null && persist !== void 0 ? persist : this.useLocalStorage;
+        if (shouldPersist) {
+            try {
+                localStorage.setItem('mm-theme', theme);
+            }
+            catch (e) {
+                // localStorage might not be available
+            }
         }
     }
     /**
@@ -30475,18 +30494,22 @@ class ThemeManager {
         return 'light';
     }
     /**
-     * Initialize theme from localStorage or system preference
+     * Initialize theme from localStorage or system preference.
+     * If localStorage is disabled, initializes to the provided default or 'auto'.
+     * @param defaultTheme - Default theme to use when localStorage is disabled or empty
      */
-    static initialize() {
-        let savedTheme = 'auto';
-        try {
-            const stored = localStorage.getItem('mm-theme');
-            if (stored && ['light', 'dark', 'auto'].includes(stored)) {
-                savedTheme = stored;
+    static initialize(defaultTheme = 'auto') {
+        let savedTheme = defaultTheme;
+        if (this.useLocalStorage) {
+            try {
+                const stored = localStorage.getItem('mm-theme');
+                if (stored && ['light', 'dark', 'auto'].includes(stored)) {
+                    savedTheme = stored;
+                }
             }
-        }
-        catch (e) {
-            // localStorage might not be available
+            catch (e) {
+                // localStorage might not be available
+            }
         }
         this.setTheme(savedTheme);
     }
@@ -30497,8 +30520,20 @@ class ThemeManager {
         const current = this.getEffectiveTheme();
         this.setTheme(current === 'light' ? 'dark' : 'light');
     }
+    /**
+     * Clear the stored theme from localStorage
+     */
+    static clearStoredTheme() {
+        try {
+            localStorage.removeItem('mm-theme');
+        }
+        catch (e) {
+            // localStorage might not be available
+        }
+    }
 }
 ThemeManager.currentTheme = 'auto';
+ThemeManager.useLocalStorage = true;
 /**
  * Theme Switcher Component
  * Provides UI controls for changing themes

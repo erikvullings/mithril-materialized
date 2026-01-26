@@ -1,3 +1,10 @@
+## [3.14.5](https://github.com/erikvullings/mithril-materialized/compare/v3.14.4...v3.14.5) (2026-01-26)
+
+
+### Bug Fixes
+
+* ThemeManager supports own settings object ([ccfa232](https://github.com/erikvullings/mithril-materialized/commit/ccfa232a8773223251a3ec38ae8a70e38488591a))
+
 ## [3.14.4](https://github.com/erikvullings/mithril-materialized/compare/v3.14.3...v3.14.4) (2026-01-22)
 
 
