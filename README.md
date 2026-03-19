@@ -2,9 +2,11 @@
 
 A Mithril.js component library inspired by [materialize-css](https://materializecss.com) design principles, [available on npm](https://www.npmjs.com/package/mithril-materialized). This library provides you with ready-to-use Mithril components that follow Material Design guidelines, with **no external JavaScript dependencies**.
 
-## 🚀 v3.14 - Latest Release
+## 🚀 v3.15 - Latest Release
 
-The current stable release that provides a complete Mithril.js Material Design component library with no external JavaScript dependencies.
+### ✨ What's New in v3.15
+
+- **📊 DataTable Horizontal Scrolling**: DataTable now correctly enables horizontal scrolling when `responsive` is set, preventing overflow on small screens
 
 ### ✨ What's New in v3.14
 
