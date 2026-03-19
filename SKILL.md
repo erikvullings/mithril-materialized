@@ -467,11 +467,11 @@ interface LikertScaleAttrs<T extends number = number> extends Attributes {
 
 **When to Use LikertScale vs RadioButtons vs Rating:**
 
-| Component | Best For | Use Case |
-|-----------|----------|----------|
-| **LikertScale** | Survey questions with semantic scales | "How satisfied are you?" with 1-5 scale and anchors |
-| **RadioButtons** | Multiple-choice questions | "What is your favorite color?" with distinct options |
-| **Rating** | Star/icon ratings and reviews | Product ratings, skill levels, movie reviews |
+| Component        | Best For                              | Use Case                                             |
+| ---------------- | ------------------------------------- | ---------------------------------------------------- |
+| **LikertScale**  | Survey questions with semantic scales | "How satisfied are you?" with 1-5 scale and anchors  |
+| **RadioButtons** | Multiple-choice questions             | "What is your favorite color?" with distinct options |
+| **Rating**       | Star/icon ratings and reviews         | Product ratings, skill levels, movie reviews         |
 
 **Styling:**
 
