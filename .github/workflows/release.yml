@@ -13,6 +13,9 @@ permissions:
   pull-requests: write
   id-token: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -47,7 +50,14 @@ jobs:
         run: pnpm run test
         working-directory: packages/lib
 
+      - name: Semantic Release
+        id: semantic-release
+        uses: cycjimmy/semantic-release-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Obtain npm OIDC token
+        if: steps.semantic-release.outputs.new_release_published == 'true'
         id: npm-oidc
         run: |
           TOKEN=$(curl -fsSL \
@@ -56,10 +66,9 @@ jobs:
           echo "::add-mask::$TOKEN"
           echo "token=$TOKEN" >> $GITHUB_OUTPUT
 
-      - name: Semantic Release
+      - name: Publish to npm with provenance
+        if: steps.semantic-release.outputs.new_release_published == 'true'
+        run: npm publish --provenance --access public
+        working-directory: packages/lib
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ steps.npm-oidc.outputs.token }}
-          NPM_CONFIG_PROVENANCE: true
-          NPM_CONFIG_REGISTRY: https://registry.npmjs.org
-        run: npx semantic-release
+          NODE_AUTH_TOKEN: ${{ steps.npm-oidc.outputs.token }}
