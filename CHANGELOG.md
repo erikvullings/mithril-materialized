@@ -1,3 +1,11 @@
+# [3.15.0](https://github.com/erikvullings/mithril-materialized/compare/v3.14.5...v3.15.0) (2026-03-19)
+
+
+### Features
+
+* add CSS documentation section with collapsible Sidenav ([6a68728](https://github.com/erikvullings/mithril-materialized/commit/6a68728e45e69d29b2e6cdf0c810be526f7090e5))
+* DataTable includes horizontal srolling when responsive. ([45ac13d](https://github.com/erikvullings/mithril-materialized/commit/45ac13d0edf9691b1f61caf708d1a5f8157068f9))
+
 ## [3.14.5](https://github.com/erikvullings/mithril-materialized/compare/v3.14.4...v3.14.5) (2026-01-26)
 
 
