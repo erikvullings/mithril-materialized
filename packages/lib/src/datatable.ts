@@ -1009,6 +1009,7 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
             style: {
               maxHeight: height ? `${height}px` : undefined,
               overflowY: height ? 'auto' : undefined,
+              overflowX: responsive ? 'auto' : undefined,
             },
           },
           processedData.length === 0

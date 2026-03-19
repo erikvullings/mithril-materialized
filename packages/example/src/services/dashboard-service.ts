@@ -18,6 +18,7 @@ import { MasonryPage } from '../components/masonry-page';
 import { ImageListPage } from '../components/image-list-page';
 import { RatingPage } from '../components/rating-page';
 import { ProgressPage } from '../components/progress-page';
+import { CssPage } from '../components/css/css-page';
 
 export enum Dashboards {
   HOME = 'HOME',
@@ -38,6 +39,17 @@ export enum Dashboards {
   PROGRESS = 'PROGRESS',
   MISC = 'MISC',
   ABOUT = 'ABOUT',
+  CSS = 'CSS',
+  CSS_GRID = 'CSS_GRID',
+  CSS_HELPERS = 'CSS_HELPERS',
+  CSS_MEDIA = 'CSS_MEDIA',
+  CSS_PULSE = 'CSS_PULSE',
+  CSS_SASS = 'CSS_SASS',
+  CSS_SHADOW = 'CSS_SHADOW',
+  CSS_TABLE = 'CSS_TABLE',
+  CSS_TRANSITIONS = 'CSS_TRANSITIONS',
+  CSS_TYPOGRAPHY = 'CSS_TYPOGRAPHY',
+  CSS_THEMING = 'CSS_THEMING',
 }
 
 class DashboardService {
@@ -213,4 +225,22 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
     visible: true,
     component: AboutPage,
   },
+  {
+    id: Dashboards.CSS,
+    title: 'CSS',
+    icon: 'style',
+    route: '/css/color',
+    visible: true,
+    component: CssPage,
+  },
+  { id: Dashboards.CSS_GRID,        title: 'Grid',        route: '/css/grid',        visible: false, component: CssPage },
+  { id: Dashboards.CSS_HELPERS,     title: 'Helpers',     route: '/css/helpers',     visible: false, component: CssPage },
+  { id: Dashboards.CSS_MEDIA,       title: 'Media',       route: '/css/media',       visible: false, component: CssPage },
+  { id: Dashboards.CSS_PULSE,       title: 'Pulse',       route: '/css/pulse',       visible: false, component: CssPage },
+  { id: Dashboards.CSS_SASS,        title: 'Sass',        route: '/css/sass',        visible: false, component: CssPage },
+  { id: Dashboards.CSS_SHADOW,      title: 'Shadow',      route: '/css/shadow',      visible: false, component: CssPage },
+  { id: Dashboards.CSS_TABLE,       title: 'Table',       route: '/css/table',       visible: false, component: CssPage },
+  { id: Dashboards.CSS_TRANSITIONS, title: 'Transitions', route: '/css/transitions', visible: false, component: CssPage },
+  { id: Dashboards.CSS_TYPOGRAPHY,  title: 'Typography',  route: '/css/typography',  visible: false, component: CssPage },
+  { id: Dashboards.CSS_THEMING,     title: 'Theming',     route: '/css/theming',     visible: false, component: CssPage },
 ]);
