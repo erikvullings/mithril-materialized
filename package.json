@@ -22,6 +22,11 @@
   ],
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
+  "pnpm": {
+    "overrides": {
+      "svgo": ">=2.8.2"
+    }
+  },
   "devDependencies": {
     "pnpm": "10.32.1",
     "rimraf": "^6.1.3",
