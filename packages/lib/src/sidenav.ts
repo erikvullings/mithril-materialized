@@ -57,6 +57,10 @@ export interface SidenavAttrs extends Attributes {
   header?: SidenavItemAttrs;
   /** Footer item displayed at the bottom of the sidenav */
   footer?: SidenavItemAttrs;
+  /** Custom vnode content rendered in the header slot (first item, before hamburger) */
+  headerContent?: m.Children;
+  /** Custom vnode content rendered in the footer slot (last item, pushed to the bottom) */
+  footerContent?: m.Children;
 }
 
 export interface SidenavItemAttrs {
@@ -221,9 +225,9 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
     }
   };
 
-  const setBodyOverflow = (isOpen: boolean, mode: string) => {
+  const setBodyOverflow = (isOpen: boolean, mode: string, fixed: boolean) => {
     if (typeof document !== 'undefined') {
-      document.body.style.overflow = isOpen && mode === 'overlay' ? 'hidden' : '';
+      document.body.style.overflow = isOpen && mode === 'overlay' && !fixed ? 'hidden' : '';
     }
   };
 
@@ -265,7 +269,7 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
       if (wasOpen !== isOpen) {
         state.isOpen = isOpen;
         state.isAnimating = true;
-        setBodyOverflow(isOpen, attrs.mode || 'overlay');
+        setBodyOverflow(isOpen, attrs.mode || 'overlay', attrs.fixed || false);
 
         // Clear animation state after animation completes
         setTimeout(() => {
@@ -277,7 +281,7 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
 
     onremove: ({ attrs }) => {
       // Clean up
-      setBodyOverflow(false, attrs.mode || 'overlay');
+      setBodyOverflow(false, attrs.mode || 'overlay', attrs.fixed || false);
       if (typeof document !== 'undefined' && attrs.closeOnEscape !== false) {
         document.removeEventListener('keydown', (e) => handleEscapeKey(e, attrs));
       }
@@ -323,6 +327,7 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
               [
                 position === 'right' ? 'right-aligned' : '',
                 fixed ? 'sidenav-fixed' : '',
+                mode === 'push' ? 'sidenav-push' : '',
                 expandable && !isExpanded ? 'sidenav-collapsed' : '',
                 className,
               ]
@@ -333,9 +338,27 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
               transform: isOpen ? 'translateX(0)' : position === 'left' ? 'translateX(-105%)' : 'translateX(105%)',
               'transition-duration': `${animationDuration}ms`,
               'transition-property': 'transform, width',
+              display: 'flex',
+              'flex-direction': 'column',
             },
           },
           [
+            // Header content slot (rendered first, before hamburger)
+            attrs.headerContent &&
+              m(
+                'li.sidenav-header-slot',
+                {
+                  style: {
+                    'flex-shrink': 0,
+                    'list-style': 'none',
+                    height: 'auto',
+                    'line-height': 'normal',
+                    padding: 0,
+                  },
+                },
+                attrs.headerContent
+              ),
+
             // Hamburger toggle button (inside sidenav, at the top)
             showHamburger &&
               m(
@@ -387,8 +410,8 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
                         ? 'chevron_right'
                         : 'chevron_left'
                       : isExpanded
-                      ? 'chevron_left'
-                      : 'chevron_right',
+                        ? 'chevron_left'
+                        : 'chevron_right',
                   style: { width: '24px', height: '24px' },
                 })
               ),
@@ -417,8 +440,25 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
                 ...attrs.footer,
                 _isExpanded: isExpanded,
                 _position: position,
-                className: 'sidenav-footer-item',
+                className: ['sidenav-footer-item', attrs.footer.className].filter(Boolean).join(' '),
               }),
+
+            // Footer content slot (rendered last, pushed to bottom via margin-top: auto)
+            attrs.footerContent &&
+              m(
+                'li.sidenav-footer-slot',
+                {
+                  style: {
+                    'margin-top': 'auto',
+                    'flex-shrink': 0,
+                    'list-style': 'none',
+                    height: 'auto',
+                    'line-height': 'normal',
+                    padding: 0,
+                  },
+                },
+                attrs.footerContent
+              ),
           ]
         ),
       ];

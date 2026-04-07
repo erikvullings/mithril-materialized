@@ -66,6 +66,10 @@ Releases are handled through the library package with automatic versioning:
 - `npm run minor-release` - Automated minor release  
 - `npm run major-release` - Automated major release
 
+## Gotcha
+
+- In mithril.js, preferably do not use keys: only use them to explicitly recreate a component, or for drag-n-drop operations in a list. If you use them, make sure that all components on the same level have a key, otherwise you will get an "Uncaught TypeError: In fragments, vnodes must either all have keys or none have keys."
+
 ## Testing
 
 Currently no automated test suite is configured. The example application serves as manual testing and documentation.

@@ -1,7 +1,8 @@
 import m, { FactoryComponent, Vnode } from 'mithril';
 import { dashboardSvc, searchIndex, SearchEntry } from '../services/dashboard-service';
 import { DashboardGroup } from '../models/dashboard';
-import { Sidenav, ThemeToggle } from 'mithril-materialized';
+import { Sidenav, TextInput, ThemeToggle } from 'mithril-materialized';
+import logo from '../assets/favicon-32x32.png';
 import './layout.css';
 
 interface NavGroup {
@@ -11,11 +12,11 @@ interface NavGroup {
 }
 
 const NAV_GROUPS: NavGroup[] = [
-  { id: 'general',    label: 'General',        icon: 'home' },
-  { id: 'forms',      label: 'Forms & Inputs',  icon: 'edit' },
-  { id: 'components', label: 'Components',      icon: 'widgets' },
-  { id: 'display',    label: 'Display',         icon: 'view_module' },
-  { id: 'styling',    label: 'Styling',         icon: 'palette' },
+  { id: 'general', label: 'General', icon: 'home' },
+  { id: 'forms', label: 'Forms & Inputs', icon: 'edit' },
+  { id: 'components', label: 'Components', icon: 'widgets' },
+  { id: 'display', label: 'Display', icon: 'view_module' },
+  { id: 'styling', label: 'Styling', icon: 'palette' },
 ];
 
 const DESKTOP_BP = 992;
@@ -58,8 +59,12 @@ export const Layout: FactoryComponent = () => {
   const pages = () => dashboardSvc.getList().filter((d) => d.visible);
 
   return {
-    oninit: () => { window.addEventListener('resize', onResize); },
-    onremove: () => { window.removeEventListener('resize', onResize); },
+    oninit: () => {
+      window.addEventListener('resize', onResize);
+    },
+    onremove: () => {
+      window.removeEventListener('resize', onResize);
+    },
 
     view: (vnode: Vnode) => {
       const results = filteredResults();
@@ -69,61 +74,65 @@ export const Layout: FactoryComponent = () => {
           Sidenav,
           {
             isOpen: sidenavOpen,
-            onToggle: (open) => { sidenavOpen = open; },
+            onToggle: (open) => {
+              sidenavOpen = open;
+            },
             mode: 'overlay',
             width: 260,
             showBackdrop: !isDesktop,
             closeOnBackdropClick: true,
             closeOnEscape: true,
+            header: {
+              text: 'Mithril-materialized',
+              icon: { type: 'image', content: logo },
+              className: 'mm-sidenav-header',
+            },
+            footer: {
+              text: 'GitHub',
+              icon: 'code',
+              href: 'https://github.com/erikvullings/mithril-materialized',
+              className: 'mm-sidenav-footer-link',
+            },
           },
           [
-            // ── Header: brand + close button ───────────────────────────
-            m('li.mm-sidenav-brand', [
-              m('span.mm-brand', 'mithril-materialized'),
-              !isDesktop &&
-                m(
-                  'button.mm-close-btn[type=button]',
-                  { onclick: () => { sidenavOpen = false; } },
-                  m('i.material-icons', 'close')
-                ),
-            ]),
-
             // ── Search ─────────────────────────────────────────────────
             m('li.mm-search-li', [
               m('.mm-search', [
-                m('i.material-icons.mm-search-icon', 'search'),
-                m('input.mm-search-input[type=text][placeholder=Search components…]', {
+                m(TextInput, {
+                  className: 'mm-search-field',
+                  label: 'Search components',
+                  iconName: 'search',
                   value: searchQuery,
-                  oninput: (e: InputEvent) => {
-                    searchQuery = (e.target as HTMLInputElement).value;
-                    showSearchResults = true;
+                  canClear: true,
+                  oninput: (value: string) => {
+                    searchQuery = value || '';
+                    showSearchResults = searchQuery.trim().length > 0;
                   },
-                  onfocus: () => { showSearchResults = true; },
-                  onblur: () => { setTimeout(() => { showSearchResults = false; m.redraw(); }, 180); },
+                  onblur: () => {
+                    setTimeout(() => {
+                      showSearchResults = false;
+                      m.redraw();
+                    }, 180);
+                  },
                 }),
-                searchQuery &&
-                  m(
-                    'button.mm-search-clear[type=button]',
-                    { onclick: () => { searchQuery = ''; showSearchResults = false; } },
-                    m('i.material-icons', 'close')
-                  ),
                 showSearchResults &&
                   results.length > 0 &&
                   m(
                     '.mm-search-results',
                     results.map((entry) =>
-                      m('.mm-search-result', {
-                        onmousedown: (e: MouseEvent) => {
-                          e.preventDefault();
-                          navigateTo(entry);
-                          searchQuery = '';
-                          showSearchResults = false;
-                          if (!isDesktop) sidenavOpen = false;
+                      m(
+                        '.mm-search-result',
+                        {
+                          onmousedown: (e: MouseEvent) => {
+                            e.preventDefault();
+                            navigateTo(entry);
+                            searchQuery = '';
+                            showSearchResults = false;
+                            if (!isDesktop) sidenavOpen = false;
+                          },
                         },
-                      }, [
-                        m('span.mm-search-result-title', entry.title),
-                        m('span.mm-search-result-page', entry.page),
-                      ])
+                        [m('span.mm-search-result-title', entry.title), m('span.mm-search-result-page', entry.page)]
+                      )
                     )
                   ),
               ]),
@@ -158,26 +167,18 @@ export const Layout: FactoryComponent = () => {
                       `a.mm-nav-item${isActive(d.route) ? '.mm-nav-item--active' : ''}`,
                       {
                         href: `#!${d.route}`,
-                        onclick: () => { if (!isDesktop) sidenavOpen = false; },
+                        onclick: () => {
+                          if (!isDesktop) sidenavOpen = false;
+                        },
                       },
-                      [
-                        d.icon && m('i.material-icons', d.icon),
-                        m('span', d.title),
-                      ]
+                      [d.icon && m('i.material-icons', d.icon), m('span', d.title)]
                     )
                   )
                 ),
               ]);
             }),
 
-            // ── Footer: GitHub link + theme toggle ────────────────────
-            m('li.mm-sidenav-footer', [
-              m(
-                'a.mm-github-link[href=https://github.com/erikvullings/mithril-materialized][target=_blank][rel=noopener]',
-                [m('i.material-icons', 'code'), m('span', 'GitHub')]
-              ),
-              m(ThemeToggle),
-            ]),
+            m('li.mm-theme-toggle-li', [m(ThemeToggle)]),
           ]
         ),
 
@@ -186,7 +187,11 @@ export const Layout: FactoryComponent = () => {
           !isDesktop &&
             m(
               'button.mm-hamburger[type=button]',
-              { onclick: () => { sidenavOpen = true; } },
+              {
+                onclick: () => {
+                  sidenavOpen = true;
+                },
+              },
               m('i.material-icons', 'menu')
             ),
           vnode.children,

@@ -1,7 +1,9 @@
 /* ─── Shell ─────────────────────────────────────────────────────────────── */
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
+  overflow-x: hidden;
 }
 
 .mm-layout {
@@ -9,126 +11,113 @@ html, body {
   min-height: 100%;
 }
 
-/* ─── Override lib Sidenav width & appearance ────────────────────────────── */
+/* ─── Override lib Sidenav appearance ────────────────────────────────────── */
 .sidenav {
   width: 260px !important;
   background-color: var(--mm-surface-color, #fff) !important;
-  display: flex !important;
-  flex-direction: column !important;
   padding-bottom: 0 !important;
+  /* Custom thin scrollbar that matches dark/light theme */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(128, 128, 128, 0.3) transparent;
 }
 
-/* ─── Sidenav brand header ────────────────────────────────────────────────── */
-li.mm-sidenav-brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 12px 0 16px;
-  height: 64px;
-  flex-shrink: 0;
+.sidenav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidenav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidenav::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.3);
+  border-radius: 2px;
+}
+
+/* Override lib's li height/line-height for custom lis */
+.sidenav li.mm-search-li,
+.sidenav li.mm-nav-group,
+.sidenav li.sidenav-footer-item,
+.sidenav li.mm-theme-toggle-li {
+  height: auto;
+  line-height: normal;
+}
+
+/* ─── Sidenav header/footer sections ─────────────────────────────────────── */
+.sidenav li.mm-sidenav-header {
+  list-style: none;
   background: var(--mm-nav-background, var(--mm-primary-color, #26a69a));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.sidenav li.mm-sidenav-header > a {
+  color: var(--mm-nav-text, #fff) !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.2px;
+  min-height: 64px;
+  line-height: 1;
+}
+
+.sidenav li.mm-sidenav-header img {
+  border-radius: 6px;
+  filter: none;
+}
+
+:root[data-theme='dark'] .sidenav li.mm-sidenav-header img {
+  filter: brightness(0) invert(1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .sidenav li.mm-sidenav-header img {
+    filter: brightness(0) invert(1);
+  }
+}
+
+.sidenav li.sidenav-footer-item.mm-sidenav-footer-link {
+  margin-top: auto;
+  border-top: 1px solid var(--mm-divider-color, rgba(0, 0, 0, 0.12));
   list-style: none;
 }
 
-.mm-brand {
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  white-space: nowrap;
-  flex: 1;
-  color: var(--mm-nav-text, #fff);
+.sidenav li.sidenav-footer-item.mm-sidenav-footer-link > a {
+  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
+  font-size: 0.85rem;
 }
 
-.mm-close-btn {
-  background: none;
-  border: none;
-  color: var(--mm-nav-text, #fff);
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-}
-
-.mm-close-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
+.sidenav li.sidenav-footer-item.mm-sidenav-footer-link > a:hover {
+  color: var(--mm-primary-color, #26a69a);
 }
 
 /* ─── Search ─────────────────────────────────────────────────────────────── */
 li.mm-search-li {
   list-style: none;
-  flex-shrink: 0;
-  border-bottom: 1px solid var(--mm-divider-color, rgba(0, 0, 0, 0.12));
   padding: 0;
   height: auto;
   line-height: normal;
-}
-
-/* Override lib's li height/line-height for our custom lis */
-.sidenav li.mm-search-li,
-.sidenav li.mm-nav-group,
-.sidenav li.mm-sidenav-brand,
-.sidenav li.mm-sidenav-footer {
-  height: auto;
-  line-height: normal;
+  border-bottom: 1px solid var(--mm-divider-color, rgba(0, 0, 0, 0.12));
 }
 
 .mm-search {
   position: relative;
-  padding: 12px;
+  padding: 8px 12px 10px;
 }
 
-.mm-search-icon {
-  position: absolute;
-  left: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
-  font-size: 18px !important;
-  pointer-events: none;
+/* Scope TextInput to search context */
+.mm-search .input-field.mm-search-field {
+  margin: 0 0 8px;
+  padding: 0;
 }
 
-.mm-search-input {
-  width: 100%;
-  padding: 8px 32px 8px 34px;
-  border: 1px solid var(--mm-border-color, rgba(0, 0, 0, 0.23));
-  border-radius: 4px;
-  background: var(--mm-input-background, rgba(0, 0, 0, 0.04));
-  font-size: 0.875rem;
-  outline: none;
-  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
-  box-sizing: border-box;
-  height: auto;
+.mm-search .input-field.mm-search-field input {
   margin: 0;
-}
-
-.mm-search-input:focus {
-  border-color: var(--mm-primary-color, #26a69a);
-  background: var(--mm-surface-color, #fff);
-  box-shadow: none;
-}
-
-.mm-search-clear {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 2px;
-  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
-  line-height: 1;
-  display: flex;
-  align-items: center;
 }
 
 .mm-search-results {
   position: absolute;
   left: 12px;
   right: 12px;
-  top: calc(100% - 4px);
+  top: calc(100% - 8px);
   background: var(--mm-surface-color, #fff);
   border: 1px solid var(--mm-divider-color, rgba(0, 0, 0, 0.12));
   border-radius: 4px;
@@ -179,7 +168,6 @@ li.mm-search-li {
 /* ─── Nav groups ─────────────────────────────────────────────────────────── */
 li.mm-nav-group {
   list-style: none;
-  flex-shrink: 0;
   padding: 0;
 }
 
@@ -251,36 +239,22 @@ li.mm-nav-group {
   font-size: 18px !important;
 }
 
-/* ─── Sidenav footer ─────────────────────────────────────────────────────── */
-li.mm-sidenav-footer {
+/* ─── Sidenav footer utility row ─────────────────────────────────────────── */
+.sidenav li.mm-theme-toggle-li {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 10px 12px;
-  margin-top: auto;
-  border-top: 1px solid var(--mm-divider-color, rgba(0, 0, 0, 0.12));
-  flex-shrink: 0;
-  list-style: none;
+  justify-content: flex-start;
+  min-height: 64px;
   height: auto;
-  line-height: normal;
+  line-height: 1;
+  padding: 10px 8px;
+  border-top: 1px solid var(--mm-divider-color, rgba(0, 0, 0, 0.08));
+  box-sizing: border-box;
 }
 
-.mm-github-link {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex: 1;
-  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
-  text-decoration: none;
-  font-size: 0.8rem;
-}
-
-.mm-github-link:hover {
-  color: var(--mm-primary-color, #26a69a);
-}
-
-.mm-github-link .material-icons {
-  font-size: 16px !important;
+.sidenav li.mm-theme-toggle-li .theme-toggle {
+  margin: 0;
+  float: none;
 }
 
 /* ─── Main content ───────────────────────────────────────────────────────── */
@@ -289,6 +263,7 @@ li.mm-sidenav-footer {
   padding: 24px;
   min-height: 100%;
   box-sizing: border-box;
+  min-width: 0;
 }
 
 .mm-content--desktop {
