@@ -16,7 +16,7 @@ export const ThemePage = () => {
           'The theme switcher allows users to choose between light, dark, and auto (system preference) themes.',
         ]),
 
-        m('h3.header', 'Theme Switcher'),
+        m('h3.header[id=themeswitcher]', 'Theme Switcher'),
         m('p', 'Full theme switcher with light/dark/auto options:'),
         m('.row', [
           m('.col.s12.m6', [
@@ -42,7 +42,7 @@ m(ThemeSwitcher, {
 })`,
         }),
 
-        m('h3.header', 'Theme Toggle'),
+        m('h3.header[id=themetoggle]', 'Theme Toggle'),
         m('p', 'Simple toggle button that switches between light and dark themes:'),
         m('.row', [
           m('.col.s12.m6', [
@@ -61,7 +61,7 @@ m(ThemeToggle, {
 })`,
         }),
 
-        m('h3.header', 'File Upload'),
+        m('h3.header[id=fileupload]', 'File Upload'),
         m('p', 'Drag-and-drop file upload with image preview, file validation, and progress tracking:'),
         m('.row', [
           m('.col.s12', [

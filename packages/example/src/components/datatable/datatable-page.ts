@@ -386,7 +386,7 @@ export const DataTablePage: FactoryComponent = () => {
         // Page header
         m('.row', [
           m('.col.s12', [
-            m('h3', 'DataTable Component'),
+            m('h3[id=datatable]', 'DataTable Component'),
             m(
               'p.grey-text',
               'Advanced data table with sorting, filtering, pagination, selection, and scrolling support.'
@@ -526,7 +526,7 @@ export const DataTablePage: FactoryComponent = () => {
         // TreeView Section
         m('.row', [
           m('.col.s12', [
-            m('h3', { style: 'margin-top: 3rem;' }, 'TreeView Component'),
+            m('h3[id=treeview]', { style: 'margin-top: 3rem;' }, 'TreeView Component'),
             m('p.grey-text', 'Hierarchical tree component with expand/collapse, selection, and customizable icons.'),
           ]),
         ]),

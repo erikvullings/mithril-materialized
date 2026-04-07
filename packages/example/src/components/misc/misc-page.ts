@@ -62,7 +62,7 @@ export const MiscPage = () => {
           m('a[href=https://materializecss.com/pagination.html][target=_blank]', 'Parallax'),
           '.',
         ]),
-        m('h3.header', 'Toast'),
+        m('h3.header[id=toast]', 'Toast'),
         m('p', 'Toast provides brief feedback about an operation through a message at the bottom of the screen.'),
         m('.row', [
           m(Button, {
@@ -187,7 +187,7 @@ toast({
 });`,
         }),
 
-        m('h3.header', 'Badge'),
+        m('h3.header[id=badge]', 'Badge'),
         m('p', 'Badges display notification counts, status indicators, or labels anchored to elements.'),
         m('h4', 'Basic Badges'),
         m('.row', { style: 'gap: 20px; display: flex; align-items: center; flex-wrap: wrap;' }, [
@@ -429,7 +429,7 @@ m(Badge, { badgeContent: 0 }, m(Button, { label: 'Auto-hidden' }))
 m(Badge, { badgeContent: 0, showZero: true }, m(Button, { label: 'Show Zero' }))`,
         }),
 
-        m('h3.header', 'Tooltip'),
+        m('h3.header[id=tooltip]', 'Tooltip'),
         m('p', 'Tooltips are small, interactive, textual hints for mainly graphical elements.'),
         m('.row', [
           m('p', [
@@ -562,7 +562,7 @@ oncreate: (vnode) => {
 }`,
         }),
 
-        m('h3.header', 'Tabs'),
+        m('h3.header[id=tabs]', 'Tabs'),
         m(Tabs, {
           selectedTabId: state.selectedTabId,
           tabWidth: state.tabWidths[state.tabWidthId % 3],
@@ -679,7 +679,7 @@ oncreate: (vnode) => {
                   })`,
         }),
 
-        m('h3.header', 'Parallax'),
+        m('h3.header[id=parallax]', 'Parallax'),
         m(Parallax, { src: gogh }),
         m(CodeBlock, {
           code: `          m(Parallax, { src: gogh }) // should be embedded in layout so the width is not limited`,
@@ -691,7 +691,7 @@ oncreate: (vnode) => {
           code: `          m(MaterialBox, { src: gogh, width: 600 })`,
         }),
 
-        m('h3.header', 'Carousel'),
+        m('h3.header[id=carousel]', 'Carousel'),
         m(
           '.row',
           m(Carousel, {
@@ -714,7 +714,7 @@ oncreate: (vnode) => {
                   ] })`,
         }),
 
-        m('h3.header', 'Pagination'),
+        m('h3.header[id=pagination]', 'Pagination'),
         m(
           '.row',
           m(Pagination, {

@@ -107,7 +107,7 @@ export const NavigationPage = () => {
         ]),
 
         // Breadcrumb Example
-        m('h3.header', 'Breadcrumb Navigation'),
+        m('h3.header[id=breadcrumb]', 'Breadcrumb Navigation'),
         m('p', "Shows the user's current location within the site hierarchy:"),
         m('.row', [
           m('.col.s12', [
@@ -134,7 +134,7 @@ m(Breadcrumb, {
         }),
 
         // Sidenav Example
-        m('h3.header', 'Sidenav'),
+        m('h3.header[id=sidenav]', 'Sidenav'),
         m('p', 'Responsive navigation drawer that slides in from the side:'),
         m('.row', [
           m('.col.s12', [
@@ -452,7 +452,7 @@ m(Sidenav, {
         }),
 
         // Wizard Example
-        m('h3.header', 'Wizard/Stepper'),
+        m('h3.header[id=wizard]', 'Wizard/Stepper'),
         m('p', 'Multi-step interface for guiding users through complex processes:'),
         m('.row', [
           m('.col.s12', [

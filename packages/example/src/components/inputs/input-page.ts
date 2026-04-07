@@ -270,7 +270,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
       m('.col.s12', [
         m('h2.header', 'Inputs'),
 
-        m('h3.header', 'TextInput'),
+        m('h3.header[id=textinput]', 'TextInput'),
         m('h4.header', 'Controlled text input'),
         m(
           '.row',
@@ -389,7 +389,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           } as InputAttrs)`,
         }),
 
-        m('h3.header', 'Autocomplete'),
+        m('h3.header[id=autocomplete]', 'Autocomplete'),
         m(
           '.row',
           m(Autocomplete, {
@@ -422,7 +422,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
         } as InputAttrs)`,
         }),
 
-        m('h3.header', 'Search and select, optionally add'),
+        m('h3.header[id=searchselect]', 'Search and select, optionally add'),
         m(SearchSelect<string>, {
           options: searchSelectOptions,
           label: 'Select search options',
@@ -612,7 +612,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
         })`,
         }),
 
-        m('h3.header', 'TextArea'),
+        m('h3.header[id=textarea]', 'TextArea'),
         m(
           '.row',
           m(TextArea, {
@@ -699,7 +699,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
         ])`,
         }),
 
-        m('h3.header', 'NumberInput'),
+        m('h3.header[id=numberinput]', 'NumberInput'),
         m(
           '.row',
           m(NumberInput, {
@@ -744,7 +744,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           })`,
         }),
 
-        m('h3.header', 'EmailInput'),
+        m('h3.header[id=emailinput]', 'EmailInput'),
         m(
           '.row',
           m(EmailInput, {
@@ -765,7 +765,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           })`,
         }),
 
-        m('h3.header', 'UrlInput'),
+        m('h3.header[id=urlinput]', 'UrlInput'),
         m(
           '.row',
           m(UrlInput, {
@@ -787,7 +787,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           })`,
         }),
 
-        m('h3.header', 'PasswordInput'),
+        m('h3.header[id=passwordinput]', 'PasswordInput'),
         m(
           '.row',
           m(PasswordInput, {
@@ -806,7 +806,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           })`,
         }),
 
-        m('h3.header', 'FileInput'),
+        m('h3.header[id=fileinput]', 'FileInput'),
         m(
           '.row',
           m(FileInput, {
@@ -830,7 +830,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           })`,
         }),
 
-        m('h3.header', 'RangeInput'),
+        m('h3.header[id=rangeinput]', 'RangeInput'),
         m(
           '.row',
           m(RangeInput, {
@@ -1004,7 +1004,7 @@ m(RangeInput, {
           } as InputAttrs<number>)`,
         }),
 
-        m('h3.header', 'Chips'),
+        m('h3.header[id=chips]', 'Chips'),
         m(
           '.row',
           m(Chips, {
@@ -1070,7 +1070,7 @@ m(RangeInput, {
           })`,
         }),
 
-        m('h3.header', 'ColorInput'),
+        m('h3.header[id=colorinput]', 'ColorInput'),
         m(
           '.row',
           m(ColorInput, {

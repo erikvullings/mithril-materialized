@@ -32,7 +32,7 @@ export const PickerPage = () => {
             onchange: (v) => (state.disabled = v),
           })
         ),
-        m('h3.header', 'DatePicker - Enhanced with custom text input and display formats'),
+        m('h3.header[id=datepicker]', 'DatePicker - Enhanced with custom text input and display formats'),
 
         // Basic date picker
         m('h4', 'Basic Date Picker (ISO format - YYYY-MM-DD)'),
@@ -313,7 +313,7 @@ m(ModalPanel, {
         }),
 
         // Date Range Picker Examples
-        m('h3.header', 'Date Range Picker'),
+        m('h3.header[id=daterangepicker]', 'Date Range Picker'),
 
         m('h4', 'Basic Date Range Picker'),
         m(
@@ -444,7 +444,7 @@ m(DatePicker, {
 // - 'dd-mm-yyyy' (Alternative format)`,
         }),
 
-        m('h3.header', 'TimePicker - Enhanced with i18n support'),
+        m('h3.header[id=timepicker]', 'TimePicker - Enhanced with i18n support'),
 
         // Basic time picker (24h format)
         m('h4', 'Basic Time Picker (24h format)'),
@@ -855,7 +855,7 @@ m(TimeRangePicker, {
         }),
 
         // AnalogClock Component Examples
-        m('h3.header', 'AnalogClock Component - Direct Usage'),
+        m('h3.header[id=analogclock]', 'AnalogClock Component - Direct Usage'),
         m(
           'p',
           'The AnalogClock is a low-level component used internally by TimePicker. It can be used standalone for custom time selection interfaces.'

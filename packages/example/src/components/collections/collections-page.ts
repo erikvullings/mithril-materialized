@@ -315,7 +315,7 @@ export const CollectionsPage = () => {
           })`,
         }),
 
-        m('h3.header', 'Collapsible (accordion)'),
+        m('h3.header[id=collapsible]', 'Collapsible (accordion)'),
         m(
           '.row',
           m(Collapsible, {

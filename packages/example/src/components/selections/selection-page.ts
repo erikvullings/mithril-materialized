@@ -32,7 +32,7 @@ export const SelectionPage = () => {
       m('.col.s12', [
         m('h2.header', 'Selections'),
 
-        m('h3.header', 'Select'),
+        m('h3.header[id=select]', 'Select'),
         m(
           '.row',
           m(Select<string>, {
@@ -269,7 +269,7 @@ export const SelectionPage = () => {
           })`,
         }),
 
-        m('h3.header', 'RadioButtons'),
+        m('h3.header[id=radiobuttons]', 'RadioButtons'),
         m('p', 'Linked radio buttons: when you change one of them, the other changes too.'),
         m(
           '.row',
@@ -287,7 +287,7 @@ export const SelectionPage = () => {
           })
         ),
         // Likert Scale Examples
-        m('h3.header', 'Likert Scale'),
+        m('h3.header[id=likert]', 'Likert Scale'),
         m(
           'p.caption',
           'Rating scales for survey questions with semantic anchors. Perfect for questionnaires and feedback forms.'
@@ -701,7 +701,7 @@ m(LikertScale, {
           })`,
         }),
 
-        m('h3.header', 'Switch'),
+        m('h3.header[id=switch]', 'Switch'),
         m(
           '.row',
           m(Switch, {
@@ -730,7 +730,7 @@ m(LikertScale, {
           })`,
         }),
 
-        m('h3.header', 'Dropdown'),
+        m('h3.header[id=dropdown]', 'Dropdown'),
         m(
           '.row',
           m(Dropdown<string>, {

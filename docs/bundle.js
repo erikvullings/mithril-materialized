@@ -13285,6 +13285,332 @@ body.dark {
 
 /***/ },
 
+/***/ 8851
+(module, __webpack_exports__, __webpack_require__) {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   A: () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_pnpm_css_loader_7_1_4_webpack_5_105_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8193);
+/* harmony import */ var _node_modules_pnpm_css_loader_7_1_4_webpack_5_105_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_pnpm_css_loader_7_1_4_webpack_5_105_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_pnpm_css_loader_7_1_4_webpack_5_105_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5479);
+/* harmony import */ var _node_modules_pnpm_css_loader_7_1_4_webpack_5_105_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_pnpm_css_loader_7_1_4_webpack_5_105_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_pnpm_css_loader_7_1_4_webpack_5_105_4_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_pnpm_css_loader_7_1_4_webpack_5_105_4_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, `/* ─── Shell ─────────────────────────────────────────────────────────────── */
+.mm-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ─── Top bar ────────────────────────────────────────────────────────────── */
+.mm-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: var(--mm-primary, #1565c0);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  z-index: 1001;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.mm-brand {
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.mm-topbar-spacer {
+  flex: 1;
+}
+
+.mm-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  line-height: 1;
+}
+
+.mm-hamburger:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ─── Sidenav ────────────────────────────────────────────────────────────── */
+.mm-sidenav {
+  position: fixed;
+  left: 0;
+  top: 64px;
+  bottom: 0;
+  width: 260px;
+  background: var(--mm-surface, #fff);
+  border-right: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.12));
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease;
+}
+
+/* ─── Search ─────────────────────────────────────────────────────────────── */
+.mm-search {
+  position: relative;
+  padding: 12px;
+  border-bottom: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.12));
+  flex-shrink: 0;
+}
+
+.mm-search-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
+  font-size: 18px !important;
+  pointer-events: none;
+}
+
+.mm-search-input {
+  width: 100%;
+  padding: 8px 32px 8px 34px;
+  border: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.23));
+  border-radius: 4px;
+  background: var(--mm-input-bg, rgba(0, 0, 0, 0.04));
+  font-size: 0.875rem;
+  outline: none;
+  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+  box-sizing: border-box;
+  height: auto;
+  margin: 0;
+}
+
+.mm-search-input:focus {
+  border-color: var(--mm-primary, #1565c0);
+  background: var(--mm-surface, #fff);
+  box-shadow: none;
+}
+
+.mm-search-clear {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.mm-search-results {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: calc(100% - 4px);
+  background: var(--mm-surface, #fff);
+  border: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.12));
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.mm-search-result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  gap: 8px;
+  border-bottom: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.06));
+}
+
+.mm-search-result:last-child {
+  border-bottom: none;
+}
+
+.mm-search-result:hover {
+  background: var(--mm-hover, rgba(0, 0, 0, 0.04));
+}
+
+.mm-search-result-title {
+  font-size: 0.875rem;
+  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mm-search-result-page {
+  font-size: 0.7rem;
+  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
+  background: var(--mm-chip-bg, rgba(0, 0, 0, 0.08));
+  padding: 2px 7px;
+  border-radius: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ─── Nav groups ─────────────────────────────────────────────────────────── */
+.mm-nav-group {
+  flex-shrink: 0;
+}
+
+.mm-nav-group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px 10px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
+  text-align: left;
+  border-top: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.08));
+}
+
+.mm-nav-group-header:first-child {
+  border-top: none;
+}
+
+.mm-nav-group-header:hover {
+  background: var(--mm-hover, rgba(0, 0, 0, 0.04));
+}
+
+.mm-nav-group-header .material-icons {
+  font-size: 16px !important;
+}
+
+.mm-nav-group-arrow {
+  margin-left: auto;
+  font-size: 16px !important;
+}
+
+.mm-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px 9px 28px;
+  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: background 0.15s;
+}
+
+.mm-nav-item:hover {
+  background: var(--mm-hover, rgba(0, 0, 0, 0.04));
+}
+
+.mm-nav-item--active {
+  color: var(--mm-primary, #1565c0);
+  background: var(--mm-primary-bg, rgba(21, 101, 192, 0.08));
+  font-weight: 500;
+  border-left: 3px solid var(--mm-primary, #1565c0);
+  padding-left: 25px;
+}
+
+.mm-nav-item .material-icons {
+  font-size: 18px !important;
+}
+
+/* ─── GitHub link ────────────────────────────────────────────────────────── */
+.mm-github-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
+  text-decoration: none;
+  font-size: 0.8rem;
+  margin-top: auto;
+  border-top: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.12));
+  flex-shrink: 0;
+}
+
+.mm-github-link:hover {
+  color: var(--mm-primary, #1565c0);
+}
+
+.mm-github-link .material-icons {
+  font-size: 16px !important;
+}
+
+/* ─── Overlay (mobile) ───────────────────────────────────────────────────── */
+.mm-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* ─── Main content ───────────────────────────────────────────────────────── */
+.mm-content {
+  margin-left: 260px;
+  margin-top: 64px;
+  padding: 24px;
+  min-height: calc(100vh - 64px);
+  box-sizing: border-box;
+}
+
+/* ─── Mobile ─────────────────────────────────────────────────────────────── */
+@media (max-width: 992px) {
+  .mm-hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mm-sidenav {
+    transform: translateX(-100%);
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .mm-sidenav--open {
+    transform: translateX(0);
+  }
+
+  .mm-overlay {
+    display: block;
+  }
+
+  .mm-content {
+    margin-left: 0;
+  }
+}
+`, "",{"version":3,"sources":["webpack://./src/components/layout.css"],"names":[],"mappings":"AAAA,8EAA8E;AAC9E;EACE,aAAa;EACb,sBAAsB;EACtB,iBAAiB;AACnB;;AAEA,+EAA+E;AAC/E;EACE,eAAe;EACf,MAAM;EACN,OAAO;EACP,QAAQ;EACR,YAAY;EACZ,sCAAsC;EACtC,WAAW;EACX,aAAa;EACb,mBAAmB;EACnB,eAAe;EACf,aAAa;EACb,QAAQ;EACR,wCAAwC;AAC1C;;AAEA;EACE,iBAAiB;EACjB,gBAAgB;EAChB,qBAAqB;EACrB,mBAAmB;AACrB;;AAEA;EACE,OAAO;AACT;;AAEA;EACE,aAAa;EACb,gBAAgB;EAChB,YAAY;EACZ,WAAW;EACX,eAAe;EACf,YAAY;EACZ,kBAAkB;EAClB,cAAc;AAChB;;AAEA;EACE,qCAAqC;AACvC;;AAEA,+EAA+E;AAC/E;EACE,eAAe;EACf,OAAO;EACP,SAAS;EACT,SAAS;EACT,YAAY;EACZ,mCAAmC;EACnC,8DAA8D;EAC9D,gBAAgB;EAChB,kBAAkB;EAClB,aAAa;EACb,aAAa;EACb,sBAAsB;EACtB,gCAAgC;AAClC;;AAEA,+EAA+E;AAC/E;EACE,kBAAkB;EAClB,aAAa;EACb,+DAA+D;EAC/D,cAAc;AAChB;;AAEA;EACE,kBAAkB;EAClB,UAAU;EACV,QAAQ;EACR,2BAA2B;EAC3B,oDAAoD;EACpD,0BAA0B;EAC1B,oBAAoB;AACtB;;AAEA;EACE,WAAW;EACX,0BAA0B;EAC1B,wDAAwD;EACxD,kBAAkB;EAClB,mDAAmD;EACnD,mBAAmB;EACnB,aAAa;EACb,kDAAkD;EAClD,sBAAsB;EACtB,YAAY;EACZ,SAAS;AACX;;AAEA;EACE,wCAAwC;EACxC,mCAAmC;EACnC,gBAAgB;AAClB;;AAEA;EACE,kBAAkB;EAClB,WAAW;EACX,QAAQ;EACR,2BAA2B;EAC3B,gBAAgB;EAChB,YAAY;EACZ,eAAe;EACf,YAAY;EACZ,oDAAoD;EACpD,cAAc;EACd,aAAa;EACb,mBAAmB;AACrB;;AAEA;EACE,kBAAkB;EAClB,UAAU;EACV,WAAW;EACX,qBAAqB;EACrB,mCAAmC;EACnC,wDAAwD;EACxD,kBAAkB;EAClB,0CAA0C;EAC1C,YAAY;EACZ,iBAAiB;EACjB,gBAAgB;AAClB;;AAEA;EACE,aAAa;EACb,8BAA8B;EAC9B,mBAAmB;EACnB,iBAAiB;EACjB,eAAe;EACf,QAAQ;EACR,+DAA+D;AACjE;;AAEA;EACE,mBAAmB;AACrB;;AAEA;EACE,gDAAgD;AAClD;;AAEA;EACE,mBAAmB;EACnB,kDAAkD;EAClD,OAAO;EACP,YAAY;EACZ,gBAAgB;EAChB,uBAAuB;EACvB,mBAAmB;AACrB;;AAEA;EACE,iBAAiB;EACjB,oDAAoD;EACpD,kDAAkD;EAClD,gBAAgB;EAChB,mBAAmB;EACnB,mBAAmB;EACnB,cAAc;AAChB;;AAEA,+EAA+E;AAC/E;EACE,cAAc;AAChB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,QAAQ;EACR,WAAW;EACX,4BAA4B;EAC5B,gBAAgB;EAChB,YAAY;EACZ,eAAe;EACf,iBAAiB;EACjB,gBAAgB;EAChB,yBAAyB;EACzB,sBAAsB;EACtB,oDAAoD;EACpD,gBAAgB;EAChB,4DAA4D;AAC9D;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,gDAAgD;AAClD;;AAEA;EACE,0BAA0B;AAC5B;;AAEA;EACE,iBAAiB;EACjB,0BAA0B;AAC5B;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,SAAS;EACT,0BAA0B;EAC1B,kDAAkD;EAClD,qBAAqB;EACrB,mBAAmB;EACnB,4BAA4B;AAC9B;;AAEA;EACE,gDAAgD;AAClD;;AAEA;EACE,iCAAiC;EACjC,0DAA0D;EAC1D,gBAAgB;EAChB,iDAAiD;EACjD,kBAAkB;AACpB;;AAEA;EACE,0BAA0B;AAC5B;;AAEA,+EAA+E;AAC/E;EACE,aAAa;EACb,mBAAmB;EACnB,QAAQ;EACR,kBAAkB;EAClB,oDAAoD;EACpD,qBAAqB;EACrB,iBAAiB;EACjB,gBAAgB;EAChB,4DAA4D;EAC5D,cAAc;AAChB;;AAEA;EACE,iCAAiC;AACnC;;AAEA;EACE,0BAA0B;AAC5B;;AAEA,+EAA+E;AAC/E;EACE,aAAa;EACb,eAAe;EACf,QAAQ;EACR,8BAA8B;EAC9B,YAAY;AACd;;AAEA,+EAA+E;AAC/E;EACE,kBAAkB;EAClB,gBAAgB;EAChB,aAAa;EACb,8BAA8B;EAC9B,sBAAsB;AACxB;;AAEA,+EAA+E;AAC/E;EACE;IACE,aAAa;IACb,mBAAmB;IACnB,uBAAuB;EACzB;;EAEA;IACE,4BAA4B;IAC5B,0CAA0C;EAC5C;;EAEA;IACE,wBAAwB;EAC1B;;EAEA;IACE,cAAc;EAChB;;EAEA;IACE,cAAc;EAChB;AACF","sourcesContent":["/* ─── Shell ─────────────────────────────────────────────────────────────── */\n.mm-layout {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh;\n}\n\n/* ─── Top bar ────────────────────────────────────────────────────────────── */\n.mm-topbar {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  height: 64px;\n  background: var(--mm-primary, #1565c0);\n  color: #fff;\n  display: flex;\n  align-items: center;\n  padding: 0 16px;\n  z-index: 1001;\n  gap: 8px;\n  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);\n}\n\n.mm-brand {\n  font-size: 1.2rem;\n  font-weight: 500;\n  letter-spacing: 0.3px;\n  white-space: nowrap;\n}\n\n.mm-topbar-spacer {\n  flex: 1;\n}\n\n.mm-hamburger {\n  display: none;\n  background: none;\n  border: none;\n  color: #fff;\n  cursor: pointer;\n  padding: 8px;\n  border-radius: 50%;\n  line-height: 1;\n}\n\n.mm-hamburger:hover {\n  background: rgba(255, 255, 255, 0.15);\n}\n\n/* ─── Sidenav ────────────────────────────────────────────────────────────── */\n.mm-sidenav {\n  position: fixed;\n  left: 0;\n  top: 64px;\n  bottom: 0;\n  width: 260px;\n  background: var(--mm-surface, #fff);\n  border-right: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.12));\n  overflow-y: auto;\n  overflow-x: hidden;\n  z-index: 1000;\n  display: flex;\n  flex-direction: column;\n  transition: transform 0.25s ease;\n}\n\n/* ─── Search ─────────────────────────────────────────────────────────────── */\n.mm-search {\n  position: relative;\n  padding: 12px;\n  border-bottom: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.12));\n  flex-shrink: 0;\n}\n\n.mm-search-icon {\n  position: absolute;\n  left: 20px;\n  top: 50%;\n  transform: translateY(-50%);\n  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));\n  font-size: 18px !important;\n  pointer-events: none;\n}\n\n.mm-search-input {\n  width: 100%;\n  padding: 8px 32px 8px 34px;\n  border: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.23));\n  border-radius: 4px;\n  background: var(--mm-input-bg, rgba(0, 0, 0, 0.04));\n  font-size: 0.875rem;\n  outline: none;\n  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));\n  box-sizing: border-box;\n  height: auto;\n  margin: 0;\n}\n\n.mm-search-input:focus {\n  border-color: var(--mm-primary, #1565c0);\n  background: var(--mm-surface, #fff);\n  box-shadow: none;\n}\n\n.mm-search-clear {\n  position: absolute;\n  right: 16px;\n  top: 50%;\n  transform: translateY(-50%);\n  background: none;\n  border: none;\n  cursor: pointer;\n  padding: 2px;\n  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));\n  line-height: 1;\n  display: flex;\n  align-items: center;\n}\n\n.mm-search-results {\n  position: absolute;\n  left: 12px;\n  right: 12px;\n  top: calc(100% - 4px);\n  background: var(--mm-surface, #fff);\n  border: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.12));\n  border-radius: 4px;\n  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);\n  z-index: 100;\n  max-height: 320px;\n  overflow-y: auto;\n}\n\n.mm-search-result {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 8px 12px;\n  cursor: pointer;\n  gap: 8px;\n  border-bottom: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.06));\n}\n\n.mm-search-result:last-child {\n  border-bottom: none;\n}\n\n.mm-search-result:hover {\n  background: var(--mm-hover, rgba(0, 0, 0, 0.04));\n}\n\n.mm-search-result-title {\n  font-size: 0.875rem;\n  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));\n  flex: 1;\n  min-width: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n\n.mm-search-result-page {\n  font-size: 0.7rem;\n  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));\n  background: var(--mm-chip-bg, rgba(0, 0, 0, 0.08));\n  padding: 2px 7px;\n  border-radius: 10px;\n  white-space: nowrap;\n  flex-shrink: 0;\n}\n\n/* ─── Nav groups ─────────────────────────────────────────────────────────── */\n.mm-nav-group {\n  flex-shrink: 0;\n}\n\n.mm-nav-group-header {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  width: 100%;\n  padding: 10px 12px 10px 16px;\n  background: none;\n  border: none;\n  cursor: pointer;\n  font-size: 0.7rem;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 0.09em;\n  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));\n  text-align: left;\n  border-top: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.08));\n}\n\n.mm-nav-group-header:first-child {\n  border-top: none;\n}\n\n.mm-nav-group-header:hover {\n  background: var(--mm-hover, rgba(0, 0, 0, 0.04));\n}\n\n.mm-nav-group-header .material-icons {\n  font-size: 16px !important;\n}\n\n.mm-nav-group-arrow {\n  margin-left: auto;\n  font-size: 16px !important;\n}\n\n.mm-nav-item {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  padding: 9px 16px 9px 28px;\n  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));\n  text-decoration: none;\n  font-size: 0.875rem;\n  transition: background 0.15s;\n}\n\n.mm-nav-item:hover {\n  background: var(--mm-hover, rgba(0, 0, 0, 0.04));\n}\n\n.mm-nav-item--active {\n  color: var(--mm-primary, #1565c0);\n  background: var(--mm-primary-bg, rgba(21, 101, 192, 0.08));\n  font-weight: 500;\n  border-left: 3px solid var(--mm-primary, #1565c0);\n  padding-left: 25px;\n}\n\n.mm-nav-item .material-icons {\n  font-size: 18px !important;\n}\n\n/* ─── GitHub link ────────────────────────────────────────────────────────── */\n.mm-github-link {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 12px 16px;\n  color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));\n  text-decoration: none;\n  font-size: 0.8rem;\n  margin-top: auto;\n  border-top: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.12));\n  flex-shrink: 0;\n}\n\n.mm-github-link:hover {\n  color: var(--mm-primary, #1565c0);\n}\n\n.mm-github-link .material-icons {\n  font-size: 16px !important;\n}\n\n/* ─── Overlay (mobile) ───────────────────────────────────────────────────── */\n.mm-overlay {\n  display: none;\n  position: fixed;\n  inset: 0;\n  background: rgba(0, 0, 0, 0.5);\n  z-index: 999;\n}\n\n/* ─── Main content ───────────────────────────────────────────────────────── */\n.mm-content {\n  margin-left: 260px;\n  margin-top: 64px;\n  padding: 24px;\n  min-height: calc(100vh - 64px);\n  box-sizing: border-box;\n}\n\n/* ─── Mobile ─────────────────────────────────────────────────────────────── */\n@media (max-width: 992px) {\n  .mm-hamburger {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  .mm-sidenav {\n    transform: translateX(-100%);\n    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.15);\n  }\n\n  .mm-sidenav--open {\n    transform: translateX(0);\n  }\n\n  .mm-overlay {\n    display: block;\n  }\n\n  .mm-content {\n    margin-left: 0;\n  }\n}\n"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ },
+
 /***/ 5479
 (module) {
 
@@ -15657,6 +15983,55 @@ var update = _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_
 
 /***/ },
 
+/***/ 5009
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(955);
+/* harmony import */ var _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2336);
+/* harmony import */ var _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6812);
+/* harmony import */ var _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4747);
+/* harmony import */ var _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9567);
+/* harmony import */ var _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(1020);
+/* harmony import */ var _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _node_modules_pnpm_css_loader_7_1_4_webpack_5_105_4_node_modules_css_loader_dist_cjs_js_layout_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(8851);
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+var options = {};
+
+options.styleTagTransform = (_node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_styleTagTransform_js__WEBPACK_IMPORTED_MODULE_5___default());
+options.setAttributes = (_node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_setAttributesWithoutAttributes_js__WEBPACK_IMPORTED_MODULE_3___default());
+options.insert = _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_insertBySelector_js__WEBPACK_IMPORTED_MODULE_2___default().bind(null, "head");
+options.domAPI = (_node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_styleDomAPI_js__WEBPACK_IMPORTED_MODULE_1___default());
+options.insertStyleElement = (_node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_insertStyleElement_js__WEBPACK_IMPORTED_MODULE_4___default());
+
+var update = _node_modules_pnpm_style_loader_4_0_0_webpack_5_105_4_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_pnpm_css_loader_7_1_4_webpack_5_105_4_node_modules_css_loader_dist_cjs_js_layout_css__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A, options);
+
+
+
+
+       /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_pnpm_css_loader_7_1_4_webpack_5_105_4_node_modules_css_loader_dist_cjs_js_layout_css__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A && _node_modules_pnpm_css_loader_7_1_4_webpack_5_105_4_node_modules_css_loader_dist_cjs_js_layout_css__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A.locals ? _node_modules_pnpm_css_loader_7_1_4_webpack_5_105_4_node_modules_css_loader_dist_cjs_js_layout_css__WEBPACK_IMPORTED_MODULE_6__/* ["default"] */ .A.locals : undefined);
+
+
+/***/ },
+
 /***/ 955
 (module) {
 
@@ -15906,7 +16281,7 @@ module.exports = styleTagTransform;
 
 /***/ },
 
-/***/ 4118
+/***/ 4520
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -15926,7 +16301,7 @@ exports.AboutPage = AboutPage;
 
 /***/ },
 
-/***/ 4533
+/***/ 1863
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -16175,7 +16550,7 @@ exports.ButtonPage = ButtonPage;
 
 /***/ },
 
-/***/ 3062
+/***/ 1608
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -16489,7 +16864,7 @@ const CollectionsPage = () => {
             }]
           })`,
             }),
-            (0, mithril_1.default)('h3.header', 'Collapsible (accordion)'),
+            (0, mithril_1.default)('h3.header[id=collapsible]', 'Collapsible (accordion)'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.Collapsible, {
                 id: 'testme',
                 className: 'first-second-third',
@@ -16550,7 +16925,7 @@ exports.CollectionsPage = CollectionsPage;
 
 /***/ },
 
-/***/ 3462
+/***/ 6444
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -16631,7 +17006,7 @@ exports.ColorSection = ColorSection;
 
 /***/ },
 
-/***/ 926
+/***/ 1680
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -16640,17 +17015,17 @@ exports.CssPage = void 0;
 const tslib_1 = __webpack_require__(5959);
 const mithril_1 = tslib_1.__importDefault(__webpack_require__(9361));
 const mithril_materialized_1 = __webpack_require__(7578);
-const color_section_1 = __webpack_require__(3462);
-const grid_section_1 = __webpack_require__(6461);
-const helpers_section_1 = __webpack_require__(2880);
-const media_section_1 = __webpack_require__(3765);
-const pulse_section_1 = __webpack_require__(1788);
-const sass_section_1 = __webpack_require__(1271);
-const shadow_section_1 = __webpack_require__(3613);
-const table_section_1 = __webpack_require__(2721);
-const transitions_section_1 = __webpack_require__(3489);
-const typography_section_1 = __webpack_require__(7724);
-const theming_section_1 = __webpack_require__(1351);
+const color_section_1 = __webpack_require__(6444);
+const grid_section_1 = __webpack_require__(431);
+const helpers_section_1 = __webpack_require__(5606);
+const media_section_1 = __webpack_require__(8827);
+const pulse_section_1 = __webpack_require__(7198);
+const sass_section_1 = __webpack_require__(7317);
+const shadow_section_1 = __webpack_require__(5843);
+const table_section_1 = __webpack_require__(5435);
+const transitions_section_1 = __webpack_require__(5311);
+const typography_section_1 = __webpack_require__(3538);
+const theming_section_1 = __webpack_require__(989);
 const SIDENAV_EXPANDED_WIDTH = 180;
 const SIDENAV_COLLAPSED_WIDTH = 60;
 // Materialize default navbar height
@@ -16732,7 +17107,7 @@ exports.CssPage = CssPage;
 
 /***/ },
 
-/***/ 6461
+/***/ 431
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -16809,7 +17184,7 @@ exports.GridSection = GridSection;
 
 /***/ },
 
-/***/ 2880
+/***/ 5606
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -16900,7 +17275,7 @@ exports.HelpersSection = HelpersSection;
 
 /***/ },
 
-/***/ 3765
+/***/ 8827
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -16963,7 +17338,7 @@ exports.MediaSection = MediaSection;
 
 /***/ },
 
-/***/ 1788
+/***/ 7198
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -17025,7 +17400,7 @@ exports.PulseSection = PulseSection;
 
 /***/ },
 
-/***/ 1271
+/***/ 7317
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -17142,7 +17517,7 @@ exports.SassSection = SassSection;
 
 /***/ },
 
-/***/ 3613
+/***/ 5843
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -17212,7 +17587,7 @@ exports.ShadowSection = ShadowSection;
 
 /***/ },
 
-/***/ 2721
+/***/ 5435
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -17281,7 +17656,7 @@ exports.TableSection = TableSection;
 
 /***/ },
 
-/***/ 1351
+/***/ 989
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -17400,7 +17775,7 @@ exports.ThemingSection = ThemingSection;
 
 /***/ },
 
-/***/ 3489
+/***/ 5311
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -17471,7 +17846,7 @@ exports.TransitionsSection = TransitionsSection;
 
 /***/ },
 
-/***/ 7724
+/***/ 3538
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -17560,7 +17935,7 @@ exports.TypographySection = TypographySection;
 
 /***/ },
 
-/***/ 4426
+/***/ 2052
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -17860,7 +18235,7 @@ const DataTablePage = () => {
                 // Page header
                 (0, mithril_1.default)('.row', [
                     (0, mithril_1.default)('.col.s12', [
-                        (0, mithril_1.default)('h3', 'DataTable Component'),
+                        (0, mithril_1.default)('h3[id=datatable]', 'DataTable Component'),
                         (0, mithril_1.default)('p.grey-text', 'Advanced data table with sorting, filtering, pagination, selection, and scrolling support.'),
                     ]),
                 ]),
@@ -17977,7 +18352,7 @@ const DataTablePage = () => {
                 // TreeView Section
                 (0, mithril_1.default)('.row', [
                     (0, mithril_1.default)('.col.s12', [
-                        (0, mithril_1.default)('h3', { style: 'margin-top: 3rem;' }, 'TreeView Component'),
+                        (0, mithril_1.default)('h3[id=treeview]', { style: 'margin-top: 3rem;' }, 'TreeView Component'),
                         (0, mithril_1.default)('p.grey-text', 'Hierarchical tree component with expand/collapse, selection, and customizable icons.'),
                     ]),
                 ]),
@@ -18229,20 +18604,20 @@ exports.DataTablePage = DataTablePage;
 
 /***/ },
 
-/***/ 8334
+/***/ 3440
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.HomePage = void 0;
 const tslib_1 = __webpack_require__(5959);
-const dashboard_service_1 = __webpack_require__(2633);
+const dashboard_service_1 = __webpack_require__(3979);
 const mithril_1 = tslib_1.__importDefault(__webpack_require__(9361));
 const mithril_materialized_1 = __webpack_require__(7578);
 const HomePage = () => ({
     view: () => (0, mithril_1.default)('.home-page', [
         (0, mithril_1.default)('.col.s12.m7.l8', (0, mithril_1.default)('.introduction', [
-            (0, mithril_1.default)('h2', 'Mithril-Materialized v3.14'),
+            (0, mithril_1.default)('h2', 'Mithril-Materialized v3.15'),
             (0, mithril_1.default)('.card.green.lighten-4', [
                 (0, mithril_1.default)('.card-content', [
                     (0, mithril_1.default)('span.card-title', '🚀 Latest Stable Release'),
@@ -18253,166 +18628,126 @@ const HomePage = () => ({
                     ]),
                 ]),
             ]),
-            (0, mithril_1.default)('p', `I like Mithril, and I also like Material Design. However, depending on large external libraries
-          like materialize-css can be problematic with bundle sizes and conflicting dependencies. For that reason,
-          mithril-materialized provides you with self-contained Mithril components that implement Material Design
-          principles without external JavaScript dependencies.`),
-            (0, mithril_1.default)('h3', '✨ What\'s New in v3.14'),
+            (0, mithril_1.default)('p', `Mithril-Materialized gives you self-contained Mithril components implementing Material Design
+          principles — no jQuery, no Materialize-CSS runtime, no bloat. Everything you need, nothing you don't.`),
+            (0, mithril_1.default)('h3', "✨ What's New in v3.15"),
             (0, mithril_1.default)('ul.collection', [
                 (0, mithril_1.default)('li.collection-item', [
-                    (0, mithril_1.default)('strong', 'ConfirmButton Component: '),
-                    'Purpose-built component for delete and submit actions. Click once to initialize, again to confirm.',
+                    (0, mithril_1.default)('strong', 'CSS Documentation: '),
+                    'Comprehensive CSS section covering Color, Grid, Typography, Helpers, Theming, and more.',
                 ]),
                 (0, mithril_1.default)('li.collection-item', [
-                    (0, mithril_1.default)('i.material-icons.tiny', 'check'),
-                    ' Support for different icons and configurable delays',
+                    (0, mithril_1.default)('strong', 'DataTable — Horizontal Scrolling: '),
+                    'Responsive tables now scroll horizontally on small screens.',
+                ]),
+                (0, mithril_1.default)('li.collection-item', [
+                    (0, mithril_1.default)('strong', 'TypeScript 6 support: '),
+                    'Updated tsconfig and ambient declarations for full TS 6 compatibility.',
+                ]),
+                (0, mithril_1.default)('li.collection-item', [
+                    (0, mithril_1.default)('strong', 'DatePicker fix: '),
+                    'Month/year dropdown selection now correctly applies and closes.',
                 ]),
             ]),
-            (0, mithril_1.default)('h3', '✨ What\'s New in v3.13'),
+            (0, mithril_1.default)('h3', "✨ What's New in v3.14"),
             (0, mithril_1.default)('ul.collection', [
                 (0, mithril_1.default)('li.collection-item', [
-                    (0, mithril_1.default)('strong', '📊 LikertScale Component: '),
-                    'Purpose-built component for survey questions and rating scales',
+                    (0, mithril_1.default)('strong', 'ConfirmButton: '),
+                    'Purpose-built component for destructive actions. Click once to prime, again to confirm.',
                 ]),
                 (0, mithril_1.default)('li.collection-item', [
-                    (0, mithril_1.default)('i.material-icons.tiny', 'star'),
-                    ' Enhanced Rating Component: Tooltips now display correctly on hover',
+                    (0, mithril_1.default)('strong', 'LikertScale: '),
+                    'Survey-ready component for rating scales with rich layout and accessibility support.',
                 ]),
                 (0, mithril_1.default)('li.collection-item', [
-                    (0, mithril_1.default)('i.material-icons.tiny', 'format_quote'),
-                    ' Rich Collection Content: Collection items now support rich content via content property',
+                    (0, mithril_1.default)('strong', 'Enhanced Rating: '),
+                    'Tooltips display correctly on hover; half-step and fractional ratings supported.',
+                ]),
+                (0, mithril_1.default)('li.collection-item', [
+                    (0, mithril_1.default)('strong', 'Rich Collection Items: '),
+                    'Collection items now accept rich content via the content property.',
                 ]),
             ]),
             (0, mithril_1.default)('h3', '✨ Key Features'),
             (0, mithril_1.default)('ul.collection', [
-                (0, mithril_1.default)('li.collection-item', [
-                    (0, mithril_1.default)('i.material-icons.tiny', '🔥'),
-                    ' Zero external JavaScript dependencies, complete ESM module size < 45kb gzipped',
-                ]),
-                (0, mithril_1.default)('li.collection-item', [(0, mithril_1.default)('i.material-icons.tiny', '📦'), ' Significantly smaller bundle size']),
-                (0, mithril_1.default)('li.collection-item', [(0, mithril_1.default)('i.material-icons.tiny', '🎨'), ' Custom SVG icons (no font dependencies)']),
-                (0, mithril_1.default)('li.collection-item', [(0, mithril_1.default)('i.material-icons.tiny', '⚡'), ' Better performance without jQuery']),
-                (0, mithril_1.default)('li.collection-item', [
-                    (0, mithril_1.default)('i.material-icons.tiny', '🛠️'),
-                    ' Enhanced DatePicker and TimePicker components',
-                ]),
-                (0, mithril_1.default)('li.collection-item', [(0, mithril_1.default)('i.material-icons.tiny', '🌗'), ' Built-in dark/light theme system']),
-                (0, mithril_1.default)('li.collection-item', [
-                    (0, mithril_1.default)('i.material-icons.tiny', '🎯'),
-                    ' Extensive component library with timeline, masonry, wizard, rating, image lists, and data tables',
-                ]),
+                (0, mithril_1.default)('li.collection-item', 'Zero external JavaScript dependencies — ESM bundle < 45 KB gzipped'),
+                (0, mithril_1.default)('li.collection-item', 'Custom SVG icons — no icon font dependency required'),
+                (0, mithril_1.default)('li.collection-item', 'Built-in light / dark / auto theme system with CSS custom properties'),
+                (0, mithril_1.default)('li.collection-item', 'Modular CSS — import only what you need'),
+                (0, mithril_1.default)('li.collection-item', 'Enhanced DatePicker and TimePicker with i18n and range selection'),
+                (0, mithril_1.default)('li.collection-item', 'Extensive library: Timeline, Masonry, Wizard, Rating, ImageList, DataTable, and more'),
             ]),
             (0, mithril_1.default)('h3', '🌓 Theme System'),
-            (0, mithril_1.default)('p', 'Built-in light and dark theme support with automatic system theme detection:'),
+            (0, mithril_1.default)('p', 'Built-in light and dark theme support with automatic system-preference detection:'),
             (0, mithril_1.default)('ul.collection', [
                 (0, mithril_1.default)('li.collection-item', [
                     (0, mithril_1.default)('span.blue-text', 'ThemeSwitcher: '),
-                    'Complete theme switcher with light/dark/auto options',
+                    'Full light / dark / auto switcher with persistence.',
                 ]),
                 (0, mithril_1.default)('li.collection-item', [
                     (0, mithril_1.default)('span.blue-text', 'ThemeToggle: '),
-                    'Simple light/dark toggle button for headers',
+                    'Compact toggle button for nav bars.',
                 ]),
                 (0, mithril_1.default)('li.collection-item', [
                     (0, mithril_1.default)('span.blue-text', 'CSS Variables: '),
-                    'All colors use CSS custom properties for smooth theme transitions',
-                ]),
-                (0, mithril_1.default)('li.collection-item', [
-                    (0, mithril_1.default)('span.blue-text', 'Auto Detection: '),
-                    "Automatically respects user's system theme preference",
+                    'All colours use CSS custom properties for seamless theme transitions.',
                 ]),
             ]),
             (0, mithril_1.default)('h3', '🎨 CSS Options'),
-            (0, mithril_1.default)('p', 'Multiple ways to include styling based on your needs:'),
             (0, mithril_1.default)('ul.collection', [
-                (0, mithril_1.default)('li.collection-item', [
-                    (0, mithril_1.default)('span.green-text', 'index.css: '),
-                    'Complete CSS bundle (23KB gzipped) with all components',
-                ]),
+                (0, mithril_1.default)('li.collection-item', [(0, mithril_1.default)('span.green-text', 'index.css: '), 'Complete bundle (~23 KB gzipped).']),
                 (0, mithril_1.default)('li.collection-item', [
                     (0, mithril_1.default)('span.green-text', 'Modular CSS: '),
-                    'Import only needed modules (core.css, forms.css, components.css, etc.)',
+                    'core.css · forms.css · components.css · pickers.css · advanced.css · utilities.css',
                 ]),
-                (0, mithril_1.default)('li.collection-item', [
-                    (0, mithril_1.default)('span.green-text', 'SASS: '),
-                    'Full SASS source files for complete customization',
-                ]),
+                (0, mithril_1.default)('li.collection-item', [(0, mithril_1.default)('span.green-text', 'SASS: '), 'Full source files for complete customisation.']),
             ]),
             (0, mithril_1.default)('p', [
-                'Check out the complete API documentation ',
-                (0, mithril_1.default)('a[href="https://erikvullings.github.io/mithril-materialized/typedoc/index.html"]', 'here'),
+                'Full API documentation is available ',
+                (0, mithril_1.default)('a[href=https://erikvullings.github.io/mithril-materialized/typedoc/index.html]', 'here'),
                 '.',
             ]),
             (0, mithril_1.default)('h3', '📦 Installation'),
-            (0, mithril_1.default)('p', 'Install the package (much simpler now!):'),
             (0, mithril_1.default)(mithril_materialized_1.CodeBlock, {
                 language: 'console',
                 code: `npm install mithril mithril-materialized
-# TypeScript types are included`,
+# TypeScript types are bundled`,
             }),
-            (0, mithril_1.default)('p', 'Use the components in your application:'),
             (0, mithril_1.default)(mithril_materialized_1.CodeBlock, {
                 code: `import m from 'mithril';
 import { TextInput, Button, DatePicker, ThemeToggle } from 'mithril-materialized';
-// Option 1: Complete CSS bundle
+// Complete CSS bundle
 import 'mithril-materialized/index.css';
-// Option 2: Modular CSS (smaller bundles)
+// — or modular CSS —
 // import 'mithril-materialized/core.css';
 // import 'mithril-materialized/forms.css';
 
 const MyApp = () => ({
   view: () => m('.container', [
-    // Theme toggle in nav
-    m('nav.light-blue', [
-      m('.nav-wrapper', [
-        m('span.brand-logo', 'My App'),
-        m('ul.right', [
-          m('li', m(ThemeToggle))
-        ])
-      ])
-    ]),
-    // Form inputs with clear functionality
-    m(TextInput, {
-      label: 'Your name',
-      canClear: true, // New: add clear button
-      onchange: (value) => console.log(value)
-    }),
-    m(Button, {
-      label: 'Submit',
-      onclick: () => alert('Hello!')
-    }),
-    m(DatePicker, {
-      label: 'Select date',
-      onchange: (date) => console.log(date)
-    })
-  ])
+    m('nav.light-blue', m('.nav-wrapper', [
+      m('span.brand-logo', 'My App'),
+      m('ul.right', [m('li', m(ThemeToggle))]),
+    ])),
+    m(TextInput, { label: 'Your name', canClear: true, onchange: (v) => console.log(v) }),
+    m(Button, { label: 'Submit', onclick: () => alert('Hello!') }),
+    m(DatePicker, { label: 'Select date', onchange: (d) => console.log(d) }),
+  ]),
 });`,
             }),
-            (0, mithril_1.default)('h3', '🎨 CSS & Theme Usage'),
-            (0, mithril_1.default)('p', 'Multiple styling options and theme system:'),
+            (0, mithril_1.default)('h3', '🎨 Theme Usage'),
             (0, mithril_1.default)(mithril_materialized_1.CodeBlock, {
-                code: `// CSS Options
-import 'mithril-materialized/index.css'; // Complete bundle
-// OR modular imports
-import 'mithril-materialized/core.css';      // Essential styles
-import 'mithril-materialized/forms.css';     // Form components
-import 'mithril-materialized/components.css'; // Interactive components
+                code: `import { ThemeManager, ThemeSwitcher, ThemeToggle } from 'mithril-materialized';
 
-// Theme System
-import { ThemeManager, ThemeSwitcher, ThemeToggle } from 'mithril-materialized';
-
-// Programmatic theme control
 ThemeManager.setTheme('dark');  // 'light' | 'dark' | 'auto'
-ThemeManager.toggle();          // Toggle between themes
-ThemeManager.getTheme();        // Get current theme
+ThemeManager.toggle();
+ThemeManager.getTheme();
 
-// UI Components
 m(ThemeSwitcher, { onThemeChange: (theme) => console.log(theme) });
-m(ThemeToggle); // Simple toggle button`,
+m(ThemeToggle);`,
             }),
         ])),
         (0, mithril_1.default)('.col.s12.m5.l4', [
-            (0, mithril_1.default)('h1', 'Contents'),
+            (0, mithril_1.default)('h3', 'Contents'),
             (0, mithril_1.default)('ul.collection', [
                 dashboard_service_1.dashboardSvc
                     .getList()
@@ -18427,7 +18762,7 @@ exports.HomePage = HomePage;
 
 /***/ },
 
-/***/ 7359
+/***/ 1713
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -18803,7 +19138,7 @@ exports.ImageListPage = ImageListPage;
 
 /***/ },
 
-/***/ 3745
+/***/ 5947
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -19058,7 +19393,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
     return {
         view: () => (0, mithril_1.default)('.col.s12', [
             (0, mithril_1.default)('h2.header', 'Inputs'),
-            (0, mithril_1.default)('h3.header', 'TextInput'),
+            (0, mithril_1.default)('h3.header[id=textinput]', 'TextInput'),
             (0, mithril_1.default)('h4.header', 'Controlled text input'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.TextInput, {
                 label: 'What is your name?',
@@ -19157,7 +19492,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             value: 'Read Only Value',
           } as InputAttrs)`,
             }),
-            (0, mithril_1.default)('h3.header', 'Autocomplete'),
+            (0, mithril_1.default)('h3.header[id=autocomplete]', 'Autocomplete'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.Autocomplete, {
                 label: 'What is your favorite company?',
                 data: {
@@ -19185,7 +19520,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             onchange: (v) => (autocompleteValue = v),
         } as InputAttrs)`,
             }),
-            (0, mithril_1.default)('h3.header', 'Search and select, optionally add'),
+            (0, mithril_1.default)('h3.header[id=searchselect]', 'Search and select, optionally add'),
             (0, mithril_1.default)((mithril_materialized_1.SearchSelect), {
                 options: searchSelectOptions,
                 label: 'Select search options',
@@ -19371,7 +19706,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           placeholder: 'No fruits selected',
         })`,
             }),
-            (0, mithril_1.default)('h3.header', 'TextArea'),
+            (0, mithril_1.default)('h3.header[id=textarea]', 'TextArea'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.TextArea, {
                 label: 'Please, describe yourself',
                 helperText: `Don't be shy`,
@@ -19444,7 +19779,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           ),
         ])`,
             }),
-            (0, mithril_1.default)('h3.header', 'NumberInput'),
+            (0, mithril_1.default)('h3.header[id=numberinput]', 'NumberInput'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.NumberInput, {
                 min: 1,
                 max: 120,
@@ -19481,7 +19816,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             validate: (v: number) => v === 42,
           })`,
             }),
-            (0, mithril_1.default)('h3.header', 'EmailInput'),
+            (0, mithril_1.default)('h3.header[id=emailinput]', 'EmailInput'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.EmailInput, {
                 label: 'What is your email?',
                 dataError: 'Please use username@org.com',
@@ -19498,7 +19833,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             onchange: v => emailValue = v,
           })`,
             }),
-            (0, mithril_1.default)('h3.header', 'UrlInput'),
+            (0, mithril_1.default)('h3.header[id=urlinput]', 'UrlInput'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.UrlInput, {
                 label: 'What is your favorite website?',
                 placeholder: 'http(s)://',
@@ -19516,7 +19851,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             onchange: v => urlValue = v,
           })`,
             }),
-            (0, mithril_1.default)('h3.header', 'PasswordInput'),
+            (0, mithril_1.default)('h3.header[id=passwordinput]', 'PasswordInput'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.PasswordInput, {
                 label: 'What is your password?',
                 iconName: 'lock',
@@ -19531,7 +19866,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             onchange: v => pwdValue = v,
           })`,
             }),
-            (0, mithril_1.default)('h3.header', 'FileInput'),
+            (0, mithril_1.default)('h3.header[id=fileinput]', 'FileInput'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.FileInput, {
                 placeholder: 'Upload one or more files',
                 multiple: true,
@@ -19551,7 +19886,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             onchange: (files: FileList) => console.table(files),
           })`,
             }),
-            (0, mithril_1.default)('h3.header', 'RangeInput'),
+            (0, mithril_1.default)('h3.header[id=rangeinput]', 'RangeInput'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.RangeInput, {
                 min: 0,
                 max: 100,
@@ -19695,7 +20030,7 @@ m(RangeInput, {
             onchange: (minVal: number, maxVal: number) => console.log('Vertical range:', minVal, '-', maxVal),
           } as InputAttrs<number>)`,
             }),
-            (0, mithril_1.default)('h3.header', 'Chips'),
+            (0, mithril_1.default)('h3.header[id=chips]', 'Chips'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.Chips, {
                 onchange: (chips) => console.log(JSON.stringify(chips)),
                 label: 'An optional label',
@@ -19753,7 +20088,7 @@ m(RangeInput, {
             },
           })`,
             }),
-            (0, mithril_1.default)('h3.header', 'ColorInput'),
+            (0, mithril_1.default)('h3.header[id=colorinput]', 'ColorInput'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.ColorInput, {
                 label: 'What is your favorite color?',
                 defaultValue: colorValue,
@@ -19774,7 +20109,7 @@ exports.InputPage = InputPage;
 
 /***/ },
 
-/***/ 3181
+/***/ 2267
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -19782,53 +20117,133 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Layout = void 0;
 const tslib_1 = __webpack_require__(5959);
 const mithril_1 = tslib_1.__importDefault(__webpack_require__(9361));
-const dashboard_service_1 = __webpack_require__(2633);
+const dashboard_service_1 = __webpack_require__(3979);
 const mithril_materialized_1 = __webpack_require__(7578);
-const isActive = (path) => (mithril_1.default.route.get().indexOf(path) >= 0 ? '.active' : '');
-const Layout = () => ({
-    view: (vnode) => (0, mithril_1.default)('.main', [
-        (0, mithril_1.default)('nav', (0, mithril_1.default)('.nav-wrapper', [
-            (0, mithril_1.default)(
-            // tslint:disable-next-line:max-line-length
-            'a.github-corner[aria-label=View source on GitHub][href=https://github.com/erikvullings/mithril-materialized]', (0, mithril_1.default)('svg[aria-hidden=true][height=80][viewBox=0 0 250 250][width=80]', {
-                style: {
-                    fill: 'black',
-                    color: '#fff',
-                    position: 'absolute',
-                    top: '0',
-                    border: '0',
-                    left: '0',
-                    transform: 'scale(-1, 1)',
-                },
-            }, [
-                (0, mithril_1.default)('path[d=M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z]'),
-                (0, mithril_1.default)(
-                // tslint:disable-next-line:max-line-length
-                'path.octo-arm[d=M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2][fill=currentColor]', { style: { 'transform-origin': '130px 106px' } }),
-                (0, mithril_1.default)(
-                // tslint:disable-next-line:max-line-length
-                'path.octo-body[d=M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z][fill=currentColor]'),
-            ])),
-            (0, mithril_1.default)('style', 
-            // tslint:disable-next-line:max-line-length
-            '.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}'),
-            (0, mithril_1.default)('ul.right', [
-                ...dashboard_service_1.dashboardSvc
-                    .getList()
-                    .filter((d) => d.visible)
-                    .map((d) => (0, mithril_1.default)(`li${isActive(d.route)}`, (0, mithril_1.default)(mithril_1.default.route.Link, { href: d.route }, d.icon ? (0, mithril_1.default)('i.material-icons', d.icon) : d.title))),
-                (0, mithril_1.default)('li', (0, mithril_1.default)(mithril_materialized_1.ThemeToggle, { className: 'white-text' })),
-            ]),
-        ])),
-        (0, mithril_1.default)('.container', (0, mithril_1.default)('.row', vnode.children)),
-    ]),
-});
+__webpack_require__(5009);
+const NAV_GROUPS = [
+    { id: 'general', label: 'General', icon: 'home' },
+    { id: 'forms', label: 'Forms & Inputs', icon: 'edit' },
+    { id: 'components', label: 'Components', icon: 'widgets' },
+    { id: 'display', label: 'Display', icon: 'view_module' },
+    { id: 'styling', label: 'Styling', icon: 'palette' },
+];
+const navigateTo = (entry) => {
+    mithril_1.default.route.set(entry.route);
+    if (entry.hash) {
+        setTimeout(() => {
+            document.getElementById(entry.hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+    }
+};
+const isActive = (route) => mithril_1.default.route.get().startsWith(route);
+const Layout = () => {
+    let sidenavOpen = false;
+    let searchQuery = '';
+    let showSearchResults = false;
+    const openGroups = new Set(['general', 'forms', 'components', 'display', 'styling']);
+    const filteredResults = () => {
+        const q = searchQuery.trim().toLowerCase();
+        if (!q)
+            return [];
+        return dashboard_service_1.searchIndex
+            .filter((e) => e.title.toLowerCase().includes(q) || e.page.toLowerCase().includes(q))
+            .slice(0, 14);
+    };
+    const pages = () => dashboard_service_1.dashboardSvc.getList().filter((d) => d.visible);
+    return {
+        view: (vnode) => {
+            const results = filteredResults();
+            return (0, mithril_1.default)('.mm-layout', [
+                // ── Top bar ──────────────────────────────────────────────────────
+                (0, mithril_1.default)('header.mm-topbar', [
+                    (0, mithril_1.default)('button.mm-hamburger[type=button]', { onclick: () => { sidenavOpen = !sidenavOpen; } }, (0, mithril_1.default)('i.material-icons', 'menu')),
+                    (0, mithril_1.default)('span.mm-brand', 'mithril-materialized'),
+                    (0, mithril_1.default)('.mm-topbar-spacer'),
+                    (0, mithril_1.default)(mithril_materialized_1.ThemeToggle, { className: 'white-text' }),
+                ]),
+                // ── Overlay (mobile) ─────────────────────────────────────────────
+                sidenavOpen &&
+                    (0, mithril_1.default)('.mm-overlay', {
+                        onclick: () => { sidenavOpen = false; },
+                    }),
+                // ── Sidenav ──────────────────────────────────────────────────────
+                (0, mithril_1.default)(`nav.mm-sidenav${sidenavOpen ? '.mm-sidenav--open' : ''}`, [
+                    // Search box
+                    (0, mithril_1.default)('.mm-search', [
+                        (0, mithril_1.default)('i.material-icons.mm-search-icon', 'search'),
+                        (0, mithril_1.default)('input.mm-search-input[type=text][placeholder=Search components…]', {
+                            value: searchQuery,
+                            oninput: (e) => {
+                                searchQuery = e.target.value;
+                                showSearchResults = true;
+                            },
+                            onfocus: () => { showSearchResults = true; },
+                            onblur: () => { setTimeout(() => { showSearchResults = false; mithril_1.default.redraw(); }, 180); },
+                        }),
+                        searchQuery &&
+                            (0, mithril_1.default)('button.mm-search-clear[type=button]', { onclick: () => { searchQuery = ''; showSearchResults = false; } }, (0, mithril_1.default)('i.material-icons', 'close')),
+                        // Dropdown results
+                        showSearchResults &&
+                            results.length > 0 &&
+                            (0, mithril_1.default)('.mm-search-results', results.map((entry) => (0, mithril_1.default)('.mm-search-result', {
+                                key: `${entry.route}#${entry.hash ?? ''}`,
+                                onmousedown: (e) => {
+                                    e.preventDefault();
+                                    navigateTo(entry);
+                                    searchQuery = '';
+                                    showSearchResults = false;
+                                    sidenavOpen = false;
+                                },
+                            }, [
+                                (0, mithril_1.default)('span.mm-search-result-title', entry.title),
+                                (0, mithril_1.default)('span.mm-search-result-page', entry.page),
+                            ]))),
+                    ]),
+                    // Grouped navigation
+                    ...NAV_GROUPS.map((group) => {
+                        const groupPages = pages().filter((d) => d.group === group.id);
+                        if (groupPages.length === 0)
+                            return null;
+                        const isOpen = openGroups.has(group.id);
+                        return (0, mithril_1.default)('.mm-nav-group', { key: group.id }, [
+                            (0, mithril_1.default)('button.mm-nav-group-header[type=button]', {
+                                onclick: () => {
+                                    if (isOpen)
+                                        openGroups.delete(group.id);
+                                    else
+                                        openGroups.add(group.id);
+                                },
+                            }, [
+                                (0, mithril_1.default)('i.material-icons', group.icon),
+                                (0, mithril_1.default)('span', group.label),
+                                (0, mithril_1.default)('i.material-icons.mm-nav-group-arrow', isOpen ? 'expand_less' : 'expand_more'),
+                            ]),
+                            isOpen &&
+                                (0, mithril_1.default)('.mm-nav-items', groupPages.map((d) => (0, mithril_1.default)(`a.mm-nav-item${isActive(d.route) ? '.mm-nav-item--active' : ''}`, {
+                                    key: d.id,
+                                    href: `#!${d.route}`,
+                                    onclick: () => { sidenavOpen = false; },
+                                }, [
+                                    d.icon && (0, mithril_1.default)('i.material-icons', d.icon),
+                                    (0, mithril_1.default)('span', d.title),
+                                ]))),
+                        ]);
+                    }),
+                    // GitHub link
+                    (0, mithril_1.default)('a.mm-github-link[href=https://github.com/erikvullings/mithril-materialized][target=_blank][rel=noopener]', [(0, mithril_1.default)('i.material-icons', 'code'), (0, mithril_1.default)('span', 'View on GitHub')]),
+                ]),
+                // ── Main content ──────────────────────────────────────────────────
+                (0, mithril_1.default)('main.mm-content', vnode.children),
+            ]);
+        },
+    };
+};
 exports.Layout = Layout;
 
 
 /***/ },
 
-/***/ 2930
+/***/ 520
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -20079,7 +20494,7 @@ exports.MasonryPage = MasonryPage;
 
 /***/ },
 
-/***/ 7200
+/***/ 9162
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -20133,7 +20548,7 @@ const MiscPage = () => {
                 (0, mithril_1.default)('a[href=https://materializecss.com/pagination.html][target=_blank]', 'Parallax'),
                 '.',
             ]),
-            (0, mithril_1.default)('h3.header', 'Toast'),
+            (0, mithril_1.default)('h3.header[id=toast]', 'Toast'),
             (0, mithril_1.default)('p', 'Toast provides brief feedback about an operation through a message at the bottom of the screen.'),
             (0, mithril_1.default)('.row', [
                 (0, mithril_1.default)(mithril_materialized_1.Button, {
@@ -20257,7 +20672,7 @@ toast({
   completeCallback: () => console.log('Toast dismissed'),
 });`,
             }),
-            (0, mithril_1.default)('h3.header', 'Badge'),
+            (0, mithril_1.default)('h3.header[id=badge]', 'Badge'),
             (0, mithril_1.default)('p', 'Badges display notification counts, status indicators, or labels anchored to elements.'),
             (0, mithril_1.default)('h4', 'Basic Badges'),
             (0, mithril_1.default)('.row', { style: 'gap: 20px; display: flex; align-items: center; flex-wrap: wrap;' }, [
@@ -20461,7 +20876,7 @@ m(Badge, { badgeContent: 0 }, m(Button, { label: 'Auto-hidden' }))
 // Show zero explicitly
 m(Badge, { badgeContent: 0, showZero: true }, m(Button, { label: 'Show Zero' }))`,
             }),
-            (0, mithril_1.default)('h3.header', 'Tooltip'),
+            (0, mithril_1.default)('h3.header[id=tooltip]', 'Tooltip'),
             (0, mithril_1.default)('p', 'Tooltips are small, interactive, textual hints for mainly graphical elements.'),
             (0, mithril_1.default)('.row', [
                 (0, mithril_1.default)('p', [
@@ -20548,7 +20963,7 @@ oncreate: (vnode) => {
   });
 }`,
             }),
-            (0, mithril_1.default)('h3.header', 'Tabs'),
+            (0, mithril_1.default)('h3.header[id=tabs]', 'Tabs'),
             (0, mithril_1.default)(mithril_materialized_1.Tabs, {
                 selectedTabId: state.selectedTabId,
                 tabWidth: state.tabWidths[state.tabWidthId % 3],
@@ -20653,7 +21068,7 @@ oncreate: (vnode) => {
                     ],
                   })`,
             }),
-            (0, mithril_1.default)('h3.header', 'Parallax'),
+            (0, mithril_1.default)('h3.header[id=parallax]', 'Parallax'),
             (0, mithril_1.default)(mithril_materialized_1.Parallax, { src: Vincent_van_Gogh___Landscape_at_twilight___Google_Art_Project_jpg_1.default }),
             (0, mithril_1.default)(mithril_materialized_1.CodeBlock, {
                 code: `          m(Parallax, { src: gogh }) // should be embedded in layout so the width is not limited`,
@@ -20663,7 +21078,7 @@ oncreate: (vnode) => {
             (0, mithril_1.default)(mithril_materialized_1.CodeBlock, {
                 code: `          m(MaterialBox, { src: gogh, width: 600 })`,
             }),
-            (0, mithril_1.default)('h3.header', 'Carousel'),
+            (0, mithril_1.default)('h3.header[id=carousel]', 'Carousel'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.Carousel, {
                 items: [
                     { href: '#!/one!', src: 'https://picsum.photos/id/301/200/300' },
@@ -20682,7 +21097,7 @@ oncreate: (vnode) => {
                     { href: '#!/five!', src: 'https://picsum.photos/id/305/200/300' },
                   ] })`,
             }),
-            (0, mithril_1.default)('h3.header', 'Pagination'),
+            (0, mithril_1.default)('h3.header[id=pagination]', 'Pagination'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.Pagination, {
                 size: 5,
                 curPage: curPage(),
@@ -20759,7 +21174,7 @@ exports.MiscPage = MiscPage;
 
 /***/ },
 
-/***/ 2883
+/***/ 9685
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -20787,7 +21202,7 @@ const ModalPage = () => {
                 (0, mithril_1.default)('a[href=https://materializecss.com/modals.html#!][target=_blank]', 'materialize-css website'),
                 '.',
             ]),
-            (0, mithril_1.default)('h3.header', 'Normal Modal'),
+            (0, mithril_1.default)('h3.header[id=modal]', 'Normal Modal'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.Button, {
                 label: 'Open modal',
                 onclick: () => {
@@ -21212,7 +21627,7 @@ exports.ModalPage = ModalPage;
 
 /***/ },
 
-/***/ 6344
+/***/ 666
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -21309,7 +21724,7 @@ const NavigationPage = () => {
                 'These components help users navigate through your application and complete multi-step processes.',
             ]),
             // Breadcrumb Example
-            (0, mithril_1.default)('h3.header', 'Breadcrumb Navigation'),
+            (0, mithril_1.default)('h3.header[id=breadcrumb]', 'Breadcrumb Navigation'),
             (0, mithril_1.default)('p', "Shows the user's current location within the site hierarchy:"),
             (0, mithril_1.default)('.row', [
                 (0, mithril_1.default)('.col.s12', [
@@ -21335,7 +21750,7 @@ m(Breadcrumb, {
 })`,
             }),
             // Sidenav Example
-            (0, mithril_1.default)('h3.header', 'Sidenav'),
+            (0, mithril_1.default)('h3.header[id=sidenav]', 'Sidenav'),
             (0, mithril_1.default)('p', 'Responsive navigation drawer that slides in from the side:'),
             (0, mithril_1.default)('.row', [
                 (0, mithril_1.default)('.col.s12', [
@@ -21641,7 +22056,7 @@ m(Sidenav, {
 ])`,
             }),
             // Wizard Example
-            (0, mithril_1.default)('h3.header', 'Wizard/Stepper'),
+            (0, mithril_1.default)('h3.header[id=wizard]', 'Wizard/Stepper'),
             (0, mithril_1.default)('p', 'Multi-step interface for guiding users through complex processes:'),
             (0, mithril_1.default)('.row', [
                 (0, mithril_1.default)('.col.s12', [
@@ -21763,7 +22178,7 @@ exports.NavigationPage = NavigationPage;
 
 /***/ },
 
-/***/ 5037
+/***/ 4439
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -21797,7 +22212,7 @@ const PickerPage = () => {
                 right: 'disable',
                 onchange: (v) => (state.disabled = v),
             })),
-            (0, mithril_1.default)('h3.header', 'DatePicker - Enhanced with custom text input and display formats'),
+            (0, mithril_1.default)('h3.header[id=datepicker]', 'DatePicker - Enhanced with custom text input and display formats'),
             // Basic date picker
             (0, mithril_1.default)('h4', 'Basic Date Picker (ISO format - YYYY-MM-DD)'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.DatePicker, {
@@ -22041,7 +22456,7 @@ m(ModalPanel, {
 })`,
             }),
             // Date Range Picker Examples
-            (0, mithril_1.default)('h3.header', 'Date Range Picker'),
+            (0, mithril_1.default)('h3.header[id=daterangepicker]', 'Date Range Picker'),
             (0, mithril_1.default)('h4', 'Basic Date Range Picker'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.DatePicker, {
                 disabled: state.disabled,
@@ -22157,7 +22572,7 @@ m(DatePicker, {
 // - 'dd.mm.yyyy' (German-style)
 // - 'dd-mm-yyyy' (Alternative format)`,
             }),
-            (0, mithril_1.default)('h3.header', 'TimePicker - Enhanced with i18n support'),
+            (0, mithril_1.default)('h3.header[id=timepicker]', 'TimePicker - Enhanced with i18n support'),
             // Basic time picker (24h format)
             (0, mithril_1.default)('h4', 'Basic Time Picker (24h format)'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.TimePicker, {
@@ -22505,7 +22920,7 @@ m(TimeRangePicker, {
 })`,
             }),
             // AnalogClock Component Examples
-            (0, mithril_1.default)('h3.header', 'AnalogClock Component - Direct Usage'),
+            (0, mithril_1.default)('h3.header[id=analogclock]', 'AnalogClock Component - Direct Usage'),
             (0, mithril_1.default)('p', 'The AnalogClock is a low-level component used internally by TimePicker. It can be used standalone for custom time selection interfaces.'),
             (0, mithril_1.default)('h4', 'Interactive Analog Clock (12-hour)'),
             (0, mithril_1.default)('.row', [
@@ -22595,7 +23010,7 @@ exports.PickerPage = PickerPage;
 
 /***/ },
 
-/***/ 8658
+/***/ 9964
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -23111,7 +23526,7 @@ exports.ProgressPage = ProgressPage;
 
 /***/ },
 
-/***/ 9712
+/***/ 2222
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -23741,7 +24156,7 @@ exports.RatingPage = RatingPage;
 
 /***/ },
 
-/***/ 9781
+/***/ 3119
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -23767,7 +24182,7 @@ const SelectionPage = () => {
     return {
         view: () => (0, mithril_1.default)('.col.s12', [
             (0, mithril_1.default)('h2.header', 'Selections'),
-            (0, mithril_1.default)('h3.header', 'Select'),
+            (0, mithril_1.default)('h3.header[id=select]', 'Select'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)((mithril_materialized_1.Select), {
                 iconName: 'person',
                 label: 'What is your favorite hobby?',
@@ -23981,7 +24396,7 @@ const SelectionPage = () => {
             onchange: ids => onchange(\`Options \${ids.join()} are checked.\`),
           })`,
             }),
-            (0, mithril_1.default)('h3.header', 'RadioButtons'),
+            (0, mithril_1.default)('h3.header[id=radiobuttons]', 'RadioButtons'),
             (0, mithril_1.default)('p', 'Linked radio buttons: when you change one of them, the other changes too.'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)((mithril_materialized_1.RadioButtons), {
                 checkboxClass: 'col s3',
@@ -23996,7 +24411,7 @@ const SelectionPage = () => {
                 onchange: (ids) => (state.radioId = ids),
             })),
             // Likert Scale Examples
-            (0, mithril_1.default)('h3.header', 'Likert Scale'),
+            (0, mithril_1.default)('h3.header[id=likert]', 'Likert Scale'),
             (0, mithril_1.default)('p.caption', 'Rating scales for survey questions with semantic anchors. Perfect for questionnaires and feedback forms.'),
             // Basic usage
             (0, mithril_1.default)('h4', 'Basic Usage'),
@@ -24386,7 +24801,7 @@ m(LikertScale, {
             onchange: ids => state.radioIds = ids,
           })`,
             }),
-            (0, mithril_1.default)('h3.header', 'Switch'),
+            (0, mithril_1.default)('h3.header[id=switch]', 'Switch'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)(mithril_materialized_1.Switch, {
                 label: 'What is your gender?',
                 left: 'Man',
@@ -24410,7 +24825,7 @@ m(LikertScale, {
             onchange,
           })`,
             }),
-            (0, mithril_1.default)('h3.header', 'Dropdown'),
+            (0, mithril_1.default)('h3.header[id=dropdown]', 'Dropdown'),
             (0, mithril_1.default)('.row', (0, mithril_1.default)((mithril_materialized_1.Dropdown), {
                 id: 'hobby',
                 iconName: 'my_location',
@@ -24458,7 +24873,7 @@ exports.SelectionPage = SelectionPage;
 
 /***/ },
 
-/***/ 4726
+/***/ 6392
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -24479,7 +24894,7 @@ const ThemePage = () => {
                 'New components for theme switching and file uploads with drag-and-drop support. ',
                 'The theme switcher allows users to choose between light, dark, and auto (system preference) themes.',
             ]),
-            (0, mithril_1.default)('h3.header', 'Theme Switcher'),
+            (0, mithril_1.default)('h3.header[id=themeswitcher]', 'Theme Switcher'),
             (0, mithril_1.default)('p', 'Full theme switcher with light/dark/auto options:'),
             (0, mithril_1.default)('.row', [
                 (0, mithril_1.default)('.col.s12.m6', [
@@ -24504,7 +24919,7 @@ m(ThemeSwitcher, {
   },
 })`,
             }),
-            (0, mithril_1.default)('h3.header', 'Theme Toggle'),
+            (0, mithril_1.default)('h3.header[id=themetoggle]', 'Theme Toggle'),
             (0, mithril_1.default)('p', 'Simple toggle button that switches between light and dark themes:'),
             (0, mithril_1.default)('.row', [
                 (0, mithril_1.default)('.col.s12.m6', [
@@ -24522,7 +24937,7 @@ m(ThemeToggle, {
   className: 'left', // Optional CSS classes
 })`,
             }),
-            (0, mithril_1.default)('h3.header', 'File Upload'),
+            (0, mithril_1.default)('h3.header[id=fileupload]', 'File Upload'),
             (0, mithril_1.default)('p', 'Drag-and-drop file upload with image preview, file validation, and progress tracking:'),
             (0, mithril_1.default)('.row', [
                 (0, mithril_1.default)('.col.s12', [
@@ -24634,7 +25049,7 @@ exports.ThemePage = ThemePage;
 
 /***/ },
 
-/***/ 3790
+/***/ 9700
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
@@ -24986,33 +25401,33 @@ exports.TimelinePage = TimelinePage;
 
 /***/ },
 
-/***/ 2633
+/***/ 3979
 (__unused_webpack_module, exports, __webpack_require__) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.dashboardSvc = exports.Dashboards = void 0;
+exports.dashboardSvc = exports.searchIndex = exports.Dashboards = void 0;
 const tslib_1 = __webpack_require__(5959);
 const mithril_1 = tslib_1.__importDefault(__webpack_require__(9361));
-const layout_1 = __webpack_require__(3181);
-const home_page_1 = __webpack_require__(8334);
-const about_page_1 = __webpack_require__(4118);
-const button_page_1 = __webpack_require__(4533);
-const input_page_1 = __webpack_require__(3745);
-const picker_page_1 = __webpack_require__(5037);
-const selection_page_1 = __webpack_require__(9781);
-const modal_page_1 = __webpack_require__(2883);
-const misc_page_1 = __webpack_require__(7200);
-const collections_page_1 = __webpack_require__(3062);
-const theme_page_1 = __webpack_require__(4726);
-const navigation_page_1 = __webpack_require__(6344);
-const datatable_page_1 = __webpack_require__(4426);
-const timeline_page_1 = __webpack_require__(3790);
-const masonry_page_1 = __webpack_require__(2930);
-const image_list_page_1 = __webpack_require__(7359);
-const rating_page_1 = __webpack_require__(9712);
-const progress_page_1 = __webpack_require__(8658);
-const css_page_1 = __webpack_require__(926);
+const layout_1 = __webpack_require__(2267);
+const home_page_1 = __webpack_require__(3440);
+const about_page_1 = __webpack_require__(4520);
+const button_page_1 = __webpack_require__(1863);
+const input_page_1 = __webpack_require__(5947);
+const picker_page_1 = __webpack_require__(4439);
+const selection_page_1 = __webpack_require__(3119);
+const modal_page_1 = __webpack_require__(9685);
+const misc_page_1 = __webpack_require__(9162);
+const collections_page_1 = __webpack_require__(1608);
+const theme_page_1 = __webpack_require__(6392);
+const navigation_page_1 = __webpack_require__(666);
+const datatable_page_1 = __webpack_require__(2052);
+const timeline_page_1 = __webpack_require__(9700);
+const masonry_page_1 = __webpack_require__(520);
+const image_list_page_1 = __webpack_require__(1713);
+const rating_page_1 = __webpack_require__(2222);
+const progress_page_1 = __webpack_require__(9964);
+const css_page_1 = __webpack_require__(1680);
 var Dashboards;
 (function (Dashboards) {
     Dashboards["HOME"] = "HOME";
@@ -25045,6 +25460,83 @@ var Dashboards;
     Dashboards["CSS_TYPOGRAPHY"] = "CSS_TYPOGRAPHY";
     Dashboards["CSS_THEMING"] = "CSS_THEMING";
 })(Dashboards || (exports.Dashboards = Dashboards = {}));
+exports.searchIndex = [
+    // General
+    { title: 'Home', page: 'General', route: '/home' },
+    { title: 'About', page: 'General', route: '/about' },
+    // Inputs
+    { title: 'Inputs', page: 'Forms', route: '/inputs' },
+    { title: 'TextInput', page: 'Inputs', route: '/inputs', hash: 'textinput' },
+    { title: 'Autocomplete', page: 'Inputs', route: '/inputs', hash: 'autocomplete' },
+    { title: 'SearchSelect', page: 'Inputs', route: '/inputs', hash: 'searchselect' },
+    { title: 'TextArea', page: 'Inputs', route: '/inputs', hash: 'textarea' },
+    { title: 'NumberInput', page: 'Inputs', route: '/inputs', hash: 'numberinput' },
+    { title: 'EmailInput', page: 'Inputs', route: '/inputs', hash: 'emailinput' },
+    { title: 'UrlInput', page: 'Inputs', route: '/inputs', hash: 'urlinput' },
+    { title: 'PasswordInput', page: 'Inputs', route: '/inputs', hash: 'passwordinput' },
+    { title: 'FileInput', page: 'Inputs', route: '/inputs', hash: 'fileinput' },
+    { title: 'RangeInput', page: 'Inputs', route: '/inputs', hash: 'rangeinput' },
+    { title: 'Chips', page: 'Inputs', route: '/inputs', hash: 'chips' },
+    { title: 'ColorInput', page: 'Inputs', route: '/inputs', hash: 'colorinput' },
+    // Pickers
+    { title: 'Pickers', page: 'Forms', route: '/pickers' },
+    { title: 'DatePicker', page: 'Pickers', route: '/pickers', hash: 'datepicker' },
+    { title: 'Date Range Picker', page: 'Pickers', route: '/pickers', hash: 'daterangepicker' },
+    { title: 'TimePicker', page: 'Pickers', route: '/pickers', hash: 'timepicker' },
+    { title: 'AnalogClock', page: 'Pickers', route: '/pickers', hash: 'analogclock' },
+    // Selections
+    { title: 'Selections', page: 'Forms', route: '/selections' },
+    { title: 'Select', page: 'Selections', route: '/selections', hash: 'select' },
+    { title: 'RadioButtons', page: 'Selections', route: '/selections', hash: 'radiobuttons' },
+    { title: 'LikertScale', page: 'Selections', route: '/selections', hash: 'likert' },
+    { title: 'Switch', page: 'Selections', route: '/selections', hash: 'switch' },
+    { title: 'Dropdown', page: 'Selections', route: '/selections', hash: 'dropdown' },
+    // Buttons
+    { title: 'Buttons', page: 'Forms', route: '/buttons' },
+    { title: 'Button (FAB)', page: 'Buttons', route: '/buttons', hash: 'fab' },
+    { title: 'Button (Raised)', page: 'Buttons', route: '/buttons', hash: 'raised' },
+    { title: 'FlatButton', page: 'Buttons', route: '/buttons', hash: 'flatbutton' },
+    { title: 'IconButton', page: 'Buttons', route: '/buttons', hash: 'iconbutton' },
+    { title: 'RoundIconButton', page: 'Buttons', route: '/buttons', hash: 'roundiconbutton' },
+    { title: 'ToggleGroup', page: 'Buttons', route: '/buttons', hash: 'togglegroup' },
+    { title: 'SubmitButton', page: 'Buttons', route: '/buttons', hash: 'submitbutton' },
+    { title: 'ConfirmButton', page: 'Buttons', route: '/buttons', hash: 'confirmbutton' },
+    // Collections
+    { title: 'Collections', page: 'Components', route: '/collections' },
+    { title: 'Collapsible', page: 'Collections', route: '/collections', hash: 'collapsible' },
+    // Modals
+    { title: 'Modals', page: 'Components', route: '/modals' },
+    { title: 'Modal', page: 'Modals', route: '/modals', hash: 'modal' },
+    // Navigation
+    { title: 'Navigation', page: 'Components', route: '/navigation' },
+    { title: 'Breadcrumb', page: 'Navigation', route: '/navigation', hash: 'breadcrumb' },
+    { title: 'Sidenav', page: 'Navigation', route: '/navigation', hash: 'sidenav' },
+    { title: 'Wizard / Stepper', page: 'Navigation', route: '/navigation', hash: 'wizard' },
+    // DataTable
+    { title: 'DataTable', page: 'Components', route: '/datatable', hash: 'datatable' },
+    { title: 'TreeView', page: 'DataTable', route: '/datatable', hash: 'treeview' },
+    // Misc
+    { title: 'Miscellaneous', page: 'Components', route: '/misc' },
+    { title: 'Toast', page: 'Misc', route: '/misc', hash: 'toast' },
+    { title: 'Badge', page: 'Misc', route: '/misc', hash: 'badge' },
+    { title: 'Tooltip', page: 'Misc', route: '/misc', hash: 'tooltip' },
+    { title: 'Tabs', page: 'Misc', route: '/misc', hash: 'tabs' },
+    { title: 'Carousel', page: 'Misc', route: '/misc', hash: 'carousel' },
+    { title: 'Pagination', page: 'Misc', route: '/misc', hash: 'pagination' },
+    { title: 'Parallax', page: 'Misc', route: '/misc', hash: 'parallax' },
+    // Display
+    { title: 'Timeline', page: 'Display', route: '/timeline' },
+    { title: 'Masonry', page: 'Display', route: '/masonry' },
+    { title: 'Image List', page: 'Display', route: '/image-list' },
+    { title: 'Rating', page: 'Display', route: '/rating' },
+    { title: 'Progress', page: 'Display', route: '/progress' },
+    // Styling
+    { title: 'Theme', page: 'Styling', route: '/theme' },
+    { title: 'ThemeSwitcher', page: 'Theme', route: '/theme', hash: 'themeswitcher' },
+    { title: 'ThemeToggle', page: 'Theme', route: '/theme', hash: 'themetoggle' },
+    { title: 'FileUpload', page: 'Theme', route: '/theme', hash: 'fileupload' },
+    { title: 'CSS', page: 'Styling', route: '/css/color' },
+];
 class DashboardService {
     layout;
     dashboards;
@@ -25062,7 +25554,7 @@ class DashboardService {
         const dashboard = this.dashboards.filter((d) => d.default).shift();
         return dashboard ? dashboard.route : this.dashboards[0].route;
     }
-    switchTo(dashboardId, fragment = '') {
+    switchTo(dashboardId, _fragment = '') {
         const dashboard = this.dashboards.filter((d) => d.id === dashboardId).shift();
         if (dashboard) {
             mithril_1.default.route.set(dashboard.route);
@@ -25079,139 +25571,156 @@ exports.dashboardSvc = new DashboardService(layout_1.Layout, [
     {
         id: Dashboards.HOME,
         default: true,
-        title: 'HOME',
+        title: 'Home',
         icon: 'home',
         route: '/home',
         visible: true,
+        group: 'general',
         component: home_page_1.HomePage,
     },
     {
+        id: Dashboards.ABOUT,
+        title: 'About',
+        icon: 'info',
+        route: '/about',
+        visible: true,
+        group: 'general',
+        component: about_page_1.AboutPage,
+    },
+    {
         id: Dashboards.BUTTONS,
-        title: 'BUTTONS',
+        title: 'Buttons',
         icon: 'crop_16_9',
         route: '/buttons',
         visible: true,
+        group: 'forms',
         component: button_page_1.ButtonPage,
     },
     {
         id: Dashboards.INPUTS,
-        title: 'INPUTS',
+        title: 'Inputs',
         icon: 'create',
         route: '/inputs',
         visible: true,
+        group: 'forms',
         component: input_page_1.InputPage,
     },
     {
         id: Dashboards.PICKERS,
-        title: 'PICKERS',
+        title: 'Pickers',
         icon: 'access_time',
         route: '/pickers',
         visible: true,
+        group: 'forms',
         component: picker_page_1.PickerPage,
     },
     {
         id: Dashboards.SELECTIONS,
-        title: 'SELECTIONS',
+        title: 'Selections',
         icon: 'check',
         route: '/selections',
         visible: true,
+        group: 'forms',
         component: selection_page_1.SelectionPage,
     },
     {
-        id: Dashboards.MODALS,
-        title: 'MODALS',
-        icon: 'all_out',
-        route: '/modals',
-        visible: true,
-        component: modal_page_1.ModalPage,
-    },
-    {
         id: Dashboards.COLLECTIONS,
-        title: 'COLLECTIONS',
+        title: 'Collections',
         icon: 'collections',
         route: '/collections',
         visible: true,
+        group: 'components',
         component: collections_page_1.CollectionsPage,
     },
     {
-        id: Dashboards.DATATABLE,
-        title: 'DATA TABLE',
-        icon: 'table_chart',
-        route: '/datatable',
+        id: Dashboards.MODALS,
+        title: 'Modals',
+        icon: 'all_out',
+        route: '/modals',
         visible: true,
-        component: datatable_page_1.DataTablePage,
-    },
-    {
-        id: Dashboards.THEME,
-        title: 'THEME',
-        icon: 'palette',
-        route: '/theme',
-        visible: true,
-        component: theme_page_1.ThemePage,
+        group: 'components',
+        component: modal_page_1.ModalPage,
     },
     {
         id: Dashboards.NAVIGATION,
-        title: 'NAVIGATION',
+        title: 'Navigation',
         icon: 'navigation',
         route: '/navigation',
         visible: true,
+        group: 'components',
         component: navigation_page_1.NavigationPage,
     },
     {
+        id: Dashboards.DATATABLE,
+        title: 'Data Table',
+        icon: 'table_chart',
+        route: '/datatable',
+        visible: true,
+        group: 'components',
+        component: datatable_page_1.DataTablePage,
+    },
+    {
+        id: Dashboards.MISC,
+        title: 'Miscellaneous',
+        icon: 'image',
+        route: '/misc',
+        visible: true,
+        group: 'components',
+        component: misc_page_1.MiscPage,
+    },
+    {
         id: Dashboards.TIMELINE,
-        title: 'TIMELINE',
+        title: 'Timeline',
         icon: 'timeline',
         route: '/timeline',
         visible: true,
+        group: 'display',
         component: timeline_page_1.TimelinePage,
     },
     {
         id: Dashboards.MASONRY,
-        title: 'MASONRY',
+        title: 'Masonry',
         icon: 'view_comfy',
         route: '/masonry',
         visible: true,
+        group: 'display',
         component: masonry_page_1.MasonryPage,
     },
     {
         id: Dashboards.IMAGE_LIST,
-        title: 'IMAGE LIST',
+        title: 'Image List',
         icon: 'photo_library',
         route: '/image-list',
         visible: true,
+        group: 'display',
         component: image_list_page_1.ImageListPage,
     },
     {
         id: Dashboards.RATING,
-        title: 'RATING',
+        title: 'Rating',
         icon: 'star',
         route: '/rating',
         visible: true,
+        group: 'display',
         component: rating_page_1.RatingPage,
     },
     {
         id: Dashboards.PROGRESS,
-        title: 'PROGRESS',
+        title: 'Progress',
         icon: 'hourglass_empty',
         route: '/progress',
         visible: true,
+        group: 'display',
         component: progress_page_1.ProgressPage,
     },
     {
-        id: Dashboards.MISC,
-        title: 'MISCELLANEOUS',
-        icon: 'image',
-        route: '/misc',
+        id: Dashboards.THEME,
+        title: 'Theme',
+        icon: 'palette',
+        route: '/theme',
         visible: true,
-        component: misc_page_1.MiscPage,
-    },
-    {
-        id: Dashboards.ABOUT,
-        title: 'ABOUT',
-        icon: 'info',
-        route: '/about',
-        visible: true,
-        component: about_page_1.AboutPage,
+        group: 'styling',
+        component: theme_page_1.ThemePage,
     },
     {
         id: Dashboards.CSS,
@@ -25219,6 +25728,7 @@ exports.dashboardSvc = new DashboardService(layout_1.Layout, [
         icon: 'style',
         route: '/css/color',
         visible: true,
+        group: 'styling',
         component: css_page_1.CssPage,
     },
     { id: Dashboards.CSS_GRID, title: 'Grid', route: '/css/grid', visible: false, component: css_page_1.CssPage },
@@ -27618,6 +28128,7 @@ const DatePicker = () => {
                                         e.stopPropagation();
                                         gotoMonth(index);
                                         state.monthDropdownOpen = false;
+                                        m.redraw();
                                     },
                                 }, monthName))),
                         ]),
@@ -27642,6 +28153,7 @@ const DatePicker = () => {
                                         e.stopPropagation();
                                         gotoYear(i);
                                         state.yearDropdownOpen = false;
+                                        m.redraw();
                                     },
                                 }, i))),
                         ]),
@@ -37479,7 +37991,7 @@ const tslib_1 = __webpack_require__(5959);
 __webpack_require__(4471);
 __webpack_require__(5590);
 const mithril_1 = tslib_1.__importDefault(__webpack_require__(9361));
-const dashboard_service_1 = __webpack_require__(2633);
+const dashboard_service_1 = __webpack_require__(3979);
 document.documentElement.setAttribute('lang', 'en');
 mithril_1.default.route(document.body, dashboard_service_1.dashboardSvc.defaultRoute, dashboard_service_1.dashboardSvc.routingTable);
 

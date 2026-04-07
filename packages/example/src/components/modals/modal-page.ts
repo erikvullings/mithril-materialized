@@ -33,7 +33,7 @@ export const ModalPage = () => {
           '.',
         ]),
 
-        m('h3.header', 'Normal Modal'),
+        m('h3.header[id=modal]', 'Normal Modal'),
         m(
           '.row',
           m(Button, {
