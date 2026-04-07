@@ -99,7 +99,6 @@ export const Layout: FactoryComponent = () => {
                   m(
                     '.mm-search-result',
                     {
-                      key: `${entry.route}#${entry.hash ?? ''}`,
                       onmousedown: (e: MouseEvent) => {
                         e.preventDefault();
                         navigateTo(entry);
@@ -123,7 +122,7 @@ export const Layout: FactoryComponent = () => {
             if (groupPages.length === 0) return null;
             const isOpen = openGroups.has(group.id);
 
-            return m('.mm-nav-group', { key: group.id }, [
+            return m('.mm-nav-group', [
               m(
                 'button.mm-nav-group-header[type=button]',
                 {
@@ -145,7 +144,6 @@ export const Layout: FactoryComponent = () => {
                     m(
                       `a.mm-nav-item${isActive(d.route) ? '.mm-nav-item--active' : ''}`,
                       {
-                        key: d.id,
                         href: `#!${d.route}`,
                         onclick: () => { sidenavOpen = false; },
                       },
