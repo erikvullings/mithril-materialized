@@ -1,4 +1,4 @@
-import { MaterialBox, IMaterialBox } from '../src/material-box';
+import { MaterialBox, MaterialBoxAttrs as IMaterialBox } from '../src/material-box';
 import { render, fireEvent, cleanup } from './test-utils';
 
 describe('MaterialBox Component', () => {
@@ -6,11 +6,11 @@ describe('MaterialBox Component', () => {
     cleanup();
     // Clean up any overlay elements that might be left behind
     const overlays = document.querySelectorAll('.materialbox-overlay');
-    overlays.forEach(overlay => overlay.remove());
+    overlays.forEach((overlay) => overlay.remove());
     const overlayImages = document.querySelectorAll('.materialbox-image');
-    overlayImages.forEach(img => img.remove());
+    overlayImages.forEach((img) => img.remove());
     const captions = document.querySelectorAll('.materialbox-caption');
-    captions.forEach(caption => caption.remove());
+    captions.forEach((caption) => caption.remove());
     // Reset body overflow
     document.body.style.overflow = '';
   });
@@ -30,9 +30,9 @@ describe('MaterialBox Component', () => {
   });
 
   test('applies custom className', () => {
-    const { container } = render(MaterialBox, { 
-      ...defaultMaterialBoxAttrs, 
-      className: 'custom-image' 
+    const { container } = render(MaterialBox, {
+      ...defaultMaterialBoxAttrs,
+      className: 'custom-image',
     });
 
     const img = container.querySelector('img');
@@ -41,10 +41,10 @@ describe('MaterialBox Component', () => {
   });
 
   test('sets width and height attributes', () => {
-    const { container } = render(MaterialBox, { 
-      ...defaultMaterialBoxAttrs, 
-      width: 300, 
-      height: 200 
+    const { container } = render(MaterialBox, {
+      ...defaultMaterialBoxAttrs,
+      width: 300,
+      height: 200,
     });
 
     const img = container.querySelector('img');
@@ -61,27 +61,30 @@ describe('MaterialBox Component', () => {
 
   test('calls onOpenStart callback when clicked', () => {
     const onOpenStart = jest.fn();
-    const { container } = render(MaterialBox, { 
-      ...defaultMaterialBoxAttrs, 
-      onOpenStart 
+    const { container } = render(MaterialBox, {
+      ...defaultMaterialBoxAttrs,
+      onOpenStart,
     });
 
     const img = container.querySelector('img') as HTMLImageElement;
     // Mock getBoundingClientRect and naturalWidth/Height
-    img.getBoundingClientRect = jest.fn(() => ({
-      top: 100,
-      left: 100,
-      width: 200,
-      height: 150,
-      right: 300,
-      bottom: 250,
-    } as DOMRect));
-    
+    img.getBoundingClientRect = jest.fn(
+      () =>
+        ({
+          top: 100,
+          left: 100,
+          width: 200,
+          height: 150,
+          right: 300,
+          bottom: 250,
+        }) as DOMRect
+    );
+
     Object.defineProperty(img, 'naturalWidth', { value: 800 });
     Object.defineProperty(img, 'naturalHeight', { value: 600 });
 
     fireEvent.click(img);
-    
+
     expect(onOpenStart).toHaveBeenCalled();
   });
 
@@ -90,15 +93,18 @@ describe('MaterialBox Component', () => {
 
     const img = container.querySelector('img') as HTMLImageElement;
     // Mock getBoundingClientRect and naturalWidth/Height
-    img.getBoundingClientRect = jest.fn(() => ({
-      top: 100,
-      left: 100,
-      width: 200,
-      height: 150,
-      right: 300,
-      bottom: 250,
-    } as DOMRect));
-    
+    img.getBoundingClientRect = jest.fn(
+      () =>
+        ({
+          top: 100,
+          left: 100,
+          width: 200,
+          height: 150,
+          right: 300,
+          bottom: 250,
+        }) as DOMRect
+    );
+
     Object.defineProperty(img, 'naturalWidth', { value: 800 });
     Object.defineProperty(img, 'naturalHeight', { value: 600 });
 
@@ -106,29 +112,32 @@ describe('MaterialBox Component', () => {
 
     const overlay = document.querySelector('.materialbox-overlay');
     const overlayImage = document.querySelector('.materialbox-image');
-    
+
     expect(overlay).toBeTruthy();
     expect(overlayImage).toBeTruthy();
     expect(document.body.style.overflow).toBe('hidden');
   });
 
   test('creates caption when provided', () => {
-    const { container } = render(MaterialBox, { 
-      ...defaultMaterialBoxAttrs, 
-      caption: 'Test Caption' 
+    const { container } = render(MaterialBox, {
+      ...defaultMaterialBoxAttrs,
+      caption: 'Test Caption',
     });
 
     const img = container.querySelector('img') as HTMLImageElement;
     // Mock getBoundingClientRect and naturalWidth/Height
-    img.getBoundingClientRect = jest.fn(() => ({
-      top: 100,
-      left: 100,
-      width: 200,
-      height: 150,
-      right: 300,
-      bottom: 250,
-    } as DOMRect));
-    
+    img.getBoundingClientRect = jest.fn(
+      () =>
+        ({
+          top: 100,
+          left: 100,
+          width: 200,
+          height: 150,
+          right: 300,
+          bottom: 250,
+        }) as DOMRect
+    );
+
     Object.defineProperty(img, 'naturalWidth', { value: 800 });
     Object.defineProperty(img, 'naturalHeight', { value: 600 });
 
@@ -146,7 +155,7 @@ describe('MaterialBox Component', () => {
     const preventDefaultSpy = jest.spyOn(clickEvent, 'preventDefault');
 
     img.dispatchEvent(clickEvent);
-    
+
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
 });

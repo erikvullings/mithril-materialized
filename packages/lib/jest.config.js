@@ -8,11 +8,7 @@ module.exports = {
     '^.+\\.tsx?$': [
       'ts-jest',
       {
-        tsconfig: {
-          target: 'es2017',
-          lib: ['dom', 'es2017', 'es2018'],
-          moduleResolution: 'node16',
-        },
+        tsconfig: './tsconfig.jest.json',
       },
     ],
   },

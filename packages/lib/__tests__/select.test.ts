@@ -1,6 +1,6 @@
 import { Select } from '../src/select';
 import { render, fireEvent, cleanup } from './test-utils';
-import { IInputOption } from '../src/option';
+import { InputOption as IInputOption } from '../src/option';
 
 describe('Select Component', () => {
   const mockOptions: IInputOption<string>[] = [
@@ -24,9 +24,9 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
-      onchange: jest.fn()
+      onchange: jest.fn(),
     });
-    
+
     expect(getByText('Test Select')).toBeInTheDocument();
   });
 
@@ -35,9 +35,9 @@ describe('Select Component', () => {
       id: 'test-select',
       placeholder: 'Choose an option',
       options: mockOptions,
-      onchange: jest.fn()
+      onchange: jest.fn(),
     });
-    
+
     // Placeholder should appear as input value when nothing is selected
     const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
     expect(input.value).toBe('Choose an option');
@@ -49,23 +49,23 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
-      onchange: jest.fn()
+      onchange: jest.fn(),
     };
     const { container } = render(Select<string>(), attrs);
 
     const input = container.querySelector('input.select-dropdown');
     const selectWrapper = container.querySelector('.select-wrapper');
-    
+
     // Initially closed
     expect(selectWrapper).toHaveAttribute('aria-expanded', 'false');
-    
+
     // Verify dropdown list is not present (input has same class, so check for ul specifically)
     expect(container.querySelector('ul.select-dropdown')).toBeNull();
-    
+
     // Click to open (we know from console logs this works)
     fireEvent.click(input! as HTMLElement);
-    
-    // The actual functionality works in the browser, but the test environment 
+
+    // The actual functionality works in the browser, but the test environment
     // doesn't properly handle Mithril's state management. This is a limitation
     // of the test setup, not the component functionality.
     // In a real browser, this would work correctly.
@@ -79,14 +79,14 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
-      onchange: mockOnChange
+      onchange: mockOnChange,
     });
 
     // Verify component structure is correct
     const selectWrapper = container.querySelector('.select-wrapper');
     expect(selectWrapper).toBeInTheDocument();
     expect(selectWrapper).toHaveAttribute('role', 'combobox');
-    
+
     // Interactive functionality requires browser environment
     expect(true).toBe(true);
   });
@@ -98,14 +98,14 @@ describe('Select Component', () => {
       label: 'Test Select',
       options: mockOptions,
       onchange: mockOnChange,
-      multiple: false
+      multiple: false,
     });
 
     // Verify single select setup
     const selectWrapper = container.querySelector('.select-wrapper');
     expect(selectWrapper).toBeInTheDocument();
     expect(selectWrapper).toHaveAttribute('aria-expanded', 'false');
-    
+
     // Interactive functionality tested in browser environment
     expect(true).toBe(true);
   });
@@ -117,14 +117,14 @@ describe('Select Component', () => {
       label: 'Test Select',
       options: mockOptions,
       onchange: mockOnChange,
-      multiple: true
+      multiple: true,
     });
 
     // Verify multiple select setup
     const selectWrapper = container.querySelector('.select-wrapper');
     expect(selectWrapper).toBeInTheDocument();
     expect(selectWrapper).toHaveAttribute('aria-expanded', 'false');
-    
+
     // Multiple select behavior tested in browser environment
     expect(true).toBe(true);
   });
@@ -134,7 +134,7 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
-      defaultCheckedId: 'option2'
+      defaultCheckedId: 'option2',
     });
 
     // Check that the selected option appears in the input value
@@ -148,7 +148,7 @@ describe('Select Component', () => {
       label: 'Test Select',
       options: mockOptions,
       checkedId: 'option1',
-      onchange: jest.fn()
+      onchange: jest.fn(),
     });
 
     // Check that the selected option appears in the input value
@@ -163,12 +163,12 @@ describe('Select Component', () => {
       label: 'Test Select',
       options: mockOptions,
       disabled: true,
-      onchange: mockOnChange
+      onchange: mockOnChange,
     });
 
     const selectWrapper = container.querySelector('.select-wrapper');
     expect(selectWrapper).toHaveAttribute('tabindex', '-1');
-    
+
     // Should not respond to clicks when disabled
     fireEvent.click(selectWrapper! as HTMLElement);
     expect(selectWrapper).toHaveAttribute('aria-expanded', 'false');
@@ -181,13 +181,13 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
-      onchange: mockOnChange
+      onchange: mockOnChange,
     });
 
     // Verify component renders with disabled options structure
     const selectWrapper = container.querySelector('.select-wrapper');
     expect(selectWrapper).toBeInTheDocument();
-    
+
     // Disabled option interaction tested in browser environment
     expect(true).toBe(true);
   });
@@ -198,7 +198,7 @@ describe('Select Component', () => {
       label: 'Test Select',
       iconName: 'person',
       options: mockOptions,
-      onchange: jest.fn()
+      onchange: jest.fn(),
     });
 
     const icon = container.querySelector('.material-icons.prefix');
@@ -212,7 +212,7 @@ describe('Select Component', () => {
       label: 'Test Select',
       helperText: 'Choose wisely',
       options: mockOptions,
-      onchange: jest.fn()
+      onchange: jest.fn(),
     });
 
     expect(getByText('Choose wisely')).toBeInTheDocument();
@@ -230,13 +230,13 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: groupedOptions,
-      onchange: jest.fn()
+      onchange: jest.fn(),
     });
 
     // Verify component renders with grouped options
     const selectWrapper = container.querySelector('.select-wrapper');
     expect(selectWrapper).toBeInTheDocument();
-    
+
     // Group rendering tested when dropdown is opened in browser
     expect(true).toBe(true);
   });
@@ -251,13 +251,13 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: optionsWithImages,
-      onchange: jest.fn()
+      onchange: jest.fn(),
     });
 
     // Verify component renders with image options
     const selectWrapper = container.querySelector('.select-wrapper');
     expect(selectWrapper).toBeInTheDocument();
-    
+
     // Note: Image functionality would be tested in browser environment
     expect(true).toBe(true);
   });
@@ -268,7 +268,7 @@ describe('Select Component', () => {
       label: 'Test Select',
       options: mockOptions,
       multiple: true,
-      defaultCheckedId: ['option1', 'option2']
+      defaultCheckedId: ['option1', 'option2'],
     });
 
     // Multiple selections are displayed as comma-separated values in the input
@@ -283,7 +283,7 @@ describe('Select Component', () => {
       label: 'Test Select',
       options: mockOptions,
       multiple: true,
-      defaultCheckedId: ['option1', 'option2']
+      defaultCheckedId: ['option1', 'option2'],
     });
 
     // Tag removal functionality is not currently implemented
@@ -297,7 +297,7 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
-      onchange: jest.fn()
+      onchange: jest.fn(),
     });
 
     const selectWrapper = container.querySelector('.select-wrapper');
@@ -316,18 +316,18 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
-      onchange: mockOnChange
+      onchange: mockOnChange,
     });
 
     const selectWrapper = container.querySelector('.select-wrapper');
-    
+
     // Press ArrowDown to open dropdown
     fireEvent.keyDown(selectWrapper! as HTMLElement, 'ArrowDown');
-    
+
     // Check if dropdown opened (by checking aria-expanded)
     expect(selectWrapper).toHaveAttribute('aria-expanded', 'true');
     expect(getByText('Option 1')).toBeInTheDocument();
-    
+
     // Verify that keyboard navigation doesn't cause errors and dropdown stays open
     fireEvent.keyDown(selectWrapper! as HTMLElement, 'ArrowDown');
     expect(selectWrapper).toHaveAttribute('aria-expanded', 'true');
@@ -338,12 +338,12 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
-      onchange: jest.fn()
+      onchange: jest.fn(),
     });
 
     const selectWrapper = container.querySelector('.select-wrapper');
     expect(selectWrapper).toHaveAttribute('tabindex', '0');
-    
+
     // Keyboard navigation tested in browser environment
     expect(true).toBe(true);
   });
@@ -354,7 +354,7 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: mockNumericOptions,
-      onchange: mockOnChange
+      onchange: mockOnChange,
     });
 
     // Verify component renders with numeric IDs
@@ -362,7 +362,7 @@ describe('Select Component', () => {
     expect(selectWrapper).toBeInTheDocument();
     const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
     expect(input).toBeInTheDocument();
-    
+
     // Numeric ID functionality tested in browser environment
     expect(true).toBe(true);
   });

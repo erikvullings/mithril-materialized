@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { Tabs, ITabs, ITabItem } from '../src/tabs';
+import { Tabs, TabsAttrs as ITabs, TabItem as ITabItem } from '../src/tabs';
 import { render, fireEvent, cleanup } from './test-utils';
 
 describe('Tabs Component', () => {
@@ -8,20 +8,20 @@ describe('Tabs Component', () => {
   });
 
   const createTestTabs = (): ITabItem[] => [
-    { 
-      title: 'Tab 1', 
+    {
+      title: 'Tab 1',
       vnode: m('div', 'Content 1'),
-      id: 'tab1'
+      id: 'tab1',
     },
-    { 
-      title: 'Tab 2', 
+    {
+      title: 'Tab 2',
       vnode: m('div', 'Content 2'),
-      id: 'tab2'
+      id: 'tab2',
     },
-    { 
-      title: 'Tab 3', 
+    {
+      title: 'Tab 3',
       vnode: m('div', 'Content 3'),
-      id: 'tab3'
+      id: 'tab3',
     },
   ];
 
@@ -62,10 +62,8 @@ describe('Tabs Component', () => {
     const { container } = render(Tabs, defaultTabsAttrs);
 
     const tabContents = container.querySelectorAll('.tab-content');
-    const visibleContent = Array.from(tabContents).find(content => 
-      (content as HTMLElement).style.display !== 'none'
-    );
-    
+    const visibleContent = Array.from(tabContents).find((content) => (content as HTMLElement).style.display !== 'none');
+
     expect(visibleContent).toBeTruthy();
   });
 
@@ -78,10 +76,10 @@ describe('Tabs Component', () => {
     fireEvent.click(secondTabLink);
 
     expect(onShow).toHaveBeenCalled();
-    
+
     // Re-render the same instance to see updated state
     rerender(TabsInstance);
-    
+
     // Check if second tab becomes active - look for any active tab
     const activeTab = container.querySelector('.tab a.active');
     expect(activeTab).toBeTruthy();
@@ -97,7 +95,7 @@ describe('Tabs Component', () => {
     const { container } = render(TabsInstance, { ...defaultTabsAttrs, tabs });
 
     const secondTabLink = container.querySelectorAll('.tab a')[1] as HTMLElement;
-    
+
     expect(secondTabLink.style.opacity).toBe('0.6');
     expect(secondTabLink.style.cursor).toBe('not-allowed');
   });
@@ -131,7 +129,7 @@ describe('Tabs Component', () => {
     const { container } = render(TabsInstance, { ...defaultTabsAttrs, tabWidth: 'fixed' });
 
     const tabItems = container.querySelectorAll('.tab');
-    tabItems.forEach(tab => {
+    tabItems.forEach((tab) => {
       expect(tab.classList.contains('col')).toBe(true);
       expect(tab.classList.contains('s4')).toBe(true); // 12 / 3 tabs = s4
     });
@@ -185,7 +183,7 @@ describe('Tabs Component', () => {
     const tabsWithoutSelection: ITabs = {
       tabs: createTestTabs(),
     };
-    
+
     const TabsInstance = Tabs;
     const { container } = render(TabsInstance, tabsWithoutSelection);
 

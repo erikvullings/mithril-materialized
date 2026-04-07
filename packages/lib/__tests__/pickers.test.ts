@@ -1,6 +1,6 @@
 import { DatePicker, DatePickerOptions } from '../src/datepicker';
 import { TimePicker, TimepickerOptions as TimePickerOptions } from '../src/timepicker';
-import { IInputOptions } from '../src/input-options';
+import { InputAttrs as IInputOptions } from '../src/input-options';
 import { render, fireEvent, cleanup } from './test-utils';
 
 describe('DatePicker Component', () => {
@@ -8,7 +8,7 @@ describe('DatePicker Component', () => {
     cleanup();
   });
 
-  const defaultDatePickerAttrs: IInputOptions<Date | string> & DatePickerOptions = {
+  const defaultDatePickerAttrs: IInputOptions<string> & DatePickerOptions = {
     label: 'Select Date',
   };
 

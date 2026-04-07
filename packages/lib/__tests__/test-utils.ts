@@ -18,7 +18,7 @@ export interface MithrilTestUtils {
   queryByRole: (role: any, options?: any) => HTMLElement | null;
   queryByLabelText: (text: any, options?: any) => HTMLElement | null;
   queryByText: (text: any, options?: any) => HTMLElement | null;
-  rerender: (component: ComponentTypes, newAttrs?: any) => void;
+  rerender: (component: ComponentTypes<any>, newAttrs?: any) => void;
   unmount: () => void;
 }
 
@@ -42,7 +42,7 @@ export function render<T>(component: ComponentTypes<T, any>, attrs?: T, containe
     queryByRole: (role: any, options?: any) => queryByRole(testContainer, role, options),
     queryByLabelText: (text: any, options?: any) => queryByLabelText(testContainer, text, options),
     queryByText: (text: any, options?: any) => queryByText(testContainer, text, options),
-    rerender: (newComponent: ComponentTypes, newAttrs?: T) => {
+    rerender: (newComponent: ComponentTypes<any>, newAttrs?: T) => {
       m.render(testContainer, m(newComponent as any, (newAttrs || attrs) as any));
     },
     unmount: () => {

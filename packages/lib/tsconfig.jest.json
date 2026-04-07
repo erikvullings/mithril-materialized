@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node16",
+    "isolatedModules": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "types": [
+      "jest",
+      "node",
+      "@testing-library/jest-dom"
+    ]
+  }
+}
