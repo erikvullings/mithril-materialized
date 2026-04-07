@@ -841,6 +841,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                             e.stopPropagation();
                             gotoMonth(index);
                             state.monthDropdownOpen = false;
+                            m.redraw();
                           },
                         },
                         monthName
@@ -875,6 +876,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                             e.stopPropagation();
                             gotoYear(i);
                             state.yearDropdownOpen = false;
+                            m.redraw();
                           },
                         },
                         i
