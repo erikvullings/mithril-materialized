@@ -28,7 +28,10 @@
     "./utilities.css": "./dist/utilities.css",
     "./sass/*": "./sass/*"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
   "files": [
     "dist",
     "sass"

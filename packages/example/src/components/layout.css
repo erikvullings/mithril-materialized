@@ -16,22 +16,6 @@ body {
   width: 260px !important;
   background-color: var(--mm-surface-color, #fff) !important;
   padding-bottom: 0 !important;
-  /* Custom thin scrollbar that matches dark/light theme */
-  scrollbar-width: thin;
-  scrollbar-color: rgba(128, 128, 128, 0.3) transparent;
-}
-
-.sidenav::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidenav::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidenav::-webkit-scrollbar-thumb {
-  background: rgba(128, 128, 128, 0.3);
-  border-radius: 2px;
 }
 
 /* Override lib's li height/line-height for custom lis */

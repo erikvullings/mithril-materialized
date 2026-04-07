@@ -132,10 +132,10 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
   display: flex;
   flex-direction: column;
   scrollbar-width: thin;
-  scrollbar-color: var(--mm-text-secondary, rgba(255,255,255,.35)) transparent;
+  scrollbar-color: var(--mm-scrollbar-thumb-color, rgba(128, 128, 128, 0.3)) transparent;
 
   &::-webkit-scrollbar {
-    width: 10px;
+    width: 4px;
   }
 
   &::-webkit-scrollbar-track {
@@ -143,15 +143,12 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(--mm-text-secondary, rgba(255,255,255,.35));
-    border-radius: 8px;
-    border: 2px solid transparent;
-    background-clip: content-box;
+    background: var(--mm-scrollbar-thumb-color, rgba(128, 128, 128, 0.3));
+    border-radius: 2px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: var(--mm-text-primary, rgba(255,255,255,.55));
-    background-clip: content-box;
+    background: var(--mm-scrollbar-thumb-hover-color, rgba(128, 128, 128, 0.5));
   }
 
   @extend .z-depth-1 !optional;
