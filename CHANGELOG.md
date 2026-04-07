@@ -1,3 +1,21 @@
+# [3.16.0](https://github.com/erikvullings/mithril-materialized/compare/v3.15.0...v3.16.0) (2026-04-07)
+
+
+### Bug Fixes
+
+* **ci:** force Node 24 runtime for skill-review workflow ([e6f723f](https://github.com/erikvullings/mithril-materialized/commit/e6f723f45f08570e7078e126dae229a13cb757cc))
+* **datepicker:** trigger redraw after month and year selection ([9452a11](https://github.com/erikvullings/mithril-materialized/commit/9452a11caa91c2d04568439148466896022ada33))
+* **example:** remove keys from sidenav vnodes to prevent Mithril fragment error ([4c04305](https://github.com/erikvullings/mithril-materialized/commit/4c04305f7d0da939cfd6d8e954ccaa65d90864f0))
+* Propagate sidenav scrollbar styling from library ([9051f9c](https://github.com/erikvullings/mithril-materialized/commit/9051f9cf3b8a51911014cbb2a31eacc6b17abf44))
+* **tests:** update type assertions and imports in test files ([5e264c4](https://github.com/erikvullings/mithril-materialized/commit/5e264c4c6ac62d7ea9ac08f78c902a603811f393))
+* upgrade TypeScript 6 compatibility ([c33ae9a](https://github.com/erikvullings/mithril-materialized/commit/c33ae9a6cb86c4268660969ba3d78e2959ee8f23))
+
+
+### Features
+
+* **example:** sidenav layout with component search + home page v3.15 ([966caaf](https://github.com/erikvullings/mithril-materialized/commit/966caaf51c4453f06433a48c88c66e30b43b1cab))
+* optimize skill scores for mithril-materialized ([3a00339](https://github.com/erikvullings/mithril-materialized/commit/3a00339c6fbb5aa1f238a6f049090bd8e6d12d5f))
+
 # [3.15.0](https://github.com/erikvullings/mithril-materialized/compare/v3.14.5...v3.15.0) (2026-03-19)
 
 
