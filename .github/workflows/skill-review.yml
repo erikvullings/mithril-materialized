@@ -8,6 +8,9 @@ on:
     paths:
       - "**/SKILL.md"
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   review:
     runs-on: ubuntu-latest
