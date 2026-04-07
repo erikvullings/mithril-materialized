@@ -1,76 +1,82 @@
 /* ─── Shell ─────────────────────────────────────────────────────────────── */
-.mm-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+html, body {
+  height: 100%;
+  margin: 0;
 }
 
-/* ─── Top bar ────────────────────────────────────────────────────────────── */
-.mm-topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 64px;
-  background: var(--mm-primary, #1565c0);
-  color: #fff;
+.mm-layout {
+  display: flex;
+  min-height: 100%;
+}
+
+/* ─── Override lib Sidenav width & appearance ────────────────────────────── */
+.sidenav {
+  width: 260px !important;
+  background-color: var(--mm-surface-color, #fff) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding-bottom: 0 !important;
+}
+
+/* ─── Sidenav brand header ────────────────────────────────────────────────── */
+li.mm-sidenav-brand {
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  z-index: 1001;
   gap: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 0 12px 0 16px;
+  height: 64px;
+  flex-shrink: 0;
+  background: var(--mm-nav-background, var(--mm-primary-color, #26a69a));
+  list-style: none;
 }
 
 .mm-brand {
-  font-size: 1.2rem;
-  font-weight: 500;
-  letter-spacing: 0.3px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
   white-space: nowrap;
-}
-
-.mm-topbar-spacer {
   flex: 1;
+  color: var(--mm-nav-text, #fff);
 }
 
-.mm-hamburger {
-  display: none;
+.mm-close-btn {
   background: none;
   border: none;
-  color: #fff;
+  color: var(--mm-nav-text, #fff);
   cursor: pointer;
   padding: 8px;
   border-radius: 50%;
   line-height: 1;
+  display: flex;
+  align-items: center;
 }
 
-.mm-hamburger:hover {
+.mm-close-btn:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
-/* ─── Sidenav ────────────────────────────────────────────────────────────── */
-.mm-sidenav {
-  position: fixed;
-  left: 0;
-  top: 64px;
-  bottom: 0;
-  width: 260px;
-  background: var(--mm-surface, #fff);
-  border-right: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.12));
-  overflow-y: auto;
-  overflow-x: hidden;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.25s ease;
+/* ─── Search ─────────────────────────────────────────────────────────────── */
+li.mm-search-li {
+  list-style: none;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--mm-divider-color, rgba(0, 0, 0, 0.12));
+  padding: 0;
+  height: auto;
+  line-height: normal;
 }
 
-/* ─── Search ─────────────────────────────────────────────────────────────── */
+/* Override lib's li height/line-height for our custom lis */
+.sidenav li.mm-search-li,
+.sidenav li.mm-nav-group,
+.sidenav li.mm-sidenav-brand,
+.sidenav li.mm-sidenav-footer {
+  height: auto;
+  line-height: normal;
+}
+
 .mm-search {
   position: relative;
   padding: 12px;
-  border-bottom: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.12));
-  flex-shrink: 0;
 }
 
 .mm-search-icon {
@@ -86,9 +92,9 @@
 .mm-search-input {
   width: 100%;
   padding: 8px 32px 8px 34px;
-  border: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.23));
+  border: 1px solid var(--mm-border-color, rgba(0, 0, 0, 0.23));
   border-radius: 4px;
-  background: var(--mm-input-bg, rgba(0, 0, 0, 0.04));
+  background: var(--mm-input-background, rgba(0, 0, 0, 0.04));
   font-size: 0.875rem;
   outline: none;
   color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
@@ -98,8 +104,8 @@
 }
 
 .mm-search-input:focus {
-  border-color: var(--mm-primary, #1565c0);
-  background: var(--mm-surface, #fff);
+  border-color: var(--mm-primary-color, #26a69a);
+  background: var(--mm-surface-color, #fff);
   box-shadow: none;
 }
 
@@ -123,10 +129,10 @@
   left: 12px;
   right: 12px;
   top: calc(100% - 4px);
-  background: var(--mm-surface, #fff);
-  border: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.12));
+  background: var(--mm-surface-color, #fff);
+  border: 1px solid var(--mm-divider-color, rgba(0, 0, 0, 0.12));
   border-radius: 4px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   z-index: 100;
   max-height: 320px;
   overflow-y: auto;
@@ -139,7 +145,7 @@
   padding: 8px 12px;
   cursor: pointer;
   gap: 8px;
-  border-bottom: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.06));
+  border-bottom: 1px solid var(--mm-divider-color, rgba(0, 0, 0, 0.06));
 }
 
 .mm-search-result:last-child {
@@ -147,7 +153,7 @@
 }
 
 .mm-search-result:hover {
-  background: var(--mm-hover, rgba(0, 0, 0, 0.04));
+  background: var(--mm-row-hover, rgba(0, 0, 0, 0.04));
 }
 
 .mm-search-result-title {
@@ -163,7 +169,7 @@
 .mm-search-result-page {
   font-size: 0.7rem;
   color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
-  background: var(--mm-chip-bg, rgba(0, 0, 0, 0.08));
+  background: var(--mm-chip-bg, #e4e4e4);
   padding: 2px 7px;
   border-radius: 10px;
   white-space: nowrap;
@@ -171,8 +177,10 @@
 }
 
 /* ─── Nav groups ─────────────────────────────────────────────────────────── */
-.mm-nav-group {
+li.mm-nav-group {
+  list-style: none;
   flex-shrink: 0;
+  padding: 0;
 }
 
 .mm-nav-group-header {
@@ -183,6 +191,7 @@
   padding: 10px 12px 10px 16px;
   background: none;
   border: none;
+  border-top: 1px solid var(--mm-divider-color, rgba(0, 0, 0, 0.08));
   cursor: pointer;
   font-size: 0.7rem;
   font-weight: 700;
@@ -190,15 +199,10 @@
   letter-spacing: 0.09em;
   color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
   text-align: left;
-  border-top: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.08));
-}
-
-.mm-nav-group-header:first-child {
-  border-top: none;
 }
 
 .mm-nav-group-header:hover {
-  background: var(--mm-hover, rgba(0, 0, 0, 0.04));
+  background: var(--mm-row-hover, rgba(0, 0, 0, 0.04));
 }
 
 .mm-nav-group-header .material-icons {
@@ -208,6 +212,16 @@
 .mm-nav-group-arrow {
   margin-left: auto;
   font-size: 16px !important;
+}
+
+.mm-nav-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mm-nav-items--hidden {
+  display: none;
 }
 
 .mm-nav-item {
@@ -222,14 +236,14 @@
 }
 
 .mm-nav-item:hover {
-  background: var(--mm-hover, rgba(0, 0, 0, 0.04));
+  background: var(--mm-row-hover, rgba(0, 0, 0, 0.04));
 }
 
 .mm-nav-item--active {
-  color: var(--mm-primary, #1565c0);
-  background: var(--mm-primary-bg, rgba(21, 101, 192, 0.08));
+  color: var(--mm-primary-color, #26a69a);
+  background: var(--mm-dropdown-selected, rgba(38, 166, 154, 0.08));
   font-weight: 500;
-  border-left: 3px solid var(--mm-primary, #1565c0);
+  border-left: 3px solid var(--mm-primary-color, #26a69a);
   padding-left: 25px;
 }
 
@@ -237,68 +251,70 @@
   font-size: 18px !important;
 }
 
-/* ─── GitHub link ────────────────────────────────────────────────────────── */
+/* ─── Sidenav footer ─────────────────────────────────────────────────────── */
+li.mm-sidenav-footer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px;
+  margin-top: auto;
+  border-top: 1px solid var(--mm-divider-color, rgba(0, 0, 0, 0.12));
+  flex-shrink: 0;
+  list-style: none;
+  height: auto;
+  line-height: normal;
+}
+
 .mm-github-link {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
+  gap: 6px;
+  flex: 1;
   color: var(--mm-text-secondary, rgba(0, 0, 0, 0.54));
   text-decoration: none;
   font-size: 0.8rem;
-  margin-top: auto;
-  border-top: 1px solid var(--mm-divider, rgba(0, 0, 0, 0.12));
-  flex-shrink: 0;
 }
 
 .mm-github-link:hover {
-  color: var(--mm-primary, #1565c0);
+  color: var(--mm-primary-color, #26a69a);
 }
 
 .mm-github-link .material-icons {
   font-size: 16px !important;
 }
 
-/* ─── Overlay (mobile) ───────────────────────────────────────────────────── */
-.mm-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-}
-
 /* ─── Main content ───────────────────────────────────────────────────────── */
 .mm-content {
-  margin-left: 260px;
-  margin-top: 64px;
+  flex: 1;
   padding: 24px;
-  min-height: calc(100vh - 64px);
+  min-height: 100%;
   box-sizing: border-box;
 }
 
-/* ─── Mobile ─────────────────────────────────────────────────────────────── */
-@media (max-width: 992px) {
-  .mm-hamburger {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.mm-content--desktop {
+  margin-left: 260px;
+}
 
-  .mm-sidenav {
-    transform: translateX(-100%);
-    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.15);
-  }
+/* ─── Mobile hamburger ────────────────────────────────────────────────────── */
+.mm-hamburger {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 998;
+  background: var(--mm-nav-background, var(--mm-primary-color, #26a69a));
+  border: none;
+  color: var(--mm-nav-text, #fff);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
 
-  .mm-sidenav--open {
-    transform: translateX(0);
-  }
-
-  .mm-overlay {
-    display: block;
-  }
-
-  .mm-content {
-    margin-left: 0;
-  }
+/* Add top padding on mobile so content doesn't hide behind hamburger */
+.mm-content:not(.mm-content--desktop) {
+  padding-top: 56px;
 }
