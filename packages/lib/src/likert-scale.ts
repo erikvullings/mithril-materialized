@@ -10,6 +10,8 @@ export type LikertScaleDensity = 'compact' | 'standard' | 'comfortable';
 /** Likert scale layout options */
 export type LikertScaleLayout = 'horizontal' | 'vertical' | 'responsive';
 
+const MOBILE_LAYOUT_BREAKPOINT = 600;
+
 /** Likert scale component attributes */
 export interface LikertScaleAttrs<T extends number = number> extends Attributes {
   // Scale configuration
@@ -168,6 +170,27 @@ export const LikertScale: FactoryComponent<LikertScaleAttrs> = () => {
     }
   };
 
+  const isVerticalLayout = (layout: LikertScaleLayout): boolean => {
+    if (layout === 'vertical') return true;
+    if (layout === 'horizontal') return false;
+    return typeof window !== 'undefined' ? window.innerWidth <= MOBILE_LAYOUT_BREAKPOINT : false;
+  };
+
+  const getInlineAnchorLabel = (
+    value: number,
+    min: number,
+    max: number,
+    middleValue: number | undefined,
+    startLabel?: string,
+    middleLabel?: string,
+    endLabel?: string
+  ): string | undefined => {
+    if (value === min && startLabel) return startLabel;
+    if (middleLabel && middleValue !== undefined && value === middleValue) return middleLabel;
+    if (value === max && endLabel) return endLabel;
+    return undefined;
+  };
+
   const handleChange = (attrs: LikertScaleAttrs, newValue: number) => {
     if (attrs.readonly || attrs.disabled) return;
 
@@ -225,6 +248,7 @@ export const LikertScale: FactoryComponent<LikertScaleAttrs> = () => {
     name?: string;
     disabled?: boolean;
     readonly?: boolean;
+    anchorLabel?: string;
     onchange: (value: number) => void;
   }
 
@@ -241,6 +265,7 @@ export const LikertScale: FactoryComponent<LikertScaleAttrs> = () => {
           name,
           disabled,
           readonly,
+          anchorLabel,
           onchange,
         } = attrs;
         const radioId = `${groupId}-${value}`;
@@ -275,6 +300,8 @@ export const LikertScale: FactoryComponent<LikertScaleAttrs> = () => {
             m('label.likert-scale__label', {
               for: radioId,
             }),
+
+            anchorLabel && m('.likert-scale__item-anchor', anchorLabel),
 
             // Tooltip (optional)
             showTooltip && tooltipLabel && m('.likert-scale__tooltip', tooltipLabel),
@@ -331,6 +358,8 @@ export const LikertScale: FactoryComponent<LikertScaleAttrs> = () => {
 
       const currentValue = getCurrentValue(attrs);
       const itemCount = Math.floor((max - min) / step) + 1;
+      const useInlineAnchors = isVerticalLayout(layout);
+      const middleValue = middleLabel ? min + Math.floor((itemCount - 1) / 2) * step : undefined;
 
       // Generate scale values
       const scaleValues = Array.from({ length: itemCount }, (_, i) => min + i * step);
@@ -388,6 +417,9 @@ export const LikertScale: FactoryComponent<LikertScaleAttrs> = () => {
                   showNumber: showNumbers,
                   showTooltip: showTooltips,
                   tooltipLabel: tooltipLabels?.[value - min],
+                  anchorLabel: useInlineAnchors
+                    ? getInlineAnchorLabel(value, min, max, middleValue, startLabel, middleLabel, endLabel)
+                    : undefined,
                   groupId: state.groupId,
                   name,
                   disabled,
@@ -398,7 +430,7 @@ export const LikertScale: FactoryComponent<LikertScaleAttrs> = () => {
             ),
 
             // Scale anchors
-            (startLabel || middleLabel || endLabel) &&
+            !useInlineAnchors && (startLabel || middleLabel || endLabel) &&
               m('.likert-scale__anchors', [
                 startLabel && m('.likert-scale__anchor.likert-scale__anchor--start', startLabel),
                 middleLabel && m('.likert-scale__anchor.likert-scale__anchor--middle', middleLabel),

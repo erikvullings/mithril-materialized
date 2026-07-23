@@ -33,6 +33,8 @@ export interface RadioButtonsAttrs<T extends string | number> extends Attributes
   disabled?: boolean;
   /** Layout for the options: 'vertical' (default) or 'horizontal' */
   layout?: 'vertical' | 'horizontal';
+  /** @deprecated Use layout instead. Kept for backward compatibility. */
+  direction?: 'vertical' | 'horizontal';
 }
 
 export interface RadioButtonAttrs<T extends string | number> extends Attributes {
@@ -107,10 +109,13 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
         options,
         isMandatory,
         checkboxClass,
-        layout = 'vertical',
+        layout,
+        direction,
         onchange,
       } = attrs;
       
+      const resolvedLayout = layout ?? direction ?? 'vertical';
+
       const { groupId, componentId } = state;
       const controlled = isControlled(attrs);
       
@@ -156,7 +161,7 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
 
       const optionsContent = m(OptionsList, {
         options: radioItems,
-        layout,
+        layout: resolvedLayout,
       });
 
       return m('div', { id: componentId, className: cn }, [

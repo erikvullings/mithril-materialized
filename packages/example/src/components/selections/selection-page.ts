@@ -286,6 +286,39 @@ export const SelectionPage = () => {
             onchange: (ids) => (state.radioId = ids),
           })
         ),
+        m(
+          '.row',
+          m(RadioButtons<string>, {
+            label: 'What is your favorite hobby? (vertical direction)',
+            options: [
+              { id: 'movies', label: 'Watching movies' },
+              { id: 'out', label: 'Going out' },
+              { id: 'reading', label: 'Reading' },
+              { id: 'sex', label: 'Sex', disabled: true },
+            ],
+            checkedId: state.radioId,
+            onchange: (ids) => (state.radioId = ids),
+            direction: 'vertical',
+          })
+        ),
+        m(CodeBlock, {
+          newRow: true,
+          code: `          m(RadioButtons<string>, {
+            checkboxClass: 'col s3', // align options horizontally
+            label: 'What is your favorite hobby?',
+            options: [
+              { id: 'movies', label: 'Watching movies' },
+              { id: 'out', label: 'Going out' },
+              { id: 'reading', label: 'Reading' },
+              { id: 'sex', label: 'Sex', disabled: true },
+            ],
+            checkedId: state.radioId,
+            onchange: (id) => (state.radioId = id),
+            // Either prop works:
+            layout: 'horizontal',
+            // direction: 'vertical',
+          })`,
+        }),
         // Likert Scale Examples
         m('h3.header[id=likert]', 'Likert Scale'),
         m(
@@ -533,7 +566,7 @@ m(LikertScale, {
         // Different scales
         m('h4', 'Different Scale Ranges'),
         m('.row', [
-          m('.col.s12.m6', [
+          m('.col.s12', [
             m('h6', '1-7 Scale'),
             m(LikertScale, {
               label: 'How likely are you to recommend us?',
@@ -545,7 +578,7 @@ m(LikertScale, {
               endLabel: 'Extremely likely',
             }),
           ]),
-          m('.col.s12.m6', [
+          m('.col.s12', [
             m('h6', '0-10 Scale'),
             m(LikertScale, {
               label: 'Net Promoter Score',
@@ -671,36 +704,6 @@ m(LikertScale, {
             ]),
           ]),
         ]),
-        m(
-          '.row',
-          m(RadioButtons<string>, {
-            label: 'What is your favorite hobby?',
-            options: [
-              { id: 'movies', label: 'Watching movies' },
-              { id: 'out', label: 'Going out' },
-              { id: 'reading', label: 'Reading' },
-              { id: 'sex', label: 'Sex', disabled: true },
-            ],
-            checkedId: state.radioId,
-            onchange: (ids) => (state.radioId = ids),
-          })
-        ),
-        m(CodeBlock, {
-          newRow: true,
-          code: `          m(RadioButtons<string>, {
-            checkboxClass: 'col s4', // to align items horizontally
-            label: 'What is your favorite hobby?',
-            options: [
-              { id: 'movies', label: 'Watching movies' },
-              { id: 'out', label: 'Going out' },
-              { id: 'reading', label: 'Reading', iconName: 'import_contacts' },
-              { id: 'sex', label: 'Sex', disabled: true },
-            ],
-            checkedId: state.radioIds,
-            onchange: ids => state.radioIds = ids,
-          })`,
-        }),
-
         m('h3.header[id=switch]', 'Switch'),
         m(
           '.row',

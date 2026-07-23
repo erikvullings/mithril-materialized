@@ -101,6 +101,14 @@ $likert-tooltip-text: white !default;
   line-height: 1.3;
 }
 
+.likert-scale__item-anchor {
+  margin-left: 12px;
+  font-size: 0.875rem;
+  color: $likert-color-text-secondary;
+  line-height: 1.2;
+  text-align: left;
+}
+
 // Scale container (right side with fixed width)
 .likert-scale__scale-container {
   flex: 0 0 auto;
@@ -345,8 +353,13 @@ $likert-tooltip-text: white !default;
   .likert-scale__item {
     flex-direction: row;
     justify-content: flex-start;
+    align-items: center;
     padding: 4px 0;
     width: 100%;
+
+    &:hover:not(.likert-scale__item--disabled):not(.likert-scale__item--readonly) {
+      transform: none;
+    }
   }
 
   .likert-scale__number {
@@ -405,8 +418,13 @@ $likert-tooltip-text: white !default;
     .likert-scale__item {
       flex-direction: row;
       justify-content: flex-start;
+      align-items: center;
       padding: 4px 0;
       width: 100%;
+
+      &:hover:not(.likert-scale__item--disabled):not(.likert-scale__item--readonly) {
+        transform: none;
+      }
     }
 
     .likert-scale__number {
@@ -544,6 +562,12 @@ $likert-tooltip-text: white !default;
 
 // RTL support
 [dir="rtl"] {
+  .likert-scale__item-anchor {
+    margin-left: 0;
+    margin-right: 12px;
+    text-align: right;
+  }
+
   .likert-scale__tooltip {
     &::after {
       transform: translateX(50%);
