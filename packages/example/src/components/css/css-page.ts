@@ -14,8 +14,8 @@ import { ThemingSection } from './theming-section';
 
 const SIDENAV_EXPANDED_WIDTH = 180;
 const SIDENAV_COLLAPSED_WIDTH = 60;
-// Materialize default navbar height
-const NAVBAR_HEIGHT = 64;
+const APP_SIDENAV_WIDTH = 260;
+const DESKTOP_BP = 992;
 
 const cssSections = [
   { section: 'color',       label: 'Color',       icon: 'palette' },
@@ -58,13 +58,15 @@ export const CssPage = () => {
       const section = activeSection();
       const SectionComponent = sectionComponents[section] || ColorSection;
       const sidenavWidth = isExpanded ? SIDENAV_EXPANDED_WIDTH : SIDENAV_COLLAPSED_WIDTH;
+      const leftOffset = window.innerWidth >= DESKTOP_BP ? APP_SIDENAV_WIDTH : 0;
 
       return m('.col.s12', { style: 'padding: 0;' }, [
-        // Inline style to position the Sidenav below the navbar
+        // Keep CSS docs sidenav inside the content area so it never overlays the app nav
         m('style', `
           .css-docs-sidenav.sidenav {
-            top: ${NAVBAR_HEIGHT}px !important;
-            height: calc(100% - ${NAVBAR_HEIGHT}px) !important;
+            left: ${leftOffset}px !important;
+            top: 0 !important;
+            height: 100% !important;
             overflow-y: auto;
             box-shadow: 2px 0 5px rgba(0,0,0,0.15);
           }
@@ -82,7 +84,9 @@ export const CssPage = () => {
         },
           cssSections.map(({ section: s, label, icon }) =>
             m(SidenavItem, {
+              className: `css-nav-item-${s}`,
               text: label,
+              title: label,
               icon,
               active: section === s,
               onclick: () => m.route.set(`/css/${s}`),

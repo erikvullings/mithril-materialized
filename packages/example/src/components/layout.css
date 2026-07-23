@@ -91,10 +91,24 @@ li.mm-search-li {
 .mm-search .input-field.mm-search-field {
   margin: 0 0 8px;
   padding: 0;
+  width: 100%;
+}
+
+/* Keep the search label floated to avoid overlap with the input underline */
+.mm-search .input-field.mm-search-field > label {
+  transform: translateY(-14px) scale(0.8);
+  transform-origin: 0 0;
 }
 
 .mm-search .input-field.mm-search-field input {
   margin: 0;
+}
+
+/* Ensure prefixed search input text starts after icon and fills remaining width */
+.mm-search .input-field.mm-search-field .prefix ~ input {
+  margin-left: 3rem;
+  width: calc(100% - 3rem);
+  box-sizing: border-box;
 }
 
 .mm-search-results {
@@ -147,6 +161,18 @@ li.mm-search-li {
   border-radius: 10px;
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+:root[data-theme='dark'] .mm-search-result-page {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .mm-search-result-page {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.72);
+  }
 }
 
 /* ─── Nav groups ─────────────────────────────────────────────────────────── */
@@ -217,6 +243,16 @@ li.mm-nav-group {
   font-weight: 500;
   border-left: 3px solid var(--mm-primary-color, #26a69a);
   padding-left: 25px;
+}
+
+:root[data-theme='dark'] .mm-nav-item--active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .mm-nav-item--active {
+    background: rgba(255, 255, 255, 0.08);
+  }
 }
 
 .mm-nav-item .material-icons {

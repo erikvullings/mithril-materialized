@@ -22,16 +22,6 @@
   ],
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",
-  "pnpm": {
-    "overrides": {
-      "svgo": ">=2.8.2",
-      "minimatch": ">=3.1.4",
-      "ajv": ">=8.18.0",
-      "qs": ">=6.14.2",
-      "markdown-it": ">=14.1.1",
-      "lodash": ">=4.17.23"
-    }
-  },
   "devDependencies": {
     "pnpm": "11.15.1",
     "rimraf": "^6.1.3",

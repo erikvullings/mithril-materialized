@@ -78,6 +78,12 @@ export interface SidenavItemAttrs {
   href?: string;
   /** Custom class */
   className?: string;
+  /** Native title attribute text shown on hover */
+  title?: string;
+  /** Alias for title; used when title is not provided */
+  tooltip?: string;
+  /** Show tooltip only while sidenav is collapsed, @default true */
+  tooltipWhenCollapsedOnly?: boolean;
   /** Whether this is a divider */
   divider?: boolean;
   /** Whether this is a subheader */
@@ -160,8 +166,21 @@ const SidenavHeaderFooterItem: FactoryComponent<
 > = () => {
   return {
     view: ({ attrs }) => {
-      const { text, icon, onclick, href, className = '', _isExpanded = true, _position = 'left' } = attrs;
+      const {
+        text,
+        icon,
+        onclick,
+        href,
+        className = '',
+        title,
+        tooltip,
+        tooltipWhenCollapsedOnly = true,
+        _isExpanded = true,
+        _position = 'left',
+      } = attrs;
       const isRightAligned = _position === 'right';
+      const tooltipText = title || tooltip || text;
+      const shouldShowTooltip = tooltipWhenCollapsedOnly ? !_isExpanded : true;
 
       const handleClick = (e: Event) => {
         if (onclick) {
@@ -197,6 +216,8 @@ const SidenavHeaderFooterItem: FactoryComponent<
             href: href || '#!',
             onclick: handleClick,
             style: linkStyle,
+            title: shouldShowTooltip ? tooltipText : undefined,
+            'aria-label': shouldShowTooltip ? tooltipText : undefined,
           },
           content
         )
@@ -560,6 +581,9 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
         subheader = false,
         submenu = [],
         submenuMode = 'checkbox',
+        title,
+        tooltip,
+        tooltipWhenCollapsedOnly = true,
       } = attrs;
 
       if (divider) {
@@ -591,6 +615,8 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
       const isExpanded = attrs._isExpanded !== false;
       const position = attrs._position || 'left';
       const isRightAligned = position === 'right';
+      const tooltipText = title || tooltip || text;
+      const shouldShowTooltip = tooltipWhenCollapsedOnly ? !isExpanded : true;
 
       // In expanded mode, icons are at the outside edge
       // In collapsed mode, icons are centered
@@ -627,6 +653,8 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
                   href,
                   onclick: handleMainClick,
                   style: linkStyle,
+                  title: shouldShowTooltip ? tooltipText : undefined,
+                  'aria-label': shouldShowTooltip ? tooltipText : undefined,
                 },
                 content
               ),
@@ -638,6 +666,8 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
                   onclick: handleMainClick,
                   href: '#!',
                   style: linkStyle,
+                  title: shouldShowTooltip ? tooltipText : undefined,
+                  'aria-label': shouldShowTooltip ? tooltipText : undefined,
                 },
                 content
               ),
