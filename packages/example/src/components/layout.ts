@@ -100,7 +100,7 @@ export const Layout: FactoryComponent = () => {
               m('.mm-search', [
                 m(TextInput, {
                   className: 'mm-search-field',
-                  label: 'Search components',
+                  placeholder: 'Search components',
                   iconName: 'search',
                   value: searchQuery,
                   canClear: true,
