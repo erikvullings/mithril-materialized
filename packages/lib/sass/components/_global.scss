@@ -7,6 +7,33 @@
 html {
  box-sizing: border-box;
 }
+
+/* Default themed scrollbar styling for all scroll containers */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--mm-scrollbar-thumb-color, rgba(128, 128, 128, 0.35))
+    var(--mm-scrollbar-track-color, transparent);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--mm-scrollbar-track-color, transparent);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--mm-scrollbar-thumb-color, rgba(128, 128, 128, 0.35));
+  border-radius: 8px;
+  border: 2px solid var(--mm-scrollbar-track-color, transparent);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--mm-scrollbar-thumb-hover-color, rgba(128, 128, 128, 0.5));
+}
+
 *, *:before, *:after {
  box-sizing: inherit;
 }

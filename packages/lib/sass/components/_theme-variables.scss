@@ -63,6 +63,11 @@
   --mm-shadow-umbra: rgba(0, 0, 0, 0.2);
   --mm-shadow-penumbra: rgba(0, 0, 0, 0.14);
   --mm-shadow-ambient: rgba(0, 0, 0, 0.12);
+
+  // Scrollbar colors
+  --mm-scrollbar-track-color: #f1f1f1;
+  --mm-scrollbar-thumb-color: rgba(0, 0, 0, 0.35);
+  --mm-scrollbar-thumb-hover-color: rgba(0, 0, 0, 0.5);
   
   // Switch colors
   --mm-switch-checked-track: rgba(38, 166, 154, 0.3);
@@ -150,6 +155,11 @@ body {
   // Collection/Table hover (dark theme) - more subtle
   --mm-row-hover: rgba(255, 255, 255, 0.04);
   --mm-row-stripe: rgba(255, 255, 255, 0.02);
+
+  // Scrollbar colors (dark theme)
+  --mm-scrollbar-track-color: #1e1e1e;
+  --mm-scrollbar-thumb-color: rgba(255, 255, 255, 0.3);
+  --mm-scrollbar-thumb-hover-color: rgba(255, 255, 255, 0.45);
   
   // Switch colors (dark theme)
   --mm-switch-checked-track: rgba(128, 203, 196, 0.3);
@@ -217,5 +227,10 @@ body {
     
     // Table colors (auto dark theme)
     --mm-table-striped-color: rgba(255, 255, 255, 0.05);
+
+    // Scrollbar colors (auto dark theme)
+    --mm-scrollbar-track-color: #1e1e1e;
+    --mm-scrollbar-thumb-color: rgba(255, 255, 255, 0.3);
+    --mm-scrollbar-thumb-hover-color: rgba(255, 255, 255, 0.45);
   }
 }
