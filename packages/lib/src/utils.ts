@@ -126,8 +126,10 @@ export const getDropdownStyles = (
         }
       });
 
-    // Calculate total height: options + group headers + padding
-    estimatedHeight = totalOptions * itemHeight + groups.size * groupHeaderHeight;
+    // Match the select dropdown's CSS max-height. Positioning with the full
+    // option count would otherwise leave a gap above an input near the bottom
+    // of the viewport when the rendered menu is capped at 400px.
+    estimatedHeight = Math.min(totalOptions * itemHeight + groups.size * groupHeaderHeight, 400);
   }
   const spaceBelow = viewportHeight - rect.bottom;
   const spaceAbove = rect.top;
@@ -149,33 +151,26 @@ export const getDropdownStyles = (
   // Calculate the actual height the dropdown will take
   const actualHeight = needsScrolling ? effectiveAvailableSpace : estimatedHeight;
 
-  // Calculate positioning when dropdown should appear above
-  let topOffset;
-  if (shouldPositionAbove) {
-    // Calculate how much space we actually have from top of viewport to top of input
-    const availableSpaceFromViewportTop = rect.top;
-
-    // If dropdown fits comfortably above input, use normal positioning
-    if (actualHeight <= availableSpaceFromViewportTop) {
-      topOffset = 12 - actualHeight + (isDropDown ? itemHeight : 0); // Bottom of dropdown aligns with top of input
-    } else {
-      // If dropdown is too tall, position it at the very top of viewport
-      // This makes the dropdown use all available space from viewport top to input top
-      topOffset = -availableSpaceFromViewportTop + 5; // 5px margin from viewport top
-    }
-  } else {
-    topOffset = overlap ? 0 : '100%';
-  }
-
   const styles: any = {
     display: 'block',
     opacity: 1,
     position: 'absolute',
-    top: typeof topOffset === 'number' ? `${topOffset}px` : topOffset,
     left: '0',
     zIndex: 1000,
     width: `${rect.width}px`,
   };
+
+  if (shouldPositionAbove) {
+    // This menu is absolutely positioned inside the select wrapper. A negative
+    // `top` calculated from viewport coordinates becomes wrong when an ancestor
+    // scrolls (as ScenarioSpark's main area does). Anchor the menu to its local
+    // containing block instead; its height can then change without detaching it
+    // from the input.
+    styles.top = 'auto';
+    styles.bottom = `${isDropDown ? -18 : inputRef.offsetHeight - 12}px`;
+  } else {
+    styles.top = overlap ? 0 : '100%';
+  }
 
   // Only add scrolling constraints when necessary
   if (needsScrolling) {

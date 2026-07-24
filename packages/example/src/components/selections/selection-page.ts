@@ -11,6 +11,24 @@ import {
   LikertScale,
 } from 'mithril-materialized';
 
+const longSelectOptions = [
+  { id: 'movies', label: 'Watching movies' },
+  { id: 'out', label: 'Going out' },
+  { id: 'reading', label: 'Reading' },
+  { id: 'cycling', label: 'Cycling' },
+  { id: 'cooking', label: 'Cooking' },
+  { id: 'gardening', label: 'Gardening' },
+  { id: 'gaming', label: 'Gaming' },
+  { id: 'music', label: 'Listening to music' },
+  { id: 'painting', label: 'Painting' },
+  { id: 'photography', label: 'Photography' },
+  { id: 'running', label: 'Running' },
+  { id: 'swimming', label: 'Swimming' },
+  { id: 'travel', label: 'Travelling' },
+  { id: 'writing', label: 'Writing' },
+  { id: 'yoga', label: 'Yoga' },
+];
+
 export const SelectionPage = () => {
   const state = {
     ids: undefined as number | number[] | undefined,
@@ -42,22 +60,7 @@ export const SelectionPage = () => {
             placeholder: 'Pick one', // Alternative to first option, is also the default
             isMandatory: true,
             checkedId: state.checkedId,
-            options: [
-              // { label: 'Pick one', disabled: true },
-              // { id: 0, label: 'Option 0' },
-              {
-                id: 'movies',
-                img: 'https://picsum.photos/320/240?random=1',
-                label: 'Watching movies',
-                title: 'Sitting for the TV, doing nothing',
-              },
-              {
-                id: 'out',
-                img: 'https://picsum.photos/320/240?random=2',
-                label: 'Going out',
-                title: 'Scanning the environment, talking to strangers',
-              },
-            ],
+            options: longSelectOptions,
             onchange: (ids) => (state.checkedId = ids),
           })
         ),
