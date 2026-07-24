@@ -7,6 +7,7 @@ import {
   RadioButtons,
   Dropdown,
   SearchSelect,
+  NumberInput,
   TextInput,
   LikertScale,
 } from 'mithril-materialized';
@@ -853,6 +854,23 @@ m(LikertScale, {
             onchange,
           })`,
         }),
+        m('h4.header', 'Row alignment'),
+        m('.row', [
+          m(NumberInput, {
+            label: 'Order',
+            className: 'col s4',
+          }),
+          m(Switch, {
+            label: 'Manual mode',
+            className: 'col s4',
+            checked: state.checked,
+            onchange: (checked) => (state.checked = checked),
+          }),
+          m(TextInput, {
+            label: 'Name',
+            className: 'col s4',
+          }),
+        ]),
 
         m('h3.header[id=dropdown]', 'Dropdown'),
         m(

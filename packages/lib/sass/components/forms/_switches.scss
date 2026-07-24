@@ -8,11 +8,17 @@
 .switch * {
   -webkit-tap-highlight-color: transparent;
   user-select: none;
-  margin: 13px 0 17px 0;
+  margin: 12px 0 17px 0;
 }
 
 .switch label {
   cursor: pointer;
+}
+
+.switch label .switch-value {
+  font-size: variables.$input-font-size;
+  position: relative;
+  top: -2px;
 }
 
 .switch label input[type=checkbox] {
@@ -39,6 +45,7 @@
   position: relative;
   width: 36px;
   height: 14px;
+  top: -3px;
   background-color: var(--mm-switch-unchecked-track, variables.$switch-unchecked-lever-bg);
   border-radius: variables.$switch-radius;
   margin-right: 10px;

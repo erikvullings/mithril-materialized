@@ -30,7 +30,13 @@ describe('Switch Component', () => {
       label: 'Enable notifications'
     });
     
-    expect(getByText('Enable notifications')).toBeInTheDocument();
+    expect(getByText('Enable notifications')).toHaveClass('switch-label', 'active');
+  });
+
+  it('marks both toggle values for switch-specific styling', () => {
+    const { container } = render(Switch, {});
+
+    expect(container.querySelectorAll('.switch-value')).toHaveLength(2);
   });
 
   it('handles initial checked state', () => {

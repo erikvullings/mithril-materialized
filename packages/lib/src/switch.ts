@@ -46,19 +46,19 @@ export const Switch: FactoryComponent<SwitchAttrs> = () => {
           },
         },
         [
-          label && m(Label, { label: label || '', id, isMandatory, className: 'active' }),
+          label && m(Label, { label: label || '', id, isMandatory, className: 'switch-label active' }),
           m(
             '.switch',
             params,
             m('label', [
-              m('span', left || 'Off'),
+              m('span.switch-value', left || 'Off'),
               m('input[type=checkbox]', {
                 id,
                 disabled,
                 checked,
               }),
               m('span.lever'),
-              m('span', right || 'On'),
+              m('span.switch-value', right || 'On'),
             ])
           ),
         ]
