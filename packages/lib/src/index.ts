@@ -42,6 +42,7 @@ export * from './tooltip';
 export * from './utils';
 export * from './theme-switcher';
 export * from './file-upload';
+export * from './form-section';
 export * from './sidenav';
 export * from './breadcrumb';
 export * from './wizard';

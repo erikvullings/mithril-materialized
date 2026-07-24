@@ -1,0 +1,63 @@
+.mm-fieldset {
+  border: 1px solid var(--mm-border-color);
+  border-radius: 4px;
+  margin: 0 0 1.5rem;
+  padding: 1rem;
+}
+
+.mm-fieldset__legend {
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0 0.35rem;
+}
+
+.mm-fieldset__required,
+.mm-fieldset__error,
+.mm-validation-summary {
+  color: var(--mm-error-color);
+}
+
+.mm-fieldset__description,
+.mm-form-section__description {
+  color: var(--mm-text-secondary);
+  margin: 0 0 1rem;
+}
+
+.mm-fieldset__error {
+  margin: 0.75rem 0 0;
+}
+
+.mm-form-section {
+  margin-bottom: 2rem;
+}
+
+.mm-form-section__header {
+  margin-bottom: 1rem;
+}
+
+.mm-form-section__title {
+  font-size: 1.3rem;
+  margin: 0 0 0.4rem;
+}
+
+.mm-validation-summary {
+  background: color-mix(in srgb, var(--mm-error-color) 10%, transparent);
+  border-left: 4px solid var(--mm-error-color);
+  margin: 0 0 1.25rem;
+  padding: 0.8rem 1rem;
+}
+
+.mm-validation-summary__title {
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+}
+
+.mm-validation-summary__list {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.mm-validation-summary a {
+  color: inherit;
+  text-decoration: underline;
+}

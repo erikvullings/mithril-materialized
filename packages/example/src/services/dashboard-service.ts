@@ -19,11 +19,13 @@ import { ImageListPage } from '../components/image-list-page';
 import { RatingPage } from '../components/rating-page';
 import { ProgressPage } from '../components/progress-page';
 import { CssPage } from '../components/css/css-page';
+import { FormSectionPage } from '../components/form-sections/form-section-page';
 
 export enum Dashboards {
   HOME = 'HOME',
   BUTTONS = 'BUTTONS',
   INPUTS = 'INPUTS',
+  FORM_SECTIONS = 'FORM_SECTIONS',
   PICKERS = 'PICKERS',
   SELECTIONS = 'SELECTIONS',
   COLLECTIONS = 'COLLECTIONS',
@@ -65,6 +67,7 @@ export const searchIndex: SearchEntry[] = [
   { title: 'About', page: 'General', route: '/about' },
   // Inputs
   { title: 'Inputs', page: 'Forms', route: '/inputs' },
+  { title: 'Form Sections', page: 'Forms', route: '/form-sections' },
   { title: 'TextInput', page: 'Inputs', route: '/inputs', hash: 'textinput' },
   { title: 'Autocomplete', page: 'Inputs', route: '/inputs', hash: 'autocomplete' },
   { title: 'SearchSelect', page: 'Inputs', route: '/inputs', hash: 'searchselect' },
@@ -209,6 +212,15 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
     visible: true,
     group: 'forms',
     component: InputPage,
+  },
+  {
+    id: Dashboards.FORM_SECTIONS,
+    title: 'Form Sections',
+    icon: 'fact_check',
+    route: '/form-sections',
+    visible: true,
+    group: 'forms',
+    component: FormSectionPage,
   },
   {
     id: Dashboards.PICKERS,

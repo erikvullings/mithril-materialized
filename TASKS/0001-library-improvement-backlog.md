@@ -67,7 +67,7 @@ This task captures the backlog so implementation can be planned and tracked incr
 ### Phase 5: Missing/high-value components
 - [x] Add `AsyncSelect` or async mode for `SearchSelect` with loading/empty/error states.
 - [x] Consider a reusable `Combobox` primitive as foundation for Select/SearchSelect/Autocomplete.
-- [ ] Add form-section primitives (`Fieldset`/`FormSection`) for grouped controls and validation summaries.
+- [x] Add form-section primitives (`Fieldset`/`FormSection`) for grouped controls and validation summaries.
 
 ### Testing and docs
 - [x] Add tests for:
