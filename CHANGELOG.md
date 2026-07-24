@@ -1,3 +1,10 @@
+## [3.17.1](https://github.com/erikvullings/mithril-materialized/compare/v3.17.0...v3.17.1) (2026-07-24)
+
+
+### Bug Fixes
+
+* **types:** migrate select tests to vitest and restore workspace typecheck ([be3943c](https://github.com/erikvullings/mithril-materialized/commit/be3943c5734be9f9504e43f8b541a92246a9aa6e))
+
 # [3.17.0](https://github.com/erikvullings/mithril-materialized/compare/v3.16.0...v3.17.0) (2026-07-24)
 
 
