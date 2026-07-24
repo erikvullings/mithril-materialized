@@ -129,6 +129,9 @@ export const ButtonFactory = (
             }
           : {};
 
+        const tagName = element.split(/[.#]/)[0] || element;
+        const isButtonElement = tagName.toLowerCase() === 'button';
+
         return m(
           element,
           {
@@ -137,7 +140,8 @@ export const ButtonFactory = (
             className: cn,
             'data-position': tooltip ? position : undefined,
             'data-tooltip': tooltip || undefined,
-            type: buttonType,
+            // Only apply button type on actual <button> elements.
+            type: isButtonElement ? buttonType : undefined,
           },
           iconName ? m(Icon, { iconName, className: iconClass !== undefined ? iconClass : 'left' }) : undefined,
           label ? label : undefined,

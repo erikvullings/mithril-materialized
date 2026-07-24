@@ -33,3 +33,10 @@ Improve public API consistency and discoverability with minimal breakage.
 - Implemented initial cleanup in `packages/lib/src/index.ts`:
   - removed duplicate `datepicker` and `timepicker` exports
   - added root export for `toggle-button`
+- Implemented button semantics adjustment in `packages/lib/src/button.ts`:
+  - apply `type` attribute only when rendered element is `<button>`
+  - avoid invalid `type` attribute on anchor-based button variants
+- Standardized attr typing in key components to support style objects:
+  - `packages/lib/src/input-options.ts`
+  - `packages/lib/src/select.ts`
+  - `packages/lib/src/floating-action-button.ts`

@@ -34,14 +34,15 @@ describe('Button Components', () => {
       expect(mockClick).toHaveBeenCalledTimes(1);
     });
 
-    it('renders with variant type', () => {
+    it('does not set type attribute on anchor buttons', () => {
       const { getByText } = render(Button, { 
         label: 'Submit Button',
         variant: 'submit'
       });
       
       const button = getByText('Submit Button');
-      expect(button).toHaveAttribute('type', 'submit');
+      expect(button.tagName).toBe('A');
+      expect(button).not.toHaveAttribute('type');
     });
 
     it('renders with tooltip', () => {

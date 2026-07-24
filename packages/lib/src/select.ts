@@ -43,7 +43,7 @@ export interface SelectAttrs<T extends string | number> extends Attributes {
   /** Sets the input field to disabled. */
   disabled?: boolean;
   /** Optional style information. */
-  style?: string;
+  style?: string | Record<string, string | number>;
   /** If true, break to a new row */
   newRow?: boolean;
   /**

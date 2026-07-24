@@ -9,7 +9,7 @@ export interface FloatingActionButtonAttrs {
   /** Optional classes to add to the top element */
   className?: string;
   /** Optional style to add to the top element, e.g. for positioning it inline */
-  style?: string;
+  style?: string | Record<string, string | number>;
   /** Material-icons name for the main FAB, @see https://materializecss.com/icons.html */
   iconName: string;
   /** Helper option to place the FAB inline instead of the bottom right of the display */
