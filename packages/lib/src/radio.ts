@@ -54,7 +54,7 @@ export const RadioButton = <T extends string | number>(): Component<RadioButtonA
     return m(
       'p',
       { className },
-      m('label', { for: radioId }, [
+      m('label', { for: radioId, style: { position: 'relative', display: 'inline-block' } }, [
         m('input[type=radio][tabindex=0]', {
           id: radioId,
           name: groupId,

@@ -55,15 +55,27 @@ const DropdownOption = <T extends string | number>(): Component<{
             }
           },
         },
-        m('label', { for: checkboxId, class: 'search-select-option-label' }, [
-          showCheckbox &&
-            m('input', {
-              type: 'checkbox',
-              id: checkboxId,
-              checked: selectedIds.includes(option.id),
-            }),
-          m('span', optionLabel),
-        ])
+        m(
+          'label',
+          {
+            for: checkboxId,
+            class: 'search-select-option-label',
+            onclick: (e: Event) => {
+              // The row already toggles the option. Prevent the label from
+              // dispatching a second click to its checkbox.
+              e.preventDefault();
+            },
+          },
+          [
+            showCheckbox &&
+              m('input', {
+                type: 'checkbox',
+                id: checkboxId,
+                checked: selectedIds.includes(option.id),
+              }),
+            m('span', optionLabel),
+          ]
+        )
       );
     },
   };
@@ -116,7 +128,19 @@ interface SearchSelectState<T extends string | number> {
 /**
  * Mithril Factory Component for Multi-Select Dropdown with search
  */
-export const SearchSelect = <T extends string | number>(): Component<SearchSelectAttrs<T>, SearchSelectState<T>> => {
+export const SearchSelect = <T extends string | number>(
+  maybeVnode?: m.Vnode<
+    SearchSelectAttrs<T>,
+    {
+      __searchSelectInstance?: Component<SearchSelectAttrs<T>, SearchSelectState<T>>;
+    }
+  >
+): Component<SearchSelectAttrs<T>, SearchSelectState<T>> => {
+  const cachedInstance = maybeVnode?.state?.__searchSelectInstance;
+  if (cachedInstance) {
+    return cachedInstance;
+  }
+
   // State initialization
   const state: SearchSelectState<T> = {
     id: '',
@@ -279,7 +303,7 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
     }
   };
 
-  return {
+  const componentInstance: Component<SearchSelectAttrs<T>, SearchSelectState<T>> = {
     oninit: ({ attrs }) => {
       state.id = attrs.id || uniqueId();
 
@@ -395,7 +419,18 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
               value: selectedOptions.map((o) => o.label || o.id.toString()).join(', '),
               readonly: true,
               class: 'sr-only',
-              style: { position: 'absolute', left: '-9999px', opacity: 0 },
+              style: {
+                position: 'absolute',
+                width: '1px',
+                height: '1px',
+                margin: '-1px',
+                padding: 0,
+                border: 0,
+                overflow: 'hidden',
+                clip: 'rect(0 0 0 0)',
+                clipPath: 'inset(50%)',
+                whiteSpace: 'nowrap',
+              },
             }),
 
             // Selected Options (chips)
@@ -572,4 +607,10 @@ export const SearchSelect = <T extends string | number>(): Component<SearchSelec
       ]);
     },
   };
+
+  if (maybeVnode?.state) {
+    maybeVnode.state.__searchSelectInstance = componentInstance;
+  }
+
+  return componentInstance;
 };

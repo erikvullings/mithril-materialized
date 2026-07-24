@@ -8,9 +8,9 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - '@semantic-release/changelog@7.0.0'
-  - '@semantic-release/git@11.0.0'
+  - '@semantic-release/git@11.0.0 || 11.0.1'
   - '@testing-library/jest-dom@7.0.0'
-  - sass@1.101.3
+  - sass@1.101.3 || 1.101.7
   - '@mithril-inspector/adapter-kit@0.3.1 || 0.3.2'
   - '@mithril-inspector/overlay@0.3.1 || 0.3.2'
   - '@mithril-inspector/protocol@0.3.1 || 0.3.2'
@@ -18,6 +18,8 @@ minimumReleaseAgeExclude:
   - '@mithril-inspector/server@0.3.1 || 0.3.2'
   - '@mithril-inspector/transform@0.3.1 || 0.3.2'
   - '@mithril-inspector/vite@0.3.1 || 0.3.2'
+  - js-yaml@5.2.2
+  - pnpm@11.17.0
 
 onlyBuiltDependencies:
   - '@parcel/watcher'

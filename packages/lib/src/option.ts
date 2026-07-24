@@ -25,7 +25,7 @@ export const InputCheckbox: FactoryComponent<InputCheckboxAttrs> = () => {
       return m(
         'div',
         { className, style },
-        m('label', { for: checkboxId }, [
+        m('label', { for: checkboxId, style: { position: 'relative', display: 'inline-block' } }, [
           m('input[type=checkbox][tabindex=0]', {
             className: disabled ? 'disabled' : undefined,
             id: checkboxId,

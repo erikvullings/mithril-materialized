@@ -1,7 +1,7 @@
 import typescript from '@rollup/plugin-typescript';
 import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
-import * as ts from 'typescript';
+import ts from 'typescript';
 
 export default {
   input: './src/index.ts',
