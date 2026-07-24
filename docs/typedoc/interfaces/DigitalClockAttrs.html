@@ -15,7 +15,7 @@
 </div></section>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">DigitalClockAttrs</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#amorpm">amOrPm</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;AM&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;PM&quot;</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#hours">hours</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#hourstep">hourStep</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#maxtime">maxTime</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#mintime">minTime</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#minutes">minutes</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#minutestep">minuteStep</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#ontimechange">onTimeChange</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">hours</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">minutes</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">amOrPm</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;AM&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;PM&quot;</span><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#spanampm">spanAmPm</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#spanhours">spanHours</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#spanminutes">spanMinutes</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">HTMLElement</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#twelvehour">twelveHour</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/fabbf99e10c0c4004d9c24b597700023e896803e/packages/lib/src/digital-clock.ts#L14">packages/lib/src/digital-clock.ts:14</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/ced2529c75a38e92fc04e64abe899215bbbe3404/packages/lib/src/digital-clock.ts#L14">packages/lib/src/digital-clock.ts:14</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -45,84 +45,84 @@
 <div class="tsd-comment tsd-typography"><p>Current AM/PM value (only relevant in 12-hour mode)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/fabbf99e10c0c4004d9c24b597700023e896803e/packages/lib/src/digital-clock.ts#L22">packages/lib/src/digital-clock.ts:22</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/ced2529c75a38e92fc04e64abe899215bbbe3404/packages/lib/src/digital-clock.ts#L22">packages/lib/src/digital-clock.ts:22</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="hours"><span>hours</span><a href="#hours" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">hours</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 <div class="tsd-comment tsd-typography"><p>Current hours value (1-12 for 12-hour, 0-23 for 24-hour)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/fabbf99e10c0c4004d9c24b597700023e896803e/packages/lib/src/digital-clock.ts#L16">packages/lib/src/digital-clock.ts:16</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/ced2529c75a38e92fc04e64abe899215bbbe3404/packages/lib/src/digital-clock.ts#L16">packages/lib/src/digital-clock.ts:16</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="hourstep"><code class="tsd-tag">Optional</code><span>hour<wbr/>Step</span><a href="#hourstep" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">hourStep</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div>
 <div class="tsd-comment tsd-typography"><p>Step between hour options (default: 1)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/fabbf99e10c0c4004d9c24b597700023e896803e/packages/lib/src/digital-clock.ts#L31">packages/lib/src/digital-clock.ts:31</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/ced2529c75a38e92fc04e64abe899215bbbe3404/packages/lib/src/digital-clock.ts#L31">packages/lib/src/digital-clock.ts:31</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="maxtime"><code class="tsd-tag">Optional</code><span>max<wbr/>Time</span><a href="#maxtime" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">maxTime</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>Maximum allowed time in format &quot;HH:MM&quot; or &quot;HH:MM AM/PM&quot;</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/fabbf99e10c0c4004d9c24b597700023e896803e/packages/lib/src/digital-clock.ts#L37">packages/lib/src/digital-clock.ts:37</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/ced2529c75a38e92fc04e64abe899215bbbe3404/packages/lib/src/digital-clock.ts#L37">packages/lib/src/digital-clock.ts:37</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="mintime"><code class="tsd-tag">Optional</code><span>min<wbr/>Time</span><a href="#mintime" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">minTime</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>Minimum allowed time in format &quot;HH:MM&quot; or &quot;HH:MM AM/PM&quot;</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/fabbf99e10c0c4004d9c24b597700023e896803e/packages/lib/src/digital-clock.ts#L34">packages/lib/src/digital-clock.ts:34</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/ced2529c75a38e92fc04e64abe899215bbbe3404/packages/lib/src/digital-clock.ts#L34">packages/lib/src/digital-clock.ts:34</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="minutes"><span>minutes</span><a href="#minutes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">minutes</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 <div class="tsd-comment tsd-typography"><p>Current minutes value (0-59)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/fabbf99e10c0c4004d9c24b597700023e896803e/packages/lib/src/digital-clock.ts#L19">packages/lib/src/digital-clock.ts:19</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/ced2529c75a38e92fc04e64abe899215bbbe3404/packages/lib/src/digital-clock.ts#L19">packages/lib/src/digital-clock.ts:19</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="minutestep"><code class="tsd-tag">Optional</code><span>minute<wbr/>Step</span><a href="#minutestep" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">minuteStep</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">number</span></div>
 <div class="tsd-comment tsd-typography"><p>Step between minute options (default: 5)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/fabbf99e10c0c4004d9c24b597700023e896803e/packages/lib/src/digital-clock.ts#L28">packages/lib/src/digital-clock.ts:28</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/ced2529c75a38e92fc04e64abe899215bbbe3404/packages/lib/src/digital-clock.ts#L28">packages/lib/src/digital-clock.ts:28</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="ontimechange"><span>on<wbr/>Time<wbr/>Change</span><a href="#ontimechange" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">onTimeChange</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">hours</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">minutes</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">,</span> <span class="tsd-kind-parameter">amOrPm</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;AM&quot;</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">&quot;PM&quot;</span><span class="tsd-signature-symbol">)</span> <span class="tsd-signature-symbol">=&gt;</span> <span class="tsd-signature-type">void</span></div>
 <div class="tsd-comment tsd-typography"><p>Callback when time changes</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/fabbf99e10c0c4004d9c24b597700023e896803e/packages/lib/src/digital-clock.ts#L40">packages/lib/src/digital-clock.ts:40</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/ced2529c75a38e92fc04e64abe899215bbbe3404/packages/lib/src/digital-clock.ts#L40">packages/lib/src/digital-clock.ts:40</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="spanampm"><code class="tsd-tag">Optional</code><span>span<wbr/>Am<wbr/>Pm</span><a href="#spanampm" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">spanAmPm</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">HTMLElement</span></div>
 <div class="tsd-comment tsd-typography"><p>Optional reference to external AM/PM display element for updates</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/fabbf99e10c0c4004d9c24b597700023e896803e/packages/lib/src/digital-clock.ts#L49">packages/lib/src/digital-clock.ts:49</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/ced2529c75a38e92fc04e64abe899215bbbe3404/packages/lib/src/digital-clock.ts#L49">packages/lib/src/digital-clock.ts:49</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="spanhours"><code class="tsd-tag">Optional</code><span>span<wbr/>Hours</span><a href="#spanhours" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">spanHours</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">HTMLElement</span></div>
 <div class="tsd-comment tsd-typography"><p>Optional reference to external hours display element for updates</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/fabbf99e10c0c4004d9c24b597700023e896803e/packages/lib/src/digital-clock.ts#L43">packages/lib/src/digital-clock.ts:43</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/ced2529c75a38e92fc04e64abe899215bbbe3404/packages/lib/src/digital-clock.ts#L43">packages/lib/src/digital-clock.ts:43</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="spanminutes"><code class="tsd-tag">Optional</code><span>span<wbr/>Minutes</span><a href="#spanminutes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">spanMinutes</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">HTMLElement</span></div>
 <div class="tsd-comment tsd-typography"><p>Optional reference to external minutes display element for updates</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/fabbf99e10c0c4004d9c24b597700023e896803e/packages/lib/src/digital-clock.ts#L46">packages/lib/src/digital-clock.ts:46</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/ced2529c75a38e92fc04e64abe899215bbbe3404/packages/lib/src/digital-clock.ts#L46">packages/lib/src/digital-clock.ts:46</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="twelvehour"><span>twelve<wbr/>Hour</span><a href="#twelvehour" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">twelveHour</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 <div class="tsd-comment tsd-typography"><p>Whether to use 12-hour format (true) or 24-hour format (false)</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/fabbf99e10c0c4004d9c24b597700023e896803e/packages/lib/src/digital-clock.ts#L25">packages/lib/src/digital-clock.ts:25</a></li></ul></aside></section></section></details></div>
+<li>Defined in <a href="https://github.com/erikvullings/mithril-materialized/blob/ced2529c75a38e92fc04e64abe899215bbbe3404/packages/lib/src/digital-clock.ts#L25">packages/lib/src/digital-clock.ts:25</a></li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
