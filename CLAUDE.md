@@ -39,6 +39,7 @@ The library is built using microbundle and exports components as ES modules, Com
 - External dependencies (mithril, materialize-css) are marked as external in the build
 - Custom CSS overrides are in `packages/lib/src/styles/` and bundled into `dist/index.css`
 - Shared flex/grid layout utilities live in `packages/lib/sass/components/_global.scss` and are consumed by selection/navigation components to reduce repeated inline style blocks
+- Combobox keyboard/async state primitives are centralized in `packages/lib/src/combobox.ts` and reused by `search-select.ts`
 - All components are re-exported from `packages/lib/src/index.ts`
 
 ### Component Categories

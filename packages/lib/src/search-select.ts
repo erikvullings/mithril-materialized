@@ -3,6 +3,15 @@ import { getDropdownStyles, uniqueId, sortOptions } from './utils';
 import { MaterialIcon } from './material-icon';
 import { SelectAttrs } from './select';
 import { InputOption } from './option';
+import {
+  AsyncComboboxState,
+  getComboboxKeyResult,
+  getComboboxOptionId,
+  getComboboxViewState,
+  rejectAsyncComboboxRequest,
+  resolveAsyncComboboxRequest,
+  startAsyncComboboxRequest,
+} from './combobox';
 
 const SelectedChip = <T extends string | number>({
   option,
@@ -26,6 +35,7 @@ const SelectedChip = <T extends string | number>({
 const DropdownOption = <T extends string | number>({
   option,
   index,
+  optionId,
   selectedIds,
   isFocused,
   onToggle,
@@ -34,6 +44,7 @@ const DropdownOption = <T extends string | number>({
 }: {
   option: InputOption<T>;
   index: number;
+  optionId: string;
   selectedIds: T[];
   isFocused: boolean;
   onToggle: (option: InputOption<T>) => void;
@@ -45,6 +56,9 @@ const DropdownOption = <T extends string | number>({
   return m(
     'li',
     {
+      id: optionId,
+      role: 'option',
+      'aria-selected': selectedIds.includes(option.id) ? 'true' : 'false',
       class: `${option.disabled ? 'disabled' : ''} ${isFocused ? 'active' : ''}`.trim(),
       onmouseover: () => {
         if (!option.disabled) {
@@ -85,6 +99,10 @@ const DropdownOption = <T extends string | number>({
 export interface SearchSelectI18n {
   /** Text shown when no options match the search */
   noOptionsFound?: string;
+  /** Text shown while async options are loading */
+  loadingOptions?: string;
+  /** Text shown when async option loading fails */
+  loadingError?: string;
   /** Prefix for adding new option */
   addNewPrefix?: string;
   /** Message template for truncated results. Use {shown} and {total} placeholders */
@@ -95,6 +113,8 @@ export interface SearchSelectI18n {
 
 // Extended SearchSelect attributes that inherit from SelectAttrs
 export interface SearchSelectAttrs<T extends string | number> extends SelectAttrs<T> {
+  /** Async options loader for remote/large data sets */
+  loadOptions?: (query: string) => Promise<InputOption<T>[]>;
   /** Callback when user creates a new option: should return new ID */
   oncreateNewOption?: (term: string) => InputOption<T> | Promise<InputOption<T>>;
   /** Placeholder text for the search input, default 'Search options...' */
@@ -116,6 +136,7 @@ export interface SearchSelectAttrs<T extends string | number> extends SelectAttr
 // Component state interface
 interface SearchSelectState<T extends string | number> {
   id: string;
+  listboxId: string;
   isOpen: boolean;
   searchTerm: string;
   inputRef: HTMLElement | null;
@@ -123,6 +144,10 @@ interface SearchSelectState<T extends string | number> {
   focusedIndex: number;
   internalSelectedIds: T[];
   createdOptions: InputOption<T>[];
+  asyncOptions: InputOption<T>[];
+  isLoading: boolean;
+  loadError: string | null;
+  latestRequestId: number;
 }
 
 /**
@@ -144,6 +169,7 @@ export const SearchSelect = <T extends string | number>(
   // State initialization
   const state: SearchSelectState<T> = {
     id: '',
+    listboxId: '',
     isOpen: false,
     searchTerm: '',
     inputRef: null,
@@ -151,7 +177,25 @@ export const SearchSelect = <T extends string | number>(
     focusedIndex: -1,
     internalSelectedIds: [],
     createdOptions: [],
+    asyncOptions: [],
+    isLoading: false,
+    loadError: null,
+    latestRequestId: 0,
   };
+
+  const updateAsyncState = (nextState: AsyncComboboxState<InputOption<T>>) => {
+    state.asyncOptions = nextState.options;
+    state.isLoading = nextState.isLoading;
+    state.loadError = nextState.error;
+    state.latestRequestId = nextState.latestRequestId;
+  };
+
+  const readAsyncState = (): AsyncComboboxState<InputOption<T>> => ({
+    options: state.asyncOptions,
+    isLoading: state.isLoading,
+    error: state.loadError,
+    latestRequestId: state.latestRequestId,
+  });
 
   const isControlled = (attrs: SearchSelectAttrs<T>) =>
     attrs.checkedId !== undefined && typeof attrs.onchange === 'function';
@@ -162,8 +206,13 @@ export const SearchSelect = <T extends string | number>(
   // Handle click outside
   const handleClickOutside = (e: MouseEvent) => {
     const target = e.target as Node;
+    const targetElement = e.target instanceof Element ? e.target : null;
     if (state.dropdownRef && state.dropdownRef.contains(target)) {
       // Click inside dropdown, do nothing
+      return;
+    }
+    if (targetElement && targetElement.closest('.chips-container')) {
+      // Click on trigger, do nothing
       return;
     }
     if (state.inputRef && state.inputRef.contains(target)) {
@@ -176,40 +225,58 @@ export const SearchSelect = <T extends string | number>(
     m.redraw();
   };
 
-  // Handle keyboard navigation
-  const handleKeyDown = (e: KeyboardEvent, filteredOptions: InputOption<T>[], showAddNew: boolean) => {
-    if (!state.isOpen) return;
+  // Handle keyboard navigation through shared combobox primitive.
+  const handleKeyDown = (e: KeyboardEvent, optionCount: number, includeActionRow: boolean) => {
+    const result = getComboboxKeyResult({
+      key: e.key,
+      isOpen: state.isOpen,
+      focusedIndex: state.focusedIndex,
+      optionCount,
+      includeActionRow,
+    });
 
-    const totalOptions = filteredOptions.length + (showAddNew ? 1 : 0);
-
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        state.focusedIndex = Math.min(state.focusedIndex + 1, totalOptions - 1);
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        state.focusedIndex = Math.max(state.focusedIndex - 1, -1);
-        break;
-      case 'Enter':
-        e.preventDefault();
-        if (state.focusedIndex >= 0) {
-          if (showAddNew && state.focusedIndex === filteredOptions.length) {
-            // Handle add new option
-            return 'addNew';
-          } else if (state.focusedIndex < filteredOptions.length) {
-            // This will be handled in the view method where attrs are available
-            return 'selectOption';
-          }
-        }
-        break;
-      case 'Escape':
-        e.preventDefault();
-        state.isOpen = false;
-        state.focusedIndex = -1;
-        break;
+    if (result.preventDefault) {
+      e.preventDefault();
     }
-    return null;
+
+    state.isOpen = result.isOpen;
+    state.focusedIndex = result.focusedIndex;
+    return result.action;
+  };
+
+  const loadAsyncOptions = async (attrs: SearchSelectAttrs<T>, query: string) => {
+    if (!attrs.loadOptions) {
+      return;
+    }
+
+    const started = startAsyncComboboxRequest(readAsyncState());
+    updateAsyncState(started.nextState);
+    m.redraw();
+
+    try {
+      const loadedOptions = await attrs.loadOptions(query);
+      const resolved = resolveAsyncComboboxRequest(readAsyncState(), started.requestId, loadedOptions);
+      updateAsyncState(resolved);
+      if (started.requestId !== state.latestRequestId) {
+        return;
+      }
+      if (state.focusedIndex >= loadedOptions.length) {
+        state.focusedIndex = -1;
+      }
+    } catch (error) {
+      const rejected = rejectAsyncComboboxRequest(
+        readAsyncState(),
+        started.requestId,
+        error instanceof Error ? error.message : 'Unable to load options'
+      );
+      updateAsyncState(rejected);
+      if (started.requestId !== state.latestRequestId) {
+        return;
+      }
+      state.focusedIndex = -1;
+    } finally {
+      m.redraw();
+    }
   };
 
   // Create new option and add to state
@@ -306,6 +373,7 @@ export const SearchSelect = <T extends string | number>(
   const componentInstance: Component<SearchSelectAttrs<T>, SearchSelectState<T>> = {
     oninit: ({ attrs }) => {
       state.id = attrs.id || uniqueId();
+      state.listboxId = `${state.id}-listbox`;
 
       // Initialize internal state for uncontrolled mode
       if (!isControlled(attrs)) {
@@ -338,6 +406,7 @@ export const SearchSelect = <T extends string | number>(
 
       const {
         options = [],
+        loadOptions,
         oncreateNewOption,
         className,
         placeholder,
@@ -353,6 +422,8 @@ export const SearchSelect = <T extends string | number>(
       // Use i18n values if provided, otherwise use defaults
       const texts = {
         noOptionsFound: i18n.noOptionsFound || noOptionsFound,
+        loadingOptions: i18n.loadingOptions || 'Loading options...',
+        loadingError: i18n.loadingError || 'Unable to load options',
         addNewPrefix: i18n.addNewPrefix || '+',
         showingXofY: i18n.showingXofY || 'Showing {shown} of {total} options',
         maxSelectionsReached: i18n.maxSelectionsReached || 'Maximum {max} selections reached',
@@ -361,11 +432,17 @@ export const SearchSelect = <T extends string | number>(
       // Check if max selections is reached
       const isMaxSelectionsReached = maxSelectedOptions && selectedIds.length >= maxSelectedOptions;
 
-      // Merge provided options with internally created options
-      const allOptions = [...options, ...state.createdOptions];
+      // In async mode, the active list is sourced remotely.
+      const sourceOptions = loadOptions ? state.asyncOptions : options;
+
+      // Merge active options with internally created options
+      const allOptions = [...sourceOptions, ...state.createdOptions];
+
+      // Keep selected label lookups stable across static, async, and created sets.
+      const lookupOptions = [...options, ...state.asyncOptions, ...state.createdOptions];
 
       // Get selected options for display
-      const selectedOptionsUnsorted = allOptions.filter((opt) => selectedIds.includes(opt.id));
+      const selectedOptionsUnsorted = lookupOptions.filter((opt) => selectedIds.includes(opt.id));
       const selectedOptions = sortOptions(selectedOptionsUnsorted, attrs.sortSelected);
 
       // Safely filter options
@@ -386,6 +463,16 @@ export const SearchSelect = <T extends string | number>(
         state.searchTerm &&
         !displayedOptions.some((o) => (o.label || o.id.toString()).toLowerCase() === state.searchTerm.toLowerCase());
 
+      const activeDescendantId =
+        state.isOpen && state.focusedIndex >= 0 && state.focusedIndex < displayedOptions.length
+          ? getComboboxOptionId(state.id, state.focusedIndex)
+          : undefined;
+      const viewState = getComboboxViewState({
+        isLoading: state.isLoading,
+        error: state.loadError,
+        optionCount: displayedOptions.length,
+      });
+
       // Render the dropdown
       return m('.input-field.multi-select-dropdown', { className }, [
         m(
@@ -398,10 +485,33 @@ export const SearchSelect = <T extends string | number>(
               // console.log('SearchSelect clicked', state.isOpen, e); // Debug log
               e.preventDefault();
               e.stopPropagation();
+              const wasOpen = state.isOpen;
               state.isOpen = !state.isOpen;
+              if (!wasOpen && state.isOpen && loadOptions) {
+                void loadAsyncOptions(attrs, state.searchTerm);
+              }
               // console.log('SearchSelect state changed to', state.isOpen); // Debug log
             },
+            onkeydown: async (e: KeyboardEvent) => {
+              const action = handleKeyDown(e, displayedOptions.length, !!showAddNew);
+              if (action === 'open' && loadOptions) {
+                await loadAsyncOptions(attrs, state.searchTerm);
+                return;
+              }
+              if (action === 'selectAction' && oncreateNewOption) {
+                await createAndSelectOption(attrs);
+              }
+              if (action === 'selectFocused' && state.focusedIndex < displayedOptions.length) {
+                toggleOption(displayedOptions[state.focusedIndex], attrs);
+              }
+            },
             class: 'chips chips-container mm-layout-row mm-layout-row--wrap mm-layout-row--align-end',
+            role: 'combobox',
+            tabindex: 0,
+            'aria-expanded': state.isOpen ? 'true' : 'false',
+            'aria-haspopup': 'listbox',
+            'aria-controls': state.isOpen ? state.listboxId : undefined,
+            'aria-activedescendant': activeDescendantId,
             style: {
               cursor: 'pointer',
               position: 'relative',
@@ -479,6 +589,8 @@ export const SearchSelect = <T extends string | number>(
           m(
             'ul.dropdown-content.select-dropdown',
             {
+              id: state.listboxId,
+              role: 'listbox',
               oncreate: ({ dom }) => {
                 state.dropdownRef = dom as HTMLElement;
               },
@@ -509,22 +621,45 @@ export const SearchSelect = <T extends string | number>(
                     oninput: (e: InputEvent) => {
                       state.searchTerm = (e.target as HTMLInputElement).value;
                       state.focusedIndex = -1; // Reset focus when typing
+                      if (loadOptions) {
+                        void loadAsyncOptions(attrs, state.searchTerm);
+                      }
                     },
                     onkeydown: async (e: KeyboardEvent) => {
-                      const result = handleKeyDown(e, displayedOptions, !!showAddNew);
-                      if (result === 'addNew' && oncreateNewOption) {
+                      const action = handleKeyDown(e, displayedOptions.length, !!showAddNew);
+                      if (action === 'open' && loadOptions) {
+                        await loadAsyncOptions(attrs, state.searchTerm);
+                      } else if (action === 'selectAction' && oncreateNewOption) {
                         await createAndSelectOption(attrs);
-                      } else if (result === 'selectOption' && state.focusedIndex < displayedOptions.length) {
+                      } else if (action === 'selectFocused' && state.focusedIndex < displayedOptions.length) {
                         toggleOption(displayedOptions[state.focusedIndex], attrs);
                       }
                     },
                     class: 'search-select-input',
+                    'aria-autocomplete': 'list',
+                    'aria-controls': state.listboxId,
                   }),
                 ]
               ),
 
+              // Async loading status
+              ...(viewState === 'loading'
+                ? [m('li.search-select-loading-info', { role: 'status', 'aria-live': 'polite' }, texts.loadingOptions)]
+                : []),
+
+              // Async loading error
+              ...(viewState === 'error' && state.loadError
+                ? [
+                    m(
+                      'li.search-select-error-info',
+                      { role: 'status', 'aria-live': 'assertive' },
+                      `${texts.loadingError}: ${state.loadError}`
+                    ),
+                  ]
+                : []),
+
               // No options found message or list of options
-              ...(displayedOptions.length === 0 && !showAddNew
+              ...(viewState === 'empty' && !showAddNew
                 ? [m('li.search-select-no-options', texts.noOptionsFound)]
                 : []),
 
@@ -572,6 +707,9 @@ export const SearchSelect = <T extends string | number>(
                     m(
                       'li',
                       {
+                        id: `${state.listboxId}-action`,
+                        role: 'option',
+                        'aria-selected': 'false',
                         onclick: async () => {
                           await createAndSelectOption(attrs);
                         },
@@ -590,6 +728,7 @@ export const SearchSelect = <T extends string | number>(
                 DropdownOption({
                   option,
                   index,
+                  optionId: getComboboxOptionId(state.id, index),
                   selectedIds,
                   isFocused: state.focusedIndex === index,
                   onToggle: (opt) => toggleOption(opt, attrs),

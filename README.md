@@ -93,7 +93,7 @@ Components marked with an * are not included in the original materialize-css lib
   - DigitalClock* (standalone digital clock component)
 - [Selections](https://erikvullings.github.io/mithril-materialized/#!/selections)
   - Select
-  - SearchSelect*, a searchable select dropdown
+  - SearchSelect*, a searchable select dropdown (supports async remote loading via `loadOptions`)
   - Options
   - RadioButtons (HTML labels/descriptions require explicit `allowHtml: true`)
   - LikertScale* (survey rating scales with anchor labels)
@@ -438,6 +438,33 @@ Online [flems](flems.io) examples: [FlatButton](https://flems.io/#0=N4IgtglgJlA2
 **TypeScript**: Full TypeScript support with comprehensive type definitions included.
 
 See the [live documentation](https://erikvullings.github.io/mithril-materialized/index.html) for examples and component APIs.
+
+### Async SearchSelect
+
+`SearchSelect` supports remote option loading for large datasets through `loadOptions(query)`.
+
+```typescript
+m(SearchSelect<number>, {
+  label: 'Remote search',
+  checkedId: selectedIds,
+  options: [],
+  loadOptions: async (query) => fetchOptions(query),
+  i18n: {
+    loadingOptions: 'Loading options...',
+    loadingError: 'Request failed',
+    noOptionsFound: 'No options found',
+  },
+  onchange: (ids) => {
+    selectedIds = ids;
+  },
+});
+```
+
+### Combobox Keyboard & Accessibility
+
+- Trigger uses `role="combobox"` with `aria-expanded` and `aria-haspopup="listbox"`
+- Option list uses `role="listbox"`; options use `role="option"` and `aria-selected`
+- Keyboard navigation supports `ArrowDown`, `ArrowUp`, `Enter`/`Space`, and `Escape`
 
 > **Note**: The date range picker is now fully implemented with comprehensive validation and formatting support.
 

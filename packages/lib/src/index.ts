@@ -8,6 +8,7 @@ export * from './carousel';
 export * from './chip';
 export * from './code-block';
 export * from './collapsible';
+export * from './combobox';
 export * from './collection';
 export * from './datepicker';
 export * from './datatable';

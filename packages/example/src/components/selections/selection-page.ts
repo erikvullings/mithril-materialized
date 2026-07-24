@@ -29,12 +29,39 @@ const longSelectOptions = [
   { id: 'yoga', label: 'Yoga' },
 ];
 
+const remoteHobbyOptions = [
+  { id: 0, label: 'Watching movies' },
+  { id: 1, label: 'Going out' },
+  { id: 2, label: 'Reading' },
+  { id: 3, label: 'Cycling' },
+  { id: 4, label: 'Horse riding' },
+  { id: 5, label: 'Cooking' },
+  { id: 6, label: 'Gardening' },
+  { id: 7, label: 'Gaming' },
+  { id: 8, label: 'Photography' },
+  { id: 9, label: 'Running' },
+];
+
+const loadRemoteHobbies = async (query: string): Promise<{ id: number; label: string }[]> =>
+  new Promise((resolve, reject) => {
+    window.setTimeout(() => {
+      const term = query.trim().toLowerCase();
+      if (term.includes('error')) {
+        reject(new Error('Simulated network error'));
+        return;
+      }
+      const filtered = remoteHobbyOptions.filter((option) => option.label.toLowerCase().includes(term)).slice(0, 6);
+      resolve(filtered);
+    }, 250);
+  });
+
 export const SelectionPage = () => {
   const state = {
     ids: undefined as number | number[] | undefined,
     radioId: undefined as string | undefined,
     checkedId: undefined as string | string[] | undefined,
     checkedIds: [0, 2],
+    asyncCheckedIds: [] as number[],
     checked: true,
     // Likert Scale state
     happiness: 3,
@@ -216,6 +243,49 @@ export const SelectionPage = () => {
                 { id: 3, label: 'Sex', disabled: true },
                 { id: 4, label: 'Horse riding' },
               ],
+          })`,
+        }),
+
+        m('h3.header', 'Select multiple with async search'),
+        m('p.caption', 'Type to load remote options. Use "error" to simulate a failed request.'),
+        m(
+          '.row',
+          m(SearchSelect<number>, {
+            label: 'Which hobbies should we fetch remotely?',
+            placeholder: 'Type to search remote options...',
+            className: 'col s12',
+            checkedId: state.asyncCheckedIds,
+            loadOptions: loadRemoteHobbies,
+            i18n: {
+              loadingOptions: 'Loading remote options...',
+              loadingError: 'Remote request failed',
+              noOptionsFound: 'No remote matches found',
+            },
+            onchange: (v) => {
+              state.asyncCheckedIds = v;
+            },
+            options: [],
+          })
+        ),
+        m(CodeBlock, {
+          newRow: true,
+          code: `          m(SearchSelect<number>, {
+            label: 'Which hobbies should we fetch remotely?',
+            placeholder: 'Type to search remote options...',
+            checkedId: state.asyncCheckedIds,
+            loadOptions: async (query) => {
+              // Replace this with your API call
+              return fetchRemoteOptions(query);
+            },
+            i18n: {
+              loadingOptions: 'Loading remote options...',
+              loadingError: 'Remote request failed',
+              noOptionsFound: 'No remote matches found',
+            },
+            onchange: (ids) => {
+              state.asyncCheckedIds = ids;
+            },
+            options: [],
           })`,
         }),
 
