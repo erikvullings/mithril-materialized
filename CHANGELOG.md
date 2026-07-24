@@ -1,3 +1,25 @@
+# [3.17.0](https://github.com/erikvullings/mithril-materialized/compare/v3.16.0...v3.17.0) (2026-07-24)
+
+
+### Bug Fixes
+
+* **button:** use native action semantics ([ca81645](https://github.com/erikvullings/mithril-materialized/commit/ca816455b713d1a206f6c8d89cef658cca04135c))
+* **example:** align misc rows and restore badge showcase spacing ([fa92326](https://github.com/erikvullings/mithril-materialized/commit/fa9232644bf2d10fa2a0570a032f9350a82d5237))
+* **example:** align toggle group with page content ([126c8cc](https://github.com/erikvullings/mithril-materialized/commit/126c8ccdf498e25fa483146cbf68e5db3509bf26))
+* **example:** resolve layout imports ([a5bae7c](https://github.com/erikvullings/mithril-materialized/commit/a5bae7cc5e28c76a1136329b1b8db495614467d0))
+* **toggle-group:** center button contents ([d914a8a](https://github.com/erikvullings/mithril-materialized/commit/d914a8a8aa2160ce3d73bc0bd3cb18fe821483c7))
+
+
+### Features
+
+* add combobox and async search ([ca62e3b](https://github.com/erikvullings/mithril-materialized/commit/ca62e3bced214263ac58dbfefbc018e9cf179120))
+* add form section primitives ([7956e29](https://github.com/erikvullings/mithril-materialized/commit/7956e292d3501025f946d5f608d2d7e9950115b6))
+* **example:** add live theme color palettes ([e2f5b1d](https://github.com/erikvullings/mithril-materialized/commit/e2f5b1df0322a524ab1ccdb63ddeca00766b7002))
+* **example:** add syntax highlighted code blocks ([a9b4f76](https://github.com/erikvullings/mithril-materialized/commit/a9b4f7665a33148d8bc0944e647725884ad8bbca))
+* **input:** theme number controls and range values ([2a6393a](https://github.com/erikvullings/mithril-materialized/commit/2a6393a039a4c103de9006d765c5fcb7680a78a2))
+* **search-select:** add async combobox states and themed error styling ([796f9e7](https://github.com/erikvullings/mithril-materialized/commit/796f9e7ed9d82b1f43ce0f12a332a5e3250e6095))
+* **select:** add multi summary mode and outlined variant ([5bfc8af](https://github.com/erikvullings/mithril-materialized/commit/5bfc8af994e0439aa2402e75c0ca4264df384890))
+
 # [3.16.0](https://github.com/erikvullings/mithril-materialized/compare/v3.15.0...v3.16.0) (2026-04-07)
 
 
