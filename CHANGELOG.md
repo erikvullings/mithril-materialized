@@ -1,3 +1,10 @@
+## [3.17.3](https://github.com/erikvullings/mithril-materialized/compare/v3.17.2...v3.17.3) (2026-07-24)
+
+
+### Bug Fixes
+
+* **input:** show number controls on hover ([fabbf99](https://github.com/erikvullings/mithril-materialized/commit/fabbf99e10c0c4004d9c24b597700023e896803e))
+
 ## [3.17.2](https://github.com/erikvullings/mithril-materialized/compare/v3.17.1...v3.17.2) (2026-07-24)
 
 
