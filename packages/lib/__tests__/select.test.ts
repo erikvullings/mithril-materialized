@@ -292,6 +292,63 @@ describe('Select Component', () => {
     expect(input.value).toBe('Option 1, Option 2');
   });
 
+  it('shows count summary in multi-select mode', () => {
+    const { container } = render(Select<string>(), {
+      id: 'test-select',
+      label: 'Test Select',
+      options: mockOptions,
+      multiple: true,
+      summaryMode: 'count',
+      defaultCheckedId: ['option1', 'option2'],
+    });
+
+    const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
+    expect(input.value).toBe('2/2 selected');
+  });
+
+  it('shows all-selected label in all-or-count summary mode', () => {
+    const { container } = render(Select<string>(), {
+      id: 'test-select',
+      label: 'Test Select',
+      options: mockOptions,
+      multiple: true,
+      summaryMode: 'all-or-count',
+      allSelectedLabel: 'Everything selected',
+      defaultCheckedId: ['option1', 'option2'],
+    });
+
+    const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
+    expect(input.value).toBe('Everything selected');
+  });
+
+  it('shows none-selected label in all-or-count summary mode', () => {
+    const { container } = render(Select<string>(), {
+      id: 'test-select',
+      label: 'Test Select',
+      options: mockOptions,
+      multiple: true,
+      summaryMode: 'all-or-count',
+      noneSelectedLabel: 'No projects selected',
+      placeholder: 'Choose...',
+    });
+
+    const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
+    expect(input.value).toBe('No projects selected');
+  });
+
+  it('adds outlined appearance class when requested', () => {
+    const { container } = render(Select<string>(), {
+      id: 'test-select',
+      label: 'Test Select',
+      options: mockOptions,
+      appearance: 'outlined',
+      onchange: jest.fn(),
+    });
+
+    const root = container.querySelector('.input-field.select-space');
+    expect(root?.className).toContain('select-appearance-outlined');
+  });
+
   it('has proper accessibility attributes', () => {
     const { container } = render(Select<string>(), {
       id: 'test-select',

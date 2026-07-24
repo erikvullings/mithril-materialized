@@ -18,6 +18,9 @@ export type SortSelected<T extends string | number> =
   | 'none'
   | ((a: InputOption<T>, b: InputOption<T>) => number);
 
+export type SelectSummaryMode = 'labels' | 'count' | 'all-or-count';
+export type SelectAppearance = 'standard' | 'outlined';
+
 export interface SelectAttrs<T extends string | number> extends Attributes {
   /** Options to select from */
   options: InputOption<T>[];
@@ -67,6 +70,16 @@ export interface SelectAttrs<T extends string | number> extends Attributes {
   maxHeight?: string;
   /** Sort selected items: 'asc' (alphabetically A-Z), 'desc' (Z-A), 'none' (insertion order), or custom sort function */
   sortSelected?: SortSelected<T>;
+  /** Display mode for selected values in the input field. Defaults to 'labels'. */
+  summaryMode?: SelectSummaryMode;
+  /** Label shown when all selectable options are selected in summary mode 'all-or-count'. */
+  allSelectedLabel?: string;
+  /** Label shown when no options are selected in summary mode 'all-or-count'. */
+  noneSelectedLabel?: string;
+  /** Custom formatter for count-based summary modes. */
+  countLabel?: (selectedCount: number, totalCount: number) => string;
+  /** Visual style of the trigger. Defaults to 'standard'. */
+  appearance?: SelectAppearance;
 }
 
 interface SelectState<T extends string | number> {
@@ -222,6 +235,38 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       display: 'block',
       opacity: 1,
     };
+  };
+
+  const formatSelectionSummary = (
+    attrs: SelectAttrs<T>,
+    selectedOptions: InputOption<T>[],
+    selectedIds: T[],
+    placeholder: string
+  ) => {
+    const mode = attrs.summaryMode || 'labels';
+    const selectedCount = selectedIds.length;
+    const totalCount = attrs.options.filter((option) => !option.disabled).length;
+
+    if (mode === 'labels') {
+      return selectedOptions.length > 0 ? selectedOptions.map((o) => o.label || o.id).join(', ') : placeholder;
+    }
+
+    const defaultCountLabel = `${selectedCount}/${totalCount} selected`;
+    const formattedCount = attrs.countLabel ? attrs.countLabel(selectedCount, totalCount) : defaultCountLabel;
+
+    if (mode === 'count') {
+      return selectedCount > 0 ? formattedCount : placeholder;
+    }
+
+    if (selectedCount === 0) {
+      return attrs.noneSelectedLabel || placeholder;
+    }
+
+    if (totalCount > 0 && selectedCount >= totalCount) {
+      return attrs.allSelectedLabel || 'All selected';
+    }
+
+    return formattedCount;
   };
 
   const renderDropdownContent = (attrs: SelectAttrs<T>, selectedIds: T[], multiple: boolean, placeholder: string) => [
@@ -420,6 +465,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
         placeholder = '',
         isMandatory,
         iconName,
+        appearance = 'standard',
         style,
         disabled,
       } = attrs;
@@ -434,9 +480,13 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
         fallbackValue: [],
       });
 
-      const finalClassName = newRow ? `${className} clear` : className;
+      const layoutClassName = newRow ? `${className} clear` : className;
+      const appearanceClassName = appearance === 'outlined' ? 'select-appearance-outlined' : '';
+      const finalClassName = [layoutClassName, appearanceClassName].filter(Boolean).join(' ');
+      const shouldInlineLabel = appearance === 'outlined' && !!label;
       const selectedOptionsUnsorted = options.filter((opt) => isSelected(opt.id, selectedIds));
       const selectedOptions = sortOptions(selectedOptionsUnsorted, attrs.sortSelected);
+      const triggerValue = formatSelectionSummary(attrs, selectedOptions, selectedIds, placeholder);
 
       // Update portal dropdown when inside modal
       if (state.isInsideModal) {
@@ -464,10 +514,15 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
               role: 'combobox',
             },
             [
+              shouldInlineLabel &&
+                m('span.select-inline-label', [
+                  label,
+                  isMandatory && m('span.mandatory', { style: { marginLeft: '2px' } }, '*'),
+                ]),
               m('input[type=text][readonly=true].select-dropdown.dropdown-trigger', {
                 id: state.id,
-                value:
-                  selectedOptions.length > 0 ? selectedOptions.map((o) => o.label || o.id).join(', ') : placeholder,
+                value: triggerValue,
+                'aria-label': label,
                 oncreate: ({ dom }) => {
                   state.inputRef = dom as HTMLElement;
                 },
@@ -509,7 +564,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
 
           // Label
           ...renderFieldChrome({
-            label,
+            label: shouldInlineLabel ? undefined : label,
             id: state.id,
             isMandatory,
             helperText,

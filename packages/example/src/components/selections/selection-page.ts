@@ -61,6 +61,7 @@ export const SelectionPage = () => {
     radioId: undefined as string | undefined,
     checkedId: undefined as string | string[] | undefined,
     checkedIds: [0, 2],
+    projectCheckedIds: [101, 102] as number[],
     asyncCheckedIds: [] as number[],
     checked: true,
     // Likert Scale state
@@ -155,6 +156,53 @@ export const SelectionPage = () => {
               ],
             })
           )`,
+        }),
+
+        m('h3.header', 'Select multiple summary (outlined variant)'),
+        m('p.caption', 'Shows a compact summary in the trigger: all selected, subset selected, or none selected.'),
+        m(
+          '.row',
+          m(Select<number>, {
+            multiple: true,
+            iconName: 'folder',
+            appearance: 'outlined',
+            summaryMode: 'all-or-count',
+            label: 'Projects',
+            placeholder: 'Choose projects...',
+            allSelectedLabel: 'All projects',
+            noneSelectedLabel: 'No projects selected',
+            countLabel: (selectedCount, totalCount) => `${selectedCount}/${totalCount} projects`,
+            checkedId: state.projectCheckedIds,
+            onchange: (ids) => {
+              state.projectCheckedIds = ids;
+            },
+            options: [
+              { id: 101, label: 'Military Documentation' },
+              { id: 102, label: 'Downloads / Custom Chat Leiden' },
+            ],
+          })
+        ),
+        m(HighlightedCodeBlock, {
+          newRow: true,
+          code: `          m(Select<number>, {
+            multiple: true,
+            iconName: 'folder',
+            appearance: 'outlined',
+            summaryMode: 'all-or-count',
+            label: 'Projects',
+            placeholder: 'Choose projects...',
+            allSelectedLabel: 'All projects',
+            noneSelectedLabel: 'No projects selected',
+            countLabel: (selectedCount, totalCount) => selectedCount + '/' + totalCount + ' projects',
+            checkedId: state.projectCheckedIds,
+            onchange: (ids) => {
+              state.projectCheckedIds = ids;
+            },
+            options: [
+              { id: 101, label: 'Military Documentation' },
+              { id: 102, label: 'Downloads / Custom Chat Leiden' },
+            ],
+          })`,
         }),
 
         m('h3.header', 'Select option group'),
