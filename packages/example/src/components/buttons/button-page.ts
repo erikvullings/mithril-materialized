@@ -108,7 +108,7 @@ m('div', [
         m(CodeBlock, { code: 'm(RoundIconButton, { iconName: "create", onclick })' }),
         m('h3.header[id=togglegroup]', 'ToggleGroup'),
         m('h5', 'Controlled mode'),
-        m('.row', [
+        m('div[style=margin-bottom:20px]', [
           m(ToggleGroup, {
             value: singleValue,
             onchange: (v) => {
@@ -123,7 +123,7 @@ m('div', [
             ],
           }),
         ]),
-        m('.row', [
+        m('div[style=margin-bottom:20px]', [
           m(ToggleGroup, {
             multiple: true,
             value: multipleValues,
@@ -141,7 +141,7 @@ m('div', [
         ]),
         m('h5', 'Uncontrolled mode'),
         m(
-          '.row',
+          'div',
           m(ToggleGroup, {
             multiple: true,
             defaultValue: ['one'],
