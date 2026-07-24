@@ -413,6 +413,17 @@ See our [contributing guide](CONTRIBUTING.md) for detailed information.
 - File upload processing: Real-time without blocking
 - TextArea auto-resize: <1ms per keystroke
 
+### Button semantics
+
+`Button`, `LargeButton`, `SmallButton`, and `FlatButton` render native `<button>` elements for actions. Use `href` when the component represents navigation; it then renders an `<a>` without a button `type`.
+
+```typescript
+m(Button, { label: 'Save', onclick: save });
+m(Button, { label: 'Read the docs', href: '/docs' });
+```
+
+> **Migration:** If you relied on the previous anchor markup for navigation, add `href`. Action buttons now correctly use native button semantics.
+
 ### Async SearchSelect
 
 Use `loadOptions(query)` to retrieve options remotely. The component displays loading, empty, and error states; `i18n` customizes their messages.

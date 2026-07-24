@@ -35,15 +35,28 @@ describe('Button Components', () => {
       expect(mockClick).toHaveBeenCalledTimes(1);
     });
 
-    it('does not set type attribute on anchor buttons', () => {
+    it('renders action buttons as native buttons', () => {
       const { getByText } = render(Button, {
         label: 'Submit Button',
         variant: 'submit',
       });
 
       const button = getByText('Submit Button');
-      expect(button.tagName).toBe('A');
-      expect(button).not.toHaveAttribute('type');
+      expect(button.tagName).toBe('BUTTON');
+      expect(button).toHaveAttribute('type', 'submit');
+    });
+
+    it('renders buttons with href as links without a type attribute', () => {
+      const { getByText } = render(Button, {
+        label: 'Documentation',
+        href: '/docs',
+        variant: 'submit',
+      });
+
+      const link = getByText('Documentation');
+      expect(link.tagName).toBe('A');
+      expect(link).toHaveAttribute('href', '/docs');
+      expect(link).not.toHaveAttribute('type');
     });
 
     it('renders with tooltip', () => {

@@ -439,6 +439,17 @@ Online [flems](flems.io) examples: [FlatButton](https://flems.io/#0=N4IgtglgJlA2
 
 See the [live documentation](https://erikvullings.github.io/mithril-materialized/index.html) for examples and component APIs.
 
+### Button semantics
+
+`Button`, `LargeButton`, `SmallButton`, and `FlatButton` render native `<button>` elements for actions. Use `href` when the component represents navigation; it then renders an `<a>` without a button `type`.
+
+```typescript
+m(Button, { label: 'Save', onclick: save });
+m(Button, { label: 'Read the docs', href: '/docs' });
+```
+
+> **Migration:** If you relied on the previous anchor markup for navigation, add `href`. Action buttons now correctly use native button semantics.
+
 ### Async SearchSelect
 
 `SearchSelect` supports remote option loading for large datasets through `loadOptions(query)`.

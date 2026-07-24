@@ -43,6 +43,9 @@ export interface ButtonAttrs extends Attributes {
   /** Button label text (optional for icon-only buttons) */
   label?: string;
 
+  /** Optional navigation destination. When provided, the component renders an anchor instead of a button. */
+  href?: string;
+
   /** Material icon name - see https://materializecss.com/icons.html */
   iconName?: string;
 
@@ -88,7 +91,7 @@ export interface ButtonAttrs extends Attributes {
 /**
  * A factory to create new buttons.
  *
- * @example FlatButton = ButtonFactory('a.waves-effect.waves-teal.btn-flat');
+ * @example FlatButton = ButtonFactory('button.waves-effect.waves-teal.btn-flat');
  */
 export const ButtonFactory = (
   element: string,
@@ -130,18 +133,20 @@ export const ButtonFactory = (
           : {};
 
         const tagName = element.split(/[.#]/)[0] || element;
-        const isButtonElement = tagName.toLowerCase() === 'button';
+        const elementSuffix = element.slice(tagName.length);
+        const isLink = Boolean(attrs.href);
+        const renderedElement = `${isLink ? 'a' : 'button'}${elementSuffix}`;
 
         return m(
-          element,
+          renderedElement,
           {
             ...params,
             ...wavesHandlers,
             className: cn,
             'data-position': tooltip ? position : undefined,
             'data-tooltip': tooltip || undefined,
-            // Only apply button type on actual <button> elements.
-            type: isButtonElement ? buttonType : undefined,
+            // Links retain native navigation semantics and must not have a button type.
+            type: isLink ? undefined : buttonType,
           },
           iconName ? m(Icon, { iconName, className: iconClass !== undefined ? iconClass : 'left' }) : undefined,
           label ? label : undefined,
@@ -152,10 +157,10 @@ export const ButtonFactory = (
   };
 };
 
-export const Button = ButtonFactory('a', 'waves-effect waves-light btn', 'button');
-export const LargeButton = ButtonFactory('a', 'waves-effect waves-light btn-large', 'button');
-export const SmallButton = ButtonFactory('a', 'waves-effect waves-light btn-small', 'button');
-export const FlatButton = ButtonFactory('a', 'waves-effect waves-teal btn-flat', 'button');
+export const Button = ButtonFactory('button', 'waves-effect waves-light btn', 'button');
+export const LargeButton = ButtonFactory('button', 'waves-effect waves-light btn-large', 'button');
+export const SmallButton = ButtonFactory('button', 'waves-effect waves-light btn-small', 'button');
+export const FlatButton = ButtonFactory('button', 'waves-effect waves-teal btn-flat', 'button');
 export const IconButton = ButtonFactory('button', 'btn-flat btn-icon waves-effect waves-teal', 'button');
 export const RoundIconButton = ButtonFactory('button', 'btn-floating btn-large waves-effect waves-light', 'button');
 export const SubmitButton = ButtonFactory('button', 'btn waves-effect waves-light', 'submit');

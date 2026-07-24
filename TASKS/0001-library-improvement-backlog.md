@@ -40,9 +40,9 @@ This task captures the backlog so implementation can be planned and tracked incr
 - [x] Fix barrel exports and API discoverability.
   - [x] Export `ToggleButton` from `packages/lib/src/index.ts`.
   - [x] Remove duplicate exports (`datepicker`, `timepicker`) from `packages/lib/src/index.ts`.
-- [ ] Improve button semantics and accessibility.
-  - [ ] Prefer `<button>` for action components.
-  - [ ] Reserve `<a>` usage for navigation semantics.
+- [x] Improve button semantics and accessibility.
+  - [x] Prefer `<button>` for action components.
+  - [x] Reserve `<a>` usage for navigation semantics.
   - [x] Avoid invalid/irrelevant attributes per element type (e.g. `type` on anchors).
 - [x] Standardize style typing across attrs.
   - [x] Expand `style` types where needed to support both string and style-object patterns.
@@ -92,3 +92,4 @@ This task captures the backlog so implementation can be planned and tracked incr
   - 0006 async select and combobox primitives
   - 0007 tests and docs alignment
 - 2026-07-24 codex: audited completed subtasks 0002–0007 against this checklist and marked implemented items complete. This backlog remains open for button element semantics, a vNext selection/input naming convention with compatibility adapters, and form-section primitives.
+- 2026-07-24 codex: action variants (`Button`, `LargeButton`, `SmallButton`, and `FlatButton`) now render native buttons, while `href` selects anchor navigation semantics. Added regression coverage and migration guidance in both public READMEs. Verified with `npm test -- button.test.ts` (12 tests), full library tests, typecheck, and the example production build.
