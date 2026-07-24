@@ -475,15 +475,33 @@ const InputField =
             ? true
             : false;
         const rangeType = type === 'range' && !attrs.minmax;
-
         // Only add validate class if input is interactive and validation is needed
         const shouldValidate = !isNonInteractive && (validate || type === 'email' || type === 'url' || isNumeric);
+        const inputClass = [
+          type === 'number' ? 'number-input' : '',
+          type === 'range' && attrs.vertical ? 'range-slider vertical' : '',
+          shouldValidate ? 'validate' : '',
+        ]
+          .filter(Boolean)
+          .join(' ');
+
+        const stepNumberInput = (direction: 'up' | 'down') => {
+          const input = state.inputElement;
+          if (!input) return;
+
+          if (direction === 'up') {
+            input.stepUp();
+          } else {
+            input.stepDown();
+          }
+
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+        };
 
         return m('.input-field', { className: cn, style }, [
           iconName ? m('i.material-icons.prefix', iconName) : undefined,
           m('input', {
-            class:
-              type === 'range' && attrs.vertical ? 'range-slider vertical' : shouldValidate ? 'validate' : undefined,
+            class: inputClass || undefined,
             ...params,
             type,
             tabindex: 0,
@@ -672,6 +690,30 @@ const InputField =
               }
             },
           }),
+          type === 'number' && !isNonInteractive
+            ? m('.number-input-controls', [
+                m(
+                  'button.number-input-control.number-input-control-up[type=button]',
+                  {
+                    'aria-label': `Increase ${label || 'value'}`,
+                    title: 'Increase value',
+                    onmousedown: (event: MouseEvent) => event.preventDefault(),
+                    onclick: () => stepNumberInput('up'),
+                  },
+                  m(MaterialIcon as any, { name: 'chevron', direction: 'up' })
+                ),
+                m(
+                  'button.number-input-control.number-input-control-down[type=button]',
+                  {
+                    'aria-label': `Decrease ${label || 'value'}`,
+                    title: 'Decrease value',
+                    onmousedown: (event: MouseEvent) => event.preventDefault(),
+                    onclick: () => stepNumberInput('down'),
+                  },
+                  m(MaterialIcon as any, { name: 'chevron' })
+                ),
+              ])
+            : undefined,
           // Clear button - only for text inputs with canClear enabled and has content
           canClear && type === 'text' && state.inputElement?.value
             ? m(MaterialIcon, {
