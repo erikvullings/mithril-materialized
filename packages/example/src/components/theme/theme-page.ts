@@ -1,20 +1,79 @@
 import m from 'mithril';
-import { ThemeSwitcher, ThemeToggle, FileUpload, CodeBlock, Theme } from 'mithril-materialized';
+import { Button, ThemeSwitcher, ThemeToggle, CodeBlock, Theme } from 'mithril-materialized';
 
 export const ThemePage = () => {
   const state = {
-    uploadedFiles: [] as File[],
     currentTheme: 'auto' as Theme,
+    primaryColor: '#26a69a',
+  };
+
+  const setPrimaryColor = (
+    color: string,
+    darkColor: string,
+    secondaryColor: string,
+    selectedBackground: string,
+    onPrimaryColor: string
+  ) => {
+    state.primaryColor = color;
+    document.documentElement.style.setProperty('--mm-primary-color', color);
+    document.documentElement.style.setProperty('--mm-primary-color-dark', darkColor);
+    document.documentElement.style.setProperty('--mm-secondary-color', secondaryColor);
+    document.documentElement.style.setProperty('--mm-dropdown-selected', selectedBackground);
+    document.documentElement.style.setProperty('--mm-button-text', onPrimaryColor);
+    document.documentElement.style.setProperty('--mm-nav-active-text', '#ffffff');
   };
 
   return {
     view: () =>
       m('.col.s12', [
-        m('h2.header', 'Theme & File Upload'),
+        m('h2.header', 'Theme'),
         m('p', [
-          'New components for theme switching and file uploads with drag-and-drop support. ',
+          'Components for switching between light and dark modes. ',
           'The theme switcher allows users to choose between light, dark, and auto (system preference) themes.',
         ]),
+
+        m('h3.header[id=primarycolor]', 'Primary Color'),
+        m('p', [
+          'The default primary color is teal (',
+          m('code', '#26a69a'),
+          '). Override ',
+          m('code', '--mm-primary-color'),
+          ' in your stylesheet to match your brand. Changes to this variable update components that use the primary color.',
+        ]),
+        m('.row', [
+          m('.col.s12', [
+            m('p', [
+              'Try it live: ',
+              m('span', {
+                style: `display: inline-block; width: 16px; height: 16px; margin: 0 6px -3px 0; border-radius: 50%; background: ${state.primaryColor};`,
+              }),
+              state.primaryColor,
+            ]),
+            m(Button, {
+              label: 'Use Teal',
+              onclick: () => setPrimaryColor('#26a69a', '#00897b', '#ff6f00', '#e0f2f1', '#000000'),
+            }),
+            m(Button, {
+              label: 'Use Indigo',
+              onclick: () => setPrimaryColor('#3f51b5', '#303f9f', '#ff6f00', '#e8eaf6', '#ffffff'),
+            }),
+            m(Button, {
+              label: 'Use Deep Orange',
+              onclick: () => setPrimaryColor('#e64a19', '#bf360c', '#1565c0', '#fbe9e7', '#000000'),
+            }),
+          ]),
+        ]),
+        m(CodeBlock, {
+          code: `/* Global primary color override */
+:root {
+  --mm-primary-color: #3f51b5;
+  --mm-primary-color-dark: #303f9f;
+  --mm-secondary-color: #ff6f00;
+  --mm-dropdown-selected: #e8eaf6;
+  --mm-button-text: #ffffff;
+  --mm-nav-active-text: #ffffff;
+}`,
+        }),
 
         m('h3.header[id=themeswitcher]', 'Theme Switcher'),
         m('p', 'Full theme switcher with light/dark/auto options:'),
@@ -61,76 +120,6 @@ m(ThemeToggle, {
 })`,
         }),
 
-        m('h3.header[id=fileupload]', 'File Upload'),
-        m('p', 'Drag-and-drop file upload with image preview, file validation, and progress tracking:'),
-        m('.row', [
-          m('.col.s12', [
-            m(FileUpload, {
-              accept: 'image/*,.pdf,.doc,.docx',
-              multiple: true,
-              maxSize: 5 * 1024 * 1024, // 5MB
-              maxFiles: 3,
-              showPreview: true,
-              label: 'Drag files here or click to browse',
-              helperText: 'Upload up to 3 files (images, PDFs, or documents)',
-              onFilesSelected: (files) => {
-                state.uploadedFiles = files;
-                console.log('Files selected:', files);
-              },
-              onFileRemoved: (file) => {
-                console.log('File removed:', file.name);
-              },
-            }),
-          ]),
-        ]),
-
-        state.uploadedFiles.length > 0 &&
-          m('.row', [
-            m('.col.s12', [
-              m('h5', 'Uploaded Files:'),
-              m(
-                'ul.collection',
-                state.uploadedFiles.map((file) =>
-                  m('li.collection-item', [
-                    m('span.title', file.name),
-                    m('p', [
-                      'Size: ',
-                      (file.size / 1024).toFixed(1),
-                      ' KB',
-                      file.type && m('br'),
-                      file.type && ['Type: ', file.type],
-                    ]),
-                  ])
-                )
-              ),
-            ]),
-          ]),
-
-        m(CodeBlock, {
-          code: `import { FileUpload } from 'mithril-materialized';
-
-m(FileUpload, {
-  accept: 'image/*,.pdf,.doc,.docx', // Accepted file types
-  multiple: true,                    // Allow multiple files
-  maxSize: 5 * 1024 * 1024,         // 5MB max size
-  maxFiles: 3,                      // Max 3 files
-  showPreview: true,                // Show image previews
-  label: 'Drag files here or click to browse',
-  helperText: 'Upload up to 3 files (images, PDFs, or documents)',
-  
-  // Callbacks
-  onFilesSelected: (files) => {
-    console.log('Files selected:', files);
-  },
-  onFileRemoved: (file) => {
-    console.log('File removed:', file.name);
-  },
-  onProgress: (progress, file) => {
-    console.log(\`Upload progress: \${progress}% for \${file.name}\`);
-  },
-})`,
-        }),
-
         m('h3.header', 'Features'),
         m('ul.collection', [
           m('li.collection-item', [
@@ -140,17 +129,6 @@ m(FileUpload, {
               m('li', 'Light, dark, and auto (system preference) themes'),
               m('li', 'localStorage persistence of theme choice'),
               m('li', 'Programmatic theme control via ThemeManager class'),
-            ]),
-          ]),
-          m('li.collection-item', [
-            m('strong', 'File Upload'),
-            m('ul', [
-              m('li', 'Drag-and-drop file handling with visual feedback'),
-              m('li', 'File type and size validation'),
-              m('li', 'Image preview generation'),
-              m('li', 'Progress tracking and error handling'),
-              m('li', 'Multiple file support with configurable limits'),
-              m('li', 'Responsive design'),
             ]),
           ]),
         ]),

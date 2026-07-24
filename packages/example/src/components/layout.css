@@ -249,6 +249,7 @@ li.mm-nav-group {
 
 :root[data-theme='dark'] .mm-nav-item--active {
   background: rgba(255, 255, 255, 0.08);
+  color: var(--mm-nav-active-text, #ffffff);
 }
 
 @media (prefers-color-scheme: dark) {

@@ -133,7 +133,7 @@ export const searchIndex: SearchEntry[] = [
   { title: 'Theme', page: 'Styling', route: '/theme' },
   { title: 'ThemeSwitcher', page: 'Theme', route: '/theme', hash: 'themeswitcher' },
   { title: 'ThemeToggle', page: 'Theme', route: '/theme', hash: 'themetoggle' },
-  { title: 'FileUpload', page: 'Theme', route: '/theme', hash: 'fileupload' },
+  { title: 'FileUpload', page: 'Misc', route: '/misc', hash: 'fileupload' },
   { title: 'CSS', page: 'Styling', route: '/css/color' },
 ];
 

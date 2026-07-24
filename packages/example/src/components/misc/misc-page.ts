@@ -9,6 +9,7 @@ import {
   Button,
   Badge,
   Icon,
+  FileUpload,
   toast,
   initTooltips,
   initPushpins,
@@ -24,6 +25,7 @@ export const MiscPage = () => {
     tabWidthId: 2,
     tabWidths: ['auto', 'fixed', 'fill'] as Array<'auto' | 'fixed' | 'fill'>,
     showToast: false,
+    uploadedFiles: [] as File[],
     // DataTable Pagination state
     dataTablePagination: {
       page: 0,
@@ -62,6 +64,72 @@ export const MiscPage = () => {
           m('a[href=https://materializecss.com/pagination.html][target=_blank]', 'Parallax'),
           '.',
         ]),
+        m('h3.header[id=fileupload]', 'File Upload'),
+        m('p', 'Drag-and-drop file upload with image preview, file validation, and progress tracking:'),
+        m('.row', [
+          m('.col.s12', [
+            m(FileUpload, {
+              accept: 'image/*,.pdf,.doc,.docx',
+              multiple: true,
+              maxSize: 5 * 1024 * 1024,
+              maxFiles: 3,
+              showPreview: true,
+              label: 'Drag files here or click to browse',
+              helperText: 'Upload up to 3 files (images, PDFs, or documents)',
+              onFilesSelected: (files) => {
+                state.uploadedFiles = files;
+                console.log('Files selected:', files);
+              },
+              onFileRemoved: (file) => {
+                console.log('File removed:', file.name);
+              },
+            }),
+          ]),
+        ]),
+        state.uploadedFiles.length > 0 &&
+          m('.row', [
+            m('.col.s12', [
+              m('h5', 'Uploaded Files:'),
+              m(
+                'ul.collection',
+                state.uploadedFiles.map((file) =>
+                  m('li.collection-item', [
+                    m('span.title', file.name),
+                    m('p', [
+                      'Size: ',
+                      (file.size / 1024).toFixed(1),
+                      ' KB',
+                      file.type && m('br'),
+                      file.type && ['Type: ', file.type],
+                    ]),
+                  ])
+                )
+              ),
+            ]),
+          ]),
+        m(CodeBlock, {
+          code: `import { FileUpload } from 'mithril-materialized';
+
+m(FileUpload, {
+  accept: 'image/*,.pdf,.doc,.docx', // Accepted file types
+  multiple: true,                    // Allow multiple files
+  maxSize: 5 * 1024 * 1024,         // 5MB max size
+  maxFiles: 3,                      // Max 3 files
+  showPreview: true,                // Show image previews
+  label: 'Drag files here or click to browse',
+  helperText: 'Upload up to 3 files (images, PDFs, or documents)',
+
+  onFilesSelected: (files) => {
+    console.log('Files selected:', files);
+  },
+  onFileRemoved: (file) => {
+    console.log('File removed:', file.name);
+  },
+  onProgress: (progress, file) => {
+    console.log(\`Upload progress: \${progress}% for \${file.name}\`);
+  },
+})`,
+        }),
         m('h3.header[id=toast]', 'Toast'),
         m('p', 'Toast provides brief feedback about an operation through a message at the bottom of the screen.'),
         m('.row', [

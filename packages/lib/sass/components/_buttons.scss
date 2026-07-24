@@ -62,22 +62,22 @@
 .btn,
 .btn-floating {
   &:focus {
-    background-color: color.adjust(variables.$button-raised-background, $lightness: -10%);
+    background-color: var(--mm-primary-color-dark, #{color.adjust(variables.$button-raised-background, $lightness: -10%)});
   }
 }
 
 // Raised Button
 .btn {
   text-decoration: none;
-  color: variables.$button-raised-color;
-  background-color: variables.$button-raised-background;
+  color: var(--mm-button-text, #{variables.$button-raised-color});
+  background-color: var(--mm-primary-color, #{variables.$button-raised-background});
   text-align: center;
   letter-spacing: .5px;
   @extend .z-depth-1 !optional;
   transition: background-color .2s ease-out;
   cursor: pointer;
   &:hover {
-    background-color: variables.$button-raised-background-hover;
+    background-color: var(--mm-primary-color-dark, #{variables.$button-raised-background-hover});
     @extend .z-depth-1-half !optional;
   }
 }
@@ -85,7 +85,7 @@
 // Floating button
 .btn-floating {
   &:hover {
-    background-color: variables.$button-floating-background-hover;
+    background-color: var(--mm-primary-color-dark, #{variables.$button-floating-background-hover});
     @extend .z-depth-1-half !optional;
   }
   &:before {
@@ -124,7 +124,7 @@
     bottom: math.div(-(variables.$button-floating-size), 2);
   }
   display: inline-block;
-  color: variables.$button-floating-color;
+  color: var(--mm-button-text, #{variables.$button-floating-color});
   position: relative;
   overflow: hidden;
   z-index: 1;
@@ -132,7 +132,7 @@
   height: variables.$button-floating-size;
   line-height: variables.$button-floating-size;
   padding: 0;
-  background-color: variables.$button-floating-background;
+  background-color: var(--mm-primary-color, #{variables.$button-floating-background});
   border-radius: variables.$button-floating-radius;
   @extend .z-depth-1 !optional;
   transition: background-color .3s;
@@ -142,7 +142,7 @@
     width: inherit;
     display: inline-block;
     text-align: center;
-    color: variables.$button-floating-color;
+    color: var(--mm-button-text, #{variables.$button-floating-color});
     font-size: variables.$button-large-icon-font-size;
     line-height: variables.$button-floating-size;
   }
@@ -269,7 +269,7 @@ button.btn-floating {
     z-index: -1;
     width: variables.$button-floating-size;
     height: variables.$button-floating-size;
-    background-color: variables.$button-floating-background;
+    background-color: var(--mm-primary-color, #{variables.$button-floating-background});
     border-radius: variables.$button-floating-radius;
     transform: scale(0);
   }
