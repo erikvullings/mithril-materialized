@@ -178,9 +178,8 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
         m(
           'span',
           {
+            class: 'mm-layout-row mm-layout-row--center',
             style: {
-              display: 'flex',
-              alignItems: 'center',
               padding: '14px 16px',
             },
           },
@@ -189,7 +188,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
               ? m(
                   'i.material-icons',
                   {
-                    style: { marginRight: '32px' },
+                    class: 'mm-layout-item-icon',
                   },
                   item.iconName
                 )
@@ -319,6 +318,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
         m(
           '.select-wrapper',
           {
+            class: 'mm-layout-row mm-layout-row--center',
             onkeydown: disabled
               ? undefined
               : (e: KeyboardEvent) => {
@@ -401,9 +401,8 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
                     m(
                       'span',
                       {
+                        class: 'mm-layout-row mm-layout-row--center',
                         style: {
-                          display: 'flex',
-                          alignItems: 'center',
                           padding: '14px 16px',
                         },
                       },
@@ -412,7 +411,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
                           ? m(
                               'i.material-icons',
                               {
-                                style: { marginRight: '32px' },
+                                class: 'mm-layout-item-icon',
                               },
                               item.iconName
                             )

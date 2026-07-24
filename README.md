@@ -603,6 +603,17 @@ import 'mithril-materialized/utilities.css'; // Badges, icons, cards
 - `advanced.css` - Specialized components (carousel, sidenav, navbar, preloader)
 - `utilities.css` - Visual utilities (badges, cards, icons, toast, chips)
 
+### Layout Utility Classes
+
+The library now includes shared layout utility classes for common flex patterns used by selection and navigation components:
+
+- `.mm-layout-row` and row modifiers such as `.mm-layout-row--center`, `.mm-layout-row--wrap`, `.mm-layout-row--justify-start`, and `.mm-layout-row--justify-between`
+- `.mm-layout-stack` for vertical stacking patterns
+- `.mm-layout-cluster` for wrapped horizontal clusters with tokenized gaps
+- `.mm-layout-grow` and spacing helpers such as `.mm-layout-ml-auto`, `.mm-layout-ml-8`, `.mm-layout-mr-8`
+
+These utilities use CSS custom-property fallbacks (for example `--mm-layout-gap`) so theme switching remains unaffected.
+
 **Bundle Size Optimization:**
 
 - Full bundle: 64KB gzipped (44KB JS + 20KB CSS)

@@ -8,7 +8,7 @@
   /* Create columns that are at least 150px wide and fill the available space */
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   /* Add space between grid items */
-  gap: 15px;
+  gap: var(--mm-layout-gap-form, 15px);
   padding-top: 10px;
   padding-bottom: 20px;
 }

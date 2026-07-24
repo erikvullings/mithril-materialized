@@ -762,6 +762,72 @@ td, th{
   Utility Classes
 *******************/
 
+.mm-layout-row {
+  display: flex;
+}
+
+.mm-layout-row--center {
+  align-items: center;
+}
+
+.mm-layout-row--align-end {
+  align-items: flex-end;
+}
+
+.mm-layout-row--wrap {
+  flex-wrap: wrap;
+}
+
+.mm-layout-row--justify-start {
+  justify-content: flex-start;
+}
+
+.mm-layout-row--justify-end {
+  justify-content: flex-end;
+}
+
+.mm-layout-row--justify-between {
+  justify-content: space-between;
+}
+
+.mm-layout-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mm-layout-gap, 0);
+}
+
+.mm-layout-cluster {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--mm-layout-gap, 8px);
+}
+
+.mm-layout-grow {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.mm-layout-ml-auto {
+  margin-left: auto;
+}
+
+.mm-layout-ml-8 {
+  margin-left: var(--mm-layout-inline-gap, 8px);
+}
+
+.mm-layout-mr-8 {
+  margin-right: var(--mm-layout-inline-gap, 8px);
+}
+
+.mm-layout-item-icon {
+  margin-right: var(--mm-layout-icon-gap, 32px);
+}
+
+.mm-layout-gap-sm {
+  gap: var(--mm-layout-gap-sm, 8px);
+}
+
 .hide {
   display: none !important;
 }

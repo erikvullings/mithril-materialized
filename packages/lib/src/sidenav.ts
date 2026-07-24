@@ -194,20 +194,20 @@ const SidenavHeaderFooterItem: FactoryComponent<
       const content = isRightAligned
         ? [
             _isExpanded &&
-              m('span.sidenav-item-text', { style: { flex: '1', 'text-align': 'left', 'margin-right': '8px' } }, text),
+              m('span.sidenav-item-text.mm-layout-grow.mm-layout-mr-8.left-align', text),
             renderIcon(icon, { 'min-width': '24px', width: '24px' }),
           ]
         : [
             renderIcon(icon, { 'min-width': '24px', width: '24px' }),
-            _isExpanded && m('span.sidenav-item-text', { style: { 'margin-left': '8px', flex: '1' } }, text),
+            _isExpanded && m('span.sidenav-item-text.mm-layout-grow.mm-layout-ml-8', text),
           ];
 
       const linkStyle = {
-        display: 'flex',
-        'align-items': 'center',
         padding: _isExpanded ? '12px 16px' : '12px 18px',
         'justify-content': _isExpanded ? (isRightAligned ? 'flex-end' : 'flex-start') : 'center',
       };
+
+      const linkClass = 'mm-layout-row mm-layout-row--center';
 
       return m(
         'li',
@@ -217,6 +217,7 @@ const SidenavHeaderFooterItem: FactoryComponent<
           {
             href: href || '#!',
             onclick: handleClick,
+            class: linkClass,
             style: linkStyle,
             title: shouldShowTooltip ? tooltipText : undefined,
             'aria-label': shouldShowTooltip ? tooltipText : undefined,
@@ -352,6 +353,7 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
                 fixed ? 'sidenav-fixed' : '',
                 mode === 'push' ? 'sidenav-push' : '',
                 expandable && !isExpanded ? 'sidenav-collapsed' : '',
+                'mm-layout-stack',
                 className,
               ]
                 .filter(Boolean)
@@ -361,8 +363,6 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
               transform: isOpen ? 'translateX(0)' : position === 'left' ? 'translateX(-105%)' : 'translateX(105%)',
               'transition-duration': `${animationDuration}ms`,
               'transition-property': 'transform, width',
-              display: 'flex',
-              'flex-direction': 'column',
             },
           },
           [
@@ -387,10 +387,9 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
               m(
                 'li.sidenav-hamburger-item',
                 {
+                  class:
+                    `mm-layout-row mm-layout-row--center ${position === 'right' ? 'mm-layout-row--justify-end' : 'mm-layout-row--justify-start'}`,
                   style: {
-                    display: 'flex',
-                    'justify-content': position === 'right' ? 'flex-end' : 'flex-start',
-                    'align-items': 'center',
                     padding: '12px 16px',
                     cursor: 'pointer',
                     'border-bottom': '1px solid rgba(0,0,0,0.1)',
@@ -416,10 +415,9 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
               m(
                 'li.sidenav-expand-toggle',
                 {
+                  class:
+                    `mm-layout-row mm-layout-row--center ${position === 'right' ? 'mm-layout-row--justify-end' : 'mm-layout-row--justify-start'}`,
                   style: {
-                    display: 'flex',
-                    'justify-content': position === 'right' ? 'flex-end' : 'flex-start',
-                    'align-items': 'center',
                     padding: '12px 16px',
                     cursor: 'pointer',
                     'border-bottom': '1px solid rgba(0,0,0,0.1)',
@@ -528,7 +526,7 @@ const NavbarSubItem: FactoryComponent<
       const submenuContent = isRightAligned
         ? [
             // Right-aligned: text on left, icons on right
-            isExpanded && m('span', { style: { flex: '1', 'text-align': 'left' } }, text),
+            isExpanded && m('span.mm-layout-grow.left-align', text),
             icon && isExpanded && renderIcon(icon, { 'font-size': '18px' }),
             indicatorIcon,
           ]
@@ -536,21 +534,26 @@ const NavbarSubItem: FactoryComponent<
             // Left-aligned: indicator on left, text and icon on right
             indicatorIcon,
             icon && isExpanded && renderIcon(icon, { 'font-size': '18px', 'margin-left': indicatorIcon ? '8px' : '0' }),
-            isExpanded && m('span', { style: { 'margin-left': icon || indicatorIcon ? '8px' : '0' } }, text),
+            isExpanded && m('span', { class: icon || indicatorIcon ? 'mm-layout-ml-8' : undefined }, text),
           ];
 
       return m(
         'li.sidenav-subitem',
         {
-          class: selected ? 'selected' : '',
+          class:
+            [
+              selected ? 'selected' : '',
+              'mm-layout-row',
+              'mm-layout-row--center',
+              'mm-layout-gap-sm',
+              isRightAligned ? 'mm-layout-row--justify-between' : 'mm-layout-row--justify-start',
+            ]
+              .filter(Boolean)
+              .join(' ') || undefined,
           style: {
             padding: isExpanded ? '0 16px 0 48px' : '0 16px',
             cursor: 'pointer',
-            display: 'flex',
-            'align-items': 'center',
-            gap: '8px',
             'font-size': '0.9em',
-            'justify-content': isRightAligned ? 'space-between' : 'flex-start',
             height: '48px',
             'min-height': '48px',
           },
@@ -627,8 +630,7 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
             // Right-aligned: text on left, icon on right
             isExpanded &&
               m(
-                'span.sidenav-item-text',
-                { style: { flex: '1', 'text-align': 'left', 'margin-right': '8px' } },
+                'span.sidenav-item-text.mm-layout-grow.mm-layout-mr-8.left-align',
                 text || children
               ),
             renderIcon(icon, { 'min-width': '24px', width: '24px' }),
@@ -636,15 +638,15 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
         : [
             // Left-aligned: icon on left, text on right
             renderIcon(icon, { 'min-width': '24px', width: '24px' }),
-            isExpanded && m('span.sidenav-item-text', { style: { 'margin-left': '8px', flex: '1' } }, text || children),
+            isExpanded && m('span.sidenav-item-text.mm-layout-grow.mm-layout-ml-8', text || children),
           ];
 
       const linkStyle = {
-        display: 'flex',
-        'align-items': 'center',
         padding: isExpanded ? '12px 16px' : '12px 18px',
         'justify-content': isExpanded ? (isRightAligned ? 'flex-end' : 'flex-start') : 'center',
       };
+
+      const linkClass = 'mm-layout-row mm-layout-row--center';
 
       const mainItem =
         href && !disabled
@@ -654,6 +656,7 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
                 {
                   href,
                   onclick: handleMainClick,
+                  class: linkClass,
                   style: linkStyle,
                   title: shouldShowTooltip ? tooltipText : undefined,
                   'aria-label': shouldShowTooltip ? tooltipText : undefined,
@@ -667,6 +670,7 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
                 {
                   onclick: handleMainClick,
                   href: '#!',
+                  class: linkClass,
                   style: linkStyle,
                   title: shouldShowTooltip ? tooltipText : undefined,
                   'aria-label': shouldShowTooltip ? tooltipText : undefined,

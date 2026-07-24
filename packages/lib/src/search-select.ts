@@ -401,11 +401,8 @@ export const SearchSelect = <T extends string | number>(
               state.isOpen = !state.isOpen;
               // console.log('SearchSelect state changed to', state.isOpen); // Debug log
             },
-            class: 'chips chips-container',
+            class: 'chips chips-container mm-layout-row mm-layout-row--wrap mm-layout-row--align-end',
             style: {
-              display: 'flex',
-              alignItems: 'end',
-              flexWrap: 'wrap',
               cursor: 'pointer',
               position: 'relative',
             },
@@ -447,9 +444,9 @@ export const SearchSelect = <T extends string | number>(
               m(
                 'span.placeholder',
                 {
+                  class: 'mm-layout-grow',
                   style: {
                     color: 'var(--mm-text-hint, #9e9e9e)',
-                    flexGrow: 1,
                     padding: '8px 0',
                   },
                 },
@@ -457,13 +454,13 @@ export const SearchSelect = <T extends string | number>(
               ),
 
             // Spacer to push caret to the right
-            m('span.spacer', { style: { flexGrow: 1 } }),
+            m('span.spacer.mm-layout-grow'),
 
             m(MaterialIcon, {
               name: 'caret',
               direction: state.isOpen ? 'up' : 'down',
-              class: 'caret',
-              style: { marginLeft: 'auto', cursor: 'pointer' },
+              class: 'caret mm-layout-ml-auto',
+              style: { cursor: 'pointer' },
             }),
           ]
         ),
