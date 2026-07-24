@@ -1,5 +1,6 @@
 import m from 'mithril';
-import { Button, CodeBlock, Fieldset, FormSection, TextInput, ValidationSummaryError } from 'mithril-materialized';
+import { Button, Fieldset, FormSection, TextInput, ValidationSummaryError } from 'mithril-materialized';
+import { HighlightedCodeBlock } from '../highlighted-code-block';
 
 export const FormSectionPage = () => {
   const state = {
@@ -73,8 +74,8 @@ export const FormSectionPage = () => {
           m(Button, { label: 'Validate form', variant: 'submit' }),
         ]),
         m('h3.header', 'TypeScript'),
-        m(CodeBlock, {
-          language: 'TypeScript',
+        m(HighlightedCodeBlock, {
+          language: 'typescript',
           code: `const errors: ValidationSummaryError[] = [
   !name && { fieldId: 'profile-name', message: 'Enter your name.' },
   !isValidEmail(email) && { fieldId: 'profile-email', message: 'Enter a valid email address.' },
@@ -93,6 +94,20 @@ m(FormSection, {
     required: true,
   }, m('label', [m('input[type=checkbox]'), ' Email updates']))
 ]);`,
+        }),
+        m('h3.header', 'CSS'),
+        m(HighlightedCodeBlock, {
+          language: 'css',
+          code: `.mm-fieldset {
+  border: 1px solid var(--mm-border-color);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.mm-validation-summary {
+  border-left: 4px solid var(--mm-error-color);
+  color: var(--mm-error-color);
+}`,
         }),
       ]);
     },

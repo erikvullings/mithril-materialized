@@ -22,6 +22,7 @@
   "target": "web",
   "type": "module",
   "dependencies": {
+    "highlight.js": "^11.11.1",
     "material-icons": "^1.13.14",
     "mithril": "^2.3.8",
     "mithril-materialized": "workspace:*"
