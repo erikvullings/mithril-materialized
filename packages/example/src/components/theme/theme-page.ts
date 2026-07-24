@@ -1,5 +1,6 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { Button, ThemeSwitcher, ThemeToggle, CodeBlock, Theme } from 'mithril-materialized';
+import { Button, ThemeSwitcher, ThemeToggle, Theme } from 'mithril-materialized';
 
 export const ThemePage = () => {
   const state = {
@@ -63,7 +64,7 @@ export const ThemePage = () => {
             }),
           ]),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `/* Global primary color override */
 :root {
   --mm-primary-color: #3f51b5;
@@ -89,7 +90,7 @@ export const ThemePage = () => {
             }),
           ]),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `import { ThemeSwitcher } from 'mithril-materialized';
 
 m(ThemeSwitcher, {
@@ -112,7 +113,7 @@ m(ThemeSwitcher, {
             m('.clearfix', { style: 'clear: both; height: 20px;' }),
           ]),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `import { ThemeToggle } from 'mithril-materialized';
 
 m(ThemeToggle, {
@@ -135,7 +136,7 @@ m(ThemeToggle, {
 
         m('h3.header', 'CSS Custom Properties'),
         m('p', 'The theme system uses CSS custom properties that can be customized:'),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `:root {
   --mm-primary-color: #26a69a;
   --mm-background-color: #ffffff;

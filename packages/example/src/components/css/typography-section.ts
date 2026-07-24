@@ -1,5 +1,5 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { CodeBlock } from 'mithril-materialized';
 
 export const TypographySection = () => ({
   view: () =>
@@ -23,7 +23,8 @@ export const TypographySection = () => ({
         ]),
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<h1>Heading h1</h1>
 <h2>Heading h2</h2>
 <h3>Heading h3</h3>
@@ -40,7 +41,8 @@ export const TypographySection = () => ({
       ]),
       m('p.flow-text', 'This paragraph uses .flow-text to scale with the screen size.'),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<p class="flow-text">Responsive text that scales with viewport width.</p>`,
       }),
 
@@ -53,7 +55,8 @@ export const TypographySection = () => ({
         ]),
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<p class="thin">Thin weight</p>
 <p class="light">Light weight</p>
 <p>Normal weight</p>`,
@@ -64,7 +67,8 @@ export const TypographySection = () => ({
         '"Material Design is a visual language that synthesizes the classic principles of good design with the innovation and possibility of technology and science."',
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<blockquote>
   "Your inspiring quote goes here."
 </blockquote>`,

@@ -1,5 +1,5 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { CodeBlock } from 'mithril-materialized';
 
 export const ShadowSection = () => ({
   view: () =>
@@ -29,7 +29,8 @@ export const ShadowSection = () => ({
         ),
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<!-- Shadow depth classes -->
 <div class="z-depth-0">No shadow</div>
 <div class="z-depth-1">Subtle shadow</div>

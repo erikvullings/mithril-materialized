@@ -1,5 +1,5 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { CodeBlock } from 'mithril-materialized';
 
 export const TransitionsSection = () => {
   const state = { showScale: false };
@@ -35,7 +35,8 @@ export const TransitionsSection = () => {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
+          language: 'css',
           code: `<!-- Toggle scale with JS -->
 <div class="scale-transition scale-in">Visible</div>
 <div class="scale-transition scale-out">Hidden</div>`,
@@ -48,7 +49,8 @@ export const TransitionsSection = () => {
           ' to an element to animate it fading in on page load.',
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
+          language: 'css',
           code: `<div class="fade-in">This fades in</div>`,
         }),
 

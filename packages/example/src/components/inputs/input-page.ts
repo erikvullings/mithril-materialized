@@ -1,9 +1,9 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import {
   ColorInput,
   NumberInput,
   TextInput,
   InputAttrs,
-  CodeBlock,
   TextArea,
   EmailInput,
   UrlInput,
@@ -288,7 +288,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             oninput: (v) => (console.log(`Oninput TextInput: ${v}`), (textInputValue = v)),
           } as InputAttrs)
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `        m(TextInput, {
           label: 'What is your name?',
           required: true,
@@ -313,7 +313,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             onchange: (v) => console.log('Uncontrolled TextInput change:', v),
           } as InputAttrs)
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `        m(TextInput, {
           label: 'What is your favorite hobby?',
           helperText: 'Uncontrolled component with defaultValue!',
@@ -333,7 +333,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             onchange: (v) => console.log(v),
           } as InputAttrs)
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `        m(TextInput, {
           label: 'What is your name?',
           iconName: 'account_circle',
@@ -354,7 +354,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             validate: (v) => v && v.toLowerCase() === 'google',
           } as InputAttrs)
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(TextInput, {
             label: 'What is the most popular search engine?',
             dataSuccess: 'Great minds think alike',
@@ -379,7 +379,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             } as InputAttrs),
           ])
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(TextInput, {
             iconName: 'category',
             label: 'Category',
@@ -407,7 +407,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           })
         ),
         m('span', m('a[target=_blank][href=https://materializecss.com/autocomplete.html]', 'Documentation')),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `        m(Autocomplete, {
             label: 'What is your favorite company?',
             data: {
@@ -433,7 +433,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             console.log('Selected:', selectedOptions);
           },
         }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `        const searchSelectOptions = [
           { id: 'option1', label: 'Option 1' },
           { id: 'option2', label: 'Option 2' },
@@ -467,7 +467,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           label: 'Select option or add new option',
           placeholder: 'No options selected',
         }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `        m(SearchSelect, {
           options: searchSelectOptions,
           checkedId: selectedOptions,
@@ -508,7 +508,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             noOptionsFound: 'No countries found',
           },
         }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `        // Large dataset (195 countries)
         const countries = [...].map((country, index) =>
           ({ id: \`country-\${index}\`, label: country })
@@ -551,7 +551,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           maxSelectedOptions: 1, // Single select - checkboxes hidden
           placeholder: 'No category selected',
         }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `        m(SearchSelect, {
           options: categories,
           label: 'Select category (single select)',
@@ -590,7 +590,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           sortSelected: 'asc', // Sort selected items A-Z
           placeholder: 'No fruits selected',
         }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `        const fruits = [
           { id: 'banana', label: 'Banana' },
           { id: 'apple', label: 'Apple' },
@@ -630,7 +630,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           '.row',
           m(
             '.col.s6',
-            m(CodeBlock, {
+            m(HighlightedCodeBlock, {
               code: `
           // Uncontrolled example
           m(TextArea, {
@@ -647,7 +647,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           ),
           m(
             '.col.s6',
-            m(CodeBlock, {
+            m(HighlightedCodeBlock, {
               code: `
               // Controlled example
               m(TextArea, {
@@ -679,7 +679,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             onchange: (v) => console.log('TextArea:', v),
           }),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `        // Both components with same content should have same height
         m('.row', [
           m('.col.s6',
@@ -713,7 +713,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             onchange: (v) => (numberValue = v),
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(NumberInput, {
             min: 1,
             max: 120,
@@ -735,7 +735,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             validate: (v: number) => v === 42,
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(NumberInput, {
             label: 'What is the result of 35 + 7?',
             dataSuccess: 'Great, you have found the answer to the meaning of life, the universe and everything!',
@@ -755,7 +755,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             onchange: (v) => (emailValue = v),
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(EmailInput, {
             label: 'What is your email?',
             dataError: 'Wrong, use username@org.com',
@@ -776,7 +776,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             onchange: (v) => (urlValue = v),
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(UrlInput, {
             label: 'What is your favorite website?',
             placeholder: 'http(s)://',
@@ -797,7 +797,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             onchange: (v) => (pwdValue = v),
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(PasswordInput, {
             label: 'What is your password?',
             iconName: 'lock',
@@ -820,7 +820,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             },
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `        m(FileInput, {
             placeholder: 'Upload one or more files',
             multiple: true,
@@ -843,7 +843,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             onchange: (v) => console.log(`RangeInput final value: ${v}`),
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(RangeInput, {
             min: 0,
             max: 100,
@@ -882,7 +882,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             } as InputAttrs<number>)
           ),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Always show tooltip (uncontrolled)
 m(RangeInput, {
   min: 0,
@@ -927,7 +927,7 @@ m(RangeInput, {
             } as InputAttrs<number>)
           )
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(RangeInput, {
             min: 18,
             max: 67,
@@ -955,7 +955,7 @@ m(RangeInput, {
             onchange: (minVal: number, maxVal: number) => console.log('Range:', minVal, '-', maxVal),
           } as InputAttrs<number>)
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(RangeInput, {
             min: 0,
             max: 100,
@@ -988,7 +988,7 @@ m(RangeInput, {
             } as InputAttrs<number>)
           )
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(RangeInput, {
             min: 0,
             max: 100,
@@ -1024,7 +1024,7 @@ m(RangeInput, {
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Chips, {
             onchange: (chips: any[]) => onchange(JSON.stringify(chips)),
             label: 'An optional label',
@@ -1055,7 +1055,7 @@ m(RangeInput, {
             },
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Chips, {
             label: 'Cloud providers',
             autocompleteOptions: {
@@ -1079,7 +1079,7 @@ m(RangeInput, {
             onchange: (v) => (colorValue = v),
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(ColorInput, {
             label: 'What is your favorite color?',
             defaultValue: colorValue,

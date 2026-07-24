@@ -1,10 +1,10 @@
+import { HighlightedCodeBlock } from "./highlighted-code-block";
 import m from 'mithril';
 import {
   CircularProgress,
   LinearProgress,
   CircularProgressAttrs,
   LinearProgressAttrs,
-  CodeBlock,
   SingleRangeSlider,
 } from 'mithril-materialized';
 
@@ -88,7 +88,7 @@ export const ProgressPage = () => {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Circular indeterminate
 m(CircularProgress, {
   mode: 'indeterminate',
@@ -150,7 +150,7 @@ m(LinearProgress, {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Circular determinate with percentage
 m(CircularProgress, {
   mode: 'determinate',
@@ -226,7 +226,7 @@ m(LinearProgress, {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Size variants: 'small' | 'medium' | 'large'
 m(CircularProgress, {
   mode: 'determinate',
@@ -330,7 +330,7 @@ m(LinearProgress, {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Available colors: red, pink, purple, deep-purple, indigo, blue,
 // light-blue, cyan, teal, green, light-green, lime, yellow,
 // amber, orange, deep-orange, brown, grey, blue-grey
@@ -394,7 +394,7 @@ m(CircularProgress, {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Auto percentage label
 m(CircularProgress, {
   mode: 'determinate',

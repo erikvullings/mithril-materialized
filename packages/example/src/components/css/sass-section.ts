@@ -1,5 +1,5 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { CodeBlock } from 'mithril-materialized';
 
 const sassVariables: Array<{ category: string; vars: Array<{ name: string; default: string; description: string }> }> = [
   {
@@ -82,7 +82,8 @@ export const SassSection = () => ({
       ]),
 
       m('h4', 'Override Example'),
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `// In your SCSS file, override variables before importing:
 $primary-color: #1976d2;
 $secondary-color: #ff5722;

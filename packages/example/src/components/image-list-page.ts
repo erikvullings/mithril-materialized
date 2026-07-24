@@ -1,4 +1,5 @@
-import { ImageList, CodeBlock, Switch, Select, RangeInput } from 'mithril-materialized';
+import { HighlightedCodeBlock } from "./highlighted-code-block";
+import { ImageList, Switch, Select, RangeInput } from 'mithril-materialized';
 import m from 'mithril';
 
 export const ImageListPage = () => {
@@ -274,7 +275,7 @@ export const ImageListPage = () => {
         ]),
 
         // Code Examples
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Standard ImageList
 m(ImageList, {
   items: [

@@ -1,4 +1,5 @@
-import { Timeline, CodeBlock, Switch } from 'mithril-materialized';
+import { HighlightedCodeBlock } from "./highlighted-code-block";
+import { Timeline, Switch } from 'mithril-materialized';
 import m from 'mithril';
 
 export const TimelinePage = () => {
@@ -299,7 +300,7 @@ export const TimelinePage = () => {
         ]),
 
         // Code Examples
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Basic Timeline
 m(Timeline, {
   items: [

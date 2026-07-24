@@ -1,5 +1,5 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { CodeBlock } from 'mithril-materialized';
 
 export const PulseSection = () => ({
   view: () =>
@@ -27,7 +27,8 @@ export const PulseSection = () => ({
         ]),
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<!-- Pulsating FAB button -->
 <a class="btn-floating btn-large pulse red">
   <i class="material-icons">add</i>

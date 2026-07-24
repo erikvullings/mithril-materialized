@@ -1,4 +1,5 @@
-import { CodeBlock, Collapsible, Collection, CollectionItem, CollectionMode, FlatButton } from 'mithril-materialized';
+import { HighlightedCodeBlock } from "../highlighted-code-block";
+import { Collapsible, Collection, CollectionItem, CollectionMode, FlatButton } from 'mithril-materialized';
 import m from 'mithril';
 
 const onclick = (item: CollectionItem) => alert(`You clicked ${item.title}.`);
@@ -24,7 +25,7 @@ export const CollectionsPage = () => {
             { id: '3', title: 'Pete', iconName: 'send', onclick },
           ],
         }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Collection, {
             items: [
               // id is used as key, e.g. when sorting or editing the collection.
@@ -45,7 +46,7 @@ export const CollectionsPage = () => {
             { title: 'Pete', onclick: console.log, href: 'https://www.google.com' },
           ],
         }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Collection, {
             header: 'First names',
             mode: CollectionMode.LINKS,
@@ -87,7 +88,7 @@ export const CollectionsPage = () => {
             },
           ],
         }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Collection, {
             header: 'First names',
             mode: CollectionMode.AVATAR,
@@ -174,7 +175,7 @@ export const CollectionsPage = () => {
             },
           ],
         }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Collection, {
             mode: CollectionMode.AVATAR,
             items: [{
@@ -238,7 +239,7 @@ export const CollectionsPage = () => {
             },
           ],
         }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Collection, {
             mode: CollectionMode.BASIC,
             items: [{
@@ -296,7 +297,7 @@ export const CollectionsPage = () => {
             },
           ],
         }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Collection, {
             mode: CollectionMode.AVATAR,
             items: [{
@@ -328,7 +329,7 @@ export const CollectionsPage = () => {
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Collapsible, { items: [
             { header: 'First', body: 'Lorem ipsum dolor sit amet.', iconName: 'filter_drama' },
             { header: 'Second', body: 'Lorem ipsum dolor sit amet.', iconName: 'place', active: true },
@@ -348,7 +349,7 @@ export const CollectionsPage = () => {
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Collapsible, {
           header: 'Tasks',
           items: [
@@ -370,7 +371,7 @@ export const CollectionsPage = () => {
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Collapsible, {
           accordion: false,
           items: [

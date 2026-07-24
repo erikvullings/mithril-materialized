@@ -9,13 +9,14 @@ hljs.registerLanguage('typescript', typescript);
 
 export interface HighlightedCodeBlockAttrs extends Attributes {
   code: string | string[];
-  language: 'typescript' | 'css';
+  /** Defaults to TypeScript, which is the example app's most common snippet language. */
+  language?: 'typescript' | 'css';
 }
 
 /** Example-app-only code block with TypeScript and CSS syntax highlighting. */
 export const HighlightedCodeBlock: FactoryComponent<HighlightedCodeBlockAttrs> = () => ({
   view: ({ attrs }) => {
-    const { code, language, className, ...params } = attrs;
+    const { code, language = 'typescript', className, ...params } = attrs;
     const source = Array.isArray(code) ? code.join('\n') : code;
     const highlighted = hljs.highlight(source, { language }).value;
     const label = language === 'typescript' ? 'TypeScript' : 'CSS';

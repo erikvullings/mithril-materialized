@@ -1,4 +1,5 @@
-import { DatePicker, TimePicker, TimeRangePicker, CodeBlock, Switch, ModalPanel, AnalogClock } from 'mithril-materialized';
+import { HighlightedCodeBlock } from "../highlighted-code-block";
+import { DatePicker, TimePicker, TimeRangePicker, Switch, ModalPanel, AnalogClock } from 'mithril-materialized';
 import m from 'mithril';
 
 export const PickerPage = () => {
@@ -285,7 +286,7 @@ export const PickerPage = () => {
           ],
         }),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Pickers now work correctly inside modals!
 m(ModalPanel, {
   title: 'Select Date and Time',
@@ -373,7 +374,7 @@ m(ModalPanel, {
           })
         ),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Basic Date Range Picker
 m(DatePicker, {
   dateRange: true,
@@ -406,7 +407,7 @@ m(DatePicker, {
 })`,
         }),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Basic usage with custom text input and display formats
 m(DatePicker, {
   dateLabel: 'What is your birthday?',
@@ -569,7 +570,7 @@ m(DatePicker, {
           }),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Inline time picker (no modal) - direct time input
 m(TimePicker, {
   label: 'Meeting Time',
@@ -710,7 +711,7 @@ m(TimePicker, {
           }),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Digital Clock Mode - 12 Hour
 m(TimePicker, {
   label: 'Select Time (Digital)',
@@ -817,7 +818,7 @@ m(TimePicker, {
           })
         ),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Basic Time Range Picker
 m(TimeRangePicker, {
   label: 'Select Time Range',
@@ -932,7 +933,7 @@ m(TimeRangePicker, {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Interactive AnalogClock Component
 const state = {
   clockHours: 10,

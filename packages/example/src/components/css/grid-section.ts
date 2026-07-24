@@ -1,5 +1,5 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { CodeBlock } from 'mithril-materialized';
 
 const demoCell = (color: string) =>
   ({ style: `background:${color};padding:8px;text-align:center;border:1px solid var(--mm-border-color);color:var(--mm-text-primary)` });
@@ -40,7 +40,8 @@ export const GridSection = () => ({
         m('.col.s12.m6', demoCell('var(--mm-secondary-color)'), m('span.white-text', 's12 m6')),
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<div class="row">
   <div class="col s12">Full width</div>
 </div>
@@ -59,7 +60,8 @@ export const GridSection = () => ({
         m('.col.s6.offset-s3', demoCell('var(--mm-surface-color)'), 's6 offset-s3'),
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<div class="row">
   <div class="col s6 offset-s3">Centered with offsets</div>
 </div>`,
@@ -67,7 +69,8 @@ export const GridSection = () => ({
 
       m('h4', 'Push & Pull'),
       m('p', 'Use ', m('code', '.push-*'), ' and ', m('code', '.pull-*'), ' to reorder columns visually without changing the DOM order.'),
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<div class="row">
   <div class="col s5 push-s7">This goes right visually</div>
   <div class="col s7 pull-s5">This goes left visually</div>

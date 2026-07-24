@@ -1,5 +1,5 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { CodeBlock } from 'mithril-materialized';
 
 const sampleRows = [
   { name: 'Alice', position: 'Developer', age: 32 },
@@ -33,7 +33,7 @@ export const TableSection = () => ({
           description,
         ]),
         m('table', { class: cls }, [tableHead, tableBody()]),
-        m(CodeBlock, { code: `<table class="${cls}">...</table>` }),
+        m(HighlightedCodeBlock, { code: `<table class="${cls}">...</table>` }),
       ]),
 
       m('h4', 'Responsive Table'),
@@ -44,7 +44,8 @@ export const TableSection = () => ({
       ]),
       m('table.responsive-table.striped.hoverable', [tableHead, tableBody()]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<table class="responsive-table striped hoverable">
   <thead>
     <tr>

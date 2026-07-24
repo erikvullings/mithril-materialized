@@ -1,6 +1,6 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import {
   MaterialBox,
-  CodeBlock,
   Carousel,
   Parallax,
   Pagination,
@@ -107,7 +107,7 @@ export const MiscPage = () => {
               ),
             ]),
           ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `import { FileUpload } from 'mithril-materialized';
 
 m(FileUpload, {
@@ -205,7 +205,7 @@ m(FileUpload, {
             },
           }),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Basic toast
 toast({ html: 'Hello World! This is a basic toast message.' });
 
@@ -264,7 +264,7 @@ toast({
           m(Badge, { badgeContent: 3, color: 'green' }, m(Button, { label: 'Updates' })),
           m(Badge, { badgeContent: 0, showZero: true, color: 'grey' }, m(Button, { label: 'Inbox' })),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Basic notification badge
 m(Badge, { badgeContent: 4 },
   m(Button, { label: 'Notifications' })
@@ -290,7 +290,7 @@ m(Badge, { badgeContent: 0, showZero: true, color: 'grey' },
           m(Badge, { badgeContent: 3, color: 'orange' }, m(Icon, { iconName: 'shopping_cart' })),
           m(Badge, { badgeContent: 150, max: 99, color: 'red' }, m(Icon, { iconName: 'inbox' })),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Icon with badge
 m(Badge, { badgeContent: 5 },
   m(Icon, { iconName: 'notifications' })
@@ -313,7 +313,7 @@ m(Badge, { variant: 'dot', color: 'green' },
           m(Badge, { badgeContent: 100, max: 99 }, m(Button, { label: 'Over Max' })),
           m(Badge, { badgeContent: 1500, max: 999, color: 'orange' }, m(Button, { label: 'Way Over' })),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Badge at max value
 m(Badge, { badgeContent: 99 },
   m(Button, { label: 'At Max' })
@@ -353,7 +353,7 @@ m(Badge, { badgeContent: 1500, max: 999, color: 'orange' },
             m(Button, { label: 'Bottom-Left' })
           ),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Position badge at different corners
 m(Badge, {
   badgeContent: 1,
@@ -387,7 +387,7 @@ m(Badge, {
             m(Button, { label: 'Active' })
           ),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Dot variant for status indicators
 m(Badge, { variant: 'dot', color: 'green' },
   m(Button, { label: 'Online' })
@@ -416,7 +416,7 @@ m(Badge, {
           m(Badge, { badgeContent: 7, color: 'amber' }, m(Button, { label: 'Amber' })),
           m(Badge, { badgeContent: 8, color: 'orange' }, m(Button, { label: 'Orange' })),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// All MaterialColor options available
 m(Badge, { badgeContent: 1, color: 'red' }, m(Button, { label: 'Red' }))
 m(Badge, { badgeContent: 2, color: 'blue' }, m(Button, { label: 'Blue' }))
@@ -430,7 +430,7 @@ m(Badge, { badgeContent: 3, color: 'green' }, m(Button, { label: 'Green' }))
           m(Badge, { badgeContent: 2, color: 'blue' }, m(Button, { label: 'Base' })),
           m(Badge, { badgeContent: 3, color: 'blue', colorIntensity: 'darken-2' }, m(Button, { label: 'Dark' })),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Adjust color intensity
 m(Badge, {
   badgeContent: 1,
@@ -464,7 +464,7 @@ m(Badge, {
             })
           ),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Rectangular overlap (default) for square elements
 m(Badge, { badgeContent: 3, overlap: 'rectangular' },
   m('div.square-element')
@@ -483,7 +483,7 @@ m(Badge, { badgeContent: 5, overlap: 'circular', color: 'green' },
           m(Badge, { badgeContent: 0 }, m(Button, { label: 'Auto-hidden (0)' })),
           m(Badge, { badgeContent: 0, showZero: true }, m(Button, { label: 'Show Zero' })),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Normal badge
 m(Badge, { badgeContent: 5 }, m(Button, { label: 'Visible' }))
 
@@ -519,7 +519,7 @@ m(Badge, { badgeContent: 0, showZero: true }, m(Button, { label: 'Show Zero' }))
             m('a[href=#!].btn.tooltipped[data-position=left][data-tooltip=I am a tooltip]', 'Hover me! (left)'),
           ]),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// HTML with data attributes
 m('a[href=#!].btn.tooltipped[data-position=top][data-tooltip=I am a tooltip]', 'Hover me!')
 
@@ -614,7 +614,7 @@ initTooltips('.my-tooltips', {
             ),
           ]),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// HTML
 m('.pushpin-element', 'This element will be pinned when you scroll!')
 
@@ -716,7 +716,7 @@ oncreate: (vnode) => {
             state.tabWidthId++;
           },
         }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Tabs, {
                     onShow: console.log,
                     tabs: [
@@ -749,13 +749,13 @@ oncreate: (vnode) => {
 
         m('h3.header[id=parallax]', 'Parallax'),
         m(Parallax, { src: gogh }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Parallax, { src: gogh }) // should be embedded in layout so the width is not limited`,
         }),
 
         m('h3.header', 'Material box (click on image)'),
         m('.row', m(MaterialBox, { src: gogh, width: 600 })),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(MaterialBox, { src: gogh, width: 600 })`,
         }),
 
@@ -772,7 +772,7 @@ oncreate: (vnode) => {
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          m(Carousel, { items: [
                     { href: '#!/one!', src: 'https://picsum.photos/id/301/200/300' },
                     { href: '#!/two!', src: 'https://picsum.photos/id/302/200/300' },
@@ -804,7 +804,7 @@ oncreate: (vnode) => {
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `m(Pagination, {
           size: 5,
           items: [
@@ -852,7 +852,7 @@ oncreate: (vnode) => {
             )
           )
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `m(PaginationControls, {
   pagination: { page: 0, pageSize: 10, total: 247 },
   onPaginationChange: (newPagination) => {

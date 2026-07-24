@@ -1,4 +1,5 @@
-import { Masonry, CodeBlock, Switch, RangeInput } from 'mithril-materialized';
+import { HighlightedCodeBlock } from "./highlighted-code-block";
+import { Masonry, Switch, RangeInput } from 'mithril-materialized';
 import m from 'mithril';
 
 export const MasonryPage = () => {
@@ -219,7 +220,7 @@ export const MasonryPage = () => {
         ]),
 
         // Code Examples
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Basic Masonry
 m(Masonry, {
   columns: 3,

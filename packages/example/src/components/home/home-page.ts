@@ -1,5 +1,5 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { CodeBlock } from 'mithril-materialized';
 
 export const HomePage = () => ({
   view: () =>
@@ -63,12 +63,12 @@ export const HomePage = () => ({
             '.',
           ]),
           m('h3', 'Installation'),
-          m(CodeBlock, {
+          m(HighlightedCodeBlock, {
             language: 'console',
             code: `npm install mithril mithril-materialized
 # TypeScript types are bundled`,
           }),
-          m(CodeBlock, {
+          m(HighlightedCodeBlock, {
             code: `import m from 'mithril';
 import { TextInput, Button, DatePicker, ThemeToggle } from 'mithril-materialized';
 // Complete CSS bundle
@@ -90,7 +90,7 @@ const MyApp = () => ({
 });`,
           }),
           m('h3', 'Theme Usage'),
-          m(CodeBlock, {
+          m(HighlightedCodeBlock, {
             code: `import { ThemeManager, ThemeSwitcher, ThemeToggle } from 'mithril-materialized';
 
 ThemeManager.setTheme('dark');  // 'light' | 'dark' | 'auto'

@@ -1,7 +1,7 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
 import {
   ModalPanel,
-  CodeBlock,
   Button,
   MaterialBox,
   Select,
@@ -62,7 +62,7 @@ export const ModalPage = () => {
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          // State to control modal visibility
                   const state = {
                     modal1Open: false,
@@ -180,7 +180,7 @@ export const ModalPage = () => {
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          // State to control modal visibility
                   const state = {
                     modal1bOpen: false,
@@ -328,7 +328,7 @@ export const ModalPage = () => {
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          // State to control modal visibility
                   const state = {
                     modal2Open: false,
@@ -396,7 +396,7 @@ export const ModalPage = () => {
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          // State to control modal visibility
                   const state = {
                     modal3Open: false,
@@ -453,7 +453,7 @@ export const ModalPage = () => {
             bottomSheet: true,
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `          // State to control modal visibility
                   const state = {
                     modal4Open: false,

@@ -1,5 +1,5 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { CodeBlock } from 'mithril-materialized';
 
 const colors = [
   'red', 'pink', 'purple', 'deep-purple', 'indigo', 'blue', 'light-blue',
@@ -38,7 +38,8 @@ export const ColorSection = () => ({
       )),
 
       m('h4', 'Usage'),
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<!-- Background color -->
 <div class="red">Red background</div>
 <div class="blue lighten-2">Light blue background</div>

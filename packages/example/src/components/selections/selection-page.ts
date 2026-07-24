@@ -1,7 +1,7 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
 import {
   Select,
-  CodeBlock,
   Options,
   Switch,
   RadioButtons,
@@ -91,7 +91,7 @@ export const SelectionPage = () => {
             onchange: (ids) => (state.checkedId = ids),
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           newRow: true,
           code: `          m(Select<string>, {
             // disabled: true, // Add disabled if you want to disable the select control
@@ -132,7 +132,7 @@ export const SelectionPage = () => {
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           newRow: true,
           code: `          m(
             '.row',
@@ -178,7 +178,7 @@ export const SelectionPage = () => {
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           newRow: true,
           code: `          m(
             '.row',
@@ -223,7 +223,7 @@ export const SelectionPage = () => {
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           newRow: true,
           code: `          m(
             '.row',
@@ -267,7 +267,7 @@ export const SelectionPage = () => {
             options: [],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           newRow: true,
           code: `          m(SearchSelect<number>, {
             label: 'Which hobbies should we fetch remotely?',
@@ -326,7 +326,7 @@ export const SelectionPage = () => {
             },
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           newRow: true,
           code: `          m(Options<string>, {
             inline: true, // next one is false
@@ -374,7 +374,7 @@ export const SelectionPage = () => {
             direction: 'vertical',
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           newRow: true,
           code: `          m(RadioButtons<string>, {
             checkboxClass: 'col s3', // align options horizontally
@@ -435,7 +435,7 @@ export const SelectionPage = () => {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Basic Likert Scale
 m(LikertScale, {
   label: 'How happy are you?',
@@ -510,7 +510,7 @@ m(LikertScale, {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `m(LikertScale, {
   label: 'Rate the quality',
   showTooltips: true,
@@ -568,7 +568,7 @@ m(LikertScale, {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Multi-question survey with aligned labels
 m(LikertScale, {
   label: 'How happy are you at work?',
@@ -720,7 +720,7 @@ m(LikertScale, {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `m(LikertScale, {
   label: 'Rate your agreement',
   showNumbers: false,  // Hide numeric values
@@ -796,7 +796,7 @@ m(LikertScale, {
             className: 'col s6 m9',
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           newRow: true,
           code: `          m(Switch, {
             label: 'What is your gender?',
@@ -829,7 +829,7 @@ m(LikertScale, {
             },
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           newRow: true,
           code: `          m(Dropdown, {
             id: 'hobby',

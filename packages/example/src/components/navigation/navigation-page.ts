@@ -1,3 +1,4 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
 import {
   Sidenav,
@@ -5,7 +6,6 @@ import {
   Breadcrumb,
   createBreadcrumb,
   Wizard,
-  CodeBlock,
   Button,
   TextInput,
   TextArea,
@@ -118,7 +118,7 @@ export const NavigationPage = () => {
             }),
           ]),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `import { Breadcrumb, createBreadcrumb } from 'mithril-materialized';
 
 // Automatic breadcrumb generation from path
@@ -171,7 +171,7 @@ m(Breadcrumb, {
             ),
           ]),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `import { Sidenav, SidenavItem } from 'mithril-materialized';
 
 m(Sidenav, {
@@ -359,7 +359,7 @@ m(Sidenav, {
             ),
           ]),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `import { Sidenav, SidenavItem } from 'mithril-materialized';
 
 m(Sidenav, {
@@ -480,7 +480,7 @@ m(Sidenav, {
             }),
           ]),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `import { Wizard } from 'mithril-materialized';
 
 const steps = [

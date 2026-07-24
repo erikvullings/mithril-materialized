@@ -1,5 +1,5 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { CodeBlock } from 'mithril-materialized';
 
 export const MediaSection = () => ({
   view: () =>
@@ -22,7 +22,8 @@ export const MediaSection = () => ({
         ]),
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<img class="responsive-img" src="photo.jpg" alt="Responsive">`,
       }),
 
@@ -33,7 +34,8 @@ export const MediaSection = () => ({
         ' to maintain the 16:9 aspect ratio across all screen sizes.',
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<div class="video-container">
   <iframe width="853" height="480"
     src="https://www.youtube.com/embed/Q8TXgCzxEnw"
@@ -51,7 +53,8 @@ export const MediaSection = () => ({
         ' section for a live demo.',
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<img class="materialboxed" src="photo.jpg" alt="Click to expand"
   data-caption="Optional caption text">`,
       }),

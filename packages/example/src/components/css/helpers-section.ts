@@ -1,5 +1,5 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { CodeBlock } from 'mithril-materialized';
 
 const box = (style = '') =>
   `border:1px solid var(--mm-border-color);padding:10px;margin-bottom:8px;color:var(--mm-text-primary);background:var(--mm-surface-color);${style}`;
@@ -24,7 +24,8 @@ export const HelpersSection = () => ({
         ]),
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<span class="left">Floated left</span>
 <span class="right">Floated right</span>
 <div class="clearfix"></div>
@@ -43,7 +44,8 @@ export const HelpersSection = () => ({
         ]),
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<p class="truncate">Very long text...</p>`,
       }),
 
@@ -75,7 +77,8 @@ export const HelpersSection = () => ({
         ]),
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<img class="circle" src="profile.jpg" alt="Avatar" width="80">`,
       }),
 

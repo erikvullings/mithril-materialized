@@ -1,5 +1,5 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { CodeBlock } from 'mithril-materialized';
 
 const cssCustomProps = [
   { name: '--mm-primary-color', default: '#ee6e73', description: 'Primary brand color' },
@@ -38,7 +38,8 @@ export const ThemingSection = () => ({
       ]),
 
       m('h4', 'Override Example (CSS)'),
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `/* Global theme override in your CSS */
 :root {
   --mm-primary-color: #1976d2;
@@ -59,7 +60,8 @@ export const ThemingSection = () => ({
       }),
 
       m('h4', 'Override Example (SCSS)'),
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `// Override Sass variables before importing
 $primary-color: #1976d2 !default;
 $secondary-color: #ff5722 !default;
@@ -83,7 +85,8 @@ $error-color: #f44336 !default;
         ' section in the navbar for a live demo.',
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `import { ThemeSwitcher, ThemeToggle } from 'mithril-materialized';
 
 // Full switcher (light / dark / auto)
@@ -106,7 +109,8 @@ m(ThemeToggle, { className: 'white-text' })`,
         ' or any container to activate dark styles without JavaScript:',
       ]),
 
-      m(CodeBlock, {
+      m(HighlightedCodeBlock, {
+          language: 'css',
         code: `<!-- Activate dark mode for the entire page -->
 <body class="dark-mode">
 

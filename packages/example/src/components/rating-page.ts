@@ -1,5 +1,6 @@
+import { HighlightedCodeBlock } from "./highlighted-code-block";
 import m from 'mithril';
-import { Rating, RatingAttrs, CodeBlock, Switch, Select, TextInput, NumberInput } from 'mithril-materialized';
+import { Rating, RatingAttrs, Switch, Select, TextInput, NumberInput } from 'mithril-materialized';
 
 export const RatingPage = () => {
   // Component state - this will trigger re-renders when modified
@@ -63,7 +64,7 @@ export const RatingPage = () => {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Basic controlled rating
 m(Rating, {
   value: basicRating,
@@ -114,7 +115,7 @@ m(Rating, {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Half-step rating
 m(Rating, {
   value: rating,
@@ -158,7 +159,7 @@ m(Rating, {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `const customHeartIcon = {
   filled: '❤️',
   empty: '🤍',
@@ -211,7 +212,7 @@ m(Rating, {
           ]),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `const qualityLabels = ['Terrible', 'Poor', 'Average', 'Good', 'Excellent'];
 
 m(Rating, {
@@ -622,7 +623,7 @@ m(Rating, {
           ),
         ]),
 
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `// Complete example with all features
 m(Rating, {
   value: rating,

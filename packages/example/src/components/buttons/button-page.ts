@@ -1,3 +1,4 @@
+import { HighlightedCodeBlock } from "../highlighted-code-block";
 import {
   RoundIconButton,
   IconButton,
@@ -5,7 +6,6 @@ import {
   Button,
   FlatButton,
   FloatingActionButton,
-  CodeBlock,
   ToggleGroup,
   ConfirmButton,
 } from 'mithril-materialized';
@@ -52,7 +52,7 @@ export const ButtonPage = () => {
             { iconName: 'attach_file', className: 'blue', onclick: () => console.log('Attach file') },
           ],
         }),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: [
             `m(FloatingActionButton, {
   className: 'red',
@@ -81,7 +81,7 @@ export const ButtonPage = () => {
             onclick,
           }),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: [
             `const onclick = () => alert('Button clicked');
 m('div', [
@@ -99,13 +99,13 @@ m('div', [
         }),
         m('h3.header[id=flatbutton]', 'FlatButton'),
         m('div', m(FlatButton, { label: 'My Flat button', onclick })),
-        m(CodeBlock, { code: 'm(FlatButton, { label: "My Flat button", onclick })' }),
+        m(HighlightedCodeBlock, { code: 'm(FlatButton, { label: "My Flat button", onclick })' }),
         m('h3.header[id=iconbutton]', 'IconButton'),
         m('div', m(IconButton, { iconName: 'favorite', onclick })),
-        m(CodeBlock, { code: 'm(IconButton, { iconName: "favorite", onclick })' }),
+        m(HighlightedCodeBlock, { code: 'm(IconButton, { iconName: "favorite", onclick })' }),
         m('h3.header[id=roundiconbutton]', 'RoundIconButton'),
         m('div', m(RoundIconButton, { iconName: 'create', onclick })),
-        m(CodeBlock, { code: 'm(RoundIconButton, { iconName: "create", onclick })' }),
+        m(HighlightedCodeBlock, { code: 'm(RoundIconButton, { iconName: "create", onclick })' }),
         m('h3.header[id=togglegroup]', 'ToggleGroup'),
         m('h5', 'Controlled mode'),
         m('div[style=margin-bottom:20px]', [
@@ -154,7 +154,7 @@ m('div', [
             ],
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `
 let singleValue: string | number = 'one';
 let multipleValues: Array<string | number> = ['one', 'three'];
@@ -206,7 +206,7 @@ m(ToggleGroup, {
             onclick,
           })
         ),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `m(SubmitButton, {
   label: 'Submit',
   iconName: 'send',
@@ -250,7 +250,7 @@ m(ToggleGroup, {
             onclick: () => console.log('Normal button clicked'),
           }),
         ]),
-        m(CodeBlock, {
+        m(HighlightedCodeBlock, {
           code: `m(ConfirmButton, {
   iconClass: 'right',
   timeout: 5000, // optional, default is 3000ms
