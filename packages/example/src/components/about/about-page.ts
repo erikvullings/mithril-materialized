@@ -16,6 +16,23 @@ export const AboutPage = () => ({
       ]),
       m('ul.collection', [
         m('li.collection-item', [
+          m('h6', 'v3.18.0 (2026-07-24)'),
+          m('ul.browser-default', [
+            m('li', 'Fixed Select typings and migrated its regression tests to Vitest, restoring workspace type checking.'),
+            m('li', 'Polished the example pages with clearer form-section, selection, and button presentation.'),
+          ]),
+        ]),
+        m('li.collection-item', [
+          m('h6', 'v3.17.0 (2026-07-24)'),
+          m('ul.browser-default', [
+            m('li', 'Added reusable combobox primitives and asynchronous SearchSelect loading, empty, and error states.'),
+            m('li', 'Added Select multi-value summaries and an outlined variant.'),
+            m('li', 'Introduced FormSection and Fieldset primitives for grouping controls and validation content.'),
+            m('li', 'Improved input number-control and range-value theming, button semantics, and ToggleGroup alignment.'),
+            m('li', 'Added live theme palettes and syntax-highlighted code examples to the showcase.'),
+          ]),
+        ]),
+        m('li.collection-item', [
           m('h6', 'v3.16.0 (2026-04-07)'),
           m('ul.browser-default', [
             m('li', 'Introduced a new example app layout with grouped sidenav navigation and component search.'),
