@@ -141,6 +141,8 @@ textarea.materialize-textarea {
 .input-field {
   input.number-input:not(.browser-default) {
     -moz-appearance: textfield;
+    box-sizing: border-box;
+    width: calc(100% - 0.75rem);
     padding-right: 2rem;
 
     &::-webkit-inner-spin-button,
@@ -153,7 +155,7 @@ textarea.materialize-textarea {
   .number-input-controls {
     position: absolute;
     top: 0;
-    right: 0;
+    right: 0.25rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -176,11 +178,6 @@ textarea.materialize-textarea {
 
     &:hover {
       background-color: var(--mm-primary-color-alpha-10, rgba(38, 166, 154, 0.1));
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--mm-primary-color, variables.$primary-color);
-      outline-offset: -2px;
     }
 
     svg {

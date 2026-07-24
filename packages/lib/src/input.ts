@@ -697,6 +697,7 @@ const InputField =
                   {
                     'aria-label': `Increase ${label || 'value'}`,
                     title: 'Increase value',
+                    tabindex: -1,
                     onmousedown: (event: MouseEvent) => event.preventDefault(),
                     onclick: () => stepNumberInput('up'),
                   },
@@ -707,6 +708,7 @@ const InputField =
                   {
                     'aria-label': `Decrease ${label || 'value'}`,
                     title: 'Decrease value',
+                    tabindex: -1,
                     onmousedown: (event: MouseEvent) => event.preventDefault(),
                     onclick: () => stepNumberInput('down'),
                   },
@@ -734,7 +736,7 @@ const InputField =
             initialValue: value !== undefined && value !== '',
             helperText,
             dataError: state.hasInteracted && !state.isValid ? dataError : undefined,
-            dataSuccess: state.hasInteracted && state.isValid ? dataSuccess : undefined,
+            dataSuccess: state.hasInteracted && state.isValid && state.inputElement?.value ? dataSuccess : undefined,
           }),
           maxLength && typeof value === 'string'
             ? m(CharacterCounter, {
