@@ -213,6 +213,33 @@ m('.product-info', [
 4. **Always provide feedback**: Handle `onchange` events appropriately
 5. **Consistent prop names**: Use `value` for single values, `checkedId` for selections
 
+## Safety Defaults
+
+### Rich text labels and descriptions
+
+Components render string labels/descriptions as plain text by default.
+
+For `RadioButtons`, HTML rendering is now explicit opt-in using `allowHtml: true`.
+This prevents accidental HTML injection when labels or descriptions come from dynamic data.
+
+```typescript
+// Safe default (plain text rendering)
+m(RadioButtons, {
+  options: [{ id: '1', label: '<b>Not rendered as HTML</b>' }]
+})
+
+// Explicit opt-in (trusted HTML only)
+m(RadioButtons, {
+  allowHtml: true,
+  options: [{ id: '1', label: '<b>Rendered as HTML</b>' }]
+})
+```
+
+### readOnly compatibility
+
+`readOnly` is the canonical prop name for non-interactive input behavior.
+Legacy `readonly` is still accepted for backward compatibility.
+
 ## Migration Guide
 
 ### From older versions that used different patterns

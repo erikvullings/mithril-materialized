@@ -6,6 +6,11 @@ import { MaterialIcon } from './material-icon';
 import { InputType } from './types';
 import { DoubleRangeSlider, SingleRangeSlider } from './range-slider';
 
+const isReadonly = <T>(attrs: InputAttrs<T>): boolean => {
+  const legacyReadonly = (attrs as InputAttrs<T> & { readonly?: boolean }).readonly;
+  return Boolean(attrs.readOnly || legacyReadonly);
+};
+
 /** Character counter component that tracks text length against maxLength */
 export const CharacterCounter: FactoryComponent<{ currentLength: number; maxLength: number; show: boolean }> = () => {
   return {
@@ -99,7 +104,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
   return {
     oninit: ({ attrs }) => {
       const controlled = isControlled(attrs);
-      const isNonInteractive = attrs.readonly || attrs.disabled;
+      const isNonInteractive = isReadonly(attrs) || attrs.disabled;
 
       // Warn developer for improper controlled usage
       if (attrs.value !== undefined && !controlled && !isNonInteractive) {
@@ -142,7 +147,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
       } = attrs;
 
       const controlled = isControlled(attrs);
-      const isNonInteractive = attrs.readonly || attrs.disabled;
+      const isNonInteractive = isReadonly(attrs) || attrs.disabled;
 
       let currentValue: string;
       if (controlled) {
@@ -387,7 +392,7 @@ const InputField =
     return {
       oninit: ({ attrs }) => {
         const controlled = isControlled(attrs);
-        const isNonInteractive = attrs.readonly || attrs.disabled;
+        const isNonInteractive = isReadonly(attrs) || attrs.disabled;
 
         // Warn developer for improper controlled usage
         if (attrs.value !== undefined && !controlled && !isNonInteractive) {
@@ -454,7 +459,7 @@ const InputField =
         }
         const isNumeric = ['number', 'range'].includes(type);
         const controlled = isControlled(attrs);
-        const isNonInteractive = attrs.readonly || attrs.disabled;
+        const isNonInteractive = isReadonly(attrs) || attrs.disabled;
 
         let value: T;
         if (controlled) {
@@ -582,7 +587,7 @@ const InputField =
               state.hasInteracted = true;
 
               // Skip validation for readonly/disabled inputs
-              if (attrs.readonly || attrs.disabled) {
+              if (isReadonly(attrs) || attrs.disabled) {
                 // Call original onblur if provided
                 if (attrs.onblur) {
                   attrs.onblur(e);

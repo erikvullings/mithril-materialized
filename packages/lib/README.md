@@ -60,7 +60,7 @@ Components marked with an * are not included in the original materialize-css lib
   - Select
   - SearchSelect*, a searchable select dropdown
   - Options
-  - RadioButtons
+  - RadioButtons (HTML labels/descriptions require explicit `allowHtml: true`)
   - Switch
   - Dropdown
 - [Collections](https://erikvullings.github.io/mithril-materialized/#!/collections)

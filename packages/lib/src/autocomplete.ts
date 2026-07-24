@@ -42,6 +42,35 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
     return filtered;
   };
 
+  const highlightMatch = (text: string, query: string) => {
+    if (!query) {
+      return text;
+    }
+
+    const lowerText = text.toLowerCase();
+    const lowerQuery = query.toLowerCase();
+    const nodes: Array<string | m.Vnode<any, any>> = [];
+
+    let start = 0;
+    let index = lowerText.indexOf(lowerQuery, start);
+
+    while (index !== -1) {
+      if (index > start) {
+        nodes.push(text.slice(start, index));
+      }
+
+      nodes.push(m('span.highlight', text.slice(index, index + query.length)));
+      start = index + query.length;
+      index = lowerText.indexOf(lowerQuery, start);
+    }
+
+    if (start < text.length) {
+      nodes.push(text.slice(start));
+    }
+
+    return nodes.length > 0 ? nodes : text;
+  };
+
   const selectSuggestion = (suggestion: { key: string; value: string | null }, attrs: AutoCompleteAttrs) => {
     const controlled = isControlled(attrs);
 
@@ -178,8 +207,6 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
       // Only open dropdown if there are suggestions and no perfect match
       state.isOpen = state.suggestions.length > 0 && currentValue.length >= minLength && !hasExactMatch;
 
-      const replacer = new RegExp(`(${currentValue})`, 'i');
-
       return m(
         '.input-field.autocomplete-wrapper',
         {
@@ -291,12 +318,7 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
                           suggestion.value.replace('icon:', '')
                         )
                       : null,
-                    m(
-                      'span',
-                      suggestion.key
-                        ? m.trust(suggestion.key.replace(replacer, (i) => `<span class="highlight">${i}</span>`))
-                        : ''
-                    ),
+                    m('span', suggestion.key ? highlightMatch(suggestion.key, currentValue) : ''),
                   ]
                 )
               )

@@ -35,6 +35,11 @@ export interface RadioButtonsAttrs<T extends string | number> extends Attributes
   layout?: 'vertical' | 'horizontal';
   /** @deprecated Use layout instead. Kept for backward compatibility. */
   direction?: 'vertical' | 'horizontal';
+  /**
+   * Explicitly allow HTML in option labels and description.
+   * Disabled by default to prevent unsafe rendering.
+   */
+  allowHtml?: boolean;
 }
 
 export interface RadioButtonAttrs<T extends string | number> extends Attributes {
@@ -46,10 +51,12 @@ export interface RadioButtonAttrs<T extends string | number> extends Attributes 
   disabled?: boolean;
   /** Optional input id for the radio button */
   inputId?: string;
+  /** Explicitly allow trusted HTML in the label */
+  allowHtml?: boolean;
 }
 
 export const RadioButton = <T extends string | number>(): Component<RadioButtonAttrs<T>> => ({
-  view: ({ attrs: { id, groupId, label, onchange, className = 'col s12', checked, disabled, inputId } }) => {
+  view: ({ attrs: { id, groupId, label, onchange, className = 'col s12', checked, disabled, inputId, allowHtml } }) => {
     const radioId = inputId || `${groupId}-${id}`;
     return m(
       'p',
@@ -62,7 +69,7 @@ export const RadioButton = <T extends string | number>(): Component<RadioButtonA
           checked,
           onclick: onchange ? () => onchange(id) : undefined,
         }),
-        m('span', m.trust(label)),
+        m('span', allowHtml ? m.trust(label) : label),
       ])
     );
   },
@@ -111,6 +118,7 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
         checkboxClass,
         layout,
         direction,
+        allowHtml = false,
         onchange,
       } = attrs;
       
@@ -155,6 +163,7 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
           className: checkboxClass,
           checked: r.id === currentCheckedId,
           inputId: `${componentId}-${r.id}`,
+          allowHtml,
         } as RadioButtonAttrs<T>,
         key: r.id,
       }));
@@ -166,7 +175,7 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
 
       return m('div', { id: componentId, className: cn }, [
         label && m('h5.form-group-label', label + (isMandatory ? ' *' : '')),
-        description && m('p.helper-text', m.trust(description)),
+        description && m('p.helper-text', allowHtml ? m.trust(description) : description),
         m('form', { action: '#' }, optionsContent),
       ]);
     },
