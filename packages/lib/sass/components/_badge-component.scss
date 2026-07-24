@@ -23,6 +23,14 @@ $badge-dot-border-radius: 50% !default;
   flex-shrink: 0;
 }
 
+// Optional layout helper for dense badge demo/list groups.
+.badge-showcase {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--mm-badge-showcase-gap, 20px);
+}
+
 // Badge element - using .m-badge to avoid conflicts with Materialize's span.badge
 .m-badge {
   position: absolute;
