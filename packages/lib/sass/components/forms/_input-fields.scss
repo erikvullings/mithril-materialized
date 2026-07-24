@@ -160,6 +160,14 @@ textarea.materialize-textarea {
     flex-direction: column;
     justify-content: center;
     height: variables.$input-height;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  &:hover .number-input-controls {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .number-input-control {
