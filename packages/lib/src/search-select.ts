@@ -659,9 +659,7 @@ export const SearchSelect = <T extends string | number>(
                 : []),
 
               // No options found message or list of options
-              ...(viewState === 'empty' && !showAddNew
-                ? [m('li.search-select-no-options', texts.noOptionsFound)]
-                : []),
+              ...(viewState === 'empty' && !showAddNew ? [m('li.search-select-no-options', texts.noOptionsFound)] : []),
 
               // Truncation message
               ...(isTruncated

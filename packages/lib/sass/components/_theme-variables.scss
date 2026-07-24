@@ -21,6 +21,7 @@
   --mm-text-secondary: rgba(0, 0, 0, 0.6);
   --mm-text-disabled: rgba(0, 0, 0, 0.38);
   --mm-text-hint: rgba(0, 0, 0, 0.38);
+  --mm-error-color: #f44336;
   
   // Border and divider colors
   --mm-border-color: rgba(0, 0, 0, 0.12);
@@ -112,6 +113,7 @@ body {
   --mm-text-secondary: rgba(255, 255, 255, 0.6);
   --mm-text-disabled: rgba(255, 255, 255, 0.38);
   --mm-text-hint: rgba(255, 255, 255, 0.38);
+  --mm-error-color: #ef5350;
   
   // Border and divider colors
   --mm-border-color: rgba(255, 255, 255, 0.12);
@@ -192,6 +194,7 @@ body {
     --mm-text-secondary: rgba(255, 255, 255, 0.6);
     --mm-text-disabled: rgba(255, 255, 255, 0.38);
     --mm-text-hint: rgba(255, 255, 255, 0.38);
+    --mm-error-color: #ef5350;
     
     --mm-border-color: rgba(255, 255, 255, 0.12);
     --mm-divider-color: rgba(255, 255, 255, 0.12);

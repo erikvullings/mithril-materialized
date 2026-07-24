@@ -270,6 +270,25 @@ body.keyboard-focused {
   }
 }
 
+// Async loading and error messages should align with other informational rows
+.search-select-loading-info,
+.search-select-error-info {
+  padding: 8px 16px;
+  color: var(--mm-text-hint, #9e9e9e);
+  font-style: italic;
+  text-align: center;
+  border-bottom: none;
+
+  &:hover {
+    background-color: transparent;
+    cursor: default;
+  }
+}
+
+.dropdown-content li.search-select-error-info {
+  color: var(--mm-error-color, #f44336) !important;
+}
+
 // Option labels for proper checkbox accessibility
 .search-select-option-label {
   display: flex;

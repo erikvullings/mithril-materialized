@@ -105,8 +105,7 @@ export const getComboboxKeyResult = ({
   };
 };
 
-export const getComboboxOptionId = (baseId: string, optionIndex: number): string =>
-  `${baseId}-option-${optionIndex}`;
+export const getComboboxOptionId = (baseId: string, optionIndex: number): string => `${baseId}-option-${optionIndex}`;
 
 export const createAsyncComboboxState = <TOption>(initialOptions: TOption[] = []): AsyncComboboxState<TOption> => ({
   options: initialOptions,
