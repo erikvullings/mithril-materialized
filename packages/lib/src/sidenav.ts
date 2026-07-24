@@ -1,6 +1,7 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
 import { MaterialIcon } from './material-icon';
+import { ComponentStyle } from './types';
 
 /** Icon definition - supports material icon name, inline SVG, or image URL */
 export type IconDefinition = string | { type: 'svg' | 'image'; content: string };
@@ -127,8 +128,9 @@ const materialIconSvgNames = [
 /**
  * Helper function to render icons based on IconDefinition type
  */
-const renderIcon = (icon: IconDefinition | undefined, style?: any): m.Children => {
+const renderIcon = (icon: IconDefinition | undefined, style?: ComponentStyle): m.Children => {
   if (!icon) return null;
+  const objectStyle = typeof style === 'string' ? undefined : style;
 
   if (typeof icon === 'string') {
     // Check if this is a MaterialIcon SVG name
@@ -148,7 +150,7 @@ const renderIcon = (icon: IconDefinition | undefined, style?: any): m.Children =
     // Image URL
     return m('img', {
       src: icon.content,
-      style: { ...style, width: '24px', height: '24px', objectFit: 'contain' },
+      style: { ...objectStyle, width: '24px', height: '24px', objectFit: 'contain' },
     });
   }
 

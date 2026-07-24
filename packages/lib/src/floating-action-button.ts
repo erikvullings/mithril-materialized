@@ -1,5 +1,6 @@
 import m, { FactoryComponent } from 'mithril';
 import { WavesEffect } from './waves';
+import { ComponentStyle } from './types';
 
 interface FloatingActionButtonState {
   isOpen: boolean;
@@ -9,7 +10,7 @@ export interface FloatingActionButtonAttrs {
   /** Optional classes to add to the top element */
   className?: string;
   /** Optional style to add to the top element, e.g. for positioning it inline */
-  style?: string | Record<string, string | number>;
+  style?: ComponentStyle;
   /** Material-icons name for the main FAB, @see https://materializecss.com/icons.html */
   iconName: string;
   /** Helper option to place the FAB inline instead of the bottom right of the display */

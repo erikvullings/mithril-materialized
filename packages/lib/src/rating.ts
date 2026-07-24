@@ -1,5 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
+import { ComponentStyle } from './types';
 
 /** Rating component size options */
 export type RatingSize = 'small' | 'medium' | 'large';
@@ -42,7 +43,7 @@ export interface RatingAttrs extends Attributes {
   /** Class name for the container */
   className?: string;
   /** Additional CSS styles */
-  style?: any;
+  style?: ComponentStyle;
   /** Callback when rating changes */
   onchange?: (value: number) => void;
   /** Callback when rating is hovered (preview mode) */

@@ -1,6 +1,7 @@
 import m from 'mithril';
 import { InputAttrs } from './input-options';
 import { Label, HelperText } from './label';
+import { ComponentStyle } from './types';
 
 // Tooltip component for range sliders
 const RangeTooltip = {
@@ -185,7 +186,7 @@ export const SingleRangeSlider = {
   }: {
     attrs: InputAttrs<any> & {
       cn?: string;
-      style?: any;
+      style?: ComponentStyle;
       iconName?: string;
       id: string;
       label?: string;
@@ -383,7 +384,7 @@ export const DoubleRangeSlider = {
   }: {
     attrs: InputAttrs<any> & {
       cn?: string;
-      style?: any;
+      style?: ComponentStyle;
       iconName?: string;
       id: string;
       label?: string;

@@ -1,4 +1,5 @@
 import { Attributes } from 'mithril';
+import { ComponentStyle } from './types';
 
 export interface InputAttrs<T = string> extends Attributes {
   /** Optional label. */
@@ -71,7 +72,7 @@ export interface InputAttrs<T = string> extends Attributes {
   /** Sets the input field to disabled. */
   disabled?: boolean;
   /** Optional style information. */
-  style?: string | Record<string, string | number>;
+  style?: ComponentStyle;
   /** When input type is a number, optionally specify the minimum value. */
   min?: number;
   /** When input type is a number, optionally specify the maximum value. */

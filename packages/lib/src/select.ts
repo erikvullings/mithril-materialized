@@ -3,6 +3,7 @@ import { Label, HelperText } from './label';
 import { InputOption } from './option';
 import { getDropdownStyles, uniqueId, sortOptions } from './utils';
 import { MaterialIcon } from './material-icon';
+import { ComponentStyle } from './types';
 
 export type SortSelected<T extends string | number> =
   | 'asc'
@@ -43,7 +44,7 @@ export interface SelectAttrs<T extends string | number> extends Attributes {
   /** Sets the input field to disabled. */
   disabled?: boolean;
   /** Optional style information. */
-  style?: string | Record<string, string | number>;
+  style?: ComponentStyle;
   /** If true, break to a new row */
   newRow?: boolean;
   /**

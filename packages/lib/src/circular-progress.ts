@@ -1,6 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
-import { MaterialColor, ColorIntensity } from './types';
+import { MaterialColor, ColorIntensity, ComponentStyle } from './types';
 
 /** Progress mode - determinate shows specific progress, indeterminate shows loading animation */
 export type ProgressMode = 'determinate' | 'indeterminate';
@@ -29,7 +29,7 @@ export interface CircularProgressAttrs extends Attributes {
   /** Additional CSS class names */
   className?: string;
   /** Additional CSS styles */
-  style?: any;
+  style?: ComponentStyle;
   /** HTML ID for the component */
   id?: string;
   /** ARIA label for accessibility */

@@ -40,3 +40,13 @@ Improve public API consistency and discoverability with minimal breakage.
   - `packages/lib/src/input-options.ts`
   - `packages/lib/src/select.ts`
   - `packages/lib/src/floating-action-button.ts`
+- Completed style typing normalization with shared `ComponentStyle` alias across all explicit style attrs:
+  - `packages/lib/src/types.ts`
+  - `packages/lib/src/circular-progress.ts`
+  - `packages/lib/src/likert-scale.ts`
+  - `packages/lib/src/linear-progress.ts`
+  - `packages/lib/src/material-icon.ts`
+  - `packages/lib/src/range-slider.ts`
+  - `packages/lib/src/rating.ts`
+  - `packages/lib/src/treeview.ts`
+  - `packages/lib/src/sidenav.ts` (renderIcon helper style type)

@@ -1,6 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
-import { MaterialColor, ColorIntensity } from './types';
+import { MaterialColor, ColorIntensity, ComponentStyle } from './types';
 import { ProgressMode, ProgressSize } from './circular-progress';
 
 /** LinearProgress component attributes */
@@ -24,7 +24,7 @@ export interface LinearProgressAttrs extends Attributes {
   /** Additional CSS class names */
   className?: string;
   /** Additional CSS styles */
-  style?: any;
+  style?: ComponentStyle;
   /** HTML ID for the component */
   id?: string;
   /** ARIA label for accessibility */

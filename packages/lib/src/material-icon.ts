@@ -1,5 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { Icon } from './icon';
+import { ComponentStyle } from './types';
 
 const iconPaths = {
   caret: [
@@ -66,7 +67,7 @@ export type IconName = keyof typeof iconPaths;
 export interface MaterialIconAttrs extends Attributes {
   name: IconName;
   direction?: 'up' | 'down' | 'left' | 'right';
-  style?: Record<string, string>;
+  style?: ComponentStyle;
   onclick?: (e: MouseEvent) => void;
 }
 
@@ -84,6 +85,15 @@ export const MaterialIcon: FactoryComponent<MaterialIconAttrs> = () => {
 
       const rotation = rotationMap[direction] ?? 0;
       const transform = rotation ? `rotate(${rotation}deg)` : undefined;
+      const baseStyle: Record<string, string | number | undefined> = {
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        transform,
+      };
+      const combinedStyle =
+        typeof style === 'string'
+          ? `display:inline-block;vertical-align:middle;${transform ? `transform:${transform};` : ''}${style}`
+          : { ...baseStyle, ...style };
 
       const icon = iconPaths[name];
       if (!icon || !Array.isArray(icon)) {
@@ -93,12 +103,7 @@ export const MaterialIcon: FactoryComponent<MaterialIconAttrs> = () => {
         'svg',
         {
           ...props,
-          style: {
-            display: 'inline-block',
-            verticalAlign: 'middle',
-            transform,
-            ...style
-          },
+          style: combinedStyle,
           height: '24px',
           width: '24px',
           viewBox: '0 0 24 24',

@@ -46,6 +46,12 @@ export type ValidationError = false | string;
 export type ValidationResult = ValidationSuccess | ValidationError;
 
 /**
+ * Shared style prop type used by component attrs.
+ * Supports CSS text strings and Mithril style objects.
+ */
+export type ComponentStyle = string | Record<string, string | number | undefined>;
+
+/**
  * Generic event handler type with proper typing for value and optional event
  * @template T - The type of the value being handled
  */

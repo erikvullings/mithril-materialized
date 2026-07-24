@@ -1,6 +1,6 @@
 import m, { FactoryComponent, Attributes, Vnode } from 'mithril';
 import { MaterialIcon } from './material-icon';
-import { EventHandler, SelectionMode } from './types';
+import { EventHandler, SelectionMode, ComponentStyle } from './types';
 
 export interface TreeNode {
   id: string;
@@ -57,7 +57,7 @@ export interface TreeViewAttrs<T extends TreeNode = TreeNode> extends Attributes
   /** Optional CSS class */
   className?: string;
   /** Optional inline styles */
-  style?: Record<string, any>;
+  style?: ComponentStyle;
   /** Component ID */
   id?: string;
 }

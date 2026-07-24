@@ -1,5 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
+import { ComponentStyle } from './types';
 
 /** Likert scale component size options */
 export type LikertScaleSize = 'small' | 'medium' | 'large';
@@ -86,7 +87,7 @@ export interface LikertScaleAttrs<T extends number = number> extends Attributes 
   /** Class name for the container */
   className?: string;
   /** Additional CSS styles */
-  style?: any;
+  style?: ComponentStyle;
 
   // Multi-question alignment
   /** Use CSS grid for label/scale alignment in multi-question surveys (default: false) */
