@@ -257,7 +257,7 @@ export const ConfirmButton: FactoryComponent<ConfirmButtonAttrs> = () => {
         style: buttonStyle,
         className: `${props.className || ''} ${cn}`,
         iconName: currentIconName as string,
-        iconClass: label ? (iconClass || 'left') : '',
+        iconClass: label ? iconClass || 'left' : '',
         label,
         onclick: handleClick,
       });

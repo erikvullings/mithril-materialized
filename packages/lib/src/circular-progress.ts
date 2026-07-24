@@ -121,7 +121,8 @@ export const CircularProgress: FactoryComponent<CircularProgressAttrs> = () => {
         : { radius: 0, circumference: 0, strokeDashoffset: 0, percentage: 0 };
 
       // Determine label content
-      const labelContent = label !== undefined ? label : showPercentage && isDeterminate ? `${Math.round(percentage)}%` : '';
+      const labelContent =
+        label !== undefined ? label : showPercentage && isDeterminate ? `${Math.round(percentage)}%` : '';
 
       // Build class names
       const classNames = [

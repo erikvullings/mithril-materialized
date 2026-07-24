@@ -307,17 +307,17 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
                           },
                         })
                       : suggestion.value && suggestion.value.startsWith('icon:')
-                      ? m(
-                          'i.material-icons',
-                          {
-                            style: {
-                              fontSize: '24px',
-                              color: 'var(--md-grey-600)',
+                        ? m(
+                            'i.material-icons',
+                            {
+                              style: {
+                                fontSize: '24px',
+                                color: 'var(--md-grey-600)',
+                              },
                             },
-                          },
-                          suggestion.value.replace('icon:', '')
-                        )
-                      : null,
+                            suggestion.value.replace('icon:', '')
+                          )
+                        : null,
                     m('span', suggestion.key ? highlightMatch(suggestion.key, currentValue) : ''),
                   ]
                 )

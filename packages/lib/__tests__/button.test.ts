@@ -13,9 +13,9 @@ describe('Button Components', () => {
     });
 
     it('renders with icon', () => {
-      const { container } = render(Button, { 
-        label: 'Test Button', 
-        iconName: 'add' 
+      const { container } = render(Button, {
+        label: 'Test Button',
+        iconName: 'add',
       });
       const icon = container.querySelector('i.material-icons');
       expect(icon).toBeInTheDocument();
@@ -24,34 +24,34 @@ describe('Button Components', () => {
 
     it('handles click events', () => {
       const mockClick = jest.fn();
-      const { getByText } = render(Button, { 
+      const { getByText } = render(Button, {
         label: 'Test Button',
-        onclick: mockClick
+        onclick: mockClick,
       });
-      
+
       const button = getByText('Test Button');
       fireEvent.click(button);
       expect(mockClick).toHaveBeenCalledTimes(1);
     });
 
     it('does not set type attribute on anchor buttons', () => {
-      const { getByText } = render(Button, { 
+      const { getByText } = render(Button, {
         label: 'Submit Button',
-        variant: 'submit'
+        variant: 'submit',
       });
-      
+
       const button = getByText('Submit Button');
       expect(button.tagName).toBe('A');
       expect(button).not.toHaveAttribute('type');
     });
 
     it('renders with tooltip', () => {
-      const { getByText } = render(Button, { 
+      const { getByText } = render(Button, {
         label: 'Tooltip Button',
         tooltip: 'This is a tooltip',
-        tooltipPostion: 'bottom'
+        tooltipPostion: 'bottom',
       });
-      
+
       const button = getByText('Tooltip Button');
       expect(button).toHaveClass('tooltipped');
       expect(button).toHaveAttribute('data-tooltip', 'This is a tooltip');
@@ -59,21 +59,21 @@ describe('Button Components', () => {
     });
 
     it('applies custom className', () => {
-      const { getByText } = render(Button, { 
+      const { getByText } = render(Button, {
         label: 'Custom Button',
-        className: 'custom-class'
+        className: 'custom-class',
       });
-      
+
       const button = getByText('Custom Button');
       expect(button).toHaveClass('custom-class');
     });
 
     it('renders disabled button', () => {
-      const { getByText } = render(Button, { 
+      const { getByText } = render(Button, {
         label: 'Disabled Button',
-        disabled: true
+        disabled: true,
       });
-      
+
       const button = getByText('Disabled Button');
       expect(button).toHaveAttribute('disabled');
     });

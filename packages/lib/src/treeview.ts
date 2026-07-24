@@ -20,12 +20,12 @@ const isNodeLastInBranch = (nodePath: number[], rootNodes: TreeNode[]): boolean 
   for (let i = 0; i < nodePath.length; i++) {
     const index = nodePath[i];
     const isLastAtThisLevel = index === currentNodes.length - 1;
-    
+
     // If this is not the last child at this level, then this node is not last in branch
     if (!isLastAtThisLevel) {
       return false;
     }
-    
+
     // Move to the next level if it exists
     if (i < nodePath.length - 1) {
       const currentNode = currentNodes[index];
@@ -184,18 +184,18 @@ const TreeNodeComponent: FactoryComponent<TreeNodeComponentAttrs> = () => {
                       iconType === 'plus-minus'
                         ? m('span.tree-plus-minus', isExpanded ? '−' : '+')
                         : iconType === 'triangle'
-                        ? m('span.tree-triangle', { class: isExpanded ? 'expanded' : undefined }, '▶')
-                        : iconType === 'chevron'
-                        ? m(MaterialIcon, {
-                            name: 'chevron',
-                            direction: isExpanded ? 'down' : 'right',
-                            class: 'tree-chevron-icon',
-                          })
-                        : m(MaterialIcon, {
-                            name: 'caret',
-                            direction: isExpanded ? 'down' : 'right',
-                            class: 'tree-caret-icon',
-                          }),
+                          ? m('span.tree-triangle', { class: isExpanded ? 'expanded' : undefined }, '▶')
+                          : iconType === 'chevron'
+                            ? m(MaterialIcon, {
+                                name: 'chevron',
+                                direction: isExpanded ? 'down' : 'right',
+                                class: 'tree-chevron-icon',
+                              })
+                            : m(MaterialIcon, {
+                                name: 'caret',
+                                direction: isExpanded ? 'down' : 'right',
+                                class: 'tree-caret-icon',
+                              }),
                     ]
                   )
                 : m('.tree-expand-spacer'), // Spacer for alignment
@@ -237,11 +237,12 @@ const TreeNodeComponent: FactoryComponent<TreeNodeComponentAttrs> = () => {
                 const childIsSelected = attrs.treeState?.selectedIds.has(child.id) ?? false;
                 const childIsExpanded = attrs.treeState?.expandedIds.has(child.id) ?? false;
                 const childIsFocused = attrs.treeState?.focusedNodeId === child.id;
-                
+
                 // Calculate if this child is last in branch
                 const childPath = [...(attrs.currentPath || []), childIndex];
-                const childIsLastInBranch = attrs.treeAttrs?.data ? 
-                  isNodeLastInBranch(childPath, attrs.treeAttrs.data) : false;
+                const childIsLastInBranch = attrs.treeAttrs?.data
+                  ? isNodeLastInBranch(childPath, attrs.treeAttrs.data)
+                  : false;
 
                 return m(TreeNodeComponent, {
                   key: child.id,
@@ -329,7 +330,12 @@ export const TreeView: FactoryComponent<TreeViewAttrs> = () => {
     state.focusedNodeId = nodeId;
   };
 
-  const renderNodes = (nodes: TreeNode[], attrs: TreeViewAttrs, level = 0, parentPath: number[] = []): Vnode<any, any>[] => {
+  const renderNodes = (
+    nodes: TreeNode[],
+    attrs: TreeViewAttrs,
+    level = 0,
+    parentPath: number[] = []
+  ): Vnode<any, any>[] => {
     return nodes.map((node, index) => {
       const isSelected = state.selectedIds.has(node.id);
       const isExpanded = state.expandedIds.has(node.id);
@@ -358,7 +364,6 @@ export const TreeView: FactoryComponent<TreeViewAttrs> = () => {
       });
     });
   };
-
 
   return {
     oninit: ({ attrs }) => {
@@ -393,10 +398,7 @@ export const TreeView: FactoryComponent<TreeViewAttrs> = () => {
       return m(
         'div.tree-view',
         {
-          class: [
-            className,
-            showConnectors && 'show-connectors'
-          ].filter(Boolean).join(' ') || undefined,
+          class: [className, showConnectors && 'show-connectors'].filter(Boolean).join(' ') || undefined,
           style,
           id,
           role: selectionMode === 'multiple' ? 'listbox' : 'tree',

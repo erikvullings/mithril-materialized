@@ -72,8 +72,8 @@ export const FloatingActionButton: FactoryComponent<FloatingActionButtonAttrs> =
         style = position === 'left' || position === 'inline-left'
           ? 'position: absolute; display: inline-block; left: 24px;'
           : position === 'right' || position === 'inline-right'
-          ? 'position: absolute; display: inline-block; right: 24px;'
-          : undefined,
+            ? 'position: absolute; display: inline-block; right: 24px;'
+            : undefined,
         buttons,
         direction = 'top',
         hoverEnabled = true,

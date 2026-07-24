@@ -431,7 +431,8 @@ export const LikertScale: FactoryComponent<LikertScaleAttrs> = () => {
             ),
 
             // Scale anchors
-            !useInlineAnchors && (startLabel || middleLabel || endLabel) &&
+            !useInlineAnchors &&
+              (startLabel || middleLabel || endLabel) &&
               m('.likert-scale__anchors', [
                 startLabel && m('.likert-scale__anchor.likert-scale__anchor--start', startLabel),
                 middleLabel && m('.likert-scale__anchor.likert-scale__anchor--middle', middleLabel),

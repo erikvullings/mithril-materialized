@@ -89,14 +89,14 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
   return {
     oninit: ({ attrs }) => {
       state.componentId = attrs.id || uniqueId();
-      
+
       const controlled = isControlled(attrs);
-      
+
       // Warn developer for improper controlled usage
       if (attrs.checkedId !== undefined && !controlled && !attrs.disabled) {
         console.warn(
           `RadioButtons component received 'checkedId' prop without 'onchange' handler. ` +
-          `Use 'defaultCheckedId' for uncontrolled components or add 'onchange' for controlled components.`
+            `Use 'defaultCheckedId' for uncontrolled components or add 'onchange' for controlled components.`
         );
       }
 
@@ -121,12 +121,12 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
         allowHtml = false,
         onchange,
       } = attrs;
-      
+
       const resolvedLayout = layout ?? direction ?? 'vertical';
 
       const { groupId, componentId } = state;
       const controlled = isControlled(attrs);
-      
+
       // Get current checked ID from props or internal state
       let currentCheckedId: T | undefined;
       if (controlled) {

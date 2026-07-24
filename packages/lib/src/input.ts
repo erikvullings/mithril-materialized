@@ -222,12 +222,12 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
             },
             onupdate: ({ dom }) => {
               const textarea = dom as HTMLTextAreaElement;
-              
+
               // Recalculate and apply height
               if (state.hiddenDiv) {
                 updateHeight(textarea, state.hiddenDiv);
               }
-              
+
               if (state.height) {
                 textarea.style.height = state.height;
               }

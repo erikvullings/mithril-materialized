@@ -163,10 +163,10 @@ export type InputType =
 export type InputValue<T extends InputType> = T extends 'number' | 'range'
   ? number
   : T extends 'date' | 'datetime-local' | 'month' | 'time' | 'week'
-  ? Date | string
-  : T extends 'file'
-  ? FileList | File[]
-  : string;
+    ? Date | string
+    : T extends 'file'
+      ? FileList | File[]
+      : string;
 
 /**
  * Icon class using template literal types for better IntelliSense

@@ -86,16 +86,11 @@ export const LinearProgress: FactoryComponent<LinearProgressAttrs> = () => {
       const percentage = Math.min(100, Math.max(0, (value / max) * 100));
 
       // Determine label content
-      const labelContent = label !== undefined ? label : showPercentage && isDeterminate ? `${Math.round(percentage)}%` : '';
+      const labelContent =
+        label !== undefined ? label : showPercentage && isDeterminate ? `${Math.round(percentage)}%` : '';
 
       // Build class names
-      const classNames = [
-        'linear-progress',
-        getColorClass(color, colorIntensity),
-        className,
-      ]
-        .filter(Boolean)
-        .join(' ');
+      const classNames = ['linear-progress', getColorClass(color, colorIntensity), className].filter(Boolean).join(' ');
 
       // ARIA attributes
       const ariaAttrs = isDeterminate
