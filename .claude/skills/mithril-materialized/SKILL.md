@@ -1,26 +1,31 @@
 ---
 name: mithril-materialized
-description: "Builds, maintains, and integrates mithril-materialized UI components — a zero-dependency TypeScript library implementing Material Design for Mithril.js. Creates FactoryComponents with controlled/uncontrolled modes, implements validation, manages light/dark theming via CSS custom properties, and handles the pnpm monorepo build pipeline. Use when building Mithril.js apps with Material Design, creating or modifying mithril-materialized components, debugging component state or validation, customizing themes, or integrating the library into a project."
+description: "Use this contributor skill only when modifying the mithril-materialized repository itself, especially `packages/lib`, `packages/example`, or generated `docs`. Trigger for requests to add, modify, style, document, test, debug, or release library components such as TextInput, NumberInput, Switch, ToggleButton, FormSection, Fieldset, or FlatButton; fix component state, validation, Sass/CSS, accessibility, row/layout behaviour, exports, examples, TypeDoc, or the semantic-release workflow. For an application merely consuming the npm package, use the root SKILL.md instead."
 ---
 
 # Mithril Materialized UI Development
 
-Develop and maintain the mithril-materialized library — a TypeScript Mithril.js component library implementing Material Design without external JavaScript dependencies.
+Develop and maintain the `mithril-materialized` repository: a TypeScript Mithril.js Material Design component library with no external JavaScript UI dependencies. This is a contributor skill, not an application-integration guide.
 
-## When to Use
+## Scope and triggers
 
-- Building Mithril.js applications with Material Design components
-- Creating, modifying, or debugging mithril-materialized components
-- Integrating mithril-materialized into a project (forms, data tables, navigation, theming)
-- Fixing validation, theming, or rendering issues in the library
-- Managing the monorepo build and release pipeline
+Use this skill for prompts such as:
+
+- “Add a Switch/TextInput/NumberInput example”, “align an input row”, or “style the Select label”.
+- “Add a ToggleButton or ToggleGroup”, “use FormSection or Fieldset”, or “make this a FlatButton”.
+- “Make this component controlled”, “fix validation on blur”, or “debug a Mithril redraw”.
+- “Add dark-theme support”, “change the Sass variables”, or “export this component”.
+- “Refresh the docs/TypeDoc”, “test a library component”, or “make a patch release”.
+
+Do not use it for a generic Mithril application that neither uses nor modifies this library.
 
 ## Project Structure
 
 Monorepo with pnpm workspaces:
 
-- **`packages/lib/`** — Core library (npm: `mithril-materialized`), source in `src/*.ts`, styles in `src/*.scss`
+- **`packages/lib/`** — Core library (npm: `mithril-materialized`), source and entry Sass files in `src/`, component Sass partials in `sass/`
 - **`packages/example/`** — Documentation site with live component demos
+- **`docs/`** — Generated GitHub Pages assets and TypeDoc output; commit regenerated content when a release requires it
 
 Key files: `src/types.ts` (shared types), `src/utils.ts` (uniqueId, helpers), `src/index.ts` (all exports).
 
@@ -51,36 +56,46 @@ export const MyComponent: FactoryComponent<MyComponentAttrs> = () => {
 
 - **Controlled**: Parent provides `value` + `oninput`/`onchange`
 - **Uncontrolled**: Use `defaultValue`, component tracks state internally
-- Detect with `isControlled(attrs)` — checks for `value` and a handler
+- Follow the component's existing `isControlled` contract; do not assume every component uses the same value or handler property
 
 ### Validation
 
 `ValidatorFunction<T>` returns `true | false | '' | string`. Always validate on **blur**, track `hasInteracted`, integrate with HTML5 `setCustomValidity`.
 
-## Component Categories
+## Component catalogue
+
+The table is a routing guide, not the API source of truth. Before using an unfamiliar component, inspect its export and attrs in `packages/lib/src/index.ts` and the component's source file.
 
 | Category | Components | Files |
 |----------|-----------|-------|
-| **Inputs** | TextInput, TextArea, AutoComplete, Chips, RangeInput | `input.ts`, `autocomplete.ts` |
-| **Selections** | Select, RadioButtons, Switch, LikertScale | `select.ts`, `likert-scale.ts` |
-| **Buttons** | Button, FlatButton, IconButton, SubmitButton, ConfirmButton, FAB | `button.ts` |
-| **Pickers** | DatePicker, TimePicker, TimeRangePicker | `datepicker.ts`, `timepicker.ts` |
-| **Displays** | ModalPanel, Tooltip, Toast, Badge | `modal.ts`, `tooltip.ts` |
-| **Navigation** | Sidenav, Breadcrumb, Tabs, Pagination | `sidenav.ts`, `tabs.ts` |
-| **Data** | DataTable, TreeView, Rating, Wizard | `datatable.ts`, `treeview.ts` |
-| **Layouts** | Masonry, ImageList, Timeline, Carousel | `masonry.ts`, `timeline.ts` |
+| **Text & numeric inputs** | TextInput, TextArea, NumberInput, PasswordInput, EmailInput, UrlInput, ColorInput, RangeInput, FileInput, CharacterCounter | `input.ts` |
+| **Form structure** | FormSection, Fieldset | `form-section.ts` |
+| **Choices & toggles** | Select, RadioButton(s), Switch, ToggleButton, ToggleGroup, LikertScale, Rating | `select.ts`, `radio.ts`, `switch.ts`, `toggle-*.ts` |
+| **Search & file inputs** | AutoComplete, Combobox, SearchSelect, Chips, FileUpload | `autocomplete.ts`, `combobox.ts`, `search-select.ts`, `file-upload.ts` |
+| **Buttons** | Button, LargeButton, SmallButton, FlatButton, IconButton, RoundIconButton, SubmitButton, ConfirmButton, FloatingActionButton | `button.ts`, `floating-action-button.ts` |
+| **Ranges & pickers** | SingleRangeSlider, DoubleRangeSlider, DatePicker, TimePicker, TimeRangePicker, AnalogClock, DigitalClock | `range-slider.ts`, `datepicker.ts`, `timepicker.ts` |
+| **Feedback & overlays** | ModalPanel, Tooltip, Toast, Badge, CircularProgress, LinearProgress | `modal.ts`, `tooltip.ts`, `toast.ts` |
+| **Navigation & organisation** | Sidenav, Breadcrumb, Tabs, Pagination, Collapsible, Collection, Dropdown, Wizard | `sidenav.ts`, `tabs.ts`, `wizard.ts` |
+| **Data & visual layout** | DataTable, TreeView, Masonry, ImageList, Timeline, Carousel, Parallax | `datatable.ts`, `treeview.ts`, `masonry.ts` |
 
 ## Theming
 
 Light/dark via 50+ CSS custom properties (`--mm-primary-color`, `--mm-surface-color`, etc.). Programmatic: `ThemeManager.setTheme('dark')`, `ThemeManager.toggle()`.
 
-## Development Workflow
+## Development workflow
 
 ```bash
 pnpm start              # Dev servers (lib + example)
-npm run build           # Build library (ESM, CJS, UMD via microbundle)
-npm run patch-release   # Bump, build, publish, push tags
+pnpm --dir packages/lib test                # Unit tests
+pnpm --dir packages/lib build:domain        # Library build + TypeDoc → docs/typedoc
+pnpm build:example                          # Example site → docs/
 ```
+
+For a normal change, update the component, its Sass, focused tests, and the live example when it clarifies behaviour. Run the narrow test first, then the relevant build.
+
+### Releases
+
+Releases are created by GitHub Actions on pushes to `master`, using semantic-release. Use Conventional Commit syntax: `fix(scope): ...` creates a patch release and `feat(scope): ...` creates a minor release. The workflow builds the library and example, runs tests, then commits release metadata and generated docs. Do not use the legacy local `patch-release` or `minor-release` scripts unless explicitly asked.
 
 ### Adding a Component
 
