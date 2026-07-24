@@ -1,6 +1,7 @@
 import { Select } from '../src/select';
 import { render, fireEvent, cleanup } from './test-utils';
 import { InputOption as IInputOption } from '../src/option';
+import { vi } from 'vitest';
 
 describe('Select Component', () => {
   const mockOptions: IInputOption<string>[] = [
@@ -24,7 +25,7 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
-      onchange: jest.fn(),
+      onchange: vi.fn(),
     });
 
     expect(getByText('Test Select')).toBeInTheDocument();
@@ -35,7 +36,7 @@ describe('Select Component', () => {
       id: 'test-select',
       placeholder: 'Choose an option',
       options: mockOptions,
-      onchange: jest.fn(),
+      onchange: vi.fn(),
     });
 
     // Placeholder should appear as input value when nothing is selected
@@ -49,7 +50,7 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
-      onchange: jest.fn(),
+      onchange: vi.fn(),
     };
     const { container } = render(Select<string>(), attrs);
 
@@ -74,7 +75,7 @@ describe('Select Component', () => {
 
   it('calls onchange when option is selected', () => {
     // This test verifies the basic component structure and that handlers are set up
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
     const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
@@ -92,7 +93,7 @@ describe('Select Component', () => {
   });
 
   it('handles single select correctly', () => {
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
     const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
@@ -111,7 +112,7 @@ describe('Select Component', () => {
   });
 
   it('handles multiple select correctly', () => {
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
     const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
@@ -148,7 +149,7 @@ describe('Select Component', () => {
       label: 'Test Select',
       options: mockOptions,
       checkedId: 'option1',
-      onchange: jest.fn(),
+      onchange: vi.fn(),
     });
 
     // Check that the selected option appears in the input value
@@ -157,7 +158,7 @@ describe('Select Component', () => {
   });
 
   it('handles disabled state', () => {
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
     const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
@@ -176,7 +177,7 @@ describe('Select Component', () => {
   });
 
   it('handles disabled options', () => {
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
     const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
@@ -198,7 +199,7 @@ describe('Select Component', () => {
       label: 'Test Select',
       iconName: 'person',
       options: mockOptions,
-      onchange: jest.fn(),
+      onchange: vi.fn(),
     });
 
     const icon = container.querySelector('.material-icons.prefix');
@@ -212,7 +213,7 @@ describe('Select Component', () => {
       label: 'Test Select',
       helperText: 'Choose wisely',
       options: mockOptions,
-      onchange: jest.fn(),
+      onchange: vi.fn(),
     });
 
     expect(getByText('Choose wisely')).toBeInTheDocument();
@@ -230,7 +231,7 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: groupedOptions,
-      onchange: jest.fn(),
+      onchange: vi.fn(),
     });
 
     // Verify component renders with grouped options
@@ -251,7 +252,7 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: optionsWithImages,
-      onchange: jest.fn(),
+      onchange: vi.fn(),
     });
 
     // Verify component renders with image options
@@ -277,7 +278,7 @@ describe('Select Component', () => {
   });
 
   it('allows removing tags in multiple select', () => {
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
     const { container } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
@@ -342,7 +343,7 @@ describe('Select Component', () => {
       label: 'Test Select',
       options: mockOptions,
       appearance: 'outlined',
-      onchange: jest.fn(),
+      onchange: vi.fn(),
     });
 
     const root = container.querySelector('.input-field.select-space');
@@ -354,7 +355,7 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
-      onchange: jest.fn(),
+      onchange: vi.fn(),
     });
 
     const selectWrapper = container.querySelector('.select-wrapper');
@@ -368,7 +369,7 @@ describe('Select Component', () => {
   });
 
   it.skip('handles keyboard navigation', () => {
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
     const { container, getByText } = render(Select<string>(), {
       id: 'test-select',
       label: 'Test Select',
@@ -395,7 +396,7 @@ describe('Select Component', () => {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
-      onchange: jest.fn(),
+      onchange: vi.fn(),
     });
 
     const selectWrapper = container.querySelector('.select-wrapper');
@@ -406,7 +407,7 @@ describe('Select Component', () => {
   });
 
   it('works with numeric option IDs', () => {
-    const mockOnChange = jest.fn();
+    const mockOnChange = vi.fn();
     const { container } = render(Select<number>(), {
       id: 'test-select',
       label: 'Test Select',

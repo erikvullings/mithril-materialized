@@ -239,7 +239,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
 
   const formatSelectionSummary = (
     attrs: SelectAttrs<T>,
-    selectedOptions: InputOption<T>[],
+    selectedLabels: string[],
     selectedIds: T[],
     placeholder: string
   ) => {
@@ -248,7 +248,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
     const totalCount = attrs.options.filter((option) => !option.disabled).length;
 
     if (mode === 'labels') {
-      return selectedOptions.length > 0 ? selectedOptions.map((o) => o.label || o.id).join(', ') : placeholder;
+      return selectedLabels.length > 0 ? selectedLabels.join(', ') : placeholder;
     }
 
     const defaultCountLabel = `${selectedCount}/${totalCount} selected`;
@@ -486,7 +486,8 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       const shouldInlineLabel = appearance === 'outlined' && !!label;
       const selectedOptionsUnsorted = options.filter((opt) => isSelected(opt.id, selectedIds));
       const selectedOptions = sortOptions(selectedOptionsUnsorted, attrs.sortSelected);
-      const triggerValue = formatSelectionSummary(attrs, selectedOptions, selectedIds, placeholder);
+      const selectedLabels = selectedOptions.map((o) => o.label || o.id.toString());
+      const triggerValue = formatSelectionSummary(attrs, selectedLabels, selectedIds, placeholder);
 
       // Update portal dropdown when inside modal
       if (state.isInsideModal) {
