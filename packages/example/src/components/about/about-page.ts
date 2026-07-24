@@ -22,7 +22,10 @@ export const AboutPage = () => ({
             m('li', 'Consolidated the example layout around the library Sidenav component.'),
             m('li', 'Improved TypeScript 6 compatibility across the project.'),
             m('li', 'Fixed DatePicker month/year selection redraw behavior.'),
-            m('li', 'Resolved example-side sidenav integration issues (fragment key mismatch and scrollbar styling propagation).'),
+            m(
+              'li',
+              'Resolved example-side sidenav integration issues (fragment key mismatch and scrollbar styling propagation).'
+            ),
           ]),
         ]),
         m('li.collection-item', [
@@ -38,7 +41,10 @@ export const AboutPage = () => ({
             m('li', 'Added ConfirmButton for deliberate confirmation of destructive actions.'),
             m('li', 'Added LikertScale and support for rich content inside Collection items.'),
             m('li', 'Improved Rating tooltip behavior.'),
-            m('li', 'Delivered important stabilization fixes after release: MaterialIcon fallback/warnings, modal action-close behavior, ConfirmButton alignment, and ThemeManager custom settings support.'),
+            m(
+              'li',
+              'Delivered important stabilization fixes after release: MaterialIcon fallback/warnings, modal action-close behavior, ConfirmButton alignment, and ThemeManager custom settings support.'
+            ),
           ]),
         ]),
         m('li.collection-item', [

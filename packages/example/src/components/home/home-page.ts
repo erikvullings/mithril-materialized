@@ -30,7 +30,10 @@ export const HomePage = () => ({
             m('li.collection-item', 'Built-in light / dark / auto theme system with CSS custom properties'),
             m('li.collection-item', 'Modular CSS — import only what you need'),
             m('li.collection-item', 'Enhanced DatePicker and TimePicker with i18n and range selection'),
-            m('li.collection-item', 'Extensive library: Timeline, Masonry, Wizard, Rating, ImageList, DataTable, and more'),
+            m(
+              'li.collection-item',
+              'Extensive library: Timeline, Masonry, Wizard, Rating, ImageList, DataTable, and more'
+            ),
           ]),
           m('h3', 'Theme System'),
           m('p', 'Built-in light and dark theme support with automatic system-preference detection:'),
@@ -39,10 +42,7 @@ export const HomePage = () => ({
               m('span.blue-text', 'ThemeSwitcher: '),
               'Full light / dark / auto switcher with persistence.',
             ]),
-            m('li.collection-item', [
-              m('span.blue-text', 'ThemeToggle: '),
-              'Compact toggle button for nav bars.',
-            ]),
+            m('li.collection-item', [m('span.blue-text', 'ThemeToggle: '), 'Compact toggle button for nav bars.']),
             m('li.collection-item', [
               m('span.blue-text', 'CSS Variables: '),
               'All colours use CSS custom properties for seamless theme transitions.',
