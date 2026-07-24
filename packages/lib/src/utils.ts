@@ -1,5 +1,6 @@
 // Utility functions for the library
 import m from 'mithril';
+import { HelperText, Label } from './label';
 import { SortSelected } from './select';
 import { InputOption } from '.';
 
@@ -73,6 +74,83 @@ export const sortOptions = <T extends string | number>(
  * @returns
  */
 export const padLeft = (n: string | number, width: number = 2, z: string = '0') => String(n).padStart(width, z);
+
+export const normalizeSelection = <T>(value?: T | T[]): T[] => {
+  if (value === undefined) {
+    return [];
+  }
+
+  return Array.isArray(value) ? value : [value];
+};
+
+export interface ControllableValueOptions<T> {
+  controlled: boolean;
+  disabled?: boolean;
+  controlledValue?: T;
+  defaultValue?: T;
+  internalValue?: T;
+  fallbackValue: T;
+}
+
+export const resolveControllableValue = <T>({
+  controlled,
+  disabled,
+  controlledValue,
+  defaultValue,
+  internalValue,
+  fallbackValue,
+}: ControllableValueOptions<T>): T => {
+  if (controlled) {
+    return controlledValue ?? fallbackValue;
+  }
+
+  if (disabled) {
+    return defaultValue ?? controlledValue ?? fallbackValue;
+  }
+
+  return internalValue ?? defaultValue ?? fallbackValue;
+};
+
+export interface FieldChromeOptions {
+  label?: string;
+  id?: string;
+  isMandatory?: boolean;
+  isActive?: boolean | string;
+  initialValue?: boolean;
+  helperText?: string;
+  dataError?: string;
+  dataSuccess?: string;
+}
+
+export const renderFieldChrome = ({
+  label,
+  id,
+  isMandatory,
+  isActive,
+  initialValue,
+  helperText,
+  dataError,
+  dataSuccess,
+}: FieldChromeOptions): m.Children[] => {
+  return [
+    label
+      ? m(Label, {
+          label,
+          id,
+          isMandatory,
+          isActive,
+          initialValue,
+        })
+      : undefined,
+    helperText || dataError || dataSuccess
+      ? m(HelperText, {
+          helperText,
+          dataError,
+          dataSuccess,
+        })
+      : undefined,
+  ].filter(Boolean) as m.Children[];
+};
 
 // Keep only essential dropdown positioning styles
 export const getDropdownStyles = (
@@ -258,6 +336,22 @@ export const releasePortalContainer = (id: string): void => {
 export const renderToPortal = (containerId: string, vnode: any, zIndex: number = 1004): void => {
   const container = getPortalContainer(containerId, zIndex);
   m.render(container, vnode);
+};
+
+export interface PortalSyncOptions {
+  containerId: string;
+  shouldRender: boolean;
+  vnode: m.Children | null;
+  zIndex?: number;
+}
+
+export const syncPortalContent = ({ containerId, shouldRender, vnode, zIndex = 1004 }: PortalSyncOptions): void => {
+  if (!shouldRender || vnode === null) {
+    clearPortal(containerId);
+    return;
+  }
+
+  renderToPortal(containerId, vnode, zIndex);
 };
 
 /**

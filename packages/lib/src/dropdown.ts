@@ -1,6 +1,6 @@
 import m, { Component, Attributes } from 'mithril';
 import { HelperText } from './label';
-import { uniqueId, getDropdownStyles } from './utils';
+import { uniqueId, getDropdownStyles, resolveControllableValue, syncPortalContent } from './utils';
 import { MaterialIcon } from './material-icon';
 
 export interface DropdownItem<T extends string | number> {
@@ -158,19 +158,6 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
   ) => {
     if (!state.isInsideModal) return;
 
-    // Clean up existing portal
-    const existingPortal = document.getElementById(`${state.id}-dropdown`);
-    if (existingPortal) {
-      existingPortal.remove();
-    }
-
-    if (!state.isOpen || !state.inputRef) return;
-
-    // Create portal element
-    const portalElement = document.createElement('div');
-    portalElement.id = `${state.id}-dropdown`;
-    document.body.appendChild(portalElement);
-
     // Create dropdown content
     const availableItems = items.filter((item) => !item.divider && !item.disabled);
     const dropdownContent = items.map((item) => {
@@ -232,8 +219,12 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       dropdownContent
     );
 
-    // Render to portal
-    m.render(portalElement, dropdownVnode);
+    syncPortalContent({
+      containerId: `${state.id}-dropdown`,
+      shouldRender: state.isOpen && !!state.inputRef,
+      vnode: dropdownVnode,
+      zIndex: 10000,
+    });
   };
 
   return {
@@ -259,10 +250,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       document.removeEventListener('click', closeDropdown);
 
       // Cleanup portal
-      const portalElement = document.getElementById(`${state.id}-dropdown`);
-      if (portalElement) {
-        portalElement.remove();
-      }
+      syncPortalContent({ containerId: `${state.id}-dropdown`, shouldRender: false, vnode: null });
     },
 
     view: ({ attrs }) => {
@@ -280,7 +268,14 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       } = attrs;
 
       const controlled = isControlled(attrs);
-      const currentCheckedId = controlled ? checkedId : state.internalCheckedId;
+      const currentCheckedId = resolveControllableValue<T | undefined>({
+        controlled,
+        disabled,
+        controlledValue: checkedId,
+        defaultValue: attrs.defaultCheckedId,
+        internalValue: state.internalCheckedId,
+        fallbackValue: undefined,
+      });
 
       const handleSelection = (value: T) => {
         // Update internal state for uncontrolled mode

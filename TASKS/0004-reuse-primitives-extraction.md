@@ -1,6 +1,6 @@
 # 0004 Reuse primitives extraction
 
-Status: open
+Status: done
 Priority: medium
 Owner: unassigned
 Agent: copilot
@@ -30,3 +30,4 @@ Reduce duplication by extracting shared primitives for controllable state, overl
 
 ## Agent Notes
 - Split from 0001 as Phase 3 implementation task.
+- 2026-07-24 copilot: extracted shared primitives into `packages/lib/src/utils.ts` for controllable-value resolution, portal sync, and form-field chrome rendering; wired them into `select.ts`, `dropdown.ts`, and `input.ts`. Verified with `/Users/erik.vullings/.nvs/default/bin/npm exec -- tsc --noEmit -p tsconfig.json`, `/Users/erik.vullings/.nvs/default/bin/npm test -- primitive-helpers.test.ts select.test.ts input.test.ts`, and the full package suite via `/Users/erik.vullings/.nvs/default/bin/npm test` (11 suites, 140 tests). No README/CLAUDE updates were needed because the refactor stayed internal.

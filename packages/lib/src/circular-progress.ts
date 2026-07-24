@@ -116,6 +116,14 @@ export const CircularProgress: FactoryComponent<CircularProgressAttrs> = () => {
 
       const isDeterminate = mode === 'determinate';
       const sizePixels = SIZE_MAP[size];
+      const styleValue =
+        typeof style === 'string'
+          ? `width:${sizePixels}px;height:${sizePixels}px;${style}`
+          : {
+              width: `${sizePixels}px`,
+              height: `${sizePixels}px`,
+              ...style,
+            };
       const { radius, circumference, strokeDashoffset, percentage } = isDeterminate
         ? calculateStrokeProperties(sizePixels, value, max)
         : { radius: 0, circumference: 0, strokeDashoffset: 0, percentage: 0 };
@@ -152,11 +160,7 @@ export const CircularProgress: FactoryComponent<CircularProgressAttrs> = () => {
         {
           ...params,
           className: classNames,
-          style: {
-            width: `${sizePixels}px`,
-            height: `${sizePixels}px`,
-            ...style,
-          },
+          style: styleValue,
           id,
           role: 'progressbar',
           'aria-label': ariaLabel || (isDeterminate ? `Progress: ${Math.round(percentage)}%` : 'Loading'),

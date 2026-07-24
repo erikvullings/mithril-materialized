@@ -1,10 +1,10 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
 import { InputAttrs } from './input-options';
-import { Label, HelperText } from './label';
 import { MaterialIcon } from './material-icon';
 import { InputType } from './types';
 import { DoubleRangeSlider, SingleRangeSlider } from './range-slider';
+import { renderFieldChrome } from './utils';
 
 const isReadonly = <T>(attrs: InputAttrs<T>): boolean => {
   const legacyReadonly = (attrs as InputAttrs<T> & { readonly?: boolean }).readonly;
@@ -288,14 +288,12 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
                 }
               : undefined,
           }),
-          m(Label, {
+          ...renderFieldChrome({
             label,
             id,
             isMandatory,
             isActive: currentValue || placeholder || state.active,
             initialValue: currentValue !== '',
-          }),
-          m(HelperText, {
             helperText,
             dataError: state.hasInteracted && attrs.dataError ? attrs.dataError : undefined,
             dataSuccess: state.hasInteracted && attrs.dataSuccess ? attrs.dataSuccess : undefined,
@@ -686,14 +684,12 @@ const InputField =
                 },
               })
             : undefined,
-          m(Label, {
+          ...renderFieldChrome({
             label,
             id,
             isMandatory,
             isActive,
             initialValue: value !== undefined && value !== '',
-          }),
-          m(HelperText, {
             helperText,
             dataError: state.hasInteracted && !state.isValid ? dataError : undefined,
             dataSuccess: state.hasInteracted && state.isValid ? dataSuccess : undefined,

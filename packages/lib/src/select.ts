@@ -1,7 +1,14 @@
 import m, { Attributes, Component } from 'mithril';
-import { Label, HelperText } from './label';
 import { InputOption } from './option';
-import { getDropdownStyles, uniqueId, sortOptions } from './utils';
+import {
+  getDropdownStyles,
+  uniqueId,
+  sortOptions,
+  normalizeSelection,
+  resolveControllableValue,
+  syncPortalContent,
+  renderFieldChrome,
+} from './utils';
 import { MaterialIcon } from './material-icon';
 import { ComponentStyle } from './types';
 
@@ -328,19 +335,6 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
   const updatePortalDropdown = (attrs: SelectAttrs<T>, selectedIds: T[], multiple: boolean, placeholder: string) => {
     if (!state.isInsideModal) return;
 
-    // Clean up existing portal
-    const existingPortal = document.getElementById(state.dropdownId);
-    if (existingPortal) {
-      existingPortal.remove();
-    }
-
-    if (!state.isOpen || !state.inputRef) return;
-
-    // Create portal element
-    const portalElement = document.createElement('div');
-    portalElement.id = state.dropdownId;
-    document.body.appendChild(portalElement);
-
     // Create dropdown with proper positioning
     const dropdownVnode = m(
       'ul.dropdown-content.select-dropdown',
@@ -360,8 +354,12 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       renderDropdownContent(attrs, selectedIds, multiple, placeholder)
     );
 
-    // Render to portal
-    m.render(portalElement, dropdownVnode);
+    syncPortalContent({
+      containerId: state.dropdownId,
+      shouldRender: state.isOpen && !!state.inputRef,
+      vnode: dropdownVnode,
+      zIndex: 10000,
+    });
   };
 
   return {
@@ -405,10 +403,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
 
       // Cleanup portaled dropdown if it exists
       if (state.isInsideModal && state.dropdownRef) {
-        const portalElement = document.getElementById(state.dropdownId);
-        if (portalElement && portalElement.parentNode) {
-          portalElement.parentNode.removeChild(portalElement);
-        }
+        syncPortalContent({ containerId: state.dropdownId, shouldRender: false, vnode: null });
       }
     },
 
@@ -430,18 +425,14 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       } = attrs;
       state.isMultiple = multiple;
       // Get selected IDs from props or internal state
-      let selectedIds: T[];
-      if (controlled) {
-        selectedIds =
-          attrs.checkedId !== undefined ? (Array.isArray(attrs.checkedId) ? attrs.checkedId : [attrs.checkedId]) : [];
-      } else if (disabled) {
-        // Non-interactive components: prefer defaultCheckedId, fallback to checkedId
-        const fallbackId = attrs.defaultCheckedId ?? attrs.checkedId;
-        selectedIds = fallbackId !== undefined ? (Array.isArray(fallbackId) ? fallbackId : [fallbackId]) : [];
-      } else {
-        // Interactive uncontrolled: use internal state
-        selectedIds = state.internalSelectedIds;
-      }
+      const selectedIds = resolveControllableValue<T[]>({
+        controlled,
+        disabled,
+        controlledValue: normalizeSelection(attrs.checkedId),
+        defaultValue: normalizeSelection(attrs.defaultCheckedId),
+        internalValue: state.internalSelectedIds,
+        fallbackValue: [],
+      });
 
       const finalClassName = newRow ? `${className} clear` : className;
       const selectedOptionsUnsorted = options.filter((opt) => isSelected(opt.id, selectedIds));
@@ -517,15 +508,12 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
           ),
 
           // Label
-          label &&
-            m(Label, {
-              id: state.id,
-              label,
-              isMandatory,
-            }),
-
-          // Helper text
-          helperText && m(HelperText, { helperText }),
+          ...renderFieldChrome({
+            label,
+            id: state.id,
+            isMandatory,
+            helperText,
+          }),
         ]
       );
     },
