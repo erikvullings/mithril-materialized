@@ -1,3 +1,10 @@
+## [3.17.4](https://github.com/erikvullings/mithril-materialized/compare/v3.17.3...v3.17.4) (2026-07-24)
+
+
+### Bug Fixes
+
+* **switch:** align layout in form rows ([f90017f](https://github.com/erikvullings/mithril-materialized/commit/f90017f01cca6405966097151d3b2e1e652bdc61))
+
 ## [3.17.3](https://github.com/erikvullings/mithril-materialized/compare/v3.17.2...v3.17.3) (2026-07-24)
 
 
