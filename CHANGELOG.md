@@ -1,3 +1,10 @@
+## [3.17.2](https://github.com/erikvullings/mithril-materialized/compare/v3.17.1...v3.17.2) (2026-07-24)
+
+
+### Bug Fixes
+
+* **input:** refine number controls and validation ([4dadc86](https://github.com/erikvullings/mithril-materialized/commit/4dadc86013d79dbe6627e9d2743ca93d7a910289))
+
 ## [3.17.1](https://github.com/erikvullings/mithril-materialized/compare/v3.17.0...v3.17.1) (2026-07-24)
 
 
