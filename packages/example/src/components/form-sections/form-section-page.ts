@@ -26,53 +26,69 @@ export const FormSectionPage = () => {
 
       return m('.col.s12', [
         m('h2.header', 'Form Sections'),
-        m('p', 'Use Fieldset to semantically group related controls and FormSection to organise a larger form area with a validation summary.'),
-        m('form', {
-          onsubmit: (event: SubmitEvent) => {
-            event.preventDefault();
-            state.submitted = true;
-          },
-        }, [
-          m(FormSection, {
-            title: 'Profile details',
-            description: 'These details appear on your account.',
-            errors: validationErrors,
-          }, [
-            m('.row', [
-              m(TextInput, {
-                id: 'profile-name',
-                label: 'Name',
-                value: state.name,
-                required: true,
-                dataError: nameError?.message as string | undefined,
-                oninput: (value) => (state.name = value),
-              }),
-              m(TextInput, {
-                id: 'profile-email',
-                label: 'Email address',
-                type: 'email',
-                value: state.email,
-                required: true,
-                dataError: emailError?.message as string | undefined,
-                oninput: (value) => (state.email = value),
-              }),
-            ]),
-            m(Fieldset, {
-              legend: 'Contact preferences',
-              description: 'Choose how we may send account updates.',
-              required: true,
+        m(
+          'p',
+          'Use Fieldset to semantically group related controls and FormSection to organise a larger form area with a validation summary.'
+        ),
+        m(
+          'form',
+          {
+            onsubmit: (event: SubmitEvent) => {
+              event.preventDefault();
+              state.submitted = true;
             },
-              m('p', m('label', [
-                m('input[type=checkbox]', {
-                  checked: state.emailUpdates,
-                  onchange: (event: Event) => (state.emailUpdates = (event.target as HTMLInputElement).checked),
-                }),
-                m('span', ' Email updates'),
-              ]))
+          },
+          [
+            m(
+              FormSection,
+              {
+                title: 'Profile details',
+                description: 'These details appear on your account.',
+                errors: validationErrors,
+              },
+              [
+                m('.row', [
+                  m(TextInput, {
+                    id: 'profile-name',
+                    label: 'Name',
+                    value: state.name,
+                    required: true,
+                    dataError: nameError?.message as string | undefined,
+                    oninput: (value) => (state.name = value),
+                  }),
+                  m(TextInput, {
+                    id: 'profile-email',
+                    label: 'Email address',
+                    type: 'email',
+                    value: state.email,
+                    required: true,
+                    dataError: emailError?.message as string | undefined,
+                    oninput: (value) => (state.email = value),
+                  }),
+                ]),
+                m(
+                  Fieldset,
+                  {
+                    legend: 'Contact preferences',
+                    description: 'Choose how we may send account updates.',
+                    required: true,
+                  },
+                  m(
+                    'p',
+                    m('label', [
+                      m('input[type=checkbox]', {
+                        checked: state.emailUpdates,
+                        onchange: (event: Event) => (state.emailUpdates = (event.target as HTMLInputElement).checked),
+                      }),
+                      m('span', ' Email updates'),
+                    ])
+                  )
+                ),
+              ]
             ),
-          ]),
-          m(Button, { label: 'Validate form', variant: 'submit' }),
-        ]),
+            m(Button, { label: 'Validate form', variant: 'submit' }),
+          ]
+        ),
         m('h3.header', 'TypeScript'),
         m(HighlightedCodeBlock, {
           language: 'typescript',

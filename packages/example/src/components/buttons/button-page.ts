@@ -1,4 +1,4 @@
-import { HighlightedCodeBlock } from "../highlighted-code-block";
+import { HighlightedCodeBlock } from '../highlighted-code-block';
 import {
   RoundIconButton,
   IconButton,
