@@ -1,6 +1,6 @@
 import m, { FactoryComponent, Vnode } from 'mithril';
-import { dashboardSvc, searchIndex, SearchEntry } from '../services/dashboard-service';
-import { DashboardGroup } from '../models/dashboard';
+import { dashboardSvc, searchIndex, SearchEntry } from '../services/dashboard-service.js';
+import { DashboardGroup } from '../models/dashboard.js';
 import { Sidenav, TextInput, ThemeToggle } from 'mithril-materialized';
 import logo from '../assets/favicon-32x32.png';
 import './layout.css';
