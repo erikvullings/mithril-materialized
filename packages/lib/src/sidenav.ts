@@ -193,8 +193,7 @@ const SidenavHeaderFooterItem: FactoryComponent<
 
       const content = isRightAligned
         ? [
-            _isExpanded &&
-              m('span.sidenav-item-text.mm-layout-grow.mm-layout-mr-8.left-align', text),
+            _isExpanded && m('span.sidenav-item-text.mm-layout-grow.mm-layout-mr-8.left-align', text),
             renderIcon(icon, { 'min-width': '24px', width: '24px' }),
           ]
         : [
@@ -387,8 +386,7 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
               m(
                 'li.sidenav-hamburger-item',
                 {
-                  class:
-                    `mm-layout-row mm-layout-row--center ${position === 'right' ? 'mm-layout-row--justify-end' : 'mm-layout-row--justify-start'}`,
+                  class: `mm-layout-row mm-layout-row--center ${position === 'right' ? 'mm-layout-row--justify-end' : 'mm-layout-row--justify-start'}`,
                   style: {
                     padding: '12px 16px',
                     cursor: 'pointer',
@@ -415,8 +413,7 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
               m(
                 'li.sidenav-expand-toggle',
                 {
-                  class:
-                    `mm-layout-row mm-layout-row--center ${position === 'right' ? 'mm-layout-row--justify-end' : 'mm-layout-row--justify-start'}`,
+                  class: `mm-layout-row mm-layout-row--center ${position === 'right' ? 'mm-layout-row--justify-end' : 'mm-layout-row--justify-start'}`,
                   style: {
                     padding: '12px 16px',
                     cursor: 'pointer',
@@ -628,11 +625,7 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
       const content = isRightAligned
         ? [
             // Right-aligned: text on left, icon on right
-            isExpanded &&
-              m(
-                'span.sidenav-item-text.mm-layout-grow.mm-layout-mr-8.left-align',
-                text || children
-              ),
+            isExpanded && m('span.sidenav-item-text.mm-layout-grow.mm-layout-mr-8.left-align', text || children),
             renderIcon(icon, { 'min-width': '24px', width: '24px' }),
           ]
         : [
