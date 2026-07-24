@@ -28,6 +28,17 @@ describe('Safety and readOnly behavior', () => {
     expect(getByDisplayValue('preferred area')).toBeInTheDocument();
   });
 
+  it('keeps legacy readonly support with the same non-interactive value precedence', () => {
+    const { getByDisplayValue } = render(TextInput, {
+      label: 'Legacy read only field',
+      readonly: true,
+      value: 'fallback value',
+      defaultValue: 'preferred value',
+    });
+
+    expect(getByDisplayValue('preferred value')).toBeInTheDocument();
+  });
+
   it('renders autocomplete suggestions with regex-like input safely', () => {
     const { getByText } = render(Autocomplete, {
       label: 'Autocomplete',

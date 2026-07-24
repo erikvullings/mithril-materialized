@@ -1,6 +1,6 @@
 # 0003 API surface and consistency
 
-Status: in_progress
+Status: done
 Priority: high
 Owner: unassigned
 Agent: copilot
@@ -50,3 +50,4 @@ Improve public API consistency and discoverability with minimal breakage.
   - `packages/lib/src/rating.ts`
   - `packages/lib/src/treeview.ts`
   - `packages/lib/src/sidenav.ts` (renderIcon helper style type)
+- 2026-07-24 codex: completion verified by package-root `ToggleButton` regression coverage, existing button semantics coverage, the full library test suite, and `tsc --noEmit`. No prop renames were made, so compatibility is preserved without a migration step.

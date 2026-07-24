@@ -333,8 +333,9 @@ export const releasePortalContainer = (id: string): void => {
  * @param vnode - Mithril vnode to render
  * @param zIndex - Z-index for portal container (default: 1004)
  */
-export const renderToPortal = (containerId: string, vnode: any, zIndex: number = 1004): void => {
-  const container = getPortalContainer(containerId, zIndex);
+export const renderToPortal = (containerId: string, vnode: m.Children, zIndex: number = 1004): void => {
+  const existingContainer = portalContainers.get(containerId);
+  const container = existingContainer ? existingContainer.element : getPortalContainer(containerId, zIndex);
   m.render(container, vnode);
 };
 

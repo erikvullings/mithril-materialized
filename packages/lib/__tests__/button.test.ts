@@ -1,4 +1,5 @@
 import { Button, FlatButton, RoundIconButton, SubmitButton } from '../src/button';
+import { ToggleButton } from '../src';
 import { render, fireEvent, cleanup } from './test-utils';
 
 describe('Button Components', () => {
@@ -104,6 +105,14 @@ describe('Button Components', () => {
       const button = container.querySelector('button[type="submit"]');
       expect(button).toBeInTheDocument();
       expect(button).toHaveClass('btn');
+    });
+  });
+
+  describe('package root exports', () => {
+    it('exports ToggleButton from the package root', () => {
+      const { container } = render(ToggleButton, { value: 'bold', label: 'Bold' });
+
+      expect(container.querySelector('button.toggle-button')).toHaveTextContent('Bold');
     });
   });
 });

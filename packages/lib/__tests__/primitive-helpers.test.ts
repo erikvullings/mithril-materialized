@@ -73,4 +73,31 @@ describe('Primitive helpers', () => {
 
     expect(document.getElementById('primitive-portal')).toBeNull();
   });
+
+  it('updates portal content without retaining the container after close', () => {
+    syncPortalContent({
+      containerId: 'updated-portal',
+      shouldRender: true,
+      vnode: m('div.portal-content', 'First render'),
+      zIndex: 1234,
+    });
+
+    syncPortalContent({
+      containerId: 'updated-portal',
+      shouldRender: true,
+      vnode: m('div.portal-content', 'Updated render'),
+      zIndex: 1234,
+    });
+
+    expect(document.querySelector('#updated-portal .portal-content')).toHaveTextContent('Updated render');
+
+    syncPortalContent({
+      containerId: 'updated-portal',
+      shouldRender: false,
+      vnode: null,
+      zIndex: 1234,
+    });
+
+    expect(document.getElementById('updated-portal')).toBeNull();
+  });
 });

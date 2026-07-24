@@ -37,6 +37,8 @@ export interface InputAttrs<T = string> extends Attributes {
    * and copy the text from it.
    */
   readOnly?: boolean;
+  /** @deprecated Use readOnly instead. Kept for backward compatibility. */
+  readonly?: boolean;
   /** When true, add the autofocus attribute to the input field. */
   autofocus?: (() => boolean) | boolean;
   /** Key down event */

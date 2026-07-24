@@ -58,11 +58,12 @@ Components marked with an * are not included in the original materialize-css lib
   - TimePicker (with inline mode and switchable AM/PM/24h)*
 - [Selections](https://erikvullings.github.io/mithril-materialized/#!/selections)
   - Select
-  - SearchSelect*, a searchable select dropdown
+  - SearchSelect*, a searchable select dropdown (supports async remote loading via `loadOptions`)
   - Options
   - RadioButtons (HTML labels/descriptions require explicit `allowHtml: true`)
   - Switch
   - Dropdown
+  - ToggleButton* (single toggle button component)
 - [Collections](https://erikvullings.github.io/mithril-materialized/#!/collections)
   - Basic, Link and Avatar Collections
   - Collapsible or accordion
@@ -411,6 +412,24 @@ See our [contributing guide](CONTRIBUTING.md) for detailed information.
 - Theme switching: <10ms for full page
 - File upload processing: Real-time without blocking
 - TextArea auto-resize: <1ms per keystroke
+
+### Async SearchSelect
+
+Use `loadOptions(query)` to retrieve options remotely. The component displays loading, empty, and error states; `i18n` customizes their messages.
+
+```typescript
+m(SearchSelect<number>, {
+  label: 'Remote search',
+  checkedId: selectedIds,
+  options: [],
+  loadOptions: (query) => fetchOptions(query),
+  onchange: (ids) => {
+    selectedIds = ids;
+  },
+});
+```
+
+`SearchSelect` uses combobox/listbox ARIA roles and supports `ArrowDown`, `ArrowUp`, `Enter`/`Space`, and `Escape`.
 
 ## Build instructions
 
