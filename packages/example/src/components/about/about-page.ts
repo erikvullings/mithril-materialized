@@ -16,10 +16,9 @@ export const AboutPage = () => ({
       ]),
       m('ul.collection', [
         m('li.collection-item', [
-          m('h6', 'v3.18.0 (2026-07-24)'),
+          m('h6', 'v3.17.1 (2026-07-24)'),
           m('ul.browser-default', [
             m('li', 'Fixed Select typings and migrated its regression tests to Vitest, restoring workspace type checking.'),
-            m('li', 'Polished the example pages with clearer form-section, selection, and button presentation.'),
           ]),
         ]),
         m('li.collection-item', [
