@@ -4,28 +4,34 @@ import { MaterialIcon } from './material-icon';
 import { SelectAttrs } from './select';
 import { InputOption } from './option';
 
-// Proper components to avoid anonymous closures
-const SelectedChip = <T extends string | number>(): Component<{
+const SelectedChip = <T extends string | number>({
+  option,
+  onRemove,
+}: {
   option: InputOption<T>;
   onRemove: (id: T) => void;
-}> => {
-  return {
-    view: ({ attrs: { option, onRemove } }) =>
-      m('.chip', [
-        option.label || option.id.toString(),
-        m(MaterialIcon, {
-          name: 'close',
-          className: 'close',
-          onclick: (e: Event) => {
-            e.stopPropagation();
-            onRemove(option.id);
-          },
-        }),
-      ]),
-  };
-};
+}) =>
+  m('.chip', [
+    option.label || option.id.toString(),
+    m(MaterialIcon, {
+      name: 'close',
+      className: 'close',
+      onclick: (e: Event) => {
+        e.stopPropagation();
+        onRemove(option.id);
+      },
+    }),
+  ]);
 
-const DropdownOption = <T extends string | number>(): Component<{
+const DropdownOption = <T extends string | number>({
+  option,
+  index,
+  selectedIds,
+  isFocused,
+  onToggle,
+  onMouseOver,
+  showCheckbox,
+}: {
   option: InputOption<T>;
   index: number;
   selectedIds: T[];
@@ -33,52 +39,46 @@ const DropdownOption = <T extends string | number>(): Component<{
   onToggle: (option: InputOption<T>) => void;
   onMouseOver: (index: number) => void;
   showCheckbox: boolean;
-}> => {
-  return {
-    view: ({ attrs: { option, index, selectedIds, isFocused, onToggle, onMouseOver, showCheckbox } }) => {
-      const checkboxId = `search-select-option-${option.id}`;
-      const optionLabel = option.label || option.id.toString();
+}) => {
+  const optionLabel = option.label || option.id.toString();
 
-      return m(
-        'li',
-        {
-          key: option.id,
-          onclick: (e: Event) => {
-            e.preventDefault();
-            e.stopPropagation();
-            onToggle(option);
-          },
-          class: `${option.disabled ? 'disabled' : ''} ${isFocused ? 'active' : ''}`.trim(),
-          onmouseover: () => {
-            if (!option.disabled) {
-              onMouseOver(index);
-            }
-          },
-        },
-        m(
-          'label',
-          {
-            for: checkboxId,
-            class: 'search-select-option-label',
-            onclick: (e: Event) => {
-              // The row already toggles the option. Prevent the label from
-              // dispatching a second click to its checkbox.
-              e.preventDefault();
-            },
-          },
-          [
-            showCheckbox &&
-              m('input', {
-                type: 'checkbox',
-                id: checkboxId,
-                checked: selectedIds.includes(option.id),
-              }),
-            m('span', optionLabel),
-          ]
-        )
-      );
+  return m(
+    'li',
+    {
+      class: `${option.disabled ? 'disabled' : ''} ${isFocused ? 'active' : ''}`.trim(),
+      onmouseover: () => {
+        if (!option.disabled) {
+          onMouseOver(index);
+        }
+      },
     },
-  };
+    m(
+      'label',
+      {
+        class: 'search-select-option-label',
+        onclick: (e: Event) => {
+          // A single-select row has no native checkbox to emit change.
+          if (!showCheckbox) {
+            e.preventDefault();
+            onToggle(option);
+          }
+        },
+      },
+      [
+        showCheckbox &&
+          m('input', {
+            type: 'checkbox',
+            checked: selectedIds.includes(option.id),
+            disabled: option.disabled,
+            onchange: (e: Event) => {
+              e.stopPropagation();
+              onToggle(option);
+            },
+          }),
+        m('span', optionLabel),
+      ]
+    )
+  );
 };
 
 // Internationalization interface for SearchSelect
@@ -435,10 +435,10 @@ export const SearchSelect = <T extends string | number>(
 
             // Selected Options (chips)
             ...selectedOptions.map((option) =>
-              m(SelectedChip<T>(), {
-                option,
+              SelectedChip({
+                option: option as InputOption<T>,
                 onRemove: (id: T) => removeOption(id, attrs),
-              } as { option: InputOption<T>; onRemove: (id: T) => void })
+              })
             ),
 
             // Placeholder when no options selected
@@ -590,7 +590,7 @@ export const SearchSelect = <T extends string | number>(
 
               // List of filtered options
               ...displayedOptions.map((option, index) =>
-                m(DropdownOption<T>(), {
+                DropdownOption({
                   option,
                   index,
                   selectedIds,
