@@ -20,6 +20,7 @@ import { RatingPage } from '../components/rating-page';
 import { ProgressPage } from '../components/progress-page';
 import { CssPage } from '../components/css/css-page';
 import { FormSectionPage } from '../components/form-sections/form-section-page';
+import { FaqPage } from '../components/faq/faq-page';
 
 export enum Dashboards {
   HOME = 'HOME',
@@ -52,6 +53,7 @@ export enum Dashboards {
   CSS_TRANSITIONS = 'CSS_TRANSITIONS',
   CSS_TYPOGRAPHY = 'CSS_TYPOGRAPHY',
   CSS_THEMING = 'CSS_THEMING',
+  FAQ = 'FAQ',
 }
 
 export interface SearchEntry {
@@ -65,6 +67,8 @@ export const searchIndex: SearchEntry[] = [
   // General
   { title: 'Home', page: 'General', route: '/home' },
   { title: 'About', page: 'General', route: '/about' },
+  { title: 'FAQ', page: 'General', route: '/faq' },
+  { title: 'Grid layout', page: 'FAQ', route: '/faq', hash: 'grid-columns' },
   // Inputs
   { title: 'Inputs', page: 'Forms', route: '/inputs' },
   { title: 'Form Sections', page: 'Forms', route: '/form-sections' },
@@ -209,6 +213,15 @@ export const dashboardSvc: DashboardService = new DashboardService(Layout, [
     visible: true,
     group: 'general',
     component: AboutPage,
+  },
+  {
+    id: Dashboards.FAQ,
+    title: 'FAQ',
+    icon: 'help',
+    route: '/faq',
+    visible: true,
+    group: 'general',
+    component: FaqPage,
   },
   {
     id: Dashboards.BUTTONS,
