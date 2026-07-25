@@ -207,6 +207,9 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
         style: {
           ...getPortalStyles(state.inputRef),
           ...(maxHeight ? { maxHeight } : {}),
+          // The full-screen portal container has pointer-events disabled so it
+          // does not block the modal. Re-enable them for the actual menu.
+          pointerEvents: 'auto',
         },
         oncreate: ({ dom }) => {
           state.dropdownRef = dom as HTMLElement;

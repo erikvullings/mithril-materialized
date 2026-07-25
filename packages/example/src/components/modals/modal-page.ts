@@ -121,7 +121,7 @@ export const ModalPage = () => {
               [
                 m(
                   'p',
-                  'The Select and Dropdown components now automatically render their dropdowns outside the modal using a portal system. This ensures the dropdown appears above the modal with its own scrolling when needed. No additional configuration required!'
+                  'The Select and Dropdown components automatically render their dropdowns outside the modal using a portal system. This keeps the list above the modal, scrollable when needed, and fully mouse-interactive. No additional configuration required!'
                 ),
                 m(Select, {
                   iconName: 'person',
@@ -206,7 +206,7 @@ export const ModalPage = () => {
                     description: m(
                       '.row', // So the content has enough vertical space
                       [
-                        m('p', 'The Select and Dropdown components now automatically render their dropdowns outside the modal using a portal system. This ensures the dropdown appears above the modal with its own scrolling when needed. No additional configuration required!'),
+                        m('p', 'The Select and Dropdown components automatically render their dropdowns outside the modal using a portal system. This keeps the list above the modal, scrollable when needed, and fully mouse-interactive. No additional configuration required!'),
                         m(Select, {
                           iconName: 'person',
                           label: 'What is your favorite hobby?',

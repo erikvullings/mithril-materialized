@@ -100,4 +100,17 @@ describe('Primitive helpers', () => {
 
     expect(document.getElementById('updated-portal')).toBeNull();
   });
+
+  it('allows portaled content to opt into pointer events', () => {
+    syncPortalContent({
+      containerId: 'interactive-portal',
+      shouldRender: true,
+      vnode: m('ul.dropdown-content', { style: { pointerEvents: 'auto' } }, 'Option'),
+    });
+
+    const container = document.getElementById('interactive-portal');
+    const dropdown = container?.querySelector('.dropdown-content') as HTMLElement;
+    expect(container).toHaveStyle({ pointerEvents: 'none' });
+    expect(dropdown).toHaveStyle({ pointerEvents: 'auto' });
+  });
 });
