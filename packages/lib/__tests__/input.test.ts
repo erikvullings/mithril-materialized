@@ -122,6 +122,15 @@ describe('Input Components', () => {
       fireEvent.blur(input); // onchange is triggered on blur
       expect(mockChange).toHaveBeenCalledWith(42);
     });
+
+    it('hides increment and decrement controls when hideSpinners is true', () => {
+      const { container } = render(NumberInput, {
+        label: 'Quantity',
+        hideSpinners: true,
+      });
+
+      expect(container.querySelector('.number-input-controls')).toBeNull();
+    });
   });
 
   describe('EmailInput', () => {

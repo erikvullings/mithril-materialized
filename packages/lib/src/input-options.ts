@@ -59,6 +59,8 @@ export interface InputAttrs<T = string> extends Attributes {
   helperText?: string;
   /** Show a clear button (small 'x') to clear the input value. Only valid for TextInput. */
   canClear?: boolean;
+  /** Hide the increment and decrement controls on a NumberInput. */
+  hideSpinners?: boolean;
   /**
    * When returning true or an empty string, clear the custom validity (= valid).
    * When returning false, set the custom validity message to a default string string.

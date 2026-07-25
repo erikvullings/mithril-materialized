@@ -1,4 +1,4 @@
-import { HighlightedCodeBlock } from "../highlighted-code-block";
+import { HighlightedCodeBlock } from '../highlighted-code-block';
 import {
   ColorInput,
   NumberInput,
@@ -718,6 +718,7 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
             min: 1,
             max: 120,
             step: 1, // Default value is step increments of 1
+            // hideSpinners: true,
             label: 'What is your age?',
             dataSuccess: 'You look much younger ;-)',
             dataError: 'Error: Age must be between 1 and 120.',

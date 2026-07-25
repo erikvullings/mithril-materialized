@@ -435,6 +435,7 @@ const InputField =
           style,
           validate,
           canClear,
+          hideSpinners,
           ...params
         } = attrs;
 
@@ -690,7 +691,7 @@ const InputField =
               }
             },
           }),
-          type === 'number' && !isNonInteractive
+          type === 'number' && !isNonInteractive && !hideSpinners
             ? m('.number-input-controls', [
                 m(
                   'button.number-input-control.number-input-control-up[type=button]',
