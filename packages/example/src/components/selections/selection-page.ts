@@ -338,7 +338,7 @@ export const SelectionPage = () => {
           })`,
         }),
 
-        m('h3.header', 'Options'),
+        m('h3.header[id=options]', 'Options'),
         m(
           '.row',
           m(Options<string>, {

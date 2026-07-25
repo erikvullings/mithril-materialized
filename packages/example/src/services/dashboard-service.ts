@@ -68,6 +68,8 @@ export const searchIndex: SearchEntry[] = [
   // Inputs
   { title: 'Inputs', page: 'Forms', route: '/inputs' },
   { title: 'Form Sections', page: 'Forms', route: '/form-sections' },
+  { title: 'FormSection', page: 'Form Sections', route: '/form-sections' },
+  { title: 'Fieldset', page: 'Form Sections', route: '/form-sections' },
   { title: 'TextInput', page: 'Inputs', route: '/inputs', hash: 'textinput' },
   { title: 'Autocomplete', page: 'Inputs', route: '/inputs', hash: 'autocomplete' },
   { title: 'SearchSelect', page: 'Inputs', route: '/inputs', hash: 'searchselect' },
@@ -78,6 +80,8 @@ export const searchIndex: SearchEntry[] = [
   { title: 'PasswordInput', page: 'Inputs', route: '/inputs', hash: 'passwordinput' },
   { title: 'FileInput', page: 'Inputs', route: '/inputs', hash: 'fileinput' },
   { title: 'RangeInput', page: 'Inputs', route: '/inputs', hash: 'rangeinput' },
+  { title: 'SingleRangeSlider', page: 'Inputs', route: '/inputs' },
+  { title: 'DoubleRangeSlider', page: 'Inputs', route: '/inputs' },
   { title: 'Chips', page: 'Inputs', route: '/inputs', hash: 'chips' },
   { title: 'ColorInput', page: 'Inputs', route: '/inputs', hash: 'colorinput' },
   // Pickers
@@ -85,6 +89,8 @@ export const searchIndex: SearchEntry[] = [
   { title: 'DatePicker', page: 'Pickers', route: '/pickers', hash: 'datepicker' },
   { title: 'Date Range Picker', page: 'Pickers', route: '/pickers', hash: 'daterangepicker' },
   { title: 'TimePicker', page: 'Pickers', route: '/pickers', hash: 'timepicker' },
+  { title: 'TimeRangePicker', page: 'Pickers', route: '/pickers', hash: 'timerangepicker' },
+  { title: 'DigitalClock', page: 'Pickers', route: '/pickers', hash: 'digitalclock' },
   { title: 'AnalogClock', page: 'Pickers', route: '/pickers', hash: 'analogclock' },
   // Selections
   { title: 'Selections', page: 'Forms', route: '/selections' },
@@ -93,6 +99,7 @@ export const searchIndex: SearchEntry[] = [
   { title: 'LikertScale', page: 'Selections', route: '/selections', hash: 'likert' },
   { title: 'Switch', page: 'Selections', route: '/selections', hash: 'switch' },
   { title: 'Dropdown', page: 'Selections', route: '/selections', hash: 'dropdown' },
+  { title: 'Options', page: 'Selections', route: '/selections', hash: 'options' },
   // Buttons
   { title: 'Buttons', page: 'Forms', route: '/buttons' },
   { title: 'Button (FAB)', page: 'Buttons', route: '/buttons', hash: 'fab' },
@@ -105,10 +112,13 @@ export const searchIndex: SearchEntry[] = [
   { title: 'ConfirmButton', page: 'Buttons', route: '/buttons', hash: 'confirmbutton' },
   // Collections
   { title: 'Collections', page: 'Components', route: '/collections' },
+  { title: 'Collection', page: 'Collections', route: '/collections' },
+  { title: 'CollectionItem', page: 'Collections', route: '/collections' },
   { title: 'Collapsible', page: 'Collections', route: '/collections', hash: 'collapsible' },
   // Modals
   { title: 'Modals', page: 'Components', route: '/modals' },
   { title: 'Modal', page: 'Modals', route: '/modals', hash: 'modal' },
+  { title: 'ModalPanel', page: 'Modals', route: '/modals', hash: 'modal' },
   // Navigation
   { title: 'Navigation', page: 'Components', route: '/navigation' },
   { title: 'Breadcrumb', page: 'Navigation', route: '/navigation', hash: 'breadcrumb' },
@@ -125,13 +135,18 @@ export const searchIndex: SearchEntry[] = [
   { title: 'Tabs', page: 'Misc', route: '/misc', hash: 'tabs' },
   { title: 'Carousel', page: 'Misc', route: '/misc', hash: 'carousel' },
   { title: 'Pagination', page: 'Misc', route: '/misc', hash: 'pagination' },
+  { title: 'PaginationControls', page: 'Misc', route: '/misc', hash: 'pagination' },
   { title: 'Parallax', page: 'Misc', route: '/misc', hash: 'parallax' },
+  { title: 'MaterialBox', page: 'Misc', route: '/misc', hash: 'materialbox' },
+  { title: 'Pushpin', page: 'Misc', route: '/misc', hash: 'pushpin' },
   // Display
   { title: 'Timeline', page: 'Display', route: '/timeline' },
   { title: 'Masonry', page: 'Display', route: '/masonry' },
-  { title: 'Image List', page: 'Display', route: '/image-list' },
+  { title: 'ImageList', page: 'Display', route: '/image-list' },
   { title: 'Rating', page: 'Display', route: '/rating' },
   { title: 'Progress', page: 'Display', route: '/progress' },
+  { title: 'CircularProgress', page: 'Progress', route: '/progress' },
+  { title: 'LinearProgress', page: 'Progress', route: '/progress' },
   // Styling
   { title: 'Theme', page: 'Styling', route: '/theme' },
   { title: 'ThemeSwitcher', page: 'Theme', route: '/theme', hash: 'themeswitcher' },

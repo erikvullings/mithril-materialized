@@ -599,7 +599,7 @@ m(TimePicker, {
         }),
 
         // Digital Clock Mode Examples
-        m('h3.header', 'Digital Clock Mode - New!'),
+        m('h3.header[id=digitalclock]', 'Digital Clock Mode - New!'),
         m(
           'p',
           'The TimePicker now supports a digital clock mode with scrollable columns, similar to mobile time pickers.'
@@ -752,7 +752,7 @@ m(TimePicker, {
         }),
 
         // Time Range Picker Examples
-        m('h3.header', 'Time Range Picker - New!'),
+        m('h3.header[id=timerangepicker]', 'Time Range Picker - New!'),
         m('p', 'Select a time range with start and end times. Supports both analog and digital modes.'),
 
         m('h4', 'Basic Time Range Picker'),

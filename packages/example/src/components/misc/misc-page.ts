@@ -568,7 +568,7 @@ initTooltips('.my-tooltips', {
 });`,
         }),
 
-        m('h3.header', 'Pushpin'),
+        m('h3.header[id=pushpin]', 'Pushpin'),
         m(
           'p',
           'Pushpin is a fixed positioning plugin. Pin elements to the top of the page when they scroll past them.'
@@ -786,7 +786,7 @@ oncreate: (vnode) => {
           code: `          m(Parallax, { src: gogh }) // should be embedded in layout so the width is not limited`,
         }),
 
-        m('h3.header', 'Material box (click on image)'),
+        m('h3.header[id=materialbox]', 'Material box (click on image)'),
         m('.row', m('.col.s12', m(MaterialBox, { src: gogh, width: 600 }))),
         m(HighlightedCodeBlock, {
           code: `          m(MaterialBox, { src: gogh, width: 600 })`,
