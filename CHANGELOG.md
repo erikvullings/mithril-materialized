@@ -1,3 +1,10 @@
+## [3.17.5](https://github.com/erikvullings/mithril-materialized/compare/v3.17.4...v3.17.5) (2026-07-25)
+
+
+### Bug Fixes
+
+* **select:** restore modal dropdown pointer events ([06b0e72](https://github.com/erikvullings/mithril-materialized/commit/06b0e72e9308bfcae2e880d5edcbec717526b26a))
+
 ## [3.17.4](https://github.com/erikvullings/mithril-materialized/compare/v3.17.3...v3.17.4) (2026-07-24)
 
 
