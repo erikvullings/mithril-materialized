@@ -1,15 +1,12 @@
-# Tessl Skill Review — runs on PRs that change any SKILL.md; posts scores as one PR comment.
-# Docs: https://github.com/tesslio/skill-review
-name: Tessl Skill Review
+# Tessl Skill Review & Optimize — review on PRs that touch SKILL.md (no secrets required).
+# Docs: https://github.com/tesslio/skill-review-and-optimize
+name: Skill review and optimize
 
 on:
   pull_request:
     branches: [master]
     paths:
       - "**/SKILL.md"
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   review:
@@ -18,8 +15,12 @@ jobs:
       pull-requests: write
       contents: read
     steps:
-      - uses: actions/checkout@v5
-      - uses: tesslio/skill-review@main
-      # Optional quality gate (off by default — do not enable unless user asked):
-      # with:
-      #   fail-threshold: 70
+      - uses: actions/checkout@v4
+      - uses: tesslio/skill-review-and-optimize@main
+        # Review-only by default — works without TESSL_API_TOKEN.
+        # Optional: enable optimize after adding repo secret TESSL_API_TOKEN:
+        # with:
+        #   optimize: true
+        #   tessl-token: ${{ secrets.TESSL_API_TOKEN }}
+        # Optional quality gate:
+        #   fail-threshold: 70
