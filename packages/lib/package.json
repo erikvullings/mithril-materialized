@@ -1,7 +1,7 @@
 {
   "name": "mithril-materialized",
   "version": "3.17.5",
-  "description": "A materialize library for mithril.",
+  "description": "Material Design components for Mithril.js with no external JavaScript dependencies.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
@@ -55,6 +55,7 @@
     "typedoc": "typedoc --out ../../docs/typedoc src",
     "build:domain": "npm run clean && npm run build && typedoc --out ../../docs/typedoc src",
     "dry-run": "npm publish --dry-run",
+    "verify:package-readme": "node ./scripts/verify-package-readme.mjs",
     "sass:watch": "sass --watch ./sass/materialize.scss ./dist/index.css",
     "css:watch": "sass --watch --no-source-map --style=compressed --no-charset ./src/index.scss ./dist/index.min.css",
     "dev:full": "pnpm run dev & pnpm run css:watch",
@@ -69,7 +70,11 @@
   "homepage": "https://erikvullings.github.io/mithril-materialized/index.html#!/home",
   "keywords": [
     "mithril",
-    "materialize-css"
+    "mithril.js",
+    "material-design",
+    "materialize-css",
+    "ui-components",
+    "typescript"
   ],
   "author": "Erik Vullings <erik.vullings@gmail.com> (http://www.tno.nl)",
   "license": "MIT",

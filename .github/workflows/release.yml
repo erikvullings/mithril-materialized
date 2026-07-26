@@ -47,6 +47,10 @@ jobs:
         run: pnpm run test
         working-directory: packages/lib
 
+      - name: Verify npm package documentation
+        run: pnpm run verify:package-readme
+        working-directory: packages/lib
+
       - name: Semantic Release
         id: semantic-release
         uses: cycjimmy/semantic-release-action@v4

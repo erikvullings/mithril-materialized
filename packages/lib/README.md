@@ -2,20 +2,11 @@
 
 A Mithril.js component library inspired by [materialize-css](https://materializecss.com) design principles, [available on npm](https://www.npmjs.com/package/mithril-materialized). This library provides you with ready-to-use Mithril components that follow Material Design guidelines, with **no external JavaScript dependencies**.
 
-## 🚀 v3.4 - Latest Release
+## Documentation and releases
 
-The current stable release that provides a complete Mithril.js Material Design component library with no external JavaScript dependencies.
-
-### ✨ What's New
-
-- **🔥 Zero External JS Dependencies**: No longer requires `materialize-css` JavaScript or `material-icons` fonts
-- **📦 Smaller Bundle Size**: Reduced package size by eliminating external dependencies
-- **⚡ Better Performance**: Direct implementations without jQuery or other heavy dependencies
-- **🛠️ Enhanced Components**: Improved DatePicker with date ranges, week numbers, and TimePicker with configurable AM/PM/24h or inline style
-- **🛠️ New Components**: DataTable, TreeView, Timeline, Masonry, RatingControl, ImageList, Wizard/Stepper, Breadcrumb
-- **📱 Modern Architecture**: Factory components with proper TypeScript support
-- **🎯 CSS-Only Styling**: Uses only CSS for styling - no JavaScript initialization needed
-- **🎨 Custom SVG Icons**: Built-in MaterialIcon component with custom SVG icons (caret, close)
+- Browse the interactive [component documentation and examples](https://erikvullings.github.io/mithril-materialized/#!/home).
+- See the [changelog](https://github.com/erikvullings/mithril-materialized/blob/master/CHANGELOG.md) for version-specific changes.
+- Report issues or contribute at the [GitHub repository](https://github.com/erikvullings/mithril-materialized).
 
 ### ✨ Key Features
 
@@ -302,91 +293,6 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 
 > **Note**: The date range picker is now fully implemented with comprehensive validation and formatting support.
 
-## 🗺️ Roadmap & Planned Improvements
-
-### 🚀 Phase 1: Core Optimizations & New Components (In Progress)
-
-**✅ Completed:**
-
-- ✅ Modular CSS architecture with tree-shaking support
-- ✅ Dark theme system with CSS custom properties  
-- ✅ File upload component with drag-and-drop
-- ✅ Theme switching components (ThemeSwitcher, ThemeToggle)
-- ✅ Sidenav component with responsive behavior
-- ✅ Breadcrumb navigation component
-- ✅ Wizard/Stepper component for multi-step forms
-
-**✅ Recently Completed (v3.2.x):**
-
-- ✅ **TextArea Height Alignment**: Fixed single-line `textarea` height to match TextInput components perfectly
-- ✅ **Improved AutoResize Logic**: TextArea now only sets custom height for multi-line content, matching Materialize CSS reference behavior
-- ✅ **Better Mithril Integration**: Hidden div for height measurement now properly managed within Mithril's render cycle
-- ✅ DataTable component with sorting, filtering, and pagination
-- ✅ TreeView component for hierarchical data with expand/collapse, selection, and VSCode-style connectors
-- ✅ Enhanced TypeScript definitions with better JSDoc comments
-- ✅ Performance optimizations and bundle size improvements
-- ✅ Enhanced RangeInput with vertical orientation, double-thumb range selection, and smart tooltip display
-- ✅ Advanced DatePicker with date range selection, constraints, and format support
-- ✅ Layout components: Masonry (Pinterest-style grid), Timeline (vertical event display), ImageList (responsive galleries)
-- ✅ RatingControl with configurable icons, min/max, tooltip/helpers, readonly and disabled mode
-- ✅ Improved RangeInput components converted to proper Mithril components with better lifecycle management
-- ✅ Enhanced accessibility with individual thumb slider elements and PageUp/PageDown keyboard support
-
-### 🎯 Phase 2: Advanced Components & Features
-
-**Data Display:**
-
-- Card layouts with enhanced Material Design 3.0 styling
-- Advanced tree operations (drag & drop, context menus)
-
-**Input & Forms:**
-
-- ✅ Advanced date range picker with validation and constraints
-- Autocomplete with async data loading
-
-**Navigation & Layout:**
-
-- AppBar/Toolbar component with responsive behavior
-- Bottom navigation component for mobile apps
-- Drawer/Sidebar component with overlay and push modes
-- Grid system enhancements with CSS Grid support
-
-### 🔮 Phase 3: Modern Features & Integration
-
-**Developer Experience:**
-
-- Storybook integration for component documentation
-- Figma design system integration
-- CLI tools for component generation
-- Better accessibility (ARIA) support throughout
-
-**Performance & Optimization:**
-
-- Virtual scrolling for large lists
-- Lazy loading component utilities
-- Bundle analyzer and optimization tools
-- CSS-in-JS runtime support option
-
-### 📊 Bundle Size Targets
-
-**Current Status (v3.2.2):**
-
-- Total: ~65KB gzipped (42KB JS + 23KB CSS)
-- Modular CSS can reduce bundle by 30-50%
-- Optimized component implementations reduce overhead
-
-**Phase 1 Targets:**
-
-- Core bundle: <40KB gzipped
-- Modular approach: <25KB for typical apps
-- Tree-shaking effectiveness: 60%+
-
-**Long-term Goals:**
-
-- Individual components: <2KB each
-- Micro-bundle support for single components
-- Zero-runtime CSS option for static sites
-
 ### 🤝 Contributing
 
 We welcome contributions! Priority areas for community involvement:
@@ -396,22 +302,6 @@ We welcome contributions! Priority areas for community involvement:
 3. **Testing**: Unit tests, visual regression tests, browser compatibility
 
 See our [contributing guide](CONTRIBUTING.md) for detailed information.
-
-### 📈 Performance Benchmarks
-
-**Bundle Size Comparison:**
-
-- mithril-materialized v3.2.2: ~65KB gzipped
-- Material-UI: ~350KB gzipped
-- Materialize CSS + jQuery: ~180KB gzipped
-- Vuetify: ~250KB gzipped
-
-**Runtime Performance:**
-
-- Component initialization: <5ms average
-- Theme switching: <10ms for full page
-- File upload processing: Real-time without blocking
-- TextArea auto-resize: <1ms per keystroke
 
 ### Button semantics
 
