@@ -1,3 +1,5 @@
+## [3.17.6](https://github.com/erikvullings/mithril-materialized/compare/v3.17.5...v3.17.6) (2026-07-26)
+
 ## [3.17.5](https://github.com/erikvullings/mithril-materialized/compare/v3.17.4...v3.17.5) (2026-07-25)
 
 
