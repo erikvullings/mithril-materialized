@@ -131,6 +131,15 @@ describe('Input Components', () => {
 
       expect(container.querySelector('.number-input-controls')).toBeNull();
     });
+
+    it('forwards explicit inputAttrs to the native input', () => {
+      const { getByLabelText } = render(NumberInput, {
+        label: 'Age',
+        inputAttrs: { 'data-testid': 'age-input' },
+      });
+
+      expect(getByLabelText('Age')).toHaveAttribute('data-testid', 'age-input');
+    });
   });
 
   describe('EmailInput', () => {

@@ -436,6 +436,7 @@ const InputField =
           validate,
           canClear,
           hideSpinners,
+          inputAttrs,
           ...params
         } = attrs;
 
@@ -444,7 +445,7 @@ const InputField =
 
         // Special rendering for minmax range sliders
         if (type === 'range' && (attrs.minmax || attrs.valueDisplay)) {
-          return m(attrs.minmax ? DoubleRangeSlider : SingleRangeSlider, {
+          const rangeSliderAttrs = {
             ...attrs,
             state,
             cn,
@@ -454,7 +455,8 @@ const InputField =
             label,
             isMandatory,
             helperText,
-          });
+          };
+          return attrs.minmax ? m(DoubleRangeSlider, rangeSliderAttrs) : m(SingleRangeSlider, rangeSliderAttrs);
         }
         const isNumeric = ['number', 'range'].includes(type);
         const controlled = isControlled(attrs);
@@ -504,6 +506,7 @@ const InputField =
           m('input', {
             class: inputClass || undefined,
             ...params,
+            ...inputAttrs,
             type,
             tabindex: 0,
             id,

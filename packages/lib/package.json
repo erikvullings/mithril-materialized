@@ -44,6 +44,7 @@
     "start": "pnpm run dev",
     "clean": "rimraf dist node_modules/.cache",
     "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.typecheck.json",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --reporter=verbose",

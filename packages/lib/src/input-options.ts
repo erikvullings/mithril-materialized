@@ -1,7 +1,33 @@
 import { Attributes } from 'mithril';
 import { ComponentStyle } from './types';
 
-export interface InputAttrs<T = string> extends Attributes {
+type DataAndAriaAttributeValue = string | number | boolean | undefined;
+
+export interface InputAttrs<T = string> {
+  /** CSS class names for the input field wrapper. */
+  className?: string;
+  /** Alias for className. */
+  class?: string;
+  /** Name submitted with the enclosing form. */
+  name?: string;
+  /** Form ID this input belongs to. */
+  form?: string;
+  /** Increment for NumberInput and RangeInput. */
+  step?: number;
+  /** Hint for the virtual keyboard to display. */
+  inputMode?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search';
+  /** Hint for the enter key label on virtual keyboards. */
+  enterKeyHint?: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send';
+  /** Tab order of the input. */
+  tabindex?: number;
+  /** Associate the input with a datalist. */
+  list?: string;
+  /** Arbitrary DOM attributes forwarded to the underlying input element. */
+  inputAttrs?: Attributes;
+  /** Accessibility attributes forwarded to the input element. */
+  [attribute: `aria-${string}`]: DataAndAriaAttributeValue;
+  /** Application-specific data attributes forwarded to the input element. */
+  [attribute: `data-${string}`]: DataAndAriaAttributeValue;
   /** Optional label. */
   label?: string;
   /** Optional ID. */
@@ -108,6 +134,8 @@ export interface InputAttrs<T = string> extends Attributes {
   maxValue?: number;
   /** For range inputs: control value display behavior. 'auto' shows on drag, 'always' shows always, 'none' never shows */
   valueDisplay?: 'auto' | 'always' | 'none';
+  /** For range inputs: show the current value. Prefer valueDisplay for new code. */
+  showValue?: boolean;
   /** For vertical range inputs: height of the slider */
   height?: string;
   /** For range inputs with valueDisplay: position of value tooltips */
