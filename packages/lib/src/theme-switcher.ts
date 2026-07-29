@@ -212,7 +212,7 @@ export const ThemeSwitcher: FactoryComponent<ThemeSwitcherAttrs> = () => {
               onclick: () => handleThemeChange('auto'),
               title: labels.autoTitle,
             },
-            [m('i.material-icons', 'brightness_auto'), showLabels && m('span', labels.auto)]
+            [m(MaterialIcon, { name: 'brightness_auto' }), showLabels && m('span', labels.auto)]
           ),
 
           m(
