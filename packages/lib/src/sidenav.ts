@@ -1,7 +1,7 @@
-import m, { FactoryComponent, Attributes } from 'mithril';
+import m, { type Attributes , type FactoryComponent } from 'mithril';
+import { MaterialIcon, type IconName } from './material-icon';
+import type { ComponentStyle } from './types';
 import { uniqueId } from './utils';
-import { MaterialIcon } from './material-icon';
-import { ComponentStyle } from './types';
 
 /** Icon definition - supports material icon name, inline SVG, or image URL */
 export type IconDefinition = string | { type: 'svg' | 'image'; content: string };
@@ -14,9 +14,9 @@ export interface NavbarSubItemAttrs {
   /** Whether this submenu item is selected */
   selected?: boolean;
   /** Value for the submenu item */
-  value?: any;
+  value?: unknown;
   /** Selection callback */
-  onSelect?: (value: any, selected: boolean) => void;
+  onSelect?: (value: unknown, selected: boolean) => void;
 }
 
 export interface SidenavAttrs extends Attributes {
@@ -105,7 +105,7 @@ interface SidenavState {
   isAnimating: boolean;
   isExpanded: boolean;
   activeItemIndex: number | null;
-  selectedSubmenuItems: Map<number, Set<any>>;
+  selectedSubmenuItems: Map<number, Set<unknown>>;
 }
 
 // List of MaterialIcon SVG icons that are available
@@ -134,8 +134,8 @@ const renderIcon = (icon: IconDefinition | undefined, style?: ComponentStyle): m
 
   if (typeof icon === 'string') {
     // Check if this is a MaterialIcon SVG name
-    if (materialIconSvgNames.includes(icon as any)) {
-      return m(MaterialIcon as any, { name: icon, style });
+    if ((materialIconSvgNames as readonly string[]).includes(icon)) {
+      return m(MaterialIcon, { name: icon as IconName, style });
     }
     // Fall back to Material Icons font for other icon names
     return m('i.material-icons', { style }, icon);
@@ -193,20 +193,20 @@ const SidenavHeaderFooterItem: FactoryComponent<
 
       const content = isRightAligned
         ? [
-            _isExpanded && m('span.sidenav-item-text.mm-layout-grow.mm-layout-mr-8.left-align', text),
-            renderIcon(icon, { 'min-width': '24px', width: '24px' }),
+            m('span.sidenav-item-text.mm-layout-grow.left-align', text),
+            renderIcon(icon),
           ]
         : [
-            renderIcon(icon, { 'min-width': '24px', width: '24px' }),
-            _isExpanded && m('span.sidenav-item-text.mm-layout-grow.mm-layout-ml-8', text),
+            renderIcon(icon),
+            m('span.sidenav-item-text.mm-layout-grow', text),
           ];
 
-      const linkStyle = {
-        padding: _isExpanded ? '12px 16px' : '12px 18px',
-        'justify-content': _isExpanded ? (isRightAligned ? 'flex-end' : 'flex-start') : 'center',
-      };
-
-      const linkClass = 'mm-layout-row mm-layout-row--center';
+      const linkClass = [
+        'mm-layout-row',
+        'mm-layout-row--center',
+        'sidenav-link',
+        isRightAligned ? 'mm-layout-row--justify-end' : 'mm-layout-row--justify-start',
+      ].join(' ');
 
       return m(
         'li',
@@ -217,7 +217,6 @@ const SidenavHeaderFooterItem: FactoryComponent<
             href: href || '#!',
             onclick: handleClick,
             class: linkClass,
-            style: linkStyle,
             title: shouldShowTooltip ? tooltipText : undefined,
             'aria-label': shouldShowTooltip ? tooltipText : undefined,
           },
@@ -324,7 +323,7 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
       } = attrs;
 
       const isOpen = state.isOpen;
-      const collapsedWidth = 60;
+      const collapsedWidth = 44;
       const isExpanded = attrs.isExpanded !== false;
       const currentWidth = expandable && !isExpanded ? collapsedWidth : width;
 
@@ -361,25 +360,11 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
               width: `${currentWidth}px`,
               transform: isOpen ? 'translateX(0)' : position === 'left' ? 'translateX(-105%)' : 'translateX(105%)',
               'transition-duration': `${animationDuration}ms`,
-              'transition-property': 'transform, width',
             },
           },
           [
             // Header content slot (rendered first, before hamburger)
-            attrs.headerContent &&
-              m(
-                'li.sidenav-header-slot',
-                {
-                  style: {
-                    'flex-shrink': 0,
-                    'list-style': 'none',
-                    height: 'auto',
-                    'line-height': 'normal',
-                    padding: 0,
-                  },
-                },
-                attrs.headerContent
-              ),
+            attrs.headerContent && m('li.sidenav-header-slot', attrs.headerContent),
 
             // Hamburger toggle button (inside sidenav, at the top)
             showHamburger &&
@@ -387,11 +372,6 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
                 'li.sidenav-hamburger-item',
                 {
                   class: `mm-layout-row mm-layout-row--center ${position === 'right' ? 'mm-layout-row--justify-end' : 'mm-layout-row--justify-start'}`,
-                  style: {
-                    padding: '12px 16px',
-                    cursor: 'pointer',
-                    'border-bottom': '1px solid rgba(0,0,0,0.1)',
-                  },
                   onclick: () => toggleHamburger(attrs),
                 },
                 m(MaterialIcon, {
@@ -414,11 +394,6 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
                 'li.sidenav-expand-toggle',
                 {
                   class: `mm-layout-row mm-layout-row--center ${position === 'right' ? 'mm-layout-row--justify-end' : 'mm-layout-row--justify-start'}`,
-                  style: {
-                    padding: '12px 16px',
-                    cursor: 'pointer',
-                    'border-bottom': '1px solid rgba(0,0,0,0.1)',
-                  },
                   onclick: () => toggleExpanded(attrs),
                 },
                 m(MaterialIcon, {
@@ -462,21 +437,7 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
               }),
 
             // Footer content slot (rendered last, pushed to bottom via margin-top: auto)
-            attrs.footerContent &&
-              m(
-                'li.sidenav-footer-slot',
-                {
-                  style: {
-                    'margin-top': 'auto',
-                    'flex-shrink': 0,
-                    'list-style': 'none',
-                    height: 'auto',
-                    'line-height': 'normal',
-                    padding: 0,
-                  },
-                },
-                attrs.footerContent
-              ),
+            attrs.footerContent && m('li.sidenav-footer-slot', attrs.footerContent),
           ]
         ),
       ];
@@ -524,13 +485,13 @@ const NavbarSubItem: FactoryComponent<
         ? [
             // Right-aligned: text on left, icons on right
             isExpanded && m('span.mm-layout-grow.left-align', text),
-            icon && isExpanded && renderIcon(icon, { 'font-size': '18px' }),
+            icon && isExpanded && renderIcon(icon),
             indicatorIcon,
           ]
         : [
             // Left-aligned: indicator on left, text and icon on right
             indicatorIcon,
-            icon && isExpanded && renderIcon(icon, { 'font-size': '18px', 'margin-left': indicatorIcon ? '8px' : '0' }),
+            icon && isExpanded && renderIcon(icon),
             isExpanded && m('span', { class: icon || indicatorIcon ? 'mm-layout-ml-8' : undefined }, text),
           ];
 
@@ -549,10 +510,6 @@ const NavbarSubItem: FactoryComponent<
               .join(' ') || undefined,
           style: {
             padding: isExpanded ? '0 16px 0 48px' : '0 16px',
-            cursor: 'pointer',
-            'font-size': '0.9em',
-            height: '48px',
-            'min-height': '48px',
           },
           onclick: handleClick,
         },
@@ -625,21 +582,21 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
       const content = isRightAligned
         ? [
             // Right-aligned: text on left, icon on right
-            isExpanded && m('span.sidenav-item-text.mm-layout-grow.mm-layout-mr-8.left-align', text || children),
-            renderIcon(icon, { 'min-width': '24px', width: '24px' }),
+            m('span.sidenav-item-text.mm-layout-grow.left-align', text || children),
+            renderIcon(icon),
           ]
         : [
             // Left-aligned: icon on left, text on right
-            renderIcon(icon, { 'min-width': '24px', width: '24px' }),
-            isExpanded && m('span.sidenav-item-text.mm-layout-grow.mm-layout-ml-8', text || children),
+            renderIcon(icon),
+            m('span.sidenav-item-text.mm-layout-grow', text || children),
           ];
 
-      const linkStyle = {
-        padding: isExpanded ? '12px 16px' : '12px 18px',
-        'justify-content': isExpanded ? (isRightAligned ? 'flex-end' : 'flex-start') : 'center',
-      };
-
-      const linkClass = 'mm-layout-row mm-layout-row--center';
+      const linkClass = [
+        'mm-layout-row',
+        'mm-layout-row--center',
+        'sidenav-link',
+        isRightAligned ? 'mm-layout-row--justify-end' : 'mm-layout-row--justify-start',
+      ].join(' ');
 
       const mainItem =
         href && !disabled
@@ -650,7 +607,6 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
                   href,
                   onclick: handleMainClick,
                   class: linkClass,
-                  style: linkStyle,
                   title: shouldShowTooltip ? tooltipText : undefined,
                   'aria-label': shouldShowTooltip ? tooltipText : undefined,
                 },
@@ -664,7 +620,6 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
                   onclick: handleMainClick,
                   href: '#!',
                   class: linkClass,
-                  style: linkStyle,
                   title: shouldShowTooltip ? tooltipText : undefined,
                   'aria-label': shouldShowTooltip ? tooltipText : undefined,
                 },
@@ -692,44 +647,33 @@ export const SidenavItem: FactoryComponent<SidenavItemAttrs> = () => {
   };
 };
 
-/**
- * Sidenav utilities for programmatic control
- */
-export class SidenavManager {
-  /**
-   * Open a sidenav by ID
-   */
-  static open(id: string): void {
+/** Sidenav utilities for programmatic control */
+export const SidenavManager = {
+  open(id: string): void {
     const element = document.getElementById(id);
     if (element) {
       element.classList.add('open');
       element.classList.remove('closed');
     }
-  }
+  },
 
-  /**
-   * Close a sidenav by ID
-   */
-  static close(id: string): void {
+  close(id: string): void {
     const element = document.getElementById(id);
     if (element) {
       element.classList.remove('open');
       element.classList.add('closed');
     }
-  }
+  },
 
-  /**
-   * Toggle a sidenav by ID
-   */
-  static toggle(id: string): void {
+  toggle(id: string): void {
     const element = document.getElementById(id);
     if (element) {
       const isOpen = element.classList.contains('open');
       if (isOpen) {
-        this.close(id);
+        SidenavManager.close(id);
       } else {
-        this.open(id);
+        SidenavManager.open(id);
       }
     }
-  }
-}
+  },
+};

@@ -128,7 +128,8 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
   will-change: transform;
   backface-visibility: hidden;
   transform: translateX(-105%);
-  transition: transform 0.3s ease, left 0.3s ease, right 0.3s ease;
+  transition: transform 0.3s ease, width 0.3s ease, left 0.3s ease, right 0.3s ease;
+  transition-property: transform, width;
   display: flex;
   flex-direction: column;
   scrollbar-width: thin;
@@ -427,6 +428,9 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
 // Hamburger item inside sidenav
 .sidenav-hamburger-item {
   list-style: none;
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--mm-divider-color, rgba(0, 0, 0, 0.1));
 
   &:hover {
     background: var(--mm-border-color, rgba(0, 0, 0, 0.05));
@@ -437,16 +441,71 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
   }
 }
 
+// Header/footer slot list items
+.sidenav-header-slot,
+.sidenav-footer-slot {
+  flex-shrink: 0;
+  list-style: none;
+  height: auto;
+  line-height: normal;
+  padding: 0;
+}
+
+.sidenav-footer-slot {
+  margin-top: auto;
+}
+
+// Override legacy Materialize block display for new-style links.
+// Specificity (0,6,2) beats the legacy rule (0,5,2).
+// Padding uses 18px on both sides so icon position matches the collapsed center exactly.
+.sidenav li > a.sidenav-link:not(.btn):not(.btn-large):not(.btn-flat):not(.btn-floating) {
+  display: flex;
+  align-items: center;
+  height: variables.$sidenav-item-height;
+  padding: 12px 10px;
+  line-height: normal;
+
+  // Reset the legacy float/margin on font icons inside new-style links.
+  & > i.material-icons {
+    margin: 0;
+    float: none;
+    flex-shrink: 0;
+  }
+}
+
+// Transition for the text label — animates width, opacity, and margin instead of
+// mounting/unmounting, keeping the icon position stable.
+.sidenav-item-text {
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: var(--mm-sidenav-text-max-width, 230px);
+  opacity: 1;
+  // Gap between icon and label; collapses to 0 so no overflow shifts the icon.
+  margin-left: var(--mm-sidenav-icon-gap, 8px);
+  transition: max-width 0.3s ease, opacity 0.2s ease, margin-left 0.3s ease;
+}
+
+// Right-aligned sidenav: gap is on the right side of the text (between text and icon).
+.sidenav.right-aligned .sidenav-item-text {
+  margin-left: 0;
+  margin-right: var(--mm-sidenav-icon-gap, 8px);
+  transition: max-width 0.3s ease, opacity 0.2s ease, margin-right 0.3s ease;
+}
+
 // Collapsed sidenav state
 .sidenav.sidenav-collapsed {
-  width: 60px !important;
+  width: 44px !important;
 
   .sidenav-item-text {
-    display: none;
+    max-width: 0;
+    opacity: 0;
+    // Zero out the margin so it contributes no flex width and the icon stays centred.
+    margin-left: 0;
+    margin-right: 0;
   }
 
   li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.btn-floating) {
-    padding: 0 18px;
+    padding: 0 10px;
     justify-content: center;
 
     & > i,
@@ -456,12 +515,21 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
     }
   }
 
+  // Pin justify-content for new-style links — beats the legacy center rule by source order
+  // (equal specificity (0,6,2), but declared after it).
+  li > a.sidenav-link.mm-layout-row--justify-start:not(.btn):not(.btn-large) {
+    justify-content: flex-start;
+  }
+  li > a.sidenav-link.mm-layout-row--justify-end:not(.btn):not(.btn-large) {
+    justify-content: flex-end;
+  }
+
   .subheader {
     display: none;
   }
 
   .sidenav-subitem {
-    padding: 8px 16px !important;
+    padding: 8px 10px !important;
     justify-content: center;
 
     span {
@@ -470,8 +538,24 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
   }
 }
 
+// Ensure SVG icons in sidenav links don't shrink in flex layout
+.sidenav li > a svg,
+.sidenav li > a i.material-icons {
+  min-width: 24px;
+  flex-shrink: 0;
+}
+
+// Submenu item icon sizing
+.sidenav-subitem i.material-icons {
+  font-size: 18px;
+}
+
 // Expand/collapse toggle button
 .sidenav-expand-toggle {
+  padding: 12px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--mm-divider-color, rgba(0, 0, 0, 0.1));
+
   &:hover {
     background: var(--mm-border-color, rgba(0, 0, 0, 0.05));
   }
@@ -485,6 +569,11 @@ ul.sidenav.right-aligned li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.bt
 // Submenu item styles
 .sidenav-subitem {
   list-style: none;
+  cursor: pointer;
+  font-size: 0.9em;
+  height: variables.$sidenav-item-height;
+  min-height: variables.$sidenav-item-height;
+  padding: 0 16px 0 48px;
   transition: background-color 0.2s ease;
   user-select: none;
   -webkit-user-select: none;
