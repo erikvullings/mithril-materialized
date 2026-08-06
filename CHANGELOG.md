@@ -1,3 +1,10 @@
+## [3.17.7](https://github.com/erikvullings/mithril-materialized/compare/v3.17.6...v3.17.7) (2026-07-29)
+
+
+### Bug Fixes
+
+* **ThemeSwitcher:** use MaterialIcon component for brightness_auto icon ([15034e3](https://github.com/erikvullings/mithril-materialized/commit/15034e3c3584b7de9c2e6db0d75a85c0c38ce64d))
+
 ## [3.17.6](https://github.com/erikvullings/mithril-materialized/compare/v3.17.5...v3.17.6) (2026-07-26)
 
 ## [3.17.5](https://github.com/erikvullings/mithril-materialized/compare/v3.17.4...v3.17.5) (2026-07-25)
