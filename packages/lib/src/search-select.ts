@@ -1,10 +1,6 @@
-import m, { Component } from 'mithril';
-import { getDropdownStyles, uniqueId, sortOptions } from './utils';
-import { MaterialIcon } from './material-icon';
-import { SelectAttrs } from './select';
-import { InputOption } from './option';
+import m, { type Component } from 'mithril';
 import {
-  AsyncComboboxState,
+  type AsyncComboboxState,
   getComboboxKeyResult,
   getComboboxOptionId,
   getComboboxViewState,
@@ -12,6 +8,10 @@ import {
   resolveAsyncComboboxRequest,
   startAsyncComboboxRequest,
 } from './combobox';
+import { MaterialIcon } from './material-icon';
+import type { InputOption } from './option';
+import type { SelectAttrs } from './select';
+import { getDropdownStyles, sortOptions, uniqueId } from './utils';
 
 const SelectedChip = <T extends string | number>({
   option,
@@ -207,15 +207,15 @@ export const SearchSelect = <T extends string | number>(
   const handleClickOutside = (e: MouseEvent) => {
     const target = e.target as Node;
     const targetElement = e.target instanceof Element ? e.target : null;
-    if (state.dropdownRef && state.dropdownRef.contains(target)) {
+    if (state.dropdownRef?.contains(target)) {
       // Click inside dropdown, do nothing
       return;
     }
-    if (targetElement && targetElement.closest('.chips-container')) {
+    if (targetElement?.closest('.chips-container')) {
       // Click on trigger, do nothing
       return;
     }
-    if (state.inputRef && state.inputRef.contains(target)) {
+    if (state.inputRef?.contains(target)) {
       // Click on trigger handled by onclick event
       return;
     } else {
@@ -694,7 +694,7 @@ export const SearchSelect = <T extends string | number>(
                           cursor: 'default',
                         },
                       },
-                      texts.maxSelectionsReached.replace('{max}', maxSelectedOptions!.toString())
+                      texts.maxSelectionsReached.replace('{max}', maxSelectedOptions?.toString())
                     ),
                   ]
                 : []),
