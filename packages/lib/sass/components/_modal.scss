@@ -157,6 +157,28 @@
   border-radius: var(--mm-modal-bottom-sheet-border-radius, 8px 8px 0 0);
 }
 
+// Neutralize legacy Materialize fixed-footer absolute positioning for ModalPanel.
+// Keep footer in flex flow so it reserves space instead of overlaying content.
+.modal.mm-modal-surface.modal-fixed-footer {
+  height: var(--mm-modal-fixed-footer-height, 70%);
+}
+
+.modal.mm-modal-surface.modal-fixed-footer .mm-modal-content {
+  position: static;
+  height: auto;
+  max-height: none;
+  width: auto;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.modal.mm-modal-surface.modal-fixed-footer .mm-modal-footer {
+  position: static;
+  bottom: auto;
+  margin-top: auto;
+  flex: 0 0 auto;
+}
+
 .modal.mm-modal-surface .mm-modal-close-button {
   position: absolute;
   top: var(--mm-modal-close-top, 8px);

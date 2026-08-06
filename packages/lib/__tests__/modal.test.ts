@@ -100,6 +100,29 @@ describe('ModalPanel Component', () => {
     expect(modal).toHaveClass('modal-fixed-footer');
   });
 
+  it('uses flow-based fixed-footer slot structure without inline positioning styles', () => {
+    const { container } = render(ModalPanel, {
+      id: 'test-modal',
+      title: 'Test Modal',
+      fixedFooter: true,
+      buttons: [{ label: 'Close' }],
+    });
+
+    const modal = container.querySelector('.modal.mm-modal-surface.modal-fixed-footer');
+    const content = container.querySelector('.mm-modal-content');
+    const footer = container.querySelector('.mm-modal-footer');
+
+    expect(modal).toBeInTheDocument();
+    expect(content).toBeInTheDocument();
+    expect(content).toHaveClass('modal-content');
+    expect(footer).toBeInTheDocument();
+    expect(footer).toHaveClass('modal-footer');
+
+    // Keep positioning in Sass so legacy absolute footer styles can be neutralized there.
+    expect(content).not.toHaveAttribute('style');
+    expect(footer).not.toHaveAttribute('style');
+  });
+
   it('renders as bottom sheet', () => {
     const { container } = render(ModalPanel, {
       id: 'test-modal',
