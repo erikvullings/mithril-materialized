@@ -98,3 +98,91 @@
   border-radius: 0;
   will-change: bottom, opacity;
 }
+
+// ModalPanel-specific styling hooks and tokens.
+// These classes keep backward compatibility with `.modal*` while making overrides predictable.
+.modal-overlay.mm-modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--mm-modal-overlay-background, rgba(0, 0, 0, 0.5));
+  z-index: var(--mm-modal-overlay-z-index, 1002);
+}
+
+.modal-overlay.mm-modal-overlay.active {
+  display: block;
+}
+
+.modal.mm-modal-surface {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  width: var(--mm-modal-width, 75%);
+  transform: translate(-50%, -50%);
+  max-width: var(--mm-modal-max-width, 75%);
+  max-height: var(--mm-modal-max-height, 85%);
+  border-radius: var(--mm-modal-border-radius, 4px);
+  background-color: var(--mm-modal-background, #fff);
+  color: var(--mm-text-primary, rgba(0, 0, 0, 0.87));
+  z-index: var(--mm-modal-z-index, 1003);
+  overflow: auto;
+  padding: 0;
+  flex-direction: column;
+  box-shadow: var(
+    --mm-modal-shadow,
+    0 24px 38px 3px rgba(0, 0, 0, 0.14),
+    0 9px 46px 8px rgba(0, 0, 0, 0.12),
+    0 11px 15px -7px rgba(0, 0, 0, 0.2)
+  );
+}
+
+.modal.mm-modal-surface.active {
+  display: flex;
+}
+
+.modal.mm-modal-surface.bottom-sheet {
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: none;
+  width: 100%;
+  max-width: 100%;
+  max-height: var(--mm-modal-bottom-sheet-max-height, var(--mm-modal-max-height, 85%));
+  border-radius: var(--mm-modal-bottom-sheet-border-radius, 8px 8px 0 0);
+}
+
+.modal.mm-modal-surface .mm-modal-close-button {
+  position: absolute;
+  top: var(--mm-modal-close-top, 8px);
+  right: var(--mm-modal-close-right, 8px);
+  padding: var(--mm-modal-close-padding, 8px);
+  min-width: auto;
+  line-height: 1;
+  z-index: var(--mm-modal-close-z-index, 2);
+}
+
+.modal.mm-modal-surface .mm-modal-content {
+  padding: var(--mm-modal-content-padding, 24px);
+  min-height: auto;
+  flex: 1 1 auto;
+}
+
+.modal.mm-modal-surface .mm-modal-content.mm-modal-content-with-close {
+  padding-top: var(--mm-modal-content-padding-top-with-close, 48px);
+}
+
+.modal.mm-modal-surface .mm-modal-title {
+  margin: var(--mm-modal-title-margin, 0 0 20px 0);
+}
+
+.modal.mm-modal-surface .mm-modal-footer {
+  padding: var(--mm-modal-footer-padding, 4px 6px);
+  border-top: var(--mm-modal-footer-border-top, 1px solid var(--mm-border-color, rgba(160, 160, 160, 0.2)));
+  text-align: right;
+}

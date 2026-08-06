@@ -1,4 +1,4 @@
-import m, { FactoryComponent, Vnode, Attributes } from 'mithril';
+import m, { type FactoryComponent, type Vnode, type Attributes } from 'mithril';
 import { FlatButton } from './button';
 import { uniqueId } from './utils';
 // Styles are imported via the main index or individual component imports
@@ -6,12 +6,14 @@ import { uniqueId } from './utils';
 export interface ModalState {
   isOpen: boolean;
   id: string;
+  modalElement: HTMLElement | null;
+  lastFocusedElement: HTMLElement | null;
 }
 
 export interface ModalAttrs extends Attributes {
   id?: string;
   title: string;
-  description?: string | Vnode<any, any>;
+  description?: string | Vnode<unknown, unknown>;
   /** Set to true when the description contains HTML */
   richContent?: boolean;
   /** Fixate the footer, so you can show more content. */
@@ -50,11 +52,30 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
   const state: ModalState = {
     isOpen: false,
     id: '',
+    modalElement: null,
+    lastFocusedElement: null,
   };
 
   let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
 
+  const blurFocusedElementInsideModal = () => {
+    const activeElement = document.activeElement;
+    if (!(activeElement instanceof HTMLElement)) return;
+    if (state.modalElement?.contains(activeElement)) {
+      activeElement.blur();
+    }
+  };
+
+  const restoreFocusToInvoker = () => {
+    const elementToFocus = state.lastFocusedElement;
+    state.lastFocusedElement = null;
+    if (elementToFocus?.isConnected) {
+      requestAnimationFrame(() => elementToFocus.focus());
+    }
+  };
+
   const closeModal = (attrs: ModalAttrs) => {
+    blurFocusedElementInsideModal();
     state.isOpen = false;
     if (attrs.onToggle) attrs.onToggle(false);
     if (attrs.onClose) attrs.onClose();
@@ -67,10 +88,13 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
 
     // Restore body scroll
     document.body.style.overflow = '';
+    restoreFocusToInvoker();
     m.redraw();
   };
 
   const openModal = (attrs: ModalAttrs) => {
+    const activeElement = document.activeElement;
+    state.lastFocusedElement = activeElement instanceof HTMLElement ? activeElement : null;
     state.isOpen = true;
     if (attrs.onToggle) attrs.onToggle(true);
 
@@ -101,6 +125,8 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
         keydownHandler = null;
       }
       document.body.style.overflow = '';
+      state.modalElement = null;
+      state.lastFocusedElement = null;
     },
 
     view: ({ attrs }) => {
@@ -129,6 +155,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
 
       const modalClasses = [
         'modal',
+        'mm-modal-surface',
         className || '',
         fixedFooter ? 'modal-fixed-footer' : '',
         bottomSheet ? 'bottom-sheet' : '',
@@ -139,23 +166,13 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
         .trim();
 
       const overlayClasses =
-        ['modal-overlay', state.isOpen ? 'active' : ''].filter(Boolean).join(' ').trim() || undefined;
+        ['modal-overlay', 'mm-modal-overlay', state.isOpen ? 'active' : ''].filter(Boolean).join(' ').trim() || undefined;
 
       return m('div', { className: 'modal-container' }, [
         // Modal overlay
         m('div', {
           className: overlayClasses,
           onclick: closeOnBackdropClick ? () => closeModal(attrs) : undefined,
-          style: {
-            display: state.isOpen ? 'block' : 'none',
-            position: 'fixed',
-            top: '0',
-            left: '0',
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: '1002',
-          },
         }),
 
         // Modal content
@@ -164,42 +181,16 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
           {
             id,
             className: modalClasses,
+            oncreate: ({ dom }) => {
+              state.modalElement = dom as HTMLElement;
+            },
+            onupdate: ({ dom }) => {
+              state.modalElement = dom as HTMLElement;
+            },
             'aria-hidden': state.isOpen ? 'false' : 'true',
             role: 'dialog',
             'aria-labelledby': `${id}-title`,
             'aria-describedby': description ? `${id}-desc` : undefined,
-            style: {
-              display: state.isOpen ? 'flex' : 'none',
-              position: 'fixed',
-              ...(bottomSheet
-                ? {
-                    // Bottom sheet positioning
-                    top: 'auto',
-                    bottom: '0',
-                    left: '0',
-                    right: '0',
-                    transform: 'none',
-                    maxWidth: '100%',
-                    borderRadius: '8px 8px 0 0',
-                  }
-                : {
-                    // Regular modal positioning
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    maxWidth: '75%',
-                    borderRadius: '4px',
-                  }),
-              backgroundColor: 'var(--mm-modal-background, #fff)',
-              maxHeight: '85%',
-              overflow: 'auto',
-              zIndex: '1003',
-              padding: '0',
-              flexDirection: 'column',
-              boxShadow:
-                '0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px -7px rgba(0,0,0,0.20)',
-            },
-            // onclick: (e: Event) => e.stopPropagation(), // Prevent backdrop click when clicking inside modal
           },
           [
             // Close button
@@ -207,15 +198,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
               m(
                 'button',
                 {
-                  className: 'modal-close btn-flat',
-                  style: {
-                    position: 'absolute',
-                    top: '8px',
-                    right: '8px',
-                    padding: '8px',
-                    minWidth: 'auto',
-                    lineHeight: 1,
-                  },
+                  className: 'modal-close btn-flat mm-modal-close-button',
                   onclick: () => closeModal(attrs),
                   'aria-label': 'Close modal',
                 },
@@ -224,17 +207,14 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
 
             // Modal content
             m(
-              '.modal-content',
+              'div',
               {
-                style: {
-                  padding: '24px',
-                  paddingTop: showCloseButton ? '48px' : '24px',
-                  minHeight: 'auto',
-                  flex: '1 1 auto',
-                },
+                className: ['modal-content', 'mm-modal-content', showCloseButton ? 'mm-modal-content-with-close' : '']
+                  .filter(Boolean)
+                  .join(' '),
               },
               [
-                m('h4', { id: `${id}-title`, style: { margin: '0 0 20px 0' } }, title),
+                m('h4', { id: `${id}-title`, className: 'mm-modal-title' }, title),
                 description &&
                   m(
                     'div',
@@ -253,11 +233,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
               m(
                 '.modal-footer',
                 {
-                  style: {
-                    padding: '4px 6px',
-                    borderTop: '1px solid var(--mm-border-color, rgba(160,160,160,0.2))',
-                    textAlign: 'right',
-                  },
+                  className: 'modal-footer mm-modal-footer',
                 },
                 buttons.map((buttonProps) =>
                   m(FlatButton, {

@@ -452,6 +452,59 @@ $secondary-color: #FF9800;
 
 ### Custom Styles
 
+#### ModalPanel overrides
+
+`ModalPanel` now exposes stable slot classes and `--mm-modal-*` tokens so you can override styles without relying on broad selectors.
+
+Slot classes:
+
+- `.mm-modal-overlay`
+- `.mm-modal-surface`
+- `.mm-modal-close-button`
+- `.mm-modal-content`
+- `.mm-modal-content-with-close`
+- `.mm-modal-title`
+- `.mm-modal-footer`
+
+Common tokens:
+
+```css
+:root {
+  --mm-modal-overlay-background: rgba(0, 0, 0, 0.5);
+  --mm-modal-overlay-z-index: 1002;
+  --mm-modal-z-index: 1003;
+
+  --mm-modal-width: 75%;
+  --mm-modal-max-width: 75%;
+  --mm-modal-max-height: 85%;
+  --mm-modal-border-radius: 4px;
+  --mm-modal-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.14),
+    0 9px 46px 8px rgba(0, 0, 0, 0.12),
+    0 11px 15px -7px rgba(0, 0, 0, 0.2);
+
+  --mm-modal-content-padding: 24px;
+  --mm-modal-content-padding-top-with-close: 48px;
+  --mm-modal-title-margin: 0 0 20px 0;
+
+  --mm-modal-footer-padding: 4px 6px;
+  --mm-modal-footer-border-top: 1px solid var(--mm-border-color, rgba(160, 160, 160, 0.2));
+
+  --mm-modal-close-top: 8px;
+  --mm-modal-close-right: 8px;
+  --mm-modal-close-padding: 8px;
+  --mm-modal-close-z-index: 2;
+
+  --mm-modal-bottom-sheet-max-height: var(--mm-modal-max-height, 85%);
+  --mm-modal-bottom-sheet-border-radius: 8px 8px 0 0;
+}
+```
+
+Backward compatibility note:
+
+- Existing `.modal` and `.modal-*` classes are retained.
+- Existing `className` usage on `ModalPanel` still works.
+- If you previously used `!important` to beat inline styles, prefer these slot classes and tokens first.
+
 The library includes these additional styles for enhanced functionality:
 
 ```css
