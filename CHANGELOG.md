@@ -1,3 +1,18 @@
+## [3.17.8](https://github.com/erikvullings/mithril-materialized/compare/v3.17.7...v3.17.8) (2026-08-07)
+
+
+### Bug Fixes
+
+* **build:** pin TypeScript to ^5.9.3 until @rollup/plugin-typescript supports TS7 ([1c01c85](https://github.com/erikvullings/mithril-materialized/commit/1c01c85a84b264533a7073ec8048860a8054b2f3))
+* **deps:** add pnpm overrides for transitive dev dependency vulnerabilities ([ae1af55](https://github.com/erikvullings/mithril-materialized/commit/ae1af552f5df7b7296dd65dbd8490fd471a4779f))
+* **deps:** update minimum release age exclusions and add new package overrides ([98922b6](https://github.com/erikvullings/mithril-materialized/commit/98922b613aa4565e608a3f003866f8aae1203c2a))
+* **modalpanel:** keep fixed-footer footer in flow ([5079cd7](https://github.com/erikvullings/mithril-materialized/commit/5079cd7a3e1a517aecc1ee02c43e2df0241378c3))
+* **modalpanel:** restore modal sizing and close-focus accessibility ([b6f530b](https://github.com/erikvullings/mithril-materialized/commit/b6f530b4b99608d74e425e887716d164827837ab))
+* remove concurrency group that was blocking release runs ([62740cd](https://github.com/erikvullings/mithril-materialized/commit/62740cdaea7a0d175cbd65be7aabdc3a8444b925))
+* retrigger release after ci fixes ([aed7bde](https://github.com/erikvullings/mithril-materialized/commit/aed7bde2aba00a815e9766d8645349bfc593d073))
+* retrigger release after pnpm version fix ([13833ef](https://github.com/erikvullings/mithril-materialized/commit/13833ef3abbfb46638ebef7e814a8f1caf34ea20))
+* **sidenav:** extract inline styles to CSS, fix icon alignment and transition ([3748771](https://github.com/erikvullings/mithril-materialized/commit/3748771941b16a3e11277d1885e64b395375a2b5))
+
 ## [3.17.7](https://github.com/erikvullings/mithril-materialized/compare/v3.17.6...v3.17.7) (2026-07-29)
 
 
