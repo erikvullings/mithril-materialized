@@ -1,3 +1,10 @@
+## [3.17.9](https://github.com/erikvullings/mithril-materialized/compare/v3.17.8...v3.17.9) (2026-08-07)
+
+
+### Bug Fixes
+
+* **build:** pin TypeScript to ^5.9.3 — TS7 programmatic API incompatible with @rollup/plugin-typescript ([b9fd4c3](https://github.com/erikvullings/mithril-materialized/commit/b9fd4c34b40977b2ba84af1061d7db89d6702ab9))
+
 ## [3.17.8](https://github.com/erikvullings/mithril-materialized/compare/v3.17.7...v3.17.8) (2026-08-07)
 
 
