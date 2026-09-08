@@ -866,7 +866,7 @@ oncreate: (vnode) => {
         m('h3.header', 'Pagination Controls'),
         m(
           'p',
-          'Standalone pagination controls component with customizable text and navigation. Used by DataTable but also available for any paginated content.'
+          'Standalone pagination controls component with customizable text and navigation. Click the page information to enter a page number directly.'
         ),
         m(
           '.row',
@@ -878,6 +878,7 @@ oncreate: (vnode) => {
                 '.card-content',
                 m(PaginationControls, {
                   pagination: state.dataTablePagination,
+                  allowPageInput: true,
                   onPaginationChange: (newPagination) => {
                     state.dataTablePagination = newPagination;
                     console.log('Pagination changed:', newPagination);
@@ -897,6 +898,7 @@ oncreate: (vnode) => {
         m(HighlightedCodeBlock, {
           code: `m(PaginationControls, {
   pagination: { page: 0, pageSize: 10, total: 247 },
+  allowPageInput: true,
   onPaginationChange: (newPagination) => {
     console.log('Page changed:', newPagination);
   },

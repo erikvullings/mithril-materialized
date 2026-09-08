@@ -1,5 +1,5 @@
 import m, { Attributes, Component, Vnode, type FactoryComponent } from 'mithril';
-import { TextInput } from './input';
+import { NumberInput, TextInput } from './input';
 import { InputCheckbox } from './option';
 import { uniqueId } from './utils';
 
@@ -430,6 +430,8 @@ export interface PaginationControlsAttrs {
   onPaginationChange: (pagination: DataTablePagination) => void;
   /** Internationalization strings for pagination text */
   i18n?: DataTableI18n;
+  /** Allow the page information label to be clicked to enter a page number. @default false */
+  allowPageInput?: boolean;
 }
 
 /**
@@ -443,15 +445,21 @@ export interface PaginationControlsAttrs {
  * ```typescript
  * m(PaginationControls, {
  *   pagination: { page: 0, pageSize: 10, total: 100 },
+ *   allowPageInput: true,
  *   onPaginationChange: (newPagination) => console.log('Page changed:', newPagination),
  *   i18n: { showing: 'Showing', to: 'to', of: 'of', entries: 'entries', page: 'Page' }
  * })
  * ```
  */
 export const PaginationControls: FactoryComponent<PaginationControlsAttrs> = () => {
+  const state = {
+    isEditingPage: false,
+    pageInputValue: 1,
+  };
+
   return {
     view: ({ attrs }: Vnode<PaginationControlsAttrs>) => {
-      const { pagination, onPaginationChange, i18n } = attrs;
+      const { pagination, onPaginationChange, i18n, allowPageInput = false } = attrs;
 
       if (!pagination) return null;
 
@@ -465,6 +473,70 @@ export const PaginationControls: FactoryComponent<PaginationControlsAttrs> = () 
       const ofText = i18n?.of || 'of';
       const entriesText = i18n?.entries || 'entries';
       const pageText = i18n?.page || 'Page';
+
+      const startEditingPage = () => {
+        if (allowPageInput && totalPages > 0) {
+          state.pageInputValue = page + 1;
+          state.isEditingPage = true;
+        }
+      };
+
+      const updatePageInput = (pageNumber: number) => {
+        if (!Number.isFinite(pageNumber)) return;
+        state.pageInputValue = Math.min(totalPages, Math.max(1, Math.trunc(pageNumber)));
+      };
+
+      const submitPage = (pageNumber: number) => {
+        if (!Number.isInteger(pageNumber) || pageNumber < 1 || pageNumber > totalPages) return;
+
+        state.isEditingPage = false;
+        if (pageNumber !== page + 1) {
+          onPaginationChange({ ...pagination, page: pageNumber - 1 });
+        }
+      };
+
+      const pageInfo = state.isEditingPage && allowPageInput && totalPages > 0
+        ? m('.page-info.page-info-editor', [
+            m('span', `${pageText} `),
+            m(NumberInput, {
+              className: 'page-number-input',
+              value: state.pageInputValue,
+              min: 1,
+              max: totalPages,
+              step: 1,
+              hideSpinners: true,
+              autofocus: true,
+              'aria-label': pageText,
+              oninput: updatePageInput,
+              onchange: () => submitPage(state.pageInputValue),
+              onkeydown: (event) => {
+                if (event.key === 'Enter') {
+                  submitPage(state.pageInputValue);
+                } else if (event.key === 'Escape') {
+                  state.isEditingPage = false;
+                }
+              },
+            }),
+            m('span', ` ${ofText} ${totalPages}`),
+          ])
+        : m(
+            'span.page-info',
+            allowPageInput && totalPages > 0
+              ? {
+                  className: 'page-info-editable',
+                  role: 'button',
+                  tabindex: 0,
+                  onclick: startEditingPage,
+                  onkeydown: (event: KeyboardEvent) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      startEditingPage();
+                    }
+                  },
+                }
+              : {},
+            `${pageText} ${page + 1} ${ofText} ${totalPages}`
+          );
 
       return m('.datatable-pagination', [
         m('.pagination-info', `${showingText} ${startItem} ${toText} ${endItem} ${ofText} ${total} ${entriesText}`),
@@ -485,7 +557,7 @@ export const PaginationControls: FactoryComponent<PaginationControlsAttrs> = () 
             },
             '◀'
           ),
-          m('span.page-info', `${pageText} ${page + 1} ${ofText} ${totalPages}`),
+          pageInfo,
           m(
             'button.btn-flat',
             {

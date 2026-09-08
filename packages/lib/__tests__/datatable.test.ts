@@ -7,6 +7,7 @@ import {
   DataTablePagination,
   DataTableSelection,
   DataTableFilter,
+  PaginationControls,
 } from '../src/datatable';
 
 // Mock data for tests
@@ -348,6 +349,68 @@ describe('DataTable Component', () => {
       (nextButton as HTMLElement | undefined)?.click();
 
       expect(onPaginationChange).toHaveBeenCalled();
+    });
+
+    test('allows entering a page number when enabled', () => {
+      const onPaginationChange = jest.fn();
+      const pagination: DataTablePagination = {
+        page: 7,
+        pageSize: 10,
+        total: 870,
+      };
+
+      m.mount(container, {
+        view: () =>
+          m(PaginationControls, {
+            pagination,
+            allowPageInput: true,
+            onPaginationChange,
+            i18n: { page: 'Part' },
+          }),
+      });
+
+      const pageInfo = container.querySelector('.page-info');
+      expect(pageInfo?.textContent).toBe('Part 8 of 87');
+
+      (pageInfo as HTMLElement).click();
+      m.redraw.sync();
+
+      const input = container.querySelector('.page-info-editor input') as HTMLInputElement | null;
+      expect(input).toBeTruthy();
+      expect(input?.min).toBe('1');
+      expect(input?.max).toBe('87');
+      expect(input?.value).toBe('8');
+
+      if (!input) return;
+      input.value = '888';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      m.redraw.sync();
+      expect(input.value).toBe('87');
+
+      input.value = '42';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      m.redraw.sync();
+      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+
+      expect(onPaginationChange).toHaveBeenCalledWith({ ...pagination, page: 41 });
+    });
+
+    test('does not allow entering a page number by default', () => {
+      const pagination: DataTablePagination = {
+        page: 0,
+        pageSize: 10,
+        total: 100,
+      };
+
+      m.mount(container, {
+        view: () => m(PaginationControls, { pagination, onPaginationChange: jest.fn() }),
+      });
+
+      const pageInfo = container.querySelector('.page-info');
+      (pageInfo as HTMLElement).click();
+      m.redraw.sync();
+
+      expect(container.querySelector('.page-info-editor input')).toBeNull();
     });
   });
 
