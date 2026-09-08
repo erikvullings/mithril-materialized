@@ -1,3 +1,10 @@
+## [3.17.11](https://github.com/erikvullings/mithril-materialized/compare/v3.17.10...v3.17.11) (2026-09-08)
+
+
+### Bug Fixes
+
+* **pagination:** preserve page input drafts ([a84b1a9](https://github.com/erikvullings/mithril-materialized/commit/a84b1a96c967fed61c898b10302258082444be1a))
+
 ## [3.17.10](https://github.com/erikvullings/mithril-materialized/compare/v3.17.9...v3.17.10) (2026-09-08)
 
 
