@@ -8,7 +8,22 @@ export * from './carousel';
 export * from './chip';
 export * from './code-block';
 export * from './collapsible';
-export * from './combobox';
+export {
+  createAsyncComboboxState,
+  getComboboxKeyResult,
+  getComboboxOptionId,
+  getComboboxViewState,
+  rejectAsyncComboboxRequest,
+  resolveAsyncComboboxRequest,
+  startAsyncComboboxRequest,
+} from './combobox';
+export type {
+  AsyncComboboxState,
+  ComboboxKeyAction,
+  ComboboxKeyInput,
+  ComboboxKeyResult,
+  ComboboxViewState,
+} from './combobox';
 export * from './collection';
 export * from './datepicker';
 export * from './datatable';

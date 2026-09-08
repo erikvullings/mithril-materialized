@@ -11,6 +11,7 @@ import {
 import { MaterialIcon } from './material-icon';
 import { ComponentStyle } from './types';
 import { createControllableFieldState } from './controllable-field';
+import { createSelectionInteraction } from './combobox';
 
 export type SortSelected<T extends string | number> =
   | 'asc'
@@ -118,76 +119,49 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
           `Use 'defaultCheckedId' for uncontrolled components or add 'onchange' for controlled components.`
         : undefined,
   });
+  const interaction = createSelectionInteraction<T>();
 
   const isSelected = (id: T, selectedIds: T[]) => {
     return selectedIds.some((selectedId) => selectedId === id);
   };
 
-  const toggleOption = (id: T, multiple: boolean, attrs: SelectAttrs<T>) => {
-    const currentSelectedIds = valueState.current(attrs);
+  const toggleOption = (option: InputOption<T>, multiple: boolean, attrs: SelectAttrs<T>) => {
+    const result = interaction.selection({
+      type: 'toggle',
+      selectedIds: valueState.current(attrs),
+      option,
+      mode: multiple ? 'multiple' : 'single',
+    });
+    if (!result.accepted) return;
 
-    let newIds: T[];
-    if (multiple) {
-      newIds = currentSelectedIds.includes(id)
-        ? currentSelectedIds.filter((selectedId) => selectedId !== id)
-        : [...currentSelectedIds, id];
-    } else {
-      newIds = [id];
-      state.isOpen = false; // Close dropdown for single select
+    valueState.update(attrs, result.selectedIds);
+    if (result.close) {
+      state.isOpen = false;
     }
-
-    valueState.update(attrs, newIds);
-
-    // Call onchange if provided
     if (attrs.onchange) {
-      attrs.onchange(newIds);
+      attrs.onchange(result.selectedIds);
     }
   };
 
   const handleKeyDown = (e: KeyboardEvent, attrs: SelectAttrs<T>) => {
-    const { options } = attrs;
-    const selectableOptions = options.filter((opt) => !opt.disabled);
+    const result = interaction.keyboard({
+      key: e.key,
+      isOpen: state.isOpen,
+      focusedIndex: state.focusedIndex,
+      options: attrs.options,
+      openOnArrowUp: false,
+    });
+    if (result.preventDefault) {
+      e.preventDefault();
+    }
 
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        if (!state.isOpen) {
-          state.isOpen = true;
-          state.focusedIndex = 0;
-        } else {
-          const currentSelectableIndex = selectableOptions.findIndex((opt) => opt === options[state.focusedIndex]);
-          const nextSelectableIndex = Math.min(currentSelectableIndex + 1, selectableOptions.length - 1);
-          const nextOption = selectableOptions[nextSelectableIndex];
-          state.focusedIndex = options.findIndex((opt) => opt === nextOption);
-        }
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        if (state.isOpen) {
-          const currentSelectableIndex = selectableOptions.findIndex((opt) => opt === options[state.focusedIndex]);
-          const prevSelectableIndex = Math.max(currentSelectableIndex - 1, 0);
-          const prevOption = selectableOptions[prevSelectableIndex];
-          state.focusedIndex = options.findIndex((opt) => opt === prevOption);
-        }
-        break;
-      case 'Enter':
-      case ' ':
-        e.preventDefault();
-        if (state.isOpen && state.focusedIndex >= 0 && state.focusedIndex < options.length) {
-          const option = options[state.focusedIndex];
-          if (option && !option.disabled) {
-            toggleOption(option.id, attrs.multiple || false, attrs);
-          }
-        } else if (!state.isOpen) {
-          state.isOpen = true;
-          state.focusedIndex = 0;
-        }
-        break;
-      case 'Escape':
-        e.preventDefault();
-        state.isOpen = false;
-        state.focusedIndex = -1;
-        break;
+    state.isOpen = result.isOpen;
+    state.focusedIndex = result.focusedIndex;
+    if (result.action === 'selectFocused') {
+      const option = attrs.options[result.focusedIndex];
+      if (option) {
+        toggleOption(option, attrs.multiple || false, attrs);
+      }
     }
   };
 
@@ -282,7 +256,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
               ? {}
               : {
                   onclick: () => {
-                    toggleOption(option.id, multiple, attrs);
+                    toggleOption(option, multiple, attrs);
                   },
                 }),
           },
@@ -340,7 +314,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                 : {
                     onclick: (e: MouseEvent) => {
                       e.stopPropagation();
-                      toggleOption(option.id, multiple, attrs);
+                      toggleOption(option, multiple, attrs);
                     },
                   }),
             },

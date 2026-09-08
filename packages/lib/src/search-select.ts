@@ -1,7 +1,7 @@
 import m, { type Component } from 'mithril';
 import {
   type AsyncComboboxState,
-  getComboboxKeyResult,
+  createSelectionInteraction,
   getComboboxOptionId,
   getComboboxViewState,
   rejectAsyncComboboxRequest,
@@ -208,6 +208,7 @@ export const SearchSelect = <T extends string | number>(
           : [attrs.defaultCheckedId],
     fallback: () => [],
   });
+  const interaction = createSelectionInteraction<T>();
 
   const componentId = uniqueId();
   const searchInputId = `${componentId}-search`;
@@ -235,12 +236,12 @@ export const SearchSelect = <T extends string | number>(
   };
 
   // Handle keyboard navigation through shared combobox primitive.
-  const handleKeyDown = (e: KeyboardEvent, optionCount: number, includeActionRow: boolean) => {
-    const result = getComboboxKeyResult({
+  const handleKeyDown = (e: KeyboardEvent, options: InputOption<T>[], includeActionRow: boolean) => {
+    const result = interaction.keyboard({
       key: e.key,
       isOpen: state.isOpen,
       focusedIndex: state.focusedIndex,
-      optionCount,
+      options,
       includeActionRow,
     });
 
@@ -303,58 +304,38 @@ export const SearchSelect = <T extends string | number>(
 
   // Toggle option selection
   const toggleOption = (option: InputOption<T>, attrs: SearchSelectAttrs<T>) => {
-    if (option.disabled) return;
+    const result = interaction.selection({
+      type: 'toggle',
+      selectedIds: valueState.current(attrs),
+      option,
+      mode: 'multiple',
+      maxSelected: attrs.maxSelectedOptions,
+    });
+    if (!result.accepted) return;
 
-    const { maxSelectedOptions } = attrs;
-
-    // Get current selected IDs from props or internal state
-    const currentSelectedIds = valueState.current(attrs);
-
-    const isSelected = currentSelectedIds.includes(option.id);
-
-    let newIds: T[];
-    if (isSelected) {
-      // Remove if already selected
-      newIds = currentSelectedIds.filter((id) => id !== option.id);
-    } else {
-      // Check if we've reached the max selection limit
-      if (maxSelectedOptions && currentSelectedIds.length >= maxSelectedOptions) {
-        // If max=1, replace the selection
-        if (maxSelectedOptions === 1) {
-          newIds = [option.id];
-        } else {
-          // Otherwise, don't add more
-          return;
-        }
-      } else {
-        // Add to selection
-        newIds = [...currentSelectedIds, option.id];
-      }
-    }
-
-    valueState.update(attrs, newIds);
+    valueState.update(attrs, result.selectedIds);
 
     state.searchTerm = '';
     state.focusedIndex = -1;
 
     // Call onchange if provided
     if (attrs.onchange) {
-      attrs.onchange(newIds);
+      attrs.onchange(result.selectedIds);
     }
   };
 
   // Remove a selected option
   const removeOption = (optionId: T, attrs: SearchSelectAttrs<T>) => {
-    // Get current selected IDs from props or internal state
-    const currentSelectedIds = valueState.current(attrs);
-
-    const newIds = currentSelectedIds.filter((id) => id !== optionId);
-
-    valueState.update(attrs, newIds);
+    const result = interaction.selection({
+      type: 'remove',
+      selectedIds: valueState.current(attrs),
+      id: optionId,
+    });
+    valueState.update(attrs, result.selectedIds);
 
     // Call onchange if provided
     if (attrs.onchange) {
-      attrs.onchange(newIds);
+      attrs.onchange(result.selectedIds);
     }
   };
 
@@ -465,7 +446,7 @@ export const SearchSelect = <T extends string | number>(
               // console.log('SearchSelect state changed to', state.isOpen); // Debug log
             },
             onkeydown: async (e: KeyboardEvent) => {
-              const action = handleKeyDown(e, displayedOptions.length, !!showAddNew);
+              const action = handleKeyDown(e, displayedOptions, !!showAddNew);
               if (action === 'open' && loadOptions) {
                 await loadAsyncOptions(attrs, state.searchTerm);
                 return;
@@ -598,7 +579,7 @@ export const SearchSelect = <T extends string | number>(
                       }
                     },
                     onkeydown: async (e: KeyboardEvent) => {
-                      const action = handleKeyDown(e, displayedOptions.length, !!showAddNew);
+                      const action = handleKeyDown(e, displayedOptions, !!showAddNew);
                       if (action === 'open' && loadOptions) {
                         await loadAsyncOptions(attrs, state.searchTerm);
                       } else if (action === 'selectAction' && oncreateNewOption) {

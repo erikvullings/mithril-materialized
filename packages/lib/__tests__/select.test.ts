@@ -45,89 +45,88 @@ describe('Select Component', () => {
   });
 
   it('renders all options when dropdown is opened', () => {
-    // Test that clicking works by verifying the click handler is called
     const attrs = {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
       onchange: vi.fn(),
     };
-    const { container } = render(Select<string>(), attrs);
+    const select = Select<string>();
+    const result = render(select, attrs);
+    const { container } = result;
 
-    const input = container.querySelector('input.select-dropdown');
-    const selectWrapper = container.querySelector('.select-wrapper');
-
-    // Initially closed
-    expect(selectWrapper).toHaveAttribute('aria-expanded', 'false');
-
-    // Verify dropdown list is not present (input has same class, so check for ul specifically)
+    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'false');
     expect(container.querySelector('ul.select-dropdown')).toBeNull();
 
-    // Click to open (we know from console logs this works)
-    fireEvent.click(input! as HTMLElement);
+    fireEvent.click(container.querySelector('input.select-dropdown') as HTMLElement);
+    result.rerender(select, attrs);
 
-    // The actual functionality works in the browser, but the test environment
-    // doesn't properly handle Mithril's state management. This is a limitation
-    // of the test setup, not the component functionality.
-    // In a real browser, this would work correctly.
-    expect(true).toBe(true); // Pass the test since we've verified the basic structure
+    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'true');
+    expect(container.querySelectorAll('ul.select-dropdown li:not(.disabled)')).toHaveLength(2);
   });
 
   it('calls onchange when option is selected', () => {
-    // This test verifies the basic component structure and that handlers are set up
     const mockOnChange = vi.fn();
-    const { container } = render(Select<string>(), {
+    const select = Select<string>();
+    const attrs = {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
       onchange: mockOnChange,
-    });
+    };
+    const result = render(select, attrs);
+    const { container } = result;
 
-    // Verify component structure is correct
-    const selectWrapper = container.querySelector('.select-wrapper');
-    expect(selectWrapper).toBeInTheDocument();
-    expect(selectWrapper).toHaveAttribute('role', 'combobox');
+    fireEvent.click(container.querySelector('input.select-dropdown') as HTMLElement);
+    result.rerender(select, attrs);
+    fireEvent.click(container.querySelector('ul.select-dropdown li:not(.disabled)') as HTMLElement);
+    result.rerender(select, attrs);
 
-    // Interactive functionality requires browser environment
-    expect(true).toBe(true);
+    expect(mockOnChange).toHaveBeenCalledWith(['option1']);
+    expect(container.querySelector('input.select-dropdown')).toHaveValue('Option 1');
+    expect(container.querySelector('ul.select-dropdown')).toBeNull();
   });
 
   it('handles single select correctly', () => {
     const mockOnChange = vi.fn();
-    const { container } = render(Select<string>(), {
+    const select = Select<string>();
+    const attrs = {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
       onchange: mockOnChange,
       multiple: false,
-    });
+    };
+    const result = render(select, attrs);
+    const { container } = result;
 
-    // Verify single select setup
-    const selectWrapper = container.querySelector('.select-wrapper');
-    expect(selectWrapper).toBeInTheDocument();
-    expect(selectWrapper).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'Enter');
+    result.rerender(select, attrs);
 
-    // Interactive functionality tested in browser environment
-    expect(true).toBe(true);
+    expect(mockOnChange).toHaveBeenCalledWith(['option1']);
+    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('handles multiple select correctly', () => {
     const mockOnChange = vi.fn();
-    const { container } = render(Select<string>(), {
+    const select = Select<string>();
+    const attrs = {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
       onchange: mockOnChange,
       multiple: true,
-    });
+    };
+    const result = render(select, attrs);
+    const { container } = result;
 
-    // Verify multiple select setup
-    const selectWrapper = container.querySelector('.select-wrapper');
-    expect(selectWrapper).toBeInTheDocument();
-    expect(selectWrapper).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, ' ');
+    result.rerender(select, attrs);
 
-    // Multiple select behavior tested in browser environment
-    expect(true).toBe(true);
+    expect(mockOnChange).toHaveBeenCalledWith(['option1']);
+    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'true');
   });
 
   it('respects defaultCheckedId prop (uncontrolled)', () => {
@@ -188,19 +187,25 @@ describe('Select Component', () => {
 
   it('handles disabled options', () => {
     const mockOnChange = vi.fn();
-    const { container } = render(Select<string>(), {
+    const select = Select<string>();
+    const attrs = {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
       onchange: mockOnChange,
-    });
+    };
+    const result = render(select, attrs);
+    const { container } = result;
 
-    // Verify component renders with disabled options structure
-    const selectWrapper = container.querySelector('.select-wrapper');
-    expect(selectWrapper).toBeInTheDocument();
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
+    result.rerender(select, attrs);
 
-    // Disabled option interaction tested in browser environment
-    expect(true).toBe(true);
+    const focusedOption = container.querySelector('ul.select-dropdown li.focused');
+    expect(focusedOption).toHaveTextContent('Option 2');
+    expect(focusedOption).not.toHaveClass('disabled');
+    expect(mockOnChange).not.toHaveBeenCalled();
   });
 
   it('renders with icon prefix', () => {
@@ -237,19 +242,21 @@ describe('Select Component', () => {
       { id: 'veg2', label: 'Broccoli', group: 'Vegetables' },
     ];
 
-    const { container } = render(Select<string>(), {
+    const select = Select<string>();
+    const attrs = {
       id: 'test-select',
       label: 'Test Select',
       options: groupedOptions,
       onchange: vi.fn(),
-    });
+    };
+    const result = render(select, attrs);
+    const { container } = result;
 
-    // Verify component renders with grouped options
-    const selectWrapper = container.querySelector('.select-wrapper');
-    expect(selectWrapper).toBeInTheDocument();
+    fireEvent.click(container.querySelector('input.select-dropdown') as HTMLElement);
+    result.rerender(select, attrs);
 
-    // Group rendering tested when dropdown is opened in browser
-    expect(true).toBe(true);
+    expect(container.querySelectorAll('li.optgroup')).toHaveLength(2);
+    expect(container.querySelectorAll('li.optgroup-option')).toHaveLength(4);
   });
 
   it('handles options with images', () => {
@@ -258,19 +265,20 @@ describe('Select Component', () => {
       { id: 'option2', label: 'Option 2', img: 'https://example.com/image2.jpg' },
     ];
 
-    const { container } = render(Select<string>(), {
+    const select = Select<string>();
+    const attrs = {
       id: 'test-select',
       label: 'Test Select',
       options: optionsWithImages,
       onchange: vi.fn(),
-    });
+    };
+    const result = render(select, attrs);
+    const { container } = result;
 
-    // Verify component renders with image options
-    const selectWrapper = container.querySelector('.select-wrapper');
-    expect(selectWrapper).toBeInTheDocument();
+    fireEvent.click(container.querySelector('input.select-dropdown') as HTMLElement);
+    result.rerender(select, attrs);
 
-    // Note: Image functionality would be tested in browser environment
-    expect(true).toBe(true);
+    expect(container.querySelectorAll('ul.select-dropdown img')).toHaveLength(2);
   });
 
   it('displays multiple selected options as tags', () => {
@@ -374,46 +382,69 @@ describe('Select Component', () => {
     expect(selectWrapper).toHaveAttribute('aria-haspopup', 'listbox');
     expect(selectWrapper).toHaveAttribute('tabindex', '0');
 
-    // Dropdown attributes tested when opened in browser environment
-    expect(true).toBe(true);
+    expect(selectWrapper).toHaveAttribute('aria-controls', 'test-select-dropdown');
   });
 
-  it.skip('handles keyboard navigation', () => {
+  it('handles keyboard navigation', () => {
     const mockOnChange = vi.fn();
-    const { container, getByText } = render(Select<string>(), {
+    const select = Select<string>();
+    const attrs = {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
       onchange: mockOnChange,
-    });
+    };
+    const result = render(select, attrs);
+    const { container } = result;
 
-    const selectWrapper = container.querySelector('.select-wrapper');
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
+    result.rerender(select, attrs);
+    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'true');
+    expect(container.querySelector('li.focused')).toHaveTextContent('Option 1');
 
-    // Press ArrowDown to open dropdown
-    fireEvent.keyDown(selectWrapper! as HTMLElement, 'ArrowDown');
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
+    result.rerender(select, attrs);
+    expect(container.querySelector('li.focused')).toHaveTextContent('Option 2');
 
-    // Check if dropdown opened (by checking aria-expanded)
-    expect(selectWrapper).toHaveAttribute('aria-expanded', 'true');
-    expect(getByText('Option 1')).toBeInTheDocument();
-
-    // Verify that keyboard navigation doesn't cause errors and dropdown stays open
-    fireEvent.keyDown(selectWrapper! as HTMLElement, 'ArrowDown');
-    expect(selectWrapper).toHaveAttribute('aria-expanded', 'true');
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'Enter');
+    result.rerender(select, attrs);
+    expect(mockOnChange).toHaveBeenCalledWith(['option2']);
   });
 
   it('closes dropdown on Escape key', () => {
-    const { container } = render(Select<string>(), {
+    const select = Select<string>();
+    const attrs = {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
       onchange: vi.fn(),
-    });
+    };
+    const result = render(select, attrs);
+    const { container } = result;
 
-    const selectWrapper = container.querySelector('.select-wrapper');
-    expect(selectWrapper).toHaveAttribute('tabindex', '0');
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
+    result.rerender(select, attrs);
+    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'true');
 
-    // Keyboard navigation tested in browser environment
-    expect(true).toBe(true);
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'Escape');
+    result.rerender(select, attrs);
+    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'false');
+    expect(container.querySelector('ul.select-dropdown')).toBeNull();
+  });
+
+  it('preserves closed-state ArrowUp behavior', () => {
+    const select = Select<string>();
+    const attrs = {
+      id: 'test-select',
+      options: mockOptions,
+      onchange: vi.fn(),
+    };
+    const result = render(select, attrs);
+
+    fireEvent.keyDown(result.container.querySelector('.select-wrapper') as HTMLElement, 'ArrowUp');
+    result.rerender(select, attrs);
+
+    expect(result.container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('works with numeric option IDs', () => {
@@ -425,13 +456,8 @@ describe('Select Component', () => {
       onchange: mockOnChange,
     });
 
-    // Verify component renders with numeric IDs
-    const selectWrapper = container.querySelector('.select-wrapper');
-    expect(selectWrapper).toBeInTheDocument();
-    const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
-    expect(input).toBeInTheDocument();
-
-    // Numeric ID functionality tested in browser environment
-    expect(true).toBe(true);
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
+    fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'Enter');
+    expect(mockOnChange).toHaveBeenCalledWith([1]);
   });
 });
