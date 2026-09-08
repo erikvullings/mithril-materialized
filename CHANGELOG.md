@@ -1,3 +1,10 @@
+## [3.17.10](https://github.com/erikvullings/mithril-materialized/compare/v3.17.9...v3.17.10) (2026-09-08)
+
+
+### Bug Fixes
+
+* **pagination:** allow direct page entry ([01629f3](https://github.com/erikvullings/mithril-materialized/commit/01629f3acb3af1db30f6bda44ea0ca2ee70a3ce1))
+
 ## [3.17.9](https://github.com/erikvullings/mithril-materialized/compare/v3.17.8...v3.17.9) (2026-08-07)
 
 
