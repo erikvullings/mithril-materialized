@@ -1,193 +1,116 @@
 import m from 'mithril';
-import { Tabs, TabsAttrs as ITabs, TabItem as ITabItem } from '../src/tabs';
-import { render, fireEvent, cleanup } from './test-utils';
+import { Tabs, type TabItem, type TabsAttrs } from '../src/tabs';
+import { cleanup, fireEvent, render } from './test-utils';
 
-describe('Tabs Component', () => {
-  afterEach(() => {
-    cleanup();
+const createTabs = (): TabItem[] => [
+  { title: 'Tab 1', vnode: m('div', 'Content 1'), id: 'tab1' },
+  { title: 'Tab 2', vnode: m('div', 'Content 2'), id: 'tab2' },
+  { title: 'Tab 3', vnode: m('div', 'Content 3'), id: 'tab3' },
+];
+
+describe('Tabs', () => {
+  afterEach(cleanup);
+
+  it('renders labels, active content, and tab IDs', () => {
+    const { container } = render(Tabs, { tabs: createTabs(), selectedTabId: 'tab1' });
+
+    expect(Array.from(container.querySelectorAll('.tab a')).map((link) => link.textContent)).toEqual([
+      'Tab 1',
+      'Tab 2',
+      'Tab 3',
+    ]);
+    expect(container.querySelector('.tab a.active')).toHaveTextContent('Tab 1');
+    expect(container.querySelector('.tab-content')).toHaveTextContent('Content 1');
+    expect(container.querySelector('.tab a')).toHaveAttribute('href', '#anchor-tab1');
   });
 
-  const createTestTabs = (): ITabItem[] => [
-    {
-      title: 'Tab 1',
-      vnode: m('div', 'Content 1'),
-      id: 'tab1',
-    },
-    {
-      title: 'Tab 2',
-      vnode: m('div', 'Content 2'),
-      id: 'tab2',
-    },
-    {
-      title: 'Tab 3',
-      vnode: m('div', 'Content 3'),
-      id: 'tab3',
-    },
-  ];
+  it('synchronizes selectedTabId on the same mounted instance', () => {
+    const attrs = { tabs: createTabs(), selectedTabId: 'tab1' };
+    const result = render(Tabs, attrs);
 
-  const defaultTabsAttrs: ITabs = {
-    tabs: createTestTabs(),
-    selectedTabId: 'tab1',
-  };
+    result.rerender(Tabs, { ...attrs, selectedTabId: 'tab2' });
 
-  test('renders tabs with correct structure', () => {
-    const { container } = render(Tabs, defaultTabsAttrs);
-
-    const row = container.querySelector('.row');
-    const tabsList = container.querySelector('ul.tabs');
-    const tabElements = container.querySelectorAll('.tab');
-
-    expect(row).toBeTruthy();
-    expect(tabsList).toBeTruthy();
-    expect(tabElements).toHaveLength(3);
+    expect(result.container.querySelector('.tab a.active')).toHaveTextContent('Tab 2');
+    expect(result.container.querySelector('.tab-content')).toHaveTextContent('Content 2');
   });
 
-  test('renders tab labels correctly', () => {
-    const { container } = render(Tabs, defaultTabsAttrs);
+  it('calls onShow before onTabChange and ignores a same-tab click', () => {
+    const calls: string[] = [];
+    const attrs: TabsAttrs = {
+      tabs: createTabs(),
+      onShow: (tab) => calls.push(`show:${tab.textContent}`),
+      onTabChange: (tabId) => calls.push(`change:${tabId}`),
+    };
+    const result = render(Tabs, attrs);
 
-    const tabLinks = container.querySelectorAll('.tab a');
-    expect(tabLinks[0].textContent).toBe('Tab 1');
-    expect(tabLinks[1].textContent).toBe('Tab 2');
-    expect(tabLinks[2].textContent).toBe('Tab 3');
+    fireEvent.click(result.container.querySelectorAll('.tab a')[0] as HTMLElement);
+    expect(calls).toEqual([]);
+
+    fireEvent.click(result.container.querySelectorAll('.tab a')[1] as HTMLElement);
+    expect(calls).toEqual(['show:Tab 2', 'change:tab2']);
+
+    result.rerender(Tabs, attrs);
+    expect(result.container.querySelector('.tab a.active')).toHaveTextContent('Tab 2');
+    expect(result.container.querySelector('.tab-content')).toHaveTextContent('Content 2');
   });
 
-  test('sets active tab correctly', () => {
-    const { container } = render(Tabs, defaultTabsAttrs);
-
-    const activeTabLink = container.querySelector('.tab a.active');
-    expect(activeTabLink?.textContent).toBe('Tab 1');
-  });
-
-  test('displays active tab content', () => {
-    const { container } = render(Tabs, defaultTabsAttrs);
-
-    const tabContents = container.querySelectorAll('.tab-content');
-    const visibleContent = Array.from(tabContents).find((content) => (content as HTMLElement).style.display !== 'none');
-
-    expect(visibleContent).toBeTruthy();
-  });
-
-  test('handles tab switching on click', () => {
-    const onShow = jest.fn();
-    const TabsInstance = Tabs;
-    const { container, rerender } = render(TabsInstance, { ...defaultTabsAttrs, onShow });
-
-    const secondTabLink = container.querySelectorAll('.tab a')[1] as HTMLElement;
-    fireEvent.click(secondTabLink);
-
-    expect(onShow).toHaveBeenCalled();
-
-    // Re-render the same instance to see updated state
-    rerender(TabsInstance);
-
-    // Check if second tab becomes active - look for any active tab
-    const activeTab = container.querySelector('.tab a.active');
-    expect(activeTab).toBeTruthy();
-  });
-
-  test('applies disabled state correctly', () => {
-    const tabs = [
-      { title: 'Tab 1', vnode: m('div', 'Content 1'), id: 'tab1' },
-      { title: 'Tab 2', vnode: m('div', 'Content 2'), id: 'tab2', disabled: true },
-      { title: 'Tab 3', vnode: m('div', 'Content 3'), id: 'tab3' },
+  it('does not transition disabled or href tabs on click', () => {
+    const onTabChange = jest.fn();
+    const tabs: TabItem[] = [
+      { title: 'Disabled', id: 'disabled', disabled: true },
+      { title: 'External', id: 'external', href: 'https://example.com', target: '_blank' },
+      { title: 'Eligible', id: 'eligible', vnode: m('div', 'Eligible content') },
     ];
-    const TabsInstance = Tabs;
-    const { container } = render(TabsInstance, { ...defaultTabsAttrs, tabs });
+    const result = render(Tabs, { tabs, onTabChange });
 
-    const secondTabLink = container.querySelectorAll('.tab a')[1] as HTMLElement;
-
-    expect(secondTabLink.style.opacity).toBe('0.6');
-    expect(secondTabLink.style.cursor).toBe('not-allowed');
-  });
-
-  test('does not activate disabled tabs', () => {
-    const onShow = jest.fn();
-    const tabs = [
-      { title: 'Tab 1', vnode: m('div', 'Content 1'), id: 'tab1' },
-      { title: 'Tab 2', vnode: m('div', 'Content 2'), id: 'tab2', disabled: true },
-      { title: 'Tab 3', vnode: m('div', 'Content 3'), id: 'tab3' },
-    ];
-    const TabsInstance = Tabs;
-    const { container } = render(TabsInstance, { ...defaultTabsAttrs, tabs, onShow });
-
-    const secondTabLink = container.querySelectorAll('.tab a')[1] as HTMLElement;
-    fireEvent.click(secondTabLink);
-
-    expect(onShow).not.toHaveBeenCalled();
-  });
-
-  test('applies fixed width when tabWidth is set to fill', () => {
-    const TabsInstance = Tabs;
-    const { container } = render(TabsInstance, { ...defaultTabsAttrs, tabWidth: 'fill' });
-
-    const tabsList = container.querySelector('ul.tabs');
-    expect(tabsList?.classList.contains('tabs-fixed-width')).toBe(true);
-  });
-
-  test('applies column classes when tabWidth is fixed', () => {
-    const TabsInstance = Tabs;
-    const { container } = render(TabsInstance, { ...defaultTabsAttrs, tabWidth: 'fixed' });
-
-    const tabItems = container.querySelectorAll('.tab');
-    tabItems.forEach((tab) => {
-      expect(tab.classList.contains('col')).toBe(true);
-      expect(tab.classList.contains('s4')).toBe(true); // 12 / 3 tabs = s4
+    expect(result.container.querySelector('.tab a.active')).toHaveTextContent('Eligible');
+    fireEvent.click(result.container.querySelectorAll('.tab a')[0] as HTMLElement);
+    fireEvent.click(result.container.querySelectorAll('.tab a')[1] as HTMLElement);
+    expect(onTabChange).not.toHaveBeenCalled();
+    expect(result.container.querySelectorAll('.tab a')[0]).toHaveStyle({
+      opacity: '0.6',
+      cursor: 'not-allowed',
     });
+    expect(result.container.querySelectorAll('.tab a')[1]).toHaveAttribute('href', 'https://example.com');
+    expect(result.container.querySelectorAll('.tab a')[1]).toHaveAttribute('target', '_blank');
   });
 
-  test('creates correct href for tabs', () => {
-    const { container } = render(Tabs, defaultTabsAttrs);
+  it('preserves tab width and custom class rendering', () => {
+    const fill = render(Tabs, { tabs: createTabs(), tabWidth: 'fill', className: 'custom-tabs' });
+    expect(fill.container.querySelector('ul.tabs')).toHaveClass('tabs-fixed-width', 'custom-tabs');
+    fill.unmount();
 
-    const firstTabLink = container.querySelector('.tab a') as HTMLAnchorElement;
-    expect(firstTabLink.href).toContain('#anchor-tab1'); // Browser resolves to full URL with anchor prefix
+    const fixed = render(Tabs, { tabs: createTabs(), tabWidth: 'fixed' });
+    fixed.container.querySelectorAll('.tab').forEach((tab) => expect(tab).toHaveClass('col', 's4'));
   });
 
-  test('handles external links when href and target are provided', () => {
-    const tabs = [
-      { title: 'External Link', href: 'https://example.com', target: '_blank' as const },
-      { title: 'Tab 2', vnode: m('div', 'Content 2'), id: 'tab2' },
-    ];
-    const TabsInstance = Tabs;
-    const { container } = render(TabsInstance, { ...defaultTabsAttrs, tabs });
-
-    const externalLink = container.querySelector('.tab a') as HTMLAnchorElement;
-    expect(externalLink.href).toBe('https://example.com/');
-    expect(externalLink.target).toBe('_blank');
-  });
-
-  test('applies custom className', () => {
-    const TabsInstance = Tabs;
-    const { container } = render(TabsInstance, { ...defaultTabsAttrs, className: 'custom-tabs' });
-
-    const tabsList = container.querySelector('ul.tabs');
-    expect(tabsList?.classList.contains('custom-tabs')).toBe(true);
-  });
-
-  test('syncs selectedTabId prop with internal state', () => {
-    const TabsInstance = Tabs;
-    const { container, rerender } = render(TabsInstance, defaultTabsAttrs);
-
-    // Initially tab1 should be active
-    expect(container.querySelector('.tab a.active')?.textContent).toBe('Tab 1');
-
-    // Change selectedTabId and rerender the same instance
-    rerender(TabsInstance);
-    const newAttrs = { ...defaultTabsAttrs, selectedTabId: 'tab2' };
-    const { container: newContainer } = render(TabsInstance, newAttrs);
-
-    // Should update to tab2
-    expect(newContainer.querySelector('.tab a.active')?.textContent).toBe('Tab 2');
-  });
-
-  test('defaults to first available tab when no active tab is specified', () => {
-    const tabsWithoutSelection: ITabs = {
-      tabs: createTestTabs(),
+  it('changes tabs on left and right swipes but not below threshold or at edges', () => {
+    const onTabChange = jest.fn();
+    const attrs = { tabs: createTabs(), swipeable: true, onTabChange };
+    const result = render(Tabs, attrs);
+    const content = () => result.container.querySelector('.tab-content') as HTMLElement;
+    const swipe = (startX: number, endX: number) => {
+      content().dispatchEvent(
+        new TouchEvent('touchstart', { bubbles: true, touches: [{ clientX: startX } as Touch] })
+      );
+      content().dispatchEvent(
+        new TouchEvent('touchend', { bubbles: true, changedTouches: [{ clientX: endX } as Touch] })
+      );
+      result.rerender(Tabs, attrs);
     };
 
-    const TabsInstance = Tabs;
-    const { container } = render(TabsInstance, tabsWithoutSelection);
+    swipe(100, 60);
+    expect(onTabChange).not.toHaveBeenCalled();
+    expect(result.container.querySelector('.tab a.active')).toHaveTextContent('Tab 1');
 
-    const activeTabLink = container.querySelector('.tab a.active');
-    expect(activeTabLink?.textContent).toBe('Tab 1');
+    swipe(100, 20);
+    expect(onTabChange).toHaveBeenLastCalledWith('tab2');
+    expect(result.container.querySelector('.tab a.active')).toHaveTextContent('Tab 2');
+
+    swipe(20, 100);
+    expect(onTabChange).toHaveBeenLastCalledWith('tab1');
+
+    swipe(20, 100);
+    expect(onTabChange).toHaveBeenCalledTimes(2);
   });
 });

@@ -1,4 +1,10 @@
 import m, { Vnode, FactoryComponent, Attributes } from 'mithril';
+import {
+  createDomTabsIndicatorMeasurementAdapter,
+  createTabsIndicator,
+  createTabsStateTransitions,
+  type TabsSnapshot,
+} from './tabs-state';
 
 /**
  * Link or anchor target may take 4 values:
@@ -58,143 +64,42 @@ export interface TabsAttrs extends TabsOptions, Attributes {
 
 /** CSS-only Tabs component - no MaterializeCSS dependencies */
 export const Tabs: FactoryComponent<TabsAttrs> = () => {
-  type AnchoredTabItem = TabItem & {
-    anchorId: string;
-    tabId: string;
-  };
-
-  const toAnchored = () => {
-    return (tab: TabItem) => {
-      const tabId = createId(tab.title, tab.id);
-      return { ...tab, tabId, anchorId: `anchor-${tabId}` } as AnchoredTabItem;
-    };
-  };
-
-  const state = {
-    activeTabId: '',
-    isDragging: false,
-    startX: 0,
-    translateX: 0,
-    indicatorStyle: {
-      left: '0px',
-      width: '0px',
-    },
-    lastIndicatorUpdate: '',
-  };
-
-  const createId = (title: string, id?: string) => (id ? id : title.replace(/ /g, '').toLowerCase());
-
-  const updateIndicator = () => {
-    const tabElement = document.getElementById(state.activeTabId);
-    if (tabElement) {
-      const tabsContainer = tabElement.closest('.tabs');
-      if (tabsContainer) {
-        const containerRect = tabsContainer.getBoundingClientRect();
-        const tabRect = tabElement.getBoundingClientRect();
-
-        const newLeft = `${tabRect.left - containerRect.left}px`;
-        const newWidth = `${tabRect.width}px`;
-
-        // Only update if values actually changed - NO m.redraw()!
-        if (state.indicatorStyle.left !== newLeft || state.indicatorStyle.width !== newWidth) {
-          state.indicatorStyle = {
-            left: newLeft,
-            width: newWidth,
-          };
-        }
-      }
-    }
-  };
+  const transitions = createTabsStateTransitions<TabItem>();
+  const indicator = createTabsIndicator(createDomTabsIndicatorMeasurementAdapter());
+  let snapshot: TabsSnapshot<TabItem> = { tabs: [] };
+  let indicatorStyle = { left: '0px', width: '0px' };
 
   const handleTabClick = (tabId: string, tabElement: HTMLElement, attrs: TabsAttrs) => {
-    console.log({ state, tabId });
-    if (state.activeTabId === tabId) return;
-
-    state.activeTabId = tabId;
-
-    // Call onShow callback if provided
+    const transition = transitions.click(tabId);
+    if (!transition.changed || !transition.tabId) return;
     if (attrs.onShow) {
       attrs.onShow(tabElement);
     }
-
-    // Call onTabChange callback if provided
     if (attrs.onTabChange) {
-      attrs.onTabChange(tabId);
+      attrs.onTabChange(transition.tabId);
     }
   };
 
-  // Touch/swipe support for mobile
   const handleTouchStart = (e: TouchEvent) => {
     if (!e.touches || e.touches.length === 0) return;
-    state.isDragging = true;
-    state.startX = e.touches[0].clientX;
+    transitions.swipe({ type: 'start', x: e.touches[0].clientX });
   };
 
   const handleTouchEnd = (e: TouchEvent, attrs: TabsAttrs) => {
-    if (!state.isDragging || !e.changedTouches || e.changedTouches.length === 0) return;
-
-    const endX = e.changedTouches[0].clientX;
-    const deltaX = endX - state.startX;
-    const threshold = 50; // Minimum swipe distance
-
-    if (Math.abs(deltaX) > threshold) {
-      const currentIndex = attrs.tabs.findIndex((tab) => createId(tab.title, tab.id) === state.activeTabId);
-
-      if (deltaX > 0 && currentIndex > 0) {
-        // Swipe right - go to previous tab
-        const prevTab = attrs.tabs[currentIndex - 1];
-        if (!prevTab.disabled && !prevTab.href) {
-          const newTabId = createId(prevTab.title, prevTab.id);
-          state.activeTabId = newTabId;
-          if (attrs.onTabChange) {
-            attrs.onTabChange(newTabId);
-          }
-        }
-      } else if (deltaX < 0 && currentIndex < attrs.tabs.length - 1) {
-        // Swipe left - go to next tab
-        const nextTab = attrs.tabs[currentIndex + 1];
-        if (!nextTab.disabled && !nextTab.href) {
-          const newTabId = createId(nextTab.title, nextTab.id);
-          state.activeTabId = newTabId;
-          if (attrs.onTabChange) {
-            attrs.onTabChange(newTabId);
-          }
-        }
-      }
+    if (!e.changedTouches || e.changedTouches.length === 0) return;
+    const transition = transitions.swipe({ type: 'end', x: e.changedTouches[0].clientX });
+    if (transition.changed && transition.tabId && attrs.onTabChange) {
+      attrs.onTabChange(transition.tabId);
     }
-
-    state.isDragging = false;
-    state.translateX = 0;
-  };
-
-  /** Initialize active tab - selectedTabId takes precedence, next active property or first available tab */
-  const setActiveTabId = (anchoredTabs: AnchoredTabItem[], selectedTabId?: string): AnchoredTabItem | undefined => {
-    const selectedTab = selectedTabId ? anchoredTabs.find((a) => a.tabId === selectedTabId) : undefined;
-    if (selectedTab) {
-      state.activeTabId = selectedTab.tabId;
-      return selectedTab;
-    }
-
-    const curTab = state.activeTabId && anchoredTabs.find((a) => a.tabId === state.activeTabId);
-    if (curTab) return curTab;
-
-    // Default to first non-disabled tab
-    const firstAvailableTab = anchoredTabs.find((a) => !a.disabled && !a.href);
-    if (firstAvailableTab) {
-      state.activeTabId = firstAvailableTab.tabId;
-      return firstAvailableTab;
-    }
-    return undefined;
   };
 
   return {
     oninit: ({ attrs }) => {
-      const anchoredTabs = attrs.tabs.map(toAnchored());
-      setActiveTabId(anchoredTabs, attrs.selectedTabId);
+      snapshot = transitions.sync(attrs.tabs, attrs.selectedTabId);
     },
 
     oncreate: () => {
-      updateIndicator();
+      indicatorStyle = indicator.sync(snapshot.activeTab?.tabId || '');
     },
 
     view: ({ attrs }) => {
@@ -202,9 +107,9 @@ export const Tabs: FactoryComponent<TabsAttrs> = () => {
       const cn =
         [tabWidth === 'fill' ? 'tabs-fixed-width' : '', className].filter(Boolean).join(' ').trim() || undefined;
 
-      const anchoredTabs = tabs.map(toAnchored());
-      const activeTab = setActiveTabId(anchoredTabs, attrs.selectedTabId);
-      updateIndicator();
+      snapshot = transitions.sync(tabs, attrs.selectedTabId);
+      const { tabs: anchoredTabs, activeTab } = snapshot;
+      indicatorStyle = indicator.sync(activeTab?.tabId || '');
 
       return m('.row', [
         // Tab headers
@@ -236,7 +141,7 @@ export const Tabs: FactoryComponent<TabsAttrs> = () => {
                     'a',
                     {
                       id: anchorId,
-                      className: tab.tabId === state.activeTabId ? 'active' : undefined,
+                      className: tab.tabId === activeTab?.tabId ? 'active' : undefined,
                       target,
                       href: href || `#${anchorId}`,
                       onclick:
@@ -256,9 +161,9 @@ export const Tabs: FactoryComponent<TabsAttrs> = () => {
               m('li.indicator', {
                 key: 'indicator',
                 style: {
-                  display: state.activeTabId ? 'block' : 'none',
-                  left: state.indicatorStyle.left,
-                  width: state.indicatorStyle.width,
+                  display: activeTab ? 'block' : 'none',
+                  left: indicatorStyle.left,
+                  width: indicatorStyle.width,
                   transition: 'left 0.35s ease, width 0.35s ease',
                 },
               }),
