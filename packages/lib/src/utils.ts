@@ -3,6 +3,7 @@ import m from 'mithril';
 import { HelperText, Label } from './label';
 import { SortSelected } from './select';
 import { InputOption } from '.';
+import { createControllableFieldState } from './controllable-field';
 
 /**
  * Create a unique ID
@@ -92,23 +93,16 @@ export interface ControllableValueOptions<T> {
   fallbackValue: T;
 }
 
-export const resolveControllableValue = <T>({
-  controlled,
-  disabled,
-  controlledValue,
-  defaultValue,
-  internalValue,
-  fallbackValue,
-}: ControllableValueOptions<T>): T => {
-  if (controlled) {
-    return controlledValue ?? fallbackValue;
-  }
-
-  if (disabled) {
-    return defaultValue ?? controlledValue ?? fallbackValue;
-  }
-
-  return internalValue ?? defaultValue ?? fallbackValue;
+export const resolveControllableValue = <T>(options: ControllableValueOptions<T>): T => {
+  const valueState = createControllableFieldState<ControllableValueOptions<T>, T>({
+    controlled: (attrs) => attrs.controlled,
+    value: (attrs) => attrs.controlledValue,
+    defaultValue: (attrs) => (attrs.disabled ? attrs.defaultValue : attrs.internalValue ?? attrs.defaultValue),
+    fallback: (attrs) => attrs.fallbackValue,
+    nonInteractive: (attrs) => attrs.disabled,
+  });
+  valueState.sync(options);
+  return valueState.current(options);
 };
 
 export interface FieldChromeOptions {

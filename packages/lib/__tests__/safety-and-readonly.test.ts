@@ -1,4 +1,4 @@
-import { TextArea, TextInput } from '../src/input';
+import { ColorInput, TextArea, TextInput } from '../src/input';
 import { Autocomplete } from '../src/autocomplete';
 import { RadioButtons } from '../src/radio';
 import { cleanup, render } from './test-utils';
@@ -37,6 +37,24 @@ describe('Safety and readOnly behavior', () => {
     });
 
     expect(getByDisplayValue('preferred value')).toBeInTheDocument();
+  });
+
+  it('preserves native color fallback and default precedence for non-interactive inputs', () => {
+    const readonlyResult = render(ColorInput, {
+      label: 'Read only color',
+      readOnly: true,
+      value: '#123456',
+    });
+    expect(readonlyResult.getByDisplayValue('#000000')).toBeInTheDocument();
+    readonlyResult.unmount();
+
+    const disabledResult = render(ColorInput, {
+      label: 'Disabled color',
+      disabled: true,
+      value: '#123456',
+      defaultValue: '#abcdef',
+    });
+    expect(disabledResult.getByDisplayValue('#abcdef')).toBeInTheDocument();
   });
 
   it('renders autocomplete suggestions with regex-like input safely', () => {

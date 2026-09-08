@@ -1,7 +1,8 @@
 import m, { Component, Attributes } from 'mithril';
 import { HelperText } from './label';
-import { uniqueId, getDropdownStyles, resolveControllableValue, syncPortalContent } from './utils';
+import { uniqueId, getDropdownStyles, syncPortalContent } from './utils';
 import { MaterialIcon } from './material-icon';
+import { createControllableFieldState } from './controllable-field';
 
 export interface DropdownItem<T extends string | number> {
   /** ID property of the selected item */
@@ -52,30 +53,33 @@ export interface DropdownAttrs<T extends string | number> extends Attributes {
   maxHeight?: string;
 }
 
-interface DropdownState<T extends string | number> {
+interface DropdownState {
   isOpen: boolean;
   id: string;
   focusedIndex: number;
   inputRef?: HTMLElement | null;
   dropdownRef?: HTMLElement | null;
-  internalCheckedId?: T;
   isInsideModal: boolean;
 }
 
 /** Pure TypeScript Dropdown component - no Materialize dependencies */
 export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T>> => {
-  const state: DropdownState<T> = {
+  const state: DropdownState = {
     isOpen: false,
     id: '',
     focusedIndex: -1,
     inputRef: null,
     dropdownRef: null,
-    internalCheckedId: undefined,
     isInsideModal: false,
   };
 
-  const isControlled = (attrs: DropdownAttrs<T>) =>
-    attrs.checkedId !== undefined && typeof attrs.onchange === 'function';
+  const valueState = createControllableFieldState<DropdownAttrs<T>, T | undefined>({
+    controlled: (attrs) => attrs.checkedId !== undefined && typeof attrs.onchange === 'function',
+    value: (attrs) => attrs.checkedId,
+    defaultValue: (attrs) => attrs.defaultCheckedId,
+    fallback: () => undefined,
+    nonInteractive: (attrs) => attrs.disabled,
+  });
 
   const closeDropdown = () => {
     state.isOpen = false;
@@ -233,10 +237,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
     oninit: ({ attrs }) => {
       state.id = attrs.id?.toString() || uniqueId();
 
-      // Initialize internal state for uncontrolled mode
-      if (!isControlled(attrs)) {
-        state.internalCheckedId = attrs.defaultCheckedId;
-      }
+      valueState.sync(attrs);
 
       // Add global click listener to close dropdown
       document.addEventListener('click', closeDropdown);
@@ -257,7 +258,6 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
 
     view: ({ attrs }) => {
       const {
-        checkedId,
         key,
         label,
         onchange,
@@ -269,21 +269,11 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
         className = 'col s12',
       } = attrs;
 
-      const controlled = isControlled(attrs);
-      const currentCheckedId = resolveControllableValue<T | undefined>({
-        controlled,
-        disabled,
-        controlledValue: checkedId,
-        defaultValue: attrs.defaultCheckedId,
-        internalValue: state.internalCheckedId,
-        fallbackValue: undefined,
-      });
+      valueState.sync(attrs);
+      const currentCheckedId = valueState.current(attrs);
 
       const handleSelection = (value: T) => {
-        // Update internal state for uncontrolled mode
-        if (!controlled) {
-          state.internalCheckedId = value;
-        }
+        valueState.update(attrs, value);
 
         // Call onchange if provided
         if (onchange) {

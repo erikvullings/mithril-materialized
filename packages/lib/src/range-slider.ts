@@ -2,6 +2,7 @@ import m from 'mithril';
 import { InputAttrs } from './input-options';
 import { Label, HelperText } from './label';
 import { ComponentStyle } from './types';
+import { ControllableFieldState, createControllableFieldState } from './controllable-field';
 
 // Tooltip component for range sliders
 const RangeTooltip = {
@@ -71,98 +72,67 @@ const handleKeyboardNavigation = (
   }
 };
 
-const isControlled = (attrs: any) => {
-  return attrs.value !== undefined && typeof attrs.oninput === 'function';
+type RangeValues = [number, number];
+
+const getSingleValueState = (
+  state: any
+): ControllableFieldState<InputAttrs<number>, number> => {
+  if (!state.singleValueState) {
+    state.singleValueState = createControllableFieldState<InputAttrs<number>, number>({
+      controlled: (attrs) => attrs.value !== undefined && typeof attrs.oninput === 'function',
+      value: (attrs) => attrs.value,
+      defaultValue: (attrs) => attrs.defaultValue ?? attrs.value,
+      fallback: (attrs) => attrs.min ?? 0,
+      adoptValueUntilInteraction: (attrs) => attrs.value,
+    });
+  }
+  return state.singleValueState;
 };
 
-const isRangeControlled = (attrs: any) => {
-  return (attrs.minValue !== undefined || attrs.maxValue !== undefined) && typeof attrs.oninput === 'function';
+const getRangeValueState = (
+  state: any
+): ControllableFieldState<InputAttrs<number>, RangeValues> => {
+  if (!state.rangeValueState) {
+    const values = (attrs: InputAttrs<number>): RangeValues => [
+      attrs.minValue ?? attrs.min ?? 0,
+      attrs.maxValue ?? attrs.max ?? 100,
+    ];
+    state.rangeValueState = createControllableFieldState<InputAttrs<number>, RangeValues>({
+      controlled: (attrs) =>
+        (attrs.minValue !== undefined || attrs.maxValue !== undefined) && typeof attrs.oninput === 'function',
+      value: values,
+      defaultValue: values,
+      fallback: values,
+      adoptValueUntilInteraction: (attrs) =>
+        attrs.minValue !== undefined || attrs.maxValue !== undefined ? values(attrs) : undefined,
+    });
+  }
+  return state.rangeValueState;
 };
 
-const initRangeState = (state: any, attrs: any) => {
-  const { min = 0, max = 100, value, minValue, maxValue, defaultValue } = attrs;
-
-  // Initialize single range value
-  if (isControlled(attrs)) {
-    // Always use value from props in controlled mode
-    state.singleValue = value !== undefined ? value : min;
-  } else {
-    // Use internal state for uncontrolled mode
-    if (state.singleValue === undefined) {
-      state.singleValue = defaultValue !== undefined ? defaultValue : value !== undefined ? value : min;
-    }
-    // Only update internal state if props changed and user hasn't interacted
-    if (state.lastValue !== value && !state.hasUserInteracted && value !== undefined) {
-      state.singleValue = value;
-      state.lastValue = value;
-    }
-  }
-
-  // Initialize range values
-  if (isRangeControlled(attrs)) {
-    // Always use values from props in controlled mode
-    state.rangeMinValue = minValue !== undefined ? minValue : min;
-    state.rangeMaxValue = maxValue !== undefined ? maxValue : max;
-  } else {
-    // Use internal state for uncontrolled mode
-    const currentMinValue = minValue !== undefined ? minValue : min;
-    const currentMaxValue = maxValue !== undefined ? maxValue : max;
-
-    if (state.rangeMinValue === undefined || state.rangeMaxValue === undefined) {
-      state.rangeMinValue = currentMinValue;
-      state.rangeMaxValue = currentMaxValue;
-    }
-
-    if (
-      !state.hasUserInteracted &&
-      ((minValue !== undefined && state.lastMinValue !== minValue) ||
-        (maxValue !== undefined && state.lastMaxValue !== maxValue))
-    ) {
-      state.rangeMinValue = currentMinValue;
-      state.rangeMaxValue = currentMaxValue;
-      state.lastMinValue = minValue;
-      state.lastMaxValue = maxValue;
-    }
-  }
-
-  // Initialize active thumb if not set
-  if (state.activeThumb === null) {
-    state.activeThumb = 'min';
-  }
-
-  // Initialize dragging state
-  if (state.isDragging === undefined) {
-    state.isDragging = false;
-  }
-};
-
-const updateRangeValues = <T>(
+const updateRangeValues = (
   minValue: number,
   maxValue: number,
-  attrs: InputAttrs<T>,
-  state: any,
+  attrs: InputAttrs<number>,
+  valueState: ControllableFieldState<InputAttrs<number>, RangeValues>,
   immediate: boolean
-) => {
+): RangeValues => {
   // Ensure min doesn't exceed max and vice versa
   if (minValue > maxValue) minValue = maxValue;
   if (maxValue < minValue) maxValue = minValue;
 
-  // Only update internal state for uncontrolled mode
-  if (!isRangeControlled(attrs)) {
-    state.rangeMinValue = minValue;
-    state.rangeMaxValue = maxValue;
-  }
-
-  state.hasUserInteracted = true;
+  valueState.update(attrs, [minValue, maxValue]);
 
   // Call appropriate handler based on interaction type, not control mode
   if (immediate && attrs.oninput) {
-    attrs.oninput(minValue as T, maxValue as T); // Immediate feedback during drag
+    attrs.oninput(minValue, maxValue); // Immediate feedback during drag
   }
 
   if (!immediate && attrs.onchange) {
-    attrs.onchange(minValue as T, maxValue as T); // Final value on interaction end (blur/mouseup)
+    attrs.onchange(minValue, maxValue); // Final value on interaction end (blur/mouseup)
   }
+
+  return [minValue, maxValue];
 };
 
 // Single Range Slider Component
@@ -219,10 +189,13 @@ export const SingleRangeSlider = {
     // Apply fallback logic for valueDisplay if not explicitly set
     const finalValueDisplay = valueDisplay || (showValue ? 'always' : 'none');
 
-    // Initialize state
-    initRangeState(state, attrs);
-
-    const percentage = getPercentage(state.singleValue as number, min, max);
+    if (state.isDragging === undefined) {
+      state.isDragging = false;
+    }
+    const valueState = getSingleValueState(state);
+    valueState.sync(attrs);
+    let singleValue = valueState.current(attrs);
+    const percentage = getPercentage(singleValue, min, max);
     const containerStyle = vertical ? { height } : {};
     const orientation = vertical ? 'vertical' : 'horizontal';
 
@@ -238,12 +211,8 @@ export const SingleRangeSlider = {
       : tooltipPos;
 
     const updateSingleValue = (newValue: number, immediate = false) => {
-      // Only update internal state for uncontrolled mode
-      if (!isControlled(attrs)) {
-        state.singleValue = newValue;
-      }
-
-      state.hasUserInteracted = true;
+      valueState.update(attrs, newValue);
+      singleValue = newValue;
 
       // Call appropriate handler based on interaction type, not control mode
       if (immediate && oninput) {
@@ -260,6 +229,7 @@ export const SingleRangeSlider = {
       e.preventDefault();
       e.stopPropagation();
       state.isDragging = true;
+      state.dragValue = singleValue;
 
       if (finalValueDisplay === 'auto') {
         m.redraw();
@@ -273,7 +243,8 @@ export const SingleRangeSlider = {
         if (!state.isDragging || !container) return;
         const rect = container.getBoundingClientRect();
         const value = positionToValue(e, rect, min, max, step, vertical);
-        updateSingleValue(value, true);
+        state.dragValue = value;
+        updateSingleValue(state.dragValue, true);
         m.redraw();
       };
 
@@ -283,7 +254,8 @@ export const SingleRangeSlider = {
           state.cleanupMouseEvents();
           state.cleanupMouseEvents = null;
         }
-        updateSingleValue(state.singleValue as number, false);
+        updateSingleValue(state.dragValue ?? singleValue, false);
+        state.dragValue = undefined;
         m.redraw();
       };
 
@@ -302,7 +274,7 @@ export const SingleRangeSlider = {
       iconName ? m('i.material-icons.prefix', iconName) : undefined,
       m('input[type=range]', {
         id,
-        value: state.singleValue,
+        value: singleValue,
         min,
         max,
         step,
@@ -318,7 +290,7 @@ export const SingleRangeSlider = {
             role: 'slider',
             'aria-valuemin': min,
             'aria-valuemax': max,
-            'aria-valuenow': state.singleValue,
+            'aria-valuenow': singleValue,
             'aria-label': label || 'Range slider',
             onclick: (e: MouseEvent) => {
               if (disabled) return;
@@ -330,7 +302,7 @@ export const SingleRangeSlider = {
             },
             onkeydown: (e: KeyboardEvent) => {
               if (disabled) return;
-              const currentValue = state.singleValue as number;
+              const currentValue = singleValue;
               const newValue = handleKeyboardNavigation(e.key, currentValue, min, max, step);
               if (newValue !== null) {
                 e.preventDefault();
@@ -339,7 +311,7 @@ export const SingleRangeSlider = {
             },
             onblur: () => {
               if (disabled || !onchange) return;
-              onchange(state.singleValue as number);
+              onchange(singleValue);
             },
           },
           [
@@ -349,7 +321,7 @@ export const SingleRangeSlider = {
               `.thumb.${orientation}`,
               { style: thumbStyle, onmousedown: handleMouseDown },
               m(RangeTooltip, {
-                value: state.singleValue as number,
+                value: singleValue,
                 position: tooltipPosition,
                 show: finalValueDisplay === 'always' || (finalValueDisplay === 'auto' && state.isDragging),
               })
@@ -413,10 +385,27 @@ export const DoubleRangeSlider = {
 
     const finalValueDisplay = valueDisplay || (showValue ? 'always' : 'none');
 
-    initRangeState(state, attrs);
+    if (state.activeThumb === null) {
+      state.activeThumb = 'min';
+    }
+    if (state.isDragging === undefined) {
+      state.isDragging = false;
+    }
+    const valueState = getRangeValueState(state);
+    valueState.sync(attrs);
+    let [rangeMinValue, rangeMaxValue] = valueState.current(attrs);
+    const updateDoubleValues = (nextMinValue: number, nextMaxValue: number, immediate: boolean) => {
+      [rangeMinValue, rangeMaxValue] = updateRangeValues(
+        nextMinValue,
+        nextMaxValue,
+        attrs,
+        valueState,
+        immediate
+      );
+    };
 
-    const minPercentage = getPercentage(state.rangeMinValue, min, max);
-    const maxPercentage = getPercentage(state.rangeMaxValue, min, max);
+    const minPercentage = getPercentage(rangeMinValue, min, max);
+    const maxPercentage = getPercentage(rangeMaxValue, min, max);
     const containerStyle = vertical ? { height } : {};
     const orientation = vertical ? 'vertical' : 'horizontal';
 
@@ -447,6 +436,7 @@ export const DoubleRangeSlider = {
       e.stopPropagation();
       state.isDragging = true;
       state.activeThumb = thumb;
+      state.dragRangeValues = [rangeMinValue, rangeMaxValue];
 
       if (finalValueDisplay === 'auto') {
         m.redraw();
@@ -460,12 +450,14 @@ export const DoubleRangeSlider = {
         if (!state.isDragging || !container) return;
         const rect = container.getBoundingClientRect();
         const steppedValue = positionToValue(e, rect, min, max, step, vertical);
+        const [dragMinValue, dragMaxValue] = state.dragRangeValues as RangeValues;
 
         if (thumb === 'min') {
-          updateRangeValues(Math.min(steppedValue, state.rangeMaxValue), state.rangeMaxValue, attrs, state, true);
+          updateDoubleValues(Math.min(steppedValue, dragMaxValue), dragMaxValue, true);
         } else {
-          updateRangeValues(state.rangeMinValue, Math.max(steppedValue, state.rangeMinValue), attrs, state, true);
+          updateDoubleValues(dragMinValue, Math.max(steppedValue, dragMinValue), true);
         }
+        state.dragRangeValues = [rangeMinValue, rangeMaxValue];
         m.redraw();
       };
 
@@ -476,7 +468,12 @@ export const DoubleRangeSlider = {
           state.cleanupMouseEvents();
           state.cleanupMouseEvents = null;
         }
-        updateRangeValues(state.rangeMinValue, state.rangeMaxValue, attrs, state, false);
+        const [dragMinValue, dragMaxValue] = (state.dragRangeValues as RangeValues | undefined) ?? [
+          rangeMinValue,
+          rangeMaxValue,
+        ];
+        updateDoubleValues(dragMinValue, dragMaxValue, false);
+        state.dragRangeValues = undefined;
         m.redraw();
       };
 
@@ -495,7 +492,7 @@ export const DoubleRangeSlider = {
       iconName ? m('i.material-icons.prefix', iconName) : undefined,
       m('input[type=range]', {
         id,
-        value: state.rangeMinValue,
+        value: rangeMinValue,
         min,
         max,
         step,
@@ -505,7 +502,7 @@ export const DoubleRangeSlider = {
       }),
       m('input[type=range]', {
         id: `${id}_max`,
-        value: state.rangeMaxValue,
+        value: rangeMaxValue,
         min,
         max,
         step,
@@ -524,28 +521,16 @@ export const DoubleRangeSlider = {
               const rect = container.getBoundingClientRect();
               const steppedValue = positionToValue(e, rect, min, max, step, vertical);
 
-              const distToMin = Math.abs(steppedValue - state.rangeMinValue);
-              const distToMax = Math.abs(steppedValue - state.rangeMaxValue);
+              const distToMin = Math.abs(steppedValue - rangeMinValue);
+              const distToMax = Math.abs(steppedValue - rangeMaxValue);
 
               if (distToMin <= distToMax) {
-                updateRangeValues(
-                  Math.min(steppedValue, state.rangeMaxValue),
-                  state.rangeMaxValue,
-                  attrs,
-                  state,
-                  false
-                );
+                updateDoubleValues(Math.min(steppedValue, rangeMaxValue), rangeMaxValue, false);
                 state.activeThumb = 'min';
                 const minThumb = container.querySelector('.thumb.min-thumb') as HTMLElement;
                 if (minThumb) minThumb.focus();
               } else {
-                updateRangeValues(
-                  state.rangeMinValue,
-                  Math.max(steppedValue, state.rangeMinValue),
-                  attrs,
-                  state,
-                  false
-                );
+                updateDoubleValues(rangeMinValue, Math.max(steppedValue, rangeMinValue), false);
                 state.activeThumb = 'max';
                 const maxThumb = container.querySelector('.thumb.max-thumb') as HTMLElement;
                 if (maxThumb) maxThumb.focus();
@@ -553,7 +538,7 @@ export const DoubleRangeSlider = {
             },
             onblur: () => {
               if (disabled || !attrs.onchange) return;
-              attrs.onchange(state.rangeMinValue, state.rangeMaxValue);
+              attrs.onchange(rangeMinValue, rangeMaxValue);
             },
           },
           [
@@ -567,9 +552,9 @@ export const DoubleRangeSlider = {
                 tabindex: disabled ? -1 : 0,
                 role: 'slider',
                 'aria-valuemin': min,
-                'aria-valuemax': state.rangeMaxValue,
-                'aria-valuenow': state.rangeMinValue,
-                'aria-label': `Minimum value: ${state.rangeMinValue}`,
+                'aria-valuemax': rangeMaxValue,
+                'aria-valuenow': rangeMinValue,
+                'aria-label': `Minimum value: ${rangeMinValue}`,
                 'aria-orientation': vertical ? 'vertical' : 'horizontal',
                 onmousedown: handleMouseDown('min'),
                 onclick: (e: MouseEvent) => {
@@ -582,17 +567,17 @@ export const DoubleRangeSlider = {
                 },
                 onkeydown: (e: KeyboardEvent) => {
                   if (disabled) return;
-                  const currentValue = state.rangeMinValue;
+                  const currentValue = rangeMinValue;
                   const newValue = handleKeyboardNavigation(e.key, currentValue, min, max, step);
                   if (newValue !== null) {
                     e.preventDefault();
-                    const constrainedValue = Math.min(newValue, state.rangeMaxValue);
-                    updateRangeValues(constrainedValue, state.rangeMaxValue, attrs, state, false);
+                    const constrainedValue = Math.min(newValue, rangeMaxValue);
+                    updateDoubleValues(constrainedValue, rangeMaxValue, false);
                   }
                 },
               },
               m(DoubleRangeTooltip, {
-                value: state.rangeMinValue,
+                value: rangeMinValue,
                 orientation,
                 show:
                   finalValueDisplay === 'always' ||
@@ -606,10 +591,10 @@ export const DoubleRangeSlider = {
                 style: createThumbStyle(maxPercentage, state.activeThumb === 'max'),
                 tabindex: disabled ? -1 : 0,
                 role: 'slider',
-                'aria-valuemin': state.rangeMinValue,
+                'aria-valuemin': rangeMinValue,
                 'aria-valuemax': max,
-                'aria-valuenow': state.rangeMaxValue,
-                'aria-label': `Maximum value: ${state.rangeMaxValue}`,
+                'aria-valuenow': rangeMaxValue,
+                'aria-label': `Maximum value: ${rangeMaxValue}`,
                 'aria-orientation': vertical ? 'vertical' : 'horizontal',
                 onmousedown: handleMouseDown('max'),
                 onclick: (e: MouseEvent) => {
@@ -622,17 +607,17 @@ export const DoubleRangeSlider = {
                 },
                 onkeydown: (e: KeyboardEvent) => {
                   if (disabled) return;
-                  const currentValue = state.rangeMaxValue;
+                  const currentValue = rangeMaxValue;
                   const newValue = handleKeyboardNavigation(e.key, currentValue, min, max, step);
                   if (newValue !== null) {
                     e.preventDefault();
-                    const constrainedValue = Math.max(newValue, state.rangeMinValue);
-                    updateRangeValues(state.rangeMinValue, constrainedValue, attrs, state, false);
+                    const constrainedValue = Math.max(newValue, rangeMinValue);
+                    updateDoubleValues(rangeMinValue, constrainedValue, false);
                   }
                 },
               },
               m(DoubleRangeTooltip, {
-                value: state.rangeMaxValue,
+                value: rangeMaxValue,
                 orientation,
                 show:
                   finalValueDisplay === 'always' ||

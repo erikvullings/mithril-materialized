@@ -1,6 +1,7 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
 import { ComponentStyle } from './types';
+import { createControllableFieldState } from './controllable-field';
 
 /** Rating component size options */
 export type RatingSize = 'small' | 'medium' | 'large';
@@ -79,31 +80,25 @@ const DEFAULT_ICONS = {
 export const Rating: FactoryComponent<RatingAttrs> = () => {
   const state = {
     id: uniqueId(),
-    internalValue: 0,
     hoverValue: null as number | null,
     isHovering: false,
     isFocused: false,
   };
 
-  const isControlled = (attrs: RatingAttrs) =>
-    typeof attrs.value !== 'undefined' && typeof attrs.onchange === 'function';
+  const valueState = createControllableFieldState<RatingAttrs, number>({
+    controlled: (attrs) => typeof attrs.value !== 'undefined' && typeof attrs.onchange === 'function',
+    value: (attrs) => attrs.value || 0,
+    defaultValue: (attrs) => attrs.defaultValue,
+    fallback: () => 0,
+    nonInteractive: (attrs) => attrs.readonly || attrs.disabled,
+    warning: (attrs) =>
+      attrs.value !== undefined
+        ? `Rating component received 'value' prop without 'onchange' handler. ` +
+          `Use 'defaultValue' for uncontrolled components or add 'onchange' for controlled components.`
+        : undefined,
+  });
 
-  const getCurrentValue = (attrs: RatingAttrs) => {
-    const controlled = isControlled(attrs);
-    const isNonInteractive = attrs.readonly || attrs.disabled;
-
-    if (controlled) {
-      return attrs.value || 0;
-    }
-
-    // Non-interactive components: prefer defaultValue, fallback to value
-    if (isNonInteractive) {
-      return attrs.defaultValue ?? attrs.value ?? 0;
-    }
-
-    // Interactive uncontrolled: use internal state (user can change it)
-    return state.internalValue ?? attrs.defaultValue ?? 0;
-  };
+  const getCurrentValue = (attrs: RatingAttrs) => valueState.current(attrs);
 
   const getDisplayValue = (attrs: RatingAttrs) =>
     state.isHovering && state.hoverValue !== null ? state.hoverValue : getCurrentValue(attrs);
@@ -149,9 +144,7 @@ export const Rating: FactoryComponent<RatingAttrs> = () => {
     const currentValue = getCurrentValue(attrs);
     const newValue = attrs.clearable && currentValue === clickValue ? 0 : clickValue;
 
-    if (!isControlled(attrs)) {
-      state.internalValue = newValue;
-    }
+    valueState.update(attrs, newValue);
 
     attrs.onchange?.(newValue);
   };
@@ -217,9 +210,7 @@ export const Rating: FactoryComponent<RatingAttrs> = () => {
     }
 
     if (newValue !== currentValue) {
-      if (!isControlled(attrs)) {
-        state.internalValue = newValue;
-      }
+      valueState.update(attrs, newValue);
       attrs.onchange?.(newValue);
     }
   };
@@ -304,20 +295,7 @@ export const Rating: FactoryComponent<RatingAttrs> = () => {
 
   return {
     oninit: ({ attrs }) => {
-      const controlled = isControlled(attrs);
-      const isNonInteractive = attrs.readonly || attrs.disabled;
-
-      // Warn developer for improper controlled usage
-      if (attrs.value !== undefined && !controlled && !isNonInteractive) {
-        console.warn(
-          `Rating component received 'value' prop without 'onchange' handler. ` +
-            `Use 'defaultValue' for uncontrolled components or add 'onchange' for controlled components.`
-        );
-      }
-
-      if (!controlled) {
-        state.internalValue = attrs.defaultValue || 0;
-      }
+      valueState.sync(attrs);
     },
 
     view: ({ attrs }) => {
@@ -335,6 +313,7 @@ export const Rating: FactoryComponent<RatingAttrs> = () => {
         ...ariaAttrs
       } = attrs;
 
+      valueState.sync(attrs);
       const currentValue = getCurrentValue(attrs);
       const displayValue = getDisplayValue(attrs);
       const itemCount = Math.ceil(max / step);

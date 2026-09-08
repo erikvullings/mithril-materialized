@@ -5,6 +5,7 @@ import { MaterialIcon } from './material-icon';
 import { InputType } from './types';
 import { DoubleRangeSlider, SingleRangeSlider } from './range-slider';
 import { renderFieldChrome } from './utils';
+import { createControllableFieldState } from './controllable-field';
 
 const isReadonly = <T>(attrs: InputAttrs<T>): boolean => {
   const legacyReadonly = (attrs as InputAttrs<T> & { readonly?: boolean }).readonly;
@@ -43,10 +44,22 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
     active: false,
     textarea: undefined as undefined | HTMLTextAreaElement,
     hiddenDiv: undefined as undefined | HTMLDivElement,
-    internalValue: '',
   };
 
   let labelManager: { updateLabelState: () => void; cleanup: () => void } | null = null;
+  const valueState = createControllableFieldState<InputAttrs<string>, string>({
+    controlled: (attrs) =>
+      attrs.value !== undefined && (attrs.oninput !== undefined || attrs.onchange !== undefined),
+    value: (attrs) => attrs.value,
+    defaultValue: (attrs) => attrs.defaultValue,
+    fallback: () => '',
+    nonInteractive: (attrs) => isReadonly(attrs) || attrs.disabled,
+    warning: (attrs) =>
+      attrs.value !== undefined
+        ? `TextArea received 'value' prop without 'oninput' or 'onchange' handler. ` +
+          `Use 'defaultValue' for uncontrolled components or add an event handler for controlled components.`
+        : undefined,
+  });
 
   const updateHeight = (textarea: HTMLTextAreaElement, hiddenDiv?: HTMLDivElement) => {
     if (!textarea || !hiddenDiv) return;
@@ -98,26 +111,9 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
     }
   };
 
-  const isControlled = (attrs: InputAttrs<string>) =>
-    attrs.value !== undefined && (attrs.oninput !== undefined || attrs.onchange !== undefined);
-
   return {
     oninit: ({ attrs }) => {
-      const controlled = isControlled(attrs);
-      const isNonInteractive = isReadonly(attrs) || attrs.disabled;
-
-      // Warn developer for improper controlled usage
-      if (attrs.value !== undefined && !controlled && !isNonInteractive) {
-        console.warn(
-          `TextArea received 'value' prop without 'oninput' or 'onchange' handler. ` +
-            `Use 'defaultValue' for uncontrolled components or add an event handler for controlled components.`
-        );
-      }
-
-      // Initialize internal value for uncontrolled mode
-      if (!controlled) {
-        state.internalValue = attrs.defaultValue || '';
-      }
+      valueState.sync(attrs);
     },
     onremove: () => {
       if (labelManager) {
@@ -146,19 +142,9 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
         ...params
       } = attrs;
 
-      const controlled = isControlled(attrs);
-      const isNonInteractive = isReadonly(attrs) || attrs.disabled;
-
-      let currentValue: string;
-      if (controlled) {
-        currentValue = value || '';
-      } else if (isNonInteractive) {
-        // Non-interactive components: prefer defaultValue, fallback to value
-        currentValue = attrs.defaultValue ?? value ?? '';
-      } else {
-        // Interactive uncontrolled: use internal state
-        currentValue = state.internalValue ?? attrs.defaultValue ?? '';
-      }
+      valueState.sync(attrs);
+      const controlled = valueState.controlled(attrs);
+      const currentValue = valueState.current(attrs);
 
       return [
         // Hidden div for height measurement - positioned outside the input-field
@@ -248,10 +234,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
                 state.hasInteracted = target.value.length > 0;
               }
 
-              // Update internal state for uncontrolled mode
-              if (!controlled) {
-                state.internalValue = target.value;
-              }
+              valueState.update(attrs, target.value);
 
               // Call oninput handler
               if (oninput) {
@@ -317,21 +300,31 @@ const InputField =
   () => {
     const state = {
       id: uniqueId(),
-      internalValue: undefined as undefined | T,
       hasInteracted: false,
       isValid: true,
       active: false,
       inputElement: null as null | HTMLInputElement,
       // Range-specific state
-      rangeMinValue: undefined as number | undefined,
-      rangeMaxValue: undefined as number | undefined,
-      singleValue: undefined as number | undefined,
       isDragging: false,
       activeThumb: null as 'min' | 'max' | null,
     };
 
-    const isControlled = (attrs: InputAttrs<T>) =>
+    const isNumeric = ['number', 'range'].includes(type);
+    const isControlledInput = (attrs: InputAttrs<T>) =>
       'value' in attrs && typeof attrs.value !== 'undefined' && typeof attrs.oninput === 'function';
+    const valueState = createControllableFieldState<InputAttrs<T>, T>({
+      controlled: isControlledInput,
+      value: (attrs) => attrs.value,
+      defaultValue: (attrs) => attrs.defaultValue,
+      fallback: (attrs) =>
+        (isControlledInput(attrs) ? undefined : type === 'color' ? '#ff0000' : isNumeric ? 0 : '') as T,
+      nonInteractive: (attrs) => isReadonly(attrs) || attrs.disabled,
+      warning: (attrs) =>
+        attrs.value !== undefined
+          ? `${type} input with label '${attrs.label}' received 'value' prop without 'oninput' handler. ` +
+            `Use 'defaultValue' for uncontrolled components or add an event handler for controlled components.`
+          : undefined,
+    });
 
     const getValue = (target: HTMLInputElement) => {
       const val = target.value as unknown as T;
@@ -389,30 +382,7 @@ const InputField =
 
     return {
       oninit: ({ attrs }) => {
-        const controlled = isControlled(attrs);
-        const isNonInteractive = isReadonly(attrs) || attrs.disabled;
-
-        // Warn developer for improper controlled usage
-        if (attrs.value !== undefined && !controlled && !isNonInteractive) {
-          console.warn(
-            `${type} input with label '${attrs.label}' received 'value' prop without 'oninput' handler. ` +
-              `Use 'defaultValue' for uncontrolled components or add an event handler for controlled components.`
-          );
-        }
-
-        // Initialize internal value if not in controlled mode
-        if (!controlled) {
-          const isNumeric = ['number', 'range'].includes(type);
-          if (attrs.defaultValue !== undefined) {
-            if (isNumeric) {
-              state.internalValue = attrs.defaultValue as T;
-            } else {
-              state.internalValue = String(attrs.defaultValue) as T;
-            }
-          } else {
-            state.internalValue = (type === 'color' ? '#ff0000' : isNumeric ? undefined : '') as T;
-          }
-        }
+        valueState.sync(attrs);
       },
       view: ({ attrs }) => {
         const {
@@ -456,20 +426,11 @@ const InputField =
             helperText,
           });
         }
-        const isNumeric = ['number', 'range'].includes(type);
-        const controlled = isControlled(attrs);
+        valueState.sync(attrs);
+        const controlled = valueState.controlled(attrs);
         const isNonInteractive = isReadonly(attrs) || attrs.disabled;
 
-        let value: T;
-        if (controlled) {
-          value = attrs.value as T;
-        } else if (isNonInteractive) {
-          // Non-interactive components: prefer defaultValue, fallback to value
-          value = (attrs.defaultValue ?? attrs.value ?? (isNumeric ? 0 : '')) as T;
-        } else {
-          // Interactive uncontrolled: use internal state
-          value = (state.internalValue ?? attrs.defaultValue ?? (isNumeric ? 0 : '')) as T;
-        }
+        const value = valueState.current(attrs);
 
         const isActive =
           state.active || state.inputElement?.value || value || placeholder || type === 'color' || type === 'range'
@@ -553,10 +514,7 @@ const InputField =
               // Handle original oninput logic
               const inputValue = getValue(target);
 
-              // Update internal state for uncontrolled mode
-              if (!controlled) {
-                state.internalValue = inputValue;
-              }
+              valueState.update(attrs, inputValue);
 
               if (oninput) {
                 oninput(inputValue);

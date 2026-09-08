@@ -5,12 +5,12 @@ import {
   uniqueId,
   sortOptions,
   normalizeSelection,
-  resolveControllableValue,
   syncPortalContent,
   renderFieldChrome,
 } from './utils';
 import { MaterialIcon } from './material-icon';
 import { ComponentStyle } from './types';
+import { createControllableFieldState } from './controllable-field';
 
 export type SortSelected<T extends string | number> =
   | 'asc'
@@ -82,49 +82,49 @@ export interface SelectAttrs<T extends string | number> extends Attributes {
   appearance?: SelectAppearance;
 }
 
-interface SelectState<T extends string | number> {
+interface SelectState {
   id: string;
   dropdownId: string;
   isOpen: boolean;
   focusedIndex: number;
   inputRef?: HTMLElement | null;
   dropdownRef?: HTMLElement | null;
-  internalSelectedIds: T[];
   isInsideModal: boolean;
   isMultiple: boolean;
 }
 
 /** Select component */
 export const Select = <T extends string | number>(): Component<SelectAttrs<T>> => {
-  const state: SelectState<T> = {
+  const state: SelectState = {
     id: '',
     dropdownId: '',
     isOpen: false,
     focusedIndex: -1,
     inputRef: null,
     dropdownRef: null,
-    internalSelectedIds: [],
     isInsideModal: false,
     isMultiple: false,
   };
 
-  const isControlled = (attrs: SelectAttrs<T>) => attrs.checkedId !== undefined && attrs.onchange !== undefined;
+  const valueState = createControllableFieldState<SelectAttrs<T>, T[]>({
+    controlled: (attrs) => attrs.checkedId !== undefined && attrs.onchange !== undefined,
+    value: (attrs) => normalizeSelection(attrs.checkedId),
+    defaultValue: (attrs) => normalizeSelection(attrs.defaultCheckedId),
+    fallback: () => [],
+    nonInteractive: (attrs) => attrs.disabled,
+    warning: (attrs) =>
+      attrs.checkedId !== undefined
+        ? `Select component received 'checkedId' prop without 'onchange' handler. ` +
+          `Use 'defaultCheckedId' for uncontrolled components or add 'onchange' for controlled components.`
+        : undefined,
+  });
 
   const isSelected = (id: T, selectedIds: T[]) => {
     return selectedIds.some((selectedId) => selectedId === id);
   };
 
   const toggleOption = (id: T, multiple: boolean, attrs: SelectAttrs<T>) => {
-    const controlled = isControlled(attrs);
-
-    // Get current selected IDs from props or internal state
-    const currentSelectedIds = controlled
-      ? attrs.checkedId !== undefined
-        ? Array.isArray(attrs.checkedId)
-          ? attrs.checkedId
-          : [attrs.checkedId]
-        : []
-      : state.internalSelectedIds;
+    const currentSelectedIds = valueState.current(attrs);
 
     let newIds: T[];
     if (multiple) {
@@ -136,10 +136,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       state.isOpen = false; // Close dropdown for single select
     }
 
-    // Update internal state for uncontrolled mode
-    if (!controlled) {
-      state.internalSelectedIds = newIds;
-    }
+    valueState.update(attrs, newIds);
 
     // Call onchange if provided
     if (attrs.onchange) {
@@ -415,26 +412,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       state.id = attrs.id || uniqueId();
       state.dropdownId = `${state.id}-dropdown`;
 
-      const controlled = isControlled(attrs);
-
-      // Warn developer for improper controlled usage
-      if (attrs.checkedId !== undefined && !controlled && !attrs.disabled) {
-        console.warn(
-          `Select component received 'checkedId' prop without 'onchange' handler. ` +
-            `Use 'defaultCheckedId' for uncontrolled components or add 'onchange' for controlled components.`
-        );
-      }
-
-      // Initialize internal state for uncontrolled mode
-      if (!controlled) {
-        const defaultIds =
-          attrs.defaultCheckedId !== undefined
-            ? Array.isArray(attrs.defaultCheckedId)
-              ? attrs.defaultCheckedId
-              : [attrs.defaultCheckedId]
-            : [];
-        state.internalSelectedIds = defaultIds;
-      }
+      valueState.sync(attrs);
 
       // Add global click listener to close dropdown
       document.addEventListener('click', closeDropdown);
@@ -456,7 +434,6 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
     },
 
     view: ({ attrs }) => {
-      const controlled = isControlled(attrs);
       const {
         newRow,
         className = 'col s12',
@@ -473,15 +450,9 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
         disabled,
       } = attrs;
       state.isMultiple = multiple;
+      valueState.sync(attrs);
       // Get selected IDs from props or internal state
-      const selectedIds = resolveControllableValue<T[]>({
-        controlled,
-        disabled,
-        controlledValue: normalizeSelection(attrs.checkedId),
-        defaultValue: normalizeSelection(attrs.defaultCheckedId),
-        internalValue: state.internalSelectedIds,
-        fallbackValue: [],
-      });
+      const selectedIds = valueState.current(attrs);
 
       const layoutClassName = newRow ? `${className} clear` : className;
       const appearanceClassName = appearance === 'outlined' ? 'select-appearance-outlined' : '';

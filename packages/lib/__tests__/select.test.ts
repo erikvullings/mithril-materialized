@@ -144,7 +144,8 @@ describe('Select Component', () => {
   });
 
   it('respects checkedId prop', () => {
-    const { container } = render(Select<string>(), {
+    const select = Select<string>();
+    const result = render(select, {
       id: 'test-select',
       label: 'Test Select',
       options: mockOptions,
@@ -153,8 +154,17 @@ describe('Select Component', () => {
     });
 
     // Check that the selected option appears in the input value
-    const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
+    const input = result.container.querySelector('input.select-dropdown') as HTMLInputElement;
     expect(input.value).toBe('Option 1');
+
+    result.rerender(select, {
+      id: 'test-select',
+      label: 'Test Select',
+      options: mockOptions,
+      checkedId: 'option2',
+      onchange: vi.fn(),
+    });
+    expect(input.value).toBe('Option 2');
   });
 
   it('handles disabled state', () => {

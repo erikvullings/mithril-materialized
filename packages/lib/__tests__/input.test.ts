@@ -1,4 +1,4 @@
-import { TextInput, NumberInput, TextArea, EmailInput, PasswordInput } from '../src/input';
+import { TextInput, NumberInput, TextArea, EmailInput, PasswordInput, RangeInput } from '../src/input';
 import { render, fireEvent, cleanup } from './test-utils';
 
 describe('Input Components', () => {
@@ -24,6 +24,19 @@ describe('Input Components', () => {
       
       const input = getByDisplayValue('John Doe');
       expect(input).toBeInTheDocument();
+    });
+
+    it('keeps the parent value until a controlled rerender supplies the update', () => {
+      const oninput = jest.fn();
+      const attrs = { label: 'Name', value: 'First', oninput };
+      const result = render(TextInput, attrs);
+      const input = result.getByLabelText('Name') as HTMLInputElement;
+
+      fireEvent.change(input, 'Local');
+      expect(oninput).toHaveBeenCalledWith('Local');
+
+      result.rerender(TextInput, { ...attrs, value: 'Second' });
+      expect(input.value).toBe('Second');
     });
 
     it('handles change events', () => {
@@ -186,6 +199,141 @@ describe('Input Components', () => {
       
       const textarea = getByDisplayValue('Initial bio content');
       expect(textarea).toBeInTheDocument();
+    });
+  });
+
+  describe('RangeInput', () => {
+    it('retains uncontrolled slider updates', () => {
+      const onchange = jest.fn();
+      const attrs = {
+        label: 'Volume',
+        defaultValue: 20,
+        valueDisplay: 'always' as const,
+        onchange,
+      };
+      const result = render(RangeInput, attrs);
+      const slider = result.container.querySelector('.single-range-slider') as HTMLElement;
+
+      expect(slider).toHaveAttribute('aria-valuenow', '20');
+      fireEvent.keyDown(slider, 'ArrowRight');
+      expect(onchange).toHaveBeenCalledWith(21);
+      result.rerender(RangeInput, attrs);
+      expect(result.container.querySelector('.single-range-slider')).toHaveAttribute('aria-valuenow', '21');
+    });
+
+    it('reads updated controlled slider values on rerender', () => {
+      const oninput = jest.fn();
+      const attrs = {
+        label: 'Volume',
+        value: 20,
+        valueDisplay: 'always' as const,
+        oninput,
+      };
+      const result = render(RangeInput, attrs);
+      const slider = result.container.querySelector('.single-range-slider') as HTMLElement;
+
+      expect(slider).toHaveAttribute('aria-valuenow', '20');
+      result.rerender(RangeInput, { ...attrs, value: 40 });
+      expect(result.container.querySelector('.single-range-slider')).toHaveAttribute('aria-valuenow', '40');
+    });
+
+    it('retains the latest controlled single value when becoming uncontrolled', () => {
+      const attrs = {
+        value: 40,
+        valueDisplay: 'always' as const,
+        oninput: jest.fn(),
+      };
+      const result = render(RangeInput, attrs);
+
+      result.rerender(RangeInput, { valueDisplay: 'always' });
+
+      expect(result.container.querySelector('.single-range-slider')).toHaveAttribute('aria-valuenow', '40');
+    });
+
+    it('retains the latest controlled double values when becoming uncontrolled', () => {
+      const oninput = jest.fn();
+      const result = render(RangeInput, {
+        minmax: true,
+        minValue: 20,
+        maxValue: 80,
+        oninput,
+      });
+
+      result.rerender(RangeInput, {
+        minmax: true,
+        minValue: 30,
+        maxValue: 70,
+        oninput,
+      });
+      result.rerender(RangeInput, { minmax: true });
+
+      expect(result.container.querySelector('.min-thumb')).toHaveAttribute('aria-valuenow', '30');
+      expect(result.container.querySelector('.max-thumb')).toHaveAttribute('aria-valuenow', '70');
+    });
+
+    it('commits the dragged controlled single value on mouseup', () => {
+      const oninput = jest.fn();
+      const onchange = jest.fn();
+      const { container } = render(RangeInput, {
+        value: 20,
+        valueDisplay: 'always',
+        oninput,
+        onchange,
+      });
+      const slider = container.querySelector('.single-range-slider') as HTMLElement;
+      const thumb = slider.querySelector('.thumb') as HTMLElement;
+      slider.getBoundingClientRect = () =>
+        ({
+          left: 0,
+          right: 100,
+          top: 0,
+          bottom: 20,
+          width: 100,
+          height: 20,
+          x: 0,
+          y: 0,
+          toJSON: () => ({}),
+        }) as DOMRect;
+
+      thumb.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, clientX: 20 }));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: 70 }));
+      document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+
+      expect(oninput).toHaveBeenLastCalledWith(70);
+      expect(onchange).toHaveBeenLastCalledWith(70);
+    });
+
+    it('commits the dragged controlled double values on mouseup', () => {
+      const oninput = jest.fn();
+      const onchange = jest.fn();
+      const { container } = render(RangeInput, {
+        minmax: true,
+        minValue: 20,
+        maxValue: 80,
+        oninput,
+        onchange,
+      });
+      const slider = container.querySelector('.double-range-slider') as HTMLElement;
+      const minThumb = slider.querySelector('.min-thumb') as HTMLElement;
+      slider.getBoundingClientRect = () =>
+        ({
+          left: 0,
+          right: 100,
+          top: 0,
+          bottom: 20,
+          width: 100,
+          height: 20,
+          x: 0,
+          y: 0,
+          toJSON: () => ({}),
+        }) as DOMRect;
+
+      minThumb.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, clientX: 20 }));
+      document.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX: 35 }));
+      document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+
+      expect(oninput).toHaveBeenLastCalledWith(35, 80);
+      expect(onchange).toHaveBeenLastCalledWith(35, 80);
     });
   });
 });

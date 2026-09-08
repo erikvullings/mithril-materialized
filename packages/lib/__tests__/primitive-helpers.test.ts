@@ -28,6 +28,17 @@ describe('Primitive helpers', () => {
         fallbackValue: [],
       })
     ).toEqual(['c']);
+
+    expect(
+      resolveControllableValue({
+        controlled: false,
+        disabled: true,
+        controlledValue: ['a'],
+        defaultValue: ['b'],
+        internalValue: ['c'],
+        fallbackValue: [],
+      })
+    ).toEqual(['b']);
   });
 
   it('renders form field chrome with label, helper text, and validation messages', () => {

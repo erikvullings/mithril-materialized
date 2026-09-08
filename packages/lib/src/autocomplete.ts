@@ -2,6 +2,7 @@ import m, { FactoryComponent } from 'mithril';
 import { uniqueId } from './utils';
 import { InputAttrs } from './input-options';
 import { Label, HelperText } from './label';
+import { createControllableFieldState } from './controllable-field';
 
 export interface AutoCompleteAttrs extends InputAttrs<string> {
   /** The data object defining the autocomplete options */
@@ -19,15 +20,19 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
   const state = {
     id: uniqueId(),
     isActive: false,
-    internalValue: '',
     isOpen: false,
     suggestions: [] as Array<{ key: string; value: string | null }>,
     selectedIndex: -1,
     inputElement: null as HTMLInputElement | null,
   };
 
-  const isControlled = (attrs: AutoCompleteAttrs) =>
-    'value' in attrs && typeof attrs.value !== 'undefined' && typeof attrs.oninput === 'function';
+  const valueState = createControllableFieldState<AutoCompleteAttrs, string>({
+    controlled: (attrs) =>
+      'value' in attrs && typeof attrs.value !== 'undefined' && typeof attrs.oninput === 'function',
+    value: (attrs) => attrs.value,
+    defaultValue: (attrs) => attrs.defaultValue,
+    fallback: () => '',
+  });
 
   const filterSuggestions = (input: string, data: Record<string, string | null>, limit: number, minLength: number) => {
     if (!input || input.length < minLength) {
@@ -72,12 +77,7 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
   };
 
   const selectSuggestion = (suggestion: { key: string; value: string | null }, attrs: AutoCompleteAttrs) => {
-    const controlled = isControlled(attrs);
-
-    // Update internal state for uncontrolled mode
-    if (!controlled) {
-      state.internalValue = suggestion.key;
-    }
+    valueState.update(attrs, suggestion.key);
 
     state.isOpen = false;
     state.selectedIndex = -1;
@@ -164,10 +164,7 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
 
   return {
     oninit: ({ attrs }) => {
-      // Initialize internal value for uncontrolled mode
-      if (!isControlled(attrs)) {
-        state.internalValue = attrs.defaultValue || '';
-      }
+      valueState.sync(attrs);
       document.addEventListener('click', closeDropdown);
     },
 
@@ -192,8 +189,9 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
         ...params
       } = attrs;
 
-      const controlled = isControlled(attrs);
-      const currentValue = controlled ? attrs.value || '' : state.internalValue;
+      valueState.sync(attrs);
+      const controlled = valueState.controlled(attrs);
+      const currentValue = valueState.current(attrs);
       const cn = newRow ? className + ' clear' : className;
 
       // Update suggestions when input changes
@@ -235,10 +233,7 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
               const inputValue = target.value;
               state.selectedIndex = -1;
 
-              // Update internal state for uncontrolled mode
-              if (!controlled) {
-                state.internalValue = inputValue;
-              }
+              valueState.update(attrs, inputValue);
 
               // Call oninput and onchange if provided
               if (attrs.oninput) {

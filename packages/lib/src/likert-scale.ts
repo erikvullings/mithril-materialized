@@ -1,6 +1,7 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
 import { ComponentStyle } from './types';
+import { createControllableFieldState } from './controllable-field';
 
 /** Likert scale component size options */
 export type LikertScaleSize = 'small' | 'medium' | 'large';
@@ -99,29 +100,23 @@ export const LikertScale: FactoryComponent<LikertScaleAttrs> = () => {
   const state = {
     id: uniqueId(),
     groupId: uniqueId(),
-    internalValue: undefined as number | undefined,
     isFocused: false,
   };
 
-  const isControlled = (attrs: LikertScaleAttrs) =>
-    typeof attrs.value !== 'undefined' && typeof attrs.onchange === 'function';
+  const valueState = createControllableFieldState<LikertScaleAttrs, number | undefined>({
+    controlled: (attrs) => typeof attrs.value !== 'undefined' && typeof attrs.onchange === 'function',
+    value: (attrs) => attrs.value,
+    defaultValue: (attrs) => attrs.defaultValue,
+    fallback: () => undefined,
+    nonInteractive: (attrs) => attrs.readonly || attrs.disabled,
+    warning: (attrs) =>
+      attrs.value !== undefined
+        ? `LikertScale component received 'value' prop without 'onchange' handler. ` +
+          `Use 'defaultValue' for uncontrolled components or add 'onchange' for controlled components.`
+        : undefined,
+  });
 
-  const getCurrentValue = (attrs: LikertScaleAttrs) => {
-    const controlled = isControlled(attrs);
-    const isNonInteractive = attrs.readonly || attrs.disabled;
-
-    if (controlled) {
-      return attrs.value;
-    }
-
-    // Non-interactive components: prefer defaultValue, fallback to value
-    if (isNonInteractive) {
-      return attrs.defaultValue ?? attrs.value;
-    }
-
-    // Interactive uncontrolled: use internal state (user can change it)
-    return state.internalValue ?? attrs.defaultValue;
-  };
+  const getCurrentValue = (attrs: LikertScaleAttrs) => valueState.current(attrs);
 
   const getLabelText = (
     value: number | undefined,
@@ -195,9 +190,7 @@ export const LikertScale: FactoryComponent<LikertScaleAttrs> = () => {
   const handleChange = (attrs: LikertScaleAttrs, newValue: number) => {
     if (attrs.readonly || attrs.disabled) return;
 
-    if (!isControlled(attrs)) {
-      state.internalValue = newValue;
-    }
+    valueState.update(attrs, newValue);
 
     attrs.onchange?.(newValue);
   };
@@ -314,20 +307,7 @@ export const LikertScale: FactoryComponent<LikertScaleAttrs> = () => {
 
   return {
     oninit: ({ attrs }) => {
-      const controlled = isControlled(attrs);
-      const isNonInteractive = attrs.readonly || attrs.disabled;
-
-      // Warn developer for improper controlled usage
-      if (attrs.value !== undefined && !controlled && !isNonInteractive) {
-        console.warn(
-          `LikertScale component received 'value' prop without 'onchange' handler. ` +
-            `Use 'defaultValue' for uncontrolled components or add 'onchange' for controlled components.`
-        );
-      }
-
-      if (!controlled) {
-        state.internalValue = attrs.defaultValue;
-      }
+      valueState.sync(attrs);
     },
 
     view: ({ attrs }) => {
@@ -357,6 +337,7 @@ export const LikertScale: FactoryComponent<LikertScaleAttrs> = () => {
         ...ariaAttrs
       } = attrs;
 
+      valueState.sync(attrs);
       const currentValue = getCurrentValue(attrs);
       const itemCount = Math.floor((max - min) / step) + 1;
       const useInlineAnchors = isVerticalLayout(layout);

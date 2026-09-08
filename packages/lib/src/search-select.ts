@@ -12,6 +12,7 @@ import { MaterialIcon } from './material-icon';
 import type { InputOption } from './option';
 import type { SelectAttrs } from './select';
 import { getDropdownStyles, sortOptions, uniqueId } from './utils';
+import { createControllableFieldState } from './controllable-field';
 
 const SelectedChip = <T extends string | number>({
   option,
@@ -142,7 +143,6 @@ interface SearchSelectState<T extends string | number> {
   inputRef: HTMLElement | null;
   dropdownRef: HTMLElement | null;
   focusedIndex: number;
-  internalSelectedIds: T[];
   createdOptions: InputOption<T>[];
   asyncOptions: InputOption<T>[];
   isLoading: boolean;
@@ -175,7 +175,6 @@ export const SearchSelect = <T extends string | number>(
     inputRef: null,
     dropdownRef: null,
     focusedIndex: -1,
-    internalSelectedIds: [],
     createdOptions: [],
     asyncOptions: [],
     isLoading: false,
@@ -197,8 +196,18 @@ export const SearchSelect = <T extends string | number>(
     latestRequestId: state.latestRequestId,
   });
 
-  const isControlled = (attrs: SearchSelectAttrs<T>) =>
-    attrs.checkedId !== undefined && typeof attrs.onchange === 'function';
+  const valueState = createControllableFieldState<SearchSelectAttrs<T>, T[]>({
+    controlled: (attrs) => attrs.checkedId !== undefined && typeof attrs.onchange === 'function',
+    value: (attrs) =>
+      attrs.checkedId === undefined ? [] : Array.isArray(attrs.checkedId) ? attrs.checkedId : [attrs.checkedId],
+    defaultValue: (attrs) =>
+      attrs.defaultCheckedId === undefined
+        ? []
+        : Array.isArray(attrs.defaultCheckedId)
+          ? attrs.defaultCheckedId
+          : [attrs.defaultCheckedId],
+    fallback: () => [],
+  });
 
   const componentId = uniqueId();
   const searchInputId = `${componentId}-search`;
@@ -296,17 +305,10 @@ export const SearchSelect = <T extends string | number>(
   const toggleOption = (option: InputOption<T>, attrs: SearchSelectAttrs<T>) => {
     if (option.disabled) return;
 
-    const controlled = isControlled(attrs);
     const { maxSelectedOptions } = attrs;
 
     // Get current selected IDs from props or internal state
-    const currentSelectedIds = controlled
-      ? attrs.checkedId !== undefined
-        ? Array.isArray(attrs.checkedId)
-          ? attrs.checkedId
-          : [attrs.checkedId]
-        : []
-      : state.internalSelectedIds;
+    const currentSelectedIds = valueState.current(attrs);
 
     const isSelected = currentSelectedIds.includes(option.id);
 
@@ -330,10 +332,7 @@ export const SearchSelect = <T extends string | number>(
       }
     }
 
-    // Update internal state for uncontrolled mode
-    if (!controlled) {
-      state.internalSelectedIds = newIds;
-    }
+    valueState.update(attrs, newIds);
 
     state.searchTerm = '';
     state.focusedIndex = -1;
@@ -346,23 +345,12 @@ export const SearchSelect = <T extends string | number>(
 
   // Remove a selected option
   const removeOption = (optionId: T, attrs: SearchSelectAttrs<T>) => {
-    const controlled = isControlled(attrs);
-
     // Get current selected IDs from props or internal state
-    const currentSelectedIds = controlled
-      ? attrs.checkedId !== undefined
-        ? Array.isArray(attrs.checkedId)
-          ? attrs.checkedId
-          : [attrs.checkedId]
-        : []
-      : state.internalSelectedIds;
+    const currentSelectedIds = valueState.current(attrs);
 
     const newIds = currentSelectedIds.filter((id) => id !== optionId);
 
-    // Update internal state for uncontrolled mode
-    if (!controlled) {
-      state.internalSelectedIds = newIds;
-    }
+    valueState.update(attrs, newIds);
 
     // Call onchange if provided
     if (attrs.onchange) {
@@ -375,16 +363,7 @@ export const SearchSelect = <T extends string | number>(
       state.id = attrs.id || uniqueId();
       state.listboxId = `${state.id}-listbox`;
 
-      // Initialize internal state for uncontrolled mode
-      if (!isControlled(attrs)) {
-        const defaultIds =
-          attrs.defaultCheckedId !== undefined
-            ? Array.isArray(attrs.defaultCheckedId)
-              ? attrs.defaultCheckedId
-              : [attrs.defaultCheckedId]
-            : [];
-        state.internalSelectedIds = defaultIds;
-      }
+      valueState.sync(attrs);
     },
     oncreate() {
       document.addEventListener('click', handleClickOutside);
@@ -393,16 +372,9 @@ export const SearchSelect = <T extends string | number>(
       document.removeEventListener('click', handleClickOutside);
     },
     view({ attrs }) {
-      const controlled = isControlled(attrs);
-
+      valueState.sync(attrs);
       // Get selected IDs from props or internal state
-      const selectedIds = controlled
-        ? attrs.checkedId !== undefined
-          ? Array.isArray(attrs.checkedId)
-            ? attrs.checkedId
-            : [attrs.checkedId]
-          : []
-        : state.internalSelectedIds;
+      const selectedIds = valueState.current(attrs);
 
       const {
         options = [],

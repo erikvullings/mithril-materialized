@@ -1,5 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { ToggleButton, ToggleButtonAttrs } from './toggle-button';
+import { createControllableFieldState } from './controllable-field';
 
 /**
  * Attributes for the ToggleGroup component.
@@ -84,7 +85,13 @@ export interface ToggleGroupAttrs extends Attributes {
  * ```
  */
 export const ToggleGroup: FactoryComponent<ToggleGroupAttrs> = () => {
-  let internalValue: string | number | Array<string | number> | undefined;
+  type ToggleValue = string | number | Array<string | number> | undefined;
+  const valueState = createControllableFieldState<ToggleGroupAttrs, ToggleValue>({
+    controlled: (attrs) => attrs.value !== undefined,
+    value: (attrs) => attrs.value,
+    defaultValue: (attrs) => attrs.defaultValue,
+    fallback: (attrs) => attrs.defaultValue,
+  });
 
   const handleSelect = (
     attrs: ToggleGroupAttrs,
@@ -94,8 +101,7 @@ export const ToggleGroup: FactoryComponent<ToggleGroupAttrs> = () => {
     if (attrs.disabled || item.disabled) {
       return;
     }
-    const { value, multiple, onchange } = attrs;
-    const isControlled = value !== undefined;
+    const { multiple, onchange } = attrs;
 
     if (multiple) {
       const currentValues = (Array.isArray(currentValue) ? currentValue : currentValue !== undefined ? [currentValue] : []) as Array<
@@ -104,17 +110,13 @@ export const ToggleGroup: FactoryComponent<ToggleGroupAttrs> = () => {
       const newValues = currentValues.includes(item.value)
         ? currentValues.filter((v) => v !== item.value)
         : [...currentValues, item.value];
-      if (!isControlled) {
-        internalValue = newValues;
-      }
+      valueState.update(attrs, newValues);
       if (onchange) {
         onchange(newValues);
       }
     } else {
       const newValue = item.value;
-      if (!isControlled) {
-        internalValue = newValue;
-      }
+      valueState.update(attrs, newValue);
       if (onchange) {
         onchange(newValue);
       }
@@ -123,12 +125,12 @@ export const ToggleGroup: FactoryComponent<ToggleGroupAttrs> = () => {
 
   return {
     oninit: ({ attrs }) => {
-      internalValue = attrs.defaultValue;
+      valueState.sync(attrs);
     },
     view: ({ attrs }) => {
-      const { value, items, multiple } = attrs;
-      const isControlled = value !== undefined;
-      const currentValue = isControlled ? value : internalValue;
+      const { items, multiple } = attrs;
+      valueState.sync(attrs);
+      const currentValue = valueState.current(attrs);
 
       return m(
         '.toggle-group',

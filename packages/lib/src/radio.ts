@@ -1,6 +1,7 @@
 import m, { Attributes, Component } from 'mithril';
 import { uniqueId } from './utils';
 import { InputOption, OptionsList } from './option';
+import { createControllableFieldState } from './controllable-field';
 
 export interface RadioButtonsAttrs<T extends string | number> extends Attributes {
   /** Element ID */
@@ -80,34 +81,29 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
   const state = {
     groupId: uniqueId(),
     componentId: '',
-    internalCheckedId: undefined as T | undefined,
   };
 
-  const isControlled = (attrs: RadioButtonsAttrs<T>) =>
-    attrs.checkedId !== undefined && typeof attrs.onchange === 'function';
+  const valueState = createControllableFieldState<RadioButtonsAttrs<T>, T | undefined>({
+    controlled: (attrs) => attrs.checkedId !== undefined && typeof attrs.onchange === 'function',
+    value: (attrs) => attrs.checkedId,
+    defaultValue: (attrs) => attrs.defaultCheckedId,
+    fallback: () => undefined,
+    nonInteractive: (attrs) => attrs.disabled,
+    warning: (attrs) =>
+      attrs.checkedId !== undefined
+        ? `RadioButtons component received 'checkedId' prop without 'onchange' handler. ` +
+          `Use 'defaultCheckedId' for uncontrolled components or add 'onchange' for controlled components.`
+        : undefined,
+  });
 
   return {
     oninit: ({ attrs }) => {
       state.componentId = attrs.id || uniqueId();
 
-      const controlled = isControlled(attrs);
-
-      // Warn developer for improper controlled usage
-      if (attrs.checkedId !== undefined && !controlled && !attrs.disabled) {
-        console.warn(
-          `RadioButtons component received 'checkedId' prop without 'onchange' handler. ` +
-            `Use 'defaultCheckedId' for uncontrolled components or add 'onchange' for controlled components.`
-        );
-      }
-
-      // Initialize internal state for uncontrolled mode
-      if (!controlled) {
-        state.internalCheckedId = attrs.defaultCheckedId;
-      }
+      valueState.sync(attrs);
     },
     view: ({ attrs }) => {
       const {
-        checkedId,
         newRow,
         className = 'col s12',
         label = '',
@@ -125,25 +121,11 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
       const resolvedLayout = layout ?? direction ?? 'vertical';
 
       const { groupId, componentId } = state;
-      const controlled = isControlled(attrs);
-
-      // Get current checked ID from props or internal state
-      let currentCheckedId: T | undefined;
-      if (controlled) {
-        currentCheckedId = checkedId;
-      } else if (disabled) {
-        // Non-interactive components: prefer defaultCheckedId, fallback to checkedId
-        currentCheckedId = attrs.defaultCheckedId ?? checkedId;
-      } else {
-        // Interactive uncontrolled: use internal state
-        currentCheckedId = state.internalCheckedId ?? attrs.defaultCheckedId;
-      }
+      valueState.sync(attrs);
+      const currentCheckedId = valueState.current(attrs);
 
       const handleChange = (id: T) => {
-        // Update internal state for uncontrolled mode
-        if (!controlled) {
-          state.internalCheckedId = id;
-        }
+        valueState.update(attrs, id);
 
         // Call onchange if provided
         if (onchange) {
