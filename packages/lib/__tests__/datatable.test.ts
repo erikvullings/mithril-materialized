@@ -351,12 +351,12 @@ describe('DataTable Component', () => {
       expect(onPaginationChange).toHaveBeenCalled();
     });
 
-    test('allows entering a page number when enabled', () => {
+    test('allows clearing the current page before entering a valid page number', () => {
       const onPaginationChange = jest.fn();
       const pagination: DataTablePagination = {
-        page: 7,
+        page: 0,
         pageSize: 10,
-        total: 870,
+        total: 1600,
       };
 
       m.mount(container, {
@@ -370,29 +370,72 @@ describe('DataTable Component', () => {
       });
 
       const pageInfo = container.querySelector('.page-info');
-      expect(pageInfo?.textContent).toBe('Part 8 of 87');
+      expect(pageInfo?.textContent).toBe('Part 1 of 160');
 
       (pageInfo as HTMLElement).click();
       m.redraw.sync();
 
-      const input = container.querySelector('.page-info-editor input') as HTMLInputElement | null;
+      const input = container.querySelector<HTMLInputElement>('.page-info-editor input');
       expect(input).toBeTruthy();
       expect(input?.min).toBe('1');
-      expect(input?.max).toBe('87');
-      expect(input?.value).toBe('8');
+      expect(input?.max).toBe('160');
+      expect(input?.step).toBe('1');
+      expect(input?.value).toBe('1');
 
       if (!input) return;
-      input.value = '888';
+      input.value = '';
       input.dispatchEvent(new Event('input', { bubbles: true }));
       m.redraw.sync();
-      expect(input.value).toBe('87');
+      expect(input.value).toBe('');
 
-      input.value = '42';
+      input.value = '80';
       input.dispatchEvent(new Event('input', { bubbles: true }));
       m.redraw.sync();
       input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
 
-      expect(onPaginationChange).toHaveBeenCalledWith({ ...pagination, page: 41 });
+      expect(onPaginationChange).toHaveBeenCalledWith({ ...pagination, page: 79 });
+    });
+
+    test('keeps invalid and out-of-range page drafts editable without submitting', () => {
+      const onPaginationChange = jest.fn();
+      const pagination: DataTablePagination = {
+        page: 0,
+        pageSize: 10,
+        total: 1600,
+      };
+
+      m.mount(container, {
+        view: () =>
+          m(PaginationControls, {
+            pagination,
+            allowPageInput: true,
+            onPaginationChange,
+          }),
+      });
+
+      (container.querySelector('.page-info') as HTMLElement).click();
+      m.redraw.sync();
+
+      const input = container.querySelector<HTMLInputElement>('.page-info-editor input');
+      if (!input) throw new Error('Expected page number input');
+
+      input.value = '';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      m.redraw.sync();
+      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+      m.redraw.sync();
+
+      expect(onPaginationChange).not.toHaveBeenCalled();
+      expect(container.querySelector<HTMLInputElement>('.page-info-editor input')?.value).toBe('');
+
+      input.value = '161';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      m.redraw.sync();
+      input.dispatchEvent(new FocusEvent('blur', { bubbles: true }));
+      m.redraw.sync();
+
+      expect(onPaginationChange).not.toHaveBeenCalled();
+      expect(container.querySelector<HTMLInputElement>('.page-info-editor input')?.value).toBe('161');
     });
 
     test('does not allow entering a page number by default', () => {

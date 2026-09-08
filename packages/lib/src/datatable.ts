@@ -454,7 +454,6 @@ export interface PaginationControlsAttrs {
 export const PaginationControls: FactoryComponent<PaginationControlsAttrs> = () => {
   const state = {
     isEditingPage: false,
-    pageInputValue: 1,
   };
 
   return {
@@ -476,17 +475,13 @@ export const PaginationControls: FactoryComponent<PaginationControlsAttrs> = () 
 
       const startEditingPage = () => {
         if (allowPageInput && totalPages > 0) {
-          state.pageInputValue = page + 1;
           state.isEditingPage = true;
         }
       };
 
-      const updatePageInput = (pageNumber: number) => {
-        if (!Number.isFinite(pageNumber)) return;
-        state.pageInputValue = Math.min(totalPages, Math.max(1, Math.trunc(pageNumber)));
-      };
-
-      const submitPage = (pageNumber: number) => {
+      const submitPage = (target: EventTarget | null) => {
+        if (!(target instanceof HTMLInputElement)) return;
+        const pageNumber = Number(target.value);
         if (!Number.isInteger(pageNumber) || pageNumber < 1 || pageNumber > totalPages) return;
 
         state.isEditingPage = false;
@@ -500,18 +495,17 @@ export const PaginationControls: FactoryComponent<PaginationControlsAttrs> = () 
             m('span', `${pageText} `),
             m(NumberInput, {
               className: 'page-number-input',
-              value: state.pageInputValue,
+              defaultValue: page + 1,
               min: 1,
               max: totalPages,
               step: 1,
               hideSpinners: true,
               autofocus: true,
               'aria-label': pageText,
-              oninput: updatePageInput,
-              onchange: () => submitPage(state.pageInputValue),
+              onblur: (event) => submitPage(event.currentTarget),
               onkeydown: (event) => {
                 if (event.key === 'Enter') {
-                  submitPage(state.pageInputValue);
+                  submitPage(event.currentTarget);
                 } else if (event.key === 'Escape') {
                   state.isEditingPage = false;
                 }
