@@ -1,8 +1,9 @@
 import m, { Component, Attributes } from 'mithril';
 import { HelperText } from './label';
-import { uniqueId, getDropdownStyles, syncPortalContent } from './utils';
+import { uniqueId, getDropdownStyles } from './utils';
 import { MaterialIcon } from './material-icon';
 import { createControllableFieldState } from './controllable-field';
+import { createPortalHandle, type PortalHandle } from './portal';
 
 export interface DropdownItem<T extends string | number> {
   /** ID property of the selected item */
@@ -72,6 +73,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
     dropdownRef: null,
     isInsideModal: false,
   };
+  let dropdownPortal: PortalHandle | undefined;
 
   const valueState = createControllableFieldState<DropdownAttrs<T>, T | undefined>({
     controlled: (attrs) => attrs.checkedId !== undefined && typeof attrs.onchange === 'function',
@@ -225,17 +227,13 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       dropdownContent
     );
 
-    syncPortalContent({
-      containerId: `${state.id}-dropdown`,
-      shouldRender: state.isOpen && !!state.inputRef,
-      vnode: dropdownVnode,
-      zIndex: 10000,
-    });
+    dropdownPortal?.sync(state.isOpen && state.inputRef ? dropdownVnode : null);
   };
 
   return {
     oninit: ({ attrs }) => {
       state.id = attrs.id?.toString() || uniqueId();
+      dropdownPortal = createPortalHandle({ id: `${state.id}-dropdown`, zIndex: 10000 });
 
       valueState.sync(attrs);
 
@@ -252,8 +250,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       // Cleanup global listener
       document.removeEventListener('click', closeDropdown);
 
-      // Cleanup portal
-      syncPortalContent({ containerId: `${state.id}-dropdown`, shouldRender: false, vnode: null });
+      dropdownPortal?.dispose();
     },
 
     view: ({ attrs }) => {

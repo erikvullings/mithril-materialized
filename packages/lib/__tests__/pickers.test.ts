@@ -68,6 +68,20 @@ describe('DatePicker Component', () => {
     expect(onOpen).toHaveBeenCalled();
   });
 
+  test('clears and disposes its portal after open and close', () => {
+    const result = render(DatePicker, defaultDatePickerAttrs);
+    fireEvent.click(result.container.querySelector('input') as HTMLInputElement);
+    result.rerender(DatePicker, defaultDatePickerAttrs);
+
+    expect(document.querySelector('[id^="datepicker-portal-"] .datepicker-modal-wrapper')).toBeInTheDocument();
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(document.querySelector('[id^="datepicker-portal-"]')).toBeNull();
+
+    result.unmount();
+    expect(document.querySelector('[id^="datepicker-portal-"]')).toBeNull();
+  });
+
   test('handles date selection', () => {
     const onchange = jest.fn();
     const onSelect = jest.fn();
@@ -191,6 +205,17 @@ describe('TimePicker Component', () => {
     fireEvent.click(input);
 
     expect(onOpen).toHaveBeenCalled();
+  });
+
+  test('disposes its portal when removed while open', () => {
+    const result = render(TimePicker, defaultTimePickerAttrs);
+    fireEvent.click(result.container.querySelector('input') as HTMLInputElement);
+    result.rerender(TimePicker, defaultTimePickerAttrs);
+
+    expect(document.querySelector('[id^="timepicker-portal-"] .timepicker-modal-wrapper')).toBeInTheDocument();
+
+    result.unmount();
+    expect(document.querySelector('[id^="timepicker-portal-"]')).toBeNull();
   });
 
   test('handles time selection', () => {

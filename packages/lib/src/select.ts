@@ -5,13 +5,13 @@ import {
   uniqueId,
   sortOptions,
   normalizeSelection,
-  syncPortalContent,
   renderFieldChrome,
 } from './utils';
 import { MaterialIcon } from './material-icon';
 import { ComponentStyle } from './types';
 import { createControllableFieldState } from './controllable-field';
 import { createSelectionInteraction } from './combobox';
+import { createPortalHandle, type PortalHandle } from './portal';
 
 export type SortSelected<T extends string | number> =
   | 'asc'
@@ -106,6 +106,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
     isInsideModal: false,
     isMultiple: false,
   };
+  let dropdownPortal: PortalHandle | undefined;
 
   const valueState = createControllableFieldState<SelectAttrs<T>, T[]>({
     controlled: (attrs) => attrs.checkedId !== undefined && attrs.onchange !== undefined,
@@ -373,18 +374,14 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       renderDropdownContent(attrs, selectedIds, multiple, placeholder)
     );
 
-    syncPortalContent({
-      containerId: state.dropdownId,
-      shouldRender: state.isOpen && !!state.inputRef,
-      vnode: dropdownVnode,
-      zIndex: 10000,
-    });
+    dropdownPortal?.sync(state.isOpen && state.inputRef ? dropdownVnode : null);
   };
 
   return {
     oninit: ({ attrs }) => {
       state.id = attrs.id || uniqueId();
       state.dropdownId = `${state.id}-dropdown`;
+      dropdownPortal = createPortalHandle({ id: state.dropdownId, zIndex: 10000 });
 
       valueState.sync(attrs);
 
@@ -401,10 +398,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
       // Cleanup global listener
       document.removeEventListener('click', closeDropdown);
 
-      // Cleanup portaled dropdown if it exists
-      if (state.isInsideModal && state.dropdownRef) {
-        syncPortalContent({ containerId: state.dropdownId, shouldRender: false, vnode: null });
-      }
+      dropdownPortal?.dispose();
     },
 
     view: ({ attrs }) => {

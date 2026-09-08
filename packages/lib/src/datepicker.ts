@@ -1,6 +1,7 @@
 import m, { FactoryComponent } from 'mithril';
 import { InputAttrs } from './input-options';
-import { range, uniqueId, renderToPortal, clearPortal } from './utils';
+import { range, uniqueId } from './utils';
+import { createPortalHandle, type PortalHandle } from './portal';
 
 export interface DatePickerI18n {
   cancel?: string;
@@ -195,6 +196,7 @@ interface DatePickerState {
  */
 export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
   let state: DatePickerState;
+  let portal: PortalHandle;
 
   const mergeOptions = (attrs: DatePickerAttrs): Required<DatePickerOptions> => {
     // Handle HTML attributes
@@ -972,7 +974,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
       state.isOpen = false;
       const options = mergeOptions({} as DatePickerAttrs);
       if (options.onClose) options.onClose();
-      clearPortal(state.portalContainerId);
+      portal.sync(null);
       m.redraw();
     }
   };
@@ -1113,7 +1115,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
       ]
     );
 
-    renderToPortal(state.portalContainerId, pickerModal, 1004);
+    portal.sync(pickerModal);
   };
 
   return {
@@ -1152,6 +1154,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
           yyyy: () => state.date?.getFullYear() || 0,
         },
       };
+      portal = createPortalHandle({ id: state.portalContainerId, zIndex: 1004 });
 
       // Initialize date or date range
       if (options.dateRange) {
@@ -1196,10 +1199,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
       document.removeEventListener('click', handleDocumentClick);
       document.removeEventListener('keydown', handleKeyDown);
 
-      // Clean up portal if picker was open
-      if (state.isOpen) {
-        clearPortal(state.portalContainerId);
-      }
+      portal.dispose();
     },
 
     onupdate: (vnode) => {
@@ -1207,7 +1207,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
       if (state.isOpen) {
         renderPickerToPortal(vnode.attrs);
       } else {
-        clearPortal(state.portalContainerId);
+        portal.sync(null);
       }
     },
 

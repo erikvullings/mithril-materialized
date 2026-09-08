@@ -1,9 +1,10 @@
 import m, { FactoryComponent } from 'mithril';
 import { InputAttrs } from './input-options';
-import { uniqueId, renderToPortal, clearPortal } from './utils';
+import { uniqueId } from './utils';
 import { addLeadingZero } from './time-utils';
 import { DigitalClock } from './digital-clock';
 import { AnalogClock } from './analog-clock';
+import { createPortalHandle, type PortalHandle } from './portal';
 
 export interface TimepickerI18n {
   cancel?: string;
@@ -117,6 +118,7 @@ const defaultOptions: Required<TimepickerOptions> = {
 export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
   let state: TimepickerState;
   let options: Required<TimepickerOptions>;
+  let portal: PortalHandle;
 
   // Use shared utilities from time-utils
   // const addLeadingZero = sharedAddLeadingZero;
@@ -469,7 +471,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Escape' && state.isOpen) {
       close();
-      clearPortal(state.portalContainerId);
+      portal.sync(null);
       m.redraw();
     }
   };
@@ -532,7 +534,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
       ]
     );
 
-    renderToPortal(state.portalContainerId, pickerModal, 1004);
+    portal.sync(pickerModal);
   };
 
   return {
@@ -549,6 +551,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
         currentView: 'hours',
         portalContainerId: `timepicker-portal-${uniqueId()}`,
       };
+      portal = createPortalHandle({ id: state.portalContainerId, zIndex: 1004 });
 
       // Handle value after options are set
       if (attrs.defaultValue) {
@@ -563,10 +566,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
       // Cleanup
       document.removeEventListener('keydown', handleKeyDown);
 
-      // Clean up portal if picker was open
-      if (state.isOpen) {
-        clearPortal(state.portalContainerId);
-      }
+      portal.dispose();
     },
 
     onupdate: ({ attrs }) => {
@@ -576,7 +576,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
       if (useModal && state.isOpen) {
         renderPickerToPortal();
       } else {
-        clearPortal(state.portalContainerId);
+        portal.sync(null);
       }
     },
 

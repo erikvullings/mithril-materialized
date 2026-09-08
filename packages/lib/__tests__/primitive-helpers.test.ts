@@ -123,5 +123,11 @@ describe('Primitive helpers', () => {
     const dropdown = container?.querySelector('.dropdown-content') as HTMLElement;
     expect(container).toHaveStyle({ pointerEvents: 'none' });
     expect(dropdown).toHaveStyle({ pointerEvents: 'auto' });
+
+    syncPortalContent({
+      containerId: 'interactive-portal',
+      shouldRender: false,
+      vnode: null,
+    });
   });
 });

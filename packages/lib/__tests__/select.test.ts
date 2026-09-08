@@ -447,6 +447,29 @@ describe('Select Component', () => {
     expect(result.container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'false');
   });
 
+  it('releases its modal portal after close and removal', () => {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    const select = Select<string>();
+    const attrs = {
+      id: 'portal-select',
+      options: mockOptions,
+      onchange: vi.fn(),
+    };
+    const result = render(select, attrs, modal);
+
+    fireEvent.click(result.container.querySelector('input.select-dropdown') as HTMLElement);
+    result.rerender(select, attrs);
+    expect(document.getElementById('portal-select-dropdown')).toBeInTheDocument();
+
+    fireEvent.keyDown(result.container.querySelector('.select-wrapper') as HTMLElement, 'Escape');
+    result.rerender(select, attrs);
+    expect(document.getElementById('portal-select-dropdown')).toBeNull();
+
+    result.unmount();
+    expect(document.getElementById('portal-select-dropdown')).toBeNull();
+  });
+
   it('works with numeric option IDs', () => {
     const mockOnChange = vi.fn();
     const { container } = render(Select<number>(), {

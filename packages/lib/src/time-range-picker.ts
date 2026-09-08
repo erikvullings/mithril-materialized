@@ -1,9 +1,10 @@
 import m, { FactoryComponent } from 'mithril';
 import { InputAttrs } from './input-options';
-import { uniqueId, renderToPortal, clearPortal } from './utils';
+import { uniqueId } from './utils';
 import { TimeValue, addLeadingZero, parseTime, formatTime, timeToMinutes } from './time-utils';
 import { DigitalClock } from './digital-clock';
 import { AnalogClock } from './analog-clock';
+import { createPortalHandle, type PortalHandle } from './portal';
 
 interface TimeRangePickerState {
   id: string;
@@ -101,6 +102,7 @@ export interface TimeRangePickerAttrs extends Omit<InputAttrs<string>, 'defaultV
  */
 export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
   let state: TimeRangePickerState;
+  let portal: PortalHandle;
 
   const calculateMinTime = (startTime: TimeValue, twelveHour: boolean): string | undefined => {
     if (!startTime) return undefined;
@@ -439,7 +441,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Escape' && state.isPickerOpen) {
       state.isPickerOpen = false;
-      clearPortal(state.portalContainerId);
+      portal.sync(null);
     }
   };
 
@@ -521,7 +523,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
       ]
     );
 
-    renderToPortal(state.portalContainerId, pickerModal, 1004);
+    portal.sync(pickerModal);
   };
 
   return {
@@ -543,6 +545,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
         portalContainerId: `timerange-portal-${uniqueId()}`,
         currentView: 'hours',
       };
+      portal = createPortalHandle({ id: state.portalContainerId, zIndex: 1004 });
 
       document.addEventListener('keydown', handleKeyDown);
     },
@@ -550,16 +553,14 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
     onremove: () => {
       document.removeEventListener('keydown', handleKeyDown);
 
-      if (state.isPickerOpen) {
-        clearPortal(state.portalContainerId);
-      }
+      portal.dispose();
     },
 
     onupdate: ({ attrs }) => {
       if (state.isPickerOpen) {
         renderPickerToPortal(attrs);
       } else {
-        clearPortal(state.portalContainerId);
+        portal.sync(null);
       }
     },
 
