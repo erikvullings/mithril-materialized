@@ -137,6 +137,8 @@ export const searchIndex: SearchEntry[] = [
   { title: 'TreeView', page: 'DataTable', route: '/datatable', hash: 'treeview' },
   // Misc
   { title: 'Miscellaneous', page: 'Components', route: '/misc' },
+  { title: 'Snackbar', page: 'Misc', route: '/misc', hash: 'snackbar' },
+  { title: 'SnackbarQueue', page: 'Misc', route: '/misc', hash: 'snackbar' },
   { title: 'Toast', page: 'Misc', route: '/misc', hash: 'toast' },
   { title: 'Badge', page: 'Misc', route: '/misc', hash: 'badge' },
   { title: 'Tooltip', page: 'Misc', route: '/misc', hash: 'tooltip' },

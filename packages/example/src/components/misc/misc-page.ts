@@ -10,6 +10,7 @@ import {
   Badge,
   Icon,
   FileUpload,
+  snackbar,
   toast,
   initTooltips,
   initPushpins,
@@ -130,6 +131,55 @@ m(FileUpload, {
   },
 })`,
         }),
+        m('h3.header[id=snackbar]', 'Snackbar Queue'),
+        m(
+          'p',
+          'Snackbars present one message at a time in insertion order. Hover or focus pauses the active timeout.'
+        ),
+        m(
+          '.row',
+          m('.col.s12', [
+            m(Button, {
+              label: 'Queue three messages',
+              onclick: () => {
+                snackbar({ message: 'Profile saved' });
+                snackbar({ message: 'Preferences synchronized' });
+                snackbar({ message: 'Backup completed' });
+              },
+            }),
+            m(Button, {
+              label: 'Delete with Undo',
+              onclick: () => {
+                snackbar({
+                  message: 'Project deleted',
+                  duration: 8000,
+                  dismissible: true,
+                  action: {
+                    label: 'Undo',
+                    onclick: () => snackbar({ message: 'Project restored' }),
+                  },
+                });
+              },
+            }),
+          ])
+        ),
+        m(HighlightedCodeBlock, {
+          code: `import { snackbar } from 'mithril-materialized';
+
+snackbar({ message: 'Profile saved' });
+snackbar({ message: 'Preferences synchronized' });
+
+snackbar({
+  message: 'Project deleted',
+  duration: 8000,
+  dismissible: true,
+  action: {
+    label: 'Undo',
+    onclick: () => restoreProject(),
+  },
+});`,
+        }),
+
         m('h3.header[id=toast]', 'Toast'),
         m('p', 'Toast provides brief feedback about an operation through a message at the bottom of the screen.'),
         m(

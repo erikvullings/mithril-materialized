@@ -59,6 +59,11 @@
   --mm-dropdown-hover: #eee;
   --mm-dropdown-focus: #ddd;
   --mm-dropdown-selected: #e3f2fd;
+
+  // Snackbar colors
+  --mm-snackbar-background: #323232;
+  --mm-snackbar-text: #ffffff;
+  --mm-snackbar-action: #80cbc4;
   
   // Collection/Table hover (light theme)
   --mm-row-hover: rgba(0, 0, 0, 0.04);
@@ -155,6 +160,11 @@ body {
   --mm-dropdown-hover: #444;
   --mm-dropdown-focus: #555;
   --mm-dropdown-selected: #1e3a8a;
+
+  // Snackbar colors
+  --mm-snackbar-background: #2d2d2d;
+  --mm-snackbar-text: rgba(255, 255, 255, 0.87);
+  --mm-snackbar-action: var(--mm-primary-color);
   
   // Collection/Table hover (dark theme) - more subtle
   --mm-row-hover: rgba(255, 255, 255, 0.04);
@@ -227,6 +237,11 @@ body {
     --mm-dropdown-hover: #444;
     --mm-dropdown-focus: #555;
     --mm-dropdown-selected: #1e3a8a;
+
+    // Snackbar colors (auto dark theme)
+    --mm-snackbar-background: #2d2d2d;
+    --mm-snackbar-text: rgba(255, 255, 255, 0.87);
+    --mm-snackbar-action: var(--mm-primary-color);
     
     // Switch colors (auto dark theme)
     --mm-switch-checked-track: rgba(128, 203, 196, 0.3);
