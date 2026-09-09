@@ -1,4 +1,5 @@
 import m, { FactoryComponent } from 'mithril';
+import { createDismissibleLayer } from './dismissible-layer';
 import { InputAttrs } from './input-options';
 import { uniqueId } from './utils';
 import { TimeValue, addLeadingZero, parseTime, formatTime, timeToMinutes } from './time-utils';
@@ -16,6 +17,7 @@ interface TimeRangePickerState {
   isPickerOpen: boolean;
   portalContainerId: string;
   currentView: 'hours' | 'minutes';
+  inputElement?: HTMLInputElement;
 
   // Display elements
   spanStartHours?: HTMLElement;
@@ -104,6 +106,15 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
   let state: TimeRangePickerState;
   let portal: PortalHandle;
 
+  const closePicker = () => {
+    state.isPickerOpen = false;
+    state.currentSelection = 'start';
+    state.currentView = 'hours';
+    escapeLayer.sync(false);
+    portal.sync(null);
+    m.redraw();
+  };
+
   const calculateMinTime = (startTime: TimeValue, twelveHour: boolean): string | undefined => {
     if (!startTime) return undefined;
 
@@ -153,8 +164,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
       // Finalize selection
       state.startTime = { ...state.tempStartTime };
       state.endTime = { ...state.tempEndTime };
-      state.isPickerOpen = false;
-      state.currentSelection = 'start';
+      closePicker();
 
       // Call onchange callback
       if (onchange && state.startTime && state.endTime) {
@@ -334,9 +344,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
                     {
                       type: 'button',
                       style: showClearBtn ? '' : 'visibility: hidden;',
-                      onclick: () => {
-                        state.isPickerOpen = false;
-                      },
+                      onclick: closePicker,
                     },
                     i18n.clear
                   ),
@@ -345,11 +353,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
                       'button.btn-flat.timepicker-close.waves-effect',
                       {
                         type: 'button',
-                        onclick: () => {
-                          state.isPickerOpen = false;
-                          state.currentSelection = 'start';
-                          state.currentView = 'hours'; // Reset to hours view
-                        },
+                        onclick: closePicker,
                       },
                       i18n.cancel
                     ),
@@ -401,9 +405,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
                     {
                       type: 'button',
                       style: showClearBtn ? '' : 'visibility: hidden;',
-                      onclick: () => {
-                        state.isPickerOpen = false;
-                      },
+                      onclick: closePicker,
                     },
                     i18n.clear
                   ),
@@ -412,11 +414,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
                       'button.btn-flat.timepicker-close.waves-effect',
                       {
                         type: 'button',
-                        onclick: () => {
-                          state.isPickerOpen = false;
-                          state.currentSelection = 'start';
-                          state.currentView = 'hours'; // Reset to hours view
-                        },
+                        onclick: closePicker,
                       },
                       i18n.cancel
                     ),
@@ -438,12 +436,11 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
     };
   };
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && state.isPickerOpen) {
-      state.isPickerOpen = false;
-      portal.sync(null);
-    }
-  };
+  const escapeLayer = createDismissibleLayer(() => {
+    if (!state.isPickerOpen || !state.inputElement?.isConnected) return false;
+    closePicker();
+    return 'dismissed';
+  });
 
   const renderPickerToPortal = (attrs: TimeRangePickerAttrs) => {
     const mergedI18n: Required<TimepickerI18n> = {
@@ -478,11 +475,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             zIndex: '1002',
           },
-          onclick: () => {
-            state.isPickerOpen = false;
-            state.currentSelection = 'start';
-            state.currentView = 'hours'; // Reset to hours view
-          },
+          onclick: closePicker,
         }),
 
         // Modal content
@@ -547,12 +540,10 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
       };
       portal = createPortalHandle({ id: state.portalContainerId, zIndex: 1004 });
 
-      document.addEventListener('keydown', handleKeyDown);
     },
 
     onremove: () => {
-      document.removeEventListener('keydown', handleKeyDown);
-
+      escapeLayer.dispose();
       portal.dispose();
     },
 
@@ -565,6 +556,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
     },
 
     view: ({ attrs }) => {
+      escapeLayer.sync(state.isPickerOpen);
       const {
         id = state.id,
         label,
@@ -600,9 +592,13 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
           readonly: true,
           disabled,
           required,
+          oncreate: ({ dom }) => {
+            state.inputElement = dom as HTMLInputElement;
+          },
           onclick: () => {
             if (!disabled && !readonly) {
               state.isPickerOpen = true;
+              escapeLayer.sync(true);
               state.currentSelection = 'start';
               state.currentView = 'hours'; // Reset to hours view when opening
               state.tempStartTime = { ...state.startTime };

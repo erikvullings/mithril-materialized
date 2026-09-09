@@ -222,6 +222,11 @@ body {
     --mm-shadow-umbra: rgba(0, 0, 0, 0.5);
     --mm-shadow-penumbra: rgba(0, 0, 0, 0.36);
     --mm-shadow-ambient: rgba(0, 0, 0, 0.3);
+
+    // Dropdown and menu colors (auto dark theme)
+    --mm-dropdown-hover: #444;
+    --mm-dropdown-focus: #555;
+    --mm-dropdown-selected: #1e3a8a;
     
     // Switch colors (auto dark theme)
     --mm-switch-checked-track: rgba(128, 203, 196, 0.3);

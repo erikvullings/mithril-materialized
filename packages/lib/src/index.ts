@@ -36,6 +36,7 @@ export * from './range-slider';
 export * from './label';
 export * from './material-box';
 export * from './material-icon';
+export * from './menu';
 export * from './modal';
 export * from './option';
 export * from './pagination';

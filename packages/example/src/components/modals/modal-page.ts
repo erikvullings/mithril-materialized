@@ -2,10 +2,12 @@ import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
 import {
   AlertDialog,
-  ModalPanel,
-  Dialog,
   Button,
+  ContextMenu,
+  Dialog,
   MaterialBox,
+  Menu,
+  ModalPanel,
   Select,
   SelectAttrs,
   Dropdown,
@@ -14,6 +16,8 @@ import {
 import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
 export const ModalPage = () => {
+  const ActionMenu = Menu<'edit' | 'duplicate' | 'archive'>();
+  const ProjectContextMenu = ContextMenu<'rename' | 'download' | 'delete'>();
   const onchange = (v: unknown) => alert(v);
 
   // State to control modal visibility
@@ -116,6 +120,83 @@ export const ModalPage = () => {
     destructive: true,
     onclick: deleteProject,
   },
+})`,
+        }),
+
+        m('h3.header[id=menu]', 'Action Menu'),
+        m(
+          '.row',
+          m(ActionMenu, {
+            ariaLabel: 'Project actions',
+            trigger: (attrs) => m(Button, { ...attrs, label: 'Project actions', iconName: 'more_vert' }),
+            items: [
+              { id: 'edit', label: 'Edit project', iconName: 'edit' },
+              { id: 'duplicate', label: 'Duplicate', iconName: 'content_copy' },
+              { separator: true },
+              { id: 'archive', label: 'Archive', iconName: 'archive', disabled: true },
+            ],
+            onSelect: (id) => alert(`Selected ${id}`),
+          })
+        ),
+        m(HighlightedCodeBlock, {
+          code: `const ActionMenu = Menu<'edit' | 'duplicate' | 'archive'>();
+
+m(ActionMenu, {
+  ariaLabel: 'Project actions',
+  trigger: (attrs) =>
+    m(Button, { ...attrs, label: 'Project actions', iconName: 'more_vert' }),
+  items: [
+    { id: 'edit', label: 'Edit project', iconName: 'edit' },
+    { id: 'duplicate', label: 'Duplicate', iconName: 'content_copy' },
+    { separator: true },
+    { id: 'archive', label: 'Archive', iconName: 'archive', disabled: true },
+  ],
+  onSelect: (id) => runProjectAction(id),
+})`,
+        }),
+
+        m('h3.header[id=context-menu]', 'Context Menu'),
+        m('p', 'Right-click the surface, or focus it and press Shift+F10 or the Context Menu key.'),
+        m(
+          ProjectContextMenu,
+          {
+            ariaLabel: 'File actions',
+            trigger: (attrs) =>
+              m(
+                '.card-panel',
+                {
+                  ...attrs,
+                  tabindex: 0,
+                  style: {
+                    maxWidth: '520px',
+                    cursor: 'context-menu',
+                  },
+                },
+                [m('strong', 'quarterly-report.pdf'), m('br'), 'Context-click for file actions']
+              ),
+            items: [
+              { id: 'rename', label: 'Rename', iconName: 'drive_file_rename_outline' },
+              { id: 'download', label: 'Download', iconName: 'download' },
+              { separator: true },
+              { id: 'delete', label: 'Delete', iconName: 'delete' },
+            ],
+            onSelect: (id) => alert(`Selected ${id}`),
+          }
+        ),
+        m(HighlightedCodeBlock, {
+          code: `const FileMenu = ContextMenu<'rename' | 'download' | 'delete'>();
+
+m(FileMenu, {
+  ariaLabel: 'File actions',
+  trigger: (attrs) =>
+    m('.card-panel', { ...attrs, tabindex: 0 }, 'quarterly-report.pdf'),
+  items: [
+    { id: 'rename', label: 'Rename', iconName: 'drive_file_rename_outline' },
+    { id: 'download', label: 'Download', iconName: 'download' },
+    { separator: true },
+    { id: 'delete', label: 'Delete', iconName: 'delete' },
+  ],
+  onSelect: (id) => runFileAction(id),
 })`,
         }),
 
