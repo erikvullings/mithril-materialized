@@ -20,3 +20,21 @@ The following tasks are unblocked and can be worked in parallel.
 - [ ] 0008 Align form grid defaults
 - [x] 0009 ModalPanel style overrides and tokens
 - [ ] 0010 Compact theme and style override surface
+
+## Overlay and Action Components
+
+Dialog is the shared foundation for CommandPalette. Menu and Snackbar can proceed independently.
+
+- [ ] 0011 Dialog and AlertDialog abstraction
+- [ ] 0012 Menu and context menu
+- [ ] 0013 Snackbar queue with actions
+- [ ] 0015 CommandPalette *(needs 0011)*
+
+## Content and Identity Components
+
+- [ ] 0014 Skeleton and EmptyState
+- [ ] 0016 Avatar and AvatarGroup
+
+## Large Data
+
+- [ ] 0017 Virtualized list and table support
