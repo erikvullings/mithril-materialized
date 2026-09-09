@@ -1,3 +1,10 @@
+# [3.18.0](https://github.com/erikvullings/mithril-materialized/compare/v3.17.11...v3.18.0) (2026-09-09)
+
+
+### Features
+
+* **interactions:** improve picker and selection workflows ([0814b2e](https://github.com/erikvullings/mithril-materialized/commit/0814b2e6059cf6c76e94c4ea8bddea4ca6a3f3f5))
+
 ## [3.17.11](https://github.com/erikvullings/mithril-materialized/compare/v3.17.10...v3.17.11) (2026-09-08)
 
 
