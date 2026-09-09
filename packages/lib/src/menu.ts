@@ -1,4 +1,5 @@
 import m, { type Attributes, type Component, type VnodeDOM } from 'mithril';
+import { createDismissibleLayer } from './dismissible-layer';
 import { createPortalHandle, type PortalHandle } from './portal';
 import { uniqueId } from './utils';
 
@@ -230,6 +231,7 @@ const createMenu = <T extends string | number>(
   const close = (attrs: MenuBaseAttrs<T>, reason: MenuCloseReason) => {
     if (!state.isOpen) return;
     state.isOpen = false;
+    escapeLayer.sync(false);
     state.activeIndex = -1;
     state.point = null;
     resetTypeahead();
@@ -242,6 +244,12 @@ const createMenu = <T extends string | number>(
     m.redraw();
   };
 
+  const escapeLayer = createDismissibleLayer(() => {
+    if (!state.isOpen || !state.menuElement?.isConnected) return false;
+    close(currentAttrs, 'escape');
+    return 'dismissed';
+  });
+
   const open = (
     attrs: MenuBaseAttrs<T>,
     invoker: HTMLElement,
@@ -252,6 +260,7 @@ const createMenu = <T extends string | number>(
     const indices = enabledIndices(attrs.items);
     const wasOpen = state.isOpen;
     state.isOpen = true;
+    escapeLayer.sync(true);
     state.activeIndex = indices.length === 0 ? -1 : focusLast ? indices[indices.length - 1] : indices[0];
     state.invoker = invoker;
     state.point = point;
@@ -324,10 +333,6 @@ const createMenu = <T extends string | number>(
           if (isMenuItem(entry)) selectItem(attrs, entry);
         }
         break;
-      case 'Escape':
-        event.preventDefault();
-        close(attrs, 'escape');
-        return;
       default:
         if (event.key.length === 1 && !event.altKey && !event.ctrlKey && !event.metaKey) {
           event.preventDefault();
@@ -495,6 +500,7 @@ const createMenu = <T extends string | number>(
       state.isOpen = attrs.isOpen ?? attrs.defaultOpen ?? false;
       state.activeIndex = state.isOpen ? enabledIndices(attrs.items)[0] ?? -1 : -1;
       portal = createPortalHandle({ id: `${menuId}-portal`, zIndex: 10010 });
+      escapeLayer.sync(state.isOpen);
       if (state.isOpen) {
         if (activeMenu?.owner !== owner) activeMenu?.close();
         activeMenu = { owner, close: () => close(currentAttrs, 'outside') };
@@ -511,6 +517,7 @@ const createMenu = <T extends string | number>(
       window.removeEventListener('resize', handleViewportChange);
       window.removeEventListener('scroll', handleViewportChange, true);
       portal.dispose();
+      escapeLayer.dispose();
       if (activeMenu?.owner === owner) activeMenu = undefined;
       if (state.isOpen) restoreFocus();
       state.menuElement = null;
@@ -524,6 +531,7 @@ const createMenu = <T extends string | number>(
           if (activeMenu?.owner !== owner) activeMenu?.close();
           const indices = enabledIndices(attrs.items);
           state.isOpen = true;
+          escapeLayer.sync(true);
           state.activeIndex = indices[0] ?? -1;
           state.invoker = document.activeElement instanceof HTMLElement ? document.activeElement : state.triggerElement;
           resetTypeahead();

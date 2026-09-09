@@ -1,5 +1,6 @@
 import m, { type FactoryComponent, type Attributes } from 'mithril';
 import { FlatButton } from './button';
+import { createDismissibleLayer } from './dismissible-layer';
 import { uniqueId } from './utils';
 // Styles are imported via the main index or individual component imports
 
@@ -163,6 +164,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
 
     blurFocusedElementInsideModal();
     state.isOpen = false;
+    escapeLayer.sync(false);
     if (attrs.onToggle) attrs.onToggle(false);
     if (attrs.onClose) attrs.onClose(reason);
 
@@ -178,20 +180,26 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
     m.redraw();
   };
 
+  const escapeLayer = createDismissibleLayer(() => {
+    if (!state.isOpen || !state.modalElement?.isConnected) return false;
+    if (currentAttrs.closeOnEsc === false) return 'blocked';
+    closeModal(currentAttrs, 'escape');
+    return 'dismissed';
+  });
+
   const openModal = (attrs: ModalAttrs) => {
     if (state.isOpen) return;
 
     const activeElement = document.activeElement;
     state.lastFocusedElement = activeElement instanceof HTMLElement ? activeElement : null;
     state.isOpen = true;
+    escapeLayer.sync(true);
     needsInitialFocus = true;
     if (attrs.onToggle) attrs.onToggle(true);
 
     // Add keyboard listener
     keydownHandler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && currentAttrs.closeOnEsc !== false && state.isOpen) {
-        closeModal(currentAttrs, 'escape');
-      } else if (e.key === 'Tab' && state.isOpen) {
+      if (e.key === 'Tab' && state.isOpen) {
         trapTabKey(e);
       }
     };
@@ -216,6 +224,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
         document.removeEventListener('keydown', keydownHandler);
         keydownHandler = null;
       }
+      escapeLayer.dispose();
       document.body.style.overflow = '';
       if (state.isOpen) {
         restoreFocusToInvoker(currentAttrs);

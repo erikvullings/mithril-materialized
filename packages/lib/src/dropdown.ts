@@ -3,6 +3,7 @@ import { HelperText } from './label';
 import { uniqueId, getDropdownStyles } from './utils';
 import { MaterialIcon } from './material-icon';
 import { createControllableFieldState } from './controllable-field';
+import { createDismissibleLayer } from './dismissible-layer';
 import { createPortalHandle, type PortalHandle } from './portal';
 
 export interface DropdownItem<T extends string | number> {
@@ -74,6 +75,11 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
     isInsideModal: false,
   };
   let dropdownPortal: PortalHandle | undefined;
+  const escapeLayer = createDismissibleLayer(() => {
+    if (!state.isOpen || !state.inputRef?.isConnected) return false;
+    closeDropdown();
+    return 'dismissed';
+  });
 
   const valueState = createControllableFieldState<DropdownAttrs<T>, T | undefined>({
     controlled: (attrs) => attrs.checkedId !== undefined && typeof attrs.onchange === 'function',
@@ -85,6 +91,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
 
   const closeDropdown = () => {
     state.isOpen = false;
+    escapeLayer.sync(false);
     m.redraw(); // Needed to remove the dropdown options list (potentially added to document root)
   };
 
@@ -124,6 +131,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       case 'Escape':
         e.preventDefault();
         state.isOpen = false;
+        escapeLayer.sync(false);
         state.focusedIndex = -1;
         return undefined;
       default:
@@ -251,6 +259,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       document.removeEventListener('click', closeDropdown);
 
       dropdownPortal?.dispose();
+      escapeLayer.dispose();
     },
 
     view: ({ attrs }) => {
@@ -267,6 +276,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       } = attrs;
 
       valueState.sync(attrs);
+      escapeLayer.sync(state.isOpen);
       const currentCheckedId = valueState.current(attrs);
 
       const handleSelection = (value: T) => {

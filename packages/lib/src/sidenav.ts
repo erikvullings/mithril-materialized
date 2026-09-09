@@ -1,4 +1,5 @@
 import m, { type Attributes , type FactoryComponent } from 'mithril';
+import { createDismissibleLayer } from './dismissible-layer';
 import { MaterialIcon, type IconName } from './material-icon';
 import type { ComponentStyle } from './types';
 import { uniqueId } from './utils';
@@ -233,6 +234,8 @@ const SidenavHeaderFooterItem: FactoryComponent<
  */
 export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
   let state: SidenavState;
+  let currentAttrs: SidenavAttrs;
+  let sidenavElement: HTMLElement | null = null;
 
   const handleBackdropClick = (attrs: SidenavAttrs) => {
     if (attrs.closeOnBackdropClick !== false && attrs.onToggle) {
@@ -240,12 +243,13 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
     }
   };
 
-  const handleEscapeKey = (e: KeyboardEvent, attrs: SidenavAttrs) => {
-    if (e.key === 'Escape' && attrs.closeOnEscape !== false && attrs.onToggle) {
-      attrs.onToggle(false);
-      m.redraw();
-    }
-  };
+  const escapeLayer = createDismissibleLayer(() => {
+    if (!state.isOpen || !sidenavElement?.isConnected) return false;
+    if (currentAttrs.closeOnEscape === false || !currentAttrs.onToggle) return 'blocked';
+    currentAttrs.onToggle(false);
+    m.redraw();
+    return 'dismissed';
+  });
 
   const setBodyOverflow = (isOpen: boolean, mode: string, fixed: boolean) => {
     if (typeof document !== 'undefined') {
@@ -269,6 +273,7 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
 
   return {
     oninit: ({ attrs }) => {
+      currentAttrs = attrs;
       state = {
         id: attrs.id || uniqueId(),
         isOpen: attrs.isOpen || false,
@@ -277,14 +282,11 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
         activeItemIndex: null,
         selectedSubmenuItems: new Map(),
       };
-
-      // Set up keyboard listener
-      if (typeof document !== 'undefined' && attrs.closeOnEscape !== false) {
-        document.addEventListener('keydown', (e) => handleEscapeKey(e, attrs));
-      }
+      escapeLayer.sync(state.isOpen);
     },
 
     onbeforeupdate: ({ attrs }) => {
+      currentAttrs = attrs;
       const wasOpen = state.isOpen;
       const isOpen = attrs.isOpen || false;
 
@@ -299,14 +301,14 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
           m.redraw();
         }, attrs.animationDuration || 300);
       }
+      escapeLayer.sync(state.isOpen);
     },
 
     onremove: ({ attrs }) => {
       // Clean up
       setBodyOverflow(false, attrs.mode || 'overlay', attrs.fixed || false);
-      if (typeof document !== 'undefined' && attrs.closeOnEscape !== false) {
-        document.removeEventListener('keydown', (e) => handleEscapeKey(e, attrs));
-      }
+      escapeLayer.dispose();
+      sidenavElement = null;
     },
 
     view: ({ attrs, children }) => {
@@ -345,6 +347,12 @@ export const Sidenav: FactoryComponent<SidenavAttrs> = () => {
           'ul.sidenav',
           {
             id: state.id,
+            oncreate: ({ dom }) => {
+              sidenavElement = dom as HTMLElement;
+            },
+            onupdate: ({ dom }) => {
+              sidenavElement = dom as HTMLElement;
+            },
             class:
               [
                 position === 'right' ? 'right-aligned' : '',

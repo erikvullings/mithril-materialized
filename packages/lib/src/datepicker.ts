@@ -1,4 +1,5 @@
 import m, { FactoryComponent } from 'mithril';
+import { createDismissibleLayer } from './dismissible-layer';
 import { InputAttrs } from './input-options';
 import { range, uniqueId } from './utils';
 import { createPortalHandle, type PortalHandle } from './portal';
@@ -201,9 +202,11 @@ interface DatePickerState {
 export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
   let state: DatePickerState;
   let portal: PortalHandle;
+  let currentAttrs: DatePickerAttrs;
 
   const closePicker = () => {
     state.isOpen = false;
+    escapeLayer.sync(false);
     state.inputElement?.focus();
     m.redraw();
   };
@@ -1244,15 +1247,13 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
     m.redraw();
   };
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && state.isOpen) {
-      closePicker();
-      const options = mergeOptions({} as DatePickerAttrs);
-      if (options.onClose) options.onClose();
-      portal.sync(null);
-      m.redraw();
-    }
-  };
+  const escapeLayer = createDismissibleLayer(() => {
+    if (!state.isOpen || !state.inputElement?.isConnected) return false;
+    closePicker();
+    mergeOptions(currentAttrs).onClose?.();
+    portal.sync(null);
+    return 'dismissed';
+  });
 
   const acceptPickerSelection = (
     attrs: DatePickerAttrs,
@@ -1433,6 +1434,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
   return {
     oninit: (vnode) => {
       const attrs = vnode.attrs;
+      currentAttrs = attrs;
       const options = mergeOptions(attrs);
 
       state = {
@@ -1510,15 +1512,12 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
 
       // Add document click listener to close dropdowns
       document.addEventListener('click', handleDocumentClick);
-      // Add ESC key listener
-      document.addEventListener('keydown', handleKeyDown);
     },
 
     onremove: () => {
       // Clean up event listeners
       document.removeEventListener('click', handleDocumentClick);
-      document.removeEventListener('keydown', handleKeyDown);
-
+      escapeLayer.dispose();
       portal.dispose();
     },
 
@@ -1533,6 +1532,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
 
     view: (vnode) => {
       const attrs = vnode.attrs;
+      currentAttrs = attrs;
       const options = mergeOptions(attrs);
       const {
         id = state.id,
@@ -1644,6 +1644,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                   initialFocusDate;
                 gotoDate(state.focusedDate);
                 state.isOpen = true;
+                escapeLayer.sync(true);
                 if (options.onOpen) options.onOpen();
               }
             },

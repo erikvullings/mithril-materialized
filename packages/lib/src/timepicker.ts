@@ -1,4 +1,5 @@
 import m, { FactoryComponent } from 'mithril';
+import { createDismissibleLayer } from './dismissible-layer';
 import { InputAttrs } from './input-options';
 import { uniqueId } from './utils';
 import { addLeadingZero } from './time-utils';
@@ -214,6 +215,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
       state.autoCloseTimer = undefined;
     }
     state.isOpen = true;
+    escapeLayer.sync(true);
     updateTimeFromInput(inputValue);
     state.currentView = 'hours';
 
@@ -230,6 +232,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
       state.autoCloseTimer = undefined;
     }
     state.isOpen = false;
+    escapeLayer.sync(false);
     state.inputElement?.focus();
     if (options.onCloseStart) options.onCloseStart();
     if (options.onCloseEnd) options.onCloseEnd();
@@ -530,13 +533,12 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     };
   };
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && state.isOpen) {
-      close();
-      portal.sync(null);
-      m.redraw();
-    }
-  };
+  const escapeLayer = createDismissibleLayer(() => {
+    if (!state.isOpen || !state.inputElement?.isConnected) return false;
+    close();
+    portal.sync(null);
+    return 'dismissed';
+  });
 
   const renderPickerToPortal = (dialogLabel: string) => {
     const pickerModal = m(
@@ -643,15 +645,13 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
         updateTimeFromInput(attrs.defaultValue);
       }
 
-      // Add ESC key listener
-      document.addEventListener('keydown', handleKeyDown);
     },
 
     onremove: () => {
       // Cleanup
-      document.removeEventListener('keydown', handleKeyDown);
       if (state.autoCloseTimer) window.clearTimeout(state.autoCloseTimer);
 
+      escapeLayer.dispose();
       portal.dispose();
     },
 

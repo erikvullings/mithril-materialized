@@ -1,4 +1,5 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
+import { createDismissibleLayer } from './dismissible-layer';
 
 export interface MaterialBoxOptions {
   /** Animation duration in ms */
@@ -44,12 +45,18 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
     originalImage: null as HTMLImageElement | null,
     overlay: null as HTMLElement | null,
     overlayImage: null as HTMLImageElement | null,
+    caption: null as HTMLElement | null,
+    openTimer: undefined as number | undefined,
+    closeTimer: undefined as number | undefined,
   };
+  let currentAttrs: MaterialBoxAttrs;
 
   const openBox = (img: HTMLImageElement, attrs: MaterialBoxAttrs) => {
-    if (state.isOpen) return;
+    if (state.isOpen || state.closeTimer) return;
 
     state.isOpen = true;
+    currentAttrs = attrs;
+    escapeLayer.sync(true);
     state.originalImage = img;
 
     if (attrs.onOpenStart) attrs.onOpenStart();
@@ -109,6 +116,7 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
     // Store references
     state.overlay = overlay;
     state.overlayImage = enlargedImg;
+    state.caption = caption;
 
     // Prevent body scrolling
     document.body.style.overflow = 'hidden';
@@ -130,12 +138,10 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
     const closeHandler = () => closeBox(attrs);
     overlay.addEventListener('click', closeHandler);
     enlargedImg.addEventListener('click', closeHandler);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeHandler();
-    });
 
     // Call onOpenEnd after animation
-    setTimeout(() => {
+    state.openTimer = window.setTimeout(() => {
+      state.openTimer = undefined;
       if (attrs.onOpenEnd) attrs.onOpenEnd();
     }, inDuration);
   };
@@ -143,6 +149,12 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
   const closeBox = (attrs: MaterialBoxAttrs) => {
     if (!state.isOpen || !state.originalImage || !state.overlay || !state.overlayImage) return;
 
+    state.isOpen = false;
+    escapeLayer.sync(false);
+    if (state.openTimer) {
+      window.clearTimeout(state.openTimer);
+      state.openTimer = undefined;
+    }
     if (attrs.onCloseStart) attrs.onCloseStart();
 
     const originalRect = state.originalImage.getBoundingClientRect();
@@ -155,29 +167,24 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
     state.overlayImage.style.height = `${originalRect.height}px`;
 
     // Hide caption
-    const caption = document.querySelector('.materialbox-caption');
+    const caption = state.caption;
     if (caption) {
       (caption as HTMLElement).style.opacity = '0';
     }
 
     // Clean up after animation
-    setTimeout(() => {
-      if (state.overlay) {
-        document.body.removeChild(state.overlay);
-        state.overlay = null;
-      }
-      if (state.overlayImage) {
-        document.body.removeChild(state.overlayImage);
-        state.overlayImage = null;
-      }
-      if (caption) {
-        document.body.removeChild(caption);
-      }
+    state.closeTimer = window.setTimeout(() => {
+      state.closeTimer = undefined;
+      state.overlay?.remove();
+      state.overlay = null;
+      state.overlayImage?.remove();
+      state.overlayImage = null;
+      caption?.remove();
+      state.caption = null;
 
       // Restore body scroll
       document.body.style.overflow = '';
 
-      state.isOpen = false;
       state.originalImage = null;
 
       if (attrs.onCloseEnd) attrs.onCloseEnd();
@@ -185,19 +192,31 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
     }, attrs.outDuration || 200);
   };
 
+  const escapeLayer = createDismissibleLayer(() => {
+    if (!state.isOpen || !state.overlay?.isConnected) return false;
+    closeBox(currentAttrs);
+    return 'dismissed';
+  });
+
   return {
     onremove: () => {
       // Clean up if component is removed while open
-      if (state.isOpen) {
-        if (state.overlay) document.body.removeChild(state.overlay);
-        if (state.overlayImage) document.body.removeChild(state.overlayImage);
-        const caption = document.querySelector('.materialbox-caption');
-        if (caption) document.body.removeChild(caption);
-        document.body.style.overflow = '';
-      }
+      escapeLayer.dispose();
+      if (state.openTimer) window.clearTimeout(state.openTimer);
+      if (state.closeTimer) window.clearTimeout(state.closeTimer);
+      state.overlay?.remove();
+      state.overlayImage?.remove();
+      state.caption?.remove();
+      document.body.style.overflow = '';
+      state.isOpen = false;
+      state.originalImage = null;
+      state.overlay = null;
+      state.overlayImage = null;
+      state.caption = null;
     },
 
     view: ({ attrs }) => {
+      currentAttrs = attrs;
       const { src, alt, width, height, caption, className, style, ...otherAttrs } = attrs;
 
       // Build style attribute - handle both string and object styles
