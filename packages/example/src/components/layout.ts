@@ -35,6 +35,7 @@ const isActive = (route: string) => m.route.get().startsWith(route);
 export const Layout: FactoryComponent = () => {
   let isDesktop = window.innerWidth >= DESKTOP_BP;
   let sidenavOpen = isDesktop;
+  let hamburgerElement: HTMLButtonElement | undefined;
   let searchQuery = '';
   let showSearchResults = false;
   const openGroups = new Set<DashboardGroup>(['general', 'forms', 'components', 'display', 'styling']);
@@ -57,6 +58,11 @@ export const Layout: FactoryComponent = () => {
   };
 
   const pages = () => dashboardSvc.getList().filter((d) => d.visible);
+  const focusNavigation = () => {
+    document
+      .querySelector<HTMLElement>('.mm-layout > .sidenav a, .mm-layout > .sidenav button, .mm-layout > .sidenav input')
+      ?.focus();
+  };
 
   return {
     oninit: () => {
@@ -75,7 +81,12 @@ export const Layout: FactoryComponent = () => {
           {
             isOpen: sidenavOpen,
             onToggle: (open) => {
+              const wasOpen = sidenavOpen;
               sidenavOpen = open;
+              if (wasOpen && !open) {
+                m.redraw.sync();
+                hamburgerElement?.focus();
+              }
             },
             mode: 'overlay',
             width: 260,
@@ -183,17 +194,25 @@ export const Layout: FactoryComponent = () => {
         ),
 
         // ── Main content ────────────────────────────────────────────────
-        m(`main.mm-content${isDesktop ? '.mm-content--desktop' : ''}`, [
-          !isDesktop &&
-            m(
-              'button.mm-hamburger[type=button]',
-              {
-                onclick: () => {
-                  sidenavOpen = true;
-                },
+        m(`main.mm-content${isDesktop && sidenavOpen ? '.mm-content--desktop' : ''}`, [
+          m(
+            `button.mm-hamburger${sidenavOpen ? '.mm-hamburger--hidden' : ''}[type=button]`,
+            {
+              'aria-label': 'Open navigation',
+              'aria-hidden': sidenavOpen ? 'true' : 'false',
+              tabindex: sidenavOpen ? -1 : 0,
+              title: 'Open navigation',
+              oncreate: ({ dom }) => {
+                hamburgerElement = dom as HTMLButtonElement;
               },
-              m('i.material-icons', 'menu')
-            ),
+              onclick: () => {
+                sidenavOpen = true;
+                m.redraw.sync();
+                focusNavigation();
+              },
+            },
+            m('i.material-icons', 'menu')
+          ),
           vnode.children,
         ]),
       ]);

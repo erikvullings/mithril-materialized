@@ -5,6 +5,7 @@ import { addLeadingZero } from './time-utils';
 import { DigitalClock } from './digital-clock';
 import { AnalogClock } from './analog-clock';
 import { createPortalHandle, type PortalHandle } from './portal';
+import { focusFirstPickerControl, trapPickerTabKey } from './picker-keyboard';
 
 export interface TimepickerI18n {
   cancel?: string;
@@ -82,6 +83,8 @@ interface TimepickerState {
   footer?: HTMLElement;
   amBtn?: HTMLElement;
   pmBtn?: HTMLElement;
+  inputElement?: HTMLInputElement;
+  autoCloseTimer?: number;
 }
 
 const defaultOptions: Required<TimepickerOptions> = {
@@ -119,6 +122,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
   let state: TimepickerState;
   let options: Required<TimepickerOptions>;
   let portal: PortalHandle;
+  let changeHandler: TimePickerAttrs['onchange'];
 
   // Use shared utilities from time-utils
   // const addLeadingZero = sharedAddLeadingZero;
@@ -205,6 +209,10 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
   const open = (inputValue: string) => {
     if (state.isOpen) return;
 
+    if (state.autoCloseTimer) {
+      window.clearTimeout(state.autoCloseTimer);
+      state.autoCloseTimer = undefined;
+    }
     state.isOpen = true;
     updateTimeFromInput(inputValue);
     state.currentView = 'hours';
@@ -217,12 +225,19 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
   const close = () => {
     if (!state.isOpen) return;
 
+    if (state.autoCloseTimer) {
+      window.clearTimeout(state.autoCloseTimer);
+      state.autoCloseTimer = undefined;
+    }
     state.isOpen = false;
+    state.inputElement?.focus();
     if (options.onCloseStart) options.onCloseStart();
     if (options.onCloseEnd) options.onCloseEnd();
+    m.redraw();
   };
 
   const done = (clearValue?: boolean) => {
+    if (!state.isOpen) return '';
     // const last = ''; // We'll get this from the actual input
     let value = clearValue ? '' : addLeadingZero(state.hours) + ':' + addLeadingZero(state.minutes);
 
@@ -230,6 +245,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
       value = `${value} ${state.amOrPm}`;
     }
 
+    changeHandler?.(value);
     close();
     m.redraw();
     return value;
@@ -259,9 +275,29 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                     'span.timepicker-span-hours',
                     {
                       class: state.currentView === 'hours' ? 'text-primary' : '',
+                      role: isDigitalMode ? undefined : 'button',
+                      tabindex: isDigitalMode ? -1 : 0,
+                      'aria-hidden': isDigitalMode ? 'true' : undefined,
+                      'aria-label': 'Hours',
+                      'data-time-segment': isDigitalMode ? undefined : 'hours',
                       onclick: () => {
                         if (!isDigitalMode) {
                           state.currentView = 'hours';
+                          m.redraw();
+                        }
+                      },
+                      onkeydown: (event: KeyboardEvent) => {
+                        if (isDigitalMode) return;
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          state.currentView = 'hours';
+                        } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+                          event.preventDefault();
+                          const direction = event.key === 'ArrowUp' ? 1 : -1;
+                          const range = options.twelveHour ? 12 : 24;
+                          const minimum = options.twelveHour ? 1 : 0;
+                          state.hours = ((state.hours - minimum + direction + range) % range) + minimum;
+                          options.onSelect(state.hours, state.minutes);
                           m.redraw();
                         }
                       },
@@ -276,9 +312,27 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                     'span.timepicker-span-minutes',
                     {
                       class: state.currentView === 'minutes' ? 'text-primary' : '',
+                      role: isDigitalMode ? undefined : 'button',
+                      tabindex: isDigitalMode ? -1 : 0,
+                      'aria-hidden': isDigitalMode ? 'true' : undefined,
+                      'aria-label': 'Minutes',
+                      'data-time-segment': isDigitalMode ? undefined : 'minutes',
                       onclick: () => {
                         if (!isDigitalMode) {
                           state.currentView = 'minutes';
+                          m.redraw();
+                        }
+                      },
+                      onkeydown: (event: KeyboardEvent) => {
+                        if (isDigitalMode) return;
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          state.currentView = 'minutes';
+                        } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+                          event.preventDefault();
+                          const direction = event.key === 'ArrowUp' ? 1 : -1;
+                          state.minutes = (state.minutes + direction + 60) % 60;
+                          options.onSelect(state.hours, state.minutes);
                           m.redraw();
                         }
                       },
@@ -300,9 +354,13 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                       },
                       [
                         m(
-                          '.am-btn',
+                          'button.am-btn.timepicker-period-button',
                           {
+                            type: 'button',
+                            disabled: isDigitalMode,
                             class: state.amOrPm === 'AM' ? 'text-primary' : '',
+                            tabindex: isDigitalMode ? -1 : 0,
+                            'aria-pressed': state.amOrPm === 'AM' ? 'true' : 'false',
                             onclick: () => handleAmPmClick('AM'),
                             oncreate: (vnode) => {
                               state.amBtn = vnode.dom as HTMLElement;
@@ -311,9 +369,13 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                           'AM'
                         ),
                         m(
-                          '.pm-btn',
+                          'button.pm-btn.timepicker-period-button',
                           {
+                            type: 'button',
+                            disabled: isDigitalMode,
                             class: state.amOrPm === 'PM' ? 'text-primary' : '',
+                            tabindex: isDigitalMode ? -1 : 0,
+                            'aria-pressed': state.amOrPm === 'PM' ? 'true' : 'false',
                             onclick: () => handleAmPmClick('PM'),
                             oncreate: (vnode) => {
                               state.pmBtn = vnode.dom as HTMLElement;
@@ -362,7 +424,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                         'button.btn-flat.timepicker-clear.waves-effect',
                         {
                           type: 'button',
-                          tabindex: options.twelveHour ? '3' : '1',
+                          tabindex: showClearBtn ? 0 : -1,
                           style: showClearBtn ? '' : 'visibility: hidden;',
                           onclick: () => clear(),
                         },
@@ -370,19 +432,17 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                       ),
                       m('.confirmation-btns', [
                         m(
-                          'button.btn-flat.timepicker-close.waves-effect',
+                          'button.btn-flat.timepicker-close.timepicker-cancel.waves-effect',
                           {
                             type: 'button',
-                            tabindex: options.twelveHour ? '3' : '1',
                             onclick: () => close(),
                           },
                           i18n.cancel
                         ),
                         m(
-                          'button.btn-flat.timepicker-close.waves-effect',
+                          'button.btn-flat.timepicker-close.timepicker-done.waves-effect',
                           {
                             type: 'button',
-                            tabindex: options.twelveHour ? '3' : '1',
                             onclick: () => done(),
                           },
                           i18n.done
@@ -414,7 +474,11 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                       onViewChange: (view) => {
                         state.currentView = view;
                         if (view === 'minutes' && options.autoClose) {
-                          setTimeout(() => done(), options.duration / 2);
+                          if (state.autoCloseTimer) window.clearTimeout(state.autoCloseTimer);
+                          state.autoCloseTimer = window.setTimeout(() => {
+                            state.autoCloseTimer = undefined;
+                            if (state.isOpen) done();
+                          }, options.duration / 2);
                         }
                       },
                       spanHours: state.spanHours,
@@ -433,7 +497,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                         'button.btn-flat.timepicker-clear.waves-effect',
                         {
                           type: 'button',
-                          tabindex: options.twelveHour ? '3' : '1',
+                          tabindex: showClearBtn ? 0 : -1,
                           style: showClearBtn ? '' : 'visibility: hidden;',
                           onclick: () => clear(),
                         },
@@ -441,19 +505,17 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
                       ),
                       m('.confirmation-btns', [
                         m(
-                          'button.btn-flat.timepicker-close.waves-effect',
+                          'button.btn-flat.timepicker-close.timepicker-cancel.waves-effect',
                           {
                             type: 'button',
-                            tabindex: options.twelveHour ? '3' : '1',
                             onclick: () => close(),
                           },
                           i18n.cancel
                         ),
                         m(
-                          'button.btn-flat.timepicker-close.waves-effect',
+                          'button.btn-flat.timepicker-close.timepicker-done.waves-effect',
                           {
                             type: 'button',
-                            tabindex: options.twelveHour ? '3' : '1',
                             onclick: () => done(),
                           },
                           i18n.done
@@ -476,7 +538,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     }
   };
 
-  const renderPickerToPortal = () => {
+  const renderPickerToPortal = (dialogLabel: string) => {
     const pickerModal = m(
       '.timepicker-modal-wrapper',
       {
@@ -514,6 +576,28 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
         m(
           '.modal.timepicker-modal.open',
           {
+            role: 'dialog',
+            'aria-modal': 'true',
+            'aria-label': dialogLabel,
+            oncreate: ({ dom }) => {
+              focusFirstPickerControl(dom as HTMLElement, '[data-time-segment="hours"][tabindex="0"]');
+            },
+            onkeydown: (event: KeyboardEvent) => {
+              const target = event.target as HTMLElement;
+              if (
+                event.key === 'Enter' &&
+                !target.matches('button, input, [role="button"]')
+              ) {
+                event.preventDefault();
+                done();
+                return;
+              }
+              trapPickerTabKey(event, event.currentTarget as HTMLElement, [
+                '.timepicker-done',
+                '.timepicker-cancel',
+                '.timepicker-clear',
+              ]);
+            },
             style: {
               position: 'relative',
               zIndex: '1003',
@@ -541,6 +625,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     oninit: (vnode) => {
       const attrs = vnode.attrs;
       options = { ...defaultOptions, ...attrs };
+      changeHandler = attrs.onchange;
 
       state = {
         id: uniqueId(),
@@ -565,6 +650,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
     onremove: () => {
       // Cleanup
       document.removeEventListener('keydown', handleKeyDown);
+      if (state.autoCloseTimer) window.clearTimeout(state.autoCloseTimer);
 
       portal.dispose();
     },
@@ -574,7 +660,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
 
       // Only render to portal when using modal mode
       if (useModal && state.isOpen) {
-        renderPickerToPortal();
+        renderPickerToPortal(attrs.label || 'Choose time');
       } else {
         portal.sync(null);
       }
@@ -597,6 +683,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
         className: cn1,
         class: cn2,
       } = attrs;
+      changeHandler = onchange;
       const className = cn1 || cn2 || 'col s12';
       // Format time value for display
       const formatTime = (hours: number, minutes: number, use12Hour: boolean): string => {
@@ -662,6 +749,9 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
           disabled,
           readonly,
           required,
+          oncreate: ({ dom }) => {
+            state.inputElement = dom as HTMLInputElement;
+          },
           onclick: () => {
             if (!disabled && !readonly && useModal) {
               open(displayValue);

@@ -406,6 +406,7 @@ const InputField =
           validate,
           canClear,
           hideSpinners,
+          selectOnFocus,
           ...params
         } = attrs;
 
@@ -482,13 +483,16 @@ const InputField =
             // attributes,
             oncreate: ({ dom }) => {
               const input = (state.inputElement = dom as HTMLInputElement);
-              if (focus(attrs)) {
-                input.focus();
-              }
-
               // For uncontrolled mode, set initial value only
               if (!controlled && attrs.defaultValue !== undefined) {
                 input.value = String(attrs.defaultValue);
+              }
+
+              if (focus(attrs)) {
+                input.focus();
+                if (selectOnFocus) {
+                  input.select();
+                }
               }
             },
             onkeyup: onkeyup

@@ -305,10 +305,11 @@ body.keyboard-focused {
 // Search input field
 .search-select-input {
   width: 100%;
+  box-sizing: border-box;
   outline: none;
   font-size: 0.875rem;
   border: none;
-  padding: 8px 0;
+  padding: 8px 24px 8px 0;
   border-bottom: 1px solid var(--mm-input-border, #9e9e9e);
   background-color: transparent;
   color: var(--mm-text-primary, inherit);
@@ -319,6 +320,52 @@ body.keyboard-focused {
 
   &::placeholder {
     color: var(--mm-text-hint, #9e9e9e);
+  }
+}
+
+.search-select-loading-indicator {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  width: 18px;
+  height: 18px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-50%);
+  transition: opacity 120ms ease-out;
+  pointer-events: none;
+
+  &.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.search-select-spinner {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--mm-divider-color, rgba(0, 0, 0, 0.16));
+  border-top-color: var(--mm-primary-color, #2196F3);
+  border-radius: 50%;
+  animation: search-select-spin 700ms linear infinite;
+}
+
+.search-select-loading-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes search-select-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -337,7 +384,6 @@ body.keyboard-focused {
 }
 
 // Async loading and error messages should align with other informational rows
-.search-select-loading-info,
 .search-select-error-info {
   padding: 8px 16px;
   color: var(--mm-text-hint, #9e9e9e);

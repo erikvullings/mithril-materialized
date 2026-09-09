@@ -145,6 +145,7 @@ interface SearchSelectState<T extends string | number> {
   focusedIndex: number;
   createdOptions: InputOption<T>[];
   asyncOptions: InputOption<T>[];
+  selectedOptionCache: Map<T, InputOption<T>>;
   isLoading: boolean;
   loadError: string | null;
   latestRequestId: number;
@@ -177,6 +178,7 @@ export const SearchSelect = <T extends string | number>(
     focusedIndex: -1,
     createdOptions: [],
     asyncOptions: [],
+    selectedOptionCache: new Map(),
     isLoading: false,
     loadError: null,
     latestRequestId: 0,
@@ -394,8 +396,20 @@ export const SearchSelect = <T extends string | number>(
       // Keep selected label lookups stable across static, async, and created sets.
       const lookupOptions = [...options, ...state.asyncOptions, ...state.createdOptions];
 
-      // Get selected options for display
-      const selectedOptionsUnsorted = lookupOptions.filter((opt) => selectedIds.includes(opt.id));
+      // Async result sets are replaced per query, so retain option objects for selected IDs.
+      lookupOptions.forEach((option) => {
+        if (selectedIds.includes(option.id)) {
+          state.selectedOptionCache.set(option.id, option);
+        }
+      });
+      state.selectedOptionCache.forEach((_option, id) => {
+        if (!selectedIds.includes(id)) {
+          state.selectedOptionCache.delete(id);
+        }
+      });
+
+      // Get selected options for display independently from the active search results.
+      const selectedOptionsUnsorted = Array.from(state.selectedOptionCache.values());
       const selectedOptions = sortOptions(selectedOptionsUnsorted, attrs.sortSelected);
 
       // Safely filter options
@@ -592,13 +606,22 @@ export const SearchSelect = <T extends string | number>(
                     'aria-autocomplete': 'list',
                     'aria-controls': state.listboxId,
                   }),
+                  loadOptions &&
+                    m(
+                      'span.search-select-loading-indicator',
+                      {
+                        class: state.isLoading ? 'is-active' : '',
+                        role: 'status',
+                        'aria-live': 'polite',
+                        'aria-hidden': state.isLoading ? 'false' : 'true',
+                      },
+                      [
+                        m('span.search-select-spinner', { 'aria-hidden': 'true' }),
+                        m('span.search-select-loading-text', texts.loadingOptions),
+                      ]
+                    ),
                 ]
               ),
-
-              // Async loading status
-              ...(viewState === 'loading'
-                ? [m('li.search-select-loading-info', { role: 'status', 'aria-live': 'polite' }, texts.loadingOptions)]
-                : []),
 
               // Async loading error
               ...(viewState === 'error' && state.loadError

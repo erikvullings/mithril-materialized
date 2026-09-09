@@ -396,6 +396,37 @@ describe('DataTable Component', () => {
       expect(onPaginationChange).toHaveBeenCalledWith({ ...pagination, page: 79 });
     });
 
+    test('selects the current page value when the editor opens', () => {
+      let selectedValue = '';
+      const select = jest.spyOn(HTMLInputElement.prototype, 'select').mockImplementation(function () {
+        selectedValue = this.value;
+      });
+      const pagination: DataTablePagination = {
+        page: 79,
+        pageSize: 10,
+        total: 1600,
+      };
+
+      m.mount(container, {
+        view: () =>
+          m(PaginationControls, {
+            pagination,
+            allowPageInput: true,
+            onPaginationChange: jest.fn(),
+          }),
+      });
+
+      (container.querySelector('.page-info') as HTMLElement).click();
+      m.redraw.sync();
+
+      const input = container.querySelector<HTMLInputElement>('.page-info-editor input');
+      expect(input).toBeTruthy();
+      expect(document.activeElement).toBe(input);
+      expect(select).toHaveBeenCalledWith();
+      expect(select.mock.instances).toContain(input);
+      expect(selectedValue).toBe('80');
+    });
+
     test('keeps invalid and out-of-range page drafts editable without submitting', () => {
       const onPaginationChange = jest.fn();
       const pagination: DataTablePagination = {

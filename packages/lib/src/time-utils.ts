@@ -137,7 +137,7 @@ export const scrollToValue = (
 ): void => {
   const scrollTop = index * itemHeight - (container.clientHeight / 2 - itemHeight / 2);
 
-  if (animated) {
+  if (animated && typeof container.scrollTo === 'function') {
     container.scrollTo({ top: scrollTop, behavior: 'smooth' });
   } else {
     container.scrollTop = scrollTop;

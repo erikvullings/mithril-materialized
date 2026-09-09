@@ -501,6 +501,7 @@ export const PaginationControls: FactoryComponent<PaginationControlsAttrs> = () 
               step: 1,
               hideSpinners: true,
               autofocus: true,
+              selectOnFocus: true,
               'aria-label': pageText,
               onblur: (event) => submitPage(event.currentTarget),
               onkeydown: (event) => {

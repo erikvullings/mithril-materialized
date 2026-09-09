@@ -2,6 +2,7 @@ import m, { FactoryComponent } from 'mithril';
 import { InputAttrs } from './input-options';
 import { range, uniqueId } from './utils';
 import { createPortalHandle, type PortalHandle } from './portal';
+import { focusFirstPickerControl, trapPickerTabKey } from './picker-keyboard';
 
 export interface DatePickerI18n {
   cancel?: string;
@@ -189,6 +190,9 @@ interface DatePickerState {
   monthDropdownOpen: boolean;
   yearDropdownOpen: boolean;
   portalContainerId: string;
+  focusedDate: Date | null;
+  inputSegmentIndex: number;
+  inputElement?: HTMLInputElement;
 }
 
 /**
@@ -197,6 +201,12 @@ interface DatePickerState {
 export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
   let state: DatePickerState;
   let portal: PortalHandle;
+
+  const closePicker = () => {
+    state.isOpen = false;
+    state.inputElement?.focus();
+    m.redraw();
+  };
 
   const mergeOptions = (attrs: DatePickerAttrs): Required<DatePickerOptions> => {
     // Handle HTML attributes
@@ -307,6 +317,107 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
     return result;
   };
 
+  type DateInputUnit = 'day' | 'month' | 'year';
+  interface DateInputSegment {
+    unit: DateInputUnit;
+    start: number;
+    end: number;
+  }
+
+  const getDateInputSegments = (
+    date: Date,
+    format: string,
+    options: Required<DatePickerOptions>
+  ): DateInputSegment[] => {
+    const segments: DateInputSegment[] = [];
+    const tokens = /(dddd|ddd|dd|d|mmmm|mmm|mm|m|yyyy|yy)/g;
+    let outputLength = 0;
+    let sourceIndex = 0;
+    let match: RegExpExecArray | null;
+
+    while ((match = tokens.exec(format))) {
+      outputLength += match.index - sourceIndex;
+      const token = match[0];
+      const rendered = formatDate(date, token, options);
+      const unit: DateInputUnit = token.startsWith('y')
+        ? 'year'
+        : token.startsWith('m')
+          ? 'month'
+          : 'day';
+      segments.push({ unit, start: outputLength, end: outputLength + rendered.length });
+      outputLength += rendered.length;
+      sourceIndex = match.index + token.length;
+    }
+
+    return segments;
+  };
+
+  const selectDateInputSegment = (
+    input: HTMLInputElement,
+    date: Date,
+    format: string,
+    options: Required<DatePickerOptions>,
+    index: number
+  ) => {
+    const segments = getDateInputSegments(date, format, options);
+    if (segments.length === 0) return;
+    state.inputSegmentIndex = Math.max(0, Math.min(segments.length - 1, index));
+    const segment = segments[state.inputSegmentIndex];
+    input.setSelectionRange(segment.start, segment.end);
+  };
+
+  const getActiveDateInputSegment = (
+    input: HTMLInputElement,
+    segments: DateInputSegment[]
+  ): number => {
+    const selectionStart = input.selectionStart ?? 0;
+    const selectedIndex = segments.findIndex(
+      (segment) => selectionStart >= segment.start && selectionStart < segment.end
+    );
+    return selectedIndex >= 0 ? selectedIndex : Math.min(state.inputSegmentIndex, segments.length - 1);
+  };
+
+  const adjustDateInputSegment = (
+    input: HTMLInputElement,
+    direction: -1 | 1,
+    format: string,
+    options: Required<DatePickerOptions>,
+    oninput?: (value: string) => void
+  ) => {
+    if (!state.date) return;
+    const segments = getDateInputSegments(state.date, format, options);
+    if (segments.length === 0) return;
+    const segmentIndex = getActiveDateInputSegment(input, segments);
+    const candidate = new Date(state.date.getTime());
+    const currentDay = candidate.getDate();
+
+    switch (segments[segmentIndex].unit) {
+      case 'day':
+        candidate.setDate(currentDay + direction);
+        break;
+      case 'month':
+        candidate.setDate(1);
+        candidate.setMonth(candidate.getMonth() + direction);
+        candidate.setDate(Math.min(currentDay, getDaysInMonth(candidate.getFullYear(), candidate.getMonth())));
+        break;
+      case 'year':
+        candidate.setDate(1);
+        candidate.setFullYear(candidate.getFullYear() + direction);
+        candidate.setDate(Math.min(currentDay, getDaysInMonth(candidate.getFullYear(), candidate.getMonth())));
+        break;
+    }
+
+    const selectable =
+      findSelectableDate(candidate, direction, options) ||
+      findSelectableDate(candidate, direction === 1 ? -1 : 1, options);
+    if (!selectable) return;
+    setDate(selectable, false, options);
+    oninput?.(formatDate(selectable, format, options));
+    input.value = formatDate(selectable, format, options);
+    m.redraw.sync();
+    selectDateInputSegment(input, selectable, format, options, segmentIndex);
+  };
+
   const setDate = (date: Date | null, preventOnSelect: boolean = false, options: Required<DatePickerOptions>) => {
     if (!date) {
       state.date = null;
@@ -390,7 +501,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
 
       // Auto-close if enabled
       if (options.autoClose) {
-        state.isOpen = false;
+        closePicker();
       }
     }
   };
@@ -408,14 +519,108 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
     ];
   };
 
-  const nextMonth = () => {
-    state.calendars[0].month++;
-    adjustCalendars();
+  const isDateDisabled = (date: Date, options: Required<DatePickerOptions>) =>
+    {
+      const candidate = new Date(date.getTime());
+      const minDate = options.minDate ? new Date(options.minDate.getTime()) : null;
+      const maxDate = options.maxDate ? new Date(options.maxDate.getTime()) : null;
+      setToStartOfDay(candidate);
+      if (minDate) setToStartOfDay(minDate);
+      if (maxDate) setToStartOfDay(maxDate);
+
+      return Boolean(
+        (minDate && candidate < minDate) ||
+          (maxDate && candidate > maxDate) ||
+          (options.disableWeekends && isWeekend(candidate)) ||
+          (options.disableDayFn && options.disableDayFn(candidate))
+      );
+    };
+
+  const findSelectableDate = (
+    date: Date,
+    direction: -1 | 1,
+    options: Required<DatePickerOptions>
+  ): Date | null => {
+    const candidate = new Date(date.getTime());
+    const minDate = options.minDate ? new Date(options.minDate.getTime()) : null;
+    const maxDate = options.maxDate ? new Date(options.maxDate.getTime()) : null;
+    setToStartOfDay(candidate);
+    if (minDate) {
+      setToStartOfDay(minDate);
+      if (candidate < minDate) candidate.setTime(minDate.getTime());
+    }
+    if (maxDate) {
+      setToStartOfDay(maxDate);
+      if (candidate > maxDate) candidate.setTime(maxDate.getTime());
+    }
+
+    for (let attempts = 0; attempts < 3660; attempts++) {
+      if (!isDateDisabled(candidate, options)) return candidate;
+      if (
+        (direction < 0 && minDate && candidate <= minDate) ||
+        (direction > 0 && maxDate && candidate >= maxDate)
+      ) {
+        return null;
+      }
+      candidate.setDate(candidate.getDate() + direction);
+    }
+    return null;
   };
 
-  const prevMonth = () => {
+  const focusDate = (date: Date, options: Required<DatePickerOptions>) => {
+    const direction = date >= (state.focusedDate || date) ? 1 : -1;
+    const candidate =
+      findSelectableDate(date, direction, options) || findSelectableDate(date, direction === 1 ? -1 : 1, options);
+    if (!candidate) return;
+
+    state.focusedDate = candidate;
+    gotoDate(candidate);
+    m.redraw.sync();
+    document
+      .querySelector<HTMLElement>(
+        `.datepicker-day-button[data-year="${candidate.getFullYear()}"][data-month="${candidate.getMonth()}"][data-day="${candidate.getDate()}"]`
+      )
+      ?.focus();
+  };
+
+  const moveDateFocus = (days: number, options: Required<DatePickerOptions>) => {
+    const date = new Date((state.focusedDate || state.date || state.startDate || new Date()).getTime());
+    date.setDate(date.getDate() + days);
+    focusDate(date, options);
+  };
+
+  const syncFocusedDateToCalendar = (options: Required<DatePickerOptions>) => {
+    const calendar = state.calendars[0];
+    const preferredDate = state.focusedDate || state.date || state.startDate || new Date();
+    const daysInMonth = getDaysInMonth(calendar.year, calendar.month);
+    const preferredDay = Math.min(preferredDate.getDate(), daysInMonth);
+    const fallback = new Date(calendar.year, calendar.month, preferredDay);
+
+    for (let offset = 0; offset < daysInMonth; offset++) {
+      const candidateDays = offset === 0 ? [preferredDay] : [preferredDay + offset, preferredDay - offset];
+      for (const day of candidateDays) {
+        if (day < 1 || day > daysInMonth) continue;
+        const candidate = new Date(calendar.year, calendar.month, day);
+        if (!isDateDisabled(candidate, options)) {
+          state.focusedDate = candidate;
+          return;
+        }
+      }
+    }
+
+    state.focusedDate = fallback;
+  };
+
+  const nextMonth = (options: Required<DatePickerOptions>) => {
+    state.calendars[0].month++;
+    adjustCalendars();
+    syncFocusedDateToCalendar(options);
+  };
+
+  const prevMonth = (options: Required<DatePickerOptions>) => {
     state.calendars[0].month--;
     adjustCalendars();
+    syncFocusedDateToCalendar(options);
   };
 
   const adjustCalendars = () => {
@@ -506,6 +711,32 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                 'data-year': opts.year,
                 'data-month': opts.month,
                 'data-day': opts.day,
+                tabindex:
+                  state.focusedDate &&
+                  state.focusedDate.getFullYear() === opts.year &&
+                  state.focusedDate.getMonth() === opts.month &&
+                  state.focusedDate.getDate() === opts.day
+                    ? 0
+                    : -1,
+                'aria-label': `${options.i18n.weekdays![new Date(opts.year, opts.month, opts.day).getDay()]}, ${
+                  options.i18n.months![opts.month]
+                } ${opts.day}, ${opts.year}`,
+                'aria-disabled': opts.isDisabled ? 'true' : 'false',
+                onfocus: () => {
+                  state.focusedDate = new Date(opts.year, opts.month, opts.day);
+                },
+                onkeydown: (event: KeyboardEvent) => {
+                  const moves: Record<string, number> = {
+                    ArrowLeft: -1,
+                    ArrowRight: 1,
+                    ArrowUp: -7,
+                    ArrowDown: 7,
+                  };
+                  const days = moves[event.key];
+                  if (days === undefined) return;
+                  event.preventDefault();
+                  moveDateFocus(days, options);
+                },
                 onclick: (e: Event) => {
                   const target = e.target as HTMLElement;
                   if (!opts.isDisabled) {
@@ -519,7 +750,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                     } else {
                       setDate(selectedDate, false, options);
                       if (options.autoClose) {
-                        state.isOpen = false;
+                        closePicker();
                       }
                     }
                   }
@@ -593,11 +824,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
             }
           }
 
-          const isDisabled =
-            (options.minDate && day < options.minDate) ||
-            (options.maxDate && day > options.maxDate) ||
-            (options.disableWeekends && isWeekend(day)) ||
-            (options.disableDayFn && options.disableDayFn(day));
+          const isDisabled = isDateDisabled(day, options);
 
           // Range selection states
           let isRangeStart = false;
@@ -714,12 +941,16 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
             const startMonth = options.i18n.monthsShort![startDate.getMonth()];
             const endDay = options.i18n.weekdaysShort![endDate.getDay()];
             const endMonth = options.i18n.monthsShort![endDate.getMonth()];
+            const yearText =
+              startDate.getFullYear() === endDate.getFullYear()
+                ? startDate.getFullYear().toString()
+                : `${startDate.getFullYear()}\u2013${endDate.getFullYear()}`;
 
             return m('.datepicker-date-display.range-display', [
-              m('span.year-text', startDate.getFullYear()),
+              m('span.year-text', yearText),
               m('span.date-text', [
                 m('span.start-date', `${startDay}, ${startMonth} ${startDate.getDate()}`),
-                m('span.range-separator', ' - '),
+                m('span.range-separator', '\u2014'),
                 m('span.end-date', `${endDay}, ${endMonth} ${endDate.getDate()}`),
               ]),
             ]);
@@ -732,7 +963,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
               m('span.year-text', startDate.getFullYear()),
               m('span.date-text', [
                 m('span.start-date', `${startDay}, ${startMonth} ${startDate.getDate()}`),
-                m('span.range-separator', ' - '),
+                m('span.range-separator', '\u2014'),
                 m('span.end-date.placeholder', 'Select end date'),
               ]),
             ]);
@@ -782,6 +1013,8 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
           yearStart = year - options.yearRange;
           yearEnd = year + options.yearRange;
         }
+        const monthListId = `${randId}-months`;
+        const yearListId = `${randId}-years`;
 
         return m(
           '.datepicker-controls',
@@ -797,7 +1030,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                 type: 'button',
                 onclick: (e: Event) => {
                   e.preventDefault();
-                  prevMonth();
+                  prevMonth(options);
                 },
               },
               m(
@@ -823,27 +1056,47 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                   type: 'text',
                   readonly: true,
                   value: options.i18n.months![month],
+                  role: 'combobox',
+                  'aria-haspopup': 'listbox',
+                  'aria-expanded': state.monthDropdownOpen ? 'true' : 'false',
+                  'aria-controls': monthListId,
                   onclick: (e: Event) => {
                     e.preventDefault();
                     state.monthDropdownOpen = !state.monthDropdownOpen;
                     state.yearDropdownOpen = false; // Close year dropdown
+                    m.redraw();
+                  },
+                  onkeydown: (e: KeyboardEvent) => {
+                    if (!['Enter', ' ', 'ArrowDown'].includes(e.key)) return;
+                    e.preventDefault();
+                    state.monthDropdownOpen = true;
+                    state.yearDropdownOpen = false;
+                    m.redraw();
                   },
                 }),
                 // Custom dropdown menu
                 state.monthDropdownOpen &&
                   m(
                     '.dropdown-content',
+                    { id: monthListId, role: 'listbox', 'aria-label': 'Month' },
                     options.i18n.months!.map((monthName, index) =>
                       m(
-                        '.dropdown-item',
+                        'button.dropdown-item',
                         {
                           key: index,
+                          type: 'button',
+                          role: 'option',
+                          'aria-selected': index === month ? 'true' : 'false',
                           class: index === month ? 'selected' : '',
                           onclick: (e: Event) => {
                             e.stopPropagation();
-                            gotoMonth(index);
+                            const trigger = (e.currentTarget as HTMLElement)
+                              .closest('.select-wrapper')
+                              ?.querySelector<HTMLElement>('.dropdown-trigger');
+                            gotoMonth(index, options);
                             state.monthDropdownOpen = false;
-                            m.redraw();
+                            m.redraw.sync();
+                            trigger?.focus();
                           },
                         },
                         monthName
@@ -858,27 +1111,47 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                   type: 'text',
                   readonly: true,
                   value: year.toString(),
+                  role: 'combobox',
+                  'aria-haspopup': 'listbox',
+                  'aria-expanded': state.yearDropdownOpen ? 'true' : 'false',
+                  'aria-controls': yearListId,
                   onclick: (e: Event) => {
                     e.preventDefault();
                     state.yearDropdownOpen = !state.yearDropdownOpen;
                     state.monthDropdownOpen = false; // Close month dropdown
+                    m.redraw();
+                  },
+                  onkeydown: (e: KeyboardEvent) => {
+                    if (!['Enter', ' ', 'ArrowDown'].includes(e.key)) return;
+                    e.preventDefault();
+                    state.yearDropdownOpen = true;
+                    state.monthDropdownOpen = false;
+                    m.redraw();
                   },
                 }),
                 // Custom dropdown menu
                 state.yearDropdownOpen &&
                   m(
                     '.dropdown-content',
+                    { id: yearListId, role: 'listbox', 'aria-label': 'Year' },
                     range(yearStart, yearEnd).map((i) =>
                       m(
-                        '.dropdown-item',
+                        'button.dropdown-item',
                         {
                           key: i,
+                          type: 'button',
+                          role: 'option',
+                          'aria-selected': i === year ? 'true' : 'false',
                           class: i === year ? 'selected' : '',
                           onclick: (e: Event) => {
                             e.stopPropagation();
-                            gotoYear(i);
+                            const trigger = (e.currentTarget as HTMLElement)
+                              .closest('.select-wrapper')
+                              ?.querySelector<HTMLElement>('.dropdown-trigger');
+                            gotoYear(i, options);
                             state.yearDropdownOpen = false;
-                            m.redraw();
+                            m.redraw.sync();
+                            trigger?.focus();
                           },
                         },
                         i
@@ -894,7 +1167,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                 type: 'button',
                 onclick: (e: Event) => {
                   e.preventDefault();
-                  nextMonth();
+                  nextMonth(options);
                 },
               },
               m(
@@ -918,7 +1191,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
     };
   };
 
-  const gotoMonth = (month: number) => {
+  const gotoMonth = (month: number, options: Required<DatePickerOptions>) => {
     if (!isNaN(month)) {
       state.calendars[0].month = month;
       adjustCalendars();
@@ -936,10 +1209,11 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
         state.date = newDate;
         setToStartOfDay(state.date);
       }
+      syncFocusedDateToCalendar(options);
     }
   };
 
-  const gotoYear = (year: number) => {
+  const gotoYear = (year: number, options: Required<DatePickerOptions>) => {
     if (!isNaN(year)) {
       state.calendars[0].year = year;
       adjustCalendars();
@@ -957,6 +1231,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
         state.date = newDate;
         setToStartOfDay(state.date);
       }
+      syncFocusedDateToCalendar(options);
     }
   };
 
@@ -971,12 +1246,33 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Escape' && state.isOpen) {
-      state.isOpen = false;
+      closePicker();
       const options = mergeOptions({} as DatePickerAttrs);
       if (options.onClose) options.onClose();
       portal.sync(null);
       m.redraw();
     }
+  };
+
+  const acceptPickerSelection = (
+    attrs: DatePickerAttrs,
+    options: Required<DatePickerOptions>
+  ): boolean => {
+    if (options.dateRange) {
+      if (!state.startDate || !state.endDate) return false;
+      if (attrs.onchange) {
+        const startStr = formatDate(state.startDate, 'yyyy-mm-dd', options);
+        const endStr = formatDate(state.endDate, 'yyyy-mm-dd', options);
+        attrs.onchange(`${startStr} - ${endStr}`);
+      }
+    } else {
+      if (!state.date) return false;
+      attrs.onchange?.(formatDate(state.date, 'yyyy-mm-dd', options));
+    }
+
+    closePicker();
+    options.onClose?.();
+    return true;
   };
 
   const renderPickerToPortal = (attrs: DatePickerAttrs) => {
@@ -1010,7 +1306,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
             zIndex: '1002',
           },
           onclick: () => {
-            state.isOpen = false;
+            closePicker();
             if (options.onClose) options.onClose();
             m.redraw();
           },
@@ -1021,7 +1317,39 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
           '.modal.datepicker-modal.open',
           {
             id: `modal-${state.id}`,
-            tabindex: 0,
+            role: 'dialog',
+            'aria-modal': 'true',
+            'aria-label': attrs.label || attrs.dateLabel || 'Choose date',
+            oncreate: ({ dom }) => {
+              focusFirstPickerControl(dom as HTMLElement, '.datepicker-day-button[tabindex="0"]');
+            },
+            onkeydown: (event: KeyboardEvent) => {
+              const target = event.target as HTMLElement;
+              if (event.key === 'Enter' && target.matches('.datepicker-day-button')) {
+                event.preventDefault();
+                const selectedDate = new Date(
+                  Number(target.dataset.year),
+                  Number(target.dataset.month),
+                  Number(target.dataset.day)
+                );
+                if (isDateDisabled(selectedDate, options)) return;
+                if (options.dateRange) {
+                  handleRangeSelection(selectedDate, options);
+                  if (state.startDate && state.endDate) {
+                    acceptPickerSelection(attrs, options);
+                  }
+                } else {
+                  setDate(selectedDate, false, options);
+                  acceptPickerSelection(attrs, options);
+                }
+                return;
+              }
+              trapPickerTabKey(event, event.currentTarget as HTMLElement, [
+                '.datepicker-done',
+                '.datepicker-cancel',
+                '.datepicker-clear',
+              ]);
+            },
             style: {
               position: 'relative',
               zIndex: '1003',
@@ -1066,7 +1394,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                           type: 'button',
                           onclick: () => {
                             setDate(null, false, options);
-                            state.isOpen = false;
+                            closePicker();
                           },
                         },
                         options.i18n.clear
@@ -1076,7 +1404,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                       {
                         type: 'button',
                         onclick: () => {
-                          state.isOpen = false;
+                          closePicker();
                           if (options.onClose) options.onClose();
                         },
                       },
@@ -1086,23 +1414,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                       'button.btn-flat.datepicker-done.waves-effect',
                       {
                         type: 'button',
-                        onclick: () => {
-                          state.isOpen = false;
-
-                          if (options.dateRange) {
-                            if (state.startDate && state.endDate && attrs.onchange) {
-                              const startStr = formatDate(state.startDate, 'yyyy-mm-dd', options);
-                              const endStr = formatDate(state.endDate, 'yyyy-mm-dd', options);
-                              attrs.onchange(`${startStr} - ${endStr}`);
-                            }
-                          } else {
-                            if (state.date && attrs.onchange) {
-                              attrs.onchange(toString(state.date, 'yyyy-mm-dd'));
-                            }
-                          }
-
-                          if (options.onClose) options.onClose();
-                        },
+                        onclick: () => acceptPickerSelection(attrs, options),
                       },
                       options.i18n.done
                     ),
@@ -1135,6 +1447,8 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
         monthDropdownOpen: false,
         yearDropdownOpen: false,
         portalContainerId: `datepicker-portal-${uniqueId()}`,
+        focusedDate: null,
+        inputSegmentIndex: 0,
         formats: {
           d: () => state.date?.getDate() || 0,
           dd: () => {
@@ -1164,6 +1478,12 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
           setToStartOfDay(state.startDate);
           gotoDate(state.startDate);
         }
+
+        const initialFocusDate = state.date || state.startDate || new Date();
+        state.focusedDate =
+          findSelectableDate(initialFocusDate, 1, options) ||
+          findSelectableDate(initialFocusDate, -1, options) ||
+          initialFocusDate;
 
         if (attrs.initialEndDate && isDate(attrs.initialEndDate)) {
           state.endDate = new Date(attrs.initialEndDate.getTime());
@@ -1312,10 +1632,50 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
             disabled,
             readonly,
             required,
+            oncreate: ({ dom }) => {
+              state.inputElement = dom as HTMLInputElement;
+            },
             onclick: () => {
               if (!disabled && !readonly) {
+                const initialFocusDate = state.date || state.startDate || new Date();
+                state.focusedDate =
+                  findSelectableDate(initialFocusDate, 1, options) ||
+                  findSelectableDate(initialFocusDate, -1, options) ||
+                  initialFocusDate;
+                gotoDate(state.focusedDate);
                 state.isOpen = true;
                 if (options.onOpen) options.onOpen();
+              }
+            },
+            onkeydown: (event: KeyboardEvent) => {
+              if (disabled || readonly || options.dateRange || state.isOpen || !state.date) return;
+              const input = event.currentTarget as HTMLInputElement;
+              const format = attrs.displayFormat || options.format;
+              const segments = getDateInputSegments(state.date, format, options);
+              if (segments.length === 0) return;
+
+              if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                event.preventDefault();
+                const currentIndex = getActiveDateInputSegment(input, segments);
+                selectDateInputSegment(
+                  input,
+                  state.date,
+                  format,
+                  options,
+                  currentIndex + (event.key === 'ArrowLeft' ? -1 : 1)
+                );
+              } else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+                event.preventDefault();
+                adjustDateInputSegment(
+                  input,
+                  event.key === 'ArrowUp' ? 1 : -1,
+                  format,
+                  options,
+                  oninput
+                );
+              } else if (event.key === 'Enter') {
+                event.preventDefault();
+                onchange?.(formatDate(state.date, 'yyyy-mm-dd', options));
               }
             },
             oninput: (e: Event) => {

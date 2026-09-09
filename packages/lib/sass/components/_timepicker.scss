@@ -124,6 +124,26 @@
 	cursor: pointer;
 }
 
+.timepicker-span-hours,
+.timepicker-span-minutes,
+.timepicker-period-button,
+.timepicker-canvas,
+.digital-clock-column {
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+}
+
+.timepicker-period-button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
 .timepicker-span-hours {
   margin-right: 3px;
   display: inline-block;
@@ -283,6 +303,11 @@
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
   position: relative;
+
+  &:focus-visible {
+    border-radius: 4px;
+    outline-color: var(--mm-primary-color, variables.$secondary-color);
+  }
 
   &::-webkit-scrollbar {
     width: 6px;

@@ -41,6 +41,8 @@ export interface InputAttrs<T = string> extends Attributes {
   readonly?: boolean;
   /** When true, add the autofocus attribute to the input field. */
   autofocus?: (() => boolean) | boolean;
+  /** Select the complete value when an autofocus input is created. */
+  selectOnFocus?: boolean;
   /** Key down event */
   onkeydown?: (ev: KeyboardEvent, value?: T) => void;
   /** Key press event */

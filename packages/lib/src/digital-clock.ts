@@ -7,6 +7,7 @@ import {
   scrollToValue,
   snapToNearestItem,
 } from './time-utils';
+import { uniqueId } from './utils';
 
 /**
  * Attributes for the DigitalClock component
@@ -53,6 +54,7 @@ export interface DigitalClockAttrs {
  * Internal state for the DigitalClock component
  */
 interface DigitalClockState {
+  id: string;
   hourScrollContainer?: HTMLElement;
   minuteScrollContainer?: HTMLElement;
   amPmScrollContainer?: HTMLElement;
@@ -80,7 +82,9 @@ interface DigitalClockState {
  */
 export const DigitalClock: FactoryComponent<DigitalClockAttrs> = () => {
   const ITEM_HEIGHT = 48;
-  const state: DigitalClockState = {};
+  const state: DigitalClockState = {
+    id: uniqueId(),
+  };
 
   return {
     view: ({ attrs }) => {
@@ -101,12 +105,55 @@ export const DigitalClock: FactoryComponent<DigitalClockAttrs> = () => {
 
       const hourOptions = generateHourOptions(twelveHour, hourStep);
       const minuteOptions = generateMinuteOptions(minuteStep);
+      const moveToEnabledOption = (
+        values: number[],
+        currentValue: number,
+        direction: -1 | 1,
+        select: (value: number) => void
+      ) => {
+        const orderedValues = [...values].sort((left, right) => left - right);
+        const currentIndex = orderedValues.indexOf(currentValue);
+        let firstIndex = currentIndex + direction;
+
+        if (currentIndex < 0) {
+          if (direction > 0) {
+            firstIndex = orderedValues.findIndex((value) => value > currentValue);
+          } else {
+            firstIndex = -1;
+            for (let index = orderedValues.length - 1; index >= 0; index--) {
+              if (orderedValues[index] < currentValue) {
+                firstIndex = index;
+                break;
+              }
+            }
+          }
+        }
+
+        if (firstIndex < 0) firstIndex = direction > 0 ? 0 : orderedValues.length - 1;
+
+        for (let offset = 0; offset < orderedValues.length; offset++) {
+          const index =
+            (firstIndex + direction * offset + orderedValues.length) % orderedValues.length;
+          const value = orderedValues[index];
+          const candidateHours = values === hourOptions ? value : hours;
+          const candidateMinutes = values === minuteOptions ? value : minutes;
+          if (!isTimeDisabled(candidateHours, candidateMinutes, amOrPm, minTime, maxTime, twelveHour)) {
+            select(value);
+            return;
+          }
+        }
+      };
 
       return m('.timepicker-digital-clock', [
         // Hours column
         m(
           '.digital-clock-column',
           {
+            tabindex: 0,
+            role: 'listbox',
+            'aria-label': 'Hours',
+            'aria-activedescendant': hourOptions.includes(hours) ? `${state.id}-hour-${hours}` : undefined,
+            'data-time-segment': 'hours',
             oncreate: (vnode) => {
               state.hourScrollContainer = vnode.dom as HTMLElement;
               const currentIndex = hourOptions.indexOf(hours);
@@ -119,18 +166,34 @@ export const DigitalClock: FactoryComponent<DigitalClockAttrs> = () => {
               if (!state.hourScrollContainer) return;
 
               const delta = Math.sign(e.deltaY);
-              const currentIndex = hourOptions.indexOf(hours);
-              const newIndex = Math.max(0, Math.min(hourOptions.length - 1, currentIndex + delta));
-              const newHour = hourOptions[newIndex];
-
-              if (!isTimeDisabled(newHour, minutes, amOrPm, minTime, maxTime, twelveHour)) {
-                onTimeChange(newHour, minutes, amOrPm);
+              if (delta === 0) return;
+              moveToEnabledOption(hourOptions, hours, delta < 0 ? -1 : 1, (hour) => {
+                onTimeChange(hour, minutes, amOrPm);
                 if (spanHours) {
-                  spanHours.innerHTML = addLeadingZero(newHour);
+                  spanHours.innerHTML = addLeadingZero(hour);
                 }
-                scrollToValue(state.hourScrollContainer, newIndex + 2, ITEM_HEIGHT, true);
+                scrollToValue(
+                  state.hourScrollContainer!,
+                  hourOptions.indexOf(hour) + 2,
+                  ITEM_HEIGHT,
+                  true
+                );
                 m.redraw();
-              }
+              });
+            },
+            onkeydown: (e: KeyboardEvent) => {
+              if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+              e.preventDefault();
+              moveToEnabledOption(hourOptions, hours, e.key === 'ArrowUp' ? -1 : 1, (hour) => {
+                onTimeChange(hour, minutes, amOrPm);
+                if (spanHours) {
+                  spanHours.innerHTML = addLeadingZero(hour);
+                }
+                if (state.hourScrollContainer) {
+                  scrollToValue(state.hourScrollContainer, hourOptions.indexOf(hour) + 2, ITEM_HEIGHT, true);
+                }
+                m.redraw();
+              });
             },
             onscroll: () => {
               if (state.hourScrollTimeout) {
@@ -165,7 +228,11 @@ export const DigitalClock: FactoryComponent<DigitalClockAttrs> = () => {
               return m(
                 '.digital-clock-item',
                 {
+                  id: `${state.id}-hour-${hour}`,
                   class: `${hour === hours ? 'selected' : ''} ${disabled ? 'disabled' : ''}`,
+                  role: 'option',
+                  'aria-selected': hour === hours ? 'true' : 'false',
+                  'aria-disabled': disabled ? 'true' : 'false',
                   onclick: () => {
                     if (disabled) return;
                     onTimeChange(hour, minutes, amOrPm);
@@ -196,6 +263,13 @@ export const DigitalClock: FactoryComponent<DigitalClockAttrs> = () => {
         m(
           '.digital-clock-column',
           {
+            tabindex: 0,
+            role: 'listbox',
+            'aria-label': 'Minutes',
+            'aria-activedescendant': minuteOptions.includes(minutes)
+              ? `${state.id}-minute-${minutes}`
+              : undefined,
+            'data-time-segment': 'minutes',
             oncreate: (vnode) => {
               state.minuteScrollContainer = vnode.dom as HTMLElement;
               const currentIndex = minuteOptions.indexOf(minutes);
@@ -208,18 +282,34 @@ export const DigitalClock: FactoryComponent<DigitalClockAttrs> = () => {
               if (!state.minuteScrollContainer) return;
 
               const delta = Math.sign(e.deltaY);
-              const currentIndex = minuteOptions.indexOf(minutes);
-              const newIndex = Math.max(0, Math.min(minuteOptions.length - 1, currentIndex + delta));
-              const newMinute = minuteOptions[newIndex];
-
-              if (!isTimeDisabled(hours, newMinute, amOrPm, minTime, maxTime, twelveHour)) {
-                onTimeChange(hours, newMinute, amOrPm);
+              if (delta === 0) return;
+              moveToEnabledOption(minuteOptions, minutes, delta < 0 ? -1 : 1, (minute) => {
+                onTimeChange(hours, minute, amOrPm);
                 if (spanMinutes) {
-                  spanMinutes.innerHTML = addLeadingZero(newMinute);
+                  spanMinutes.innerHTML = addLeadingZero(minute);
                 }
-                scrollToValue(state.minuteScrollContainer, newIndex + 2, ITEM_HEIGHT, true);
+                scrollToValue(
+                  state.minuteScrollContainer!,
+                  minuteOptions.indexOf(minute) + 2,
+                  ITEM_HEIGHT,
+                  true
+                );
                 m.redraw();
-              }
+              });
+            },
+            onkeydown: (e: KeyboardEvent) => {
+              if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+              e.preventDefault();
+              moveToEnabledOption(minuteOptions, minutes, e.key === 'ArrowUp' ? -1 : 1, (minute) => {
+                onTimeChange(hours, minute, amOrPm);
+                if (spanMinutes) {
+                  spanMinutes.innerHTML = addLeadingZero(minute);
+                }
+                if (state.minuteScrollContainer) {
+                  scrollToValue(state.minuteScrollContainer, minuteOptions.indexOf(minute) + 2, ITEM_HEIGHT, true);
+                }
+                m.redraw();
+              });
             },
             onscroll: () => {
               if (state.minuteScrollTimeout) {
@@ -254,7 +344,11 @@ export const DigitalClock: FactoryComponent<DigitalClockAttrs> = () => {
               return m(
                 '.digital-clock-item',
                 {
+                  id: `${state.id}-minute-${minute}`,
                   class: `${minute === minutes ? 'selected' : ''} ${disabled ? 'disabled' : ''}`,
+                  role: 'option',
+                  'aria-selected': minute === minutes ? 'true' : 'false',
+                  'aria-disabled': disabled ? 'true' : 'false',
                   onclick: () => {
                     if (disabled) return;
                     onTimeChange(hours, minute, amOrPm);
@@ -283,6 +377,11 @@ export const DigitalClock: FactoryComponent<DigitalClockAttrs> = () => {
           m(
             '.digital-clock-column.ampm-column',
             {
+              tabindex: 0,
+              role: 'listbox',
+              'aria-label': 'AM or PM',
+              'aria-activedescendant': `${state.id}-ampm-${amOrPm.toLowerCase()}`,
+              'data-time-segment': 'ampm',
               oncreate: (vnode) => {
                 state.amPmScrollContainer = vnode.dom as HTMLElement;
                 const amPmOptions = ['AM', 'PM'];
@@ -294,6 +393,7 @@ export const DigitalClock: FactoryComponent<DigitalClockAttrs> = () => {
               onwheel: (e: WheelEvent) => {
                 e.preventDefault();
                 const delta = Math.sign(e.deltaY);
+                if (delta === 0) return;
                 const newAmPm = delta > 0 ? 'PM' : 'AM';
                 if (newAmPm !== amOrPm && !isTimeDisabled(hours, minutes, newAmPm, minTime, maxTime, twelveHour)) {
                   onTimeChange(hours, minutes, newAmPm);
@@ -304,6 +404,21 @@ export const DigitalClock: FactoryComponent<DigitalClockAttrs> = () => {
                   const newIndex = amPmOptions.indexOf(newAmPm);
                   if (state.amPmScrollContainer) {
                     scrollToValue(state.amPmScrollContainer, newIndex + 2, ITEM_HEIGHT, true);
+                  }
+                  m.redraw();
+                }
+              },
+              onkeydown: (e: KeyboardEvent) => {
+                if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+                e.preventDefault();
+                const newAmPm = e.key === 'ArrowUp' ? 'AM' : 'PM';
+                if (!isTimeDisabled(hours, minutes, newAmPm, minTime, maxTime, twelveHour)) {
+                  onTimeChange(hours, minutes, newAmPm);
+                  if (spanAmPm) {
+                    spanAmPm.innerHTML = newAmPm;
+                  }
+                  if (state.amPmScrollContainer) {
+                    scrollToValue(state.amPmScrollContainer, newAmPm === 'AM' ? 2 : 3, ITEM_HEIGHT, true);
                   }
                   m.redraw();
                 }
@@ -342,7 +457,11 @@ export const DigitalClock: FactoryComponent<DigitalClockAttrs> = () => {
                 return m(
                   '.digital-clock-item',
                   {
+                    id: `${state.id}-ampm-${ampm.toLowerCase()}`,
                     class: `${ampm === amOrPm ? 'selected' : ''} ${disabled ? 'disabled' : ''}`,
+                    role: 'option',
+                    'aria-selected': ampm === amOrPm ? 'true' : 'false',
+                    'aria-disabled': disabled ? 'true' : 'false',
                     onclick: () => {
                       if (disabled) return;
                       onTimeChange(hours, minutes, ampm as 'AM' | 'PM');

@@ -221,6 +221,31 @@ export const AnalogClock: FactoryComponent<AnalogClockAttrs> = () => {
     setHand(x, y, attrs);
   };
 
+  const handleKeyDown = (event: KeyboardEvent, attrs: AnalogClockAttrs) => {
+    if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+
+    event.preventDefault();
+    const direction = event.key === 'ArrowUp' ? 1 : -1;
+    if (attrs.currentView === 'hours') {
+      const minimum = attrs.twelveHour ? 1 : 0;
+      const maximum = attrs.twelveHour ? 12 : 23;
+      const range = maximum - minimum + 1;
+      const nextHours = ((attrs.hours - minimum + direction + range) % range) + minimum;
+      attrs.onTimeChange(nextHours, attrs.minutes);
+      if (attrs.spanHours) {
+        attrs.spanHours.innerHTML = addLeadingZero(nextHours);
+      }
+    } else {
+      const step = attrs.roundBy5 ? 5 : 1;
+      const nextMinutes = (attrs.minutes + direction * step + 60) % 60;
+      attrs.onTimeChange(attrs.hours, nextMinutes);
+      if (attrs.spanMinutes) {
+        attrs.spanMinutes.innerHTML = addLeadingZero(nextMinutes);
+      }
+    }
+    m.redraw();
+  };
+
   const handleClockClickStart = (e: Event, attrs: AnalogClockAttrs) => {
     e.preventDefault();
     if (!state.plate) return;
@@ -401,12 +426,20 @@ export const AnalogClock: FactoryComponent<AnalogClockAttrs> = () => {
         m(
           '.timepicker-canvas',
           {
+            tabindex: 0,
+            role: 'spinbutton',
+            'aria-label': isHours ? 'Hours' : 'Minutes',
+            'aria-valuemin': isHours ? (attrs.twelveHour ? 1 : 0) : 0,
+            'aria-valuemax': isHours ? (attrs.twelveHour ? 12 : 23) : 59,
+            'aria-valuenow': value,
+            'data-time-segment': 'clock',
             oncreate: (vnode) => {
               state.canvas = vnode.dom as HTMLElement;
               state.plate = vnode.dom.parentElement as HTMLElement;
             },
             onmousedown: (e: MouseEvent) => handleClockClickStart(e, attrs),
             ontouchstart: (e: TouchEvent) => handleClockClickStart(e, attrs),
+            onkeydown: (e: KeyboardEvent) => handleKeyDown(e, attrs),
           },
           [
             m(

@@ -6,7 +6,7 @@ import {
   startAsyncComboboxRequest,
 } from '../src/combobox';
 import { SearchSelect } from '../src/search-select';
-import { render, cleanup } from './test-utils';
+import { render, fireEvent, cleanup } from './test-utils';
 import { InputOption } from '../src/option';
 
 describe('SearchSelect async mode', () => {
@@ -71,5 +71,56 @@ describe('SearchSelect async mode', () => {
     expect(trigger.getAttribute('role')).toBe('combobox');
     expect(trigger.getAttribute('aria-expanded')).toBe('false');
     expect(trigger.getAttribute('aria-haspopup')).toBe('listbox');
+  });
+
+  it('keeps selected chips visible when a new async query replaces the result list', async () => {
+    const options: InputOption<number>[] = [
+      { id: 0, label: 'Watching movies' },
+      { id: 1, label: 'Going out' },
+      { id: 2, label: 'Reading' },
+      { id: 3, label: 'Cycling' },
+    ];
+    const pendingLoads: Array<(options: InputOption<number>[]) => void> = [];
+    const loadOptions = jest.fn((_query: string) => {
+      return new Promise<InputOption<number>[]>((resolve) => {
+        pendingLoads.push(resolve);
+      });
+    });
+    const component = SearchSelect<number>();
+    const attrs = {
+      label: 'Remote hobbies',
+      options: [],
+      defaultCheckedId: [0, 1, 3],
+      loadOptions,
+    };
+    const result = render(component, attrs);
+    const { container } = result;
+
+    fireEvent.click(container.querySelector('.chips-container') as HTMLElement);
+    pendingLoads.shift()?.(options);
+    await Promise.resolve();
+    result.rerender(component, attrs);
+    expect(container.querySelectorAll('.chip')).toHaveLength(3);
+
+    const searchInput = container.querySelector('.search-select-input') as HTMLInputElement;
+    searchInput.value = 're';
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+    result.rerender(component, attrs);
+    expect(container.querySelector('.search-select-loading-indicator')).toHaveClass('is-active');
+    expect(container.querySelector('.search-select-loading-info')).toBeNull();
+    expect(container.querySelector('.dropdown-content')?.textContent).toContain('Reading');
+
+    pendingLoads.shift()?.([options[2]]);
+    await Promise.resolve();
+    result.rerender(component, attrs);
+    expect(loadOptions).toHaveBeenLastCalledWith('re');
+    expect(container.querySelector('.search-select-loading-info')).toBeNull();
+
+    expect(Array.from(container.querySelectorAll('.chip')).map((chip) => chip.textContent)).toEqual([
+      'Watching movies',
+      'Going out',
+      'Cycling',
+    ]);
+    expect(container.querySelector('.dropdown-content')?.textContent).toContain('Reading');
   });
 });

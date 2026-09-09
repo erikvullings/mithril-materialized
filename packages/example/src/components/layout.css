@@ -312,6 +312,10 @@ li.mm-nav-group {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+.mm-hamburger--hidden {
+  display: none;
+}
+
 /* Add top padding on mobile so content doesn't hide behind hamburger */
 .mm-content:not(.mm-content--desktop) {
   padding-top: 56px;

@@ -34,6 +34,10 @@ export const PickerPage = () => {
           })
         ),
         m('h3.header[id=datepicker]', 'DatePicker - Enhanced with custom text input and display formats'),
+        m(
+          'p',
+          'With the input focused, use Left/Right to select the year, month, or day and Arrow Up/Down to change it. In the calendar, Enter accepts the focused date.'
+        ),
 
         // Basic date picker
         m('h4', 'Basic Date Picker (ISO format - YYYY-MM-DD)'),
@@ -252,8 +256,8 @@ export const PickerPage = () => {
                 label: 'Select Date Range',
                 helperText: 'Range picker also works in modals',
                 iconName: 'date_range',
-                initialStartDate: new Date(`${year}-03-01`),
-                initialEndDate: new Date(`${year}-03-15`),
+                initialStartDate: new Date(`${year}-12-25`),
+                initialEndDate: new Date(`${year + 1}-01-04`),
                 showClearBtn: true,
                 onchange: (v) => {
                   state.modalDateRange = v;
@@ -325,8 +329,8 @@ m(ModalPanel, {
             label: 'Select Date Range',
             helperText: 'Click to select start and end dates',
             iconName: 'date_range',
-            initialStartDate: new Date(`${year}-03-01`),
-            initialEndDate: new Date(`${year}-03-15`),
+            initialStartDate: new Date(`${year}-12-25`),
+            initialEndDate: new Date(`${year + 1}-01-04`),
             showClearBtn: true,
             onSelect: (start, end) => console.table({ start, end }),
             onchange: (value) => {
@@ -380,8 +384,8 @@ m(DatePicker, {
   dateRange: true,
   label: 'Select Date Range',
   helperText: 'Click to select start and end dates',
-  initialStartDate: new Date('${year}-03-01'),
-  initialEndDate: new Date('${year}-03-15'),
+  initialStartDate: new Date('${year}-12-25'),
+  initialEndDate: new Date('${year + 1}-01-04'),
   onSelect: (start, end) => console.table({ start, end }),
   onchange: (value) => console.log('Range:', value), // Returns "YYYY-MM-DD - YYYY-MM-DD"
 })
@@ -454,7 +458,7 @@ m(DatePicker, {
           m(TimePicker, {
             disabled: state.disabled,
             label: 'When do you normally get up?',
-            helperText: 'Select your wake-up time',
+            helperText: 'Use Tab to move through the controls and Arrow Up/Down to adjust the focused value',
             iconName: 'alarm',
             defaultValue: '09:00',
             onchange,
@@ -602,7 +606,7 @@ m(TimePicker, {
         m('h3.header[id=digitalclock]', 'Digital Clock Mode - New!'),
         m(
           'p',
-          'The TimePicker now supports a digital clock mode with scrollable columns, similar to mobile time pickers.'
+          'The TimePicker supports scrollable digital columns. Use Tab to move between hours, minutes, AM/PM, and actions; use Arrow Up/Down to change the focused value.'
         ),
 
         m('h4', 'Digital Clock - 12 Hour Format'),
@@ -611,7 +615,7 @@ m(TimePicker, {
           m(TimePicker, {
             disabled: state.disabled,
             label: 'Select Time (Digital)',
-            helperText: 'Scroll or click to select time',
+            helperText: 'Scroll, click, or use Tab and Arrow Up/Down to select a time',
             iconName: 'schedule',
             displayMode: 'digital',
             twelveHour: true,
