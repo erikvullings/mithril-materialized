@@ -1,3 +1,19 @@
+# [3.21.0](https://github.com/erikvullings/mithril-materialized/compare/v3.20.0...v3.21.0) (2026-09-09)
+
+
+### Bug Fixes
+
+* **ui:** correct layering and dark theme styles ([7d32909](https://github.com/erikvullings/mithril-materialized/commit/7d32909778d9994cd0d3cdb5bc0a79152f01a20b))
+
+
+### Features
+
+* **avatar:** add identity components ([d957a20](https://github.com/erikvullings/mithril-materialized/commit/d957a200e5385c8e546cca9818520159bf0c30dd))
+* **command-palette:** add keyboard launcher ([dd4e889](https://github.com/erikvullings/mithril-materialized/commit/dd4e8897a5c453c9f1cf66a66f2304b90459767b))
+* **display:** add skeleton and empty states ([c8036e8](https://github.com/erikvullings/mithril-materialized/commit/c8036e8659ec3eacea7566da2d10be1d699c3a2f))
+* **snackbar:** add queued notifications ([1a13225](https://github.com/erikvullings/mithril-materialized/commit/1a13225b1f090ca851c935583188f0cb2567fd55))
+* **virtualization:** add virtual list and table rows ([9b5572b](https://github.com/erikvullings/mithril-materialized/commit/9b5572ba2f6050615cc9681dd26a6fd561fb2f0f))
+
 # [3.20.0](https://github.com/erikvullings/mithril-materialized/compare/v3.19.0...v3.20.0) (2026-09-09)
 
 
