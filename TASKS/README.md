@@ -33,7 +33,7 @@ Dialog is the shared foundation for CommandPalette. Menu and Snackbar can procee
 
 ## Content and Identity Components
 
-- [ ] 0014 Skeleton and EmptyState
+- [x] 0014 Skeleton and EmptyState
 - [ ] 0016 Avatar and AvatarGroup
 
 ## Large Data

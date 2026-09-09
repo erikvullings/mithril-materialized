@@ -10,6 +10,8 @@ import {
   Badge,
   Icon,
   FileUpload,
+  EmptyState,
+  Skeleton,
   snackbar,
   toast,
   initTooltips,
@@ -65,6 +67,77 @@ export const MiscPage = () => {
           m('a[href=https://materializecss.com/pagination.html][target=_blank]', 'Parallax'),
           '.',
         ]),
+        m('h3.header[id=skeleton]', 'Skeleton'),
+        m(
+          'p',
+          'Skeletons reserve space while content is loading without owning loading state.'
+        ),
+        m('.row', [
+          m('.col.s12.m6', [
+            m(Skeleton, { shape: 'circular', width: 56, height: 56 }),
+            m(Skeleton, { shape: 'text', count: 3, width: '100%' }),
+          ]),
+          m('.col.s12.m6', [
+            m(Skeleton, { shape: 'rectangular', width: '100%', height: 160 }),
+          ]),
+        ]),
+        m(HighlightedCodeBlock, {
+          code: `import { Skeleton } from 'mithril-materialized';
+
+m(Skeleton, { shape: 'text', count: 3 });
+m(Skeleton, { shape: 'circular', width: 56, height: 56 });
+m(Skeleton, { shape: 'rectangular', width: '100%', height: 160 });
+m(Skeleton, { shape: 'text', animated: false });`,
+        }),
+        m('h3.header[id=empty-state]', 'Empty State'),
+        m(
+          'p',
+          'Empty states explain why content is absent and can offer clear next actions.'
+        ),
+        m('.row', [
+          m(
+            '.col.s12.m6',
+            m(EmptyState, {
+              iconName: 'search',
+              title: 'No matching projects',
+              description: 'Try changing your filters or search terms.',
+            })
+          ),
+          m(
+            '.col.s12.m6',
+            m(EmptyState, {
+              illustration: m('i.material-icons.large', 'folder_open'),
+              title: 'Create your first project',
+              description: 'Projects help your team organize related work.',
+              primaryAction: {
+                label: 'Create a project',
+                onclick: () => snackbar({ message: 'Create project selected' }),
+              },
+              secondaryAction: {
+                label: 'Import an existing project with a long localized label',
+                onclick: () => snackbar({ message: 'Import selected' }),
+              },
+              content: m('small', 'You can change these settings later.'),
+            })
+          ),
+        ]),
+        m(HighlightedCodeBlock, {
+          code: `import { EmptyState } from 'mithril-materialized';
+
+m(EmptyState, {
+  iconName: 'folder_open',
+  title: 'Create your first project',
+  description: 'Projects help your team organize related work.',
+  primaryAction: {
+    label: 'Create a project',
+    onclick: createProject,
+  },
+  secondaryAction: {
+    label: 'Import a project',
+    onclick: importProject,
+  },
+});`,
+        }),
         m('h3.header[id=fileupload]', 'File Upload'),
         m('p', 'Drag-and-drop file upload with image preview, file validation, and progress tracking:'),
         m('.row', [
