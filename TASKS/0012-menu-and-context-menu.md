@@ -1,10 +1,10 @@
 # 0012 Menu and context menu
 
-Status: open
+Status: done
 Priority: medium
 Subsystem: frontend
 Owner: unassigned
-Agent: unassigned
+Agent: copilot
 Depends on: none
 
 ## Context
@@ -32,3 +32,4 @@ The library has dropdown and selection primitives, but no general-purpose action
 ## Agent Notes
 
 - 2026-09-09 copilot: Created from the suggested component backlog. This is an action menu, not another Select variant; preserve the semantic distinction in API and accessibility tests.
+- 2026-09-09 copilot: Added portal-backed `Menu` and `ContextMenu` components in `packages/lib/src/menu.ts` with render-prop triggers, controlled/uncontrolled state, roving focus, typeahead, context-menu gestures, coordinated dismissal, and collision-aware LTR/RTL positioning. Added menu Sass, unit coverage, package exports, and anchored/context examples on the modal page.

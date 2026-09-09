@@ -1,4 +1,4 @@
-import m, { type FactoryComponent, type Vnode, type Attributes } from 'mithril';
+import m, { type FactoryComponent, type Attributes } from 'mithril';
 import { FlatButton } from './button';
 import { uniqueId } from './utils';
 // Styles are imported via the main index or individual component imports
@@ -16,7 +16,7 @@ export type ModalInitialFocus = 'first' | 'dialog' | string | HTMLElement | fals
 export interface ModalAttrs extends Attributes {
   id?: string;
   title: string;
-  description?: string | Vnode<unknown, unknown>;
+  description?: m.Children;
   /** Content rendered after the optional accessible description. */
   content?: m.Children;
   /** Set to true when the description contains HTML */
