@@ -1,3 +1,10 @@
+# [3.19.0](https://github.com/erikvullings/mithril-materialized/compare/v3.18.0...v3.19.0) (2026-09-09)
+
+
+### Features
+
+* **dialog:** add dialog abstractions ([ed850a8](https://github.com/erikvullings/mithril-materialized/commit/ed850a8abf44c3b677a9ea580a8645c60732ffa1))
+
 # [3.18.0](https://github.com/erikvullings/mithril-materialized/compare/v3.17.11...v3.18.0) (2026-09-09)
 
 
