@@ -121,6 +121,8 @@ export const searchIndex: SearchEntry[] = [
   { title: 'Collapsible', page: 'Collections', route: '/collections', hash: 'collapsible' },
   // Modals
   { title: 'Modals', page: 'Components', route: '/modals' },
+  { title: 'Dialog', page: 'Modals', route: '/modals', hash: 'dialog' },
+  { title: 'AlertDialog', page: 'Modals', route: '/modals', hash: 'alert-dialog' },
   { title: 'Modal', page: 'Modals', route: '/modals', hash: 'modal' },
   { title: 'ModalPanel', page: 'Modals', route: '/modals', hash: 'modal' },
   // Navigation

@@ -10,10 +10,15 @@ export interface ModalState {
   lastFocusedElement: HTMLElement | null;
 }
 
+export type ModalCloseReason = 'escape' | 'backdrop' | 'close-button' | 'action' | 'programmatic';
+export type ModalInitialFocus = 'first' | 'dialog' | string | HTMLElement | false;
+
 export interface ModalAttrs extends Attributes {
   id?: string;
   title: string;
   description?: string | Vnode<unknown, unknown>;
+  /** Content rendered after the optional accessible description. */
+  content?: m.Children;
   /** Set to true when the description contains HTML */
   richContent?: boolean;
   /** Fixate the footer, so you can show more content. */
@@ -30,10 +35,12 @@ export interface ModalAttrs extends Attributes {
   }>;
   /** Control modal visibility externally */
   isOpen?: boolean;
+  /** Initial visibility when the modal manages its own state */
+  defaultOpen?: boolean;
   /** Called when modal should be opened/closed */
   onToggle?: (open: boolean) => void;
   /** Called when modal is closed */
-  onClose?: () => void;
+  onClose?: (reason: ModalCloseReason) => void;
   /** Show close button in top right (default true) */
   showCloseButton?: boolean;
   /** Close modal when clicking backdrop (default true) */
@@ -42,7 +49,24 @@ export interface ModalAttrs extends Attributes {
   closeOnButtonClick?: boolean;
   /** Close modal when pressing escape key */
   closeOnEsc?: boolean;
+  /** Accessible modal role. */
+  role?: 'dialog' | 'alertdialog';
+  /** Element to focus when opening. A CSS selector is resolved within the modal. */
+  initialFocus?: ModalInitialFocus;
+  /** Keep keyboard focus within the open modal. */
+  trapFocus?: boolean;
+  /** Restore focus to the element active before opening (default true). */
+  restoreFocus?: boolean;
 }
+
+const FOCUSABLE_SELECTOR = [
+  'a[href]',
+  'button:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(',');
 
 /**
  * CSS-only Modal Panel component - no JavaScript dependencies
@@ -57,6 +81,66 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
   };
 
   let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
+  let currentAttrs: ModalAttrs;
+  let needsInitialFocus = false;
+
+  const getFocusableElements = () =>
+    state.modalElement
+      ? Array.from(state.modalElement.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)).filter(
+          (element) => element.getAttribute('aria-hidden') !== 'true'
+        )
+      : [];
+
+  const focusInitialElement = (attrs: ModalAttrs) => {
+    if (!needsInitialFocus || !state.isOpen) return;
+
+    const configuredTarget = attrs.initialFocus;
+    needsInitialFocus = false;
+    if (configuredTarget === false || configuredTarget === undefined) return;
+
+    const focusableElements = getFocusableElements();
+    let target: HTMLElement | null = null;
+    if (configuredTarget instanceof HTMLElement) {
+      target =
+        state.modalElement?.contains(configuredTarget) && focusableElements.includes(configuredTarget)
+          ? configuredTarget
+          : null;
+    } else if (configuredTarget === 'dialog') {
+      target = state.modalElement;
+    } else if (configuredTarget === 'first') {
+      target = focusableElements[0] ?? state.modalElement;
+    } else {
+      const selectedElement = state.modalElement?.querySelector<HTMLElement>(configuredTarget) ?? null;
+      target = selectedElement && focusableElements.includes(selectedElement) ? selectedElement : null;
+      target ??= focusableElements[0] ?? state.modalElement;
+    }
+
+    target?.focus();
+  };
+
+  const trapTabKey = (event: KeyboardEvent) => {
+    if (!currentAttrs.trapFocus || !state.modalElement) return;
+
+    const focusableElements = getFocusableElements();
+    if (focusableElements.length === 0) {
+      event.preventDefault();
+      state.modalElement.focus();
+      return;
+    }
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+    const activeElement = document.activeElement;
+    const activeElementIsFocusable =
+      activeElement instanceof HTMLElement && focusableElements.includes(activeElement);
+    if (event.shiftKey && (!activeElementIsFocusable || activeElement === firstElement)) {
+      event.preventDefault();
+      lastElement.focus();
+    } else if (!event.shiftKey && (!activeElementIsFocusable || activeElement === lastElement)) {
+      event.preventDefault();
+      firstElement.focus();
+    }
+  };
 
   const blurFocusedElementInsideModal = () => {
     const activeElement = document.activeElement;
@@ -66,19 +150,21 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
     }
   };
 
-  const restoreFocusToInvoker = () => {
+  const restoreFocusToInvoker = (attrs: ModalAttrs) => {
     const elementToFocus = state.lastFocusedElement;
     state.lastFocusedElement = null;
-    if (elementToFocus?.isConnected) {
+    if (attrs.restoreFocus !== false && elementToFocus?.isConnected) {
       requestAnimationFrame(() => elementToFocus.focus());
     }
   };
 
-  const closeModal = (attrs: ModalAttrs) => {
+  const closeModal = (attrs: ModalAttrs, reason: ModalCloseReason) => {
+    if (!state.isOpen) return;
+
     blurFocusedElementInsideModal();
     state.isOpen = false;
     if (attrs.onToggle) attrs.onToggle(false);
-    if (attrs.onClose) attrs.onClose();
+    if (attrs.onClose) attrs.onClose(reason);
 
     // Remove keyboard listener
     if (keydownHandler) {
@@ -88,20 +174,25 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
 
     // Restore body scroll
     document.body.style.overflow = '';
-    restoreFocusToInvoker();
+    restoreFocusToInvoker(attrs);
     m.redraw();
   };
 
   const openModal = (attrs: ModalAttrs) => {
+    if (state.isOpen) return;
+
     const activeElement = document.activeElement;
     state.lastFocusedElement = activeElement instanceof HTMLElement ? activeElement : null;
     state.isOpen = true;
+    needsInitialFocus = true;
     if (attrs.onToggle) attrs.onToggle(true);
 
     // Add keyboard listener
     keydownHandler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && attrs.closeOnEsc !== false && state.isOpen) {
-        closeModal(attrs);
+      if (e.key === 'Escape' && currentAttrs.closeOnEsc !== false && state.isOpen) {
+        closeModal(currentAttrs, 'escape');
+      } else if (e.key === 'Tab' && state.isOpen) {
+        trapTabKey(e);
       }
     };
     document.addEventListener('keydown', keydownHandler);
@@ -113,7 +204,8 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
   return {
     oninit: ({ attrs }) => {
       state.id = attrs.id ?? uniqueId();
-      if (attrs.isOpen) {
+      currentAttrs = attrs;
+      if (attrs.isOpen ?? attrs.defaultOpen) {
         openModal(attrs);
       }
     },
@@ -125,24 +217,29 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
         keydownHandler = null;
       }
       document.body.style.overflow = '';
+      if (state.isOpen) {
+        restoreFocusToInvoker(currentAttrs);
+      }
       state.modalElement = null;
       state.lastFocusedElement = null;
     },
 
     view: ({ attrs }) => {
+      currentAttrs = attrs;
       // Sync external isOpen prop with internal state - do this in view for immediate response
       if (attrs.isOpen !== undefined && attrs.isOpen !== state.isOpen) {
         if (attrs.isOpen) {
           openModal(attrs);
         } else {
-          closeModal(attrs);
+          closeModal(attrs, 'programmatic');
         }
       }
 
       const {
-        id,
+        id: providedId,
         title,
         description,
+        content,
         fixedFooter,
         bottomSheet,
         buttons,
@@ -151,7 +248,9 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
         showCloseButton = true,
         closeOnBackdropClick = true,
         closeOnButtonClick = false,
+        role = 'dialog',
       } = attrs;
+      const id = providedId ?? state.id;
 
       const modalClasses = [
         'modal',
@@ -172,7 +271,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
         // Modal overlay
         m('div', {
           className: overlayClasses,
-          onclick: closeOnBackdropClick ? () => closeModal(attrs) : undefined,
+          onclick: closeOnBackdropClick ? () => closeModal(attrs, 'backdrop') : undefined,
         }),
 
         // Modal content
@@ -183,12 +282,16 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
             className: modalClasses,
             oncreate: ({ dom }) => {
               state.modalElement = dom as HTMLElement;
+              focusInitialElement(attrs);
             },
             onupdate: ({ dom }) => {
               state.modalElement = dom as HTMLElement;
+              focusInitialElement(attrs);
             },
+            tabindex: -1,
             'aria-hidden': state.isOpen ? 'false' : 'true',
-            role: 'dialog',
+            'aria-modal': state.isOpen ? 'true' : undefined,
+            role,
             'aria-labelledby': `${id}-title`,
             'aria-describedby': description ? `${id}-desc` : undefined,
           },
@@ -199,7 +302,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
                 'button',
                 {
                   className: 'modal-close btn-flat mm-modal-close-button',
-                  onclick: () => closeModal(attrs),
+                  onclick: () => closeModal(attrs, 'close-button'),
                   'aria-label': 'Close modal',
                 },
                 '×'
@@ -224,6 +327,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
                     },
                     richContent && typeof description === 'string' ? undefined : description
                   ),
+                content,
               ]
             ),
 
@@ -242,7 +346,7 @@ export const ModalPanel: FactoryComponent<ModalAttrs> = () => {
                     className: `modal-close ${buttonProps.className || ''}`,
                     onclick: (e: UIEvent) => {
                       if (buttonProps.onclick) buttonProps.onclick(e);
-                      closeOnButtonClick && closeModal(attrs);
+                      closeOnButtonClick && closeModal(attrs, 'action');
                     },
                   })
                 )

@@ -25,7 +25,7 @@ The following tasks are unblocked and can be worked in parallel.
 
 Dialog is the shared foundation for CommandPalette. Menu and Snackbar can proceed independently.
 
-- [ ] 0011 Dialog and AlertDialog abstraction
+- [x] 0011 Dialog and AlertDialog abstraction
 - [ ] 0012 Menu and context menu
 - [ ] 0013 Snackbar queue with actions
 - [ ] 0015 CommandPalette *(needs 0011)*

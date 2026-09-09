@@ -217,4 +217,97 @@ describe('ModalPanel Component', () => {
     expect(modal).toBeInTheDocument();
     expect(modal).toHaveAttribute('role', 'dialog');
   });
+
+  it('reports escape as the close reason', () => {
+    const onClose = jest.fn();
+    render(ModalPanel, {
+      title: 'Keyboard dialog',
+      defaultOpen: true,
+      onClose,
+    });
+
+    fireEvent.keyDown(document.body, 'Escape');
+
+    expect(onClose).toHaveBeenCalledWith('escape');
+  });
+
+  it('reports backdrop and close-button dismissal reasons', () => {
+    const backdropClose = jest.fn();
+    const backdropResult = render(ModalPanel, {
+      title: 'Backdrop dialog',
+      defaultOpen: true,
+      onClose: backdropClose,
+    });
+
+    fireEvent.click(backdropResult.container.querySelector('.modal-overlay') as HTMLElement);
+    expect(backdropClose).toHaveBeenCalledWith('backdrop');
+    backdropResult.unmount();
+
+    const buttonClose = jest.fn();
+    const buttonResult = render(ModalPanel, {
+      title: 'Close button dialog',
+      defaultOpen: true,
+      onClose: buttonClose,
+    });
+
+    fireEvent.click(buttonResult.container.querySelector('.mm-modal-close-button') as HTMLElement);
+    expect(buttonClose).toHaveBeenCalledWith('close-button');
+  });
+
+  it('reports a controlled close as programmatic', () => {
+    const onClose = jest.fn();
+    const result = render(ModalPanel, {
+      title: 'Controlled dialog',
+      isOpen: true,
+      onClose,
+    });
+
+    result.rerender(ModalPanel, {
+      title: 'Controlled dialog',
+      isOpen: false,
+      onClose,
+    });
+
+    expect(onClose).toHaveBeenCalledWith('programmatic');
+  });
+
+  it('restores focus to the opener after closing by default', () => {
+    const requestAnimationFrame = jest
+      .spyOn(window, 'requestAnimationFrame')
+      .mockImplementation((callback: FrameRequestCallback) => {
+        callback(0);
+        return 1;
+      });
+    const opener = document.createElement('button');
+    document.body.appendChild(opener);
+    opener.focus();
+    const result = render(ModalPanel, {
+      title: 'Focus dialog',
+      defaultOpen: true,
+      initialFocus: 'dialog',
+    });
+
+    fireEvent.click(result.container.querySelector('.modal-overlay') as HTMLElement);
+
+    expect(document.activeElement).toBe(opener);
+    requestAnimationFrame.mockRestore();
+  });
+
+  it('traps reverse tab when initial focus is on the dialog surface', () => {
+    const { container } = render(ModalPanel, {
+      title: 'Surface focus',
+      buttons: [{ label: 'Cancel' }, { label: 'Continue' }],
+      defaultOpen: true,
+      initialFocus: 'dialog',
+      trapFocus: true,
+    });
+    const surface = container.querySelector<HTMLElement>('.mm-modal-surface') as HTMLElement;
+    const buttons = Array.from(container.querySelectorAll<HTMLButtonElement>('.mm-modal-footer button'));
+
+    expect(document.activeElement).toBe(surface);
+
+    fireEvent.keyDown(surface, 'Tab', { shiftKey: true });
+
+    expect(document.activeElement).toBe(buttons[1]);
+  });
 });
