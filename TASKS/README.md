@@ -28,7 +28,7 @@ Dialog is the shared foundation for CommandPalette. Menu and Snackbar can procee
 - [x] 0011 Dialog and AlertDialog abstraction
 - [x] 0012 Menu and context menu
 - [x] 0013 Snackbar queue with actions
-- [ ] 0015 CommandPalette *(needs 0011)*
+- [x] 0015 CommandPalette *(needs 0011)*
 - [x] 0018 Topmost layer Escape dismissal *(needs 0011, 0012)*
 
 ## Content and Identity Components

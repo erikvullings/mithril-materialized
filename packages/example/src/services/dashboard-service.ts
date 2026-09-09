@@ -125,6 +125,7 @@ export const searchIndex: SearchEntry[] = [
   { title: 'AlertDialog', page: 'Modals', route: '/modals', hash: 'alert-dialog' },
   { title: 'Menu', page: 'Modals', route: '/modals', hash: 'menu' },
   { title: 'ContextMenu', page: 'Modals', route: '/modals', hash: 'context-menu' },
+  { title: 'CommandPalette', page: 'Modals', route: '/modals', hash: 'command-palette' },
   { title: 'Modal', page: 'Modals', route: '/modals', hash: 'modal' },
   { title: 'ModalPanel', page: 'Modals', route: '/modals', hash: 'modal' },
   // Navigation

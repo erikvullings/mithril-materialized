@@ -37,6 +37,7 @@ export * from './label';
 export * from './material-box';
 export * from './material-icon';
 export * from './menu';
+export * from './command-palette';
 export * from './modal';
 export * from './option';
 export * from './pagination';

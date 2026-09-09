@@ -1,10 +1,10 @@
 # 0015 CommandPalette
 
-Status: open
+Status: done
 Priority: medium
 Subsystem: frontend
 Owner: unassigned
-Agent: unassigned
+Agent: copilot
 Depends on: 0011
 
 ## Context
@@ -32,3 +32,5 @@ Applications with many routes and actions benefit from a keyboard-first command 
 ## Agent Notes
 
 - 2026-09-09 copilot: Created from the suggested component backlog. 0011 is a hard dependency so focus trapping, Escape behavior, and overlay ownership are not duplicated.
+- 2026-09-09 copilot: Implementing `CommandPalette<T>()` as a generic component factory over `Dialog`. Commands own typed IDs and execution callbacks; `filterCommands` can replace ranking/filtering while the palette retains accessible list behavior.
+- 2026-09-09 copilot: Completed controlled/uncontrolled visibility, coordinated Ctrl/Command+K registration, grouped and customizable filtering, active-descendant keyboard navigation, IME-safe execution, focus restoration, responsive theme styling, and a navigation/action example. The full suite passes with 282 tests.
