@@ -2,6 +2,7 @@ import m, { Attributes, Component, Vnode, type FactoryComponent } from 'mithril'
 import { NumberInput, TextInput } from './input';
 import { InputCheckbox } from './option';
 import { uniqueId } from './utils';
+import { calculateVirtualRange } from './virtual-list';
 
 /**
  * Attributes for custom cell renderer components in DataTable
@@ -78,8 +79,8 @@ export interface DataTablePagination {
 export interface DataTableSelection<T = Record<string, any>> {
   /** Selection mode - controls how many rows can be selected */
   mode: 'single' | 'multiple' | 'none';
-  /** Array of currently selected row keys */
-  selectedKeys: string[];
+  /** Immutable array of currently selected row keys */
+  selectedKeys: readonly string[];
   /** Function to generate a unique key for each row */
   getRowKey: (row: T, index: number) => string;
   /** Callback invoked when row selection changes */
@@ -94,6 +95,15 @@ export interface DataTableFilter {
   searchTerm?: string;
   /** Column-specific filter values keyed by column key */
   columnFilters?: Record<string, any>;
+}
+
+export interface DataTableVirtualization {
+  /** Height of the scroll viewport in pixels. */
+  viewportHeight: number;
+  /** Fixed height of every rendered data row in pixels. */
+  rowHeight: number;
+  /** Additional rows rendered before and after the visible window. @default 1 */
+  overscan?: number;
 }
 
 /**
@@ -147,10 +157,17 @@ export interface DataTableAttrs<T = Record<string, any>> extends Attributes {
   centered?: boolean;
   /** Fixed table height in pixels (enables scrolling) */
   height?: number;
+  /**
+   * Render only the fixed-height visible row window. If scrolling removes a
+   * focused row, focus moves to the table viewport.
+   */
+  virtualization?: DataTableVirtualization;
   /** Additional CSS classes to apply to the table */
   className?: string;
   /** Custom HTML id attribute for the table container */
   id?: string;
+  /** Stable row identity used for keyed rendering independently of selection. */
+  getRowKey?: (row: T, originalIndex: number) => string | number;
 
   // Sorting
   /** Current sort configuration. If provided, sorting is controlled externally */
@@ -202,6 +219,15 @@ interface DataTableState<T = Record<string, any>> {
   lastProcessedHash?: string;
   cachedFilteredData?: T[];
   cachedSortedData?: T[];
+  virtualScrollTop: number;
+  processedOriginalIndices: number[];
+  selectionCache?: {
+    processedData: T[];
+    selectedKeys: readonly string[];
+    getRowKey: (row: T, index: number) => string;
+    allSelected: boolean;
+    someSelected: boolean;
+  };
 }
 
 // Helper function interfaces for FactoryComponents
@@ -350,28 +376,48 @@ interface TableRowAttrs<T = Record<string, any>> {
   onRowDoubleClick?: (row: T, index: number, event: Event) => void;
   getRowClassName?: (row: T, index: number) => string;
   helpers: DataTableHelpers<T>;
-  data: T[];
+  virtualRowHeight?: number;
+  virtualStripe?: boolean;
+  rowKey: string;
 }
 
 const TableRow = <T = Record<string, any>>(): Component<TableRowAttrs<T>> => {
   return {
     view: ({ attrs }: Vnode<TableRowAttrs<T>>) => {
-      const { row, index, columns, selection, onRowClick, onRowDoubleClick, getRowClassName, helpers, data } = attrs;
+      const {
+        row,
+        index,
+        columns,
+        selection,
+        onRowClick,
+        onRowDoubleClick,
+        getRowClassName,
+        helpers,
+        virtualRowHeight,
+        virtualStripe,
+        rowKey,
+      } = attrs;
 
-      // Calculate the original data index for the row key
-      const originalIndex = data.findIndex((originalRow: T) => originalRow === row);
-      const rowKey = selection?.getRowKey(row, originalIndex) || String(originalIndex);
       const isSelected = selection?.selectedKeys.includes(rowKey) || false;
 
       return m(
         'tr',
         {
           class:
-            [getRowClassName ? getRowClassName(row, index) : '', isSelected ? 'selected' : '']
+            [
+              getRowClassName ? getRowClassName(row, index) : '',
+              isSelected ? 'selected' : '',
+              virtualStripe ? 'virtual-stripe' : '',
+            ]
               .filter(Boolean)
               .join(' ') || undefined,
           onclick: onRowClick ? (e: Event) => onRowClick(row, index, e) : undefined,
           ondblclick: onRowDoubleClick ? (e: Event) => onRowDoubleClick(row, index, e) : undefined,
+          'data-virtual-index': virtualRowHeight ? index : undefined,
+          'aria-rowindex': virtualRowHeight ? index + 2 : undefined,
+          style: virtualRowHeight
+            ? { height: `${virtualRowHeight}px` }
+            : undefined,
         },
         [
           // Selection column
@@ -410,7 +456,13 @@ const TableRow = <T = Record<string, any>>(): Component<TableRowAttrs<T>> => {
                   [column.className, column.align ? `align-${column.align}` : ''].filter(Boolean).join(' ') ||
                   undefined,
               },
-              cellContent
+              virtualRowHeight
+                ? m(
+                    '.datatable-virtual-cell-content',
+                    { style: { height: `${virtualRowHeight}px` } },
+                    cellContent
+                  )
+                : cellContent
             );
           }),
         ]
@@ -589,10 +641,17 @@ interface TableContentAttrs<T = Record<string, any>> {
   onRowClick?: (row: T, index: number, event: Event) => void;
   onRowDoubleClick?: (row: T, index: number, event: Event) => void;
   getRowClassName?: (row: T, index: number) => string;
-  data: T[];
+  virtualization?: DataTableVirtualization;
+  scrollTop?: number;
+  striped?: boolean;
+  processedOriginalIndices: number[];
+  getRowKey?: (row: T, originalIndex: number) => string | number;
 }
 
 const TableContent = <T = Record<string, any>>(): Component<TableContentAttrs<T>> => {
+  const Header = TableHeader<T>();
+  const Row = TableRow<T>();
+
   return {
     view: ({ attrs: contentAttrs }) => {
       const {
@@ -607,15 +666,83 @@ const TableContent = <T = Record<string, any>>(): Component<TableContentAttrs<T>
         onRowClick,
         onRowDoubleClick,
         getRowClassName,
-        data,
+        virtualization,
+        scrollTop = 0,
+        striped,
+        processedOriginalIndices,
+        getRowKey,
       } = contentAttrs;
+      const range = virtualization
+        ? calculateVirtualRange({
+            itemCount: processedData.length,
+            itemHeight: virtualization.rowHeight,
+            viewportHeight: virtualization.viewportHeight,
+            scrollTop,
+            overscan: virtualization.overscan,
+          })
+        : undefined;
+      const rows = range
+        ? processedData.slice(range.startIndex, range.endIndex + 1)
+        : processedData;
+      const columnCount =
+        columns.length + (selection && selection.mode !== 'none' ? 1 : 0);
+      const rowVnodes = rows.map((row, visibleIndex) => {
+        const index = range ? range.startIndex + visibleIndex : visibleIndex;
+        const originalIndex = processedOriginalIndices[index] ?? index;
+        const selectionKey = selection?.getRowKey(row, originalIndex);
+        const stableIdentity =
+          getRowKey?.(row, originalIndex) ?? selectionKey ?? originalIndex;
+        const rowKey = selectionKey ?? String(stableIdentity);
+        return m(Row, {
+          key: `datatable-row-${typeof stableIdentity}-${String(stableIdentity)}`,
+          row,
+          index,
+          columns,
+          selection,
+          onRowClick,
+          onRowDoubleClick,
+          getRowClassName,
+          helpers,
+          virtualRowHeight: virtualization?.rowHeight,
+          virtualStripe: Boolean(range && striped && index % 2 === 0),
+          rowKey,
+        });
+      });
+      const topSpacerHeight = range ? range.startIndex * virtualization!.rowHeight : 0;
+      const bottomSpacerHeight = range
+        ? (processedData.length - range.endIndex - 1) * virtualization!.rowHeight
+        : 0;
+      const bodyRows = range
+        ? [
+            m(
+              'tr.datatable-virtual-spacer',
+              {
+                key: 'virtual-spacer-top',
+                'aria-hidden': 'true',
+                style: { height: `${topSpacerHeight}px` },
+              },
+              m('td', { colspan: columnCount })
+            ),
+            ...rowVnodes,
+            m(
+              'tr.datatable-virtual-spacer',
+              {
+                key: 'virtual-spacer-bottom',
+                'aria-hidden': 'true',
+                style: { height: `${bottomSpacerHeight}px` },
+              },
+              m('td', { colspan: columnCount })
+            ),
+          ]
+        : rowVnodes;
 
       return m(
         'table',
         {
           class: tableClasses,
+          'aria-rowcount': range ? processedData.length + 1 : undefined,
         },
-        m(TableHeader<T>(), {
+        m(Header, {
           columns,
           selection,
           sort: internalSort,
@@ -626,24 +753,7 @@ const TableContent = <T = Record<string, any>>(): Component<TableContentAttrs<T>
 
         m(
           'tbody',
-          processedData.map((row, index) =>
-            m(TableRow<T>(), {
-              key:
-                selection?.getRowKey(
-                  row,
-                  data.findIndex((originalRow) => originalRow === row)
-                ) || index,
-              row,
-              index,
-              columns,
-              selection,
-              onRowClick,
-              onRowDoubleClick,
-              getRowClassName,
-              helpers,
-              data,
-            })
-          )
+          bodyRows
         )
       );
     },
@@ -719,6 +829,7 @@ const TableContent = <T = Record<string, any>>(): Component<TableContentAttrs<T>
  * @returns A Mithril component that renders the data table
  */
 export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T>> => {
+  const Content = TableContent<T>();
   const state: DataTableState<T> = {
     internalSort: undefined,
     internalFilter: undefined,
@@ -729,6 +840,9 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
     lastProcessedHash: '',
     cachedFilteredData: undefined,
     cachedSortedData: [],
+    virtualScrollTop: 0,
+    processedOriginalIndices: [],
+    selectionCache: undefined,
   };
 
   // Helper functions
@@ -852,6 +966,7 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
     const { internalSort, internalFilter, internalPagination } = state;
 
     let processedData = [...data];
+    state.selectionCache = undefined;
 
     // Apply filtering
     if (internalFilter) {
@@ -862,6 +977,22 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
     if (internalSort) {
       processedData = applySorting(processedData, internalSort, attrs.columns);
     }
+
+    const sourceIndicesByRow = new Map<T, number[]>();
+    data.forEach((row, index) => {
+      const indices = sourceIndicesByRow.get(row);
+      if (indices) {
+        indices.push(index);
+      } else {
+        sourceIndicesByRow.set(row, [index]);
+      }
+    });
+    const rowOccurrences = new Map<T, number>();
+    let processedOriginalIndices = processedData.map((row, index) => {
+      const occurrence = rowOccurrences.get(row) ?? 0;
+      rowOccurrences.set(row, occurrence + 1);
+      return sourceIndicesByRow.get(row)?.[occurrence] ?? index;
+    });
 
     // Update total count for pagination
     if (internalPagination) {
@@ -877,9 +1008,11 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
       const start = page * pageSize;
       const end = start + pageSize;
       processedData = processedData.slice(start, end);
+      processedOriginalIndices = processedOriginalIndices.slice(start, end);
     }
 
     state.processedData = processedData;
+    state.processedOriginalIndices = processedOriginalIndices;
   };
 
   // Create stable helper functions that don't get recreated on every render
@@ -942,9 +1075,10 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
       }
 
       // Get selected rows
+      const selectedKeySet = new Set(newSelectedKeys);
       const selectedRows = attrs.data.filter((row, index) => {
         const key = attrs.selection!.getRowKey(row, index);
-        return newSelectedKeys.includes(key);
+        return selectedKeySet.has(key);
       });
 
       attrs.selection.onSelectionChange?.(newSelectedKeys, selectedRows);
@@ -956,17 +1090,18 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
 
       if (selected) {
         // Select all visible rows
-        newSelectedKeys = state.processedData.map((row) => {
-          const originalIndex = attrs.data.findIndex((originalRow) => originalRow === row);
+        newSelectedKeys = state.processedData.map((row, index) => {
+          const originalIndex = state.processedOriginalIndices[index] ?? index;
           return attrs.selection!.getRowKey(row, originalIndex);
         });
       } else {
         newSelectedKeys = [];
       }
 
+      const selectedKeySet = new Set(newSelectedKeys);
       const selectedRows = attrs.data.filter((row, index) => {
         const key = attrs.selection!.getRowKey(row, index);
-        return newSelectedKeys.includes(key);
+        return selectedKeySet.has(key);
       });
 
       attrs.selection.onSelectionChange?.(newSelectedKeys, selectedRows);
@@ -983,6 +1118,7 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
       state.internalPagination = pagination || undefined;
 
       processData(vnodeInit.attrs);
+      state.lastProcessedHash = getDataHash(vnodeInit.attrs);
     },
 
     onbeforeupdate(vnodeUpdate) {
@@ -1007,6 +1143,7 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
         id,
         title,
         height,
+        virtualization,
         enableGlobalSearch,
         searchPlaceholder,
         selection,
@@ -1014,7 +1151,7 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
         onRowClick,
         onRowDoubleClick,
         getRowClassName,
-        data,
+        getRowKey,
         onPaginationChange,
         i18n,
       } = attrs;
@@ -1037,14 +1174,35 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
       let someSelected = false;
 
       if (selection && selection.mode === 'multiple') {
-        const visibleRowKeys = processedData.map((row) => {
-          const originalIndex = data.findIndex((originalRow) => originalRow === row);
-          return selection.getRowKey(row, originalIndex);
-        });
-
-        const selectedVisibleKeys = visibleRowKeys.filter((key) => selection.selectedKeys.includes(key));
-        allSelected = visibleRowKeys.length > 0 && selectedVisibleKeys.length === visibleRowKeys.length;
-        someSelected = selectedVisibleKeys.length > 0 && selectedVisibleKeys.length < visibleRowKeys.length;
+        const cache = state.selectionCache;
+        if (
+          cache?.processedData === processedData &&
+          cache.selectedKeys === selection.selectedKeys &&
+          cache.getRowKey === selection.getRowKey
+        ) {
+          allSelected = cache.allSelected;
+          someSelected = cache.someSelected;
+        } else {
+          const selectedKeys = new Set(selection.selectedKeys);
+          let selectedCount = 0;
+          processedData.forEach((row, index) => {
+            const originalIndex = state.processedOriginalIndices[index] ?? index;
+            if (selectedKeys.has(selection.getRowKey(row, originalIndex))) {
+              selectedCount += 1;
+            }
+          });
+          allSelected =
+            processedData.length > 0 && selectedCount === processedData.length;
+          someSelected =
+            selectedCount > 0 && selectedCount < processedData.length;
+          state.selectionCache = {
+            processedData,
+            selectedKeys: selection.selectedKeys,
+            getRowKey: selection.getRowKey,
+            allSelected,
+            someSelected,
+          };
+        }
       }
 
       const tableClasses = [
@@ -1053,6 +1211,7 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
         hoverable ? 'highlight' : '',
         responsive ? 'responsive-table' : '',
         centered ? 'centered' : '',
+        virtualization ? 'fixed-header' : '',
         className || '',
       ]
         .filter(Boolean)
@@ -1073,15 +1232,53 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
         m(
           '.datatable-wrapper',
           {
+            tabindex: virtualization ? 0 : undefined,
+            'aria-label': virtualization
+              ? title ?? 'Virtualized data table'
+              : undefined,
             style: {
-              maxHeight: height ? `${height}px` : undefined,
-              overflowY: height ? 'auto' : undefined,
+              maxHeight: virtualization
+                ? `${virtualization.viewportHeight}px`
+                : height
+                  ? `${height}px`
+                  : undefined,
+              height: virtualization
+                ? `${virtualization.viewportHeight}px`
+                : undefined,
+              overflowY: virtualization || height ? 'auto' : undefined,
               overflowX: responsive ? 'auto' : undefined,
             },
+            onscroll: virtualization
+              ? (event: Event) => {
+                  const viewport = event.currentTarget as HTMLElement;
+                  state.virtualScrollTop = viewport.scrollTop;
+                  const focusedRow = (
+                    document.activeElement as HTMLElement | null
+                  )?.closest<HTMLElement>('tr[data-virtual-index]');
+                  if (focusedRow && viewport.contains(focusedRow)) {
+                    const focusedIndex = Number(
+                      focusedRow.dataset.virtualIndex
+                    );
+                    const nextRange = calculateVirtualRange({
+                      itemCount: processedData.length,
+                      itemHeight: virtualization.rowHeight,
+                      viewportHeight: virtualization.viewportHeight,
+                      scrollTop: state.virtualScrollTop,
+                      overscan: virtualization.overscan,
+                    });
+                    if (
+                      focusedIndex < nextRange.startIndex ||
+                      focusedIndex > nextRange.endIndex
+                    ) {
+                      viewport.focus();
+                    }
+                  }
+                }
+              : undefined,
           },
           processedData.length === 0
             ? m('.datatable-empty', emptyMessage || i18n?.noDataAvailable || 'No data available')
-            : m(TableContent<T>(), {
+            : m(Content, {
                 processedData,
                 height,
                 tableClasses,
@@ -1094,7 +1291,11 @@ export const DataTable = <T = Record<string, any>>(): Component<DataTableAttrs<T
                 onRowClick,
                 onRowDoubleClick,
                 getRowClassName,
-                data,
+                virtualization,
+                scrollTop: state.virtualScrollTop,
+                striped,
+                processedOriginalIndices: state.processedOriginalIndices,
+                getRowKey,
               })
         ),
         m(PaginationControls, {

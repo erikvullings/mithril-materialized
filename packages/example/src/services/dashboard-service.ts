@@ -135,6 +135,7 @@ export const searchIndex: SearchEntry[] = [
   { title: 'Wizard / Stepper', page: 'Navigation', route: '/navigation', hash: 'wizard' },
   // DataTable
   { title: 'DataTable', page: 'Components', route: '/datatable', hash: 'datatable' },
+  { title: 'VirtualList', page: 'DataTable', route: '/datatable' },
   { title: 'TreeView', page: 'DataTable', route: '/datatable', hash: 'treeview' },
   // Misc
   { title: 'Miscellaneous', page: 'Components', route: '/misc' },

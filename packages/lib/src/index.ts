@@ -27,6 +27,7 @@ export type {
 export * from './collection';
 export * from './datepicker';
 export * from './datatable';
+export * from './virtual-list';
 export * from './dropdown';
 export * from './floating-action-button';
 export * from './icon';

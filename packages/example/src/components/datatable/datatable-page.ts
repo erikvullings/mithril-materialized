@@ -202,7 +202,6 @@ interface DataTablePageState {
 
   // Large dataset for performance demo
   largeDataset: User[];
-  largeDatasetPagination: DataTablePagination;
 
   // TreeView state
   treeData: TreeNode[];
@@ -216,7 +215,7 @@ export const DataTablePage: FactoryComponent = () => {
       // Initialize data
       state.users = generateUsers(25);
       state.products = generateProducts(30);
-      state.largeDataset = generateUsers(5000);
+      state.largeDataset = generateUsers(10_000);
       state.treeData = generateTreeData();
       state.selectedTreeNodes = [];
 
@@ -239,8 +238,6 @@ export const DataTablePage: FactoryComponent = () => {
       state.productFilter = { searchTerm: '', columnFilters: {} };
       state.productPagination = { page: 0, pageSize: 8, total: 0 };
 
-      // Initialize large dataset pagination
-      state.largeDatasetPagination = { page: 0, pageSize: 100, total: state.largeDataset.length };
     },
 
     view() {
@@ -255,7 +252,6 @@ export const DataTablePage: FactoryComponent = () => {
         productSort,
         productFilter,
         productPagination,
-        largeDatasetPagination,
         treeData,
         selectedTreeNodes,
       } = state;
@@ -498,7 +494,10 @@ export const DataTablePage: FactoryComponent = () => {
         m('.row', [
           m('.col.s12', [
             m('h5', 'Large Dataset Performance Demo'),
-            m('p', 'Handling large datasets (5,000+ rows) efficiently with pagination and search.'),
+            m(
+              'p',
+              'Only the visible window of 10,000 rows is rendered. Virtualized rows must use the configured fixed height; variable-height content is not supported.'
+            ),
 
             m('.card', [
               m('.card-content', [
@@ -508,11 +507,10 @@ export const DataTablePage: FactoryComponent = () => {
                   title: `Large Dataset (${largeDataset.length.toLocaleString()} rows)`,
                   striped: true,
                   hoverable: true,
-                  height: 400,
-
-                  pagination: largeDatasetPagination,
-                  onPaginationChange: (pagination) => {
-                    state.largeDatasetPagination = pagination;
+                  virtualization: {
+                    viewportHeight: 400,
+                    rowHeight: 48,
+                    overscan: 4,
                   },
 
                   enableGlobalSearch: true,

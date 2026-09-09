@@ -38,4 +38,4 @@ Dialog is the shared foundation for CommandPalette. Menu and Snackbar can procee
 
 ## Large Data
 
-- [ ] 0017 Virtualized list and table support
+- [x] 0017 Virtualized list and table support
