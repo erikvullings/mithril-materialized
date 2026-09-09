@@ -1,3 +1,16 @@
+# [3.20.0](https://github.com/erikvullings/mithril-materialized/compare/v3.19.0...v3.20.0) (2026-09-09)
+
+
+### Bug Fixes
+
+* **menu:** refine theme-aware focus styles ([2c9a36d](https://github.com/erikvullings/mithril-materialized/commit/2c9a36da1c1b9f65d8b8f03da49b53eec10833ca))
+* **overlays:** dismiss topmost layer first ([bfe96c1](https://github.com/erikvullings/mithril-materialized/commit/bfe96c192ad96fa799c23ffb4d0f8e4a3e669897))
+
+
+### Features
+
+* **menu:** add action and context menus ([d3c0c72](https://github.com/erikvullings/mithril-materialized/commit/d3c0c72f9cfccebc31e9363f59bcf7474e0f3baf))
+
 # [3.19.0](https://github.com/erikvullings/mithril-materialized/compare/v3.18.0...v3.19.0) (2026-09-09)
 
 
