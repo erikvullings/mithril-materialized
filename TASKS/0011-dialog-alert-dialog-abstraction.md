@@ -1,10 +1,10 @@
 # 0011 Dialog and AlertDialog abstraction
 
-Status: open
+Status: done
 Priority: medium
 Subsystem: frontend
 Owner: unassigned
-Agent: unassigned
+Agent: copilot
 Depends on: none
 
 ## Context
@@ -34,3 +34,4 @@ The library has `ModalPanel`, but consumers still need to assemble common dialog
 ## Agent Notes
 
 - 2026-09-09 copilot: Created from the suggested component backlog. Reuse the completed modal slot/token work in 0009 and watch for duplicated overlay lifecycle ownership.
+- 2026-09-09 copilot: Added `Dialog` and `AlertDialog` in `packages/lib/src/dialog.ts`, composing `ModalPanel` with typed ordered actions and alert-safe defaults. Extended `packages/lib/src/modal.ts` with uncontrolled `defaultOpen`, close reasons, separate content, configurable focus trapping/initial focus/restoration, and generated accessible IDs. Added responsive/destructive styles, focused tests, and light/dark-compatible examples under `packages/example/src/components/modals/modal-page.ts`.

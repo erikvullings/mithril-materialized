@@ -208,3 +208,59 @@
   border-top: var(--mm-modal-footer-border-top, 1px solid var(--mm-border-color, rgba(160, 160, 160, 0.2)));
   text-align: right;
 }
+
+.modal.mm-dialog .mm-modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--mm-dialog-action-gap, 4px);
+  height: auto;
+  min-height: 56px;
+}
+
+.modal.mm-dialog .mm-dialog-action {
+  margin: 4px 0;
+}
+
+.modal.mm-dialog .mm-dialog-primary-action {
+  font-weight: 600;
+}
+
+.modal.mm-dialog .mm-dialog-action-destructive {
+  color: var(--mm-error-color, #f44336);
+}
+
+.mm-dialog-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media #{variables.$small-and-down} {
+  .modal.mm-dialog {
+    width: var(--mm-dialog-mobile-width, calc(100% - 32px));
+    max-width: var(--mm-dialog-mobile-max-width, calc(100% - 32px));
+  }
+
+  .modal.mm-dialog .mm-modal-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .modal.mm-dialog .mm-dialog-action {
+    width: 100%;
+    height: auto;
+    min-height: 36px;
+    line-height: 1.4;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    white-space: normal;
+  }
+}

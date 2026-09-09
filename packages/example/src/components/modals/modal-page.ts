@@ -1,7 +1,9 @@
 import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
 import {
+  AlertDialog,
   ModalPanel,
+  Dialog,
   Button,
   MaterialBox,
   Select,
@@ -16,6 +18,8 @@ export const ModalPage = () => {
 
   // State to control modal visibility
   const state = {
+    dialogOpen: false,
+    alertDialogOpen: false,
     modal1Open: false,
     modal1bOpen: false,
     modal2Open: false,
@@ -32,6 +36,88 @@ export const ModalPage = () => {
           m('a[href=https://materializecss.com/modals.html#!][target=_blank]', 'materialize-css website'),
           '.',
         ]),
+        m(
+          'p',
+          'The dialog examples use theme tokens, so the theme switcher demonstrates the same interactions in light and dark themes.'
+        ),
+
+        m('h3.header[id=dialog]', 'Dialog'),
+        m(
+          '.row',
+          m(Button, {
+            label: 'Edit profile',
+            onclick: () => {
+              state.dialogOpen = true;
+            },
+          }),
+          m(Dialog, {
+            title: 'Edit profile',
+            description: 'Review the account details before saving.',
+            content: m('p', 'Your profile remains visible to everyone in your organization.'),
+            isOpen: state.dialogOpen,
+            onToggle: (open: boolean) => {
+              state.dialogOpen = open;
+            },
+            actions: [{ label: 'Help', onclick: () => alert('Open profile help') }],
+            secondaryAction: { label: 'Cancel' },
+            primaryAction: { label: 'Save', onclick: () => alert('Profile saved') },
+          })
+        ),
+        m(HighlightedCodeBlock, {
+          code: `m(Dialog, {
+  title: 'Edit profile',
+  description: 'Review the account details before saving.',
+  content: m('p', 'Your profile remains visible to everyone in your organization.'),
+  isOpen: state.dialogOpen,
+  onToggle: (open) => {
+    state.dialogOpen = open;
+  },
+  actions: [{ label: 'Help' }],
+  secondaryAction: { label: 'Cancel' },
+  primaryAction: { label: 'Save', onclick: saveProfile },
+})`,
+        }),
+
+        m('h3.header[id=alert-dialog]', 'Destructive Alert Dialog'),
+        m(
+          '.row',
+          m(Button, {
+            label: 'Delete project',
+            onclick: () => {
+              state.alertDialogOpen = true;
+            },
+          }),
+          m(AlertDialog, {
+            title: 'Delete project?',
+            description: 'This permanently removes the project and all of its data.',
+            isOpen: state.alertDialogOpen,
+            onToggle: (open: boolean) => {
+              state.alertDialogOpen = open;
+            },
+            secondaryAction: { label: 'Cancel' },
+            primaryAction: {
+              label: 'Delete project',
+              destructive: true,
+              onclick: () => alert('Project deleted'),
+            },
+          })
+        ),
+        m(HighlightedCodeBlock, {
+          code: `m(AlertDialog, {
+  title: 'Delete project?',
+  description: 'This permanently removes the project and all of its data.',
+  isOpen: state.alertDialogOpen,
+  onToggle: (open) => {
+    state.alertDialogOpen = open;
+  },
+  secondaryAction: { label: 'Cancel' },
+  primaryAction: {
+    label: 'Delete project',
+    destructive: true,
+    onclick: deleteProject,
+  },
+})`,
+        }),
 
         m('h3.header[id=modal]', 'Normal Modal'),
         m(

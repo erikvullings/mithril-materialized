@@ -50,6 +50,7 @@ export * from './search-select';
 export { TimeRangePicker } from './time-range-picker';
 export type { TimeRangePickerAttrs } from './time-range-picker';
 export * from './digital-clock';
+export * from './dialog';
 export * from './analog-clock';
 export * from './time-utils';
 export * from './toast';
