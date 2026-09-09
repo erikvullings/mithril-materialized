@@ -62,6 +62,7 @@ describe('Menu', () => {
 
     fireEvent.keyDown(trigger, 'ArrowDown');
     expect(document.activeElement).toHaveTextContent('Copy');
+    expect(document.activeElement).not.toHaveClass('active');
 
     fireEvent.keyDown(document.activeElement as HTMLElement, 'End');
     expect(document.activeElement).toHaveTextContent('Duplicate');

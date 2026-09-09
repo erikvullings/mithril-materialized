@@ -385,7 +385,7 @@ const createMenu = <T extends string | number>(
                 {
                   type: 'button',
                   role: 'menuitem',
-                  className: [entry.className, index === state.activeIndex ? 'active' : ''].filter(Boolean).join(' '),
+                  className: entry.className,
                   disabled: entry.disabled,
                   'aria-disabled': entry.disabled ? 'true' : undefined,
                   tabindex: index === state.activeIndex ? 0 : -1,
