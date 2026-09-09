@@ -54,11 +54,22 @@
   // Chip colors
   --mm-chip-bg: #e4e4e4;
   --mm-chip-text: var(--mm-text-secondary);
+
+  // Avatar colors
+  --mm-avatar-background: #e4e4e4;
+  --mm-avatar-text: rgba(0, 0, 0, 0.6);
+  --mm-avatar-border: #ffffff;
+  --mm-avatar-focus: var(--mm-primary-color);
   
   // Dropdown colors
   --mm-dropdown-hover: #eee;
   --mm-dropdown-focus: #ddd;
   --mm-dropdown-selected: #e3f2fd;
+
+  // Snackbar colors
+  --mm-snackbar-background: #323232;
+  --mm-snackbar-text: #ffffff;
+  --mm-snackbar-action: #80cbc4;
   
   // Collection/Table hover (light theme)
   --mm-row-hover: rgba(0, 0, 0, 0.04);
@@ -150,11 +161,22 @@ body {
   // Chip colors
   --mm-chip-bg: #424242;
   --mm-chip-text: var(--mm-text-secondary);
+
+  // Avatar colors
+  --mm-avatar-background: #424242;
+  --mm-avatar-text: rgba(255, 255, 255, 0.87);
+  --mm-avatar-border: #1e1e1e;
+  --mm-avatar-focus: var(--mm-primary-color);
   
   // Dropdown colors
   --mm-dropdown-hover: #444;
   --mm-dropdown-focus: #555;
   --mm-dropdown-selected: #1e3a8a;
+
+  // Snackbar colors
+  --mm-snackbar-background: #2d2d2d;
+  --mm-snackbar-text: rgba(255, 255, 255, 0.87);
+  --mm-snackbar-action: var(--mm-primary-color);
   
   // Collection/Table hover (dark theme) - more subtle
   --mm-row-hover: rgba(255, 255, 255, 0.04);
@@ -223,10 +245,21 @@ body {
     --mm-shadow-penumbra: rgba(0, 0, 0, 0.36);
     --mm-shadow-ambient: rgba(0, 0, 0, 0.3);
 
+    // Avatar colors (auto dark theme)
+    --mm-avatar-background: #424242;
+    --mm-avatar-text: rgba(255, 255, 255, 0.87);
+    --mm-avatar-border: #1e1e1e;
+    --mm-avatar-focus: var(--mm-primary-color);
+
     // Dropdown and menu colors (auto dark theme)
     --mm-dropdown-hover: #444;
     --mm-dropdown-focus: #555;
     --mm-dropdown-selected: #1e3a8a;
+
+    // Snackbar colors (auto dark theme)
+    --mm-snackbar-background: #2d2d2d;
+    --mm-snackbar-text: rgba(255, 255, 255, 0.87);
+    --mm-snackbar-action: var(--mm-primary-color);
     
     // Switch colors (auto dark theme)
     --mm-switch-checked-track: rgba(128, 203, 196, 0.3);

@@ -3,6 +3,7 @@ import m from 'mithril';
 import {
   AlertDialog,
   Button,
+  CommandPalette,
   ContextMenu,
   Dialog,
   MaterialBox,
@@ -18,12 +19,14 @@ import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google
 export const ModalPage = () => {
   const ActionMenu = Menu<'edit' | 'duplicate' | 'archive'>();
   const ProjectContextMenu = ContextMenu<'rename' | 'download' | 'delete'>();
+  const AppCommands = CommandPalette<'home' | 'theme' | 'clear-cache'>();
   const onchange = (v: unknown) => alert(v);
 
   // State to control modal visibility
   const state = {
     dialogOpen: false,
     alertDialogOpen: false,
+    commandPaletteOpen: false,
     modal1Open: false,
     modal1bOpen: false,
     modal2Open: false,
@@ -44,6 +47,83 @@ export const ModalPage = () => {
           'p',
           'The dialog examples use theme tokens, so the theme switcher demonstrates the same interactions in light and dark themes.'
         ),
+
+        m('h3.header[id=command-palette]', 'Command Palette'),
+        m(
+          'p',
+          'Press Ctrl+K or Command+K anywhere on this page, then search navigation and application commands.'
+        ),
+        m(
+          '.row',
+          m(Button, {
+            label: 'Open command palette',
+            onclick: () => {
+              state.commandPaletteOpen = true;
+            },
+          }),
+          m(AppCommands, {
+            isOpen: state.commandPaletteOpen,
+            onToggle: (open) => {
+              state.commandPaletteOpen = open;
+            },
+            enableGlobalShortcut: true,
+            commands: [
+              {
+                id: 'home',
+                label: 'Go to home',
+                description: 'Open the component overview',
+                iconName: 'home',
+                shortcut: 'G H',
+                group: 'Navigation',
+                execute: () => m.route.set('/home'),
+              },
+              {
+                id: 'theme',
+                label: 'Open theme settings',
+                description: 'Review light and dark theme options',
+                iconName: 'palette',
+                shortcut: 'G T',
+                group: 'Navigation',
+                execute: () => m.route.set('/theme'),
+              },
+              {
+                id: 'clear-cache',
+                label: 'Clear local cache',
+                description: 'Demonstrates an application action',
+                iconName: 'cleaning_services',
+                shortcut: 'Ctrl+Shift+C',
+                group: 'Actions',
+                execute: () => alert('Local cache cleared'),
+              },
+            ],
+          })
+        ),
+        m(HighlightedCodeBlock, {
+          code: `const AppCommands = CommandPalette<'home' | 'theme' | 'clear-cache'>();
+
+m(AppCommands, {
+  isOpen: state.commandPaletteOpen,
+  onToggle: (open) => {
+    state.commandPaletteOpen = open;
+  },
+  enableGlobalShortcut: true,
+  commands: [
+    {
+      id: 'home',
+      label: 'Go to home',
+      group: 'Navigation',
+      shortcut: 'G H',
+      execute: () => m.route.set('/home'),
+    },
+    {
+      id: 'clear-cache',
+      label: 'Clear local cache',
+      group: 'Actions',
+      execute: clearCache,
+    },
+  ],
+})`,
+        }),
 
         m('h3.header[id=dialog]', 'Dialog'),
         m(

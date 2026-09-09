@@ -1,10 +1,10 @@
 # 0013 Snackbar queue with actions
 
-Status: open
+Status: done
 Priority: medium
 Subsystem: frontend
 Owner: unassigned
-Agent: unassigned
+Agent: copilot
 Depends on: none
 
 ## Context
@@ -32,3 +32,5 @@ The existing Toast API can show transient messages, but applications need ordere
 ## Agent Notes
 
 - 2026-09-09 copilot: Created from the suggested component backlog. Preserve the existing Toast API unless a documented compatibility layer is included.
+- 2026-09-09 copilot: Implementing a separate `SnackbarQueue` so the existing `Toast` API remains backward compatible. The queue will show one entry at a time, allow duplicates, and retain at most 10 entries by dropping the oldest waiting entry when full.
+- 2026-09-09 copilot: Added `packages/lib/src/snackbar.ts` with the typed queue, shared `snackbar()` API, persistent live region, bounded FIFO behavior, action/dismiss callbacks, and remaining-duration pause/resume. Added theme-aware reduced-motion Sass, eight focused tests, exports, search entries, and queued/Undo examples in the Misc page. Completion is synchronous and action dismissal is bound to the originating entry to remain safe under callback reentrancy.

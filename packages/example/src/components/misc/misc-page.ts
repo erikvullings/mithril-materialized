@@ -10,12 +10,26 @@ import {
   Badge,
   Icon,
   FileUpload,
+  EmptyState,
+  Skeleton,
+  Avatar,
+  AvatarGroup,
+  snackbar,
   toast,
   initTooltips,
   initPushpins,
 } from 'mithril-materialized';
 import m from 'mithril';
 import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
+
+const sectionLink = (id: string, label: string) =>
+  m(
+    'a',
+    {
+      href: `#!/misc?section=${encodeURIComponent(id)}`,
+    },
+    label
+  );
 
 export const MiscPage = () => {
   const state = {
@@ -34,36 +48,203 @@ export const MiscPage = () => {
     },
   };
   const curPage = () => (m.route.param('page') ? +m.route.param('page') : 1);
+  let focusedSection = '';
+
+  const focusCurrentSection = () => {
+    const section = m.route.param('section');
+    if (!section || section === focusedSection) return;
+    focusedSection = section;
+    requestAnimationFrame(() => {
+      const heading = document.getElementById(section);
+      if (!heading) return;
+      heading.tabIndex = -1;
+      heading.focus({ preventScroll: true });
+      heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
 
   return {
+    oncreate: focusCurrentSection,
+    onupdate: focusCurrentSection,
     view: () =>
       m('.col.s12', [
         m('h2.header', 'Miscellaneous'),
         m('p', [
-          'Some miscellaneous components, like ',
-          m('a[href=https://materializecss.com/toasts.html][target=_blank]', 'Toast'),
+          'This page demonstrates ',
+          sectionLink('avatar', 'Avatar'),
+          ' and ',
+          sectionLink('avatar', 'AvatarGroup'),
           ', ',
-          m('a[href=https://mui.com/material-ui/react-badge/][target=_blank]', 'Badge'),
+          sectionLink('skeleton', 'Skeleton'),
           ', ',
-          m('a[href=https://materializecss.com/tooltips.html][target=_blank]', 'Tooltip'),
+          sectionLink('empty-state', 'Empty State'),
           ', ',
-          m('a[href=https://materializecss.com/pushpin.html][target=_blank]', 'Pushpin'),
+          sectionLink('fileupload', 'File Upload'),
           ', ',
-          m('a[href=https://materializecss.com/tabs.html][target=_blank]', 'Tabs'),
+          sectionLink('snackbar', 'Snackbar Queue'),
           ', ',
-          m('a[href=https://materializecss.com/media.html][target=_blank]', 'Material box'),
+          sectionLink('toast', 'Toast'),
           ', ',
-          m('a[href=https://materializecss.com/collection.html][target=_blank]', 'Collection'),
+          sectionLink('badge', 'Badge'),
           ', ',
-          m('a[href=https://materializecss.com/collapsible.html][target=_blank]', 'Collapsible'),
+          sectionLink('tooltip', 'Tooltip'),
           ', ',
-          m('a[href=https://materializecss.com/carousel.html][target=_blank]', 'Carousel'),
+          sectionLink('pushpin', 'Pushpin'),
           ', ',
-          m('a[href=https://materializecss.com/parallax.html][target=_blank]', 'Pagination'),
+          sectionLink('tabs', 'Tabs'),
+          ', ',
+          sectionLink('materialbox', 'Material Box'),
+          ', ',
+          sectionLink('carousel', 'Carousel'),
+          ', ',
+          sectionLink('pagination', 'Pagination'),
           ' and the ',
-          m('a[href=https://materializecss.com/pagination.html][target=_blank]', 'Parallax'),
+          sectionLink('parallax', 'Parallax'),
           '.',
         ]),
+        m('h3.header[id=avatar]', 'Avatar and AvatarGroup'),
+        m(
+          'p',
+          'Avatars show an image, explicit text, derived initials, or an icon. Wrap an avatar in a native link or button when it is interactive.'
+        ),
+        m('.row', [
+          m('.col.s12.m6', [
+            m(Avatar, {
+              src: gogh,
+              alt: 'Vincent van Gogh',
+              size: 'large',
+            }),
+            m(Avatar, {
+              name: 'Ada Lovelace',
+              alt: 'Ada Lovelace',
+              size: 'large',
+            }),
+            m(Avatar, {
+              text: 'MM',
+              alt: 'Mithril Materialized',
+              size: 'large',
+              shape: 'rounded',
+            }),
+            m(Avatar, {
+              alt: 'Unassigned person',
+              size: 'large',
+              shape: 'square',
+              disabled: true,
+            }),
+          ]),
+          m(
+            '.col.s12.m6',
+            m(
+              AvatarGroup,
+              {
+                max: 3,
+                totalCount: 7,
+                overlap: 12,
+                ariaLabel: 'Project contributors',
+              },
+              [
+                m('a[href="#!/about"][aria-label="Open Ada Lovelace"]', [
+                  m(Avatar, { name: 'Ada Lovelace', alt: '' }),
+                ]),
+                m(Avatar, { name: 'Grace Hopper', alt: 'Grace Hopper' }),
+                m(Avatar, { name: 'Katherine Johnson', alt: 'Katherine Johnson' }),
+                m(Avatar, { name: 'Dorothy Vaughan', alt: 'Dorothy Vaughan' }),
+              ]
+            )
+          ),
+        ]),
+        m(HighlightedCodeBlock, {
+          code: `import { Avatar, AvatarGroup } from 'mithril-materialized';
+
+m(Avatar, { src: user.photo, name: user.name, alt: user.name });
+m(Avatar, { name: 'Ada Lovelace', alt: 'Ada Lovelace' });
+m(Avatar, { iconName: 'person', alt: 'Unassigned person' });
+
+m(AvatarGroup, {
+  max: 3,
+  totalCount: 7,
+  overlap: 12,
+  ariaLabel: 'Project contributors',
+}, users.map((user) =>
+  m(Avatar, { src: user.photo, name: user.name, alt: user.name })
+));`,
+        }),
+        m('h3.header[id=skeleton]', 'Skeleton'),
+        m(
+          'p',
+          'Skeletons reserve space while content is loading without owning loading state.'
+        ),
+        m('.row', [
+          m('.col.s12.m6', [
+            m(Skeleton, {
+              shape: 'circular',
+              width: 56,
+              height: 56,
+              margin: '0 0 16px',
+            }),
+            m(Skeleton, { shape: 'text', count: 3, width: '100%' }),
+          ]),
+          m('.col.s12.m6', [
+            m(Skeleton, { shape: 'rectangular', width: '100%', height: 160 }),
+          ]),
+        ]),
+        m(HighlightedCodeBlock, {
+          code: `import { Skeleton } from 'mithril-materialized';
+
+m(Skeleton, { shape: 'text', count: 3 });
+m(Skeleton, { shape: 'circular', width: 56, height: 56, margin: '0 0 16px' });
+m(Skeleton, { shape: 'rectangular', width: '100%', height: 160 });
+m(Skeleton, { shape: 'text', animated: false });`,
+        }),
+        m('h3.header[id=empty-state]', 'Empty State'),
+        m(
+          'p',
+          'Empty states explain why content is absent and can offer clear next actions.'
+        ),
+        m('.row', [
+          m(
+            '.col.s12.m6',
+            m(EmptyState, {
+              iconName: 'search',
+              title: 'No matching projects',
+              description: 'Try changing your filters or search terms.',
+            })
+          ),
+          m(
+            '.col.s12.m6',
+            m(EmptyState, {
+              illustration: m('i.material-icons.large', 'folder_open'),
+              title: 'Create your first project',
+              description: 'Projects help your team organize related work.',
+              primaryAction: {
+                label: 'Create a project',
+                onclick: () => snackbar({ message: 'Create project selected' }),
+              },
+              secondaryAction: {
+                label: 'Import an existing project with a long localized label',
+                onclick: () => snackbar({ message: 'Import selected' }),
+              },
+              content: m('small', 'You can change these settings later.'),
+            })
+          ),
+        ]),
+        m(HighlightedCodeBlock, {
+          code: `import { EmptyState } from 'mithril-materialized';
+
+m(EmptyState, {
+  iconName: 'folder_open',
+  title: 'Create your first project',
+  description: 'Projects help your team organize related work.',
+  primaryAction: {
+    label: 'Create a project',
+    onclick: createProject,
+  },
+  secondaryAction: {
+    label: 'Import a project',
+    onclick: importProject,
+  },
+});`,
+        }),
         m('h3.header[id=fileupload]', 'File Upload'),
         m('p', 'Drag-and-drop file upload with image preview, file validation, and progress tracking:'),
         m('.row', [
@@ -130,6 +311,55 @@ m(FileUpload, {
   },
 })`,
         }),
+        m('h3.header[id=snackbar]', 'Snackbar Queue'),
+        m(
+          'p',
+          'Snackbars present one message at a time in insertion order. Hover or focus pauses the active timeout.'
+        ),
+        m(
+          '.row',
+          m('.col.s12', [
+            m(Button, {
+              label: 'Queue three messages',
+              onclick: () => {
+                snackbar({ message: 'Profile saved' });
+                snackbar({ message: 'Preferences synchronized' });
+                snackbar({ message: 'Backup completed' });
+              },
+            }),
+            m(Button, {
+              label: 'Delete with Undo',
+              onclick: () => {
+                snackbar({
+                  message: 'Project deleted',
+                  duration: 8000,
+                  dismissible: true,
+                  action: {
+                    label: 'Undo',
+                    onclick: () => snackbar({ message: 'Project restored' }),
+                  },
+                });
+              },
+            }),
+          ])
+        ),
+        m(HighlightedCodeBlock, {
+          code: `import { snackbar } from 'mithril-materialized';
+
+snackbar({ message: 'Profile saved' });
+snackbar({ message: 'Preferences synchronized' });
+
+snackbar({
+  message: 'Project deleted',
+  duration: 8000,
+  dismissible: true,
+  action: {
+    label: 'Undo',
+    onclick: () => restoreProject(),
+  },
+});`,
+        }),
+
         m('h3.header[id=toast]', 'Toast'),
         m('p', 'Toast provides brief feedback about an operation through a message at the bottom of the screen.'),
         m(

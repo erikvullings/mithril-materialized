@@ -1,0 +1,12 @@
+.mm-virtual-list {
+  position: relative;
+  width: 100%;
+  overflow-anchor: none;
+  -webkit-overflow-scrolling: touch;
+  contain: strict;
+}
+
+.mm-virtual-list-item {
+  box-sizing: border-box;
+  overflow: hidden;
+}

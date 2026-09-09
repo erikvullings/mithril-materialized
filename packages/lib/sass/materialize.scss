@@ -16,6 +16,7 @@
 // components
 @use "components/global";
 @use "components/badges";
+@use "components/avatar";
 @use "components/icons-material-design";
 @use "components/grid";
 @use "components/navbar";
@@ -23,11 +24,14 @@
 @use "components/transitions";
 @use "components/cards";
 @use "components/toast";
+@use "components/snackbar";
+@use "components/skeleton-empty-state";
 @use "components/tabs";
 @use "components/tooltip";
 @use "components/buttons";
 @use "components/dropdown";
 @use "components/menu";
+@use "components/command-palette";
 @use "components/waves";
 @use "components/modal";
 @use "components/collapsible";
@@ -49,6 +53,7 @@
 @use "components/breadcrumb";
 @use "components/wizard";
 @use "components/datatable";
+@use "components/virtual-list";
 @use "components/treeview";
 @use "components/timeline";
 @use "components/masonry";

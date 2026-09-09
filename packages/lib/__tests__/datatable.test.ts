@@ -182,6 +182,213 @@ describe('DataTable Component', () => {
       expect(loadingElement).toBeTruthy();
       expect(loadingElement?.textContent).toContain('Loading...');
     });
+
+    test('bounds rendered rows when virtualization is enabled', () => {
+      const data = Array.from({ length: 10_000 }, (_, index) => ({
+        ...mockUsers[index % mockUsers.length],
+        id: index + 1,
+        name: `User ${index + 1}`,
+      }));
+      const attrs: DataTableAttrs<TestUser> = {
+        data,
+        columns: mockColumns,
+        virtualization: {
+          viewportHeight: 200,
+          rowHeight: 40,
+          overscan: 2,
+        },
+      };
+
+      m.mount(container, { view: () => m(DataTable<TestUser>(), attrs) });
+
+      const table = container.querySelector('table');
+      const rows = container.querySelectorAll('tbody tr[data-virtual-index]');
+
+      expect(rows).toHaveLength(7);
+      expect(table).toHaveAttribute('aria-rowcount', '10001');
+      expect(rows[0]).toHaveAttribute('aria-rowindex', '2');
+    });
+
+    test('updates the virtual row window while scrolling', () => {
+      const data = Array.from({ length: 100 }, (_, index) => ({
+        ...mockUsers[index % mockUsers.length],
+        id: index + 1,
+        name: `User ${index + 1}`,
+      }));
+      const attrs: DataTableAttrs<TestUser> = {
+        data,
+        columns: mockColumns,
+        virtualization: {
+          viewportHeight: 200,
+          rowHeight: 40,
+          overscan: 2,
+        },
+      };
+
+      m.mount(container, { view: () => m(DataTable<TestUser>, attrs) });
+      const viewport = container.querySelector<HTMLElement>('.datatable-wrapper')!;
+      viewport.scrollTop = 400;
+      viewport.dispatchEvent(new Event('scroll'));
+      m.redraw.sync();
+      const rows = container.querySelectorAll<HTMLElement>(
+        'tbody tr[data-virtual-index]'
+      );
+
+      expect(rows[0].dataset.virtualIndex).toBe('8');
+      expect(rows).toHaveLength(9);
+      const spacers = container.querySelectorAll<HTMLElement>(
+        '.datatable-virtual-spacer'
+      );
+      const representedHeight =
+        Number.parseFloat(spacers[0].style.height) +
+        rows.length * attrs.virtualization!.rowHeight +
+        Number.parseFloat(spacers[1].style.height);
+      expect(representedHeight).toBe(
+        data.length * attrs.virtualization!.rowHeight
+      );
+    });
+
+    test('moves focus to the table viewport before a focused row is removed', () => {
+      const data = Array.from({ length: 100 }, (_, index) => ({
+        ...mockUsers[index % mockUsers.length],
+        id: index + 1,
+      }));
+      const attrs: DataTableAttrs<TestUser> = {
+        data,
+        columns: mockColumns,
+        selection: {
+          mode: 'multiple',
+          selectedKeys: [],
+          getRowKey: (row) => String(row.id),
+        },
+        virtualization: {
+          viewportHeight: 200,
+          rowHeight: 40,
+          overscan: 1,
+        },
+      };
+
+      m.mount(container, { view: () => m(DataTable<TestUser>, attrs) });
+      const viewport = container.querySelector<HTMLElement>('.datatable-wrapper')!;
+      const firstCheckbox = container.querySelector<HTMLInputElement>(
+        'tbody tr[data-virtual-index] input'
+      )!;
+      firstCheckbox.focus();
+      viewport.scrollTop = 800;
+      viewport.dispatchEvent(new Event('scroll'));
+
+      expect(document.activeElement).toBe(viewport);
+    });
+
+    test('preserves visible row DOM and focus when the virtual range is unchanged', () => {
+      const data = Array.from({ length: 100 }, (_, index) => ({
+        ...mockUsers[index % mockUsers.length],
+        id: index + 1,
+      }));
+      const attrs: DataTableAttrs<TestUser> = {
+        data,
+        columns: mockColumns,
+        selection: {
+          mode: 'multiple',
+          selectedKeys: [],
+          getRowKey: (row) => String(row.id),
+        },
+        virtualization: {
+          viewportHeight: 200,
+          rowHeight: 40,
+          overscan: 1,
+        },
+      };
+
+      m.mount(container, { view: () => m(DataTable<TestUser>, attrs) });
+      const viewport = container.querySelector<HTMLElement>('.datatable-wrapper')!;
+      const table = container.querySelector('table');
+      const firstCheckbox = container.querySelector<HTMLInputElement>(
+        'tbody tr[data-virtual-index] input'
+      )!;
+      firstCheckbox.focus();
+
+      viewport.scrollTop = 1;
+      viewport.dispatchEvent(new Event('scroll'));
+      m.redraw.sync();
+
+      expect(container.querySelector('table')).toBe(table);
+      expect(
+        container.querySelector('tbody tr[data-virtual-index] input')
+      ).toBe(firstCheckbox);
+      expect(document.activeElement).toBe(firstCheckbox);
+    });
+
+    test('applies sorting and pagination before virtual windowing', () => {
+      const attrs: DataTableAttrs<TestUser> = {
+        data: mockUsers,
+        columns: mockColumns,
+        sort: { column: 'name', direction: 'asc' },
+        pagination: { page: 0, pageSize: 3, total: mockUsers.length },
+        virtualization: {
+          viewportHeight: 40,
+          rowHeight: 40,
+          overscan: 0,
+        },
+      };
+
+      m.mount(container, { view: () => m(DataTable<TestUser>(), attrs) });
+
+      const row = container.querySelector('tbody tr[data-virtual-index]');
+      expect(row).toHaveTextContent('Alice Brown');
+      expect(container.querySelector('.pagination-info')).toHaveTextContent(
+        'Showing 1 to 3 of 5 entries'
+      );
+    });
+
+    test('does not recompute selection for every row while virtually scrolling', () => {
+      const data = Array.from({ length: 10_000 }, (_, index) => ({
+        ...mockUsers[index % mockUsers.length],
+        id: index + 1,
+      }));
+      const getRowKey = jest.fn((row: TestUser) => String(row.id));
+      const attrs: DataTableAttrs<TestUser> = {
+        data,
+        columns: mockColumns,
+        selection: { mode: 'multiple', selectedKeys: [], getRowKey },
+        virtualization: {
+          viewportHeight: 200,
+          rowHeight: 40,
+          overscan: 2,
+        },
+      };
+
+      m.mount(container, { view: () => m(DataTable<TestUser>, attrs) });
+      const callsAfterInitialRender = getRowKey.mock.calls.length;
+      const viewport = container.querySelector<HTMLElement>('.datatable-wrapper')!;
+      viewport.scrollTop = 400;
+      viewport.dispatchEvent(new Event('scroll'));
+      m.redraw.sync();
+
+      expect(getRowKey.mock.calls.length - callsAfterInitialRender).toBeLessThan(
+        20
+      );
+    });
+
+    test('keeps distinct original indices for duplicate row values', () => {
+      const duplicate = mockUsers[0];
+      const getRowKey = jest.fn((_row: TestUser, originalIndex: number) => originalIndex);
+      const attrs: DataTableAttrs<TestUser> = {
+        data: [duplicate, duplicate],
+        columns: mockColumns,
+        getRowKey,
+        virtualization: {
+          viewportHeight: 80,
+          rowHeight: 40,
+          overscan: 0,
+        },
+      };
+
+      m.mount(container, { view: () => m(DataTable<TestUser>, attrs) });
+
+      expect(getRowKey.mock.calls.map(([, index]) => index)).toEqual([0, 1]);
+      expect(container.querySelectorAll('tbody tr[data-virtual-index]')).toHaveLength(2);
+    });
   });
 
   describe('Sorting', () => {
@@ -243,6 +450,26 @@ describe('DataTable Component', () => {
         column: 'name',
         direction: 'asc',
       });
+    });
+
+    test('moves stable row DOM with its record after sorting', () => {
+      const attrs: DataTableAttrs<TestUser> = {
+        data: mockUsers,
+        columns: mockColumns,
+      };
+
+      m.mount(container, { view: () => m(DataTable<TestUser>, attrs) });
+      const aliceRow = Array.from(container.querySelectorAll('tbody tr')).find(
+        (row) => row.textContent?.includes('Alice Brown')
+      );
+      const nameHeader = Array.from(container.querySelectorAll('thead th')).find(
+        (header) => header.textContent?.includes('Name')
+      ) as HTMLElement;
+
+      nameHeader.click();
+      m.redraw.sync();
+
+      expect(container.querySelector('tbody tr')).toBe(aliceRow);
     });
   });
 

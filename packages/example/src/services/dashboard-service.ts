@@ -125,6 +125,7 @@ export const searchIndex: SearchEntry[] = [
   { title: 'AlertDialog', page: 'Modals', route: '/modals', hash: 'alert-dialog' },
   { title: 'Menu', page: 'Modals', route: '/modals', hash: 'menu' },
   { title: 'ContextMenu', page: 'Modals', route: '/modals', hash: 'context-menu' },
+  { title: 'CommandPalette', page: 'Modals', route: '/modals', hash: 'command-palette' },
   { title: 'Modal', page: 'Modals', route: '/modals', hash: 'modal' },
   { title: 'ModalPanel', page: 'Modals', route: '/modals', hash: 'modal' },
   // Navigation
@@ -134,9 +135,16 @@ export const searchIndex: SearchEntry[] = [
   { title: 'Wizard / Stepper', page: 'Navigation', route: '/navigation', hash: 'wizard' },
   // DataTable
   { title: 'DataTable', page: 'Components', route: '/datatable', hash: 'datatable' },
+  { title: 'VirtualList', page: 'DataTable', route: '/datatable' },
   { title: 'TreeView', page: 'DataTable', route: '/datatable', hash: 'treeview' },
   // Misc
   { title: 'Miscellaneous', page: 'Components', route: '/misc' },
+  { title: 'Snackbar', page: 'Misc', route: '/misc', hash: 'snackbar' },
+  { title: 'SnackbarQueue', page: 'Misc', route: '/misc', hash: 'snackbar' },
+  { title: 'Skeleton', page: 'Misc', route: '/misc', hash: 'skeleton' },
+  { title: 'EmptyState', page: 'Misc', route: '/misc', hash: 'empty-state' },
+  { title: 'Avatar', page: 'Misc', route: '/misc', hash: 'avatar' },
+  { title: 'AvatarGroup', page: 'Misc', route: '/misc', hash: 'avatar' },
   { title: 'Toast', page: 'Misc', route: '/misc', hash: 'toast' },
   { title: 'Badge', page: 'Misc', route: '/misc', hash: 'badge' },
   { title: 'Tooltip', page: 'Misc', route: '/misc', hash: 'tooltip' },

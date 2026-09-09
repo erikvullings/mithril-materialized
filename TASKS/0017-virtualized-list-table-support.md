@@ -1,10 +1,10 @@
 # 0017 Virtualized list and table support
 
-Status: open
+Status: done
 Priority: medium
 Subsystem: frontend
 Owner: unassigned
-Agent: unassigned
+Agent: copilot
 Depends on: none
 
 ## Context
@@ -34,3 +34,6 @@ Rendering thousands of rows makes list and table views slow and produces an unne
 ## Agent Notes
 
 - 2026-09-09 copilot: Created from the suggested component backlog. This is the broadest item; preserve an additive opt-in path and establish the reusable list primitive before coupling it to DataTable.
+- 2026-09-09 copilot: Implementing a fixed-height `VirtualList<T>()` with pure inclusive range calculations, stable keyed item wrappers, and an optional controller. DataTable receives an additive `virtualization` configuration and keeps sorting, filtering, pagination, and selection ahead of windowing.
+- 2026-09-09 copilot: Completed fixed-height list and DataTable virtualization with bounded overscan, controller alignment, exact scroll height, stable identity, focus handoff, ARIA position metadata, cached selection aggregates, and a 10,000-row example. The full suite passes with 297 tests.
+- 2026-09-09 copilot: Removed per-row compositor promotion and raised the sticky header group so Edge cannot paint hovered virtual rows through header cells.

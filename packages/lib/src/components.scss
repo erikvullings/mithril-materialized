@@ -6,9 +6,13 @@
 
 // Interactive UI Components
 @use '../sass/components/buttons';
+@use '../sass/components/avatar';
 @use '../sass/components/modal';
 @use '../sass/components/dropdown';
 @use '../sass/components/menu';
+@use '../sass/components/command-palette';
+@use '../sass/components/snackbar';
+@use '../sass/components/skeleton-empty-state';
 @use '../sass/components/tabs';
 @use '../sass/components/tooltip';
 @use '../sass/components/collapsible';
@@ -18,6 +22,7 @@
 @use '../sass/components/breadcrumb';
 @use '../sass/components/wizard';
 @use '../sass/components/datatable.scss';
+@use '../sass/components/virtual-list';
 @use '../sass/components/treeview.scss';
 @use '../sass/components/timeline';
 @use '../sass/components/masonry';

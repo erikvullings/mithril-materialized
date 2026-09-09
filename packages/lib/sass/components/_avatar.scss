@@ -1,0 +1,112 @@
+.mm-avatar {
+  align-items: center;
+  background: var(--mm-avatar-background);
+  color: var(--mm-avatar-text);
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1;
+  overflow: hidden;
+  text-transform: uppercase;
+  user-select: none;
+
+  &--tiny {
+    font-size: 0.625rem;
+    height: 24px;
+    width: 24px;
+  }
+
+  &--small {
+    font-size: 0.75rem;
+    height: 32px;
+    width: 32px;
+  }
+
+  &--medium {
+    font-size: 0.875rem;
+    height: 40px;
+    width: 40px;
+  }
+
+  &--large {
+    font-size: 1.125rem;
+    height: 56px;
+    width: 56px;
+  }
+
+  &--circle {
+    border-radius: 50%;
+  }
+
+  &--rounded {
+    border-radius: 25%;
+  }
+
+  &--square {
+    border-radius: 0;
+  }
+
+  &--disabled {
+    opacity: 0.45;
+  }
+}
+
+.mm-avatar-image {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.mm-avatar-text {
+  overflow: hidden;
+  padding-inline: 0.25em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mm-avatar-group {
+  align-items: center;
+  display: inline-flex;
+  isolation: isolate;
+}
+
+.mm-avatar-group-item {
+  align-items: center;
+  display: inline-flex;
+  position: relative;
+
+  & + & {
+    margin-inline-start: calc(-1 * var(--mm-avatar-group-overlap, 8px));
+  }
+
+  &:focus-within {
+    z-index: 1;
+  }
+
+  > .mm-avatar,
+  > a > .mm-avatar,
+  > button > .mm-avatar {
+    box-shadow: 0 0 0 2px var(--mm-avatar-border);
+  }
+}
+
+.mm-avatar-group-overflow {
+  align-items: center;
+  background: var(--mm-avatar-background);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--mm-avatar-border);
+  color: var(--mm-avatar-text);
+  display: inline-flex;
+  font-size: 0.75rem;
+  font-weight: 600;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+a:focus-visible > .mm-avatar,
+button:focus-visible > .mm-avatar {
+  outline: 2px solid var(--mm-avatar-focus);
+  outline-offset: 2px;
+}

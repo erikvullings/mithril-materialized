@@ -2,6 +2,7 @@
 import './index.scss';
 
 export * from './autocomplete';
+export * from './avatar';
 export * from './badge';
 export * from './button';
 export * from './carousel';
@@ -27,6 +28,7 @@ export type {
 export * from './collection';
 export * from './datepicker';
 export * from './datatable';
+export * from './virtual-list';
 export * from './dropdown';
 export * from './floating-action-button';
 export * from './icon';
@@ -37,6 +39,7 @@ export * from './label';
 export * from './material-box';
 export * from './material-icon';
 export * from './menu';
+export * from './command-palette';
 export * from './modal';
 export * from './option';
 export * from './pagination';
@@ -48,6 +51,9 @@ export * from './select';
 export * from './switch';
 export * from './tabs';
 export * from './search-select';
+export * from './snackbar';
+export * from './skeleton';
+export * from './empty-state';
 export { TimeRangePicker } from './time-range-picker';
 export type { TimeRangePickerAttrs } from './time-range-picker';
 export * from './digital-clock';
