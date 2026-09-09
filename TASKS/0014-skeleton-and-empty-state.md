@@ -33,3 +33,4 @@ Loading and no-data views are currently assembled ad hoc in consuming applicatio
 - 2026-09-09 copilot: Created from the suggested component backlog. Treat Skeleton and EmptyState as a paired loading/no-results experience while keeping their exports independently usable.
 - 2026-09-09 copilot: Implementing separate presentational `Skeleton` and `EmptyState` exports. Skeleton dimensions accept CSS lengths, text count renders independent lines, and EmptyState actions reuse `Button`/`FlatButton` through typed action descriptors.
 - 2026-09-09 copilot: Completed both exports with theme-aware and reduced-motion styling, configurable heading semantics, click or navigation actions, responsive examples, search entries, and five focused tests. Full library suite passes with 270 tests.
+- 2026-09-09 copilot: Added a typed `margin` prop that composes with consumer styles so adjacent skeleton groups can reserve explicit spacing.

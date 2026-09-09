@@ -258,11 +258,16 @@
 
   // Fixed header styles
   &.fixed-header {
+    thead {
+      position: relative;
+      z-index: 10;
+    }
+
     thead th {
       position: sticky;
       top: 0;
       background: var(--mm-card-background);
-      z-index: 10;
+      z-index: 1;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
   }
@@ -459,14 +464,7 @@
     backface-visibility: hidden;
   }
 
-  // Optimize row rendering
-  tbody tr {
-    // Use transform3d for better performance
-    transform: translateZ(0);
-    
-    // Optimize paint operations
-    will-change: transform;
-  }
+
 
   // Optimize table layout
   &.fixed-layout {

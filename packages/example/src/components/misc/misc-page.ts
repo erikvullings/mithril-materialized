@@ -22,6 +22,15 @@ import {
 import m from 'mithril';
 import gogh from '../../assets/Vincent_van_Gogh_-_Landscape_at_twilight_-_Google_Art_Project.jpg';
 
+const sectionLink = (id: string, label: string) =>
+  m(
+    'a',
+    {
+      href: `#!/misc?section=${encodeURIComponent(id)}`,
+    },
+    label
+  );
+
 export const MiscPage = () => {
   const state = {
     selectedTabId: '',
@@ -39,34 +48,58 @@ export const MiscPage = () => {
     },
   };
   const curPage = () => (m.route.param('page') ? +m.route.param('page') : 1);
+  let focusedSection = '';
+
+  const focusCurrentSection = () => {
+    const section = m.route.param('section');
+    if (!section || section === focusedSection) return;
+    focusedSection = section;
+    requestAnimationFrame(() => {
+      const heading = document.getElementById(section);
+      if (!heading) return;
+      heading.tabIndex = -1;
+      heading.focus({ preventScroll: true });
+      heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
 
   return {
+    oncreate: focusCurrentSection,
+    onupdate: focusCurrentSection,
     view: () =>
       m('.col.s12', [
         m('h2.header', 'Miscellaneous'),
         m('p', [
-          'Some miscellaneous components, like ',
-          m('a[href=https://materializecss.com/toasts.html][target=_blank]', 'Toast'),
+          'This page demonstrates ',
+          sectionLink('avatar', 'Avatar'),
+          ' and ',
+          sectionLink('avatar', 'AvatarGroup'),
           ', ',
-          m('a[href=https://mui.com/material-ui/react-badge/][target=_blank]', 'Badge'),
+          sectionLink('skeleton', 'Skeleton'),
           ', ',
-          m('a[href=https://materializecss.com/tooltips.html][target=_blank]', 'Tooltip'),
+          sectionLink('empty-state', 'Empty State'),
           ', ',
-          m('a[href=https://materializecss.com/pushpin.html][target=_blank]', 'Pushpin'),
+          sectionLink('fileupload', 'File Upload'),
           ', ',
-          m('a[href=https://materializecss.com/tabs.html][target=_blank]', 'Tabs'),
+          sectionLink('snackbar', 'Snackbar Queue'),
           ', ',
-          m('a[href=https://materializecss.com/media.html][target=_blank]', 'Material box'),
+          sectionLink('toast', 'Toast'),
           ', ',
-          m('a[href=https://materializecss.com/collection.html][target=_blank]', 'Collection'),
+          sectionLink('badge', 'Badge'),
           ', ',
-          m('a[href=https://materializecss.com/collapsible.html][target=_blank]', 'Collapsible'),
+          sectionLink('tooltip', 'Tooltip'),
           ', ',
-          m('a[href=https://materializecss.com/carousel.html][target=_blank]', 'Carousel'),
+          sectionLink('pushpin', 'Pushpin'),
           ', ',
-          m('a[href=https://materializecss.com/parallax.html][target=_blank]', 'Pagination'),
+          sectionLink('tabs', 'Tabs'),
+          ', ',
+          sectionLink('materialbox', 'Material Box'),
+          ', ',
+          sectionLink('carousel', 'Carousel'),
+          ', ',
+          sectionLink('pagination', 'Pagination'),
           ' and the ',
-          m('a[href=https://materializecss.com/pagination.html][target=_blank]', 'Parallax'),
+          sectionLink('parallax', 'Parallax'),
           '.',
         ]),
         m('h3.header[id=avatar]', 'Avatar and AvatarGroup'),
@@ -110,7 +143,7 @@ export const MiscPage = () => {
                 ariaLabel: 'Project contributors',
               },
               [
-                m('a[href="#avatar"][aria-label="Open Ada Lovelace"]', [
+                m('a[href="#!/about"][aria-label="Open Ada Lovelace"]', [
                   m(Avatar, { name: 'Ada Lovelace', alt: '' }),
                 ]),
                 m(Avatar, { name: 'Grace Hopper', alt: 'Grace Hopper' }),
@@ -143,7 +176,12 @@ m(AvatarGroup, {
         ),
         m('.row', [
           m('.col.s12.m6', [
-            m(Skeleton, { shape: 'circular', width: 56, height: 56 }),
+            m(Skeleton, {
+              shape: 'circular',
+              width: 56,
+              height: 56,
+              margin: '0 0 16px',
+            }),
             m(Skeleton, { shape: 'text', count: 3, width: '100%' }),
           ]),
           m('.col.s12.m6', [
@@ -154,7 +192,7 @@ m(AvatarGroup, {
           code: `import { Skeleton } from 'mithril-materialized';
 
 m(Skeleton, { shape: 'text', count: 3 });
-m(Skeleton, { shape: 'circular', width: 56, height: 56 });
+m(Skeleton, { shape: 'circular', width: 56, height: 56, margin: '0 0 16px' });
 m(Skeleton, { shape: 'rectangular', width: '100%', height: 160 });
 m(Skeleton, { shape: 'text', animated: false });`,
         }),

@@ -47,6 +47,20 @@ describe('Skeleton', () => {
       height: '48px',
     });
   });
+
+  it('applies component margin without replacing consumer styles', () => {
+    const result = render(Skeleton, {
+      shape: 'circular',
+      width: 48,
+      margin: '0 0 16px',
+      style: { alignSelf: 'flex-start' },
+    });
+
+    expect(result.container.firstElementChild).toHaveStyle({
+      margin: '0 0 16px',
+      alignSelf: 'flex-start',
+    });
+  });
 });
 
 describe('EmptyState', () => {

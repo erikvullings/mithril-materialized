@@ -1,4 +1,5 @@
 import m, { type Attributes, type Component } from 'mithril';
+import type { ComponentStyle } from './types';
 
 export type SkeletonShape = 'text' | 'rectangular' | 'circular';
 export type SkeletonSize = number | string;
@@ -10,8 +11,12 @@ export interface SkeletonAttrs extends Attributes {
   count?: number;
   width?: SkeletonSize;
   height?: SkeletonSize;
+  /** CSS margin applied to the skeleton group. Numbers are interpreted as pixels. */
+  margin?: SkeletonSize;
   /** Enable the loading animation. @default true */
   animated?: boolean;
+  className?: string;
+  style?: ComponentStyle;
 }
 
 const cssSize = (value: SkeletonSize | undefined): string | undefined =>
@@ -25,6 +30,7 @@ export const Skeleton: Component<SkeletonAttrs> = {
       count = 1,
       width,
       height,
+      margin,
       animated = true,
       className,
       style,
@@ -39,10 +45,16 @@ export const Skeleton: Component<SkeletonAttrs> = {
       .filter(Boolean)
       .join(' ');
     const circularSize = shape === 'circular' ? width ?? height ?? 40 : undefined;
+    const groupStyle =
+      margin === undefined
+        ? style
+        : typeof style === 'string'
+          ? `margin:${cssSize(margin)};${style}`
+          : { margin: cssSize(margin), ...style };
 
     return m(
       '.mm-skeleton-group',
-      { ...htmlAttrs, 'aria-hidden': 'true', className, style },
+      { ...htmlAttrs, 'aria-hidden': 'true', className, style: groupStyle },
       Array.from({ length: itemCount }, () =>
         m('span', {
           className: classes,

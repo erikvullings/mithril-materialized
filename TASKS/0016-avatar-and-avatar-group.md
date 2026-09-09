@@ -34,3 +34,4 @@ The library lacks a standard identity primitive for people, teams, and entities.
 - 2026-09-09 copilot: Created from the suggested component backlog. Keep identity fetching and privacy-sensitive lookup outside the component.
 - 2026-09-09 copilot: Implementing `Avatar` with deterministic image fallback and `AvatarGroup` with logical-direction overlap. The group accepts child vnodes so consumers can use native links or buttons for interactive avatars.
 - 2026-09-09 copilot: Completed image, text, initials, icon, size, shape, disabled, and decorative avatar variants plus labelled groups with configurable overlap and deterministic overflow. Browser checks covered light/dark theme tokens and the example; the full suite passes with 301 tests.
+- 2026-09-09 copilot: Added dedicated avatar color tokens for explicit and automatic dark themes after manual testing exposed mixed light-background/dark-text chip tokens.

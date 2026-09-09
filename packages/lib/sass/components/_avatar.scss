@@ -1,7 +1,7 @@
 .mm-avatar {
   align-items: center;
-  background: var(--mm-chip-bg);
-  color: var(--mm-chip-text);
+  background: var(--mm-avatar-background);
+  color: var(--mm-avatar-text);
   display: inline-flex;
   flex: 0 0 auto;
   font-weight: 600;
@@ -87,16 +87,16 @@
   > .mm-avatar,
   > a > .mm-avatar,
   > button > .mm-avatar {
-    box-shadow: 0 0 0 2px var(--mm-surface-color);
+    box-shadow: 0 0 0 2px var(--mm-avatar-border);
   }
 }
 
 .mm-avatar-group-overflow {
   align-items: center;
-  background: var(--mm-chip-bg);
+  background: var(--mm-avatar-background);
   border-radius: 50%;
-  box-shadow: 0 0 0 2px var(--mm-surface-color);
-  color: var(--mm-chip-text);
+  box-shadow: 0 0 0 2px var(--mm-avatar-border);
+  color: var(--mm-avatar-text);
   display: inline-flex;
   font-size: 0.75rem;
   font-weight: 600;
@@ -107,6 +107,6 @@
 
 a:focus-visible > .mm-avatar,
 button:focus-visible > .mm-avatar {
-  outline: 2px solid var(--mm-primary-color);
+  outline: 2px solid var(--mm-avatar-focus);
   outline-offset: 2px;
 }
