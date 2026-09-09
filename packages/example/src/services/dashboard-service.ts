@@ -143,6 +143,8 @@ export const searchIndex: SearchEntry[] = [
   { title: 'SnackbarQueue', page: 'Misc', route: '/misc', hash: 'snackbar' },
   { title: 'Skeleton', page: 'Misc', route: '/misc', hash: 'skeleton' },
   { title: 'EmptyState', page: 'Misc', route: '/misc', hash: 'empty-state' },
+  { title: 'Avatar', page: 'Misc', route: '/misc', hash: 'avatar' },
+  { title: 'AvatarGroup', page: 'Misc', route: '/misc', hash: 'avatar' },
   { title: 'Toast', page: 'Misc', route: '/misc', hash: 'toast' },
   { title: 'Badge', page: 'Misc', route: '/misc', hash: 'badge' },
   { title: 'Tooltip', page: 'Misc', route: '/misc', hash: 'tooltip' },

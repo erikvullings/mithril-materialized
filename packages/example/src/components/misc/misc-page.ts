@@ -12,6 +12,8 @@ import {
   FileUpload,
   EmptyState,
   Skeleton,
+  Avatar,
+  AvatarGroup,
   snackbar,
   toast,
   initTooltips,
@@ -67,6 +69,73 @@ export const MiscPage = () => {
           m('a[href=https://materializecss.com/pagination.html][target=_blank]', 'Parallax'),
           '.',
         ]),
+        m('h3.header[id=avatar]', 'Avatar and AvatarGroup'),
+        m(
+          'p',
+          'Avatars show an image, explicit text, derived initials, or an icon. Wrap an avatar in a native link or button when it is interactive.'
+        ),
+        m('.row', [
+          m('.col.s12.m6', [
+            m(Avatar, {
+              src: gogh,
+              alt: 'Vincent van Gogh',
+              size: 'large',
+            }),
+            m(Avatar, {
+              name: 'Ada Lovelace',
+              alt: 'Ada Lovelace',
+              size: 'large',
+            }),
+            m(Avatar, {
+              text: 'MM',
+              alt: 'Mithril Materialized',
+              size: 'large',
+              shape: 'rounded',
+            }),
+            m(Avatar, {
+              alt: 'Unassigned person',
+              size: 'large',
+              shape: 'square',
+              disabled: true,
+            }),
+          ]),
+          m(
+            '.col.s12.m6',
+            m(
+              AvatarGroup,
+              {
+                max: 3,
+                totalCount: 7,
+                overlap: 12,
+                ariaLabel: 'Project contributors',
+              },
+              [
+                m('a[href="#avatar"][aria-label="Open Ada Lovelace"]', [
+                  m(Avatar, { name: 'Ada Lovelace', alt: '' }),
+                ]),
+                m(Avatar, { name: 'Grace Hopper', alt: 'Grace Hopper' }),
+                m(Avatar, { name: 'Katherine Johnson', alt: 'Katherine Johnson' }),
+                m(Avatar, { name: 'Dorothy Vaughan', alt: 'Dorothy Vaughan' }),
+              ]
+            )
+          ),
+        ]),
+        m(HighlightedCodeBlock, {
+          code: `import { Avatar, AvatarGroup } from 'mithril-materialized';
+
+m(Avatar, { src: user.photo, name: user.name, alt: user.name });
+m(Avatar, { name: 'Ada Lovelace', alt: 'Ada Lovelace' });
+m(Avatar, { iconName: 'person', alt: 'Unassigned person' });
+
+m(AvatarGroup, {
+  max: 3,
+  totalCount: 7,
+  overlap: 12,
+  ariaLabel: 'Project contributors',
+}, users.map((user) =>
+  m(Avatar, { src: user.photo, name: user.name, alt: user.name })
+));`,
+        }),
         m('h3.header[id=skeleton]', 'Skeleton'),
         m(
           'p',
