@@ -168,7 +168,7 @@ export const Options = <T extends string | number>(): Component<OptionsAttrs<T>>
           disabled: disabled || option.disabled,
           label: option.label,
           onchange: onchange ? (v: boolean) => handleChange(option.id, v, checkedIds, onchange) : undefined,
-          className: option.className || checkboxClass,
+          className: option.className || checkboxClass || '',
           checked: isChecked(option.id),
           description: option.description,
           inputId: `${state.componentId}-${option.id}`,

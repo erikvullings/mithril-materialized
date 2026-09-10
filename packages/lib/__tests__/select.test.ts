@@ -1,4 +1,5 @@
 import { Select } from '../src/select';
+import { Dropdown } from '../src/dropdown';
 import { render, fireEvent, cleanup } from './test-utils';
 import { InputOption as IInputOption } from '../src/option';
 import { vi } from 'vitest';
@@ -482,5 +483,26 @@ describe('Select Component', () => {
     fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
     fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'Enter');
     expect(mockOnChange).toHaveBeenCalledWith([1]);
+  });
+});
+
+describe('Dropdown Component', () => {
+  afterEach(cleanup);
+
+  it('leaves option spacing to the stylesheet', () => {
+    const dropdown = Dropdown<string>();
+    const attrs = {
+      label: 'Choose',
+      items: [{ id: 'movie', label: 'Movies', iconName: 'movie' }],
+    };
+    const result = render(dropdown, attrs);
+    const { container } = result;
+
+    fireEvent.click(container.querySelector('input.dropdown-trigger') as HTMLInputElement);
+    result.rerender(dropdown, attrs);
+
+    expect(container.querySelector('.dropdown-content li > span')).not.toHaveStyle({
+      padding: '14px 16px',
+    });
   });
 });

@@ -250,16 +250,17 @@ export const AnalogClock: FactoryComponent<AnalogClockAttrs> = () => {
     e.preventDefault();
     if (!state.plate) return;
 
-    const _dialRadius = attrs.dialRadius || 135;
+    const dialRadius = attrs.dialRadius || 135;
     const clockPlateBR = state.plate.getBoundingClientRect();
-    const offset = { x: clockPlateBR.left, y: clockPlateBR.top };
+    const renderedDiameter = clockPlateBR.width || dialRadius * 2;
+    const coordinateScale = (dialRadius * 2) / renderedDiameter;
 
-    state.x0 = offset.x + _dialRadius;
-    state.y0 = offset.y + _dialRadius;
+    state.x0 = clockPlateBR.left + clockPlateBR.width / 2;
+    state.y0 = clockPlateBR.top + clockPlateBR.height / 2;
     state.moved = false;
     const clickPos = getPos(e);
-    state.dx = clickPos.x - state.x0;
-    state.dy = clickPos.y - state.y0;
+    state.dx = (clickPos.x - state.x0) * coordinateScale;
+    state.dy = (clickPos.y - state.y0) * coordinateScale;
 
     const startX = clickPos.x;
     const startY = clickPos.y;
@@ -271,8 +272,8 @@ export const AnalogClock: FactoryComponent<AnalogClockAttrs> = () => {
     const moveHandler = (e: Event) => {
       e.preventDefault();
       const clickPos = getPos(e);
-      const x = clickPos.x - state.x0;
-      const y = clickPos.y - state.y0;
+      const x = (clickPos.x - state.x0) * coordinateScale;
+      const y = (clickPos.y - state.y0) * coordinateScale;
 
       // Only consider it "moved" if dragged more than 5 pixels
       const distance = Math.sqrt(Math.pow(clickPos.x - startX, 2) + Math.pow(clickPos.y - startY, 2));

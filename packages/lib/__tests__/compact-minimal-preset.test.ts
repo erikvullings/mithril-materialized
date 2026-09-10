@@ -87,4 +87,17 @@ describe('compact minimal preset contract', () => {
     expect(source).toContain('.timepicker-modal');
     expect(source).toContain('.select-wrapper:focus-visible');
   });
+
+  it('normalizes dense icon controls, fields, choices, and picker internals', () => {
+    const source = fs.readFileSync(presetPath, 'utf8');
+
+    expect(source).toMatch(/\.btn-floating i\s*\{[^}]*margin:\s*0/s);
+    expect(source).toContain('.toggle-group .toggle-button > svg');
+    expect(source).toContain('--mm-confirm-button-size');
+    expect(source).toMatch(/textarea\.materialize-textarea\s*\{[^}]*padding-block-start:/s);
+    expect(source).toMatch(/\.datepicker-controls[\s\S]*?\.dropdown-item\s*\{/);
+    expect(source).toContain('.timepicker-analog-display');
+    expect(source).toContain('.likert-scale__label::before');
+    expect(source).toContain('.dropdown-content .mm-layout-item-icon');
+  });
 });

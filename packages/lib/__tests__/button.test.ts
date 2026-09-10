@@ -1,4 +1,4 @@
-import { Button, FlatButton, RoundIconButton, SubmitButton } from '../src/button';
+import { Button, ConfirmButton, FlatButton, RoundIconButton, SubmitButton } from '../src/button';
 import { ToggleButton } from '../src';
 import { render, fireEvent, cleanup } from './test-utils';
 
@@ -109,6 +109,20 @@ describe('Button Components', () => {
       expect(button).toHaveClass('btn-floating');
       expect(button).toHaveClass('waves-effect');
       expect(button).toHaveClass('waves-light');
+    });
+  });
+
+  describe('ConfirmButton', () => {
+    it('uses a theme-overridable size while awaiting confirmation', () => {
+      const result = render(ConfirmButton, {});
+      const { container } = result;
+
+      fireEvent.click(container.querySelector('button') as HTMLButtonElement);
+      result.rerender(ConfirmButton, {});
+
+      const button = container.querySelector('button') as HTMLButtonElement;
+      expect(button.style.width).toBe('var(--mm-confirm-button-size, 36px)');
+      expect(button.style.height).toBe('var(--mm-confirm-button-size, 36px)');
     });
   });
 

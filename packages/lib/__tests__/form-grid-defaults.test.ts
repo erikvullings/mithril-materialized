@@ -1,5 +1,7 @@
 import { FileUpload } from '../src/file-upload';
 import { LikertScale } from '../src/likert-scale';
+import { Options } from '../src/option';
+import { RadioButtons } from '../src/radio';
 import { DoubleRangeSlider, SingleRangeSlider } from '../src/range-slider';
 import { Rating } from '../src/rating';
 import { SearchSelect } from '../src/search-select';
@@ -82,5 +84,22 @@ describe('form grid defaults', () => {
     const wrapper = container.querySelector(selector);
 
     expect(wrapper).not.toHaveClass('col', 's12');
+  });
+
+  it.each([
+    {
+      name: 'Options',
+      component: Options<string>(),
+      attrs: { id: 'options', options: [{ id: 'one', label: 'One' }] },
+    },
+    {
+      name: 'RadioButtons',
+      component: RadioButtons<string>(),
+      attrs: { id: 'radios', options: [{ id: 'one', label: 'One' }] },
+    },
+  ])('$name does not add a second grid gutter to its internal choices', ({ component, attrs }) => {
+    const { container } = render(component, attrs);
+
+    expect(container.querySelector('form .col')).toBeNull();
   });
 });

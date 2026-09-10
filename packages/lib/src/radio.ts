@@ -142,7 +142,7 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
           onchange: handleChange,
           groupId,
           disabled: disabled || r.disabled,
-          className: checkboxClass,
+          className: checkboxClass || '',
           checked: r.id === currentCheckedId,
           inputId: `${componentId}-${r.id}`,
           allowHtml,
