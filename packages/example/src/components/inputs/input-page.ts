@@ -857,31 +857,25 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
         m('h4.header', 'RangeInput with valueDisplay options'),
         m('.row', [
           m('.col.s12', m('h6', 'Always show value (uncontrolled)')),
-          m(
-            '.col.s12',
-            m(RangeInput, {
-              min: 0,
-              max: 100,
-              defaultValue: 75,
-              label: 'Always visible tooltip',
-              valueDisplay: 'always',
-              tooltipPos: 'top',
-              onchange: (value: number) => console.log('Range final value:', value),
-            } as InputAttrs<number>)
-          ),
+          m(RangeInput, {
+            min: 0,
+            max: 100,
+            defaultValue: 75,
+            label: 'Always visible tooltip',
+            valueDisplay: 'always',
+            tooltipPos: 'top',
+            onchange: (value: number) => console.log('Range final value:', value),
+          } as InputAttrs<number>),
           m('.col.s12', { style: 'margin-top: 20px;' }, m('h6', 'Show value only during drag (uncontrolled)')),
-          m(
-            '.col.s12',
-            m(RangeInput, {
-              min: 0,
-              max: 100,
-              defaultValue: 50,
-              label: 'Tooltip on drag',
-              valueDisplay: 'auto',
-              tooltipPos: 'bottom',
-              onchange: (value: number) => console.log('Range final value:', value),
-            } as InputAttrs<number>)
-          ),
+          m(RangeInput, {
+            min: 0,
+            max: 100,
+            defaultValue: 50,
+            label: 'Tooltip on drag',
+            valueDisplay: 'auto',
+            tooltipPos: 'bottom',
+            onchange: (value: number) => console.log('Range final value:', value),
+          } as InputAttrs<number>),
         ]),
         m(HighlightedCodeBlock, {
           code: `// Always show tooltip (uncontrolled)

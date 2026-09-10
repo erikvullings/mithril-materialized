@@ -73,6 +73,47 @@ describe('SearchSelect async mode', () => {
     expect(trigger.getAttribute('aria-haspopup')).toBe('listbox');
   });
 
+  it('renders the search field in the trigger line instead of as a dropdown row', () => {
+    const component = SearchSelect<number>();
+    const attrs = {
+      id: 'inline-search-select',
+      label: 'Options',
+      options: [{ id: 1, label: 'Alpha' }],
+      searchPlaceholder: 'Find an option',
+    };
+    const result = render(component, attrs);
+    const { container } = result;
+
+    fireEvent.click(container.querySelector('.chips-container') as HTMLElement);
+    result.rerender(component, attrs);
+
+    expect(container.querySelector('.chips-container > .search-select-input')).toBeInTheDocument();
+    expect(container.querySelector('.dropdown-content .search-select-input')).toBeNull();
+    expect(container.querySelector('.search-select-input')).toHaveAttribute('placeholder', 'Find an option');
+    expect(container.querySelector('.search-select-input')).toHaveAttribute('role', 'combobox');
+    expect(container.querySelector('.search-select-input')).toHaveAttribute('aria-expanded', 'true');
+    expect(container.querySelector('.input-field > label')).toHaveClass('active');
+  });
+
+  it('allows Tab from the inline search field to reach modal focus management', () => {
+    const component = SearchSelect<number>();
+    const attrs = {
+      label: 'Options',
+      options: [{ id: 1, label: 'Alpha' }],
+    };
+    const result = render(component, attrs);
+    const { container } = result;
+    const onDocumentKeydown = jest.fn();
+    document.addEventListener('keydown', onDocumentKeydown);
+
+    fireEvent.click(container.querySelector('.chips-container') as HTMLElement);
+    result.rerender(component, attrs);
+    fireEvent.keyDown(container.querySelector('.search-select-input') as HTMLInputElement, 'Tab');
+
+    expect(onDocumentKeydown).toHaveBeenCalledTimes(1);
+    document.removeEventListener('keydown', onDocumentKeydown);
+  });
+
   it('keeps selected chips visible when a new async query replaces the result list', async () => {
     const options: InputOption<number>[] = [
       { id: 0, label: 'Watching movies' },

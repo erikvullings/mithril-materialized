@@ -76,4 +76,15 @@ describe('compact minimal preset contract', () => {
       '.mm-empty-state',
     ].forEach((selector) => expect(source).toContain(selector));
   });
+
+  it('preserves compact control shapes and dense selection geometry', () => {
+    const source = fs.readFileSync(presetPath, 'utf8');
+
+    expect(source).toContain('border-radius: 50%');
+    expect(source).toContain('flex-direction: column');
+    expect(source).toContain('.search-select-option-label');
+    expect(source).toContain('.datepicker-modal');
+    expect(source).toContain('.timepicker-modal');
+    expect(source).toContain('.select-wrapper:focus-visible');
+  });
 });

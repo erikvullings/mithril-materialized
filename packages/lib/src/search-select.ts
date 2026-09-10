@@ -460,6 +460,9 @@ export const SearchSelect = <T extends string | number>(
               // console.log('SearchSelect state changed to', state.isOpen); // Debug log
             },
             onkeydown: async (e: KeyboardEvent) => {
+              if (e.target !== e.currentTarget) {
+                return;
+              }
               const action = handleKeyDown(e, displayedOptions, !!showAddNew);
               if (action === 'open' && loadOptions) {
                 await loadAsyncOptions(attrs, state.searchTerm);
@@ -473,12 +476,10 @@ export const SearchSelect = <T extends string | number>(
               }
             },
             class: 'chips chips-container mm-layout-row mm-layout-row--wrap mm-layout-row--align-end',
-            role: 'combobox',
-            tabindex: 0,
-            'aria-expanded': state.isOpen ? 'true' : 'false',
-            'aria-haspopup': 'listbox',
-            'aria-controls': state.isOpen ? state.listboxId : undefined,
-            'aria-activedescendant': activeDescendantId,
+            role: state.isOpen ? undefined : 'combobox',
+            tabindex: state.isOpen ? -1 : 0,
+            'aria-expanded': state.isOpen ? undefined : 'false',
+            'aria-haspopup': state.isOpen ? undefined : 'listbox',
             style: {
               cursor: 'pointer',
               position: 'relative',
@@ -516,7 +517,8 @@ export const SearchSelect = <T extends string | number>(
             ),
 
             // Placeholder when no options selected
-            selectedOptions.length === 0 &&
+            !state.isOpen &&
+              selectedOptions.length === 0 &&
               placeholder &&
               m(
                 'span.placeholder',
@@ -530,8 +532,64 @@ export const SearchSelect = <T extends string | number>(
                 placeholder
               ),
 
+            state.isOpen &&
+              m('input.search-select-input.mm-layout-grow', {
+                type: 'text',
+                id: searchInputId,
+                placeholder: searchPlaceholder,
+                value: state.searchTerm || '',
+                oncreate: ({ dom }) => {
+                  (dom as HTMLInputElement).focus();
+                },
+                onclick: (e: MouseEvent) => {
+                  e.stopPropagation();
+                },
+                oninput: (e: InputEvent) => {
+                  state.searchTerm = (e.target as HTMLInputElement).value;
+                  state.focusedIndex = -1;
+                  if (loadOptions) {
+                    void loadAsyncOptions(attrs, state.searchTerm);
+                  }
+                },
+                onkeydown: async (e: KeyboardEvent) => {
+                  const action = handleKeyDown(e, displayedOptions, !!showAddNew);
+                  if (e.defaultPrevented) {
+                    e.stopPropagation();
+                  }
+                  if (action === 'open' && loadOptions) {
+                    await loadAsyncOptions(attrs, state.searchTerm);
+                  } else if (action === 'selectAction' && oncreateNewOption) {
+                    await createAndSelectOption(attrs);
+                  } else if (action === 'selectFocused' && state.focusedIndex < displayedOptions.length) {
+                    toggleOption(displayedOptions[state.focusedIndex], attrs);
+                  }
+                },
+                role: 'combobox',
+                'aria-label': label || searchPlaceholder,
+                'aria-expanded': 'true',
+                'aria-haspopup': 'listbox',
+                'aria-autocomplete': 'list',
+                'aria-controls': state.listboxId,
+                'aria-activedescendant': activeDescendantId,
+              }),
+            state.isOpen &&
+              loadOptions &&
+              m(
+                'span.search-select-loading-indicator',
+                {
+                  class: state.isLoading ? 'is-active' : '',
+                  role: 'status',
+                  'aria-live': 'polite',
+                  'aria-hidden': state.isLoading ? 'false' : 'true',
+                },
+                [
+                  m('span.search-select-spinner', { 'aria-hidden': 'true' }),
+                  m('span.search-select-loading-text', texts.loadingOptions),
+                ]
+              ),
+
             // Spacer to push caret to the right
-            m('span.spacer.mm-layout-grow'),
+            !state.isOpen && m('span.spacer.mm-layout-grow'),
 
             m(MaterialIcon, {
               name: 'caret',
@@ -547,7 +605,7 @@ export const SearchSelect = <T extends string | number>(
             'label',
             {
               for: state.id,
-              class: placeholder || selectedOptions.length > 0 ? 'active' : '',
+              class: state.isOpen || placeholder || selectedOptions.length > 0 ? 'active' : '',
             },
             label
           ),
@@ -570,59 +628,6 @@ export const SearchSelect = <T extends string | number>(
               },
             },
             [
-              m(
-                'li', // Search Input
-                {
-                  class: 'search-wrapper',
-                },
-                [
-                  m('input', {
-                    type: 'text',
-                    id: searchInputId,
-                    placeholder: searchPlaceholder,
-                    value: state.searchTerm || '',
-                    oncreate: ({ dom }) => {
-                      // Auto-focus the search input when dropdown opens
-                      (dom as HTMLInputElement).focus();
-                    },
-                    oninput: (e: InputEvent) => {
-                      state.searchTerm = (e.target as HTMLInputElement).value;
-                      state.focusedIndex = -1; // Reset focus when typing
-                      if (loadOptions) {
-                        void loadAsyncOptions(attrs, state.searchTerm);
-                      }
-                    },
-                    onkeydown: async (e: KeyboardEvent) => {
-                      const action = handleKeyDown(e, displayedOptions, !!showAddNew);
-                      if (action === 'open' && loadOptions) {
-                        await loadAsyncOptions(attrs, state.searchTerm);
-                      } else if (action === 'selectAction' && oncreateNewOption) {
-                        await createAndSelectOption(attrs);
-                      } else if (action === 'selectFocused' && state.focusedIndex < displayedOptions.length) {
-                        toggleOption(displayedOptions[state.focusedIndex], attrs);
-                      }
-                    },
-                    class: 'search-select-input',
-                    'aria-autocomplete': 'list',
-                    'aria-controls': state.listboxId,
-                  }),
-                  loadOptions &&
-                    m(
-                      'span.search-select-loading-indicator',
-                      {
-                        class: state.isLoading ? 'is-active' : '',
-                        role: 'status',
-                        'aria-live': 'polite',
-                        'aria-hidden': state.isLoading ? 'false' : 'true',
-                      },
-                      [
-                        m('span.search-select-spinner', { 'aria-hidden': 'true' }),
-                        m('span.search-select-loading-text', texts.loadingOptions),
-                      ]
-                    ),
-                ]
-              ),
-
               // Async loading error
               ...(viewState === 'error' && state.loadError
                 ? [
