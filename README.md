@@ -1,74 +1,39 @@
 # mithril-materialized
 
-A Mithril.js component library inspired by [materialize-css](https://materializecss.com) design principles, [available on npm](https://www.npmjs.com/package/mithril-materialized). This library provides you with ready-to-use Mithril components that follow Material Design guidelines, with **no external JavaScript dependencies**.
+Typed Mithril components with Material Design foundations, accessible interaction patterns, and no external JavaScript UI runtime.
 
-## 🚀 v3.21 - Latest Release
+[Documentation](https://erikvullings.github.io/mithril-materialized/#!/home) · [npm](https://www.npmjs.com/package/mithril-materialized) · [Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md)
 
-### ✨ What's New in v3.21
+## Why mithril-materialized
 
-- **Snackbar queue**: FIFO notifications with actions, dismiss buttons, pause-on-hover/focus timers, completion reasons, and accessible live-region announcements
-- **Skeleton and EmptyState**: Theme-aware loading placeholders and presentational no-content states with illustrations, descriptions, actions, and supplemental content
-- **CommandPalette**: A typed, searchable command launcher with grouping, keyboard navigation, disabled commands, custom filtering, and an optional Ctrl/Command+K shortcut
-- **VirtualList and virtualized DataTable rows**: Fixed-height windowing for large synchronous datasets, overscan, programmatic scrolling, focus handoff, and preserved sorting/filtering/pagination behavior
-- **Avatar and AvatarGroup**: Images with deterministic initials/icon fallback, accessible decorative or labelled variants, size/shape options, RTL-safe overlap, and deterministic overflow
+- **TypeScript-first APIs** with explicit controlled and uncontrolled component contracts.
+- **Broad component coverage** for forms, navigation, overlays, feedback, data display, and application layouts.
+- **Accessible interaction** with keyboard navigation, focus management, ARIA semantics, and coarse-pointer support.
+- **Flexible styling** through light and dark themes, CSS custom properties, modular stylesheets, and an optional Compact Minimal preset.
+- **No JavaScript framework dependency beyond Mithril**; components do not require Materialize JavaScript or jQuery.
 
-### ✨ What's New in v3.15
+## Version 4 release
 
-- **📊 DataTable Horizontal Scrolling**: DataTable now correctly enables horizontal scrolling when `responsive` is set, preventing overflow on small screens
+Version 4 introduces the Compact Minimal design preset for dense desktop applications and standardizes field layout across the library. It also includes Dialog and AlertDialog abstractions, typed menus, CommandPalette, SnackbarQueue, Avatar and AvatarGroup, Skeleton and EmptyState, VirtualList, and virtualized DataTable rows.
 
-### ✨ What's New in v3.14
+### Breaking layout change
 
-- ** ConfirmButton Component**: Purpose-built component for delete and submit actions
-  - Click once to initialize the action, click again to confirm
-  - Button icon is changed, e.g. from 'delete' to 'checkmark' to confirm the action
-  - Removes the need for yet another confirmation dialog "Are you sure?"
-  - Support for different icons and delays
+`SearchSelect`, `FileUpload`, `LikertScale`, `Rating`, `SingleRangeSlider`, and `DoubleRangeSlider` now default their outer wrapper to `col s12`. Pass `className: ''` to retain a classless inline layout, or provide an explicit grid width such as `className: 'col s6'`.
 
-### ✨ What's New in v3.13
+### Compact Minimal preset
 
-- **📊 LikertScale Component**: Purpose-built component for survey questions and rating scales
-  - Horizontal/vertical/responsive layouts for desktop and mobile
-  - Scale anchor labels (start/middle/end) for semantic meaning
-  - Multi-question alignment for professional survey forms
-  - Optional tooltips and number display
-  - Size and density variants for different contexts
-  - Full keyboard navigation and accessibility support
-- **⭐ Enhanced Rating Component**: Tooltips now display correctly on hover
-- **📝 Rich Collection Content**: Collection items now support rich content via `content` property
+Import the preset after the standard stylesheet and activate it on the document root:
 
-### ✨ Previous Major Features (v3.12)
+```typescript
+import 'mithril-materialized/index.css';
+import 'mithril-materialized/presets/compact-minimal.css';
 
-- **🎯 Enhanced Toast Component**: Toasts with simple actions (undo, confirmation) and custom classes
-- **🏷️ Badge Component**: New badge component for labels and notifications
-- **⏱️ Progress Components**: CircularProgress and LinearProgress for loading states
-- **🔘 Toggle Components**: ToggleGroup and ToggleButton for grouped selections
-- **🕐 Advanced Time Components**: TimeRangePicker, AnalogClock, and DigitalClock
-- **🎨 Enhanced Sidenav**: Collapsible/expandable sidebar with submenu support
-- **⚡ Waves Effect**: Material Design ripple animations on buttons and FABs
+document.documentElement.dataset.mmPreset = 'compact-minimal';
+```
 
-### ✨ Key Features Since v3.4
+The preset provides compact typography, controls, forms, menus, navigation, dialogs, tables, pickers, feedback, and display components while retaining larger targets for coarse pointers.
 
-- **🔥 Zero External JS Dependencies**: No longer requires `materialize-css` JavaScript or `material-icons` fonts
-- **📦 Smaller Bundle Size**: Reduced package size by eliminating external dependencies
-- **⚡ Better Performance**: Direct implementations without jQuery or other heavy dependencies
-- **🛠️ Enhanced Components**: Improved DatePicker with date ranges, week numbers, and TimePicker with configurable AM/PM/24h or inline style
-- **🛠️ Rich Component Library**: DataTable, TreeView, Timeline, Masonry, RatingControl, ImageList, Wizard/Stepper, Breadcrumb, Progress indicators, and more
-- **📱 Modern Architecture**: Factory components with proper TypeScript support
-- **🎯 CSS-Only Styling**: Uses only CSS for styling - no JavaScript initialization needed
-- **🎨 Custom SVG Icons**: Built-in MaterialIcon component with custom SVG icons (caret, close)
-
-### ✨ Key Features
-
-- **🔥 Zero External JS Dependencies**: No longer requires `materialize-css` JavaScript or `material-icons` fonts
-- **📦 Smaller Bundle Size**: Reduced package size by eliminating external dependencies  
-- **🎨 Custom SVG Icons**: Built-in MaterialIcon component with custom SVG icons
-- **⚡ Better Performance**: Direct implementations without jQuery or other heavy dependencies
-- **🛠️ Enhanced Components**: Comprehensive component library with modern features
-- **🌗 Dark Theme Support**: Built-in light/dark theme system with CSS custom properties
-- **📱 Modern Architecture**: Factory components with proper TypeScript support, and clear separation between [controlled and uncontrolled](CONTROLLED_COMPONENTS.md) component state
-- **🎯 CSS-Only Styling**: Uses only CSS for styling - no JavaScript initialization needed
-
-### 📦 Installation
+## Installation
 
 ```bash
 npm install mithril mithril-materialized
@@ -121,6 +86,8 @@ Components marked with an * are not included in the original materialize-css lib
   - Breadcrumb* (navigation path indicator)
   - Wizard/Stepper* (multi-step process guidance)
 - [Others](https://erikvullings.github.io/mithril-materialized/#!/modals)
+  - Dialog and AlertDialog* (accessible confirmation and destructive-action dialogs)
+  - Menu and ContextMenu* (typed action menus with keyboard navigation)
   - CommandPalette* (searchable keyboard command launcher)
   - ModalPanel
   - MaterialBox
@@ -140,7 +107,7 @@ Components marked with an * are not included in the original materialize-css lib
   - CircularProgress* (circular loading indicator)
   - LinearProgress* (linear loading indicator)
 - [Rating](https://erikvullings.github.io/mithril-materialized/#!/rating)*
-  - RatingControl (Horizontal control, configurable range and step size, optionally with custom icons)
+  - Rating (configurable range, step size, density, and custom icons)
 - [Data & Tables](https://erikvullings.github.io/mithril-materialized/#!/datatable)
   - DataTable* (sorting, filtering, pagination, selection, and optional fixed-height virtualization)
   - VirtualList* (fixed-height virtualized rendering for large lists)
@@ -152,7 +119,7 @@ Components marked with an * are not included in the original materialize-css lib
   - Icon, a simple wrapper for creating icons using material-icons font
   - MaterialIcon, for creating the close/clear and caret as SVG
 
-## 📖 Usage Instructions
+## Usage
 
 Online [flems](flems.io) examples: [FlatButton](https://flems.io/#0=N4IgtglgJlA2CmIBcBWFA6AnAJgDQgGd4EBjAF3imRHTIJHwDMIF6kBtUAOwEMxEkNABZkwsBiBIB7LhVnUAPLAhcA1gAIATsQC8AHUJkAnqyHx4ZA+qHbG+kCLIAHAkgD0bgK5cnqgObo0mBukGQ2LAC0YDwUmhA8ygBelG5QEARkbipQ8AAegQQEBgB8elwSRKRkEDJsIACMSAAMIAC+uNx8AjR0EtKy8PKC-RnqwOoAYrAxAEKeZGQy6q3qOuoA7tlS6+wA5KHhsFEx8HEJEMlQuwC6ANxlZSNk6jIkyiQaawAUAJSrxeoEqcyF9dqoAFZCCG7H4PLhgdDaLg5TRfKBSEiefiydAAIykUCMuHUYC+U1m80WXGJ42muOISHUBgAskZJtNnrjKTIDMTXu8NK0fj97lwyhViPByDUuHUAGzNNodEC8fjUAr0fD9ORkahta74ZRqNicFVdagHOLifCeTTiQSOFzuLw+fyBKTBS0sAAC2HQAGZ0AB2EIQMJW9CQLjocGakDGJzdAgkOJOXXtTpqwReo7RWLxJKUCS2+0OBZOjzeXwBIKh8ORPOnAsXSjewOBgAsqXSmWyeXQWKgMbjCaTKYgaf1rSAA) and [Select](https://flems.io/#0=N4IgtglgJlA2CmIBcBWFA6AnAJgDQgGd4EBjAF3imRHTIJHwDMIF6kBtUAOwEMxEkNABZkwsBiBIB7LhVnUAPLAhcA1gAIATsQC8AHUJkAnqyHx4ZA+qHbG+kCLIAHAkgD0bgK5cnqgObo0mBukGQ2LAC0YDwUmhA8ygBelG5QEARkbipQ8AAegQQEBgB8elwSRKRkEDJsIACMSAAMIAC+uNx8AjR0EtKy8PKC-RnqwOoAysTw5Oqt6jrqAO7ZUkvsAOSh4bBRMfBxCRDJUBsAugDcZWUIZOokZiSqlACSUAvqG9gbV1xlYOgwFJvGQABRQKQkTz8WToABGUigRlwY2uZAAbhB4EskOpQQBKBbFdRgUEbdCaNYbFHjDImeC48bRTR+FQAFSkTlxG3qTScuQ2czmKLK6jFJNBUyqNPUsB4cOI3KlMzu-Gp6lF4rFTjlJHgQiksBymm5AGFlE91DJ4NTNVqHjNnlA3rg7eLOdVarj2G6teNoNz6uq5QrYNyAPJOT1cdRB4W+8X+qDc74okOKz6R6Pqb7xmNaxPqAOfADMwflGY2WZqMbLeYL6jOrvzWpkDx4XD8DLx6MJOmJwATYodT1e70W6N+Dfabta+LKc+uf3K+EqKprdSazQi2EaLXanX41AK9Hw-TkZGobSbIGUajYnBAvCPgm2cXE+E8mnEgkcLncXg+P4gRSMEb4sAAAtg6AlugADsIQQGE76Aio6AAFaniAxhON0BAkHEUZtB0T5dNQ4G7NEsTxEklASF+P4OGQziuB43i+AEQSIchkRUQcNHHJQEGwbBAAsqTpJk2R5Og0JQBhWE4XhBEQERrRnK0QA).
 
@@ -575,124 +542,22 @@ m(DataTable<User>, {
 });
 ```
 
-## 🗺️ Roadmap & Planned Improvements
+## Contributing
 
-### 🚀 Phase 1: Core Optimizations & New Components (In Progress)
-
-**✅ Completed:**
-
-- ✅ Modular CSS architecture with tree-shaking support
-- ✅ Dark theme system with CSS custom properties  
-- ✅ File upload component with drag-and-drop
-- ✅ Theme switching components (ThemeSwitcher, ThemeToggle)
-- ✅ Sidenav component with responsive behavior
-- ✅ Breadcrumb navigation component
-- ✅ Wizard/Stepper component for multi-step forms
-
-**✅ Recently Completed (v3.2.x):**
-
-- ✅ **TextArea Height Alignment**: Fixed single-line `textarea` height to match TextInput components perfectly
-- ✅ **Improved AutoResize Logic**: TextArea now only sets custom height for multi-line content, matching Materialize CSS reference behavior
-- ✅ **Better Mithril Integration**: Hidden div for height measurement now properly managed within Mithril's render cycle
-- ✅ DataTable component with sorting, filtering, and pagination
-- ✅ TreeView component for hierarchical data with expand/collapse, selection, and VSCode-style connectors
-- ✅ Enhanced TypeScript definitions with better JSDoc comments
-- ✅ Performance optimizations and bundle size improvements
-- ✅ Enhanced RangeInput with vertical orientation, double-thumb range selection, and smart tooltip display
-- ✅ Advanced DatePicker with date range selection, constraints, and format support
-- ✅ Layout components: Masonry (Pinterest-style grid), Timeline (vertical event display), ImageList (responsive galleries)
-- ✅ RatingControl with configurable icons, min/max, tooltip/helpers, readonly and disabled mode
-- ✅ Improved RangeInput components converted to proper Mithril components with better lifecycle management
-- ✅ Enhanced accessibility with individual thumb slider elements and PageUp/PageDown keyboard support
-
-### 🎯 Phase 2: Advanced Components & Features
-
-**Data Display:**
-
-- Card layouts with enhanced Material Design 3.0 styling
-- Advanced tree operations (drag & drop, context menus)
-
-**Input & Forms:**
-
-- ✅ Advanced date range picker with validation and constraints
-- Autocomplete with async data loading
-
-**Navigation & Layout:**
-
-- AppBar/Toolbar component with responsive behavior
-- Bottom navigation component for mobile apps
-- Drawer/Sidebar component with overlay and push modes
-- Grid system enhancements with CSS Grid support
-
-### 🔮 Phase 3: Modern Features & Integration
-
-**Developer Experience:**
-
-- Storybook integration for component documentation
-- Figma design system integration
-- CLI tools for component generation
-- Better accessibility (ARIA) support throughout
-
-**Performance & Optimization:**
-
-- ✅ Fixed-height virtual scrolling for large lists and DataTable rows
-- Lazy loading component utilities
-- Bundle analyzer and optimization tools
-- CSS-in-JS runtime support option
-
-### 📊 Bundle Size Targets
-
-**Current Status (v3.2.2):**
-
-- Total: ~65KB gzipped (42KB JS + 23KB CSS)
-- Modular CSS can reduce bundle by 30-50%
-- Optimized component implementations reduce overhead
-
-**Phase 1 Targets:**
-
-- Core bundle: <40KB gzipped
-- Modular approach: <25KB for typical apps
-- Tree-shaking effectiveness: 60%+
-
-**Long-term Goals:**
-
-- Individual components: <2KB each
-- Micro-bundle support for single components
-- Zero-runtime CSS option for static sites
-
-### 🤝 Contributing
-
-We welcome contributions! Priority areas for community involvement:
-
-1. **Usage**: Accessibility improvements, performance optimizations
-2. **Documentation**: Examples, guides, API documentation
-3. **Testing**: Unit tests, visual regression tests, browser compatibility
-
-See our [contributing guide](CONTRIBUTING.md) for detailed information.
-
-### 📈 Performance Benchmarks
-
-**Bundle Size Comparison:**
-
-- mithril-materialized v3.2.2: ~65KB gzipped
-- Material-UI: ~350KB gzipped
-- Materialize CSS + jQuery: ~180KB gzipped
-- Vuetify: ~250KB gzipped
-
-**Runtime Performance:**
-
-- Component initialization: <5ms average
-- Theme switching: <10ms for full page
-- File upload processing: Real-time without blocking
-- TextArea auto-resize: <1ms per keystroke
+Contributions are welcome. See the [contributing guide](CONTRIBUTING.md) for development setup, coding conventions, and submission guidance. Please use the issue tracker for reproducible defects and focused feature proposals.
 
 ## Build instructions
 
-This repository consists of two packages, combined using `lerna`: the `lib` package that is published to `npm`, as well as an `example` project which uses this library to display the Mithril components that it contains.
+This pnpm workspace contains the published library in `packages/lib` and the documentation application in `packages/example`.
 
-To install the dependencies, you can use `npm i`, or, alternatively, use `pnpm m i` (assuming you have installed `pnpm` as alternative package manager using `npm i -g pnpm`) to perform a multi-repository install. Next, build everything using `npm start` and visit the documentation page on [http://localhost:1234](http://localhost:1234) in case port 1234 is not occupied already.
+```bash
+pnpm install
+pnpm start
+```
 
-## 🎨 Styling & CSS
+The development server prints its local URL when ready. Use `pnpm --dir packages/lib test` for the library tests, `pnpm --dir packages/lib build` for the distributable package, and `pnpm build:example` for the documentation application.
+
+## Styling and CSS
 
 ### CSS Usage
 
@@ -704,12 +569,12 @@ import 'mithril-materialized/index.css';
 
 **Important**: The CSS styling is **completely independent** of the original materialize-css. This means:
 
-- ✅ No conflicting styles from materialize-css
-- ✅ Smaller CSS bundle size
-- ✅ Custom optimizations for better performance
-- ✅ No external font dependencies
+- No conflicting styles from materialize-css
+- Smaller CSS bundle size
+- Custom optimizations for better performance
+- No external font dependencies
 
-### 🔥 NEW: Modular CSS Architecture
+### Modular CSS architecture
 
 **Tree-shakable CSS modules** for optimal bundle sizes! Import only the CSS you need:
 
@@ -808,7 +673,7 @@ These utilities use CSS custom-property fallbacks (for example `--mm-layout-gap`
 - Modular approach can reduce CSS by 30-50%
 - Use only `core.css` + specific modules for your use case
 
-### 🌓 Dark Theme Support
+### Dark theme support
 
 Built-in dark theme support with CSS custom properties:
 

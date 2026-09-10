@@ -29,6 +29,7 @@ describe('compact minimal preset contract', () => {
     [
       '--mm-density-unit',
       '--mm-control-height',
+      '--mm-field-prefix-width',
       '--mm-row-height',
       '--mm-menu-item-height',
       '--mm-navigation-item-height',
@@ -118,6 +119,15 @@ describe('compact minimal preset contract', () => {
     expect(source).toMatch(/\.tabs,[^{]*\{[^}]*height:\s*var\(--mm-control-height\)/s);
     expect(source).toMatch(/\.timeline\s*\{[^}]*padding:\s*var\(--mm-space-1\)/s);
     expect(source).toMatch(/\.chips\.chips-container\s*\{[^}]*padding-block:\s*5px 2px/s);
+    expect(source).toMatch(
+      /\.search-select-option-label\s*\{[^}]*gap:\s*var\(--mm-space-1\)/s
+    );
+    expect(source).toMatch(
+      /\.search-select-option-label\s*\{[^}]*padding-inline:\s*var\(--mm-space-2\)/s
+    );
+    expect(source).toMatch(
+      /\.search-select-option-label input\[type="checkbox"\]\s*\{[^}]*flex:\s*0 0 14px[^}]*margin:\s*0/s
+    );
     expect(source).toMatch(/\.search-select-option-label input\[type="checkbox"\] \+ span\s*\{[^}]*padding-left:\s*0/s);
     expect(source).toMatch(
       /\.likert-scale__anchor,[^{]*\{[^}]*font-size:\s*var\(--mm-control-font-size\)/s
@@ -125,6 +135,8 @@ describe('compact minimal preset contract', () => {
     expect(source).toMatch(/\.timepicker-plate\s*\{[^}]*inset-inline-start:\s*50%/s);
     expect(source).toMatch(/--mm-modal-content-padding-top-with-close:\s*var\(--mm-space-2\)/);
     expect(source).toMatch(/\.mm-dialog-primary-action[^}]*\{[^}]*color:\s*var\(--mm-button-text/s);
+    expect(source).toMatch(/\.mm-fieldset__legend\s*\{[^}]*padding-inline:\s*0/s);
+    expect(source).toMatch(/\.sort-indicators\s*\{[^}]*gap:\s*1px/s);
     expect(source).toMatch(/\.sort-indicators \.sort-icon\s*\{[^}]*font-size:\s*10px/s);
   });
 });

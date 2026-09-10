@@ -1,33 +1,29 @@
 # mithril-materialized
 
-A Mithril.js component library inspired by [materialize-css](https://materializecss.com) design principles, [available on npm](https://www.npmjs.com/package/mithril-materialized). This library provides you with ready-to-use Mithril components that follow Material Design guidelines, with **no external JavaScript dependencies**.
+Typed Mithril components with Material Design foundations, accessible interaction patterns, and no external JavaScript UI runtime.
 
-## Documentation and releases
+[Documentation](https://erikvullings.github.io/mithril-materialized/#!/home) · [npm](https://www.npmjs.com/package/mithril-materialized) · [Changelog](https://github.com/erikvullings/mithril-materialized/blob/master/CHANGELOG.md) · [Repository](https://github.com/erikvullings/mithril-materialized)
 
-- Browse the interactive [component documentation and examples](https://erikvullings.github.io/mithril-materialized/#!/home).
-- See the [changelog](https://github.com/erikvullings/mithril-materialized/blob/master/CHANGELOG.md) for version-specific changes.
-- Report issues or contribute at the [GitHub repository](https://github.com/erikvullings/mithril-materialized).
+## Version 4 release
 
-### What's new in v3.21
+Version 4 adds the Compact Minimal design preset and standardizes field layout across the library. It also includes Dialog and AlertDialog abstractions, typed menus, CommandPalette, SnackbarQueue, Avatar and AvatarGroup, Skeleton and EmptyState, VirtualList, and virtualized DataTable rows.
 
-- **Snackbar queue**: FIFO notifications with actions, dismiss controls, pause-on-hover/focus timers, and accessible live-region announcements
-- **Skeleton and EmptyState**: Theme-aware loading placeholders and presentational no-content states with illustrations and actions
-- **CommandPalette**: A typed searchable command launcher with keyboard navigation, grouping, custom filtering, and an optional Ctrl/Command+K shortcut
-- **VirtualList and virtualized DataTable rows**: Fixed-height windowing, overscan, programmatic scrolling, focus handoff, and integration after sorting/filtering/pagination
-- **Avatar and AvatarGroup**: Deterministic image fallback, accessible labels, sizes and shapes, RTL-safe overlap, and total-count overflow
+### Breaking layout change
 
-### ✨ Key Features
+`SearchSelect`, `FileUpload`, `LikertScale`, `Rating`, `SingleRangeSlider`, and `DoubleRangeSlider` now default their outer wrapper to `col s12`. Pass `className: ''` for a classless inline layout, or provide an explicit width such as `className: 'col s6'`.
 
-- **🔥 Zero External JS Dependencies**: No longer requires `materialize-css` JavaScript or `material-icons` fonts
-- **📦 Smaller Bundle Size**: Reduced package size by eliminating external dependencies  
-- **🎨 Custom SVG Icons**: Built-in MaterialIcon component with custom SVG icons
-- **⚡ Better Performance**: Direct implementations without jQuery or other heavy dependencies
-- **🛠️ Enhanced Components**: Comprehensive component library with modern features
-- **🌗 Dark Theme Support**: Built-in light/dark theme system with CSS custom properties
-- **📱 Modern Architecture**: Factory components with proper TypeScript support, and clear separation between [controlled and uncontrolled](CONTROLLED_COMPONENTS.md) component state
-- **🎯 CSS-Only Styling**: Uses only CSS for styling - no JavaScript initialization needed
+### Compact Minimal preset
 
-### 📦 Installation
+```typescript
+import 'mithril-materialized/index.css';
+import 'mithril-materialized/presets/compact-minimal.css';
+
+document.documentElement.dataset.mmPreset = 'compact-minimal';
+```
+
+The preset compacts typography, controls, forms, menus, navigation, dialogs, tables, pickers, feedback, and display components. Light, dark, and automatic color themes remain independent of density.
+
+## Installation
 
 ```bash
 npm install mithril mithril-materialized
@@ -75,6 +71,8 @@ Components marked with an * are not included in the original materialize-css lib
   - Breadcrumb* (navigation path indicator)
   - Wizard/Stepper* (multi-step process guidance)
 - [Others](https://erikvullings.github.io/mithril-materialized/#!/modals)
+  - Dialog and AlertDialog* (accessible confirmation and destructive-action dialogs)
+  - Menu and ContextMenu* (typed action menus with keyboard navigation)
   - CommandPalette* (searchable keyboard command launcher)
   - ModalPanel
   - MaterialBox
@@ -82,7 +80,9 @@ Components marked with an * are not included in the original materialize-css lib
   - Pagination
   - PaginationControls*
   - Parallax
+  - Toast* (notifications with optional actions)
   - SnackbarQueue* (ordered notifications with actions and accessible announcements)
+  - Badge* (labels and notification indicators)
 - Layout & Display
   - [Avatar and AvatarGroup](https://erikvullings.github.io/mithril-materialized/#!/misc?section=avatar)* (identity images, initials, icons, and grouped overflow)
   - [Skeleton and EmptyState](https://erikvullings.github.io/mithril-materialized/#!/misc?section=skeleton)* (loading and no-content states)
@@ -90,7 +90,7 @@ Components marked with an * are not included in the original materialize-css lib
   - [ImageList](https://erikvullings.github.io/mithril-materialized/#!/image-list)* (responsive image galleries with various layouts)
   - [Timeline](https://erikvullings.github.io/mithril-materialized/#!/timeline)* (vertical timeline with events and milestones)
 - [Rating](https://erikvullings.github.io/mithril-materialized/#!/rating)*
-  - RatingControl (Horizontal control, configurable range and step size, optionally with custom icons)
+  - Rating (configurable range, step size, density, and custom icons)
 - [Data & Tables](https://erikvullings.github.io/mithril-materialized/#!/datatable)
   - DataTable* (sorting, filtering, pagination, selection, and optional fixed-height virtualization)
   - VirtualList* (fixed-height virtualized rendering for large lists)
@@ -102,7 +102,7 @@ Components marked with an * are not included in the original materialize-css lib
   - Icon, a simple wrapper for creating icons using material-icons font
   - MaterialIcon, for creating the close/clear and caret as SVG
 
-## 📖 Usage Instructions
+## Usage
 
 Online [flems](flems.io) examples: [FlatButton](https://flems.io/#0=N4IgtglgJlA2CmIBcBWFA6AnAJgDQgGd4EBjAF3imRHTIJHwDMIF6kBtUAOwEMxEkNABZkwsBiBIB7LhVnUAPLAhcA1gAIATsQC8AHUJkAnqyHx4ZA+qHbG+kCLIAHAkgD0bgK5cnqgObo0mBukGQ2LAC0YDwUmhA8ygBelG5QEARkbipQ8AAegQQEBgB8elwSRKRkEDJsIACMSAAMIAC+uNx8AjR0EtKy8PKC-RnqwOoAYrAxAEKeZGQy6q3qOuoA7tlS6+wA5KHhsFEx8HEJEMlQuwC6ANxlZSNk6jIkyiQaawAUAJSrxeoEqcyF9dqoAFZCCG7H4PLhgdDaLg5TRfKBSEiefiydAAIykUCMuHUYC+U1m80WXGJ42muOISHUBgAskZJtNnrjKTIDMTXu8NK0fj97lwyhViPByDUuHUAGzNNodEC8fjUAr0fD9ORkahta74ZRqNicFVdagHOLifCeTTiQSOFzuLw+fyBKTBS0sAAC2HQAGZ0AB2EIQMJW9CQLjocGakDGJzdAgkOJOXXtTpqwReo7RWLxJKUCS2+0OBZOjzeXwBIKh8ORPOnAsXSjewOBgAsqXSmWyeXQWKgMbjCaTKYgaf1rSAA) and [Select](https://flems.io/#0=N4IgtglgJlA2CmIBcBWFA6AnAJgDQgGd4EBjAF3imRHTIJHwDMIF6kBtUAOwEMxEkNABZkwsBiBIB7LhVnUAPLAhcA1gAIATsQC8AHUJkAnqyHx4ZA+qHbG+kCLIAHAkgD0bgK5cnqgObo0mBukGQ2LAC0YDwUmhA8ygBelG5QEARkbipQ8AAegQQEBgB8elwSRKRkEDJsIACMSAAMIAC+uNx8AjR0EtKy8PKC-RnqwOoAysTw5Oqt6jrqAO7ZUkvsAOSh4bBRMfBxCRDJUBsAugDcZWUIZOokZiSqlACSUAvqG9gbV1xlYOgwFJvGQABRQKQkTz8WToABGUigRlwY2uZAAbhB4EskOpQQBKBbFdRgUEbdCaNYbFHjDImeC48bRTR+FQAFSkTlxG3qTScuQ2czmKLK6jFJNBUyqNPUsB4cOI3KlMzu-Gp6lF4rFTjlJHgQiksBymm5AGFlE91DJ4NTNVqHjNnlA3rg7eLOdVarj2G6teNoNz6uq5QrYNyAPJOT1cdRB4W+8X+qDc74okOKz6R6Pqb7xmNaxPqAOfADMwflGY2WZqMbLeYL6jOrvzWpkDx4XD8DLx6MJOmJwATYodT1e70W6N+Dfabta+LKc+uf3K+EqKprdSazQi2EaLXanX41AK9Hw-TkZGobSbIGUajYnBAvCPgm2cXE+E8mnEgkcLncXg+P4gRSMEb4sAAAtg6AlugADsIQQGE76Aio6AAFaniAxhON0BAkHEUZtB0T5dNQ4G7NEsTxEklASF+P4OGQziuB43i+AEQSIchkRUQcNHHJQEGwbBAAsqTpJk2R5Og0JQBhWE4XhBEQERrRnK0QA).
 
@@ -306,7 +306,7 @@ See the [live documentation](https://erikvullings.github.io/mithril-materialized
 
 > **Note**: The date range picker is now fully implemented with comprehensive validation and formatting support.
 
-### 🤝 Contributing
+### Contributing
 
 We welcome contributions! Priority areas for community involvement:
 
@@ -428,11 +428,16 @@ m(DataTable<User>, {
 
 ## Build instructions
 
-This repository consists of two packages, combined using `lerna`: the `lib` package that is published to `npm`, as well as an `example` project which uses this library to display the Mithril components that it contains.
+This pnpm workspace contains the published library in `packages/lib` and the documentation application in `packages/example`.
 
-To install the dependencies, you can use `npm i`, or, alternatively, use `pnpm m i` (assuming you have installed `pnpm` as alternative package manager using `npm i -g pnpm`) to perform a multi-repository install. Next, build everything using `npm start` and visit the documentation page on [http://localhost:1234](http://localhost:1234) in case port 1234 is not occupied already.
+```bash
+pnpm install
+pnpm start
+```
 
-## 🎨 Styling & CSS
+Use `pnpm test` and `pnpm build` from `packages/lib` for package validation and distribution output.
+
+## Styling and CSS
 
 ### CSS Usage
 
@@ -444,12 +449,12 @@ import 'mithril-materialized/index.css';
 
 **Important**: The CSS styling is **completely independent** of the original materialize-css. This means:
 
-- ✅ No conflicting styles from materialize-css
-- ✅ Smaller CSS bundle size
-- ✅ Custom optimizations for better performance
-- ✅ No external font dependencies
+- No conflicting styles from materialize-css
+- Smaller CSS bundle size
+- Custom optimizations for better performance
+- No external font dependencies
 
-### 🔥 NEW: Modular CSS Architecture
+### Modular CSS architecture
 
 **Tree-shakable CSS modules** for optimal bundle sizes! Import only the CSS you need:
 
@@ -537,7 +542,7 @@ m('.row', [
 - Modular approach can reduce CSS by 30-50%
 - Use only `core.css` + specific modules for your use case
 
-### 🌓 Dark Theme Support
+### Dark theme support
 
 Built-in dark theme support with CSS custom properties:
 

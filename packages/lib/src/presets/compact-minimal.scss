@@ -12,6 +12,7 @@
   --mm-space-3: 12px;
   --mm-space-4: 16px;
   --mm-control-height: 32px;
+  --mm-field-prefix-width: 24px;
   --mm-row-height: 36px;
   --mm-menu-item-height: 32px;
   --mm-navigation-item-height: 36px;
@@ -282,7 +283,7 @@
     right: auto;
     inset-inline-start: 0;
     inset-block-start: 0;
-    width: var(--mm-control-height);
+    width: var(--mm-field-prefix-width);
     height: var(--mm-control-height);
     font-size: 1.25rem;
     line-height: 1;
@@ -311,15 +312,15 @@
   .input-field .prefix ~ .validate ~ label,
   .input-field .prefix ~ .helper-text,
   .input-field .prefix ~ .autocomplete-content {
-    width: calc(100% - var(--mm-control-height) - var(--mm-space-1));
+    width: calc(100% - var(--mm-field-prefix-width) - var(--mm-space-1));
     margin-left: 0;
-    margin-inline-start: calc(var(--mm-control-height) + var(--mm-space-1));
+    margin-inline-start: calc(var(--mm-field-prefix-width) + var(--mm-space-1));
   }
 
   .input-field.col .prefix ~ label,
   .input-field.col .prefix ~ .validate ~ label {
     width: calc(
-      100% - var(--mm-control-height) - var(--mm-space-1) - 1.5rem
+      100% - var(--mm-field-prefix-width) - var(--mm-space-1) - 1.5rem
     );
   }
 
@@ -549,14 +550,18 @@
   }
 
   .search-select-option-label {
+    box-sizing: border-box;
+    gap: var(--mm-space-1);
     min-height: var(--mm-menu-item-height);
+    padding-inline: var(--mm-space-2);
     font-size: var(--mm-control-font-size);
   }
 
   .search-select-option-label input[type="checkbox"] {
+    flex: 0 0 14px;
     width: 14px;
     height: 14px;
-    margin-right: var(--mm-space-1);
+    margin: 0;
     border-width: 1px;
   }
 
@@ -717,7 +722,7 @@
 
   .mm-fieldset__legend {
     font-size: var(--mm-control-font-size);
-    padding-inline: var(--mm-space-1);
+    padding-inline: 0;
   }
 
   .mm-fieldset__description,
@@ -1213,6 +1218,7 @@
   .datatable thead th.sortable .sort-indicators {
     right: auto;
     inset-inline-end: 5px;
+    gap: 1px;
   }
 
   .datatable thead th.sortable .sort-indicators .sort-icon {
