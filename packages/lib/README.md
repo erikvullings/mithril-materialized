@@ -29,6 +29,16 @@ The preset compacts typography, controls, forms, menus, navigation, dialogs, tab
 npm install mithril mithril-materialized
 ```
 
+### AI agent skill
+
+Install the application-integration skill for supported coding agents with:
+
+```bash
+npx skills add erikvullings/mithril-materialized --skill mithril-materialized
+```
+
+The skill includes focused component, form-layout, and theming references for the Version 4 APIs and Compact Minimal preset. Use `npx skills add erikvullings/mithril-materialized --list` to inspect the available skill before installation.
+
 ## Supported Components
 
 Components marked with an * are not included in the original materialize-css library.

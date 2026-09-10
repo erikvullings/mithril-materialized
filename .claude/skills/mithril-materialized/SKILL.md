@@ -1,23 +1,13 @@
 ---
 name: mithril-materialized
-description: "Use this contributor skill only when modifying the mithril-materialized repository itself, especially `packages/lib`, `packages/example`, or generated `docs`. Trigger for requests to add, modify, style, document, test, debug, or release library components such as TextInput, NumberInput, Switch, ToggleButton, FormSection, Fieldset, or FlatButton; fix component state, validation, Sass/CSS, accessibility, row/layout behaviour, exports, examples, TypeDoc, or the semantic-release workflow. For an application merely consuming the npm package, use the root SKILL.md instead."
+description: "Use this contributor skill only when modifying the mithril-materialized repository itself, especially `packages/lib`, `packages/example`, generated `docs`, or the installable consumer skill. Trigger for requests to add, modify, style, document, test, debug, or release components; work on Dialog, Menu, CommandPalette, SnackbarQueue, Avatar, Skeleton, EmptyState, VirtualList, themes, Compact Minimal, form grids, accessibility, exports, examples, TypeDoc, or semantic-release. For an application consuming the npm package, install the public skill under `skills/mithril-materialized`."
 ---
 
 # Mithril Materialized UI Development
 
 Develop and maintain the `mithril-materialized` repository: a TypeScript Mithril.js Material Design component library with no external JavaScript UI dependencies. This is a contributor skill, not an application-integration guide.
 
-## Scope and triggers
-
-Use this skill for prompts such as:
-
-- “Add a Switch/TextInput/NumberInput example”, “align an input row”, or “style the Select label”.
-- “Add a ToggleButton or ToggleGroup”, “use FormSection or Fieldset”, or “make this a FlatButton”.
-- “Make this component controlled”, “fix validation on blur”, or “debug a Mithril redraw”.
-- “Add dark-theme support”, “change the Sass variables”, or “export this component”.
-- “Refresh the docs/TypeDoc”, “test a library component”, or “make a patch release”.
-
-Do not use it for a generic Mithril application that neither uses nor modifies this library.
+Do not use it for a generic Mithril application that neither uses nor modifies this library. The installable application-integration skill lives in `skills/mithril-materialized/`.
 
 ## Project Structure
 
@@ -29,36 +19,25 @@ Monorepo with pnpm workspaces:
 
 Key files: `src/types.ts` (shared types), `src/utils.ts` (uniqueId, helpers), `src/index.ts` (all exports).
 
-## Core Patterns
+## Core patterns
 
-### FactoryComponent Pattern
-
-All components use this structure for lifecycle management:
+Components that need lifecycle state use Mithril's factory pattern. Keep state inside the factory and return lifecycle methods:
 
 ```typescript
-import m, { FactoryComponent, Attributes } from 'mithril';
-
-export const MyComponent: FactoryComponent<MyComponentAttrs> = () => {
-  const state = { id: uniqueId(), internalValue: undefined, hasInteracted: false };
-
+export const MyComponent: FactoryComponent<MyAttrs> = () => {
+  const state = { id: uniqueId() };
   return {
-    oninit: ({ attrs }) => { /* init */ },
-    onremove: () => { /* cleanup */ },
-    view: ({ attrs }) => {
-      const value = isControlled(attrs) ? attrs.value : state.internalValue ?? attrs.defaultValue;
-      return m('.my-component', { /* ... */ });
-    },
+    onremove: () => cleanup(),
+    view: ({ attrs }) => m('.my-component', render(attrs, state)),
   };
 };
 ```
 
-### Controlled vs Uncontrolled
+### Controlled vs uncontrolled
 
 - **Controlled**: Parent provides `value` + `oninput`/`onchange`
 - **Uncontrolled**: Use `defaultValue`, component tracks state internally
 - Follow the component's existing `isControlled` contract; do not assume every component uses the same value or handler property
-
-### Validation
 
 `ValidatorFunction<T>` returns `true | false | '' | string`. Always validate on **blur**, track `hasInteracted`, integrate with HTML5 `setCustomValidity`.
 
@@ -74,13 +53,17 @@ The table is a routing guide, not the API source of truth. Before using an unfam
 | **Search & file inputs** | AutoComplete, Combobox, SearchSelect, Chips, FileUpload | `autocomplete.ts`, `combobox.ts`, `search-select.ts`, `file-upload.ts` |
 | **Buttons** | Button, LargeButton, SmallButton, FlatButton, IconButton, RoundIconButton, SubmitButton, ConfirmButton, FloatingActionButton | `button.ts`, `floating-action-button.ts` |
 | **Ranges & pickers** | SingleRangeSlider, DoubleRangeSlider, DatePicker, TimePicker, TimeRangePicker, AnalogClock, DigitalClock | `range-slider.ts`, `datepicker.ts`, `timepicker.ts` |
-| **Feedback & overlays** | ModalPanel, Tooltip, Toast, Badge, CircularProgress, LinearProgress | `modal.ts`, `tooltip.ts`, `toast.ts` |
+| **Feedback & overlays** | ModalPanel, Dialog, AlertDialog, Menu, ContextMenu, CommandPalette, SnackbarQueue, Tooltip, Toast, Badge, Skeleton, EmptyState, CircularProgress, LinearProgress | `modal.ts`, `dialog.ts`, `menu.ts`, `command-palette.ts`, `snackbar.ts` |
 | **Navigation & organisation** | Sidenav, Breadcrumb, Tabs, Pagination, Collapsible, Collection, Dropdown, Wizard | `sidenav.ts`, `tabs.ts`, `wizard.ts` |
-| **Data & visual layout** | DataTable, TreeView, Masonry, ImageList, Timeline, Carousel, Parallax | `datatable.ts`, `treeview.ts`, `masonry.ts` |
+| **Data & visual layout** | Avatar, AvatarGroup, DataTable, VirtualList, TreeView, Masonry, ImageList, Timeline, Carousel, Parallax | `avatar.ts`, `datatable.ts`, `virtual-list.ts`, `treeview.ts`, `masonry.ts` |
 
 ## Theming
 
-Light/dark via 50+ CSS custom properties (`--mm-primary-color`, `--mm-surface-color`, etc.). Programmatic: `ThemeManager.setTheme('dark')`, `ThemeManager.toggle()`.
+Light/dark/auto colors use CSS custom properties (`--mm-primary-color`, `--mm-surface-color`, etc.) and `ThemeManager`. The opt-in Compact Minimal density preset is exported as `mithril-materialized/presets/compact-minimal.css` and activated with `data-mm-preset="compact-minimal"` on the document root. Color theme and density are independent; keep every preset rule root-scoped and preserve coarse-pointer targets.
+
+## Version 4 layout contract
+
+`SearchSelect`, `FileUpload`, `LikertScale`, `Rating`, `SingleRangeSlider`, and `DoubleRangeSlider` default to `className: 'col s12'`. Examples must place them in a `.row`, use an explicit grid width when needed, and avoid duplicate nested column gutters. `className: ''` intentionally opts out.
 
 ## Development workflow
 
