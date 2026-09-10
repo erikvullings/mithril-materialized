@@ -2,7 +2,15 @@
 
 A Mithril.js component library inspired by [materialize-css](https://materializecss.com) design principles, [available on npm](https://www.npmjs.com/package/mithril-materialized). This library provides you with ready-to-use Mithril components that follow Material Design guidelines, with **no external JavaScript dependencies**.
 
-## 🚀 v3.15 - Latest Release
+## 🚀 v3.21 - Latest Release
+
+### ✨ What's New in v3.21
+
+- **Snackbar queue**: FIFO notifications with actions, dismiss buttons, pause-on-hover/focus timers, completion reasons, and accessible live-region announcements
+- **Skeleton and EmptyState**: Theme-aware loading placeholders and presentational no-content states with illustrations, descriptions, actions, and supplemental content
+- **CommandPalette**: A typed, searchable command launcher with grouping, keyboard navigation, disabled commands, custom filtering, and an optional Ctrl/Command+K shortcut
+- **VirtualList and virtualized DataTable rows**: Fixed-height windowing for large synchronous datasets, overscan, programmatic scrolling, focus handoff, and preserved sorting/filtering/pagination behavior
+- **Avatar and AvatarGroup**: Images with deterministic initials/icon fallback, accessible decorative or labelled variants, size/shape options, RTL-safe overlap, and deterministic overflow
 
 ### ✨ What's New in v3.15
 
@@ -113,6 +121,7 @@ Components marked with an * are not included in the original materialize-css lib
   - Breadcrumb* (navigation path indicator)
   - Wizard/Stepper* (multi-step process guidance)
 - [Others](https://erikvullings.github.io/mithril-materialized/#!/modals)
+  - CommandPalette* (searchable keyboard command launcher)
   - ModalPanel
   - MaterialBox
   - Carousel
@@ -120,8 +129,11 @@ Components marked with an * are not included in the original materialize-css lib
   - PaginationControls*
   - Parallax
   - Toast* (notifications with optional actions)
+  - SnackbarQueue* (ordered notifications with actions and accessible announcements)
   - Badge* (labels and notification indicators)
 - Layout & Display
+  - [Avatar and AvatarGroup](https://erikvullings.github.io/mithril-materialized/#!/misc?section=avatar)* (identity images, initials, icons, and grouped overflow)
+  - [Skeleton and EmptyState](https://erikvullings.github.io/mithril-materialized/#!/misc?section=skeleton)* (loading and no-content states)
   - [Masonry](https://erikvullings.github.io/mithril-materialized/#!/masonry)* (Pinterest-style responsive grid layout)
   - [ImageList](https://erikvullings.github.io/mithril-materialized/#!/image-list)* (responsive image galleries with various layouts)
   - [Timeline](https://erikvullings.github.io/mithril-materialized/#!/timeline)* (vertical timeline with events and milestones)
@@ -130,7 +142,8 @@ Components marked with an * are not included in the original materialize-css lib
 - [Rating](https://erikvullings.github.io/mithril-materialized/#!/rating)*
   - RatingControl (Horizontal control, configurable range and step size, optionally with custom icons)
 - [Data & Tables](https://erikvullings.github.io/mithril-materialized/#!/datatable)
-  - DataTable* (sorting, filtering, pagination, selection)
+  - DataTable* (sorting, filtering, pagination, selection, and optional fixed-height virtualization)
+  - VirtualList* (fixed-height virtualized rendering for large lists)
   - TreeView* (hierarchical data with expand/collapse, selection, and customizable icons)
 - Additional
   - Label
@@ -479,6 +492,89 @@ m(SearchSelect<number>, {
 
 > **Note**: The date range picker is now fully implemented with comprehensive validation and formatting support.
 
+### Feedback and empty states
+
+`snackbar()` adds messages to the shared FIFO queue. Actions and dismiss controls use native buttons, and the active timeout pauses while the snackbar is hovered or focused.
+
+```typescript
+import { EmptyState, Skeleton, snackbar } from 'mithril-materialized';
+
+snackbar({
+  message: 'Project deleted',
+  dismissible: true,
+  action: { label: 'Undo', onclick: restoreProject },
+});
+
+m(Skeleton, { shape: 'text', count: 3 });
+m(Skeleton, { shape: 'circular', width: 48, margin: '0 0 16px' });
+
+m(EmptyState, {
+  title: 'No projects yet',
+  description: 'Create a project to start organizing your work.',
+  primaryAction: { label: 'Create project', onclick: createProject },
+});
+```
+
+### Command palette
+
+Create the generic component once and keep it stable between redraws. It supports controlled or uncontrolled visibility, grouped commands, custom filtering, and accessible combobox keyboard interaction.
+
+```typescript
+import { CommandPalette } from 'mithril-materialized';
+
+const ProjectCommands = CommandPalette<'new' | 'settings'>();
+
+m(ProjectCommands, {
+  enableGlobalShortcut: true,
+  commands: [
+    { id: 'new', label: 'New project', group: 'Project', execute: createProject },
+    { id: 'settings', label: 'Open settings', execute: openSettings },
+  ],
+});
+```
+
+### Avatars
+
+Images fall back once to explicit text, deterministic initials, or an icon. Set `alt: ''` for decorative avatars. Wrap interactive avatars in a native link or button.
+
+```typescript
+import { Avatar, AvatarGroup } from 'mithril-materialized';
+
+m(Avatar, { src: user.photo, name: user.name, alt: user.name });
+
+m(AvatarGroup, { max: 3, totalCount: 8, ariaLabel: 'Project members' }, [
+  m(Avatar, { name: 'Ada Lovelace', alt: 'Ada Lovelace' }),
+  m(Avatar, { name: 'Grace Hopper', alt: 'Grace Hopper' }),
+  m(Avatar, { name: 'Katherine Johnson', alt: 'Katherine Johnson' }),
+]);
+```
+
+### Large-data virtualization
+
+`VirtualList` and DataTable virtualization use a fixed item/row height. Variable-height content is intentionally unsupported because it requires measurement and scroll-anchor invalidation.
+
+```typescript
+import { DataTable, VirtualList } from 'mithril-materialized';
+
+const UserList = VirtualList<User>();
+
+m(UserList, {
+  items: users,
+  height: 400,
+  itemHeight: 48,
+  overscan: 2,
+  getItemKey: (user) => user.id,
+  renderItem: (user) => user.name,
+});
+
+m(DataTable<User>, {
+  data: users,
+  columns,
+  getRowKey: (user) => user.id,
+  virtualization: { viewportHeight: 480, rowHeight: 48, overscan: 2 },
+});
+```
+
 ## 🗺️ Roadmap & Planned Improvements
 
 ### 🚀 Phase 1: Core Optimizations & New Components (In Progress)
@@ -539,7 +635,7 @@ m(SearchSelect<number>, {
 
 **Performance & Optimization:**
 
-- Virtual scrolling for large lists
+- ✅ Fixed-height virtual scrolling for large lists and DataTable rows
 - Lazy loading component utilities
 - Bundle analyzer and optimization tools
 - CSS-in-JS runtime support option

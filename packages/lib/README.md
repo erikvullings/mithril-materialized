@@ -8,6 +8,14 @@ A Mithril.js component library inspired by [materialize-css](https://materialize
 - See the [changelog](https://github.com/erikvullings/mithril-materialized/blob/master/CHANGELOG.md) for version-specific changes.
 - Report issues or contribute at the [GitHub repository](https://github.com/erikvullings/mithril-materialized).
 
+### What's new in v3.21
+
+- **Snackbar queue**: FIFO notifications with actions, dismiss controls, pause-on-hover/focus timers, and accessible live-region announcements
+- **Skeleton and EmptyState**: Theme-aware loading placeholders and presentational no-content states with illustrations and actions
+- **CommandPalette**: A typed searchable command launcher with keyboard navigation, grouping, custom filtering, and an optional Ctrl/Command+K shortcut
+- **VirtualList and virtualized DataTable rows**: Fixed-height windowing, overscan, programmatic scrolling, focus handoff, and integration after sorting/filtering/pagination
+- **Avatar and AvatarGroup**: Deterministic image fallback, accessible labels, sizes and shapes, RTL-safe overlap, and total-count overflow
+
 ### ✨ Key Features
 
 - **🔥 Zero External JS Dependencies**: No longer requires `materialize-css` JavaScript or `material-icons` fonts
@@ -67,20 +75,25 @@ Components marked with an * are not included in the original materialize-css lib
   - Breadcrumb* (navigation path indicator)
   - Wizard/Stepper* (multi-step process guidance)
 - [Others](https://erikvullings.github.io/mithril-materialized/#!/modals)
+  - CommandPalette* (searchable keyboard command launcher)
   - ModalPanel
   - MaterialBox
   - Carousel
   - Pagination
   - PaginationControls*
   - Parallax
+  - SnackbarQueue* (ordered notifications with actions and accessible announcements)
 - Layout & Display
+  - [Avatar and AvatarGroup](https://erikvullings.github.io/mithril-materialized/#!/misc?section=avatar)* (identity images, initials, icons, and grouped overflow)
+  - [Skeleton and EmptyState](https://erikvullings.github.io/mithril-materialized/#!/misc?section=skeleton)* (loading and no-content states)
   - [Masonry](https://erikvullings.github.io/mithril-materialized/#!/masonry)* (Pinterest-style responsive grid layout)
   - [ImageList](https://erikvullings.github.io/mithril-materialized/#!/image-list)* (responsive image galleries with various layouts)
   - [Timeline](https://erikvullings.github.io/mithril-materialized/#!/timeline)* (vertical timeline with events and milestones)
 - [Rating](https://erikvullings.github.io/mithril-materialized/#!/rating)*
   - RatingControl (Horizontal control, configurable range and step size, optionally with custom icons)
 - [Data & Tables](https://erikvullings.github.io/mithril-materialized/#!/datatable)
-  - DataTable* (sorting, filtering, pagination, selection)
+  - DataTable* (sorting, filtering, pagination, selection, and optional fixed-height virtualization)
+  - VirtualList* (fixed-height virtualized rendering for large lists)
   - TreeView* (hierarchical data with expand/collapse, selection, and customizable icons)
 - Additional
   - Label
@@ -331,6 +344,87 @@ m(SearchSelect<number>, {
 ```
 
 `SearchSelect` uses combobox/listbox ARIA roles and supports `ArrowDown`, `ArrowUp`, `Enter`/`Space`, and `Escape`.
+
+### Feedback and empty states
+
+```typescript
+import { EmptyState, Skeleton, snackbar } from 'mithril-materialized';
+
+snackbar({
+  message: 'Project deleted',
+  dismissible: true,
+  action: { label: 'Undo', onclick: restoreProject },
+});
+
+m(Skeleton, { shape: 'text', count: 3 });
+m(Skeleton, { shape: 'circular', width: 48, margin: '0 0 16px' });
+
+m(EmptyState, {
+  title: 'No projects yet',
+  description: 'Create a project to start organizing your work.',
+  primaryAction: { label: 'Create project', onclick: createProject },
+});
+```
+
+### Command palette
+
+Create the generic component once and keep it stable between redraws.
+
+```typescript
+import { CommandPalette } from 'mithril-materialized';
+
+const ProjectCommands = CommandPalette<'new' | 'settings'>();
+
+m(ProjectCommands, {
+  enableGlobalShortcut: true,
+  commands: [
+    { id: 'new', label: 'New project', group: 'Project', execute: createProject },
+    { id: 'settings', label: 'Open settings', execute: openSettings },
+  ],
+});
+```
+
+### Avatars
+
+Images fall back once to explicit text, deterministic initials, or an icon. Use `alt: ''` for decorative avatars and native links or buttons for interaction.
+
+```typescript
+import { Avatar, AvatarGroup } from 'mithril-materialized';
+
+m(Avatar, { src: user.photo, name: user.name, alt: user.name });
+
+m(AvatarGroup, { max: 3, totalCount: 8, ariaLabel: 'Project members' }, [
+  m(Avatar, { name: 'Ada Lovelace', alt: 'Ada Lovelace' }),
+  m(Avatar, { name: 'Grace Hopper', alt: 'Grace Hopper' }),
+  m(Avatar, { name: 'Katherine Johnson', alt: 'Katherine Johnson' }),
+]);
+```
+
+### Large-data virtualization
+
+Both APIs require fixed item/row heights; variable-height virtualization is intentionally unsupported.
+
+```typescript
+import { DataTable, VirtualList } from 'mithril-materialized';
+
+const UserList = VirtualList<User>();
+
+m(UserList, {
+  items: users,
+  height: 400,
+  itemHeight: 48,
+  overscan: 2,
+  getItemKey: (user) => user.id,
+  renderItem: (user) => user.name,
+});
+
+m(DataTable<User>, {
+  data: users,
+  columns,
+  getRowKey: (user) => user.id,
+  virtualization: { viewportHeight: 480, rowHeight: 48, overscan: 2 },
+});
+```
 
 ## Build instructions
 
