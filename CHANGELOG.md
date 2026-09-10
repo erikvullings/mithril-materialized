@@ -1,3 +1,31 @@
+# [4.0.0](https://github.com/erikvullings/mithril-materialized/compare/v3.21.0...v4.0.0) (2026-09-10)
+
+
+* feat(styles)!: finalize compact minimal design system ([9826c2a](https://github.com/erikvullings/mithril-materialized/commit/9826c2abf2842e78e6f42736558a8c6a86bcaf78))
+* feat(ui)!: align compact forms and grid defaults ([c8b854a](https://github.com/erikvullings/mithril-materialized/commit/c8b854a35a89d5b83406a62846e46fe08aa73af1))
+
+
+### Bug Fixes
+
+* **styles:** complete compact minimal refinements ([2505965](https://github.com/erikvullings/mithril-materialized/commit/250596535c2f97c1196ee4ec5b3cd4ee6929cdf5))
+* **styles:** polish compact minimal controls ([560c30f](https://github.com/erikvullings/mithril-materialized/commit/560c30f5ed5240f658f094f8bbd7ef229bb1c70a))
+* **styles:** refine compact minimal controls ([c2957f4](https://github.com/erikvullings/mithril-materialized/commit/c2957f453b3a09d57812a7fff9920a8f340e5a9a))
+
+
+### Features
+
+* **styles:** add compact minimal preset ([d007648](https://github.com/erikvullings/mithril-materialized/commit/d007648cacbca9e0176425450945a1079c3a0080))
+
+
+### BREAKING CHANGES
+
+* SearchSelect, FileUpload, LikertScale, Rating, SingleRangeSlider, and DoubleRangeSlider now default their outer wrapper to col s12. Pass className: '' for classless inline layout or an explicit grid class for another width.
+
+Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>
+* SearchSelect, FileUpload, LikertScale, Rating, SingleRangeSlider, and DoubleRangeSlider now default their outer wrappers to col s12.
+
+Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>
+
 # [3.21.0](https://github.com/erikvullings/mithril-materialized/compare/v3.20.0...v3.21.0) (2026-09-09)
 
 
