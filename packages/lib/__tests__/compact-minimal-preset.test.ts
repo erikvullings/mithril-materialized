@@ -65,10 +65,19 @@ describe('compact minimal preset contract', () => {
       '.select-wrapper',
       '.dropdown-content',
       '.mm-menu',
+      '.collection-header',
+      '.collapsible-header',
+      '.breadcrumb',
       '.sidenav-link',
       '.mm-modal-surface',
       '.mm-command-palette',
       '.datatable',
+      '.sort-indicators',
+      '.toast',
+      '.tabs',
+      '.pagination',
+      '.material-tooltip',
+      '.timeline',
       '.mm-virtual-list-item',
       '.mm-snackbar',
       '.mm-avatar',
@@ -99,5 +108,23 @@ describe('compact minimal preset contract', () => {
     expect(source).toContain('.timepicker-analog-display');
     expect(source).toContain('.likert-scale__label::before');
     expect(source).toContain('.dropdown-content .mm-layout-item-icon');
+    expect(source).toMatch(/\.collection \.collection-item\.avatar,[^{]*\{[^}]*padding-inline-start:/s);
+    expect(source).toMatch(/\.collapsible-header\s*\{[^}]*min-height:\s*var\(--mm-navigation-item-height\)/s);
+    expect(source).toMatch(/\.breadcrumb\s*\{[^}]*min-height:\s*0/s);
+    expect(source).toMatch(/\.breadcrumb\s*\{[^}]*height:\s*auto/s);
+    expect(source).toMatch(
+      /\.breadcrumb i\.breadcrumb-icon\.material-icons\s*\{[^}]*font-size:\s*1rem/s
+    );
+    expect(source).toMatch(/\.tabs,[^{]*\{[^}]*height:\s*var\(--mm-control-height\)/s);
+    expect(source).toMatch(/\.timeline\s*\{[^}]*padding:\s*var\(--mm-space-1\)/s);
+    expect(source).toMatch(/\.chips\.chips-container\s*\{[^}]*padding-block:\s*5px 2px/s);
+    expect(source).toMatch(/\.search-select-option-label input\[type="checkbox"\] \+ span\s*\{[^}]*padding-left:\s*0/s);
+    expect(source).toMatch(
+      /\.likert-scale__anchor,[^{]*\{[^}]*font-size:\s*var\(--mm-control-font-size\)/s
+    );
+    expect(source).toMatch(/\.timepicker-plate\s*\{[^}]*inset-inline-start:\s*50%/s);
+    expect(source).toMatch(/--mm-modal-content-padding-top-with-close:\s*var\(--mm-space-2\)/);
+    expect(source).toMatch(/\.mm-dialog-primary-action[^}]*\{[^}]*color:\s*var\(--mm-button-text/s);
+    expect(source).toMatch(/\.sort-indicators \.sort-icon\s*\{[^}]*font-size:\s*10px/s);
   });
 });

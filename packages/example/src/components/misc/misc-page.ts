@@ -248,8 +248,7 @@ m(EmptyState, {
         m('h3.header[id=fileupload]', 'File Upload'),
         m('p', 'Drag-and-drop file upload with image preview, file validation, and progress tracking:'),
         m('.row', [
-          m('.col.s12', [
-            m(FileUpload, {
+          m(FileUpload, {
               accept: 'image/*,.pdf,.doc,.docx',
               multiple: true,
               maxSize: 5 * 1024 * 1024,
@@ -265,7 +264,6 @@ m(EmptyState, {
                 console.log('File removed:', file.name);
               },
             }),
-          ]),
         ]),
         state.uploadedFiles.length > 0 &&
           m('.row', [

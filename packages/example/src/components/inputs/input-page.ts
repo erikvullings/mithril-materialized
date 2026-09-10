@@ -423,16 +423,19 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
         }),
 
         m('h3.header[id=searchselect]', 'Search and select, optionally add'),
-        m(SearchSelect<string>, {
-          options: searchSelectOptions,
-          label: 'Select search options',
-          searchPlaceholder: 'Find an option...', // Custom search placeholder
-          checkedId: selectedOptions,
-          onchange: (v) => {
-            selectedOptions = v;
-            console.log('Selected:', selectedOptions);
-          },
-        }),
+        m(
+          '.row',
+          m(SearchSelect<string>, {
+            options: searchSelectOptions,
+            label: 'Select search options',
+            searchPlaceholder: 'Find an option...', // Custom search placeholder
+            checkedId: selectedOptions,
+            onchange: (v) => {
+              selectedOptions = v;
+              console.log('Selected:', selectedOptions);
+            },
+          })
+        ),
         m(HighlightedCodeBlock, {
           code: `        const searchSelectOptions = [
           { id: 'option1', label: 'Option 1' },
@@ -451,22 +454,25 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           },
         })`,
         }),
-        m(SearchSelect<string>, {
-          options: searchSelectOptions,
-          checkedId: selectedOptions,
-          onchange: (v) => {
-            selectedOptions = v;
-            console.log('Selected:', selectedOptions);
-          },
-          oncreateNewOption: (searchTerm) => {
-            console.log('Creating new option:', searchTerm);
-            const newOption = { id: uniqueId(), label: searchTerm };
-            // Option is automatically stored internally by the component
-            return newOption;
-          },
-          label: 'Select option or add new option',
-          placeholder: 'No options selected',
-        }),
+        m(
+          '.row',
+          m(SearchSelect<string>, {
+            options: searchSelectOptions,
+            checkedId: selectedOptions,
+            onchange: (v) => {
+              selectedOptions = v;
+              console.log('Selected:', selectedOptions);
+            },
+            oncreateNewOption: (searchTerm) => {
+              console.log('Creating new option:', searchTerm);
+              const newOption = { id: uniqueId(), label: searchTerm };
+              // Option is automatically stored internally by the component
+              return newOption;
+            },
+            label: 'Select option or add new option',
+            placeholder: 'No options selected',
+          })
+        ),
         m(HighlightedCodeBlock, {
           code: `        m(SearchSelect, {
           options: searchSelectOptions,
@@ -493,21 +499,24 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           m('code', 'maxDisplayedOptions'),
           ' to limit the number of rendered options for better performance. The component will show a message indicating how many results are available.',
         ]),
-        m(SearchSelect<string>, {
-          options: countries,
-          label: 'Select countries (large dataset)',
-          searchPlaceholder: 'Search countries...',
-          checkedId: selectedCountry,
-          onchange: (v) => {
-            selectedCountry = v;
-            console.log('Selected countries:', selectedCountry);
-          },
-          maxDisplayedOptions: 50,
-          i18n: {
-            showingXofY: 'Showing {shown} of {total} countries - refine your search',
-            noOptionsFound: 'No countries found',
-          },
-        }),
+        m(
+          '.row',
+          m(SearchSelect<string>, {
+            options: countries,
+            label: 'Select countries (large dataset)',
+            searchPlaceholder: 'Search countries...',
+            checkedId: selectedCountry,
+            onchange: (v) => {
+              selectedCountry = v;
+              console.log('Selected countries:', selectedCountry);
+            },
+            maxDisplayedOptions: 50,
+            i18n: {
+              showingXofY: 'Showing {shown} of {total} countries - refine your search',
+              noOptionsFound: 'No countries found',
+            },
+          })
+        ),
         m(HighlightedCodeBlock, {
           code: `        // Large dataset (195 countries)
         const countries = [...].map((country, index) =>
@@ -539,18 +548,21 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           m('code', 'maxSelectedOptions=1'),
           ', checkboxes are hidden and it behaves like a single-select dropdown.',
         ]),
-        m(SearchSelect<string>, {
-          options: categories,
-          label: 'Select category (single select)',
-          searchPlaceholder: 'Search categories...',
-          checkedId: selectedCategory,
-          onchange: (v) => {
-            selectedCategory = v;
-            console.log('Selected category:', selectedCategory);
-          },
-          maxSelectedOptions: 1, // Single select - checkboxes hidden
-          placeholder: 'No category selected',
-        }),
+        m(
+          '.row',
+          m(SearchSelect<string>, {
+            options: categories,
+            label: 'Select category (single select)',
+            searchPlaceholder: 'Search categories...',
+            checkedId: selectedCategory,
+            onchange: (v) => {
+              selectedCategory = v;
+              console.log('Selected category:', selectedCategory);
+            },
+            maxSelectedOptions: 1, // Single select - checkboxes hidden
+            placeholder: 'No category selected',
+          })
+        ),
         m(HighlightedCodeBlock, {
           code: `        m(SearchSelect, {
           options: categories,
@@ -578,18 +590,21 @@ Sindsdien is het wetenschappelijk consens dat de blauwe kleur van de lucht het r
           m('code', "'none'"),
           ' (insertion order), or provide a custom sort function.',
         ]),
-        m(SearchSelect<string>, {
-          options: fruits,
-          label: 'Select fruits (sorted alphabetically)',
-          searchPlaceholder: 'Search fruits...',
-          checkedId: selectedFruits,
-          onchange: (v) => {
-            selectedFruits = v;
-            console.log('Selected fruits:', selectedFruits);
-          },
-          sortSelected: 'asc', // Sort selected items A-Z
-          placeholder: 'No fruits selected',
-        }),
+        m(
+          '.row',
+          m(SearchSelect<string>, {
+            options: fruits,
+            label: 'Select fruits (sorted alphabetically)',
+            searchPlaceholder: 'Search fruits...',
+            checkedId: selectedFruits,
+            onchange: (v) => {
+              selectedFruits = v;
+              console.log('Selected fruits:', selectedFruits);
+            },
+            sortSelected: 'asc', // Sort selected items A-Z
+            placeholder: 'No fruits selected',
+          })
+        ),
         m(HighlightedCodeBlock, {
           code: `        const fruits = [
           { id: 'banana', label: 'Banana' },

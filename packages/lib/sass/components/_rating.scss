@@ -67,6 +67,11 @@ $rating-tooltip-text: white !default;
   }
 }
 
+// A parent grid column already provides the page gutter.
+.col > .rating.col {
+  padding-inline: 0;
+}
+
 .rating__items {
   display: flex !important;
   flex-direction: row !important;

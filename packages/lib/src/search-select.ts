@@ -624,6 +624,8 @@ export const SearchSelect = <T extends string | number>(
               },
               style: {
                 ...getDropdownStyles(state.inputRef),
+                left: state.inputRef ? `${state.inputRef.offsetLeft}px` : '0',
+                minWidth: 0,
                 ...(maxHeight ? { maxHeight } : {}),
               },
             },

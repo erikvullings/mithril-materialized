@@ -314,6 +314,32 @@ describe('Menu', () => {
     result.unmount();
   });
 
+  it('uses a configured fixed width for layout and clamps it to the viewport', () => {
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 300 });
+    const result = render(Menu<string>(), {
+      trigger: (attrs) => m('button', attrs, 'Actions'),
+      items: [{ id: 'edit', label: 'Edit' }],
+      width: 180,
+    });
+    const trigger = result.getByText('Actions');
+    trigger.getBoundingClientRect = () =>
+      ({
+        top: 20,
+        right: 290,
+        bottom: 40,
+        left: 260,
+        width: 30,
+      }) as DOMRect;
+
+    fireEvent.click(trigger);
+
+    const menu = document.querySelector<HTMLElement>('[role="menu"]') as HTMLElement;
+    expect(menu.style.width).toBe('180px');
+    expect(menu.style.left).toBe('112px');
+
+    result.unmount();
+  });
+
   it('moves focus when updated items invalidate the active item', () => {
     const menu = Menu<string>();
     const result = render(menu, {

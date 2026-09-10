@@ -102,4 +102,28 @@ describe('form grid defaults', () => {
 
     expect(container.querySelector('form .col')).toBeNull();
   });
+
+  it.each([
+    {
+      name: 'Options',
+      component: Options<string>(),
+      attrs: {
+        id: 'options-grid',
+        options: [{ id: 'one', label: 'One', className: 'col s4' }],
+      },
+    },
+    {
+      name: 'RadioButtons',
+      component: RadioButtons<string>(),
+      attrs: {
+        id: 'radios-grid',
+        options: [{ id: 'one', label: 'One' }],
+        checkboxClass: 'col s4',
+      },
+    },
+  ])('$name gives grid option columns a compensating row', ({ component, attrs }) => {
+    const { container } = render(component, attrs);
+
+    expect(container.querySelector('form')).toHaveClass('row');
+  });
 });

@@ -293,6 +293,60 @@ li.mm-nav-group {
   margin-left: 260px;
 }
 
+:root[data-mm-preset='compact-minimal'] .sidenav {
+  width: 240px !important;
+}
+
+:root[data-mm-preset='compact-minimal'] .mm-content {
+  padding: 16px;
+}
+
+:root[data-mm-preset='compact-minimal'] .mm-content--desktop {
+  margin-left: 240px;
+}
+
+:root[data-mm-preset='compact-minimal'] .mm-search {
+  padding: 4px 8px 6px;
+}
+
+:root[data-mm-preset='compact-minimal'] .mm-search-results {
+  right: 8px;
+  left: 8px;
+}
+
+:root[data-mm-preset='compact-minimal'] .mm-search-result {
+  gap: 4px;
+  padding: 4px 8px;
+}
+
+:root[data-mm-preset='compact-minimal'] .mm-nav-group-header {
+  gap: 4px;
+  padding: 6px 10px 6px 12px;
+}
+
+:root[data-mm-preset='compact-minimal'] .mm-nav-item {
+  gap: 8px;
+  padding: 6px 12px 6px 20px;
+  font-size: 0.8125rem;
+}
+
+:root[data-mm-preset='compact-minimal'] .mm-nav-item--active {
+  padding-left: 17px;
+}
+
+:root[data-mm-preset='compact-minimal'] .sidenav li.mm-theme-toggle-li {
+  min-height: 40px;
+  padding: 4px;
+}
+
+@media (pointer: coarse) {
+  :root[data-mm-preset='compact-minimal'] .mm-nav-item,
+  :root[data-mm-preset='compact-minimal'] .mm-nav-group-header,
+  :root[data-mm-preset='compact-minimal'] .mm-search-result {
+    min-height: 40px;
+  }
+}
+
 /* ─── Mobile hamburger ────────────────────────────────────────────────────── */
 .mm-hamburger {
   position: fixed;

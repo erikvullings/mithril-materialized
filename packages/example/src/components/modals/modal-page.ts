@@ -55,6 +55,7 @@ export const ModalPage = () => {
         ),
         m(
           '.row',
+          { style: { marginInline: 0 } },
           m(Button, {
             label: 'Open command palette',
             onclick: () => {
@@ -128,6 +129,7 @@ m(AppCommands, {
         m('h3.header[id=dialog]', 'Dialog'),
         m(
           '.row',
+          { style: { marginInline: 0 } },
           m(Button, {
             label: 'Edit profile',
             onclick: () => {
@@ -165,6 +167,7 @@ m(AppCommands, {
         m('h3.header[id=alert-dialog]', 'Destructive Alert Dialog'),
         m(
           '.row',
+          { style: { marginInline: 0 } },
           m(Button, {
             label: 'Delete project',
             onclick: () => {
@@ -206,8 +209,10 @@ m(AppCommands, {
         m('h3.header[id=menu]', 'Action Menu'),
         m(
           '.row',
+          { style: { marginInline: 0 } },
           m(ActionMenu, {
             ariaLabel: 'Project actions',
+            width: 220,
             trigger: (attrs) => m(Button, { ...attrs, label: 'Project actions', iconName: 'more_vert' }),
             items: [
               { id: 'edit', label: 'Edit project', iconName: 'edit' },
@@ -223,6 +228,7 @@ m(AppCommands, {
 
 m(ActionMenu, {
   ariaLabel: 'Project actions',
+  width: 220,
   trigger: (attrs) =>
     m(Button, { ...attrs, label: 'Project actions', iconName: 'more_vert' }),
   items: [
@@ -283,6 +289,7 @@ m(FileMenu, {
         m('h3.header[id=modal]', 'Normal Modal'),
         m(
           '.row',
+          { style: { marginInline: 0 } },
           m(Button, {
             label: 'Open modal',
             onclick: () => {
@@ -348,6 +355,7 @@ m(FileMenu, {
         m('h3.header', 'Modal with Select Component'),
         m(
           '.row',
+          { style: { marginInline: 0 } },
           m(Button, {
             label: 'Open modal',
             onclick: () => {
@@ -516,6 +524,7 @@ m(FileMenu, {
         m('h3.header', 'Fixed Footer Modal'),
         m(
           '.row',
+          { style: { marginInline: 0 } },
           m(Button, {
             label: 'Fixed footer modal',
             onclick: () => {
@@ -616,6 +625,7 @@ m(FileMenu, {
         m('h3.header', 'Bottom Modal'),
         m(
           '.row',
+          { style: { marginInline: 0 } },
           m(Button, {
             label: 'Open bottom modal',
             onclick: () => {
@@ -683,6 +693,7 @@ m(FileMenu, {
         m('h3.header', 'Vnode as content'),
         m(
           '.row',
+          { style: { marginInline: 0 } },
           m(Button, {
             label: 'Open bottom content modal',
             onclick: () => {

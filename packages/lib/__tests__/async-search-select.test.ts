@@ -95,6 +95,23 @@ describe('SearchSelect async mode', () => {
     expect(container.querySelector('.input-field > label')).toHaveClass('active');
   });
 
+  it('positions the dropdown from the trigger content edge without forcing the field width', () => {
+    const component = SearchSelect<number>();
+    const attrs = {
+      options: [{ id: 1, label: 'Alpha' }],
+    };
+    const result = render(component, attrs);
+    const trigger = result.container.querySelector('.chips-container') as HTMLElement;
+    Object.defineProperty(trigger, 'offsetLeft', { configurable: true, value: 11 });
+
+    fireEvent.click(trigger);
+    result.rerender(component, attrs);
+
+    const dropdown = result.container.querySelector('.dropdown-content') as HTMLElement;
+    expect(dropdown.style.left).toBe('11px');
+    expect(dropdown.style.minWidth).toBe('0px');
+  });
+
   it('allows Tab from the inline search field to reach modal focus management', () => {
     const component = SearchSelect<number>();
     const attrs = {

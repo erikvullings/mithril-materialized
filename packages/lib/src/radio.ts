@@ -154,11 +154,14 @@ export const RadioButtons = <T extends string | number>(): Component<RadioButton
         options: radioItems,
         layout: resolvedLayout,
       });
+      const optionsUseGrid = radioItems.some(({ props }) =>
+        props.className?.split(/\s+/).includes('col')
+      );
 
       return m('div', { id: componentId, className: cn }, [
         label && m('h5.form-group-label', label + (isMandatory ? ' *' : '')),
         description && m('p.helper-text', allowHtml ? m.trust(description) : description),
-        m('form', { action: '#' }, optionsContent),
+        m('form', { action: '#', className: optionsUseGrid ? 'row' : undefined }, optionsContent),
       ]);
     },
   };
