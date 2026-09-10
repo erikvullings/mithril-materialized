@@ -166,7 +166,7 @@ export const SingleRangeSlider = {
     state: any;
   }) {
     const {
-      cn,
+      cn = attrs.className ?? 'col s12',
       style,
       iconName,
       id,
@@ -366,7 +366,7 @@ export const DoubleRangeSlider = {
     state: any;
   }) {
     const {
-      cn,
+      cn = attrs.className ?? 'col s12',
       style,
       iconName,
       id,

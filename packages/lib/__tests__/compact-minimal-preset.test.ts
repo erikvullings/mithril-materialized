@@ -34,10 +34,24 @@ describe('compact minimal preset contract', () => {
       '--mm-navigation-item-height',
       '--mm-control-padding-inline',
       '--mm-control-font-size',
+      '--mm-heading-1-font-size',
+      '--mm-heading-6-font-size',
       '--mm-surface-radius',
       '--mm-surface-shadow',
       '--mm-focus-ring-width',
     ].forEach((token) => expect(source).toContain(token));
+  });
+
+  it('compacts typography without shifting plain text inputs', () => {
+    const source = fs.readFileSync(presetPath, 'utf8');
+
+    expect(source).toMatch(/h1\s*\{[^}]*font-size:\s*var\(--mm-heading-1-font-size\)/s);
+    expect(source).toMatch(/h6\s*\{[^}]*font-size:\s*var\(--mm-heading-6-font-size\)/s);
+    expect(source).toMatch(/textarea\.materialize-textarea\s*\{[^}]*padding-inline:\s*0/s);
+    expect(source).toMatch(/\.input-field \.prefix\s*\{[^}]*align-items:\s*center/s);
+    expect(source).toContain('.input-field .prefix ~ .select-wrapper');
+    expect(source).toMatch(/\.input-field > label\s*\{[^}]*inset-inline-start:\s*0/s);
+    expect(source).toContain('.input-field:dir(rtl) .prefix');
   });
 
   it('covers the required desktop component surfaces within the preset scope', () => {

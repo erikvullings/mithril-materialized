@@ -363,7 +363,7 @@ export const SearchSelect = <T extends string | number>(
         options = [],
         loadOptions,
         oncreateNewOption,
-        className,
+        className = 'col s12',
         placeholder,
         searchPlaceholder = 'Search options...',
         noOptionsFound = 'No options found',

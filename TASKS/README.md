@@ -17,7 +17,7 @@
 
 The following tasks are unblocked and can be worked in parallel.
 
-- [ ] 0008 Align form grid defaults
+- [x] 0008 Align form grid defaults
 - [x] 0009 ModalPanel style overrides and tokens
 - [x] 0010 Compact theme and style override surface
 - [x] 0019 Compact minimal design preset *(needs 0010)*

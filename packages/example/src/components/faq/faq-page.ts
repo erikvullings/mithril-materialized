@@ -31,24 +31,37 @@ m('.row', [
 
       m('h3.header', 'Which components add col s12 by default?'),
       m('p', [
-        'The usual field controls do: ',
+        'Field-like controls default to a full-width ',
+        m('code', 'col s12'),
+        ' wrapper: ',
         m(
           'code',
-          'TextInput, TextArea, NumberInput, EmailInput, UrlInput, PasswordInput, ColorInput, RangeInput, FileInput, Autocomplete, Select, Dropdown, Chips, Switch, RadioButtons, Options, DatePicker, TimePicker, and TimeRangePicker.'
+          'TextInput, TextArea, NumberInput, EmailInput, UrlInput, PasswordInput, ColorInput, RangeInput, SingleRangeSlider, DoubleRangeSlider, FileInput, FileUpload, Autocomplete, Select, SearchSelect, Dropdown, Chips, Switch, RadioButtons, Options, LikertScale, Rating, DatePicker, TimePicker, and TimeRangePicker.'
         ),
       ]),
       m('p', [
-        'This is not a library-wide layout guarantee. ',
-        m('code', 'SearchSelect'),
-        ', ',
-        m('code', 'FileUpload'),
-        ', ',
-        m('code', 'LikertScale'),
-        ', ',
-        m('code', 'Rating'),
-        ', toggle buttons/groups, and range sliders do not add ',
+        m('code', 'ToggleButton'),
+        ' and ',
+        m('code', 'ToggleGroup'),
+        ' remain inline controls and do not add ',
         m('code', 'col s12'),
-        ' by default. Supply layout classes explicitly when placing those components in a grid.',
+        ' by default.',
+      ]),
+
+      m('h3.header', 'What changed in the form grid convention?'),
+      m('p', [
+        'Starting with the next major release, ',
+        m(
+          'code',
+          'SearchSelect, FileUpload, LikertScale, Rating, SingleRangeSlider, and DoubleRangeSlider'
+        ),
+        ' also default to ',
+        m('code', 'col s12'),
+        '. If your layout relied on one of these controls having no grid class, pass ',
+        m('code', "className: ''"),
+        '. Otherwise, pass the intended grid width explicitly, for example ',
+        m('code', "className: 'col s6'"),
+        '.',
       ]),
 
       m('h3.header', 'Why does className use spaces instead of dots?'),

@@ -495,6 +495,7 @@ delete document.documentElement.dataset.mmPreset;
 ```
 
 The preset covers buttons, form controls, selects, menus, navigation, dialogs, CommandPalette, DataTable, VirtualList, Snackbar, Avatar, Skeleton, and EmptyState. Coarse pointers automatically retain larger control and menu targets.
+Its semantic typography scale also reduces heading, body, label, and control sizes while preserving the existing font family and readable hierarchy.
 
 Virtualization remains runtime geometry, so configure its fixed height explicitly:
 
@@ -512,9 +513,23 @@ Override semantic tokens after the preset import when product-specific tuning is
 [data-mm-preset="compact-minimal"] {
   --mm-control-height: 34px;
   --mm-row-height: 38px;
+  --mm-heading-2-font-size: 1.875rem;
   --mm-surface-radius: 2px;
 }
 ```
+
+### Form grid convention
+
+Field-like controls default their outer wrapper to `col s12`, including `SearchSelect`, `FileUpload`, `LikertScale`, `Rating`, `SingleRangeSlider`, and `DoubleRangeSlider`. Pass `className` to replace that width:
+
+```typescript
+m('.row', [
+  m(TextInput, { className: 'col s6', label: 'Name' }),
+  m(SearchSelect, { className: 'col s6', options }),
+]);
+```
+
+`ToggleButton` and `ToggleGroup` remain inline controls. **Migration note:** starting with the next major release, the six components listed above gain the full-width default. Consumers that relied on their previous classless layout should pass `className: ''`; use an explicit grid class such as `className: 'col s6'` when a fixed width is intended.
 
 **Bundle Size Optimization:**
 

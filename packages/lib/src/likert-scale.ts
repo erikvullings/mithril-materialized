@@ -318,7 +318,7 @@ export const LikertScale: FactoryComponent<LikertScaleAttrs> = () => {
         size = 'medium',
         density = 'standard',
         layout = 'responsive',
-        className = '',
+        className = 'col s12',
         style = {},
         readonly = false,
         disabled = false,

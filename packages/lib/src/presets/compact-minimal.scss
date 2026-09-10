@@ -19,6 +19,15 @@
   --mm-control-padding-block: 4px;
   --mm-control-font-size: 0.8125rem;
   --mm-control-line-height: 1.35;
+  --mm-body-font-size: 0.9375rem;
+  --mm-heading-1-font-size: 2rem;
+  --mm-heading-2-font-size: 1.75rem;
+  --mm-heading-3-font-size: 1.5rem;
+  --mm-heading-4-font-size: 1.25rem;
+  --mm-heading-5-font-size: 1.0625rem;
+  --mm-heading-6-font-size: 0.9375rem;
+  --mm-heading-font-weight: 500;
+  --mm-heading-line-height: 1.25;
   --mm-surface-radius: 3px;
   --mm-surface-shadow: none;
   --mm-border-width: 1px;
@@ -44,6 +53,50 @@
   --mm-skeleton-text-radius: 2px;
   --mm-empty-state-padding: 24px 16px;
   --mm-empty-state-title-size: 1.25rem;
+
+  body {
+    font-size: var(--mm-body-font-size);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: var(--mm-heading-font-weight);
+    line-height: var(--mm-heading-line-height);
+  }
+
+  h1 {
+    margin-block: var(--mm-space-4) var(--mm-space-3);
+    font-size: var(--mm-heading-1-font-size);
+  }
+
+  h2 {
+    margin-block: var(--mm-space-4) var(--mm-space-3);
+    font-size: var(--mm-heading-2-font-size);
+  }
+
+  h3 {
+    margin-block: var(--mm-space-4) var(--mm-space-2);
+    font-size: var(--mm-heading-3-font-size);
+  }
+
+  h4 {
+    margin-block: var(--mm-space-3) var(--mm-space-2);
+    font-size: var(--mm-heading-4-font-size);
+  }
+
+  h5 {
+    margin-block: var(--mm-space-3) var(--mm-space-1);
+    font-size: var(--mm-heading-5-font-size);
+  }
+
+  h6 {
+    margin-block: var(--mm-space-2) var(--mm-space-1);
+    font-size: var(--mm-heading-6-font-size);
+  }
 
   .btn,
   .btn-flat,
@@ -117,7 +170,7 @@
     height: var(--mm-control-height);
     min-height: var(--mm-control-height);
     margin-block: 0 var(--mm-space-2);
-    padding-inline: var(--mm-space-1);
+    padding-inline: 0;
     box-sizing: border-box;
     font-size: var(--mm-control-font-size);
     line-height: var(--mm-control-line-height);
@@ -128,7 +181,90 @@
   }
 
   .input-field > label {
+    left: auto;
+    right: auto;
+    inset-inline-start: 0;
     font-size: var(--mm-control-font-size);
+  }
+
+  .input-field.col > label {
+    inset-inline-start: 0.75rem;
+  }
+
+  .input-field .prefix {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: auto;
+    right: auto;
+    inset-inline-start: 0;
+    inset-block-start: 0;
+    width: var(--mm-control-height);
+    height: var(--mm-control-height);
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .input-field.col .prefix {
+    inset-inline-start: 0.75rem;
+  }
+
+  // Material Icons force `direction: ltr`, so their logical inset must be
+  // corrected from the field direction rather than the icon's own direction.
+  .input-field:dir(rtl) .prefix {
+    left: auto;
+    right: 0;
+    inset-inline-start: auto;
+  }
+
+  .input-field.col:dir(rtl) .prefix {
+    right: 0.75rem;
+  }
+
+  .input-field .prefix ~ input,
+  .input-field .prefix ~ textarea,
+  .input-field .prefix ~ .select-wrapper,
+  .input-field .prefix ~ label,
+  .input-field .prefix ~ .validate ~ label,
+  .input-field .prefix ~ .helper-text,
+  .input-field .prefix ~ .autocomplete-content {
+    width: calc(100% - var(--mm-control-height) - var(--mm-space-2));
+    margin-left: 0;
+    margin-inline-start: calc(var(--mm-control-height) + var(--mm-space-2));
+  }
+
+  .input-field.col .prefix ~ label,
+  .input-field.col .prefix ~ .validate ~ label {
+    width: calc(
+      100% - var(--mm-control-height) - var(--mm-space-2) - 1.5rem
+    );
+  }
+
+  .input-field.select-space.select-appearance-outlined
+    > .prefix.material-icons {
+    left: auto;
+    top: 0;
+    inset-inline-start: calc(0.75rem + var(--mm-control-padding-inline));
+    transform: none;
+  }
+
+  .input-field.select-space.select-appearance-outlined:dir(rtl)
+    > .prefix.material-icons {
+    left: auto;
+    right: calc(0.75rem + var(--mm-control-padding-inline));
+    inset-inline-start: auto;
+  }
+
+  .input-field.select-space.select-appearance-outlined
+    > .prefix.material-icons
+    + .select-wrapper {
+    width: 100%;
+    margin-left: 0;
+    margin-inline-start: 0;
+    padding-left: var(--mm-control-padding-inline);
+    padding-inline-start: calc(
+      var(--mm-control-height) + var(--mm-control-padding-inline)
+    );
   }
 
   .input-field .number-input-controls {

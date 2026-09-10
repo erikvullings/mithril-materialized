@@ -201,7 +201,7 @@ export const FileUpload: FactoryComponent<FileUploadAttrs> = () => {
         label,
         helperText,
         showPreview = true,
-        className = '',
+        className = 'col s12',
         error,
         i18n,
       } = attrs;

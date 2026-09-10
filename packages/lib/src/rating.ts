@@ -304,7 +304,7 @@ export const Rating: FactoryComponent<RatingAttrs> = () => {
         step = 1,
         size = 'medium',
         density = 'standard',
-        className = '',
+        className = 'col s12',
         style = {},
         readonly: readonly = false,
         disabled = false,
