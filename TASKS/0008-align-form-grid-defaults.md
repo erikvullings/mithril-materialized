@@ -1,10 +1,10 @@
 # 0008 Align form grid defaults
 
-Status: open
+Status: done
 Priority: medium
 Owner: unassigned
-Agent: unassigned
-Area: lib
+Agent: copilot
+Subsystem: frontend
 Depends on: none
 
 ## Context
@@ -31,3 +31,4 @@ Make the layout behavior consistent in the next major release. The change is vis
 ## Agent Notes
 
 - 2026-07-25 codex: created from the Example-app grid-layout FAQ work. The current inconsistent components were audited from source; `ToggleButton` and `ToggleGroup` are intentionally excluded because their common toolbar/inline use should not gain a full-width wrapper.
+- 2026-09-10 copilot: Added `col s12` defaults with replacing `className` overrides for SearchSelect, FileUpload, LikertScale, Rating, SingleRangeSlider, and DoubleRangeSlider. Added regression coverage for defaults, overrides, and the intentionally inline ToggleButton/ToggleGroup controls. Updated both READMEs and the Example FAQ with the convention and migration guidance.

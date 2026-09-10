@@ -303,19 +303,26 @@ body.keyboard-focused {
 }
 
 // Search input field
-.search-select-input {
-  width: 100%;
+input[type="text"].search-select-input:not(.browser-default) {
+  flex: 1 1 8rem;
+  width: auto;
+  min-width: 5rem;
+  height: 32px;
+  min-height: 32px;
+  margin: 0;
   box-sizing: border-box;
   outline: none;
   font-size: 0.875rem;
   border: none;
-  padding: 8px 24px 8px 0;
-  border-bottom: 1px solid var(--mm-input-border, #9e9e9e);
+  padding: 0 24px 0 0;
+  border-bottom: 0;
   background-color: transparent;
   color: var(--mm-text-primary, inherit);
+  box-shadow: none;
 
   &:focus {
-    border-bottom-color: var(--mm-primary-color, #2196F3);
+    border-bottom: 0;
+    box-shadow: none;
   }
 
   &::placeholder {
@@ -324,14 +331,16 @@ body.keyboard-focused {
 }
 
 .search-select-loading-indicator {
-  position: absolute;
-  top: 50%;
-  right: 16px;
+  position: relative;
+  top: auto;
+  right: auto;
+  inset-inline-end: auto;
+  flex: 0 0 18px;
   width: 18px;
   height: 18px;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-50%);
+  transform: none;
   transition: opacity 120ms ease-out;
   pointer-events: none;
 
@@ -452,12 +461,18 @@ body.keyboard-focused {
 .multi-select-dropdown {
   .chips-container {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     flex-wrap: wrap;
     cursor: pointer;
     position: relative;
     min-height: var(--mm-input-height, 3rem);
     padding: 4px 0;
+
+    &:focus-visible,
+    &:focus-within {
+      border-bottom-color: var(--mm-primary-color, #26a69a);
+      box-shadow: 0 1px 0 0 var(--mm-primary-color, #26a69a);
+    }
 
     .chip {
       margin: 2px 4px 2px 0;
@@ -485,8 +500,10 @@ body.keyboard-focused {
     }
 
     .caret {
-      margin-left: auto;
+      margin-left: 0;
+      margin-inline-start: auto;
       cursor: pointer;
+      flex: 0 0 auto;
     }
   }
 }

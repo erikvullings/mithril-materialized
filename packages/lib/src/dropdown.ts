@@ -193,9 +193,6 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
           'span',
           {
             class: 'mm-layout-row mm-layout-row--center',
-            style: {
-              padding: '14px 16px',
-            },
           },
           [
             item.iconName
@@ -402,9 +399,6 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
                       'span',
                       {
                         class: 'mm-layout-row mm-layout-row--center',
-                        style: {
-                          padding: '14px 16px',
-                        },
                       },
                       [
                         item.iconName

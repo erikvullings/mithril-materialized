@@ -166,7 +166,7 @@ export const SingleRangeSlider = {
     state: any;
   }) {
     const {
-      cn,
+      cn = attrs.className ?? 'col s12',
       style,
       iconName,
       id,
@@ -268,7 +268,13 @@ export const SingleRangeSlider = {
       };
     };
 
-    const fieldClass = vertical ? 'range-field vertical' : 'range-field';
+    const fieldClass = [
+      'range-field',
+      vertical ? 'vertical' : '',
+      finalValueDisplay === 'always' ? 'has-visible-value' : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
 
     return m('.input-field', { className: cn, style }, [
       iconName ? m('i.material-icons.prefix', iconName) : undefined,
@@ -366,7 +372,7 @@ export const DoubleRangeSlider = {
     state: any;
   }) {
     const {
-      cn,
+      cn = attrs.className ?? 'col s12',
       style,
       iconName,
       id,

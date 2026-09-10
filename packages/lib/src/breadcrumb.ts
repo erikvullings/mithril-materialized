@@ -62,7 +62,7 @@ export const Breadcrumb: FactoryComponent<BreadcrumbAttrs> = () => {
         displayItems = [firstItem, { text: '...', disabled: true, className: 'breadcrumb-ellipsis' }, ...lastItems];
       }
 
-      return m('nav.breadcrumb', { class: className }, [
+      return m('nav.breadcrumb', { className }, [
         m(
           'ol.breadcrumb-list',
           displayItems

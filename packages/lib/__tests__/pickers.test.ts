@@ -749,4 +749,35 @@ describe('Clock keyboard navigation', () => {
     fireEvent.keyDown(clock, 'ArrowDown');
     expect(onTimeChange).toHaveBeenLastCalledWith(9, 30);
   });
+
+  test('maps pointer positions from a visually scaled analog clock to its logical dial', () => {
+    const onTimeChange = jest.fn();
+    const { container } = render(AnalogClock, {
+      hours: 12,
+      minutes: 30,
+      amOrPm: 'AM',
+      currentView: 'hours',
+      twelveHour: true,
+      onTimeChange,
+    });
+    const canvas = container.querySelector('.timepicker-canvas') as HTMLElement;
+    const plate = canvas.parentElement as HTMLElement;
+    plate.getBoundingClientRect = () =>
+      ({
+        left: 0,
+        top: 0,
+        right: 216,
+        bottom: 216,
+        width: 216,
+        height: 216,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      }) as DOMRect;
+
+    canvas.dispatchEvent(new MouseEvent('mousedown', { clientX: 216, clientY: 108, bubbles: true }));
+    document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+
+    expect(onTimeChange).toHaveBeenCalledWith(3, 30);
+  });
 });

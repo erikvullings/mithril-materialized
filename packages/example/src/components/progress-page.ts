@@ -79,7 +79,7 @@ export const ProgressPage = () => {
             m('h5', 'Linear Indeterminate'),
             m(
               '.demo-container',
-              { style: { padding: '20px' } },
+              { style: { padding: '20px 0' } },
               m(LinearProgress, {
                 mode: 'indeterminate',
                 color: 'teal',
@@ -106,7 +106,6 @@ m(LinearProgress, {
         m('h3.header', 'Determinate Progress'),
         m('p', 'Use determinate mode to show specific progress values.'),
         m('.row', [
-          m('.col.s12', [
             m(SingleRangeSlider, {
               id: 'progress-slider',
               label: 'Progress Value',
@@ -119,7 +118,6 @@ m(LinearProgress, {
                 determinateValue = value;
               },
             }),
-          ]),
         ]),
         m('.row', [
           m('.col.s12.m6', [
@@ -139,7 +137,7 @@ m(LinearProgress, {
             m('h5', 'Linear Determinate'),
             m(
               '.demo-container',
-              { style: { padding: '20px' } },
+              { style: { padding: '20px 0' } },
               m(LinearProgress, {
                 mode: 'determinate',
                 value: determinateValue,
@@ -200,7 +198,7 @@ m(LinearProgress, {
           ]),
           m('.col.s12.m6', [
             m('h5', 'Linear Sizes'),
-            m('.demo-container', { style: { padding: '20px' } }, [
+            m('.demo-container', { style: { padding: '20px 0' } }, [
               m('p', 'Small'),
               m(LinearProgress, {
                 mode: 'determinate',
@@ -295,7 +293,7 @@ m(LinearProgress, {
           ]),
           m('.col.s12.m6', [
             m('h5', 'Linear Colors'),
-            m('.demo-container', { style: { padding: '20px' } }, [
+            m('.demo-container', { style: { padding: '20px 0' } }, [
               m('p', 'Red'),
               m(LinearProgress, {
                 mode: 'determinate',
@@ -370,7 +368,7 @@ m(CircularProgress, {
           ]),
           m('.col.s12.m6', [
             m('h5', 'Linear with Labels'),
-            m('.demo-container', { style: { padding: '20px' } }, [
+            m('.demo-container', { style: { padding: '20px 0' } }, [
               m(LinearProgress, {
                 mode: 'determinate',
                 value: 60,
@@ -438,7 +436,7 @@ m(LinearProgress, {
             m('h5', 'Linear'),
             m(
               '.demo-container',
-              { style: { padding: '20px' } },
+              { style: { padding: '20px 0' } },
               m(LinearProgress, {
                 mode: 'determinate',
                 value: simulatedProgress,

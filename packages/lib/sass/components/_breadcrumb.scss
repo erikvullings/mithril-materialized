@@ -1,11 +1,15 @@
 // Breadcrumb Component Styles
 
-.breadcrumb {
+nav.breadcrumb {
   padding: 1rem 0;
   margin-bottom: 1rem;
   background: transparent;
+  color: inherit;
   display: flex;
   align-items: center;
+  height: auto;
+  font-size: inherit;
+  line-height: normal;
   min-height: 2rem;
   
   .breadcrumb-list {
@@ -81,12 +85,14 @@
   max-width: 200px;
 }
 
-.breadcrumb-icon {
+nav.breadcrumb .breadcrumb-icon {
   font-size: 1.125rem;
   width: 18px;
   height: 18px;
+  line-height: 18px;
   margin-right: 0.5rem;
   flex-shrink: 0;
+  float: none;
   color: inherit;
   display: flex;
   align-items: center;

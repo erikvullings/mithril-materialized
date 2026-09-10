@@ -1,5 +1,6 @@
 import 'material-icons/iconfont/filled.css';
 import 'mithril-materialized/index.css';
+import 'mithril-materialized/presets/compact-minimal.css';
 import m from 'mithril';
 import { dashboardSvc } from './services/dashboard-service';
 

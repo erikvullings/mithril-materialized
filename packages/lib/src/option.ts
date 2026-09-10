@@ -109,6 +109,9 @@ export const OptionsList: Component<{
   },
 };
 
+const usesGridColumns = (classNames: Array<string | undefined>) =>
+  classNames.some((className) => className?.split(/\s+/).includes('col'));
+
 /** A list of checkboxes */
 export const Options = <T extends string | number>(): Component<OptionsAttrs<T>> => {
   const state = {
@@ -168,7 +171,7 @@ export const Options = <T extends string | number>(): Component<OptionsAttrs<T>>
           disabled: disabled || option.disabled,
           label: option.label,
           onchange: onchange ? (v: boolean) => handleChange(option.id, v, checkedIds, onchange) : undefined,
-          className: option.className || checkboxClass,
+          className: option.className || checkboxClass || '',
           checked: isChecked(option.id),
           description: option.description,
           inputId: `${state.componentId}-${option.id}`,
@@ -180,6 +183,9 @@ export const Options = <T extends string | number>(): Component<OptionsAttrs<T>>
         options: optionItems,
         layout,
       });
+      const optionsUseGrid = usesGridColumns(
+        optionItems.map(({ props }) => props.className)
+      );
 
       return m('div', { id: state.componentId, className: cn, style }, [
         label && m('h5.form-group-label', label + (isMandatory ? ' *' : '')),
@@ -210,7 +216,7 @@ export const Options = <T extends string | number>(): Component<OptionsAttrs<T>>
             ),
           ]),
         description && m(HelperText, { helperText: description }),
-        m('form', { action: '#' }, optionsContent),
+        m('form', { action: '#', className: optionsUseGrid ? 'row' : undefined }, optionsContent),
       ]);
     },
   };

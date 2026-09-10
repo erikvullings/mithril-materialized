@@ -275,7 +275,7 @@ export const CollectionsPage = () => {
               content: m('div', [
                 m('p', { style: 'margin: 0 0 8px 0;' }, 'Senior Developer • React Team'),
                 m('div', { style: 'display: flex; gap: 8px;' }, [
-                  m('span.badge.blue', { 'data-badge-caption': '' }, 'React'),
+                  m('span.badge.blue.white-text', { 'data-badge-caption': '' }, 'React'),
                   m('span.badge.green', { 'data-badge-caption': '' }, 'TypeScript'),
                   m('span.badge.orange', { 'data-badge-caption': '' }, 'Node.js'),
                 ]),
@@ -307,7 +307,7 @@ export const CollectionsPage = () => {
               content: m('div', [
                 m('p', 'Senior Developer • React Team'),
                 m('div', [
-                  m('span.badge.blue', { 'data-badge-caption': '' }, 'React'),
+                  m('span.badge.blue.white-text', { 'data-badge-caption': '' }, 'React'),
                   m('span.badge.green', { 'data-badge-caption': '' }, 'TypeScript'),
                   m('span.badge.orange', { 'data-badge-caption': '' }, 'Node.js')
                 ])

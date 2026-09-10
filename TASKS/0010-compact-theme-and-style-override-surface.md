@@ -1,10 +1,10 @@
 # 0010 Compact theme and style override surface
 
-Status: open
+Status: done
 Priority: medium
 Owner: unassigned
-Agent: unassigned
-Area: styles
+Agent: copilot
+Subsystem: frontend
 Depends on: none
 
 ## Context
@@ -49,3 +49,4 @@ The user also wants a compact modern theme (denser controls/spacing), but this t
 ## Agent Notes
 
 - 2026-08-06 copilot: created from follow-up discussion after modal refactor. This task is planning/scope only. No code implementation started.
+- 2026-09-10 copilot: Completed the override inventory. Prioritized forms/buttons/select/menu/dialog as the pilot, navigation and data density second, and feedback/identity surfaces third. The minimum shared token set covers spacing, control/row/menu heights, control typography, radii, borders, elevation, and focus. Runtime positioning, virtual offsets, measured dimensions, progress values, and other behavioral geometry remain intentionally outside the token system. Implementation proceeds in 0019 through a standalone scoped preset.

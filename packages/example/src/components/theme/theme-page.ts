@@ -1,11 +1,30 @@
 import { HighlightedCodeBlock } from "../highlighted-code-block";
 import m from 'mithril';
-import { Button, ThemeSwitcher, ThemeToggle, Theme } from 'mithril-materialized';
+import {
+  Avatar,
+  Button,
+  Skeleton,
+  TextInput,
+  ThemeSwitcher,
+  ThemeToggle,
+  Theme,
+} from 'mithril-materialized';
 
 export const ThemePage = () => {
   const state = {
     currentTheme: 'auto' as Theme,
     primaryColor: '#26a69a',
+    compactMinimal:
+      document.documentElement.dataset.mmPreset === 'compact-minimal',
+  };
+
+  const setCompactMinimal = (enabled: boolean) => {
+    state.compactMinimal = enabled;
+    if (enabled) {
+      document.documentElement.dataset.mmPreset = 'compact-minimal';
+    } else {
+      delete document.documentElement.dataset.mmPreset;
+    }
   };
 
   const setPrimaryColor = (
@@ -32,6 +51,53 @@ export const ThemePage = () => {
           'Components for switching between light and dark modes. ',
           'The theme switcher allows users to choose between light, dark, and auto (system preference) themes.',
         ]),
+
+        m('h3.header[id=compact-minimal]', 'Compact Minimal Preset'),
+        m(
+          'p',
+          'An opt-in desktop density and visual-style preset that composes independently with light, dark, and auto color themes. Touch pointers retain larger interaction targets.'
+        ),
+        m('.row', [
+          m('.col.s12.mm-layout-cluster', [
+            m(Button, {
+              label: 'Use default',
+              disabled: !state.compactMinimal,
+              onclick: () => setCompactMinimal(false),
+            }),
+            m(Button, {
+              label: 'Use compact minimal',
+              disabled: state.compactMinimal,
+              onclick: () => setCompactMinimal(true),
+            }),
+          ]),
+          m(TextInput, {
+            label: 'Filter files',
+            placeholder: 'Type a file name',
+          }),
+          m('.col.s12', [
+            m('.mm-layout-cluster', [
+              m(Avatar, { name: 'Ada Lovelace', alt: 'Ada Lovelace' }),
+              m('span', 'Ada Lovelace'),
+            ]),
+          ]),
+          m('.col.s12', [
+            m(Skeleton, {
+              shape: 'text',
+              count: 2,
+              margin: '12px 0 0',
+            }),
+          ]),
+        ]),
+        m(HighlightedCodeBlock, {
+          code: `import 'mithril-materialized/index.css';
+import 'mithril-materialized/presets/compact-minimal.css';
+
+// Combine independently with data-theme="light", "dark", or auto.
+document.documentElement.dataset.mmPreset = 'compact-minimal';
+
+// Return to the default spacious presentation.
+delete document.documentElement.dataset.mmPreset;`,
+        }),
 
         m('h3.header[id=primarycolor]', 'Primary Color'),
         m('p', [

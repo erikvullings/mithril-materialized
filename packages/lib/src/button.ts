@@ -246,10 +246,10 @@ export const ConfirmButton: FactoryComponent<ConfirmButtonAttrs> = () => {
         !label && isConfirming
           ? {
               ...props.style,
-              width: '36px',
-              height: '36px',
+              width: 'var(--mm-confirm-button-size, 36px)',
+              height: 'var(--mm-confirm-button-size, 36px)',
               padding: '0',
-              minWidth: '28px',
+              minWidth: 'var(--mm-confirm-button-min-size, 28px)',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',

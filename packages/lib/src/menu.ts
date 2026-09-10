@@ -55,6 +55,8 @@ export interface MenuBaseAttrs<T extends string | number> extends Attributes {
   onSelect?: (id: T, item: MenuItem<T>) => void;
   /** Keep the menu open after an item is selected. */
   closeOnSelect?: boolean;
+  /** Fixed menu width in pixels, clamped to the viewport. */
+  width?: number;
   /** Minimum menu width in pixels. */
   minWidth?: number;
   /** Maximum menu height in pixels. */
@@ -178,9 +180,12 @@ const createMenu = <T extends string | number>(
   const calculatePosition = (attrs: MenuBaseAttrs<T>, menuElement?: HTMLElement | null) => {
     const rect = anchorRect();
     const measuredRect = menuElement?.getBoundingClientRect();
+    const viewportWidth = Math.max(0, window.innerWidth - 16);
     const menuWidth = Math.min(
-      measuredRect?.width || Math.max(attrs.minWidth ?? 200, rect.width),
-      Math.max(0, window.innerWidth - 16)
+      attrs.width !== undefined
+        ? Math.max(0, attrs.width)
+        : measuredRect?.width || Math.max(attrs.minWidth ?? 200, rect.width),
+      viewportWidth
     );
     const estimatedHeight = Math.min(
       attrs.maxHeight ?? 320,
@@ -347,6 +352,9 @@ const createMenu = <T extends string | number>(
 
   const renderMenu = (attrs: MenuBaseAttrs<T>) => {
     const position = calculatePosition(attrs);
+    const viewportWidth = Math.max(0, window.innerWidth - 16);
+    const fixedWidth =
+      attrs.width === undefined ? undefined : Math.min(Math.max(0, attrs.width), viewportWidth);
     return m(
       'ul.mm-menu',
       {
@@ -359,10 +367,11 @@ const createMenu = <T extends string | number>(
         style: {
           top: `${position.top}px`,
           left: `${position.left}px`,
-          minWidth: `${Math.min(
-            Math.max(attrs.minWidth ?? 200, anchorRect().width),
-            Math.max(0, window.innerWidth - 16)
-          )}px`,
+          width: fixedWidth === undefined ? undefined : `${fixedWidth}px`,
+          minWidth:
+            fixedWidth === undefined
+              ? `${Math.min(Math.max(attrs.minWidth ?? 200, anchorRect().width), viewportWidth)}px`
+              : undefined,
           maxHeight: `${Math.min(attrs.maxHeight ?? position.maxHeight, position.maxHeight)}px`,
         },
         onkeydown: (event: KeyboardEvent) => handleMenuKeyDown(event, attrs),

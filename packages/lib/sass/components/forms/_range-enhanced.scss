@@ -80,7 +80,7 @@
     
     &.horizontal {
       position: absolute;
-      top: 25%;
+      top: 50%;
       left: 0;
       transform: translateY(-50%);
       width: 100%;
@@ -101,7 +101,7 @@
     
     &.horizontal {
       position: absolute;
-      top: 25%;
+      top: 50%;
       transform: translateY(-50%);
       height: 4px;
     }
@@ -124,6 +124,7 @@
     
     &.horizontal {
       position: absolute;
+      top: 50%;
       transform: translateY(-50%);
     }
     
@@ -228,6 +229,10 @@
   &:focus-visible .thumb:hover {
     box-shadow: 0 0 0 3px var(--mm-primary-color-alpha-30, rgba(38, 166, 154, 0.3)), 0 4px 8px rgba(0,0,0,0.3);
   }
+}
+
+.range-field.has-visible-value {
+  padding-top: 20px;
 }
 
 .double-range-slider {

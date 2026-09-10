@@ -249,7 +249,7 @@ video.responsive-video {
 }
 
 // Breadcrumbs
-.breadcrumb {
+.breadcrumb:not(nav) {
   display: inline-block;
   font-size: 18px;
   color: rgba(255,255,255, .7);
