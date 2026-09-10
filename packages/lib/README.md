@@ -477,6 +477,45 @@ import 'mithril-materialized/utilities.css'; // Badges, icons, cards
 - `advanced.css` - Specialized components (carousel, sidenav, navbar, preloader)
 - `utilities.css` - Visual utilities (badges, cards, icons, toast, chips)
 
+### Compact Minimal preset
+
+The optional Compact Minimal preset provides a denser, low-elevation desktop-tool presentation without changing component APIs or the default spacious design:
+
+```typescript
+import 'mithril-materialized/index.css';
+import 'mithril-materialized/presets/compact-minimal.css';
+
+document.documentElement.dataset.mmPreset = 'compact-minimal';
+```
+
+Density and visual style remain independent of color. Combine the preset with light, dark, or automatic theme selection, and remove the attribute to return to the default:
+
+```typescript
+delete document.documentElement.dataset.mmPreset;
+```
+
+The preset covers buttons, form controls, selects, menus, navigation, dialogs, CommandPalette, DataTable, VirtualList, Snackbar, Avatar, Skeleton, and EmptyState. Coarse pointers automatically retain larger control and menu targets.
+
+Virtualization remains runtime geometry, so configure its fixed height explicitly:
+
+```typescript
+m(DataTable, {
+  data,
+  columns,
+  virtualization: { viewportHeight: 360, rowHeight: 36, overscan: 2 },
+});
+```
+
+Override semantic tokens after the preset import when product-specific tuning is needed:
+
+```css
+[data-mm-preset="compact-minimal"] {
+  --mm-control-height: 34px;
+  --mm-row-height: 38px;
+  --mm-surface-radius: 2px;
+}
+```
+
 **Bundle Size Optimization:**
 
 - Full bundle: 64KB gzipped (44KB JS + 20KB CSS)

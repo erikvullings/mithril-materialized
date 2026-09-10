@@ -1,10 +1,10 @@
 # 0019 Compact minimal design preset
 
-Status: open
+Status: done
 Priority: medium
 Subsystem: frontend
 Owner: unassigned
-Agent: unassigned
+Agent: copilot
 Depends on: 0010
 
 ## Context
@@ -71,3 +71,5 @@ The preset must remain independent from the existing light/dark/auto color theme
 ## Agent Notes
 
 - 2026-09-10 copilot: Created as the implementation follow-up to planning task 0010. Scope is intentionally limited to one opt-in compact-minimal preset; the default design and future preset families are out of scope.
+- 2026-09-10 copilot: Started implementation after completing 0010. The public contract will be a standalone `presets/compact-minimal.css` import plus `data-mm-preset="compact-minimal"` on the document root. Component APIs and runtime-calculated geometry remain unchanged.
+- 2026-09-10 copilot: Implemented the scoped preset, package export and build target, Theme-page comparison, search entry, and README guidance. Covered forms, actions, menus, navigation, overlays, data display, feedback, identity, and loading/empty states; coarse pointers raise interaction targets to 40px. Browser validation covered default isolation, light/dark composition, desktop/touch layouts, input-label clearance, and horizontal overflow. All 305 library tests pass and both production packages build. The example's standalone typecheck retains unrelated pre-existing `unknown`-to-`string` errors in `navigation-page.ts`.

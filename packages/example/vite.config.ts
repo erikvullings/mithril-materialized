@@ -38,6 +38,10 @@ export default defineConfig(({ command }) => {
               // exist until that build runs; the source .scss produces the same
               // stylesheet directly.
               'mithril-materialized/index.css': path.resolve(libRoot, 'src/index.scss'),
+              'mithril-materialized/presets/compact-minimal.css': path.resolve(
+                libRoot,
+                'src/presets/compact-minimal.scss'
+              ),
               'mithril-materialized': path.resolve(libRoot, 'src/index.ts'),
             }),
       },

@@ -26,6 +26,7 @@
     "./pickers.css": "./dist/pickers.css",
     "./advanced.css": "./dist/advanced.css",
     "./utilities.css": "./dist/utilities.css",
+    "./presets/compact-minimal.css": "./dist/presets/compact-minimal.css",
     "./sass/*": "./sass/*"
   },
   "sideEffects": [
@@ -39,7 +40,8 @@
   "scripts": {
     "build": "rollup -c rollup.config.mjs && npm run build:css-min",
     "build:css-min": "sass --no-source-map --style=compressed --no-charset ./src/index.scss ./dist/index.min.css && npm run build:css-modules",
-    "build:css-modules": "sass --no-source-map ./src/core.scss ./dist/core.css && sass --no-source-map ./src/components.scss ./dist/components.css && sass --no-source-map ./src/forms.scss ./dist/forms.css && sass --no-source-map ./src/pickers.scss ./dist/pickers.css && sass --no-source-map ./src/advanced.scss ./dist/advanced.css && sass --no-source-map ./src/utilities.scss ./dist/utilities.css",
+    "build:css-modules": "sass --no-source-map ./src/core.scss ./dist/core.css && sass --no-source-map ./src/components.scss ./dist/components.css && sass --no-source-map ./src/forms.scss ./dist/forms.css && sass --no-source-map ./src/pickers.scss ./dist/pickers.css && sass --no-source-map ./src/advanced.scss ./dist/advanced.css && sass --no-source-map ./src/utilities.scss ./dist/utilities.css && npm run build:css-presets",
+    "build:css-presets": "sass --no-source-map ./src/presets/compact-minimal.scss ./dist/presets/compact-minimal.css",
     "dev": "concurrently \"rollup -c rollup.config.mjs -w\" \"pnpm run css:watch\"",
     "start": "pnpm run dev",
     "clean": "rimraf dist node_modules/.cache",

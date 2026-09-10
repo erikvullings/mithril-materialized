@@ -167,6 +167,7 @@ export const searchIndex: SearchEntry[] = [
   { title: 'Theme', page: 'Styling', route: '/theme' },
   { title: 'ThemeSwitcher', page: 'Theme', route: '/theme', hash: 'themeswitcher' },
   { title: 'ThemeToggle', page: 'Theme', route: '/theme', hash: 'themetoggle' },
+  { title: 'Compact Minimal Preset', page: 'Theme', route: '/theme', hash: 'compact-minimal' },
   { title: 'FileUpload', page: 'Misc', route: '/misc', hash: 'fileupload' },
   { title: 'CSS', page: 'Styling', route: '/css/color' },
 ];

@@ -1,0 +1,469 @@
+/**
+ * Compact Minimal preset
+ *
+ * Import this stylesheet after a regular mithril-materialized CSS bundle, then
+ * add data-mm-preset="compact-minimal" to the document root. Color remains
+ * controlled independently by data-theme.
+ */
+[data-mm-preset="compact-minimal"] {
+  --mm-density-unit: 4px;
+  --mm-space-1: 4px;
+  --mm-space-2: 8px;
+  --mm-space-3: 12px;
+  --mm-space-4: 16px;
+  --mm-control-height: 32px;
+  --mm-row-height: 36px;
+  --mm-menu-item-height: 32px;
+  --mm-navigation-item-height: 36px;
+  --mm-control-padding-inline: 10px;
+  --mm-control-padding-block: 4px;
+  --mm-control-font-size: 0.8125rem;
+  --mm-control-line-height: 1.35;
+  --mm-surface-radius: 3px;
+  --mm-surface-shadow: none;
+  --mm-border-width: 1px;
+  --mm-divider-width: 1px;
+  --mm-focus-ring-width: 2px;
+  --mm-focus-ring-color: var(--mm-primary-color);
+
+  --mm-menu-padding: 4px 0;
+  --mm-menu-border-radius: var(--mm-surface-radius);
+  --mm-menu-shadow: var(--mm-surface-shadow);
+  --mm-modal-border-radius: var(--mm-surface-radius);
+  --mm-modal-shadow: var(--mm-surface-shadow);
+  --mm-modal-content-padding: var(--mm-space-4);
+  --mm-modal-content-padding-top-with-close: 40px;
+  --mm-modal-footer-padding: var(--mm-space-1) var(--mm-space-2);
+  --mm-modal-close-top: var(--mm-space-1);
+  --mm-modal-close-right: var(--mm-space-1);
+  --mm-modal-close-padding: var(--mm-space-1);
+  --mm-dialog-action-gap: var(--mm-space-1);
+  --mm-command-palette-radius: var(--mm-surface-radius);
+  --mm-skeleton-gap: var(--mm-space-1);
+  --mm-skeleton-radius: 2px;
+  --mm-skeleton-text-radius: 2px;
+  --mm-empty-state-padding: 24px 16px;
+  --mm-empty-state-title-size: 1.25rem;
+
+  .btn,
+  .btn-flat,
+  .btn-small,
+  .btn-large {
+    min-height: var(--mm-control-height);
+    height: var(--mm-control-height);
+    line-height: var(--mm-control-height);
+    padding-inline: var(--mm-control-padding-inline);
+    border-radius: var(--mm-surface-radius);
+    box-shadow: var(--mm-surface-shadow);
+    font-size: var(--mm-control-font-size);
+    letter-spacing: 0.02em;
+  }
+
+  .btn:hover,
+  .btn:focus {
+    box-shadow: var(--mm-surface-shadow);
+  }
+
+  .btn-flat.btn-icon,
+  .btn-small.btn-icon {
+    min-width: var(--mm-control-height);
+    width: var(--mm-control-height);
+    padding-inline: 0;
+  }
+
+  .btn-floating {
+    width: var(--mm-control-height);
+    height: var(--mm-control-height);
+    line-height: var(--mm-control-height);
+    box-shadow: var(--mm-surface-shadow);
+  }
+
+  .btn-floating i {
+    line-height: var(--mm-control-height);
+    font-size: 1.125rem;
+  }
+
+  .btn:focus-visible,
+  .btn-flat:focus-visible,
+  .btn-floating:focus-visible,
+  .dropdown-trigger:focus-visible,
+  .sidenav-link:focus-visible,
+  .mm-menu-item:focus-visible,
+  .mm-command-palette-command:focus-visible,
+  .mm-snackbar-action:focus-visible,
+  .mm-snackbar-dismiss:focus-visible {
+    outline: var(--mm-focus-ring-width) solid var(--mm-focus-ring-color);
+    outline-offset: 1px;
+  }
+
+  .input-field {
+    margin-block: calc(var(--mm-space-4) + var(--mm-space-1))
+      var(--mm-space-2);
+  }
+
+  input:not([type]):not(.browser-default),
+  input[type="text"]:not(.browser-default),
+  input[type="password"]:not(.browser-default),
+  input[type="email"]:not(.browser-default),
+  input[type="url"]:not(.browser-default),
+  input[type="time"]:not(.browser-default),
+  input[type="date"]:not(.browser-default),
+  input[type="datetime"]:not(.browser-default),
+  input[type="datetime-local"]:not(.browser-default),
+  input[type="tel"]:not(.browser-default),
+  input[type="number"]:not(.browser-default),
+  input[type="search"]:not(.browser-default),
+  textarea.materialize-textarea {
+    height: var(--mm-control-height);
+    min-height: var(--mm-control-height);
+    margin-block: 0 var(--mm-space-2);
+    padding-inline: var(--mm-space-1);
+    box-sizing: border-box;
+    font-size: var(--mm-control-font-size);
+    line-height: var(--mm-control-line-height);
+  }
+
+  textarea.materialize-textarea {
+    padding-block: var(--mm-control-padding-block);
+  }
+
+  .input-field > label {
+    font-size: var(--mm-control-font-size);
+  }
+
+  .input-field .number-input-controls {
+    inset-inline-end: var(--mm-space-1);
+    right: auto;
+    flex-direction: row;
+    align-items: center;
+    height: var(--mm-control-height);
+  }
+
+  .input-field input.number-input:not(.browser-default) {
+    padding-inline-end: 52px;
+  }
+
+  .input-field .number-input-control {
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+  }
+
+  .chips.chips-container {
+    box-sizing: border-box;
+    min-height: var(--mm-control-height);
+    padding-block: calc(var(--mm-control-padding-block) - 1px);
+  }
+
+  .chips.chips-container .chip {
+    height: 24px;
+    margin-bottom: 0;
+    padding-inline: var(--mm-space-2);
+    border-radius: 12px;
+    font-size: var(--mm-control-font-size);
+    line-height: 24px;
+  }
+
+  .chips.chips-container .placeholder {
+    padding-block: 0 !important;
+    font-size: var(--mm-control-font-size);
+    line-height: var(--mm-control-line-height);
+  }
+
+  .select-wrapper input.select-dropdown {
+    height: var(--mm-control-height);
+    line-height: var(--mm-control-height);
+    margin-block: 0 var(--mm-space-2);
+    padding-inline: var(--mm-space-1) 24px;
+    box-sizing: border-box;
+    font-size: var(--mm-control-font-size);
+  }
+
+  .select-wrapper .caret {
+    inset-inline-end: var(--mm-space-1);
+    right: auto;
+  }
+
+  .input-field.select-space.select-appearance-outlined .select-wrapper {
+    min-height: var(--mm-control-height);
+    padding-inline: var(--mm-control-padding-inline);
+    border-radius: var(--mm-surface-radius);
+  }
+
+  .input-field.select-space.select-appearance-outlined
+    .select-wrapper
+    input.select-dropdown {
+    height: var(--mm-control-height);
+    line-height: var(--mm-control-height);
+  }
+
+  .search-wrapper {
+    padding-inline: var(--mm-control-padding-inline);
+  }
+
+  .search-select-input {
+    height: var(--mm-control-height);
+    padding: var(--mm-control-padding-block) 24px
+      var(--mm-control-padding-block) 0;
+    font-size: var(--mm-control-font-size);
+  }
+
+  .dropdown-content {
+    border: var(--mm-border-width) solid var(--mm-border-color);
+    border-radius: var(--mm-surface-radius);
+    box-shadow: var(--mm-surface-shadow);
+  }
+
+  .dropdown-content li {
+    min-height: var(--mm-menu-item-height);
+    line-height: var(--mm-control-line-height);
+    font-size: var(--mm-control-font-size);
+    text-align: start;
+  }
+
+  .dropdown-content li > a,
+  .dropdown-content li > span {
+    min-height: var(--mm-menu-item-height);
+    padding: var(--mm-control-padding-block)
+      var(--mm-control-padding-inline);
+    font-size: var(--mm-control-font-size);
+    line-height: calc(
+      var(--mm-menu-item-height) - 2 * var(--mm-control-padding-block)
+    );
+  }
+
+  .mm-menu {
+    border-radius: var(--mm-surface-radius);
+    font-size: var(--mm-control-font-size);
+  }
+
+  .mm-menu-item {
+    min-height: var(--mm-menu-item-height);
+    padding: var(--mm-control-padding-block)
+      var(--mm-control-padding-inline);
+    line-height: var(--mm-control-line-height);
+  }
+
+  .mm-menu-item-icon {
+    margin-inline-end: var(--mm-space-2);
+  }
+
+  .mm-menu-separator {
+    height: var(--mm-divider-width);
+    margin-block: var(--mm-space-1) !important;
+  }
+
+  .sidenav {
+    box-shadow: var(--mm-surface-shadow);
+  }
+
+  .sidenav-link,
+  .sidenav li > a:not(.btn):not(.btn-large):not(.btn-flat):not(.btn-floating) {
+    min-height: var(--mm-navigation-item-height);
+    height: auto;
+    padding-block: var(--mm-control-padding-block);
+    padding-inline: var(--mm-control-padding-inline);
+    line-height: var(--mm-control-line-height);
+    font-size: var(--mm-control-font-size);
+  }
+
+  .sidenav-icon {
+    width: 20px;
+    height: 20px;
+    margin-inline-end: var(--mm-space-2);
+    margin-right: 0;
+    font-size: 1.125rem;
+  }
+
+  .sidenav-text {
+    font-size: var(--mm-control-font-size);
+    line-height: var(--mm-control-line-height);
+  }
+
+  .sidenav-divider {
+    margin-block: var(--mm-space-1);
+  }
+
+  .sidenav-subheader {
+    padding: var(--mm-space-3) var(--mm-control-padding-inline)
+      var(--mm-space-1);
+    font-size: 0.6875rem;
+  }
+
+  .modal.mm-modal-surface {
+    border: var(--mm-border-width) solid var(--mm-border-color);
+  }
+
+  .modal.mm-dialog .mm-modal-footer {
+    min-height: 44px;
+  }
+
+  .modal.mm-dialog .mm-dialog-action {
+    margin-block: var(--mm-space-1);
+  }
+
+  .modal.mm-modal-surface.mm-command-palette {
+    width: min(560px, calc(100% - 24px));
+  }
+
+  .mm-command-palette-search {
+    gap: var(--mm-space-2);
+    padding: var(--mm-space-2) var(--mm-space-3);
+  }
+
+  .mm-command-palette-search input[type="search"] {
+    min-height: var(--mm-control-height);
+    height: var(--mm-control-height);
+    font-size: 0.9375rem;
+  }
+
+  .mm-command-palette-results {
+    padding: var(--mm-space-1);
+  }
+
+  .mm-command-palette-group-label {
+    padding: var(--mm-space-2) var(--mm-space-2) var(--mm-space-1);
+    font-size: 0.6875rem;
+  }
+
+  .mm-command-palette-command {
+    gap: var(--mm-space-2);
+    min-height: var(--mm-menu-item-height);
+    padding: var(--mm-control-padding-block) var(--mm-space-2);
+    border-radius: var(--mm-surface-radius);
+    font-size: var(--mm-control-font-size);
+  }
+
+  .mm-command-palette-command-description {
+    margin-top: 1px;
+    font-size: 0.75rem;
+  }
+
+  .datatable {
+    font-size: var(--mm-control-font-size);
+  }
+
+  .datatable thead th,
+  .datatable tbody td {
+    padding-block: var(--mm-control-padding-block);
+    padding-inline: var(--mm-control-padding-inline);
+  }
+
+  .datatable tbody tr:not([data-virtual-index]) {
+    height: var(--mm-row-height);
+  }
+
+  .datatable thead th.sortable {
+    padding-inline-end: 28px;
+  }
+
+  .datatable-pagination {
+    gap: var(--mm-space-2);
+    margin-top: var(--mm-space-2);
+    padding: var(--mm-space-2);
+  }
+
+  .datatable-pagination .pagination-controls {
+    gap: var(--mm-space-1);
+  }
+
+  .datatable-pagination .pagination-controls button.btn-flat {
+    min-width: var(--mm-control-height);
+    width: var(--mm-control-height);
+    height: var(--mm-control-height);
+  }
+
+  .mm-virtual-list-item {
+    padding-inline: var(--mm-control-padding-inline);
+    font-size: var(--mm-control-font-size);
+    line-height: var(--mm-control-line-height);
+  }
+
+  .mm-snackbar-container {
+    inset-inline: var(--mm-space-2);
+    bottom: var(--mm-space-2);
+  }
+
+  .mm-snackbar {
+    gap: var(--mm-space-2);
+    min-height: 40px;
+    padding: var(--mm-space-1) var(--mm-space-2);
+    border: var(--mm-border-width) solid var(--mm-border-color);
+    border-radius: var(--mm-surface-radius);
+    box-shadow: var(--mm-surface-shadow);
+    font-size: var(--mm-control-font-size);
+  }
+
+  .mm-snackbar-action,
+  .mm-snackbar-dismiss {
+    padding: var(--mm-space-1);
+  }
+
+  .mm-avatar--tiny {
+    width: 20px;
+    height: 20px;
+  }
+
+  .mm-avatar--small {
+    width: 28px;
+    height: 28px;
+  }
+
+  .mm-avatar--medium,
+  .mm-avatar-group-overflow {
+    width: 32px;
+    height: 32px;
+    font-size: 0.6875rem;
+  }
+
+  .mm-avatar--large {
+    width: 44px;
+    height: 44px;
+    font-size: 0.875rem;
+  }
+
+  .mm-skeleton-group {
+    gap: var(--mm-skeleton-gap);
+  }
+
+  .mm-skeleton,
+  .mm-skeleton--text,
+  .mm-skeleton--rectangular {
+    border-radius: var(--mm-skeleton-radius);
+  }
+
+  .mm-empty-state {
+    padding: var(--mm-empty-state-padding);
+  }
+
+  .mm-empty-state-illustration,
+  .mm-empty-state-icon {
+    margin-bottom: var(--mm-space-2);
+  }
+
+  .mm-empty-state-description {
+    margin-top: var(--mm-space-1);
+  }
+
+  .mm-empty-state-actions {
+    gap: var(--mm-space-2);
+    margin-top: var(--mm-space-3);
+  }
+}
+
+@media (pointer: coarse) {
+  [data-mm-preset="compact-minimal"] {
+    --mm-control-height: 40px;
+    --mm-menu-item-height: 40px;
+    --mm-navigation-item-height: 40px;
+
+    .input-field input.number-input:not(.browser-default) {
+      padding-inline-end: 84px;
+    }
+
+    .input-field .number-input-control {
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
