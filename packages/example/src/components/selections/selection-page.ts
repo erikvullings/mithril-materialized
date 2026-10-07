@@ -1,5 +1,7 @@
 import { HighlightedCodeBlock } from '../highlighted-code-block';
 import m from 'mithril';
+import mountainsImage from '../../assets/search-select-mountains.svg';
+import seaImage from '../../assets/search-select-sea.svg';
 import {
   Select,
   Options,
@@ -293,6 +295,38 @@ export const SelectionPage = () => {
                 { id: 4, label: 'Horse riding' },
               ],
           })`,
+        }),
+
+        m('h3.header', 'Select with search and image previews'),
+        m('p.caption', 'SVG thumbnails appear beside option names in the dropdown. Options without images remain text-only.'),
+        m(
+          '.row',
+          m(SearchSelect<string>, {
+            label: 'Choose a destination',
+            placeholder: 'Search destinations...',
+            className: 'col s12',
+            maxSelectedOptions: 1,
+            options: [
+              { id: 'mountains', label: 'Mountains', img: mountainsImage },
+              { id: 'sea', label: 'Sea', img: seaImage },
+              { id: 'city', label: 'City' },
+            ],
+          })
+        ),
+        m(HighlightedCodeBlock, {
+          newRow: true,
+          code: `import mountainsImage from '../../assets/search-select-mountains.svg';
+import seaImage from '../../assets/search-select-sea.svg';
+
+m(SearchSelect<string>, {
+  label: 'Choose a destination',
+  maxSelectedOptions: 1,
+  options: [
+    { id: 'mountains', label: 'Mountains', img: mountainsImage },
+    { id: 'sea', label: 'Sea', img: seaImage },
+    { id: 'city', label: 'City' },
+  ],
+})`,
         }),
 
         m('h3.header', 'Select multiple with async search'),

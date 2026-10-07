@@ -90,7 +90,11 @@ const DropdownOption = <T extends string | number>({
               onToggle(option);
             },
           }),
-        m('span', optionLabel),
+        m(
+          'span',
+          { class: option.img ? 'search-select-option-with-image' : undefined },
+          [optionLabel, option.img && m('img.search-select-option-image', { src: option.img, alt: '' })]
+        ),
       ]
     )
   );
@@ -110,6 +114,8 @@ export interface SearchSelectI18n {
   showingXofY?: string;
   /** Message shown when max selections reached. Use {max} placeholder */
   maxSelectionsReached?: string;
+  /** Message shown when the maximum is one. Use {max} placeholder. Falls back to maxSelectionsReached if provided. */
+  maxSelectionReached?: string;
 }
 
 // Extended SearchSelect attributes that inherit from SelectAttrs
@@ -381,7 +387,10 @@ export const SearchSelect = <T extends string | number>(
         loadingError: i18n.loadingError || 'Unable to load options',
         addNewPrefix: i18n.addNewPrefix || '+',
         showingXofY: i18n.showingXofY || 'Showing {shown} of {total} options',
-        maxSelectionsReached: i18n.maxSelectionsReached || 'Maximum {max} selections reached',
+        maxSelectionsReached:
+          maxSelectedOptions === 1
+            ? i18n.maxSelectionReached || i18n.maxSelectionsReached || 'You can select only {max} option'
+            : i18n.maxSelectionsReached || 'You can select only {max} options',
       };
 
       // Check if max selections is reached
@@ -669,14 +678,7 @@ export const SearchSelect = <T extends string | number>(
                 ? [
                     m(
                       'li.search-select-max-info',
-                      {
-                        style: {
-                          fontStyle: 'italic',
-                          color: 'var(--mm-text-hint, #9e9e9e)',
-                          padding: '8px 16px',
-                          cursor: 'default',
-                        },
-                      },
+                      { role: 'status' },
                       texts.maxSelectionsReached.replace('{max}', maxSelectedOptions?.toString())
                     ),
                   ]
