@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/erikvullings/mithril-materialized/compare/v4.0.0...v4.1.0) (2026-10-07)
+
+
+### Features
+
+* **search-select:** add image previews ([90e2fd1](https://github.com/erikvullings/mithril-materialized/commit/90e2fd18b947f10011628da787a8cfc5050373ba))
+
 # [4.0.0](https://github.com/erikvullings/mithril-materialized/compare/v3.21.0...v4.0.0) (2026-09-10)
 
 
