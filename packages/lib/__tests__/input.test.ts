@@ -1,5 +1,6 @@
 import { TextInput, NumberInput, TextArea, EmailInput, PasswordInput, RangeInput } from '../src/input';
 import { render, fireEvent, cleanup } from './test-utils';
+import { getByRole } from '@testing-library/dom';
 
 describe('Input Components', () => {
   afterEach(cleanup);
@@ -72,6 +73,13 @@ describe('Input Components', () => {
       expect(icon).toHaveTextContent('search');
     });
 
+    it('renders built-in prefix icons without a font', () => {
+      const { container } = render(TextInput, { label: 'User', iconName: 'person' });
+      expect(container.querySelector('svg.prefix path')).toBeInTheDocument();
+      expect(container.querySelector('svg.prefix')).toHaveAttribute('aria-hidden', 'true');
+      expect(getByRole(container, 'textbox', { name: 'User' })).toBeInTheDocument();
+    });
+
     it('shows mandatory indicator', () => {
       const { container } = render(TextInput, { 
         label: 'Required Field',
@@ -80,6 +88,10 @@ describe('Input Components', () => {
       
       const mandatory = container.querySelector('span.mandatory');
       expect(mandatory).toBeInTheDocument();
+      expect(mandatory).toHaveAttribute('aria-hidden', 'true');
+      const input = getByRole(container, 'textbox', { name: 'Required Field' });
+      expect(input).toHaveAttribute('required');
+      expect(input).toHaveAttribute('aria-required', 'true');
     });
 
     it('applies validation', () => {

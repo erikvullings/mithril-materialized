@@ -1,4 +1,5 @@
 import m, { FactoryComponent, Attributes, Vnode } from 'mithril';
+import { Icon } from './icon';
 
 export interface CollapsibleItem extends Attributes {
   /** Header of the collabsible item, may contain HTML or may be a Vnode */
@@ -36,7 +37,7 @@ export const CollapsibleItem: FactoryComponent<
                 onclick: onToggle,
               },
               [
-                iconName ? m('i.material-icons', iconName) : undefined,
+                iconName ? m(Icon, { iconName }) : undefined,
                 header
                   ? typeof header === 'string'
                     ? m('span.collapsible-header-text', header)

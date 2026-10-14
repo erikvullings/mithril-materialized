@@ -2,6 +2,7 @@ import m, { Component, Attributes } from 'mithril';
 import { HelperText } from './label';
 import { uniqueId, getDropdownStyles } from './utils';
 import { MaterialIcon } from './material-icon';
+import { Icon } from './icon';
 import { createControllableFieldState } from './controllable-field';
 import { createDismissibleLayer } from './dismissible-layer';
 import { createPortalHandle, type PortalHandle } from './portal';
@@ -310,7 +311,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       }
 
       return m('.dropdown-wrapper.input-field', { className, key, style }, [
-        iconName ? m('i.material-icons.prefix', iconName) : undefined,
+        iconName ? m(Icon, { iconName, className: 'prefix' }) : undefined,
         m(HelperText, { helperText }),
         m(
           '.select-wrapper',

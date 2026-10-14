@@ -2,6 +2,7 @@ import m, { FactoryComponent, Attributes } from 'mithril';
 import { uniqueId } from './utils';
 import { InputAttrs } from './input-options';
 import { MaterialIcon } from './material-icon';
+import { Icon } from './icon';
 import { InputType } from './types';
 import { DoubleRangeSlider, SingleRangeSlider } from './range-slider';
 import { renderFieldChrome } from './utils';
@@ -173,9 +174,11 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
           },
         }),
         m('.input-field', { className, style }, [
-          iconName ? m('i.material-icons.prefix', iconName) : '',
+          iconName ? m(Icon, { iconName, className: 'prefix' }) : '',
           m('textarea.materialize-textarea', {
             ...params,
+            required: attrs.required || isMandatory || undefined,
+            'aria-required': attrs.required || isMandatory ? 'true' : undefined,
             id,
             tabindex: 0,
             value: controlled ? currentValue : undefined,
@@ -462,10 +465,12 @@ const InputField =
         };
 
         return m('.input-field', { className: cn, style }, [
-          iconName ? m('i.material-icons.prefix', iconName) : undefined,
+          iconName ? m(Icon, { iconName, className: 'prefix' }) : undefined,
           m('input', {
             class: inputClass || undefined,
             ...params,
+            required: attrs.required || isMandatory || undefined,
+            'aria-required': attrs.required || isMandatory ? 'true' : undefined,
             type,
             tabindex: 0,
             id,

@@ -1,6 +1,8 @@
 import { Select } from '../src/select';
 import { Dropdown } from '../src/dropdown';
 import { render, fireEvent, cleanup } from './test-utils';
+import { getByRole } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 import { InputOption as IInputOption } from '../src/option';
 import { vi } from 'vitest';
 
@@ -56,13 +58,13 @@ describe('Select Component', () => {
     const result = render(select, attrs);
     const { container } = result;
 
-    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'false');
+    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'false');
     expect(container.querySelector('ul.select-dropdown')).toBeNull();
 
     fireEvent.click(container.querySelector('input.select-dropdown') as HTMLElement);
     result.rerender(select, attrs);
 
-    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'true');
+    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'true');
     expect(container.querySelectorAll('ul.select-dropdown li:not(.disabled)')).toHaveLength(2);
   });
 
@@ -106,7 +108,7 @@ describe('Select Component', () => {
     result.rerender(select, attrs);
 
     expect(mockOnChange).toHaveBeenCalledWith(['option1']);
-    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'false');
+    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('handles multiple select correctly', () => {
@@ -127,7 +129,7 @@ describe('Select Component', () => {
     result.rerender(select, attrs);
 
     expect(mockOnChange).toHaveBeenCalledWith(['option1']);
-    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'true');
+    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'true');
   });
 
   it('respects defaultCheckedId prop (uncontrolled)', () => {
@@ -177,7 +179,7 @@ describe('Select Component', () => {
       onchange: mockOnChange,
     });
 
-    const selectWrapper = container.querySelector('.select-wrapper');
+    const selectWrapper = container.querySelector('input.select-dropdown');
     expect(selectWrapper).toHaveAttribute('tabindex', '-1');
 
     // Should not respond to clicks when disabled
@@ -218,9 +220,10 @@ describe('Select Component', () => {
       onchange: vi.fn(),
     });
 
-    const icon = container.querySelector('.material-icons.prefix');
+    const icon = container.querySelector('svg.prefix');
     expect(icon).toBeInTheDocument();
-    expect(icon?.textContent).toBe('person');
+    expect(icon?.querySelector('path')).toBeInTheDocument();
+    expect(icon).toHaveAttribute('aria-hidden', 'true');
   });
 
   it('renders helper text', () => {
@@ -377,13 +380,73 @@ describe('Select Component', () => {
       onchange: vi.fn(),
     });
 
-    const selectWrapper = container.querySelector('.select-wrapper');
-    expect(selectWrapper).toHaveAttribute('role', 'combobox');
-    expect(selectWrapper).toHaveAttribute('aria-expanded', 'false');
-    expect(selectWrapper).toHaveAttribute('aria-haspopup', 'listbox');
-    expect(selectWrapper).toHaveAttribute('tabindex', '0');
+    const combobox = getByRole(container, 'combobox', { name: 'Test Select' });
+    expect(combobox).toHaveAttribute('id', 'test-select');
+    expect(combobox).toHaveAttribute('aria-expanded', 'false');
+    expect(combobox).toHaveAttribute('aria-haspopup', 'listbox');
+    expect(combobox).toHaveAttribute('aria-controls', 'test-select-dropdown');
+    expect(container.querySelector('label')).toHaveAttribute('for', 'test-select');
+    expect(container.querySelector('.select-wrapper')).not.toHaveAttribute('tabindex');
+    expect(container.querySelectorAll('.select-space [tabindex="0"], .select-space input:not([tabindex])')).toHaveLength(1);
+  });
 
-    expect(selectWrapper).toHaveAttribute('aria-controls', 'test-select-dropdown');
+  it('has one tab stop and keeps Enter, arrows and Escape on the focused combobox', async () => {
+    const select = Select<string>();
+    const attrs = { label: 'Unit', options: mockOptions, onchange: vi.fn() };
+    const result = render(select, attrs);
+    const next = document.createElement('button');
+    document.body.appendChild(next);
+    const user = userEvent.setup();
+    await user.tab();
+    const combobox = getByRole(result.container, 'combobox', { name: 'Unit' });
+    expect(document.activeElement).toBe(combobox);
+    fireEvent.keyDown(combobox, 'ArrowDown');
+    result.rerender(select, attrs);
+    expect(combobox).toHaveAttribute('aria-expanded', 'true');
+    fireEvent.keyDown(combobox, 'Escape');
+    result.rerender(select, attrs);
+    expect(combobox).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.keyDown(combobox, 'Enter');
+    result.rerender(select, attrs);
+    expect(combobox).toHaveAttribute('aria-expanded', 'true');
+    await user.tab();
+    expect(document.activeElement).toBe(next);
+  });
+
+  it('does not add tab stops for an open multi-select menu', () => {
+    const select = Select<string>();
+    const attrs = { label: 'Units', multiple: true, placeholder: 'Choose units', options: mockOptions };
+    const result = render(select, attrs);
+    fireEvent.click(result.container.querySelector('input.select-dropdown') as HTMLElement);
+    result.rerender(select, attrs);
+    expect(result.container.querySelectorAll('.select-space [tabindex="0"]')).toHaveLength(1);
+    expect(result.container.querySelectorAll('ul.select-dropdown input[type="checkbox"][tabindex="-1"]')).toHaveLength(3);
+  });
+
+  it('names an outlined and mandatory select without including its visual asterisk', () => {
+    const { container } = render(Select<string>(), {
+      label: 'Parent unit',
+      appearance: 'outlined',
+      isMandatory: true,
+      options: mockOptions,
+    });
+    const combobox = getByRole(container, 'combobox', { name: 'Parent unit' });
+    expect(combobox).toHaveAttribute('aria-required', 'true');
+    expect(container.querySelector('label.select-inline-label')).toHaveAttribute('for', combobox.id);
+    expect(container.querySelector('.select-inline-label .mandatory')).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('honors an explicit accessible name and removes disabled selects from tab order', () => {
+    const { container } = render(Select<string>(), {
+      label: 'Units',
+      'aria-label': 'Parent unit',
+      disabled: true,
+      options: mockOptions,
+    });
+    const combobox = getByRole(container, 'combobox', { name: 'Parent unit' });
+    expect(combobox).toHaveAttribute('tabindex', '-1');
+    expect(combobox).toHaveAttribute('aria-disabled', 'true');
+    expect(container.querySelectorAll('.select-space [tabindex="0"], .select-space input:not([tabindex])')).toHaveLength(0);
   });
 
   it('handles keyboard navigation', () => {
@@ -400,7 +463,7 @@ describe('Select Component', () => {
 
     fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
     result.rerender(select, attrs);
-    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'true');
+    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'true');
     expect(container.querySelector('li.focused')).toHaveTextContent('Option 1');
 
     fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
@@ -425,11 +488,11 @@ describe('Select Component', () => {
 
     fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
     result.rerender(select, attrs);
-    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'true');
+    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'true');
 
     fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'Escape');
     result.rerender(select, attrs);
-    expect(container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'false');
+    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'false');
     expect(container.querySelector('ul.select-dropdown')).toBeNull();
   });
 
@@ -445,7 +508,7 @@ describe('Select Component', () => {
     fireEvent.keyDown(result.container.querySelector('.select-wrapper') as HTMLElement, 'ArrowUp');
     result.rerender(select, attrs);
 
-    expect(result.container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'false');
+    expect(result.container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('releases its modal portal after close and removal', () => {

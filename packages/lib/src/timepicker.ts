@@ -1,6 +1,7 @@
 import m, { FactoryComponent } from 'mithril';
 import { createDismissibleLayer } from './dismissible-layer';
 import { InputAttrs } from './input-options';
+import { Icon } from './icon';
 import { uniqueId } from './utils';
 import { addLeadingZero } from './time-utils';
 import { DigitalClock } from './digital-clock';
@@ -734,7 +735,7 @@ export const TimePicker: FactoryComponent<TimePickerAttrs> = () => {
 
       return m('.input-field', { className }, [
         // Icon prefix
-        iconName && m('i.material-icons.prefix', iconName),
+        iconName && m(Icon, { iconName, className: 'prefix' }),
 
         // Time input field - use HTML5 time input for inline mode
         m('input.timepicker', {

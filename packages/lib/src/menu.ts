@@ -2,6 +2,7 @@ import m, { type Attributes, type Component, type VnodeDOM } from 'mithril';
 import { createDismissibleLayer } from './dismissible-layer';
 import { createPortalHandle, type PortalHandle } from './portal';
 import { uniqueId } from './utils';
+import { Icon } from './icon';
 
 export interface MenuItem<T extends string | number> {
   /** Value passed to `onSelect`. */
@@ -414,7 +415,7 @@ const createMenu = <T extends string | number>(
                 },
                 [
                   entry.iconName
-                    ? m('i.material-icons.mm-menu-item-icon', { 'aria-hidden': 'true' }, entry.iconName)
+                    ? m(Icon, { iconName: entry.iconName, className: 'mm-menu-item-icon' })
                     : undefined,
                   m('span', entry.label),
                 ]

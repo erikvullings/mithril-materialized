@@ -1,5 +1,6 @@
 import m from 'mithril';
 import { InputAttrs } from './input-options';
+import { Icon } from './icon';
 import { Label, HelperText } from './label';
 import { ComponentStyle } from './types';
 import { ControllableFieldState, createControllableFieldState } from './controllable-field';
@@ -277,7 +278,7 @@ export const SingleRangeSlider = {
       .join(' ');
 
     return m('.input-field', { className: cn, style }, [
-      iconName ? m('i.material-icons.prefix', iconName) : undefined,
+      iconName ? m(Icon, { iconName, className: 'prefix' }) : undefined,
       m('input[type=range]', {
         id,
         value: singleValue,
@@ -495,7 +496,7 @@ export const DoubleRangeSlider = {
     const fieldClass = vertical ? 'range-field vertical' : 'range-field';
 
     return m('.input-field', { className: cn, style }, [
-      iconName ? m('i.material-icons.prefix', iconName) : undefined,
+      iconName ? m(Icon, { iconName, className: 'prefix' }) : undefined,
       m('input[type=range]', {
         id,
         value: rangeMinValue,

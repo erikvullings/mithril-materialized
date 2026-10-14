@@ -1,6 +1,7 @@
 import m, { FactoryComponent } from 'mithril';
 import { createDismissibleLayer } from './dismissible-layer';
 import { InputAttrs } from './input-options';
+import { Icon } from './icon';
 import { uniqueId } from './utils';
 import { TimeValue, addLeadingZero, parseTime, formatTime, timeToMinutes } from './time-utils';
 import { DigitalClock } from './digital-clock';
@@ -581,7 +582,7 @@ export const TimeRangePicker: FactoryComponent<TimeRangePickerAttrs> = () => {
           : '';
 
       return m('.input-field', { className }, [
-        iconName && m('i.material-icons.prefix', iconName),
+        iconName && m(Icon, { iconName, className: 'prefix' }),
 
         // Display input
         m('input.timerangepicker', {
