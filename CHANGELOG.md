@@ -1,3 +1,10 @@
+## [4.1.2](https://github.com/erikvullings/mithril-materialized/compare/v4.1.1...v4.1.2) (2026-10-14)
+
+
+### Bug Fixes
+
+* **components:** stop forwarding Mithril key attrs to inner elements ([#55](https://github.com/erikvullings/mithril-materialized/issues/55)) ([4043350](https://github.com/erikvullings/mithril-materialized/commit/4043350b03dd827b4b352d4202a091fc378978b1))
+
 ## [4.1.1](https://github.com/erikvullings/mithril-materialized/compare/v4.1.0...v4.1.1) (2026-10-14)
 
 
