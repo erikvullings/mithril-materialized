@@ -1,3 +1,10 @@
+## [4.1.1](https://github.com/erikvullings/mithril-materialized/compare/v4.1.0...v4.1.1) (2026-10-14)
+
+
+### Bug Fixes
+
+* **a11y:** name Select controls and render built-in icons as SVG ([2a259e5](https://github.com/erikvullings/mithril-materialized/commit/2a259e5356f5a4f959b47384ba3629187ebe3768))
+
 # [4.1.0](https://github.com/erikvullings/mithril-materialized/compare/v4.0.0...v4.1.0) (2026-10-07)
 
 
