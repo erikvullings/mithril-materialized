@@ -1,5 +1,6 @@
 import m, { FactoryComponent } from 'mithril';
 import { addLeadingZero } from './time-utils';
+import { omitKey } from './utils';
 
 /**
  * Attributes for the AnalogClock component
@@ -501,7 +502,7 @@ export const AnalogClock: FactoryComponent<AnalogClockAttrs> = () => {
               visibility: isHours ? 'visible' : 'hidden',
             },
           },
-          m(HourTicks, attrs)
+          m(HourTicks, omitKey(attrs))
         ),
         m(
           `.timepicker-dial.timepicker-minutes${!isHours ? '' : '.timepicker-dial-out'}`,
@@ -513,7 +514,7 @@ export const AnalogClock: FactoryComponent<AnalogClockAttrs> = () => {
               visibility: !isHours ? 'visible' : 'hidden',
             },
           },
-          m(MinuteTicks, attrs)
+          m(MinuteTicks, omitKey(attrs))
         ),
       ];
     },

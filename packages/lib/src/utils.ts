@@ -32,6 +32,17 @@ export const uuid4 = () => {
   });
 };
 
+/**
+ * Remove Mithril's `key` from attrs before forwarding them to an inner element or child component.
+ * A component's `key` identifies the component vnode itself; forwarding it would mix keyed and
+ * unkeyed siblings inside the component's view, which Mithril rejects.
+ */
+export const omitKey = <T extends object>(attrs: T): Omit<T, 'key'> => {
+  if (!attrs || !('key' in attrs)) return attrs;
+  const { key: _key, ...rest } = attrs as T & { key?: unknown };
+  return rest;
+};
+
 /** Check if a string or number is numeric. @see https://stackoverflow.com/a/9716488/319711 */
 export const isNumeric = (n: string | number) => !isNaN(parseFloat(n as string)) && isFinite(n as number);
 

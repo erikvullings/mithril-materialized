@@ -1,5 +1,5 @@
 import m, { FactoryComponent } from 'mithril';
-import { uniqueId } from './utils';
+import { uniqueId, omitKey } from './utils';
 import { InputAttrs } from './input-options';
 import { Label, HelperText } from './label';
 import { createControllableFieldState } from './controllable-field';
@@ -215,7 +215,7 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
         [
           iconName ? m(Icon, { iconName, className: 'prefix' }) : '',
           m('input', {
-            ...params,
+            ...omitKey(params),
             className: 'autocomplete',
             type: 'text',
             tabindex: 0,

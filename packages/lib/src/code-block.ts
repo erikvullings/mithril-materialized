@@ -1,5 +1,6 @@
 // Styles are imported via the main index or individual component imports
 import m, { FactoryComponent, Attributes } from 'mithril';
+import { omitKey } from './utils';
 
 export interface CodeBlockAttrs extends Attributes {
   language?: string;
@@ -10,7 +11,7 @@ export interface CodeBlockAttrs extends Attributes {
 /** A simple code block without syntax high-lighting */
 export const CodeBlock: FactoryComponent<CodeBlockAttrs> = () => ({
   view: ({ attrs }) => {
-    const { newRow, code, language, className, ...params } = attrs;
+    const { newRow, code, language, className, ...params } = omitKey(attrs);
     const lang = language || 'lang-TypeScript';
     const label = lang.replace('lang-', '');
     const cb = code instanceof Array ? code.join('\n') : code;

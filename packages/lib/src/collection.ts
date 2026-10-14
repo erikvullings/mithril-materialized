@@ -1,5 +1,6 @@
 import m, { FactoryComponent, Attributes, Vnode } from 'mithril';
 import { Icon } from './icon';
+import { omitKey } from './utils';
 
 export enum CollectionMode {
   BASIC,
@@ -109,8 +110,8 @@ const BasicCollection: FactoryComponent<CollectionAttrs> = () => {
     view: ({ attrs: { header, items, mode = CollectionMode.BASIC, ...params } }) => {
       const collectionItems = items.map((item) => m(ListItem, { key: item.id, item, mode }));
       return header
-        ? m('ul.collection.with-header', params, [m('li.collection-header', m('h4', header)), collectionItems])
-        : m('ul.collection', params, collectionItems);
+        ? m('ul.collection.with-header', omitKey(params), [m('li.collection-header', m('h4', header)), collectionItems])
+        : m('ul.collection', omitKey(params), collectionItems);
     },
   };
 };
@@ -120,7 +121,7 @@ export const AnchorItem: FactoryComponent<{ item: CollectionItem }> = () => {
     view: ({ attrs: { item } }) => {
       const { title, active, href, ...params } = item;
       const props = {
-        ...params,
+        ...omitKey(params),
         className: `collection-item ${active ? 'active' : ''}`,
         href,
       };
@@ -135,13 +136,13 @@ const LinksCollection: FactoryComponent<CollectionAttrs> = () => {
   return {
     view: ({ attrs: { items, header, ...params } }) => {
       return header
-        ? m('.collection.with-header', params, [
+        ? m('.collection.with-header', omitKey(params), [
             m('.collection-header', m('h4', header)),
             items.map((item) => m(AnchorItem, { key: item.id, item })),
           ])
         : m(
             '.collection',
-            params,
+            omitKey(params),
             items.map((item) => m(AnchorItem, { key: item.id, item }))
           );
     },
@@ -157,8 +158,8 @@ export const Collection: FactoryComponent<CollectionAttrs> = () => {
     view: ({ attrs: { items, header, mode = CollectionMode.BASIC, ...params } }) => {
       return header || (items && items.length > 0)
         ? mode === CollectionMode.LINKS
-          ? m(LinksCollection, { header, items, ...params })
-          : m(BasicCollection, { header, items, mode, ...params })
+          ? m(LinksCollection, { header, items, ...omitKey(params) })
+          : m(BasicCollection, { header, items, mode, ...omitKey(params) })
         : undefined;
     },
   };

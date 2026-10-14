@@ -1,7 +1,8 @@
 import m, { FactoryComponent, Component, Attributes } from 'mithril';
+import { omitKey } from './utils';
 // import './styles/input.css';
 
-export const Mandatory: Component = { view: ({ attrs }) => m('span.mandatory', { ...attrs, 'aria-hidden': 'true' }, '*') };
+export const Mandatory: Component = { view: ({ attrs }) => m('span.mandatory', { ...omitKey(attrs), 'aria-hidden': 'true' }, '*') };
 
 export interface LabelAttrs extends Attributes {
   /** Optional title/label */
@@ -24,7 +25,7 @@ export const Label: FactoryComponent<LabelAttrs> = () => {
         ? m(
             'label',
             {
-              ...params,
+              ...omitKey(params),
               className: [className, isActive ? 'active' : ''].filter(Boolean).join(' ').trim() || undefined,
               for: id,
               oncreate: ({ dom }) => {

@@ -1,5 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { ComponentStyle } from './types';
+import { omitKey } from './utils';
 
 const iconPaths = {
   caret: [
@@ -105,12 +106,12 @@ export const MaterialIcon: FactoryComponent<MaterialIconAttrs> = () => {
 
       const icon = iconPaths[name];
       if (!icon || !Array.isArray(icon)) {
-        return m('i.material-icons', props, name);
+        return m('i.material-icons', omitKey(props), name);
       }
       return m(
         'svg',
         {
-          ...props,
+          ...omitKey(props),
           style: combinedStyle,
           height: '24px',
           width: '24px',

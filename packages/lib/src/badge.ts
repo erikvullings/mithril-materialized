@@ -1,5 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { MaterialColor, ColorIntensity } from './types';
+import { omitKey } from './utils';
 
 /** Badge positioning anchor origin */
 export interface BadgeAnchorOrigin {
@@ -233,7 +234,7 @@ export const Badge: FactoryComponent<BadgeAttrs> = () => {
       return m(
         '.badge-wrapper',
         {
-          ...params,
+          ...omitKey(params),
           className: wrapperClasses,
         },
         [

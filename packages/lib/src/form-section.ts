@@ -1,4 +1,5 @@
 import m, { Attributes, FactoryComponent } from 'mithril';
+import { omitKey } from './utils';
 
 export interface ValidationSummaryError {
   /** The ID of the invalid field. Used to link and focus the field from the summary. */
@@ -30,7 +31,7 @@ export const Fieldset: FactoryComponent<FieldsetAttrs> = () => ({
     const errorId = params.id ? `${params.id}-error` : undefined;
     const describedBy = [description && descriptionId, error && errorId].filter(Boolean).join(' ') || undefined;
 
-    return m('fieldset.mm-fieldset', { ...params, className, disabled, 'aria-describedby': describedBy }, [
+    return m('fieldset.mm-fieldset', { ...omitKey(params), className, disabled, 'aria-describedby': describedBy }, [
       m('legend.mm-fieldset__legend', [legend, required && m('span.mm-fieldset__required[aria-hidden=true]', ' *')]),
       description && m('p.mm-fieldset__description', { id: descriptionId }, description),
       children,
@@ -60,7 +61,7 @@ export const FormSection: FactoryComponent<FormSectionAttrs> = () => ({
   view: ({ attrs, children }) => {
     const { title, description, errors = [], summaryTitle = 'Please correct the following errors', className, ...params } = attrs;
 
-    return m('section.mm-form-section', { ...params, className }, [
+    return m('section.mm-form-section', { ...omitKey(params), className }, [
       (title || description) &&
         m('.mm-form-section__header', [
           title && m('h3.mm-form-section__title', title),

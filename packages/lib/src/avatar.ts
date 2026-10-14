@@ -1,6 +1,7 @@
 import m, { Attributes, FactoryComponent, Vnode } from 'mithril';
 import { MaterialIcon, type IconName } from './material-icon';
 import type { ComponentSize, ComponentStyle } from './types';
+import { omitKey } from './utils';
 
 export type AvatarShape = 'circle' | 'rounded' | 'square';
 
@@ -83,7 +84,7 @@ export const Avatar: FactoryComponent<AvatarAttrs> = () => {
       return m(
         'span',
         {
-          ...htmlAttrs,
+          ...omitKey(htmlAttrs),
           class: [
             'mm-avatar',
             `mm-avatar--${size}`,
@@ -151,7 +152,7 @@ export const AvatarGroup: FactoryComponent<AvatarGroupAttrs> = () => ({
     return m(
       'div',
       {
-        ...htmlAttrs,
+        ...omitKey(htmlAttrs),
         class: ['mm-avatar-group', className].filter(Boolean).join(' '),
         style: groupStyle,
         role: 'group',

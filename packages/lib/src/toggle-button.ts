@@ -1,6 +1,7 @@
 import m, { FactoryComponent, Attributes, Vnode } from 'mithril';
 import { Icon } from './icon';
 import { WavesEffect } from './waves';
+import { omitKey } from './utils';
 
 /**
  * Attributes for the ToggleButton component.
@@ -55,7 +56,7 @@ export const ToggleButton: FactoryComponent<ToggleButtonAttrs> = () => {
       return m(
         'button.btn-flat.waves-effect.toggle-button',
         {
-          ...rest,
+          ...omitKey(rest),
           className: classes,
           title: tooltip,
           onclick: () => {

@@ -1,4 +1,5 @@
 import m, { type Attributes, type FactoryComponent } from 'mithril';
+import { omitKey } from './utils';
 
 export interface VirtualRangeInput {
   itemCount: number;
@@ -243,7 +244,7 @@ export const VirtualList = <T>(): FactoryComponent<VirtualListAttrs<T>> => () =>
       return m(
         '.mm-virtual-list',
         {
-          ...htmlAttrs,
+          ...omitKey(htmlAttrs),
           role,
           tabindex: attrs.tabindex ?? 0,
           className,
