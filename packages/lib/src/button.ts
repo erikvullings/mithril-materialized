@@ -46,7 +46,7 @@ export interface ButtonAttrs extends Attributes {
   /** Optional navigation destination. When provided, the component renders an anchor instead of a button. */
   href?: string;
 
-  /** Material icon name - see https://materializecss.com/icons.html */
+  /** Built-in names render as inline SVG; other Material icon names require a separately loaded font. */
   iconName?: string;
 
   /**
@@ -136,11 +136,18 @@ export const ButtonFactory = (
         const elementSuffix = element.slice(tagName.length);
         const isLink = Boolean(attrs.href);
         const renderedElement = `${isLink ? 'a' : 'button'}${elementSuffix}`;
+        const hasChildren = Array.isArray(children) ? children.length > 0 : children != null;
+        const accessibleName =
+          attrs['aria-label'] ||
+          (label || hasChildren
+            ? undefined
+            : iconName?.replace(/[_-]/g, ' ').replace(/^./, (c) => c.toUpperCase()));
 
         return m(
           renderedElement,
           {
             ...params,
+            'aria-label': accessibleName,
             ...wavesHandlers,
             className: cn,
             'data-position': tooltip ? position : undefined,
@@ -259,6 +266,13 @@ export const ConfirmButton: FactoryComponent<ConfirmButtonAttrs> = () => {
 
       return m(ButtonComponent, {
         ...props,
+        'aria-label':
+          props['aria-label'] ||
+          (label
+            ? undefined
+            : isConfirming
+              ? `Confirm ${iconName.replace(/[_-]/g, ' ')}`
+              : iconName.replace(/[_-]/g, ' ').replace(/^./, (c) => c.toUpperCase())),
         style: buttonStyle,
         className: `${props.className || ''} ${cn}`,
         iconName: currentIconName as string,

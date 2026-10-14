@@ -1,11 +1,20 @@
 import { Button, ConfirmButton, FlatButton, RoundIconButton, SubmitButton } from '../src/button';
 import { ToggleButton } from '../src';
+import { FloatingActionButton } from '../src/floating-action-button';
 import { render, fireEvent, cleanup } from './test-utils';
+import { getByRole } from '@testing-library/dom';
 
 describe('Button Components', () => {
   afterEach(cleanup);
 
   describe('Button', () => {
+    it('renders built-in icons without a font and preserves labels for links', () => {
+      const { container } = render(Button, { label: 'Delete', iconName: 'delete', href: '/remove' });
+      const link = getByRole(container, 'link', { name: 'Delete' });
+      expect(link.querySelector('svg path')).toBeInTheDocument();
+      expect(link.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+    });
+
     it('renders with label', () => {
       const { getByText } = render(Button, { label: 'Test Button' });
       const button = getByText('Test Button');
@@ -113,6 +122,34 @@ describe('Button Components', () => {
   });
 
   describe('ConfirmButton', () => {
+    it('uses decorative SVG icons and a single written label in both states', () => {
+      const attrs = { label: 'Delete', iconName: 'delete', confirmIconName: 'check' };
+      const result = render(ConfirmButton, attrs);
+      const button = getByRole(result.container, 'button', { name: 'Delete' });
+      expect(button.querySelector('svg path')).toBeInTheDocument();
+      expect(button.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+      expect(button).not.toHaveTextContent('delete');
+
+      fireEvent.click(button);
+      result.rerender(ConfirmButton, attrs);
+      expect(getByRole(result.container, 'button', { name: 'Delete' }).querySelector('svg path')).toBeInTheDocument();
+      expect(button).not.toHaveTextContent('check');
+    });
+
+    it('names icon-only confirmation states and honors caller-provided names', () => {
+      const result = render(ConfirmButton, {});
+      const button = getByRole(result.container, 'button', { name: 'Delete' });
+      fireEvent.click(button);
+      result.rerender(ConfirmButton, {});
+      expect(getByRole(result.container, 'button', { name: 'Confirm delete' })).toBeInTheDocument();
+
+      const explicit = render(ConfirmButton, { 'aria-label': 'Remove item' });
+      expect(getByRole(explicit.container, 'button', { name: 'Remove item' })).toBeInTheDocument();
+      fireEvent.click(explicit.container.querySelector('button') as HTMLButtonElement);
+      explicit.rerender(ConfirmButton, { 'aria-label': 'Remove item' });
+      expect(getByRole(explicit.container, 'button', { name: 'Remove item' })).toBeInTheDocument();
+    });
+
     it('uses a theme-overridable size while awaiting confirmation', () => {
       const result = render(ConfirmButton, {});
       const { container } = result;
@@ -132,6 +169,23 @@ describe('Button Components', () => {
       const button = container.querySelector('button[type="submit"]');
       expect(button).toBeInTheDocument();
       expect(button).toHaveClass('btn');
+    });
+  });
+
+  describe('FloatingActionButton', () => {
+    it('names icon-only actions and hides closed child actions from tab order', () => {
+      const attrs = {
+        iconName: 'expand',
+        buttons: [{ iconName: 'delete', ariaLabel: 'Delete record' }],
+      };
+      const result = render(FloatingActionButton, attrs);
+      const { container } = result;
+      const main = getByRole(container, 'button', { name: 'expand' });
+      expect(main.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+      expect(container.querySelector('ul a')).toHaveAttribute('tabindex', '-1');
+      fireEvent.click(main);
+      result.rerender(FloatingActionButton, attrs);
+      expect(getByRole(container, 'button', { name: 'Delete record' })).toHaveAttribute('tabindex', '0');
     });
   });
 

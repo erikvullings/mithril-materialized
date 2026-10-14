@@ -160,22 +160,22 @@
     font-size: 1.125rem;
   }
 
-  .btn i.left,
-  .btn-flat i.left,
-  .btn-small i.left,
-  .btn-large i.left {
+  .btn :is(i, svg.mm-icon).left,
+  .btn-flat :is(i, svg.mm-icon).left,
+  .btn-small :is(i, svg.mm-icon).left,
+  .btn-large :is(i, svg.mm-icon).left {
     margin-right: var(--mm-space-1);
   }
 
-  .btn i.right,
-  .btn-flat i.right,
-  .btn-small i.right,
-  .btn-large i.right {
+  .btn :is(i, svg.mm-icon).right,
+  .btn-flat :is(i, svg.mm-icon).right,
+  .btn-small :is(i, svg.mm-icon).right,
+  .btn-large :is(i, svg.mm-icon).right {
     margin-left: var(--mm-space-1);
   }
 
-  .btn-floating > i.left,
-  .btn-floating > i.right {
+  .btn-floating > :is(i, svg.mm-icon).left,
+  .btn-floating > :is(i, svg.mm-icon).right {
     float: none;
     margin: 0;
   }
@@ -289,6 +289,10 @@
     line-height: 1;
   }
 
+  .input-field svg.mm-icon.prefix {
+    inset-block-start: calc((var(--mm-control-height) - 24px) / 2);
+  }
+
   .input-field.col .prefix {
     inset-inline-start: 0.75rem;
   }
@@ -325,7 +329,7 @@
   }
 
   .input-field.select-space.select-appearance-outlined
-    > .prefix.material-icons {
+    > .prefix:is(.material-icons, .mm-icon) {
     left: auto;
     top: 0;
     inset-inline-start: calc(0.75rem + var(--mm-control-padding-inline));
@@ -333,14 +337,14 @@
   }
 
   .input-field.select-space.select-appearance-outlined:dir(rtl)
-    > .prefix.material-icons {
+    > .prefix:is(.material-icons, .mm-icon) {
     left: auto;
     right: calc(0.75rem + var(--mm-control-padding-inline));
     inset-inline-start: auto;
   }
 
   .input-field.select-space.select-appearance-outlined
-    > .prefix.material-icons
+    > .prefix:is(.material-icons, .mm-icon)
     + .select-wrapper {
     width: 100%;
     margin-left: 0;

@@ -49,7 +49,7 @@ select {
   &.valid + label,
   &.invalid + label {
     width: 100%;
-    pointer-events: none;
+    cursor: pointer;
   }
 
   & + label:after {
@@ -131,7 +131,7 @@ select:disabled {
 .input-field.select-space.select-appearance-outlined {
   position: relative;
 
-  > i.prefix.material-icons {
+  > .prefix:is(.material-icons, .mm-icon) {
     position: absolute;
     left: 24px;
     top: 50%;
@@ -141,11 +141,11 @@ select:disabled {
     pointer-events: none;
   }
 
-  > i.prefix.material-icons + .select-wrapper {
+  > .prefix:is(.material-icons, .mm-icon) + .select-wrapper {
     padding-left: 54px;
   }
 
-  > i.prefix ~ .select-wrapper {
+  > .prefix ~ .select-wrapper {
     margin-left: 0;
     width: 100%;
   }

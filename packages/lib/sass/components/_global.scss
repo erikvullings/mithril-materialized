@@ -184,6 +184,21 @@ i {
   }
 }
 
+svg.mm-icon {
+  &.left {
+    float: left;
+    margin-right: 15px;
+  }
+  &.right {
+    float: right;
+    margin-left: 15px;
+  }
+  &.tiny { width: 1rem; height: 1rem; }
+  &.small { width: 2rem; height: 2rem; }
+  &.medium { width: 4rem; height: 4rem; }
+  &.large { width: 6rem; height: 6rem; }
+}
+
 // Images
 img.responsive-img,
 video.responsive-video {

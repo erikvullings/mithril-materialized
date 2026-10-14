@@ -49,6 +49,7 @@ export const SecondaryContent: FactoryComponent<CollectionItem> = () => {
         href,
         style,
         className: 'secondary-content',
+        'aria-label': attrs['aria-label'] || `${iconName.replace(/[_-]/g, ' ')}${typeof attrs.title === 'string' ? ` ${attrs.title}` : ''}`,
         onclick: onclick ? () => onclick(attrs) : undefined,
       };
       return isNonLocalRoute(href) || !href

@@ -1,6 +1,7 @@
 import m, { FactoryComponent } from 'mithril';
 import { createDismissibleLayer } from './dismissible-layer';
 import { InputAttrs } from './input-options';
+import { Icon } from './icon';
 import { range, uniqueId } from './utils';
 import { createPortalHandle, type PortalHandle } from './portal';
 import { focusFirstPickerControl, trapPickerTabKey } from './picker-keyboard';
@@ -1621,7 +1622,7 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
         },
         [
           // Icon prefix
-          iconName && m('i.material-icons.prefix', iconName),
+          iconName && m(Icon, { iconName, className: 'prefix' }),
 
           // Date input field
           m('input.datepicker', {

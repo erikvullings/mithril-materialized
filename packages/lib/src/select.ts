@@ -8,6 +8,7 @@ import {
   renderFieldChrome,
 } from './utils';
 import { MaterialIcon } from './material-icon';
+import { Icon } from './icon';
 import { ComponentStyle } from './types';
 import { createControllableFieldState } from './controllable-field';
 import { createSelectionInteraction } from './combobox';
@@ -50,7 +51,7 @@ export interface SelectAttrs<T extends string | number> extends Attributes {
   placeholder?: string;
   /** Add a description underneath the input field. */
   helperText?: string;
-  /** Uses Materialize icons as a prefix or postfix. */
+  /** Built-in icon names render as SVG; other names need the Material Icons font. */
   iconName?: string;
   /** Sets the input field to disabled. */
   disabled?: boolean;
@@ -60,10 +61,10 @@ export interface SelectAttrs<T extends string | number> extends Attributes {
   newRow?: boolean;
   /**
    * If true, add a mandatory * after the label (if any),
-   * and add the required and aria-required attributes to the input element.
+   * and mark the combobox as required for assistive technology.
    */
   isMandatory?: boolean;
-  /** Add the required and aria-required attributes to the input element */
+  /** Mark the combobox as required for assistive technology. */
   required?: boolean;
   /** Enable the clear icon */
   showClearButton?: boolean;
@@ -242,7 +243,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
   };
 
   const renderDropdownContent = (attrs: SelectAttrs<T>, selectedIds: T[], multiple: boolean, placeholder: string) => [
-    placeholder && m('li.disabled', { tabindex: 0 }, m('span', placeholder)),
+    placeholder && m('li.disabled', m('span', placeholder)),
     // Render ungrouped options first
     attrs.options
       .filter((option) => !option.group)
@@ -273,6 +274,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                       m('input', {
                         id: option.id,
                         type: 'checkbox',
+                        tabindex: -1,
                         checked: selectedIds.includes(option.id),
                         disabled: option.disabled ? true : undefined,
                         onclick: (e: MouseEvent) => {
@@ -302,7 +304,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
         )
     )
       .map(([groupName, groupOptions]) => [
-        m('li.optgroup', { tabindex: 0 }, m('span', groupName)),
+        m('li.optgroup', m('span', groupName)),
         ...groupOptions.map((option) =>
           m(
             'li',
@@ -331,6 +333,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                         m('input', {
                           id: option.id,
                           type: 'checkbox',
+                          tabindex: -1,
                           checked: selectedIds.includes(option.id),
                           disabled: option.disabled ? true : undefined,
                           onclick: (e: MouseEvent) => {
@@ -356,7 +359,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
     const dropdownVnode = m(
       'ul.dropdown-content.select-dropdown',
       {
-        tabindex: 0,
+        tabindex: -1,
         style: {
           ...getPortalStyles(state.inputRef),
           ...(attrs.maxHeight ? { maxHeight: attrs.maxHeight } : {}),
@@ -445,27 +448,33 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
         },
         [
           // Icon prefix
-          iconName && m('i.material-icons.prefix', iconName),
+          iconName && m(Icon, { iconName, className: 'prefix' }),
           m(
             '.select-wrapper',
             {
               onkeydown: disabled ? undefined : (e: KeyboardEvent) => handleKeyDown(e, attrs),
-              tabindex: disabled ? -1 : 0,
-              'aria-expanded': state.isOpen ? 'true' : 'false',
-              'aria-haspopup': 'listbox',
-              'aria-controls': state.dropdownId,
-              role: 'combobox',
             },
             [
               shouldInlineLabel &&
-                m('span.select-inline-label', [
+                m('label.select-inline-label', { id: `${state.id}-label`, for: state.id }, [
                   label,
-                  isMandatory && m('span.mandatory', { style: { marginLeft: '2px' } }, '*'),
+                  isMandatory && m('span.mandatory', { 'aria-hidden': 'true', style: { marginLeft: '2px' } }, '*'),
                 ]),
               m('input[type=text][readonly=true].select-dropdown.dropdown-trigger', {
                 id: state.id,
                 value: triggerValue,
-                'aria-label': label,
+                role: 'combobox',
+                tabindex: disabled ? -1 : 0,
+                'aria-expanded': state.isOpen ? 'true' : 'false',
+                'aria-haspopup': 'listbox',
+                'aria-controls': state.dropdownId,
+                'aria-disabled': disabled ? 'true' : undefined,
+                'aria-required': isMandatory || attrs.required ? 'true' : undefined,
+                'aria-label':
+                  attrs['aria-label'] ||
+                  (!label ? placeholder || (multiple ? 'Select options' : 'Select option') : undefined),
+                'aria-labelledby':
+                  attrs['aria-label'] || !shouldInlineLabel ? undefined : `${state.id}-label`,
                 oncreate: ({ dom }) => {
                   state.inputRef = dom as HTMLElement;
                 },
@@ -483,7 +492,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                 m(
                   'ul.dropdown-content.select-dropdown',
                   {
-                    tabindex: 0,
+                    tabindex: -1,
                     oncreate: ({ dom }) => {
                       state.dropdownRef = dom as HTMLElement;
                     },
@@ -501,6 +510,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                 name: 'caret',
                 direction: 'down',
                 class: 'caret',
+                'aria-hidden': 'true',
               }),
             ]
           ),

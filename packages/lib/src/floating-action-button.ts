@@ -1,6 +1,7 @@
 import m, { FactoryComponent } from 'mithril';
 import { WavesEffect } from './waves';
 import { ComponentStyle } from './types';
+import { Icon } from './icon';
 
 interface FloatingActionButtonState {
   isOpen: boolean;
@@ -13,6 +14,8 @@ export interface FloatingActionButtonAttrs {
   style?: ComponentStyle;
   /** Material-icons name for the main FAB, @see https://materializecss.com/icons.html */
   iconName: string;
+  /** Accessible name for the main action; defaults to its icon name. */
+  ariaLabel?: string;
   /** Helper option to place the FAB inline instead of the bottom right of the display */
   position?: 'left' | 'right' | 'inline-left' | 'inline-right';
   /**
@@ -26,6 +29,8 @@ export interface FloatingActionButtonAttrs {
     className?: string;
     /** Name of the icon */
     iconName: string;
+    /** Accessible name for this action; defaults to its icon name. */
+    ariaLabel?: string;
     /** Classes of the icon */
     iconClass?: string;
     /** On click function */
@@ -67,6 +72,7 @@ export const FloatingActionButton: FactoryComponent<FloatingActionButtonAttrs> =
       attrs: {
         className,
         iconName,
+        ariaLabel,
         iconClass,
         position,
         style = position === 'left' || position === 'inline-left'
@@ -122,24 +128,43 @@ export const FloatingActionButton: FactoryComponent<FloatingActionButtonAttrs> =
               'a.btn-floating.btn-large.waves-effect.waves-light',
               {
                 className,
+                role: 'button',
+                tabindex: 0,
+                'aria-label': ariaLabel || iconName.replace(/[_-]/g, ' '),
+                onkeydown: (e: KeyboardEvent) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    (e.currentTarget as HTMLElement).click();
+                  }
+                },
                 onmousedown: WavesEffect.onMouseDown,
                 onmouseup: WavesEffect.onMouseUp,
                 onmouseleave: WavesEffect.onMouseLeave,
                 ontouchstart: WavesEffect.onTouchStart,
                 ontouchend: WavesEffect.onTouchEnd,
               },
-              m('i.material-icons', { className: iconClass }, iconName)
+              m(Icon, { className: iconClass, iconName })
             ),
             buttons &&
               buttons.length > 0 &&
               m(
                 'ul',
+                { 'aria-hidden': state.isOpen ? undefined : 'true' },
                 buttons.map((button, index) =>
                   m(
                     'li',
                     m(
                       `a.btn-floating.waves-effect.waves-light.${button.className || 'red'}`,
                       {
+                        role: 'button',
+                        tabindex: state.isOpen ? 0 : -1,
+                        'aria-label': button.ariaLabel || button.iconName.replace(/[_-]/g, ' '),
+                        onkeydown: (e: KeyboardEvent) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            (e.currentTarget as HTMLElement).click();
+                          }
+                        },
                         style: {
                           opacity: state.isOpen ? '1' : '0',
                           transform: state.isOpen ? 'scale(1)' : 'scale(0.4)',
@@ -155,7 +180,7 @@ export const FloatingActionButton: FactoryComponent<FloatingActionButtonAttrs> =
                         ontouchstart: WavesEffect.onTouchStart,
                         ontouchend: WavesEffect.onTouchEnd,
                       },
-                      m('i.material-icons', { className: button.iconClass }, button.iconName)
+                      m(Icon, { className: button.iconClass, iconName: button.iconName })
                     )
                   )
                 )

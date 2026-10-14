@@ -1,5 +1,4 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
-import { Icon } from './icon';
 import { ComponentStyle } from './types';
 
 const iconPaths = {
@@ -70,6 +69,8 @@ const iconPaths = {
 } as const;
 
 export type IconName = keyof typeof iconPaths;
+export const isMaterialIconName = (name: string): name is IconName =>
+  Object.prototype.hasOwnProperty.call(iconPaths, name);
 
 export interface MaterialIconAttrs extends Attributes {
   name: IconName;
@@ -104,7 +105,7 @@ export const MaterialIcon: FactoryComponent<MaterialIconAttrs> = () => {
 
       const icon = iconPaths[name];
       if (!icon || !Array.isArray(icon)) {
-        return m(Icon, { ...props, iconName: name });
+        return m('i.material-icons', props, name);
       }
       return m(
         'svg',

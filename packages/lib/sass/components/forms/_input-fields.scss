@@ -313,6 +313,12 @@ textarea.materialize-textarea {
     &.active { color: variables.$input-focus-color; }
   }
 
+  svg.mm-icon.prefix {
+    width: 24px;
+    height: 24px;
+    top: calc((#{variables.$input-height} - 24px) / 2);
+  }
+
   .prefix ~ input,
   .prefix ~ textarea,
   .prefix ~ label,

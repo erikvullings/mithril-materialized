@@ -3,6 +3,7 @@ import { uniqueId } from './utils';
 import { InputAttrs } from './input-options';
 import { Label, HelperText } from './label';
 import { createControllableFieldState } from './controllable-field';
+import { Icon } from './icon';
 
 export interface AutoCompleteAttrs extends InputAttrs<string> {
   /** The data object defining the autocomplete options */
@@ -212,7 +213,7 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
           style,
         },
         [
-          iconName ? m('i.material-icons.prefix', iconName) : '',
+          iconName ? m(Icon, { iconName, className: 'prefix' }) : '',
           m('input', {
             ...params,
             className: 'autocomplete',
