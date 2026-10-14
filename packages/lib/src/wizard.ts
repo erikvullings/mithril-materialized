@@ -1,5 +1,5 @@
 import m, { FactoryComponent, Attributes, Vnode } from 'mithril';
-import { uniqueId } from './utils';
+import { uniqueId, omitKey } from './utils';
 
 export interface WizardStep {
   /** Unique identifier for the step */
@@ -287,7 +287,7 @@ export const Stepper: FactoryComponent<Pick<WizardAttrs, 'steps' | 'currentStep'
   return {
     view: ({ attrs }) => {
       return m(Wizard, {
-        ...attrs,
+        ...omitKey(attrs),
         linear: true,
         showNavigation: false,
         allowHeaderNavigation: false,

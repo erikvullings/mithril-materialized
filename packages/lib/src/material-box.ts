@@ -1,5 +1,6 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
 import { createDismissibleLayer } from './dismissible-layer';
+import { omitKey } from './utils';
 
 export interface MaterialBoxOptions {
   /** Animation duration in ms */
@@ -232,7 +233,7 @@ export const MaterialBox: FactoryComponent<MaterialBoxAttrs> = () => {
       }
 
       return m('img.materialboxed', {
-        ...otherAttrs,
+        ...omitKey(otherAttrs),
         src,
         alt: alt || '',
         width,

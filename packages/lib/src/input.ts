@@ -1,5 +1,5 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
-import { uniqueId } from './utils';
+import { uniqueId, omitKey } from './utils';
 import { InputAttrs } from './input-options';
 import { MaterialIcon } from './material-icon';
 import { Icon } from './icon';
@@ -176,7 +176,7 @@ export const TextArea: FactoryComponent<InputAttrs<string>> = () => {
         m('.input-field', { className, style }, [
           iconName ? m(Icon, { iconName, className: 'prefix' }) : '',
           m('textarea.materialize-textarea', {
-            ...params,
+            ...omitKey(params),
             required: attrs.required || isMandatory || undefined,
             'aria-required': attrs.required || isMandatory ? 'true' : undefined,
             id,
@@ -419,7 +419,7 @@ const InputField =
         // Special rendering for minmax range sliders
         if (type === 'range' && (attrs.minmax || attrs.valueDisplay)) {
           return m(attrs.minmax ? DoubleRangeSlider : SingleRangeSlider, {
-            ...attrs,
+            ...omitKey(attrs),
             state,
             cn,
             style,
@@ -468,7 +468,7 @@ const InputField =
           iconName ? m(Icon, { iconName, className: 'prefix' }) : undefined,
           m('input', {
             class: inputClass || undefined,
-            ...params,
+            ...omitKey(params),
             required: attrs.required || isMandatory || undefined,
             'aria-required': attrs.required || isMandatory ? 'true' : undefined,
             type,

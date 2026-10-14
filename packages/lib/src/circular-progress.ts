@@ -1,5 +1,5 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
-import { uniqueId } from './utils';
+import { uniqueId, omitKey } from './utils';
 import { MaterialColor, ColorIntensity, ComponentStyle } from './types';
 
 /** Progress mode - determinate shows specific progress, indeterminate shows loading animation */
@@ -158,7 +158,7 @@ export const CircularProgress: FactoryComponent<CircularProgressAttrs> = () => {
       return m(
         '.circular-progress',
         {
-          ...params,
+          ...omitKey(params),
           className: classNames,
           style: styleValue,
           id,

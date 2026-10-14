@@ -1,6 +1,7 @@
 import m, { type Attributes, type Component } from 'mithril';
 import { Button, FlatButton, type ButtonAttrs } from './button';
 import { Icon } from './icon';
+import { omitKey } from './utils';
 
 export type EmptyStateAction = ButtonAttrs & {
   label: string;
@@ -48,7 +49,7 @@ export const EmptyState: Component<EmptyStateAttrs> = {
     const classes = ['mm-empty-state', className].filter(Boolean).join(' ');
     const titleElement = `h${headingLevel}.mm-empty-state-title`;
 
-    return m('section', { ...htmlAttrs, className: classes }, [
+    return m('section', { ...omitKey(htmlAttrs), className: classes }, [
       illustration
         ? m('.mm-empty-state-illustration', { 'aria-hidden': 'true' }, illustration)
         : iconName

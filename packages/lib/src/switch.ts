@@ -1,5 +1,5 @@
 import m, { FactoryComponent } from 'mithril';
-import { uniqueId } from './utils';
+import { uniqueId, omitKey } from './utils';
 import { InputAttrs } from './input-options';
 import { Label } from './label';
 // Styles are imported via the main index or individual component imports
@@ -49,7 +49,7 @@ export const Switch: FactoryComponent<SwitchAttrs> = () => {
           label && m(Label, { label: label || '', id, isMandatory, className: 'switch-label active' }),
           m(
             '.switch',
-            params,
+            omitKey(params),
             m('label', [
               m('span.switch-value', left || 'Off'),
               m('input[type=checkbox]', {

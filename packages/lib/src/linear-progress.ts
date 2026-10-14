@@ -1,5 +1,5 @@
 import m, { FactoryComponent, Attributes } from 'mithril';
-import { uniqueId } from './utils';
+import { uniqueId, omitKey } from './utils';
 import { MaterialColor, ColorIntensity, ComponentStyle } from './types';
 import { ProgressMode, ProgressSize } from './circular-progress';
 
@@ -107,7 +107,7 @@ export const LinearProgress: FactoryComponent<LinearProgressAttrs> = () => {
       return m(
         '.linear-progress',
         {
-          ...params,
+          ...omitKey(params),
           className: classNames,
           style,
           id,

@@ -3,6 +3,7 @@ import { Icon } from './icon';
 import { IconName } from './material-icon';
 import { MaterialPosition, IconClass, ButtonVariant } from './types';
 import { WavesEffect } from './waves';
+import { omitKey } from './utils';
 
 /**
  * HTML attributes that can be passed to button elements
@@ -146,7 +147,7 @@ export const ButtonFactory = (
         return m(
           renderedElement,
           {
-            ...params,
+            ...omitKey(params),
             'aria-label': accessibleName,
             ...wavesHandlers,
             className: cn,
@@ -265,7 +266,7 @@ export const ConfirmButton: FactoryComponent<ConfirmButtonAttrs> = () => {
           : props.style;
 
       return m(ButtonComponent, {
-        ...props,
+        ...omitKey(props),
         'aria-label':
           props['aria-label'] ||
           (label

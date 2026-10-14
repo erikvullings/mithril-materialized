@@ -1,5 +1,6 @@
 import m, { type Attributes, type Component } from 'mithril';
 import type { ComponentStyle } from './types';
+import { omitKey } from './utils';
 
 export type SkeletonShape = 'text' | 'rectangular' | 'circular';
 export type SkeletonSize = number | string;
@@ -54,7 +55,7 @@ export const Skeleton: Component<SkeletonAttrs> = {
 
     return m(
       '.mm-skeleton-group',
-      { ...htmlAttrs, 'aria-hidden': 'true', className, style: groupStyle },
+      { ...omitKey(htmlAttrs), 'aria-hidden': 'true', className, style: groupStyle },
       Array.from({ length: itemCount }, () =>
         m('span', {
           className: classes,
