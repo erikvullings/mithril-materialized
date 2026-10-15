@@ -1,3 +1,10 @@
+## [4.1.3](https://github.com/erikvullings/mithril-materialized/compare/v4.1.2...v4.1.3) (2026-10-15)
+
+
+### Bug Fixes
+
+* **select:** close open selects when another select or dropdown is clicked ([#56](https://github.com/erikvullings/mithril-materialized/issues/56)) ([e8ee79a](https://github.com/erikvullings/mithril-materialized/commit/e8ee79a41357e83764acb20fc3bc7133c99b3163))
+
 ## [4.1.2](https://github.com/erikvullings/mithril-materialized/compare/v4.1.1...v4.1.2) (2026-10-14)
 
 
