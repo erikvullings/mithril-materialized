@@ -1,3 +1,10 @@
+## [4.1.4](https://github.com/erikvullings/mithril-materialized/compare/v4.1.3...v4.1.4) (2026-10-15)
+
+
+### Bug Fixes
+
+* **toggle-button:** keep icon gap stable during waves ripple ([#57](https://github.com/erikvullings/mithril-materialized/issues/57)) ([ae69e18](https://github.com/erikvullings/mithril-materialized/commit/ae69e181eb783b7af8c9bbea0d9371f3f0407f69))
+
 ## [4.1.3](https://github.com/erikvullings/mithril-materialized/compare/v4.1.2...v4.1.3) (2026-10-15)
 
 
