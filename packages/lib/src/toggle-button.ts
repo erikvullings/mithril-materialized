@@ -52,7 +52,10 @@ export const ToggleButton: FactoryComponent<ToggleButtonAttrs> = () => {
   return {
     view: ({ attrs }) => {
       const { checked, iconName, icon, label, onchange, className, tooltip, ...rest } = attrs;
-      const classes = [className, checked ? 'checked' : ''].filter(Boolean).join(' ');
+      const iconOnly = (icon || iconName) && (label === undefined || label === null || label === '');
+      const classes = [className, checked ? 'checked' : '', iconOnly ? 'toggle-button--icon-only' : '']
+        .filter(Boolean)
+        .join(' ');
       return m(
         'button.btn-flat.waves-effect.toggle-button',
         {

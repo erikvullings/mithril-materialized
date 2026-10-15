@@ -196,8 +196,8 @@
     margin-inline: 0 var(--mm-space-1);
   }
 
-  .toggle-group .toggle-button > i:only-child,
-  .toggle-group .toggle-button > svg:only-child {
+  .toggle-group .toggle-button.toggle-button--icon-only > i,
+  .toggle-group .toggle-button.toggle-button--icon-only > svg {
     margin-inline: 0;
   }
 
