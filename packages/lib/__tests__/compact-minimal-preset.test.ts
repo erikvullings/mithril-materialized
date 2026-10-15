@@ -103,6 +103,9 @@ describe('compact minimal preset contract', () => {
 
     expect(source).toMatch(/\.btn-floating i\s*\{[^}]*margin:\s*0/s);
     expect(source).toContain('.toggle-group .toggle-button > svg');
+    // :only-child ignores text nodes and flips when Waves appends a ripple, causing width jitter.
+    expect(source).not.toMatch(/toggle-button[^{]*:only-child/);
+    expect(source).toMatch(/\.toggle-button\.toggle-button--icon-only > i[^{]*\{[^}]*margin-inline:\s*0/s);
     expect(source).toContain('--mm-confirm-button-size');
     expect(source).toMatch(/textarea\.materialize-textarea\s*\{[^}]*padding-block-start:/s);
     expect(source).toMatch(/\.datepicker-controls[\s\S]*?\.dropdown-item\s*\{/);
