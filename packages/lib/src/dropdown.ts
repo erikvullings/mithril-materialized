@@ -96,6 +96,13 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
     m.redraw(); // Needed to remove the dropdown options list (potentially added to document root)
   };
 
+  const handleDocumentClick = (e: MouseEvent) => {
+    if (!state.isOpen) return;
+    // The trigger toggles the dropdown itself
+    if (state.inputRef?.contains(e.target as Node)) return;
+    closeDropdown();
+  };
+
   const handleKeyDown = (e: KeyboardEvent, items: DropdownItem<T>[]): T | undefined => {
     const availableItems = items.filter((item) => !item.divider && !item.disabled);
 
@@ -244,7 +251,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
       valueState.sync(attrs);
 
       // Add global click listener to close dropdown
-      document.addEventListener('click', closeDropdown);
+      document.addEventListener('click', handleDocumentClick);
     },
 
     oncreate: ({ dom }) => {
@@ -254,7 +261,7 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
 
     onremove: () => {
       // Cleanup global listener
-      document.removeEventListener('click', closeDropdown);
+      document.removeEventListener('click', handleDocumentClick);
 
       dropdownPortal?.dispose();
       escapeLayer.dispose();
@@ -338,8 +345,8 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
                 state.inputRef = dom as HTMLElement;
               },
               onclick: (e: Event) => {
+                // Let the click bubble so other open selects/dropdowns can close themselves
                 e.preventDefault();
-                e.stopPropagation();
                 if (!disabled) {
                   state.isOpen = !state.isOpen;
                   // Reset focus index when opening/closing

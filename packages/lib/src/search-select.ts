@@ -224,13 +224,8 @@ export const SearchSelect = <T extends string | number>(
   // Handle click outside
   const handleClickOutside = (e: MouseEvent) => {
     const target = e.target as Node;
-    const targetElement = e.target instanceof Element ? e.target : null;
     if (state.dropdownRef?.contains(target)) {
       // Click inside dropdown, do nothing
-      return;
-    }
-    if (targetElement?.closest('.chips-container')) {
-      // Click on trigger, do nothing
       return;
     }
     if (state.inputRef?.contains(target)) {
@@ -458,9 +453,8 @@ export const SearchSelect = <T extends string | number>(
               state.inputRef = dom as HTMLElement;
             },
             onclick: (e: Event) => {
-              // console.log('SearchSelect clicked', state.isOpen, e); // Debug log
+              // Let the click bubble so other open selects/dropdowns can close themselves
               e.preventDefault();
-              e.stopPropagation();
               const wasOpen = state.isOpen;
               state.isOpen = !state.isOpen;
               if (!wasOpen && state.isOpen && loadOptions) {

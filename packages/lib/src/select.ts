@@ -89,6 +89,7 @@ interface SelectState {
   dropdownId: string;
   isOpen: boolean;
   focusedIndex: number;
+  rootRef?: HTMLElement | null;
   inputRef?: HTMLElement | null;
   dropdownRef?: HTMLElement | null;
   isInsideModal: boolean;
@@ -168,20 +169,17 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
   };
 
   const closeDropdown = (e: MouseEvent) => {
-    if (!state.isMultiple) {
-      state.isOpen = false;
-      m.redraw();
-      return;
+    if (!state.isOpen) return;
+    const target = e.target as Node;
+    // The trigger toggles the dropdown itself
+    if (state.inputRef?.contains(target)) return;
+    if (state.isMultiple) {
+      // Only clicks inside this select (or its portaled dropdown) keep a multi-select open
+      const isClickInsideSelect = !!state.rootRef?.contains(target);
+      const isClickInsidePortalDropdown = !!state.dropdownRef?.contains(target);
+      if (isClickInsideSelect || isClickInsidePortalDropdown) return;
     }
-    const target = e.target as Element;
-    // When inside modal, check both the select component AND the portaled dropdown
-    const isClickInsideSelect = target.closest('.input-field.select-space');
-    const isClickInsidePortalDropdown =
-      state.isInsideModal && state.dropdownRef && (state.dropdownRef.contains(target) || target === state.dropdownRef);
-
-    if (!isClickInsideSelect && !isClickInsidePortalDropdown) {
-      state.isOpen = false;
-    }
+    state.isOpen = false;
     m.redraw();
   };
 
@@ -393,11 +391,17 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
     },
 
     oncreate: ({ dom }) => {
+      state.rootRef = dom as HTMLElement;
       // Detect if component is inside a modal
       state.isInsideModal = !!dom.closest('.modal');
     },
 
+    onupdate: ({ dom }) => {
+      state.rootRef = dom as HTMLElement;
+    },
+
     onremove: () => {
+      state.rootRef = null;
       // Cleanup global listener
       document.removeEventListener('click', closeDropdown);
 
@@ -479,8 +483,8 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                   state.inputRef = dom as HTMLElement;
                 },
                 onclick: (e: Event) => {
+                  // Let the click bubble so other open selects/dropdowns can close themselves
                   e.preventDefault();
-                  e.stopPropagation();
                   if (!disabled) {
                     state.isOpen = !state.isOpen;
                   }
