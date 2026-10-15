@@ -25,6 +25,7 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
     suggestions: [] as Array<{ key: string; value: string | null }>,
     selectedIndex: -1,
     inputElement: null as HTMLInputElement | null,
+    rootRef: null as HTMLElement | null,
   };
 
   const valueState = createControllableFieldState<AutoCompleteAttrs, string>({
@@ -122,12 +123,10 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
   };
 
   const closeDropdown = (e: Event) => {
-    const target = e.target as Element;
-    const autocompleteWrapper = target.closest('.autocomplete-wrapper');
-    const dropdownContent = target.closest('.autocomplete-content');
+    const target = e.target as Node;
 
-    // Close if clicking outside both the input wrapper and dropdown content
-    if (!autocompleteWrapper && !dropdownContent) {
+    // Close if clicking outside this autocomplete (its dropdown is rendered inside the wrapper)
+    if (!state.rootRef?.contains(target)) {
       state.isOpen = false;
       state.selectedIndex = -1;
     }
@@ -169,7 +168,16 @@ export const Autocomplete: FactoryComponent<AutoCompleteAttrs> = () => {
       document.addEventListener('click', closeDropdown);
     },
 
+    oncreate: ({ dom }) => {
+      state.rootRef = dom as HTMLElement;
+    },
+
+    onupdate: ({ dom }) => {
+      state.rootRef = dom as HTMLElement;
+    },
+
     onremove: () => {
+      state.rootRef = null;
       document.removeEventListener('click', closeDropdown);
     },
 
