@@ -1056,10 +1056,8 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
             m('.selects-container', [
               // Month select wrapper
               m('.select-wrapper.select-month', [
-                m('input.select-dropdown.dropdown-trigger', {
-                  type: 'text',
-                  readonly: true,
-                  value: options.i18n.months![month],
+                m('button.select-dropdown.dropdown-trigger', {
+                  type: 'button',
                   role: 'combobox',
                   'aria-haspopup': 'listbox',
                   'aria-expanded': state.monthDropdownOpen ? 'true' : 'false',
@@ -1071,13 +1069,24 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                     m.redraw();
                   },
                   onkeydown: (e: KeyboardEvent) => {
+                    if (e.key === 'Tab') {
+                      state.monthDropdownOpen = false;
+                      return;
+                    }
+                    if (e.key === 'Escape' && state.monthDropdownOpen) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      state.monthDropdownOpen = false;
+                      m.redraw();
+                      return;
+                    }
                     if (!['Enter', ' ', 'ArrowDown'].includes(e.key)) return;
                     e.preventDefault();
                     state.monthDropdownOpen = true;
                     state.yearDropdownOpen = false;
                     m.redraw();
                   },
-                }),
+                }, options.i18n.months![month]),
                 // Custom dropdown menu
                 state.monthDropdownOpen &&
                   m(
@@ -1111,10 +1120,8 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
 
               // Year select wrapper
               m('.select-wrapper.select-year', [
-                m('input.select-dropdown.dropdown-trigger', {
-                  type: 'text',
-                  readonly: true,
-                  value: year.toString(),
+                m('button.select-dropdown.dropdown-trigger', {
+                  type: 'button',
                   role: 'combobox',
                   'aria-haspopup': 'listbox',
                   'aria-expanded': state.yearDropdownOpen ? 'true' : 'false',
@@ -1126,13 +1133,24 @@ export const DatePicker: FactoryComponent<DatePickerAttrs> = () => {
                     m.redraw();
                   },
                   onkeydown: (e: KeyboardEvent) => {
+                    if (e.key === 'Tab') {
+                      state.yearDropdownOpen = false;
+                      return;
+                    }
+                    if (e.key === 'Escape' && state.yearDropdownOpen) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      state.yearDropdownOpen = false;
+                      m.redraw();
+                      return;
+                    }
                     if (!['Enter', ' ', 'ArrowDown'].includes(e.key)) return;
                     e.preventDefault();
                     state.yearDropdownOpen = true;
                     state.monthDropdownOpen = false;
                     m.redraw();
                   },
-                }),
+                }, year.toString()),
                 // Custom dropdown menu
                 state.yearDropdownOpen &&
                   m(

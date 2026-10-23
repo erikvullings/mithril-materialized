@@ -229,11 +229,20 @@ describe('DatePicker Component', () => {
     fireEvent.click(result.container.querySelector('input') as HTMLInputElement);
     result.rerender(DatePicker, attrs);
 
-    const monthTrigger = document.querySelector<HTMLElement>('.select-month .dropdown-trigger');
+    const monthTrigger = document.querySelector<HTMLButtonElement>('.select-month .dropdown-trigger');
     if (!monthTrigger) throw new Error('Expected month dropdown trigger');
+    expect(monthTrigger).toHaveAttribute('type', 'button');
+    expect(monthTrigger).toHaveAttribute('role', 'combobox');
+    expect(monthTrigger.getAttribute('aria-controls')).toContain('months');
     fireEvent.keyDown(monthTrigger, 'Enter');
     result.rerender(DatePicker, attrs);
     expect(monthTrigger).toHaveAttribute('aria-expanded', 'true');
+    fireEvent.keyDown(monthTrigger, 'Escape');
+    result.rerender(DatePicker, attrs);
+    expect(document.querySelector('.datepicker-modal')).toBeInTheDocument();
+    expect(document.querySelector('.select-month .dropdown-content')).toBeNull();
+    fireEvent.keyDown(monthTrigger, 'Enter');
+    result.rerender(DatePicker, attrs);
 
     const july = Array.from(
       document.querySelectorAll<HTMLButtonElement>('.select-month .dropdown-item')
@@ -242,10 +251,10 @@ describe('DatePicker Component', () => {
     july.focus();
     fireEvent.click(july);
     result.rerender(DatePicker, attrs);
-    const selectedMonthTrigger = document.querySelector<HTMLInputElement>(
+    const selectedMonthTrigger = document.querySelector<HTMLButtonElement>(
       '.select-month .dropdown-trigger'
     );
-    expect(selectedMonthTrigger?.value).toBe('July');
+    expect(selectedMonthTrigger?.textContent).toBe('July');
     expect(document.activeElement).toBe(selectedMonthTrigger);
 
     const yearTrigger = document.querySelector<HTMLElement>('.select-year .dropdown-trigger');
@@ -253,6 +262,15 @@ describe('DatePicker Component', () => {
     fireEvent.keyDown(yearTrigger, 'ArrowDown');
     result.rerender(DatePicker, attrs);
     expect(document.querySelectorAll('.select-year .dropdown-item').length).toBeGreaterThan(0);
+    const previouslyFocused = document.activeElement;
+    const tabEvent = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true, cancelable: true });
+    yearTrigger.dispatchEvent(tabEvent);
+    result.rerender(DatePicker, attrs);
+    expect(tabEvent.defaultPrevented).toBe(true);
+    expect(document.activeElement).not.toBe(previouslyFocused);
+    expect(document.querySelector('.select-year .dropdown-content')).toBeNull();
+    fireEvent.keyDown(yearTrigger, 'ArrowDown');
+    result.rerender(DatePicker, attrs);
 
     const nextYear = Array.from(
       document.querySelectorAll<HTMLButtonElement>('.select-year .dropdown-item')
@@ -261,10 +279,10 @@ describe('DatePicker Component', () => {
     nextYear.focus();
     fireEvent.click(nextYear);
     result.rerender(DatePicker, attrs);
-    const selectedYearTrigger = document.querySelector<HTMLInputElement>(
+    const selectedYearTrigger = document.querySelector<HTMLButtonElement>(
       '.select-year .dropdown-trigger'
     );
-    expect(selectedYearTrigger?.value).toBe('2024');
+    expect(selectedYearTrigger?.textContent).toBe('2024');
     expect(document.activeElement).toBe(selectedYearTrigger);
   });
 

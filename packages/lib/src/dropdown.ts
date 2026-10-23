@@ -107,6 +107,11 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
     const availableItems = items.filter((item) => !item.divider && !item.disabled);
 
     switch (e.key) {
+      case 'Tab':
+        state.isOpen = false;
+        state.focusedIndex = -1;
+        escapeLayer.sync(false);
+        return undefined;
       case 'ArrowDown':
         e.preventDefault();
         if (!state.isOpen) {
@@ -222,7 +227,10 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
     const dropdownVnode = m(
       'ul.dropdown-content.select-dropdown',
       {
+        id: `${state.id}-dropdown`,
         tabindex: 0,
+        role: 'listbox',
+        'aria-labelledby': state.id,
         style: {
           ...getPortalStyles(state.inputRef),
           ...(maxHeight ? { maxHeight } : {}),
@@ -332,15 +340,19 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
                     handleSelection(selectedValue);
                   }
                 },
-            tabindex: disabled ? -1 : 0,
-            'aria-expanded': state.isOpen ? 'true' : 'false',
-            'aria-haspopup': 'listbox',
-            role: 'combobox',
           },
           [
-            m('input[type=text][readonly=true].select-dropdown.dropdown-trigger', {
+            m('button.select-dropdown.dropdown-trigger', {
+              type: 'button',
               id: state.id,
-              value: title,
+              disabled: disabled || undefined,
+              tabindex: disabled ? -1 : 0,
+              role: 'combobox',
+              'aria-expanded': state.isOpen ? 'true' : 'false',
+              'aria-haspopup': 'listbox',
+              'aria-controls': `${state.id}-dropdown`,
+              'aria-disabled': disabled ? 'true' : undefined,
+              'aria-label': label || title,
               oncreate: ({ dom }) => {
                 state.inputRef = dom as HTMLElement;
               },
@@ -353,13 +365,14 @@ export const Dropdown = <T extends string | number>(): Component<DropdownAttrs<T
                   state.focusedIndex = -1;
                 }
               },
-            }),
+            }, title),
             // Dropdown Menu - render inline only when NOT inside modal
             state.isOpen &&
               !state.isInsideModal &&
               m(
                 'ul.dropdown-content.select-dropdown',
                 {
+                  id: `${state.id}-dropdown`,
                   tabindex: 0,
                   role: 'listbox',
                   'aria-labelledby': state.id,

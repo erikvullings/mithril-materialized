@@ -31,7 +31,8 @@
     position: relative;
     overflow: visible;
 
-    input {
+    input,
+    button {
       &:focus {
         border-bottom: none;
       }
@@ -90,7 +91,8 @@
   }
 
   .select-year {
-    input {
+    input,
+    button {
       width: 50px;
     }
 
@@ -101,7 +103,8 @@
   }
 
   .select-month {
-    input {
+    input,
+    button {
       width: 80px;
     }
 

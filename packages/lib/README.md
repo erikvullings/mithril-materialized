@@ -355,6 +355,29 @@ m(SearchSelect<number>, {
 
 `SearchSelect` uses combobox/listbox ARIA roles and supports `ArrowDown`, `ArrowUp`, `Enter`/`Space`, and `Escape`.
 
+Pass `multiple: false` for searchable single selection. Choosing an option replaces the current value, and `onchange` continues to receive an array. Group headings use each option's `group` property and remain aligned with filtered options:
+
+```typescript
+m(SearchSelect<string>, {
+  label: 'Scenario type',
+  multiple: false,
+  checkedId: selectedIds,
+  options: [
+    { id: 'mine', label: 'My scenario', group: 'My scenarios' },
+    { id: 'starter', label: 'Starter scenario', group: 'Starter kit' },
+  ],
+  onchange: (ids) => {
+    selectedIds = ids;
+  },
+});
+```
+
+`maxSelectedOptions: 1` remains a multi-select limit and does not enable single-selection mode.
+
+### Select trigger migration
+
+`Select`, `Dropdown`, and DatePicker month/year triggers now render as non-submitting buttons instead of readonly text inputs. Keep styling with `.select-dropdown` or `.dropdown-trigger`; consumer CSS that specifically targets `input.select-dropdown` must be updated. This markup change may require a breaking release.
+
 ### Feedback and empty states
 
 ```typescript

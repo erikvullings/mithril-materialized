@@ -111,16 +111,16 @@ describe('dismissible layer Escape handling', () => {
       label: 'Choose action',
       items: [{ id: 'edit', label: 'Edit' }],
     });
-    const dropdownTrigger = dropdownResult.container.querySelector<HTMLElement>('.select-wrapper');
+    const dropdownTrigger = dropdownResult.container.querySelector<HTMLElement>('.dropdown-trigger');
 
     fireEvent.keyDown(dropdownTrigger!, 'ArrowDown');
     dropdownResult.rerender(Select);
-    expect(dropdownResult.container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'true');
+    expect(dropdownTrigger).toHaveAttribute('aria-expanded', 'true');
 
     fireEvent.keyDown(document.body, 'Escape');
     dropdownResult.rerender(Select);
 
-    expect(dropdownResult.container.querySelector('.select-wrapper')).toHaveAttribute('aria-expanded', 'false');
+    expect(dropdownTrigger).toHaveAttribute('aria-expanded', 'false');
     expect(closeOrder).toEqual([]);
 
     fireEvent.keyDown(document.body, 'Escape');

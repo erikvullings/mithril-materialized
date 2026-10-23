@@ -26,7 +26,8 @@ select {
   }
 
   &.valid {
-    & > input.select-dropdown {
+    & > input.select-dropdown,
+    & > button.select-dropdown {
       @extend %valid-input-style !optional;
     }
 
@@ -37,7 +38,9 @@ select {
 
   &.invalid {
     & > input.select-dropdown,
-    & > input.select-dropdown:focus {
+    & > input.select-dropdown:focus,
+    & > button.select-dropdown,
+    & > button.select-dropdown:focus {
       @extend %invalid-input-style !optional;
     }
 
@@ -58,7 +61,8 @@ select {
 
   position: relative;
 
-  input.select-dropdown {
+  input.select-dropdown,
+  button.select-dropdown {
     &:focus {
       border-bottom: 1px solid variables.$input-focus-color;
     }
@@ -77,6 +81,14 @@ select {
     display: block;
     user-select:none;
     z-index: 1;
+  }
+
+  button.select-dropdown {
+    appearance: none;
+    border-radius: 0;
+    color: inherit;
+    font-family: inherit;
+    text-align: start;
   }
 
   .caret {
@@ -121,7 +133,8 @@ select:disabled {
   }
 }
 
-.select-wrapper input.select-dropdown:disabled {
+.select-wrapper input.select-dropdown:disabled,
+.select-wrapper button.select-dropdown:disabled {
   color: variables.$input-disabled-color;
   cursor: default;
   user-select: none;
@@ -166,7 +179,8 @@ select:disabled {
       box-shadow: 0 0 0 1px var(--mm-primary-color, #2196f3);
     }
 
-    input.select-dropdown {
+    input.select-dropdown,
+    button.select-dropdown {
       border-bottom: none;
       margin: 0;
       width: auto;
@@ -260,6 +274,22 @@ body.keyboard-focused {
   & ~ li.optgroup-option {
     padding-left: 1rem;
   }
+}
+
+.search-select-option-group > ul {
+  margin: 0;
+  box-shadow: none;
+
+  > .optgroup-option {
+    padding-left: 1rem;
+  }
+}
+
+.search-select-single-value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Dark theme overrides to ensure proper colors */

@@ -60,7 +60,10 @@ const DropdownOption = <T extends string | number>({
       id: optionId,
       role: 'option',
       'aria-selected': selectedIds.includes(option.id) ? 'true' : 'false',
-      class: `${option.disabled ? 'disabled' : ''} ${isFocused ? 'active' : ''}`.trim(),
+      class: `${option.disabled ? 'disabled' : ''} ${selectedIds.includes(option.id) ? 'selected' : ''} ${
+        isFocused ? 'active' : ''
+      }`.trim(),
+      onclick: !showCheckbox && !option.disabled ? () => onToggle(option) : undefined,
       onmouseover: () => {
         if (!option.disabled) {
           onMouseOver(index);
@@ -71,13 +74,6 @@ const DropdownOption = <T extends string | number>({
       'label',
       {
         class: 'search-select-option-label',
-        onclick: (e: Event) => {
-          // A single-select row has no native checkbox to emit change.
-          if (!showCheckbox) {
-            e.preventDefault();
-            onToggle(option);
-          }
-        },
       },
       [
         showCheckbox &&
@@ -120,6 +116,11 @@ export interface SearchSelectI18n {
 
 // Extended SearchSelect attributes that inherit from SelectAttrs
 export interface SearchSelectAttrs<T extends string | number> extends SelectAttrs<T> {
+  /**
+   * Select one option when false. SearchSelect defaults to multiple selection.
+   * onchange continues to receive an array in either mode.
+   */
+  multiple?: boolean;
   /** Async options loader for remote/large data sets */
   loadOptions?: (query: string) => Promise<InputOption<T>[]>;
   /** Callback when user creates a new option: should return new ID */
@@ -155,6 +156,7 @@ interface SearchSelectState<T extends string | number> {
   isLoading: boolean;
   loadError: string | null;
   latestRequestId: number;
+  focusTriggerAfterSelection: boolean;
 }
 
 /**
@@ -188,6 +190,7 @@ export const SearchSelect = <T extends string | number>(
     isLoading: false,
     loadError: null,
     latestRequestId: 0,
+    focusTriggerAfterSelection: false,
   };
 
   const updateAsyncState = (nextState: AsyncComboboxState<InputOption<T>>) => {
@@ -252,6 +255,9 @@ export const SearchSelect = <T extends string | number>(
       e.preventDefault();
     }
 
+    if (result.action === 'close' && state.isOpen) {
+      state.focusTriggerAfterSelection = true;
+    }
     state.isOpen = result.isOpen;
     state.focusedIndex = result.focusedIndex;
     return result.action;
@@ -311,12 +317,16 @@ export const SearchSelect = <T extends string | number>(
       type: 'toggle',
       selectedIds: valueState.current(attrs),
       option,
-      mode: 'multiple',
+      mode: attrs.multiple === false ? 'single' : 'multiple',
       maxSelected: attrs.maxSelectedOptions,
     });
     if (!result.accepted) return;
 
     valueState.update(attrs, result.selectedIds);
+    if (result.close && state.isOpen) {
+      state.isOpen = false;
+      state.focusTriggerAfterSelection = true;
+    }
 
     state.searchTerm = '';
     state.focusedIndex = -1;
@@ -352,6 +362,12 @@ export const SearchSelect = <T extends string | number>(
     oncreate() {
       document.addEventListener('click', handleClickOutside);
     },
+    onupdate() {
+      if (state.focusTriggerAfterSelection && state.inputRef) {
+        state.focusTriggerAfterSelection = false;
+        state.inputRef.focus();
+      }
+    },
     onremove() {
       document.removeEventListener('click', handleClickOutside);
     },
@@ -373,6 +389,7 @@ export const SearchSelect = <T extends string | number>(
         maxDisplayedOptions,
         maxSelectedOptions,
         maxHeight,
+        multiple = true,
       } = attrs;
 
       // Use i18n values if provided, otherwise use defaults
@@ -389,7 +406,8 @@ export const SearchSelect = <T extends string | number>(
       };
 
       // Check if max selections is reached
-      const isMaxSelectionsReached = maxSelectedOptions && selectedIds.length >= maxSelectedOptions;
+      const isMaxSelectionsReached =
+        multiple && maxSelectedOptions && selectedIds.length >= maxSelectedOptions;
 
       // In async mode, the active list is sourced remotely.
       const sourceOptions = loadOptions ? state.asyncOptions : options;
@@ -420,13 +438,26 @@ export const SearchSelect = <T extends string | number>(
       const filteredOptions = allOptions.filter(
         (option) =>
           (option.label || option.id.toString()).toLowerCase().includes((state.searchTerm || '').toLowerCase()) &&
-          !selectedIds.includes(option.id)
+          (multiple === false || !selectedIds.includes(option.id))
       );
 
       // Apply display limit if configured
       const totalFilteredCount = filteredOptions.length;
       const displayedOptions = maxDisplayedOptions ? filteredOptions.slice(0, maxDisplayedOptions) : filteredOptions;
       const isTruncated = maxDisplayedOptions && totalFilteredCount > maxDisplayedOptions;
+      const groupedOptions: Array<{
+        group?: string;
+        entries: Array<{ option: InputOption<T>; index: number }>;
+      }> = [];
+      displayedOptions.forEach((option, index) => {
+        const group = option.group || undefined;
+        const previousGroup = groupedOptions[groupedOptions.length - 1];
+        if (previousGroup && previousGroup.group === group) {
+          previousGroup.entries.push({ option, index });
+        } else {
+          groupedOptions.push({ group, entries: [{ option, index }] });
+        }
+      });
 
       // Check if we should show the "add new option" element
       const showAddNew =
@@ -466,6 +497,11 @@ export const SearchSelect = <T extends string | number>(
               if (e.target !== e.currentTarget) {
                 return;
               }
+              if (e.key === 'Tab') {
+                state.isOpen = false;
+                state.focusedIndex = -1;
+                return;
+              }
               const action = handleKeyDown(e, displayedOptions, !!showAddNew);
               if (action === 'open' && loadOptions) {
                 await loadAsyncOptions(attrs, state.searchTerm);
@@ -483,6 +519,9 @@ export const SearchSelect = <T extends string | number>(
             tabindex: state.isOpen ? -1 : 0,
             'aria-expanded': state.isOpen ? undefined : 'false',
             'aria-haspopup': state.isOpen ? undefined : 'listbox',
+            'aria-controls': state.isOpen ? undefined : state.listboxId,
+            'aria-labelledby': !state.isOpen && label ? `${state.id}-label` : undefined,
+            'aria-label': !state.isOpen && !label ? placeholder || searchPlaceholder : undefined,
             style: {
               cursor: 'pointer',
               position: 'relative',
@@ -512,12 +551,16 @@ export const SearchSelect = <T extends string | number>(
             }),
 
             // Selected Options (chips)
-            ...selectedOptions.map((option) =>
-              SelectedChip({
-                option: option as InputOption<T>,
-                onRemove: (id: T) => removeOption(id, attrs),
-              })
-            ),
+            multiple === false
+              ? !state.isOpen &&
+                selectedOptions[0] &&
+                m('span.search-select-single-value', selectedOptions[0].label || selectedOptions[0].id.toString())
+              : selectedOptions.map((option) =>
+                  SelectedChip({
+                    option: option as InputOption<T>,
+                    onRemove: (id: T) => removeOption(id, attrs),
+                  })
+                ),
 
             // Placeholder when no options selected
             !state.isOpen &&
@@ -555,6 +598,11 @@ export const SearchSelect = <T extends string | number>(
                   }
                 },
                 onkeydown: async (e: KeyboardEvent) => {
+                  if (e.key === 'Tab') {
+                    state.isOpen = false;
+                    state.focusedIndex = -1;
+                    return;
+                  }
                   const action = handleKeyDown(e, displayedOptions, !!showAddNew);
                   if (e.defaultPrevented) {
                     e.stopPropagation();
@@ -608,6 +656,7 @@ export const SearchSelect = <T extends string | number>(
             'label',
             {
               for: state.id,
+              id: `${state.id}-label`,
               class: state.isOpen || placeholder || selectedOptions.length > 0 ? 'active' : '',
             },
             label
@@ -701,20 +750,35 @@ export const SearchSelect = <T extends string | number>(
                 : []),
 
               // List of filtered options
-              ...displayedOptions.map((option, index) =>
-                DropdownOption({
-                  option,
-                  index,
-                  optionId: getComboboxOptionId(state.id, index),
-                  selectedIds,
-                  isFocused: state.focusedIndex === index,
-                  onToggle: (opt) => toggleOption(opt, attrs),
-                  onMouseOver: (idx) => {
-                    state.focusedIndex = idx;
-                  },
-                  showCheckbox: maxSelectedOptions !== 1,
-                })
-              ),
+              ...groupedOptions.map(({ group, entries }, groupIndex) => {
+                const renderedOptions = entries.map(({ option, index }) =>
+                  DropdownOption({
+                    option,
+                    index,
+                    optionId: getComboboxOptionId(state.id, index),
+                    selectedIds,
+                    isFocused: state.focusedIndex === index,
+                    onToggle: (opt) => toggleOption(opt, attrs),
+                    onMouseOver: (idx) => {
+                      state.focusedIndex = idx;
+                    },
+                    showCheckbox: multiple !== false && maxSelectedOptions !== 1,
+                  })
+                );
+                if (!group) {
+                  return renderedOptions;
+                }
+
+                const headingId = `${state.listboxId}-group-${groupIndex}`;
+                return m(
+                  'li.search-select-option-group.optgroup',
+                  { role: 'group', 'aria-labelledby': headingId },
+                  [
+                    m('span.optgroup-label', { id: headingId }, group),
+                    m('ul[role=presentation]', renderedOptions),
+                  ]
+                );
+              }),
             ]
           ),
       ]);

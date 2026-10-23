@@ -43,8 +43,8 @@ describe('Select Component', () => {
     });
 
     // Placeholder should appear as input value when nothing is selected
-    const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
-    expect(input.value).toBe('Choose an option');
+    const trigger = container.querySelector('button.select-dropdown') as HTMLButtonElement;
+    expect(trigger.textContent).toBe('Choose an option');
   });
 
   it('renders all options when dropdown is opened', () => {
@@ -58,13 +58,13 @@ describe('Select Component', () => {
     const result = render(select, attrs);
     const { container } = result;
 
-    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'false');
+    expect(container.querySelector('button.select-dropdown')).toHaveAttribute('aria-expanded', 'false');
     expect(container.querySelector('ul.select-dropdown')).toBeNull();
 
-    fireEvent.click(container.querySelector('input.select-dropdown') as HTMLElement);
+    fireEvent.click(container.querySelector('button.select-dropdown') as HTMLElement);
     result.rerender(select, attrs);
 
-    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'true');
+    expect(container.querySelector('button.select-dropdown')).toHaveAttribute('aria-expanded', 'true');
     expect(container.querySelectorAll('ul.select-dropdown li:not(.disabled)')).toHaveLength(2);
   });
 
@@ -80,13 +80,13 @@ describe('Select Component', () => {
     const result = render(select, attrs);
     const { container } = result;
 
-    fireEvent.click(container.querySelector('input.select-dropdown') as HTMLElement);
+    fireEvent.click(container.querySelector('button.select-dropdown') as HTMLElement);
     result.rerender(select, attrs);
     fireEvent.click(container.querySelector('ul.select-dropdown li:not(.disabled)') as HTMLElement);
     result.rerender(select, attrs);
 
     expect(mockOnChange).toHaveBeenCalledWith(['option1']);
-    expect(container.querySelector('input.select-dropdown')).toHaveValue('Option 1');
+    expect(container.querySelector('button.select-dropdown')).toHaveTextContent('Option 1');
     expect(container.querySelector('ul.select-dropdown')).toBeNull();
   });
 
@@ -108,7 +108,7 @@ describe('Select Component', () => {
     result.rerender(select, attrs);
 
     expect(mockOnChange).toHaveBeenCalledWith(['option1']);
-    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'false');
+    expect(container.querySelector('button.select-dropdown')).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('handles multiple select correctly', () => {
@@ -129,7 +129,7 @@ describe('Select Component', () => {
     result.rerender(select, attrs);
 
     expect(mockOnChange).toHaveBeenCalledWith(['option1']);
-    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'true');
+    expect(container.querySelector('button.select-dropdown')).toHaveAttribute('aria-expanded', 'true');
   });
 
   it('respects defaultCheckedId prop (uncontrolled)', () => {
@@ -141,8 +141,8 @@ describe('Select Component', () => {
     });
 
     // Check that the selected option appears in the input value
-    const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
-    expect(input.value).toBe('Option 2');
+    const trigger = container.querySelector('button.select-dropdown') as HTMLButtonElement;
+    expect(trigger.textContent).toBe('Option 2');
   });
 
   it('respects checkedId prop', () => {
@@ -156,8 +156,8 @@ describe('Select Component', () => {
     });
 
     // Check that the selected option appears in the input value
-    const input = result.container.querySelector('input.select-dropdown') as HTMLInputElement;
-    expect(input.value).toBe('Option 1');
+    const trigger = result.container.querySelector('button.select-dropdown') as HTMLButtonElement;
+    expect(trigger.textContent).toBe('Option 1');
 
     result.rerender(select, {
       id: 'test-select',
@@ -166,7 +166,7 @@ describe('Select Component', () => {
       checkedId: 'option2',
       onchange: vi.fn(),
     });
-    expect(input.value).toBe('Option 2');
+    expect(trigger.textContent).toBe('Option 2');
   });
 
   it('handles disabled state', () => {
@@ -179,7 +179,7 @@ describe('Select Component', () => {
       onchange: mockOnChange,
     });
 
-    const selectWrapper = container.querySelector('input.select-dropdown');
+    const selectWrapper = container.querySelector('button.select-dropdown');
     expect(selectWrapper).toHaveAttribute('tabindex', '-1');
 
     // Should not respond to clicks when disabled
@@ -256,7 +256,7 @@ describe('Select Component', () => {
     const result = render(select, attrs);
     const { container } = result;
 
-    fireEvent.click(container.querySelector('input.select-dropdown') as HTMLElement);
+    fireEvent.click(container.querySelector('button.select-dropdown') as HTMLElement);
     result.rerender(select, attrs);
 
     expect(container.querySelectorAll('li.optgroup')).toHaveLength(2);
@@ -279,7 +279,7 @@ describe('Select Component', () => {
     const result = render(select, attrs);
     const { container } = result;
 
-    fireEvent.click(container.querySelector('input.select-dropdown') as HTMLElement);
+    fireEvent.click(container.querySelector('button.select-dropdown') as HTMLElement);
     result.rerender(select, attrs);
 
     expect(container.querySelectorAll('ul.select-dropdown img')).toHaveLength(2);
@@ -295,8 +295,8 @@ describe('Select Component', () => {
     });
 
     // Multiple selections are displayed as comma-separated values in the input
-    const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
-    expect(input.value).toBe('Option 1, Option 2');
+    const trigger = container.querySelector('button.select-dropdown') as HTMLButtonElement;
+    expect(trigger.textContent).toBe('Option 1, Option 2');
   });
 
   it('allows removing tags in multiple select', () => {
@@ -311,8 +311,8 @@ describe('Select Component', () => {
 
     // Tag removal functionality is not currently implemented
     // Multiple selections are managed through the dropdown interface
-    const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
-    expect(input.value).toBe('Option 1, Option 2');
+    const trigger = container.querySelector('button.select-dropdown') as HTMLButtonElement;
+    expect(trigger.textContent).toBe('Option 1, Option 2');
   });
 
   it('shows count summary in multi-select mode', () => {
@@ -325,8 +325,8 @@ describe('Select Component', () => {
       defaultCheckedId: ['option1', 'option2'],
     });
 
-    const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
-    expect(input.value).toBe('2/2 selected');
+    const trigger = container.querySelector('button.select-dropdown') as HTMLButtonElement;
+    expect(trigger.textContent).toBe('2/2 selected');
   });
 
   it('shows all-selected label in all-or-count summary mode', () => {
@@ -340,8 +340,8 @@ describe('Select Component', () => {
       defaultCheckedId: ['option1', 'option2'],
     });
 
-    const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
-    expect(input.value).toBe('Everything selected');
+    const trigger = container.querySelector('button.select-dropdown') as HTMLButtonElement;
+    expect(trigger.textContent).toBe('Everything selected');
   });
 
   it('shows none-selected label in all-or-count summary mode', () => {
@@ -355,8 +355,8 @@ describe('Select Component', () => {
       placeholder: 'Choose...',
     });
 
-    const input = container.querySelector('input.select-dropdown') as HTMLInputElement;
-    expect(input.value).toBe('No projects selected');
+    const trigger = container.querySelector('button.select-dropdown') as HTMLButtonElement;
+    expect(trigger.textContent).toBe('No projects selected');
   });
 
   it('adds outlined appearance class when requested', () => {
@@ -385,6 +385,8 @@ describe('Select Component', () => {
     expect(combobox).toHaveAttribute('aria-expanded', 'false');
     expect(combobox).toHaveAttribute('aria-haspopup', 'listbox');
     expect(combobox).toHaveAttribute('aria-controls', 'test-select-dropdown');
+    expect(combobox.tagName).toBe('BUTTON');
+    expect(combobox).toHaveAttribute('type', 'button');
     expect(container.querySelector('label')).toHaveAttribute('for', 'test-select');
     expect(container.querySelector('.select-wrapper')).not.toHaveAttribute('tabindex');
     expect(container.querySelectorAll('.select-space [tabindex="0"], .select-space input:not([tabindex])')).toHaveLength(1);
@@ -409,6 +411,9 @@ describe('Select Component', () => {
     fireEvent.keyDown(combobox, 'Enter');
     result.rerender(select, attrs);
     expect(combobox).toHaveAttribute('aria-expanded', 'true');
+    fireEvent.keyDown(combobox, 'Tab');
+    result.rerender(select, attrs);
+    expect(combobox).toHaveAttribute('aria-expanded', 'false');
     await user.tab();
     expect(document.activeElement).toBe(next);
   });
@@ -417,7 +422,7 @@ describe('Select Component', () => {
     const select = Select<string>();
     const attrs = { label: 'Units', multiple: true, placeholder: 'Choose units', options: mockOptions };
     const result = render(select, attrs);
-    fireEvent.click(result.container.querySelector('input.select-dropdown') as HTMLElement);
+    fireEvent.click(result.container.querySelector('button.select-dropdown') as HTMLElement);
     result.rerender(select, attrs);
     expect(result.container.querySelectorAll('.select-space [tabindex="0"]')).toHaveLength(1);
     expect(result.container.querySelectorAll('ul.select-dropdown input[type="checkbox"][tabindex="-1"]')).toHaveLength(3);
@@ -463,7 +468,7 @@ describe('Select Component', () => {
 
     fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
     result.rerender(select, attrs);
-    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'true');
+    expect(container.querySelector('button.select-dropdown')).toHaveAttribute('aria-expanded', 'true');
     expect(container.querySelector('li.focused')).toHaveTextContent('Option 1');
 
     fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
@@ -488,11 +493,11 @@ describe('Select Component', () => {
 
     fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'ArrowDown');
     result.rerender(select, attrs);
-    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'true');
+    expect(container.querySelector('button.select-dropdown')).toHaveAttribute('aria-expanded', 'true');
 
     fireEvent.keyDown(container.querySelector('.select-wrapper') as HTMLElement, 'Escape');
     result.rerender(select, attrs);
-    expect(container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'false');
+    expect(container.querySelector('button.select-dropdown')).toHaveAttribute('aria-expanded', 'false');
     expect(container.querySelector('ul.select-dropdown')).toBeNull();
   });
 
@@ -508,7 +513,7 @@ describe('Select Component', () => {
     fireEvent.keyDown(result.container.querySelector('.select-wrapper') as HTMLElement, 'ArrowUp');
     result.rerender(select, attrs);
 
-    expect(result.container.querySelector('input.select-dropdown')).toHaveAttribute('aria-expanded', 'false');
+    expect(result.container.querySelector('button.select-dropdown')).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('releases its modal portal after close and removal', () => {
@@ -522,7 +527,7 @@ describe('Select Component', () => {
     };
     const result = render(select, attrs, modal);
 
-    fireEvent.click(result.container.querySelector('input.select-dropdown') as HTMLElement);
+    fireEvent.click(result.container.querySelector('button.select-dropdown') as HTMLElement);
     result.rerender(select, attrs);
     expect(document.getElementById('portal-select-dropdown')).toBeInTheDocument();
 
@@ -561,11 +566,34 @@ describe('Dropdown Component', () => {
     const result = render(dropdown, attrs);
     const { container } = result;
 
-    fireEvent.click(container.querySelector('input.dropdown-trigger') as HTMLInputElement);
+    fireEvent.click(container.querySelector('button.dropdown-trigger') as HTMLButtonElement);
     result.rerender(dropdown, attrs);
 
     expect(container.querySelector('.dropdown-content li > span')).not.toHaveStyle({
       padding: '14px 16px',
     });
+  });
+
+  it('uses a non-submitting button combobox with keyboard dismissal', () => {
+    const dropdown = Dropdown<string>();
+    const attrs = {
+      id: 'dropdown-test',
+      label: 'Choose a movie',
+      items: [{ id: 'movie', label: 'Movies' }],
+    };
+    const result = render(dropdown, attrs);
+    const trigger = result.container.querySelector('button.dropdown-trigger') as HTMLButtonElement;
+
+    expect(trigger).toHaveAttribute('type', 'button');
+    expect(trigger).toHaveAttribute('role', 'combobox');
+    expect(trigger).toHaveAttribute('aria-controls', 'dropdown-test-dropdown');
+    expect(trigger).toHaveAccessibleName('Choose a movie');
+
+    fireEvent.keyDown(trigger, 'ArrowDown');
+    result.rerender(dropdown, attrs);
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    fireEvent.keyDown(trigger, 'Tab');
+    result.rerender(dropdown, attrs);
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
   });
 });

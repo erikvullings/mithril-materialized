@@ -20,6 +20,10 @@ Version 4 introduces the Compact Minimal design preset for dense desktop applica
 
 `SearchSelect`, `FileUpload`, `LikertScale`, `Rating`, `SingleRangeSlider`, and `DoubleRangeSlider` now default their outer wrapper to `col s12`. Pass `className: ''` to retain a classless inline layout, or provide an explicit grid width such as `className: 'col s6'`.
 
+### Select trigger migration
+
+`Select`, `Dropdown`, and the DatePicker month/year selectors use `<button type="button">` triggers instead of readonly text inputs. This preserves keyboard focus visibility without the pointer-triggered ring in Chrome and keeps the `.select-dropdown` and `.dropdown-trigger` classes. Consumer CSS targeting `input.select-dropdown` must switch to `.select-dropdown` or `button.select-dropdown`; this markup change may require a breaking release. The trigger is not a form field.
+
 ### Compact Minimal preset
 
 Import the preset after the standard stylesheet and activate it on the document root:
@@ -457,6 +461,23 @@ m(SearchSelect<number>, {
   },
   onchange: (ids) => {
     selectedIds = ids;
+  },
+});
+```
+
+Set `multiple: false` for searchable single selection. The selected option remains visible in the list, choosing another option replaces it, and `onchange` still receives an array. Options can be grouped using their `group` property:
+
+```typescript
+m(SearchSelect<string>, {
+  label: 'Scenario type',
+  multiple: false,
+  checkedId: selectedScenarioIds,
+  options: [
+    { id: 'mine', label: 'My scenario', group: 'My scenarios' },
+    { id: 'starter', label: 'Starter scenario', group: 'Starter kit' },
+  ],
+  onchange: (ids) => {
+    selectedScenarioIds = ids;
   },
 });
 ```

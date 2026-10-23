@@ -42,7 +42,7 @@ describe('closing on outside click when another instance is clicked', () => {
       m(second, { id: 'second', options, multiple, onchange: vi.fn() }),
     ]);
     unmount = pair.unmount;
-    const [firstTrigger, secondTrigger] = Array.from(pair.container.querySelectorAll('input.select-dropdown'));
+    const [firstTrigger, secondTrigger] = Array.from(pair.container.querySelectorAll('button.select-dropdown'));
 
     pair.click(firstTrigger);
     expect(firstTrigger).toHaveAttribute('aria-expanded', 'true');
@@ -61,7 +61,7 @@ describe('closing on outside click when another instance is clicked', () => {
     ]);
     unmount = pair.unmount;
     const [firstRoot, secondRoot] = Array.from(pair.container.querySelectorAll('.input-field.select-space'));
-    const firstTrigger = firstRoot.querySelector('input.select-dropdown')!;
+    const firstTrigger = firstRoot.querySelector('button.select-dropdown')!;
 
     pair.click(firstTrigger);
     expect(firstTrigger).toHaveAttribute('aria-expanded', 'true');
@@ -80,7 +80,7 @@ describe('closing on outside click when another instance is clicked', () => {
     ]);
     unmount = pair.unmount;
     const firstRoot = pair.container.querySelector('.input-field.select-space')!;
-    const firstTrigger = firstRoot.querySelector('input.select-dropdown')!;
+    const firstTrigger = firstRoot.querySelector('button.select-dropdown')!;
 
     pair.click(firstTrigger);
     pair.click(firstRoot.querySelector('ul.select-dropdown li')!);
@@ -101,7 +101,7 @@ describe('closing on outside click when another instance is clicked', () => {
       m(second, { id: 'second', label: 'Second', items }),
     ]);
     unmount = pair.unmount;
-    const [firstTrigger, secondTrigger] = Array.from(pair.container.querySelectorAll('input.dropdown-trigger'));
+    const [firstTrigger, secondTrigger] = Array.from(pair.container.querySelectorAll('button.dropdown-trigger'));
     const isOpen = (trigger: Element) => !!trigger.parentElement?.querySelector('.dropdown-content');
 
     pair.click(firstTrigger);

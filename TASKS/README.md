@@ -40,3 +40,8 @@ Dialog is the shared foundation for CommandPalette. Menu and Snackbar can procee
 ## Large Data
 
 - [x] 0017 Virtualized list and table support
+
+## Selection Components
+
+- [x] 0020 SearchSelect single selection and grouped options
+- [x] 0021 Non-text select triggers for correct focus rings

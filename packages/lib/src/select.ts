@@ -147,6 +147,12 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
   };
 
   const handleKeyDown = (e: KeyboardEvent, attrs: SelectAttrs<T>) => {
+    if (e.key === 'Tab') {
+      state.isOpen = false;
+      state.focusedIndex = -1;
+      return;
+    }
+
     const result = interaction.keyboard({
       key: e.key,
       isOpen: state.isOpen,
@@ -357,6 +363,7 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
     const dropdownVnode = m(
       'ul.dropdown-content.select-dropdown',
       {
+        id: state.dropdownId,
         tabindex: -1,
         style: {
           ...getPortalStyles(state.inputRef),
@@ -464,38 +471,44 @@ export const Select = <T extends string | number>(): Component<SelectAttrs<T>> =
                   label,
                   isMandatory && m('span.mandatory', { 'aria-hidden': 'true', style: { marginLeft: '2px' } }, '*'),
                 ]),
-              m('input[type=text][readonly=true].select-dropdown.dropdown-trigger', {
-                id: state.id,
-                value: triggerValue,
-                role: 'combobox',
-                tabindex: disabled ? -1 : 0,
-                'aria-expanded': state.isOpen ? 'true' : 'false',
-                'aria-haspopup': 'listbox',
-                'aria-controls': state.dropdownId,
-                'aria-disabled': disabled ? 'true' : undefined,
-                'aria-required': isMandatory || attrs.required ? 'true' : undefined,
-                'aria-label':
-                  attrs['aria-label'] ||
-                  (!label ? placeholder || (multiple ? 'Select options' : 'Select option') : undefined),
-                'aria-labelledby':
-                  attrs['aria-label'] || !shouldInlineLabel ? undefined : `${state.id}-label`,
-                oncreate: ({ dom }) => {
-                  state.inputRef = dom as HTMLElement;
+              m(
+                'button.select-dropdown.dropdown-trigger',
+                {
+                  type: 'button',
+                  id: state.id,
+                  disabled: disabled || undefined,
+                  tabindex: disabled ? -1 : 0,
+                  role: 'combobox',
+                  'aria-expanded': state.isOpen ? 'true' : 'false',
+                  'aria-haspopup': 'listbox',
+                  'aria-controls': state.dropdownId,
+                  'aria-disabled': disabled ? 'true' : undefined,
+                  'aria-required': isMandatory || attrs.required ? 'true' : undefined,
+                  'aria-label':
+                    attrs['aria-label'] ||
+                    (!label ? placeholder || (multiple ? 'Select options' : 'Select option') : undefined),
+                  'aria-labelledby':
+                    attrs['aria-label'] || !shouldInlineLabel ? undefined : `${state.id}-label`,
+                  oncreate: ({ dom }) => {
+                    state.inputRef = dom as HTMLElement;
+                  },
+                  onclick: (e: Event) => {
+                    // Let the click bubble so other open selects/dropdowns can close themselves
+                    e.preventDefault();
+                    if (!disabled) {
+                      state.isOpen = !state.isOpen;
+                    }
+                  },
                 },
-                onclick: (e: Event) => {
-                  // Let the click bubble so other open selects/dropdowns can close themselves
-                  e.preventDefault();
-                  if (!disabled) {
-                    state.isOpen = !state.isOpen;
-                  }
-                },
-              }),
+                triggerValue
+              ),
               // Dropdown Menu - render inline only when NOT inside modal
               state.isOpen &&
                 !state.isInsideModal &&
                 m(
                   'ul.dropdown-content.select-dropdown',
                   {
+                    id: state.dropdownId,
                     tabindex: -1,
                     oncreate: ({ dom }) => {
                       state.dropdownRef = dom as HTMLElement;

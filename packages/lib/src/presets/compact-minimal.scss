@@ -418,7 +418,8 @@
     vertical-align: top;
   }
 
-  .select-wrapper input.select-dropdown {
+  .select-wrapper input.select-dropdown,
+  .select-wrapper button.select-dropdown {
     height: var(--mm-control-height);
     line-height: var(--mm-control-height);
     margin-block: 0 2px;
@@ -457,7 +458,8 @@
 
   .input-field.select-space.select-appearance-outlined
     .select-wrapper
-    input.select-dropdown {
+    input.select-dropdown,
+    button.select-dropdown {
     height: var(--mm-control-height);
     line-height: var(--mm-control-height);
     padding-inline-end: 20px;
@@ -886,7 +888,8 @@
     width: 260px;
   }
 
-  .datepicker-controls .select-wrapper input.select-dropdown {
+  .datepicker-controls .select-wrapper input.select-dropdown,
+  .datepicker-controls .select-wrapper button.select-dropdown {
     min-height: 28px;
     height: 28px;
     padding-inline: var(--mm-space-1) 18px;
@@ -894,11 +897,13 @@
     line-height: 28px;
   }
 
-  .datepicker-controls .select-month input.select-dropdown {
+  .datepicker-controls .select-month input.select-dropdown,
+  .datepicker-controls .select-month button.select-dropdown {
     width: 72px;
   }
 
-  .datepicker-controls .select-year input.select-dropdown {
+  .datepicker-controls .select-year input.select-dropdown,
+  .datepicker-controls .select-year button.select-dropdown {
     width: 58px;
   }
 

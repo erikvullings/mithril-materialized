@@ -64,6 +64,7 @@ export const SelectionPage = () => {
     radioId: undefined as string | undefined,
     checkedId: undefined as string | string[] | undefined,
     checkedIds: [0, 2],
+    singleScenarioIds: [] as string[],
     projectCheckedIds: [101, 102] as number[],
     asyncCheckedIds: [] as number[],
     checked: true,
@@ -326,6 +327,43 @@ m(SearchSelect<string>, {
     { id: 'sea', label: 'Sea', img: seaImage },
     { id: 'city', label: 'City' },
   ],
+})`,
+        }),
+
+        m('h3.header', 'Grouped searchable single select'),
+        m('p.caption', 'Choose one scenario type from either group; selecting a new option replaces the current value.'),
+        m(
+          '.row',
+          m(SearchSelect<string>, {
+            label: 'Scenario type',
+            multiple: false,
+            checkedId: state.singleScenarioIds,
+            options: [
+              { id: 'mine-a', label: 'Community showcase', group: 'My scenario types' },
+              { id: 'mine-b', label: 'Research prototype', group: 'My scenario types' },
+              { id: 'starter-a', label: 'Starter kit', group: 'Starter kit' },
+              { id: 'starter-b', label: 'Tutorial scenario', group: 'Starter kit' },
+            ],
+            onchange: (ids) => {
+              state.singleScenarioIds = ids;
+            },
+          })
+        ),
+        m(HighlightedCodeBlock, {
+          newRow: true,
+          code: `m(SearchSelect<string>, {
+  label: 'Scenario type',
+  multiple: false,
+  checkedId: state.singleScenarioIds,
+  options: [
+    { id: 'mine-a', label: 'Community showcase', group: 'My scenario types' },
+    { id: 'mine-b', label: 'Research prototype', group: 'My scenario types' },
+    { id: 'starter-a', label: 'Starter kit', group: 'Starter kit' },
+    { id: 'starter-b', label: 'Tutorial scenario', group: 'Starter kit' },
+  ],
+  onchange: (ids) => {
+    state.singleScenarioIds = ids;
+  },
 })`,
         }),
 
