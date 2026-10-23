@@ -1,3 +1,11 @@
+## [5.0.1](https://github.com/erikvullings/mithril-materialized/compare/v5.0.0...v5.0.1) (2026-10-23)
+
+
+### Bug Fixes
+
+* **search-select:** highlight first enabled match while typing ([caa6898](https://github.com/erikvullings/mithril-materialized/commit/caa689812b88a6eb96f1bbcf18b341bd5b739c1a))
+* **search-select:** select first match on Enter without a highlighted option ([398d0d1](https://github.com/erikvullings/mithril-materialized/commit/398d0d15aef228527362d327f8bbdf7ea79e003e))
+
 # [5.0.0](https://github.com/erikvullings/mithril-materialized/compare/v4.1.4...v5.0.0) (2026-10-23)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "mithril-materialized",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Material Design components for Mithril.js with no external JavaScript dependencies.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
