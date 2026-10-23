@@ -1,3 +1,15 @@
+# [5.0.0](https://github.com/erikvullings/mithril-materialized/compare/v4.1.4...v5.0.0) (2026-10-23)
+
+
+* feat(search-select)!: add grouped single-select and semantic triggers ([42bd80b](https://github.com/erikvullings/mithril-materialized/commit/42bd80b5f0424c63b22b8e4011ad0409523cd472))
+
+
+### BREAKING CHANGES
+
+* Select-like triggers now use buttons instead of readonly text inputs. Update consumer CSS selectors that target input.select-dropdown.
+
+Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>
+
 ## [4.1.4](https://github.com/erikvullings/mithril-materialized/compare/v4.1.3...v4.1.4) (2026-10-15)
 
 
