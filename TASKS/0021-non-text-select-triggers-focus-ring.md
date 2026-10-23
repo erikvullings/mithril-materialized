@@ -8,22 +8,32 @@ Area: lib
 Depends on: none
 
 ## Context
-Select-like triggers rendered as readonly text inputs, causing Chrome to apply `:focus-visible` after pointer interaction. Compact Minimal should keep a focus ring for keyboard navigation without showing one after a click.
+Select-like triggers currently render as readonly text inputs (`input[type=text][readonly=true].select-dropdown.dropdown-trigger`). Chrome applies `:focus-visible` to text inputs even when they are focused with the mouse. As a result, Compact Minimal's `.dropdown-trigger:focus-visible` rule (`packages/lib/src/presets/compact-minimal.scss`) shows a focus ring when users click a `Select`. Scenario Spark currently works around this in app CSS by suppressing the ring for pointer interaction.
 
-Affected triggers include Select, Dropdown, DatePicker month/year selection, and SearchSelect.
+Focus rings must stay available for keyboard users (WCAG 2.4.7, Focus Visible). The fix is to render triggers as non-text focusable elements so the browser's own `:focus-visible` rules apply: no ring after a click, a ring after Tab.
+
+Affected triggers:
+- `packages/lib/src/select.ts` (around line 467)
+- `packages/lib/src/dropdown.ts` (around line 341)
+- `packages/lib/src/datepicker.ts` (month/year selects around lines 1059 and 1114)
+- `packages/lib/src/search-select.ts` (readonly trigger around line 498; coordinate with 0020)
 
 ## Acceptance Criteria
-- Select, Dropdown, and DatePicker month/year triggers render as `button[type=button]` comboboxes, not text inputs. SearchSelect retains its existing non-text trigger.
-- Triggers retain their dropdown classes and ARIA relationships, accessible names, disabled states, and keyboard behavior.
-- Tab closes an open list and moves focus normally; Escape closes it.
-- Keep existing visual presentation across themes and Compact Minimal, including value text, ellipsis, placeholder, disabled state, caret, underline/border, and keyboard-visible focus.
-- Update tests for trigger semantics, ARIA, keyboard behavior, and selectors.
-- Document that consumer CSS targeting `input.select-dropdown` must migrate to `.select-dropdown` (or `button.select-dropdown`).
-- Triggers are not form fields; existing native form controls remain unaffected.
+- Each select-like trigger renders as a `button[type=button]` or as an element with `role="combobox"` and `tabindex="0"`, not as a text input. Use one pattern consistently.
+- The trigger keeps its ARIA: `aria-haspopup="listbox"`, `aria-expanded`, `aria-controls`, an accessible name linked to the label, and `aria-disabled` or `disabled`.
+- Keyboard behavior stays the same: Enter/Space/ArrowDown open the list, Escape closes it, and Tab moves focus on.
+- Clicking a trigger in Chrome shows no focus ring; tabbing to it shows one. Check this in the default theme and in Compact Minimal.
+- Looks match the current design: label float/active state, the selected-value text, overflow ellipsis, the placeholder, the disabled state, the dropdown caret, and the underline or border in every theme and preset. Update the SCSS that targets `input.select-dropdown`.
+- Update the existing tests (`select.test.ts`, `outside-click-close.test.ts`, and the datepicker tests) to use the new selectors. Add tests for the role/ARIA attributes and keyboard opening.
+- Assess backwards compatibility: consumer CSS and test selectors that target `input.select-dropdown` will break. Keep the `.select-dropdown.dropdown-trigger` classes, and document the change in the changelog/README as a potentially breaking change.
+- Once the new element ships, Spark can drop its pointer-focus workaround. Spark changes are not part of this task.
 
 ## Implementation Notes
-- Consumer selectors targeting `input.select-dropdown` are a potentially breaking change. Keep `.select-dropdown` and `.dropdown-trigger` classes.
-- No release is included in this task.
+- Keep `.select-dropdown` and `.dropdown-trigger` class names so theme hooks keep working.
+- Make sure the trigger is never submitted as a form field. Forms that rely on hidden native selects or inputs must keep working.
+- Do not remove or weaken `:focus-visible` styles anywhere.
+- Do not release as part of this task.
 
 ## Agent Notes
-- 2026-10-23 copilot: replaced readonly Select, Dropdown, and DatePicker month/year text inputs with non-submitting button comboboxes; retained class hooks, ARIA controls, native focus-visible behavior, and keyboard dismissal.
+- 2026-10-23 copilot: created after the Scenario Spark focus-ring discussion. We chose the semantic non-text trigger approach over pointer-focus tracking.
+- 2026-10-23 copilot: replaced readonly Select, Dropdown, and DatePicker month/year text inputs with non-submitting button comboboxes; SearchSelect retains its non-text trigger. Retained class hooks, ARIA controls, focus-visible styling, and keyboard dismissal. Documented the potentially breaking CSS selector change in both READMEs.
