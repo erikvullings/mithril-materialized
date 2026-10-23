@@ -603,6 +603,18 @@ export const SearchSelect = <T extends string | number>(
                     state.focusedIndex = -1;
                     return;
                   }
+                  if (e.key === 'Enter' && state.focusedIndex < 0 && state.searchTerm) {
+                    // Enter after typing selects the first enabled match without arrowing to it first.
+                    const firstMatch = displayedOptions.find((option) => !option.disabled);
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (firstMatch) {
+                      toggleOption(firstMatch, attrs);
+                    } else if (showAddNew) {
+                      await createAndSelectOption(attrs);
+                    }
+                    return;
+                  }
                   const action = handleKeyDown(e, displayedOptions, !!showAddNew);
                   if (e.defaultPrevented) {
                     e.stopPropagation();
