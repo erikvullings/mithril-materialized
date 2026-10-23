@@ -157,6 +157,7 @@ interface SearchSelectState<T extends string | number> {
   loadError: string | null;
   latestRequestId: number;
   focusTriggerAfterSelection: boolean;
+  highlightFirstMatch: boolean;
 }
 
 /**
@@ -191,6 +192,7 @@ export const SearchSelect = <T extends string | number>(
     loadError: null,
     latestRequestId: 0,
     focusTriggerAfterSelection: false,
+    highlightFirstMatch: false,
   };
 
   const updateAsyncState = (nextState: AsyncComboboxState<InputOption<T>>) => {
@@ -465,6 +467,14 @@ export const SearchSelect = <T extends string | number>(
         state.searchTerm &&
         !displayedOptions.some((o) => (o.label || o.id.toString()).toLowerCase() === state.searchTerm.toLowerCase());
 
+      // While typing, keep the first enabled match active so Enter's target is visible.
+      if (!state.isOpen || !state.searchTerm) {
+        state.highlightFirstMatch = false;
+      }
+      if (state.highlightFirstMatch) {
+        state.focusedIndex = displayedOptions.findIndex((option) => !option.disabled);
+      }
+
       const activeDescendantId =
         state.isOpen && state.focusedIndex >= 0 && state.focusedIndex < displayedOptions.length
           ? getComboboxOptionId(state.id, state.focusedIndex)
@@ -593,6 +603,7 @@ export const SearchSelect = <T extends string | number>(
                 oninput: (e: InputEvent) => {
                   state.searchTerm = (e.target as HTMLInputElement).value;
                   state.focusedIndex = -1;
+                  state.highlightFirstMatch = !!state.searchTerm;
                   if (loadOptions) {
                     void loadAsyncOptions(attrs, state.searchTerm);
                   }
@@ -614,6 +625,9 @@ export const SearchSelect = <T extends string | number>(
                       await createAndSelectOption(attrs);
                     }
                     return;
+                  }
+                  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                    state.highlightFirstMatch = false;
                   }
                   const action = handleKeyDown(e, displayedOptions, !!showAddNew);
                   if (e.defaultPrevented) {
@@ -772,6 +786,7 @@ export const SearchSelect = <T extends string | number>(
                     isFocused: state.focusedIndex === index,
                     onToggle: (opt) => toggleOption(opt, attrs),
                     onMouseOver: (idx) => {
+                      state.highlightFirstMatch = false;
                       state.focusedIndex = idx;
                     },
                     showCheckbox: multiple !== false && maxSelectedOptions !== 1,

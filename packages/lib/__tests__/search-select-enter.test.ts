@@ -27,8 +27,6 @@ describe('SearchSelect Enter without a highlighted option', () => {
     const onchange = vi.fn();
     const attrs = { label: 'Scenario type', multiple: false, options, onchange };
     const { component, result, input } = openAndType(attrs, 'storm');
-    expect(input.getAttribute('aria-activedescendant')).toBeNull();
-
     fireEvent.keyDown(input, 'Enter');
     result.rerender(component, attrs);
 
@@ -85,5 +83,64 @@ describe('SearchSelect Enter without a highlighted option', () => {
 
     expect(onchange).not.toHaveBeenCalled();
     expect(result.container.querySelector('[role="listbox"]')).not.toBeNull();
+  });
+
+  it('highlights the first enabled match while typing and exposes it as aria-activedescendant', () => {
+    const attrs = { label: 'Scenario type', multiple: false, options };
+    const { component, result, input } = openAndType(attrs, 'storm');
+
+    const activeId = input.getAttribute('aria-activedescendant');
+    expect(activeId).not.toBeNull();
+    const active = document.getElementById(activeId!) as HTMLElement;
+    expect(active).toHaveTextContent('Storm');
+    expect(active).not.toHaveTextContent('archived');
+    expect(active.classList.contains('active')).toBe(true);
+    expect(result.container.querySelectorAll('[role="option"].active')).toHaveLength(1);
+
+    fireEvent.change(input, 'snow');
+    result.rerender(component, attrs);
+    expect(document.getElementById(input.getAttribute('aria-activedescendant')!)).toHaveTextContent('Snowstorm');
+  });
+
+  it('moves from the typed highlight with arrow keys', () => {
+    const attrs = { label: 'Scenario type', multiple: false, options };
+    const { component, result, input } = openAndType(attrs, 'storm');
+
+    fireEvent.keyDown(input, 'ArrowDown');
+    result.rerender(component, attrs);
+    expect(document.getElementById(input.getAttribute('aria-activedescendant')!)).toHaveTextContent('Snowstorm');
+
+    fireEvent.keyDown(input, 'ArrowUp');
+    result.rerender(component, attrs);
+    expect(document.getElementById(input.getAttribute('aria-activedescendant')!)).toHaveTextContent('Storm');
+  });
+
+  it('highlights nothing when no option matches and leaves the typed text untouched', () => {
+    const attrs = { label: 'Scenario type', multiple: false, options };
+    const { result, input } = openAndType(attrs, 'Drought');
+
+    expect(input.getAttribute('aria-activedescendant')).toBeNull();
+    expect(result.container.querySelector('[role="option"].active')).toBeNull();
+    expect(input.value).toBe('Drought');
+  });
+
+  it('does not inline-autocomplete the search field', () => {
+    const attrs = { label: 'Scenario type', multiple: false, options };
+    const { input } = openAndType(attrs, 'sto');
+
+    expect(input.value).toBe('sto');
+    expect(input.selectionStart).toBe(input.selectionEnd);
+  });
+
+  it('keeps no highlight when the list opens without typing', () => {
+    const component = SearchSelect<string>();
+    const attrs = { label: 'Scenario type', multiple: false, options };
+    const result = render(component, attrs);
+    fireEvent.click(result.container.querySelector('.chips-container') as HTMLElement);
+    result.rerender(component, attrs);
+
+    const input = result.container.querySelector('.search-select-input') as HTMLInputElement;
+    expect(input.getAttribute('aria-activedescendant')).toBeNull();
+    expect(result.container.querySelector('[role="option"].active')).toBeNull();
   });
 });
