@@ -1,3 +1,10 @@
+## [5.0.2](https://github.com/erikvullings/mithril-materialized/compare/v5.0.1...v5.0.2) (2026-10-24)
+
+
+### Bug Fixes
+
+* **portal:** redraw after interactions in portal-rendered content ([#60](https://github.com/erikvullings/mithril-materialized/issues/60)) ([e91d063](https://github.com/erikvullings/mithril-materialized/commit/e91d063dfa4ec2d8ebdccf11cc315b954e15dd3d))
+
 ## [5.0.1](https://github.com/erikvullings/mithril-materialized/compare/v5.0.0...v5.0.1) (2026-10-23)
 
 
