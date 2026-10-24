@@ -58,21 +58,27 @@ const getContainer = (id: string, zIndex: number): PortalContainer => {
   return createContainer(id, zIndex);
 };
 
+// Portals are rendered with m.render outside the m.mount tree, so pass a redraw callback to give
+// event handlers inside portal content the same auto-redraw behaviour as the mounted tree.
+const redrawApp = () => m.redraw();
+// Mithril 2 supports a third `redraw` argument at runtime, but @types/mithril omits it.
+const renderPortal = m.render as (el: Element, vnodes: m.Children, redraw?: () => void) => void;
+
 const renderOwner = (container: PortalContainer, owner?: symbol, vnode?: m.Children): void => {
   if (container.activeOwner !== owner) {
     if (container.activeOwner !== undefined) {
-      m.render(container.element, null);
+      renderPortal(container.element, null, redrawApp);
     }
     container.activeOwner = undefined;
     if (owner !== undefined) {
-      m.render(container.element, vnode);
+      renderPortal(container.element, vnode, redrawApp);
       container.activeOwner = owner;
     }
     return;
   }
 
   if (owner !== undefined) {
-    m.render(container.element, vnode);
+    renderPortal(container.element, vnode, redrawApp);
   }
 };
 

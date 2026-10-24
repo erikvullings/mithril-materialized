@@ -136,4 +136,57 @@ describe('Portal lifecycle', () => {
     });
     expect(document.getElementById('legacy-sync')).toBeNull();
   });
+
+  it('schedules an app redraw after event handlers inside portal content', async () => {
+    const root = document.createElement('div');
+    document.body.appendChild(root);
+    const portal = createPortalHandle({ id: 'portal-redraw' });
+    let count = 0;
+    m.mount(root, {
+      view: () => {
+        portal.sync(m('button.portal-btn', { onclick: () => count++ }, 'Add'));
+        return m('span.count', String(count));
+      },
+    });
+
+    (document.querySelector('#portal-redraw .portal-btn') as HTMLButtonElement).click();
+    await new Promise<void>((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
+
+    expect(root.querySelector('.count')?.textContent).toBe('1');
+    m.mount(root, null);
+    portal.dispose();
+    root.remove();
+  });
+
+  it('respects e.redraw = false inside portal content', async () => {
+    const root = document.createElement('div');
+    document.body.appendChild(root);
+    const portal = createPortalHandle({ id: 'portal-no-redraw' });
+    let count = 0;
+    m.mount(root, {
+      view: () => {
+        portal.sync(
+          m(
+            'button.portal-btn',
+            {
+              onclick: (e: Event & { redraw?: boolean }) => {
+                e.redraw = false;
+                count++;
+              },
+            },
+            'Add'
+          )
+        );
+        return m('span.count', String(count));
+      },
+    });
+
+    (document.querySelector('#portal-no-redraw .portal-btn') as HTMLButtonElement).click();
+    await new Promise<void>((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
+
+    expect(root.querySelector('.count')?.textContent).toBe('0');
+    m.mount(root, null);
+    portal.dispose();
+    root.remove();
+  });
 });
