@@ -1,3 +1,11 @@
+## [5.0.3](https://github.com/erikvullings/mithril-materialized/compare/v5.0.2...v5.0.3) (2026-10-30)
+
+
+### Bug Fixes
+
+* **forms:** align standard single-line control heights ([abb2952](https://github.com/erikvullings/mithril-materialized/commit/abb29524ee7620455c0128716764cc3b4f713b64))
+* **styles:** restore modular themes and compact outlined sizing ([4d3a002](https://github.com/erikvullings/mithril-materialized/commit/4d3a002ab92335453dca297fc70349b8e068d824))
+
 ## [5.0.2](https://github.com/erikvullings/mithril-materialized/compare/v5.0.1...v5.0.2) (2026-10-24)
 
 
