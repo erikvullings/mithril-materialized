@@ -51,6 +51,7 @@
     "test:ui": "vitest --reporter=verbose",
     "test:server": "node test-server.js",
     "test:visual": "playwright test",
+    "test:geometry": "npm run build && playwright test --config playwright.geometry.config.ts",
     "test:visual:ui": "playwright test --ui",
     "test:all": "npm run test && npm run test:visual",
     "link:old": "pnpm link",

@@ -1,2 +1,4 @@
 dist
+test-results/
+playwright-report/
 .rpt2_cache

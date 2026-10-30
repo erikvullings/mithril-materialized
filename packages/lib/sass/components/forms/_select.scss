@@ -84,6 +84,9 @@ select {
   }
 
   button.select-dropdown {
+    // Match content-box text inputs without changing the trigger's width.
+    box-sizing: border-box;
+    height: calc(#{variables.$input-height} + 1px);
     appearance: none;
     border-radius: 0;
     color: inherit;

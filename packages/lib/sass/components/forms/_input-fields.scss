@@ -142,6 +142,7 @@ textarea.materialize-textarea {
   input.number-input:not(.browser-default) {
     -moz-appearance: textfield;
     box-sizing: border-box;
+    height: calc(#{variables.$input-height} + 1px);
     width: calc(100% - 0.75rem);
     padding-right: 2rem;
 

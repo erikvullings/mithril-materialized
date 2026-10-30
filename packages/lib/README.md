@@ -12,6 +12,17 @@ Version 4 adds the Compact Minimal design preset and standardizes field layout a
 
 `SearchSelect`, `FileUpload`, `LikertScale`, `Rating`, `SingleRangeSlider`, and `DoubleRangeSlider` now default their outer wrapper to `col s12`. Pass `className: ''` for a classless inline layout, or provide an explicit width such as `className: 'col s6'`.
 
+Standard single-line text inputs, `NumberInput`, and standard `Select` triggers
+(including legacy `input.select-dropdown`) share an outer height of `3rem + 1px`,
+including the bottom border. Outlined Select and Compact Minimal retain their
+own dimensions; textarea, range, and file-input sizing is unchanged.
+
+Run `pnpm --dir packages/lib test:geometry` from the repository root for the
+real-browser alignment regression against rebuilt CSS. It uses local Mithril
+and library bundles without the visual-demo server or external styles/fonts.
+Install Playwright's browsers first with
+`pnpm --dir packages/lib exec playwright install` if needed.
+
 ### Compact Minimal preset
 
 ```typescript
