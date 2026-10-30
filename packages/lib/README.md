@@ -17,6 +17,11 @@ Standard single-line text inputs, `NumberInput`, and standard `Select` triggers
 including the bottom border. Outlined Select and Compact Minimal retain their
 own dimensions; textarea, range, and file-input sizing is unchanged.
 
+Modular imports (`core.css` plus component styles such as `forms.css`) include
+the same light/dark/automatic theme variables as `index.css`. Compact Minimal
+outlined Select triggers use the preset control height (32px, or 40px for
+coarse pointers), for both button and legacy input triggers.
+
 Run `pnpm --dir packages/lib test:geometry` from the repository root for the
 real-browser alignment regression against rebuilt CSS. It uses local Mithril
 and library bundles without the visual-demo server or external styles/fonts.

@@ -5,6 +5,7 @@
 @charset "UTF-8";
 
 // Essential foundation
+@use '../sass/components/theme-variables';
 @use '../sass/components/color-variables';
 @use '../sass/components/variables'; 
 @use '../sass/components/normalize';

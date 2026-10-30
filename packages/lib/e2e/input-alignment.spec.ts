@@ -46,8 +46,14 @@ async function mountFields(page: Page, icons: boolean, populated: boolean) {
         m('.select-wrapper', m('input.select-dropdown', { id: 'alignment-legacy', type: 'text', readonly: true })),
         m(Select<string>, {
           id: 'alignment-outlined', className: '', label: 'Outlined', appearance: 'outlined',
+          iconName: icons ? 'search' : undefined,
           options: [{ id: 'one', label: 'One' }],
         }),
+        m('.input-field.select-space.select-appearance-outlined',
+          m('.select-wrapper', m('input.select-dropdown', {
+            id: 'alignment-outlined-legacy', type: 'text', readonly: true,
+          }))
+        ),
         m(TextArea, { id: 'unchanged-textarea', className: '', label: 'Notes' }),
         m(RangeInput, { id: 'unchanged-range', className: '', label: 'Range' }),
         m(FileInput, { className: '' }),
@@ -83,12 +89,13 @@ async function expectAligned(page: Page, expectedHeight: number) {
   expect(geometry.pageOverflow).toBeLessThanOrEqual(0);
 }
 
-for (const css of ['index.css', 'index.min.css']) {
+for (const css of ['index.css', 'index.min.css', 'forms.css']) {
   for (const rootSize of [14, 16]) {
     for (const theme of ['light', 'dark']) {
       for (const compact of [false, true]) {
         test(`${css}, ${rootSize}px, ${theme}, ${compact ? 'compact' : 'standard'}`, async ({ page }) => {
           await page.setContent('<!doctype html><html><head></head><body><main id="app"></main></body></html>');
+          if (css === 'forms.css') await page.addStyleTag({ path: path.join(dist, 'core.css') });
           await page.addStyleTag({ path: path.join(dist, css) });
           await page.addStyleTag({ path: path.join(dist, 'presets/compact-minimal.css') });
           await page.addStyleTag({ content: `
@@ -107,6 +114,8 @@ for (const css of ['index.css', 'index.min.css']) {
           await page.addScriptTag({ path: path.join(dist, 'index.umd.js') });
           const coarse = await page.evaluate(() => matchMedia('(pointer: coarse)').matches);
           const expectedHeight = compact ? (coarse ? 40 : 32) : rootSize * 3 + 1;
+          await expect(page.locator('body')).toHaveCSS('background-color', theme === 'dark'
+            ? 'rgb(18, 18, 18)' : 'rgb(255, 255, 255)');
 
           for (const width of [375, 1024]) {
             await page.setViewportSize({ width, height: 900 });
@@ -119,6 +128,7 @@ for (const css of ['index.css', 'index.min.css']) {
                 const label = page.locator('label[for="alignment-search"]');
                 const selectLabel = page.locator('label[for="alignment-category"]');
                 const selectBorder = await select.evaluate(el => getComputedStyle(el).borderBottomColor);
+                await expect(select).toHaveCSS('padding-right', compact ? '24px' : '0px');
                 await expect(page.locator('.input-clear-btn')).toHaveCount(populated ? 1 : 0);
                 await expect(selectLabel).toHaveCSS('top', '-26px');
                 if (populated) await expect(label).toHaveClass(/active/);
@@ -157,7 +167,21 @@ for (const css of ['index.css', 'index.min.css']) {
               }
             }
           }
-          await expect(page.locator('#alignment-outlined')).toHaveCSS('height', `${rootSize * 3}px`);
+          await expect(page.locator('#alignment-outlined')).toHaveCSS('height', `${compact ? expectedHeight : rootSize * 3}px`);
+          await expect(page.locator('#alignment-outlined-legacy')).toHaveCSS('height', `${compact ? expectedHeight : rootSize * 3}px`);
+          const outlined = page.locator('#alignment-outlined');
+          await expect(outlined).toHaveCSS('padding-right', compact ? '20px' : '24px');
+          await outlined.focus();
+          await outlined.press('ArrowDown');
+          await expect(outlined).toHaveAttribute('aria-expanded', 'true');
+          await outlined.press('Enter');
+          await expect(outlined).toHaveText('One');
+          await expect(outlined).toHaveAttribute('aria-expanded', 'false');
+          await expect.poll(() => outlined.evaluate(el => {
+            const rect = el.getBoundingClientRect();
+            const wrapper = el.closest('.select-wrapper')!.getBoundingClientRect();
+            return Math.max(wrapper.left - rect.left, rect.right - wrapper.right);
+          })).toBeLessThan(0.1);
           const textarea = page.locator('#unchanged-textarea');
           await expect(textarea).toHaveCSS('box-sizing', compact ? 'border-box' : 'content-box');
           await expect(textarea).toHaveCSS('padding-top', compact ? '7px' : '10px');
@@ -167,6 +191,15 @@ for (const css of ['index.css', 'index.min.css']) {
           await expect(page.locator('#unchanged-range')).toHaveCSS('box-sizing', 'border-box');
           await expect(page.locator('input[type="file"]')).toHaveCSS('opacity', '0');
           await expect(page.locator('input.file-path')).toHaveCSS('box-sizing', compact ? 'border-box' : 'content-box');
+          await page.evaluate(() => { delete document.documentElement.dataset.theme; });
+          for (const colorScheme of ['dark', 'light'] as const) {
+            await page.emulateMedia({ colorScheme });
+            await expect(page.locator('body')).toHaveCSS('background-color', colorScheme === 'dark'
+              ? 'rgb(18, 18, 18)' : 'rgb(255, 255, 255)');
+            await expect(page.locator('#alignment-search')).toHaveCSS('border-bottom-color', colorScheme === 'dark'
+              ? 'rgba(255, 255, 255, 0.42)' : 'rgba(0, 0, 0, 0.42)');
+            await expectAligned(page, expectedHeight);
+          }
         });
       }
     }
